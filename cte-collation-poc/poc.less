@@ -1,0 +1,61 @@
+// "Rule" and "RuleSet" are actually CSS terms.
+
+@import 'defs';
+
+//  above import looks like this:
+// .Book(@rules) { body { @rules(); } };
+// .Chapter(@rules) { div[data-type=chapter] { @rules(); } };
+// .Solution(@rules) { div[data-type='solution'] { @rules(); } };
+// .Exercise(@rules) { div[data-type='exercise'] { @rules(); } };
+// .Exercises(@rules) { section[data-element-type='problems-exercises'] { @rules(); } };
+// .Definition(@rules) { div[data-type='definition'] { @rules(); } };
+// .homework(@rules) { .homework { @rules(); } };
+// .target(@rules) { &::div { @rules(); } };
+
+
+.Book ({
+  .Chapter ({
+    // Move Exercises section  to a place defined by probs-123
+    .Exercises ({
+        move-to: probs-123; // or just `problems`
+
+        .Exercise ({
+            .Solution ({ move-to: sol-234; });
+        });
+    });
+
+    // copy definitions to somewhere else
+    .Definition ({ copy-to: defs-345; });
+
+    // This says to create a fragment-container at the end of the chapter (book template),
+    // and put all the problems in here, tagged with a classname
+    .target ({ 
+      class: eoc-exercises;
+      content: pending(probs-123); });
+  });
+
+  // End of book materials.
+  // This says to create a fragment named 'Exercise Solutions' which has a
+  // fragment-container with all the solutions in the book, grouped by chapter.
+
+  // create the solutions section with title "Exercise Solutions"
+  .target ({
+  //  content: 'Exercise Solutions';
+  //  .target ({
+      class: eob-solutions;
+      content: pending(sol-234);
+      group-by: 'div[data-type=chapter]'; // group-by takes a quoted CSS selector. Something like: `Chapter` or `Section`
+  //  });
+  });
+
+  // create the book Glossary section and sort by the Term
+  .target ({
+  //  content: 'Glossary';
+  //  .target ({
+      class: eob-glossary;
+      content: pending(defs-345);
+      sort-by: '.Term'; // Sort-by takes a CSS selector. Probably the only place `sort-by` will be used
+  //  });
+  });
+
+});
