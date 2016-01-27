@@ -12,6 +12,18 @@ example rule set is in poc.less.
 convert to css via 'lessc poc.less > poc.css'
 requires lessc >= 1.7
 
+## Install
+
+Install less (which contains the lessc tool):
+
+```npm install -g less```
+
+Install the required python packages:
+
+```pip install -r requirements.txt```
+
+## Usage
+
 run test as:
 
 ./poc.py poc.css poc-raw.html poc-cooked.html
