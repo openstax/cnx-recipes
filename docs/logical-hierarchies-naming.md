@@ -1,7 +1,7 @@
 Problem: Names vs Behavior (strict typing vs duck typing)
 
 
-Use naming conventions, human language for now
+##Use naming conventions, human language for now
 
 Archive > Series > Book > Unit > Chapter > Page (smallest unit) > Section > Sub section > sub sub section > ....
 
@@ -13,7 +13,7 @@ S < B/U/C/P
 Creating special chapters 'appendix', special page 'preface', based on rules above. A page can be right under a book, but a unit cannot be in a chapter for example. 
 
 
-Long term/TBD: 
+##Long term/TBD: 
 Use underlying structure: bottom up logic, knowing how many parents one elements has, not limited to position in DOM as opposed to how many children one element has
 
 L6 > L5 > L4 > L3 > L2 > L1
