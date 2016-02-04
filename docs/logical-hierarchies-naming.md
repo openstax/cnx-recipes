@@ -5,10 +5,10 @@ Problem: Names vs Behavior (strict typing vs duck typing)
 
 Archive > Series > Book > Unit > Chapter > Page (smallest unit) > Section > Sub section > sub sub section > ....
 
-- C < P 
-- U < C/P
-- B < U/C/P
-- S < B/U/C/P
+- C < P
+- U < C|P
+- B < U|C|P
+- S < B|U|C|P
 
 Creating special chapters 'appendix', special page 'preface', based on rules above. A page can be right under a book, but a unit cannot be in a chapter for example. 
 
