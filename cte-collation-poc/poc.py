@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import sys
+import argparse
 
 import tinycss
 import cssselect
@@ -9,15 +10,9 @@ from lxml import etree
 import copy
 
 
-def usage():
-    print(
-        """usage: {} <stylesheet.css> [input.html] [output.html]""".
-        format(sys.argv[0]), file=sys.stderr)
-    exit(1)
-
-
 def debug(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
+    if verbose:
+        print(*args, file=sys.stderr, **kwargs)
 
 
 def main(css_in, html_in=sys.stdin, html_out=sys.stdout):
@@ -97,7 +92,7 @@ def main(css_in, html_in=sys.stdin, html_out=sys.stdout):
         pending[target]['nodes'] = nodes
 
         element = rule_to_element(rule, action_targets[target])
-        if element:
+        if element is not None:
             nodes[0].append(element)
 
     print(etree.tostring(html_doc), file=html_out)
@@ -107,7 +102,7 @@ def rule_to_xpath(rule):
     """Convert CSS rule selector to HTML xpath """
     s = cssselect.parse(rule.selector.as_css())
     #FIXME need to extend selector_to_xpath to handle custom
-    # pseduo-selector, namely '::div'
+    # psuedo-selector, namely '::div'
     # esp. for any sort of nesting
     xpath = cssselect.HTMLTranslator().selector_to_xpath(s[0])
     return xpath
@@ -134,14 +129,21 @@ def rule_to_element(rule, content):
     return elem
 
 if __name__ == '__main__':
-    argc = len(sys.argv)
-    if argc == 1:
-        usage()
-    elif argc == 2:
-        main(open(sys.argv[1]))
-    elif argc == 3:
-        main(open(sys.argv[1]), open(sys.argv[2]))
-    elif argc == 4:
-        main(open(sys.argv[1]), open(sys.argv[2]), open(sys.argv[3], 'w'))
-    else:
-        usage()
+
+    parser = argparse.ArgumentParser(description="Process raw HTML to cooked"
+                                                 " (embedded numbering and"
+                                                 " collation)")
+    parser.add_argument("css_rules", help="CSS3 ruleset stylesheet recipe")
+    parser.add_argument("html_in", nargs="?",
+                        type=argparse.FileType('r'),
+                        help="raw HTML file to cook (default stdin)",
+                        default=sys.stdin)
+    parser.add_argument("html_out", nargs="?",
+                        type=argparse.FileType('w'),
+                        help="cooked HTML file output (default stdout)",
+                        default=sys.stdout)
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='Send debugging info to stderr')
+    args = parser.parse_args()
+    verbose = args.verbose
+    main(args.css_rules, args.html_in, args.html_out)
