@@ -1,9 +1,40 @@
-Problem: Names vs Behavior (strict typing vs duck typing)
+Textbooks as defined in OpenStax are hierachical, nested trees, with the leaves
+being indivdual HTML pages. (The logical levels of nesting continue inside the
+indivual pages, but that is beyond the scope of this document)
 
+The CSS rulesets - used for processing (collation and numbering) as well as
+styling - need to be able to reference logical levels of that hierachy
+unambigously. As often happens in technical systems, the natural names for some
+of these levels (c.f. "book", "page") collide with their more specific,
+technical use (a.k.a. "jargon")
+
+This is not merely a naming problem: the expectation is that actions will
+attach to specific names, rather than to levels in the hierarchy - things
+are moved to "end of chapter"  or "end of book", regardless of if there
+are "units" or other levels of containment in the tree.
+
+In addition, the natural numbering is from the bottom up: leaves, then
+groupings of leaves, then groupings of groupings. This is the opposite of, for
+example, header numbering in HTML, where H1 is the top, and H2, etc. follow
+below that. 
+
+A potential technical solution is to use something like L1..L5, analogous 
+to H1..H5, but reversed: a leaf would be L1, which would be inside an L2, etc.
+While this solves the problem of unambigously labelling levels, the textbook
+developers thought that is would not be very usable when styling books, since
+they would be constantly "translating" to more human terms in any case.
+
+An additional problem is that the labeling from below is not strict: leaves
+can actually occur at any level of the tree, so an L1 may be the direct child
+of an L3 (or L4). We have many such examples in the archive already.
+
+The compromise solution:
 
 ##Use naming conventions, human language for now
 
-Archive > Series > Book > Unit > Chapter > Page (smallest unit) > Section > Sub section > sub sub section > ....
+Proposed names for levels of aggregation:
+
+Archive > Series > Book > Unit > Chapter > Page (actual HTML document) [> Section > Sub section > sub sub section > ....]
 
 - C < P
 - U < C|P
