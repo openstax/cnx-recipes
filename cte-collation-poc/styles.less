@@ -74,6 +74,7 @@ table {
   color: @blue;
   margin-bottom: @spacing;
   line-height: 1.5em;
+  font-weight: bold;
 }
 body {
   font-size: 12px;
@@ -94,14 +95,22 @@ p, figure, section, ul, li {
 ul, ol {
   margin-left: 2em;
 }
+[data-type="document-title"] {
+  font-size: 4em;
+  margin-bottom: 1em;
+  color: @blue;
+  text-align: center;
+}
 [data-type='chapter'] {
   [data-type='page'] {
     margin-bottom: 1em;
     [data-type='document-title'] {
       background: @orange;
-      padding: .2em;
+      text-align: left;
+      padding: 0 .2em;
       margin-bottom: @spacing;
-      font-size: 2.5em;
+      font-size: 2em;
+      line-height: 1.5;
       font-weight: normal;
       text-transform: uppercase;
       color: #FFF;
@@ -128,8 +137,10 @@ ul, ol {
     }
   }
 }
+
 [data-type="abstract"] {
   border: solid 1px @blue;
+  margin-bottom: @spacing;
 
   &:before {
     content: "Table of Contents";
@@ -161,36 +172,74 @@ ul, ol {
     .title;
   }
 }
-[data-element-type="conceptual-questions"],[data-element-type="check-understanding"] {
-  padding: 1em;
+[data-type="exercise"]{
+  &:first-child {padding-top: 1em;}
+  padding: 0;
+  .problem, .solution {
+  }
 }
-[data-type="exercise"], [data-element-type="conceptual-questions"] {
+[data-element-type="conceptual-questions"],[data-element-type="check-understanding"], [data-element-type="check-understanding"] {
   background: @light-green;
+  padding: 1em;
   [data-type="title"] {
     .title;
   }
 }
-
-.eoc-exercises {
-  [data-element-type="problems-exercises"] {
-    [data-type="title"] {
-      color: #FFF;
-      padding: 0.1em 1em;
-      margin-bottom: 1em;
-      background-color: #0061AA;
-      font-size: 13px;
-      font-weight: bold;
-      page-break-after: avoid;
-      border-bottom: none;
-    }
+// [data-type="exercise"] {
+//   [data-type="title"] {
+//     font-weight: bold;
+//     color: black;
+//   }
+// }
+.problems-exercises {
+  &:before {
+    content: "Not End of Chapter Exercises (yet)";
+    display: block;
+    margin-bottom: 1em;
+    .title;
   }
-
-  [data-type="exercise"]{
-    &:first-child {padding-top: 1em;}
-    background: white;
-    padding: 0;
-    .problem, .solution {
-
-    }
+  [data-type="title"] {
+    font-weight: bold;
+    border-bottom: none;
   }
 }
+
+.eoc-exercises {
+  counter-reset: eoc-exercises;
+  &:before {
+    content: "End of Chapter Exercises";
+    display: block;
+    margin-bottom: 1em;
+    .title;
+  }
+  [data-type="title"] {
+    font-size: 1.2em;
+  }
+  [data-element-type="problems-exercises"] {
+    &:before {
+      content: "";
+      display: none;
+    }
+  }
+  [data-type="exercise"] {
+    &:before {
+      display: inline;
+      font-weight: bold;
+      content: "Exercise " counter(eoc-exercises);
+      counter-increment: eoc-exercises;
+    }
+  }
+  [data-type="problem"] {
+    display: inline;
+  }
+}
+
+.eob-solutions {
+  &:before {
+    content: "Answer Key";
+    display: block;
+    margin-bottom: 1em;
+    .title;
+  }
+}
+//eob stuff, eoc numbering continuous exercise
