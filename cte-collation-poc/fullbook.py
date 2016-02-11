@@ -10,6 +10,13 @@ from lxml import etree
 ARCHIVEJS = 'http://archive.cnx.org/contents/{}.json'
 ARCHIVEHTML = 'http://archive.cnx.org/contents/{}.html'
 NS = {'x': 'http://www.w3.org/1999/xhtml'}
+HTMLWRAPPER = """<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{title}</title>
+<style href="styles.css" rel="stylsheet" type="text/css"/>
+</head>
+</html>
+"""
 
 
 def debug(*args, **kwargs):
@@ -22,11 +29,12 @@ def main(code, html_out=sys.stdout):
 
     res = requests.get(ARCHIVEJS.format(code))
     b_json = res.json()
-    book_elem = etree.Element('body', attrib={'data-type': 'book'})
+    html = etree.fromstring(HTMLWRAPPER.format(title=b_json['title']))
+    book_elem = etree.SubElement(html, 'body', attrib={'data-type': 'book'})
 
     html_nest([b_json['tree']], book_elem)
 
-    print(etree.tostring(book_elem), file=html_out)
+    print(etree.tostring(html), file=html_out)
 
 
 def html_nest(tree, root_element):
@@ -41,7 +49,8 @@ def html_nest(tree, root_element):
             title_elem = title_xpath(div_elem)[0]
         except IndexError:
             title_elem = etree.SubElement(div_elem, 'div',
-                                          attrib={'data-type': 'document-title'})
+                                          attrib={'data-type':
+                                                  'document-title'})
         title_elem.text = node['title']
         debug(node['title'])
         if 'contents' in node:
