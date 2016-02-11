@@ -18,7 +18,7 @@ HTMLWRAPPER = """<html xmlns="http://www.w3.org/1999/xhtml">
 </html>
 """
 
-types = ['page', 'chapter', 'unit', 'book', 'series']
+parts = ['page', 'chapter', 'unit', 'book', 'series']
 
 
 def debug(*args, **kwargs):
@@ -45,13 +45,14 @@ def html_nest(tree, parent):
         div_elem = etree.SubElement(parent, 'div')
         if node['id'] != 'subcol':
             page_nodes(node['id'], div_elem)
-            mytype = types.index(div_elem.get('data-type'))
+            mytype = parts.index(div_elem.get('data-type'))
             if parent.get('data-type'):
-                parenttype = types.index(parent.get('data-type'))
+                parenttype = parts.index(parent.get('data-type'))
                 if parenttype <= mytype:
-                    parent.set('data-type', types[mytype + 1])
+                    parent.set('data-type', parts[mytype + 1])
             else:
-                parent.set('data-type', types[mytype + 1])
+                parent.set('data-type', parts[mytype + 1])
+
         title_xpath = etree.XPath("//x:div[@data-type='document-title']",
                                   namespaces=NS)
         try:
