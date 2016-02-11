@@ -26,5 +26,10 @@ Install the required python packages:
 
 run test as:
 
-./poc.py poc.css poc-raw.html poc-cooked.html
+```./poc.py poc.css poc-raw.html poc-cooked.html```
 
+## Book assembler
+
+```fullbook.py <bookid> mybook.html```
+
+bookid may be any id that defines a book: long uuid, shortid, with or without @version.

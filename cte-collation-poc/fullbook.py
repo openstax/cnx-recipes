@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import sys
+import argparse
 
 import requests
 from lxml import etree
@@ -9,17 +10,20 @@ from lxml import etree
 ARCHIVEJS = 'http://archive.cnx.org/contents/{}.json'
 ARCHIVEHTML = 'http://archive.cnx.org/contents/{}.html'
 NS = {'x': 'http://www.w3.org/1999/xhtml'}
+HTMLWRAPPER = """<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{title}</title>
+<style href="styles.css" rel="stylsheet" type="text/css"/>
+</head>
+</html>
+"""
 
-
-def usage():
-    print(
-        """usage: {} <uuid|shortId>[@ver] [output.html]""".
-        format(sys.argv[0]), file=sys.stderr)
-    exit(1)
+parts = ['page', 'chapter', 'unit', 'book', 'series']
 
 
 def debug(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
+    if verbose:
+        print(*args, file=sys.stderr, **kwargs)
 
 
 def main(code, html_out=sys.stdout):
@@ -27,26 +31,36 @@ def main(code, html_out=sys.stdout):
 
     res = requests.get(ARCHIVEJS.format(code))
     b_json = res.json()
-    book_elem = etree.Element('body', attrib={'data-type': 'book'})
+    html = etree.fromstring(HTMLWRAPPER.format(title=b_json['title']))
+    book_elem = etree.SubElement(html, 'body', attrib={'data-type': 'book'})
 
     html_nest([b_json['tree']], book_elem)
 
-    print(etree.tostring(book_elem), file=html_out)
+    print(etree.tostring(html), file=html_out)
 
 
-def html_nest(tree, root_element):
+def html_nest(tree, parent):
     """Recursively construct HTML nested div version of book tree."""
     for node in tree:
-        div_elem = etree.SubElement(root_element, 'div')
+        div_elem = etree.SubElement(parent, 'div')
         if node['id'] != 'subcol':
             page_nodes(node['id'], div_elem)
+            mytype = parts.index(div_elem.get('data-type'))
+            if parent.get('data-type'):
+                parenttype = parts.index(parent.get('data-type'))
+                if parenttype <= mytype:
+                    parent.set('data-type', parts[mytype + 1])
+            else:
+                parent.set('data-type', parts[mytype + 1])
+
         title_xpath = etree.XPath("//x:div[@data-type='document-title']",
                                   namespaces=NS)
         try:
             title_elem = title_xpath(div_elem)[0]
         except IndexError:
             title_elem = etree.SubElement(div_elem, 'div',
-                                          attrib={'data-type': 'document-title'})
+                                          attrib={'data-type':
+                                                  'document-title'})
         title_elem.text = node['title']
         debug(node['title'])
         if 'contents' in node:
@@ -69,13 +83,19 @@ def page_nodes(page_id, elem):
 
     return elem
 
+
 if __name__ == '__main__':
-    argc = len(sys.argv)
-    if argc == 1:
-        usage()
-    elif argc == 2:
-        main(sys.argv[1])
-    elif argc == 3:
-        main(sys.argv[1], open(sys.argv[2], "w"))
-    else:
-        usage()
+
+    parser = argparse.ArgumentParser(description="Assemble complete book "
+                                                 "as single HTML file")
+    parser.add_argument("bookid", help="Identifier of book: "
+                        "<uuid|shortId>[@ver]")
+    parser.add_argument("html_out", nargs="?",
+                        type=argparse.FileType('w'),
+                        help="assembled HTML file output (default stdout)",
+                        default=sys.stdout)
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='Send debugging info to stderr')
+    args = parser.parse_args()
+    verbose = args.verbose
+    main(args.bookid, args.html_out)
