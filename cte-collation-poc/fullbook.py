@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import sys
+import argparse
 
 import requests
 from lxml import etree
@@ -11,15 +12,9 @@ ARCHIVEHTML = 'http://archive.cnx.org/contents/{}.html'
 NS = {'x': 'http://www.w3.org/1999/xhtml'}
 
 
-def usage():
-    print(
-        """usage: {} <uuid|shortId>[@ver] [output.html]""".
-        format(sys.argv[0]), file=sys.stderr)
-    exit(1)
-
-
 def debug(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)
+    if verbose:
+        print(*args, file=sys.stderr, **kwargs)
 
 
 def main(code, html_out=sys.stdout):
@@ -69,13 +64,19 @@ def page_nodes(page_id, elem):
 
     return elem
 
+
 if __name__ == '__main__':
-    argc = len(sys.argv)
-    if argc == 1:
-        usage()
-    elif argc == 2:
-        main(sys.argv[1])
-    elif argc == 3:
-        main(sys.argv[1], open(sys.argv[2], "w"))
-    else:
-        usage()
+
+    parser = argparse.ArgumentParser(description="Assemble complete book "
+                                                 "as single HTML file")
+    parser.add_argument("bookid", help="Identifier of book: "
+                        "<uuid|shortId>[@ver]")
+    parser.add_argument("html_out", nargs="?",
+                        type=argparse.FileType('w'),
+                        help="assembled HTML file output (default stdout)",
+                        default=sys.stdout)
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='Send debugging info to stderr')
+    args = parser.parse_args()
+    verbose = args.verbose
+    main(args.bookid, args.html_out)
