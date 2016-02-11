@@ -13,7 +13,7 @@ NS = {'x': 'http://www.w3.org/1999/xhtml'}
 HTMLWRAPPER = """<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{title}</title>
-<style href="styles.css" rel="stylsheet" type="text/css"/>
+<link href="styles.css" rel="stylesheet" type="text/css"/>
 </head>
 </html>
 """
