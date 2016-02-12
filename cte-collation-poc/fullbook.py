@@ -18,7 +18,11 @@ HTMLWRAPPER = """<html xmlns="http://www.w3.org/1999/xhtml">
 </html>
 """
 
+title_xpath = etree.XPath("./x:div[@data-type='document-title']",
+                          namespaces=NS)
+
 parts = ['page', 'chapter', 'unit', 'book', 'series']
+partcount = {}.fromkeys(parts, 0)
 
 
 def debug(*args, **kwargs):
@@ -33,9 +37,14 @@ def main(code, html_out=sys.stdout):
     b_json = res.json()
     html = etree.fromstring(HTMLWRAPPER.format(title=b_json['title']))
     book_elem = etree.SubElement(html, 'body', attrib={'data-type': 'book'})
+    title_elem = etree.SubElement(book_elem, 'div',
+                                  attrib={'data-type': 'document-title'})
+    title_elem.text = b_json['title']
+    partcount['book'] += 1
 
-    html_nest([b_json['tree']], book_elem)
+    html_nest(b_json['tree']['contents'], book_elem)
 
+    debug(' '.join(['{}: {}'.format(name, partcount[name]) for name in parts]))
     print(etree.tostring(html), file=html_out)
 
 
@@ -43,29 +52,42 @@ def html_nest(tree, parent):
     """Recursively construct HTML nested div version of book tree."""
     for node in tree:
         div_elem = etree.SubElement(parent, 'div')
-        if node['id'] != 'subcol':
+        if node['id'] != 'subcol' and 'contents' not in node:
             page_nodes(node['id'], div_elem)
-            mytype = parts.index(div_elem.get('data-type'))
-            if parent.get('data-type'):
-                parenttype = parts.index(parent.get('data-type'))
-                if parenttype <= mytype:
-                    parent.set('data-type', parts[mytype + 1])
-            else:
-                parent.set('data-type', parts[mytype + 1])
+            set_parent_type(div_elem, parent)
 
-        title_xpath = etree.XPath("//x:div[@data-type='document-title']",
-                                  namespaces=NS)
-        try:
-            title_elem = title_xpath(div_elem)[0]
-        except IndexError:
-            title_elem = etree.SubElement(div_elem, 'div',
-                                          attrib={'data-type':
-                                                  'document-title'})
-        title_elem.text = node['title']
-        debug(node['title'])
-        if 'contents' in node:
-            elem = etree.SubElement(div_elem, 'div')
-            html_nest(node['contents'], elem)
+        if args.numchapters is None or partcount['chapter'] < args.numchapters:
+            try:
+                title_elem = title_xpath(div_elem)[0]
+            except IndexError:
+                title_elem = etree.Element('div',
+                                           attrib={'data-type':
+                                                   'document-title'})
+                div_elem.insert(0, title_elem)
+
+            title_elem.text = node['title']
+            debug(node['title'])
+
+            if 'contents' in node:
+                html_nest(node['contents'], div_elem)
+
+
+def set_parent_type(node, parent):
+    if parent is not None and parent.tag != 'body':
+        mytype = node.get('data-type')
+        mytypeid = parts.index(mytype)
+        if parent.get('data-type'):
+            parenttype = parent.get('data-type')
+            parenttypeid = parts.index(parenttype)
+            if parenttypeid <= mytypeid:
+                parent.set('data-type', parts[mytypeid + 1])
+                partcount[parenttype] -= 1
+                partcount[parts[mytypeid + 1]] += 1
+        else:
+            parent.set('data-type', parts[mytypeid + 1])
+            partcount[parts[mytypeid + 1]] += 1
+
+        set_parent_type(parent, parent.getparent())
 
 
 def page_nodes(page_id, elem):
@@ -78,6 +100,7 @@ def page_nodes(page_id, elem):
     body = xpath(etree.fromstring(res.content))[0]
 
     elem.set('data-type', 'page')
+    partcount['page'] += 1
     for c in body.iterchildren():
         elem.append(c)
 
@@ -96,6 +119,10 @@ if __name__ == '__main__':
                         default=sys.stdout)
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='Send debugging info to stderr')
+    parser.add_argument('-s', '--subset-chapters', dest='numchapters',
+                        type=int, const=2, nargs='?', metavar='num_chapters',
+                        help="Create subset of complete book "
+                        "(default 2 chapters plus extras)")
     args = parser.parse_args()
     verbose = args.verbose
     main(args.bookid, args.html_out)
