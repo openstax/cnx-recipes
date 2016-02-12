@@ -6,6 +6,7 @@ import argparse
 
 import tinycss
 import cssselect
+from cssselect import HTMLTranslator
 from lxml import etree
 import copy
 
@@ -56,6 +57,7 @@ def main(css_in, html_in=sys.stdin, html_out=sys.stdout):
                     content.append(rule)
 
     debug(action_targets.keys(), pending.keys())
+    debug(content)
 
     # Validate targets and actions
     action_pending = (set(action_targets.keys()) - set(pending.keys()))
@@ -104,7 +106,7 @@ def rule_to_xpath(rule):
     #FIXME need to extend selector_to_xpath to handle custom
     # psuedo-selector, namely '::div'
     # esp. for any sort of nesting
-    xpath = cssselect.HTMLTranslator().selector_to_xpath(s[0])
+    xpath = HTMLTranslator().selector_to_xpath(s[0])
     return xpath
 
 
@@ -116,7 +118,12 @@ def rule_to_element(rule, content):
         for decl in rule.declarations:
             if decl.name == 'class':
                 elem.attrib['class'] = decl.value.as_css()
-            #FIXME group-by and sort-by
+            elif decl.name == 'sort-by':
+                sort_by_css(decl.value.as_css(), content['nodes'])
+
+            elif decl.name == 'group-by':
+                pass
+                #FIXME group-by
 
     col_type = content['type']
     if col_type == 'move-to':
@@ -127,6 +134,14 @@ def rule_to_element(rule, content):
             elem.append(copy.deepcopy(node))
 
     return elem
+
+
+def sort_by_css(css, nodes):
+    """Sorts a list of nodes by the text value of the css selector"""
+
+    xpath = etree.XPath(HTMLTranslator().css_to_xpath(css) + '/text()')
+    #FIXME extend translator for ::text pseudo
+    nodes.sort(key=xpath)
 
 if __name__ == '__main__':
 
