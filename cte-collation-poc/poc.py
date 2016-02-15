@@ -72,12 +72,14 @@ def main(css_in, html_in=sys.stdin, html_out=sys.stdout):
               format(','.join(pending_action)), file=sys.stderr)
         sys.exit(1)
 
+    debug('CSS parsed: {} targets'.format(len(pending)), file=sys.stderr)
+
     # Loop over actions, grab selectors, convert to xpaths, apply to HTML DOM
     # and extract content to copy/move
 
     for action, value in action_targets.items():
         xpath = etree.XPath(rule_to_xpath(value['rule']))
-        debug(xpath)
+        debug('Target XPath:', xpath)
         nodes = xpath(html_doc)
         debug(nodes)
         action_targets[action]['nodes'] = nodes
@@ -88,7 +90,7 @@ def main(css_in, html_in=sys.stdin, html_out=sys.stdout):
     for target, value in pending.items():
         rule = value['rule']
         xpath = etree.XPath(rule_to_xpath(rule))
-        debug(xpath)
+        debug('Pending XPath:', xpath)
         nodes = xpath(html_doc)
         debug(nodes)
         pending[target]['nodes'] = nodes
