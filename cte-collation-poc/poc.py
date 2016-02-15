@@ -117,9 +117,10 @@ def rule_to_element(rule, content):
 
     if rule.selector.as_css().endswith('::div'):
         elem = etree.Element('div')
+        elem.set('data-type', 'composite-page')
         for decl in rule.declarations:
             if decl.name == 'class':
-                elem.attrib['class'] = decl.value.as_css()
+                elem.set('class', decl.value.as_css())
             elif decl.name == 'sort-by':
                 sort_by_css(decl.value.as_css(), content['nodes'])
 
