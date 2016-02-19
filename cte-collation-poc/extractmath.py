@@ -26,6 +26,7 @@ def main(html_in, html_out=sys.stdout):
     body.clear()
 
     for m in math:
+        m.tail = None
         body.append(m)
 
     print(etree.tostring(html), file=html_out)
