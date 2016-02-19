@@ -43,7 +43,11 @@ def main(code, html_out=sys.stdout, mathjax_version=None):
     book_elem = etree.SubElement(html, 'body', attrib={'data-type': 'book'})
     title_elem = etree.SubElement(book_elem, 'div',
                                   attrib={'data-type': 'document-title'})
-    title_elem.text = b_json['title']
+    id_and_version = '{}@{}'.format(b_json['id'], b_json['version'])
+    link_elem = etree.SubElement(title_elem, 'a',
+                                 attrib={'href': ARCHIVEHTML.format(id_and_version),
+                                         'title': id_and_version})
+    link_elem.text = b_json['title']
     partcount['book'] += 1
 
     html_nest(b_json['tree']['contents'], book_elem)

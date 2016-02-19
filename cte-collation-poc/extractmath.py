@@ -11,6 +11,8 @@ NS = {'x': 'http://www.w3.org/1999/xhtml',
 
 body_xpath = etree.XPath('//x:body', namespaces=NS)
 
+title_xpath = etree.XPath('//x:div[@data-type="document-title"]', namespaces=NS)
+
 math_xpath = etree.XPath("//mml:math", namespaces=NS)
 
 
@@ -21,9 +23,13 @@ def main(html_in, html_out=sys.stdout):
 
     body = body_xpath(html)[0]
 
+    title = title_xpath(body)[0]
+
     math = math_xpath(body)
 
     body.clear()
+
+    body.append(title)
 
     for m in math:
         m.tail = None
