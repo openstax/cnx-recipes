@@ -23,8 +23,7 @@ def main(html_in, html_out=sys.stdout):
 
     math = math_xpath(body)
 
-    for c in body.iterchildren():
-        body.remove(c)
+    body.clear()
 
     for m in math:
         body.append(m)
