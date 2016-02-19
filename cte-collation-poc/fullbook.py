@@ -10,10 +10,13 @@ from lxml import etree
 ARCHIVEJS = 'http://archive.cnx.org/contents/{}.json'
 ARCHIVEHTML = 'http://archive.cnx.org/contents/{}.html'
 NS = {'x': 'http://www.w3.org/1999/xhtml'}
+SCRIPT_WRAPPER = """<script src="https://cdn.mathjax.org/mathjax/{mathjax_version}-latest/unpacked/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+"""
 HTMLWRAPPER = """<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{title}</title>
 <link href="styles.css" rel="stylesheet" type="text/css"/>
+{script_tag}
 </head>
 </html>
 """
@@ -30,12 +33,13 @@ def debug(*args, **kwargs):
         print(*args, file=sys.stderr, **kwargs)
 
 
-def main(code, html_out=sys.stdout):
+def main(code, html_out=sys.stdout, mathjax_version=None):
     """Generate complete book HTML."""
 
     res = requests.get(ARCHIVEJS.format(code))
     b_json = res.json()
-    html = etree.fromstring(HTMLWRAPPER.format(title=b_json['title']))
+    script_tag = SCRIPT_WRAPPER.format(mathjax_version=mathjax_version) if mathjax_version else ''
+    html = etree.fromstring(HTMLWRAPPER.format(title=b_json['title'], script_tag=script_tag))
     book_elem = etree.SubElement(html, 'body', attrib={'data-type': 'book'})
     title_elem = etree.SubElement(book_elem, 'div',
                                   attrib={'data-type': 'document-title'})
@@ -117,6 +121,9 @@ if __name__ == '__main__':
                         type=argparse.FileType('w'),
                         help="assembled HTML file output (default stdout)",
                         default=sys.stdout)
+    parser.add_argument("mathjax_version", nargs="?",
+                        help="MathJax version",
+                        default=None)
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='Send debugging info to stderr')
     parser.add_argument('-s', '--subset-chapters', dest='numchapters',
@@ -125,4 +132,4 @@ if __name__ == '__main__':
                         "(default 2 chapters plus extras)")
     args = parser.parse_args()
     verbose = args.verbose
-    main(args.bookid, args.html_out)
+    main(args.bookid, args.html_out, args.mathjax_version)
