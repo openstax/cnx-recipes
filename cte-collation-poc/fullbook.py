@@ -12,7 +12,7 @@ ARCHIVEHTML = 'http://archive.cnx.org/contents/{}.html'
 NS = {'x': 'http://www.w3.org/1999/xhtml'}
 SCRIPT_WRAPPER = '<script '\
                  'src="https://cdn.mathjax.org/mathjax/{mathjax_version}/'\
-                 'unpacked/MathJax.js?config=TeX-MML-AM_CHTML"> </script>'
+                 'unpacked/MathJax.js?config=MML_HTMLorMML"> </script>'
 HTMLWRAPPER = """<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{title}</title>
