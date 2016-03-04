@@ -1,5 +1,24 @@
 # Drafting of the Single HTML format
 
+## Structure
+
+Recreate the `structure.html` file using:
+
+```py
+>>> import os
+>>> import cnxepub
+>>> cnxepub_dir = os.path.abspath(os.path.dirname(cnxepub.__file__))
+>>> book_dir = os.path.join(cnxepub_dir, 'tests', 'data', 'book')
+>>> epub = cnxepub.EPUB.from_file(book_dir)
+>>> binder = cnxepub.adapt_package(epub[0])
+>>> html = bytes(cnxepub.SingleHTMLFormatter(binder))
+>>> with open('structure.html', 'w') as f:
+...    f.write(html)
+```
+
+
+## Example: Algebra
+
 Recreate the `algebra.html` file using:
 
 ```
