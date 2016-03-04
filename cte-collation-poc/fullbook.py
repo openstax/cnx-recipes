@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
+try:
+    from html import escape  # python3
+except ImportError:
+    from cgi import escape  # python2
 import sys
 import argparse
 
@@ -15,6 +19,7 @@ SCRIPT_WRAPPER = '<script '\
                  'unpacked/MathJax.js?config=MML_HTMLorMML"> </script>'
 HTMLWRAPPER = """<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta charset="utf-8"/>
 <title>{title}</title>
 <link href="styles.css" rel="stylesheet" type="text/css"/>
 {script_tag}
@@ -43,14 +48,16 @@ def main(code, html_out=sys.stdout, mathjax_version=None):
         script_tag = SCRIPT_WRAPPER.format(mathjax_version=mathjax_version)
     else:
         script_tag = ''
-    html = etree.fromstring(HTMLWRAPPER.format(title=b_json['title'],
+    html = etree.fromstring(HTMLWRAPPER.format(
+                            title=escape(b_json['title']).encode('utf-8'),
                             script_tag=script_tag))
     book_elem = etree.SubElement(html, 'body', attrib={'data-type': 'book'})
     title_elem = etree.SubElement(book_elem, 'div',
                                   attrib={'data-type': 'document-title'})
     id_and_version = '{}@{}'.format(b_json['id'], b_json['version'])
     link_elem = etree.SubElement(title_elem, 'a',
-                                 attrib={'href': ARCHIVEHTML.format(id_and_version),
+                                 attrib={'href': ARCHIVEHTML.format(
+                                         id_and_version),
                                          'title': id_and_version})
     link_elem.text = b_json['title']
     partcount['book'] += 1
