@@ -11,8 +11,8 @@ import argparse
 import requests
 from lxml import etree
 
-ARCHIVEJS = 'http://archive.cnx.org/contents/{}.json'
-ARCHIVEHTML = 'http://archive.cnx.org/contents/{}.html'
+ARCHIVEJS = 'http://{}/contents/{}.json'
+ARCHIVEHTML = 'http://{}/contents/{}.html'
 NS = {'x': 'http://www.w3.org/1999/xhtml'}
 SCRIPT_WRAPPER = '<script '\
                  'src="https://cdn.mathjax.org/mathjax/{mathjax_version}/'\
@@ -42,7 +42,7 @@ def debug(*args, **kwargs):
 def main(code, html_out=sys.stdout, mathjax_version=None):
     """Generate complete book HTML."""
 
-    res = requests.get(ARCHIVEJS.format(code))
+    res = requests.get(ARCHIVEJS.format(archive, code))
     b_json = res.json()
     if mathjax_version:
         script_tag = SCRIPT_WRAPPER.format(mathjax_version=mathjax_version)
@@ -57,7 +57,7 @@ def main(code, html_out=sys.stdout, mathjax_version=None):
     id_and_version = '{}@{}'.format(b_json['id'], b_json['version'])
     link_elem = etree.SubElement(title_elem, 'a',
                                  attrib={'href': ARCHIVEHTML.format(
-                                         id_and_version),
+                                         archive, id_and_version),
                                          'title': id_and_version})
     link_elem.text = b_json['title']
     partcount['book'] += 1
@@ -114,7 +114,7 @@ def page_nodes(page_id, elem):
     """Fetch page return body wrapped in provided element."""
 
     debug(page_id)
-    res = requests.get(ARCHIVEHTML.format(page_id))
+    res = requests.get(ARCHIVEHTML.format(archive, page_id))
     xpath = etree.XPath('//x:body', namespaces=NS)
 
     body = xpath(etree.fromstring(res.content))[0]
@@ -140,6 +140,10 @@ if __name__ == '__main__':
     parser.add_argument('-m', "--mathjax_version", const="latest",
                         metavar="mathjax_version", nargs="?",
                         help="Add script tag to use MathJax of given version")
+    parser.add_argument('-a', "--archive_server", default="archive.cnx.org",
+                        metavar="archive_server", nargs="?",
+                        help="Archive server to fetch from "
+                        "(default archive.cnx.org)")
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='Send debugging info to stderr')
     parser.add_argument('-s', '--subset-chapters', dest='numchapters',
@@ -148,6 +152,7 @@ if __name__ == '__main__':
                         "(default 2 chapters plus extras)")
     args = parser.parse_args()
     verbose = args.verbose
+    archive = args.archive_server
     mathjax_version = args.mathjax_version
     if mathjax_version:
         if not mathjax_version.endswith('latest'):
