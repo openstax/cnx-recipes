@@ -1,45 +1,51 @@
-@include ('../common/numbering.less');
-//@include ('../common/parts.less');
+@import url("common/numbering.less");
+@import url("common/collations.less");
+
+//numbering
 div[data-type='chapter'] {
-  section.conceptual-questions {
-    move-to: eoc-conceptual-questions;
+  .interactive-exercise, .multiple-choice, .free-response, .references {
+    .x-numb ();
   }
+}
+//<cnx-pi data-type="cnx.eoc">class="summary" title="Chapter Review"</cnx-pi>
+//<cnx-pi data-type="cnx.eoc">class="interactive-exercise" title="Interactive Link Questions"</cnx-pi>
+//<cnx-pi data-type="cnx.eoc">class="multiple-choice" title="Review Questions"</cnx-pi>
+//<cnx-pi data-type="cnx.eoc">class="free-response" title="Critical Thinking Questions"</cnx-pi>
+//<cnx-pi data-type="cnx.eoc">class="references" title="References"</cnx-pi>
 
-  .eoc-conceptual-questions {
-  //  .\=(exercise);
-
-    > section h1.title {
-      string-set: section-title content();
-      content: '';
-
-      &::span {
-        class: 'titling';
-        content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
-      }
-      &::span {
-        class: 'titling';
-        content: string(section-title);
-      }
-    }
-
-    div[data-type='exercise'] {
-    //  .\+(exercise);
-    }
-    div[data-type='problem'] {
-      &::before {
-        content: counter(exercise) '.';
-        // If you needed to, you could also do this with
-        // the internal cross references and target-counter
-        // instead of "recounting" them here. Sometimes it's
-        // basic and this "easy" way is fine, sometimes it isn't...
-      }
-    }
+//eoc
+div[data-type='chapter'] {
+  section.interactive-exercise {
+    move-to: eoc-interactive-exercise;
+  }
+  section.multiple-choice {
+    move-to: eoc-multiple-choice;
+  }
+  section.free-response {
+    move-to: eoc-free-response;
+  }
+  section.references {
+    move-to: eoc-references;
   }
 }
 
-
 div[data-type='chapter']::div {
-  class: eoc-conceptual-questions;
-  content: pending(eoc-conceptual-questions);
+  class: eoc-interactive-exercise;
+  content: pending(eoc-interactive-exercise);
+  group-by: "div[data-type='page']";
+}
+div[data-type='chapter']::div {
+  class: eoc-multiple-choice;
+  content: pending(eoc-multiple-choice);
+  group-by: "div[data-type='page']";
+}
+div[data-type='chapter']::div {
+  class: eoc-free-response;
+  content: pending(eoc-free-response);
+  group-by: "div[data-type='page']";
+}
+div[data-type='chapter']::div {
+  class: eoc-references;
+  content: pending(eoc-references);
   group-by: "div[data-type='page']";
 }

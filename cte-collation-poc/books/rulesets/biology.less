@@ -1,45 +1,42 @@
-@include ('../common/numbering.less');
-//@include ('../common/parts.less');
+@import url("common/numbering.less");
+@import url("common/collations.less");
+
+//numbering
 div[data-type='chapter'] {
-  section.conceptual-questions {
-    move-to: eoc-conceptual-questions;
+  .art-exercise, .multiple-choice, .free-response {
+    .x-numb ();
   }
+}
+// <cnx-pi data-type="cnx.eoc">class="summary" title="Sections Summary"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="art-exercise" title="Art Connections"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="multiple-choice" title="Multiple Choice"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="free-response" title="Free Response"</cnx-pi>
 
-  .eoc-conceptual-questions {
-  //  .\=(exercise);
-
-    > section h1.title {
-      string-set: section-title content();
-      content: '';
-
-      &::span {
-        class: 'titling';
-        content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
-      }
-      &::span {
-        class: 'titling';
-        content: string(section-title);
-      }
-    }
-
-    div[data-type='exercise'] {
-    //  .\+(exercise);
-    }
-    div[data-type='problem'] {
-      &::before {
-        content: counter(exercise) '.';
-        // If you needed to, you could also do this with
-        // the internal cross references and target-counter
-        // instead of "recounting" them here. Sometimes it's
-        // basic and this "easy" way is fine, sometimes it isn't...
-      }
-    }
+//eoc
+div[data-type='chapter'] {
+  section.art-exercise {
+    move-to: eoc-art-exercise;
+  }
+  section.multiple-choice {
+    move-to: eoc-multiple-choice;
+  }
+  section.free-response {
+    move-to: eoc-free-response;
   }
 }
 
-
 div[data-type='chapter']::div {
-  class: eoc-conceptual-questions;
-  content: pending(eoc-conceptual-questions);
+  class: eoc-art-exercise;
+  content: pending(eoc-art-exercise);
+  group-by: "div[data-type='page']";
+}
+div[data-type='chapter']::div {
+  class: eoc-multiple-choice;
+  content: pending(eoc-multiple-choice);
+  group-by: "div[data-type='page']";
+}
+div[data-type='chapter']::div {
+  class: eoc-free-response;
+  content: pending(eoc-free-response);
   group-by: "div[data-type='page']";
 }
