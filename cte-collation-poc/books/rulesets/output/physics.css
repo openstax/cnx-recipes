@@ -1,25 +1,142 @@
-@include ('../common/numbering.less');
-@include ('../common/parts.less');
-div[data-type='chapter'] section.conceptual-questions {
-  move-to: eoc-conceptual-questions;
+div[data-type='book'] {
+  counter-reset: chapter;
 }
-div[data-type='chapter'] .eoc-conceptual-questions > section h1.title {
+div[data-type='chapter'] {
+  counter-reset: section figure table list;
+  counter-increment: chapter;
+}
+div[data-type='chapter'] div[data-type="page"] {
+  counter-reset: subsection;
+  counter-increment: section;
+}
+div[data-type='chapter'] .eoc-exercises {
+  counter-reset: exercise;
+}
+div[data-type='chapter'] div[data-type='exercise'] {
+  counter-increment: exercise;
+}
+div[data-type='chapter'] > div[data-type='document-title'] {
+  string-set: chapter-title content();
+  content: '';
+}
+div[data-type='chapter'] > div[data-type='document-title']::span {
+  class: 'titling';
+  content: counter(chapter);
+}
+div[data-type='chapter'] > div[data-type='document-title']::span {
+  class: 'titling';
+  content: string(chapter-title);
+}
+div[data-type='chapter'] div[data-type="page"] {
+  counter-reset: subsection;
+  counter-increment: section;
+}
+div[data-type='chapter'] div[data-type="page"] > div[data-type='document-title'] {
   string-set: section-title content();
   content: '';
 }
-div[data-type='chapter'] .eoc-conceptual-questions > section h1.title::span {
+div[data-type='chapter'] div[data-type="page"] > div[data-type='document-title']::span {
   class: 'titling';
-  content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
+  content: counter(chapter) '.' counter(section);
 }
-div[data-type='chapter'] .eoc-conceptual-questions > section h1.title::span {
+div[data-type='chapter'] div[data-type="page"] > div[data-type='document-title']::span {
   class: 'titling';
   content: string(section-title);
 }
-div[data-type='chapter'] .eoc-conceptual-questions div[data-type='problem']::before {
-  content: counter(exercise) '.';
+div[data-type='chapter'] div[data-type="page"] > section {
+  counter-increment: subsection;
+}
+div[data-type='chapter'] .eoc-section-summary > section h1.title {
+  string-set: section-title content();
+  content: '';
+}
+div[data-type='chapter'] .eoc-section-summary > section h1.title::span {
+  class: 'titling';
+  content: target-counter(attr(xref), chapter) '.' target-counter(attr(xref), section);
+}
+div[data-type='chapter'] .eoc-section-summary > section h1.title::span {
+  class: 'titling';
+  content: string(section-title);
+}
+div[data-type='chapter'] .eoc-exercises div[data-type='problem']::before {
+  content: 'Exercise ' counter(exercise);
+}
+div[data-type='chapter'] dl.definition {
+  copy-to: eoc-key-terms;
+}
+div[data-type='chapter'] section.section-summary {
+  move-to: eoc-section-summary;
+}
+div[data-type='chapter'] section.conceptual-questions {
+  move-to: eoc-conceptual-questions;
+}
+div[data-type='chapter'] section.problems-exercises {
+  move-to: eoc-exercises;
+}
+div[data-type='chapter'] span[data-type='term'] {
+  copy-to: eob-index;
+}
+div[data-type='chapter']::div {
+  class: eoc-key-terms;
+  content: pending(eoc-key-terms);
+  sort-by: alphabetic;
+}
+div[data-type='chapter']::div {
+  class: eoc-section-summary;
+  content: pending(eoc-section-summary);
+  group-by: "div[data-type='page']";
 }
 div[data-type='chapter']::div {
   class: eoc-conceptual-questions;
   content: pending(eoc-conceptual-questions);
+  group-by: "div[data-type='page']";
+}
+div[data-type='chapter']::div {
+  class: eoc-exercises;
+  content: pending(eoc-exercises);
+}
+body::div {
+  class: eob-index;
+  content: pending(eob-index);
+  group-by: first-letter;
+  sort-by: alphabetic;
+}
+div[data-type='chapter'] .conceptual-questions,
+div[data-type='chapter'] .problems-exercises {
+  counter-reset: exercise;
+}
+div[data-type='chapter'] .conceptual-questions > section h1.title,
+div[data-type='chapter'] .problems-exercises > section h1.title {
+  string-set: section-title content();
+  content: '';
+}
+div[data-type='chapter'] .conceptual-questions > section h1.title::span,
+div[data-type='chapter'] .problems-exercises > section h1.title::span {
+  class: 'titling';
+  content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
+}
+div[data-type='chapter'] .conceptual-questions > section h1.title::span,
+div[data-type='chapter'] .problems-exercises > section h1.title::span {
+  class: 'titling';
+  content: string(section-title);
+}
+div[data-type='chapter'] .conceptual-questions div[data-type='problem']::before,
+div[data-type='chapter'] .problems-exercises div[data-type='problem']::before {
+  content: counter(exercise) '.';
+}
+div[data-type='chapter'] section.conceptual-questions {
+  move-to: eoc-conceptual-questions;
+}
+div[data-type='chapter'] section.problems-exercises {
+  move-to: eoc-problems-exercises;
+}
+div[data-type='chapter']::div {
+  class: eoc-conceptual-questions;
+  content: pending(eoc-conceptual-questions);
+  group-by: "div[data-type='page']";
+}
+div[data-type='chapter']::div {
+  class: eoc-problems-exercises;
+  content: pending(eoc-problems-exercises);
   group-by: "div[data-type='page']";
 }
