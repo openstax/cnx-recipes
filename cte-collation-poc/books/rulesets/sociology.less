@@ -1,45 +1,55 @@
-@include ('../common/numbering.less');
-//@include ('../common/parts.less');
+
+//    <cnx-pi data-type="cnx.eoc">class="section-summary" title="Section Summary"</cnx-pi>
+//    <cnx-pi data-type="cnx.eoc">class="section-quiz" title="Section Quiz"</cnx-pi>
+//    <cnx-pi data-type="cnx.eoc">class="short-answer" title="Short Answer"</cnx-pi>
+//    <cnx-pi data-type="cnx.eoc">class="further-research" title="Further Research"</cnx-pi>
+//    <cnx-pi data-type="cnx.eoc">class="references" title="References"</cnx-pi>
+
+@import url("common/numbering.less");
+@import url("common/collations.less");
+
+//numbering
 div[data-type='chapter'] {
-  section.conceptual-questions {
-    move-to: eoc-conceptual-questions;
-  }
-
-  .eoc-conceptual-questions {
-  //  .\=(exercise);
-
-    > section h1.title {
-      string-set: section-title content();
-      content: '';
-
-      &::span {
-        class: 'titling';
-        content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
-      }
-      &::span {
-        class: 'titling';
-        content: string(section-title);
-      }
-    }
-
-    div[data-type='exercise'] {
-    //  .\+(exercise);
-    }
-    div[data-type='problem'] {
-      &::before {
-        content: counter(exercise) '.';
-        // If you needed to, you could also do this with
-        // the internal cross references and target-counter
-        // instead of "recounting" them here. Sometimes it's
-        // basic and this "easy" way is fine, sometimes it isn't...
-      }
-    }
+  .section-quiz, .short-answer, .further-research, .references {
+    .x-numb ();
   }
 }
 
 
-div[data-type='chapter']::div {
-  class: eoc-conceptual-questions;
-  content: pending(eoc-conceptual-questions);
-  group-by: "div[data-type='page']";
+//eoc
+div[data-type='chapter'] {
+  section.section-quiz {
+    move-to: eoc-section-quiz;
+  }
+  section.short-answer {
+    move-to: eoc-short-answer;
+  }
+  section.further-research{
+    move-to: further-research;
+  }
+  section.references {
+    move-to: eoc-references;
+  }
+}
+
+
+div[data-type='chapter']::after {
+  content: pending(eoc-section-quiz);
+  class: eoc-section-quiz;
+  display: block;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-short-answer);
+  class: eoc-short-answer;
+  display: block;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-further-research);
+  class: further-research;
+  display: block;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-references);
+  class: eoc-references;
+  display: block;
 }

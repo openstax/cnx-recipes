@@ -1,45 +1,54 @@
-@include ('../common/numbering.less');
-//@include ('../common/parts.less');
+// <cnx-pi data-type="cnx.eoc">class="summary" title="Summary"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="review-questions" title="Review Questions"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="critical-thinking" title="Critical Thinking Questions"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="personal-application" title="Personal Application Questions"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="references" title="References"</cnx-pi>
+
+@import url("common/numbering.less");
+@import url("common/collations.less");
+
+//numbering
 div[data-type='chapter'] {
-  section.conceptual-questions {
-    move-to: eoc-conceptual-questions;
-  }
-
-  .eoc-conceptual-questions {
-  //  .\=(exercise);
-
-    > section h1.title {
-      string-set: section-title content();
-      content: '';
-
-      &::span {
-        class: 'titling';
-        content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
-      }
-      &::span {
-        class: 'titling';
-        content: string(section-title);
-      }
-    }
-
-    div[data-type='exercise'] {
-    //  .\+(exercise);
-    }
-    div[data-type='problem'] {
-      &::before {
-        content: counter(exercise) '.';
-        // If you needed to, you could also do this with
-        // the internal cross references and target-counter
-        // instead of "recounting" them here. Sometimes it's
-        // basic and this "easy" way is fine, sometimes it isn't...
-      }
-    }
+  .review-questions, .critical-thinking, .personal-application, .references {
+    .x-numb ();
   }
 }
 
 
-div[data-type='chapter']::div {
-  class: eoc-conceptual-questions;
-  content: pending(eoc-conceptual-questions);
-  group-by: "div[data-type='page']";
+//eoc
+div[data-type='chapter'] {
+  section.review-questions {
+    move-to: eoc-review-questions;
+  }
+  section.critical-thinking {
+    move-to: eoc-critical-thinking;
+  }
+  section.personal-application {
+    move-to: personal-application;
+  }
+  section.references {
+    move-to: eoc-references;
+  }
+}
+
+
+div[data-type='chapter']::after {
+  content: pending(eoc-review-questions);
+  class: eoc-review-questions;
+  display: block;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-critical-thinking);
+  class: eoc-critical-thinking;
+  display: block;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-personal-application);
+  class: personal-application;
+  display: block;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-references);
+  class: eoc-references;
+  display: block;
 }
