@@ -61,6 +61,26 @@ div[data-type='chapter'] .eoc-section-summary > section h1.title::span {
 div[data-type='chapter'] .eoc-exercises div[data-type='problem']::before {
   content: 'Exercise ' counter(exercise);
 }
+div[data-type='chapter'] dl.definition {
+  copy-to: eoc-key-terms;
+}
+div[data-type='chapter'] section.section-summary {
+  move-to: eoc-section-summary;
+}
+div[data-type='chapter'] span[data-type='term'] {
+  copy-to: eob-index;
+}
+div[data-type='chapter']::after {
+  class: eoc-section-summary;
+  content: pending(eoc-section-summary);
+  container: div;
+}
+body::after {
+  class: eob-index;
+  content: pending(eob-index);
+  container: div;
+  sort-by: span;
+}
 div[data-type='chapter'] .practice-test,
 div[data-type='chapter'] .key-equations,
 div[data-type='chapter'] .key-concepts,
@@ -94,11 +114,11 @@ div[data-type='chapter'] .key-concepts div[data-type='problem']::before,
 div[data-type='chapter'] .review-exercises div[data-type='problem']::before {
   content: counter(exercise) '.';
 }
-div[data-type='chapter'] span[data-type='term'] {
-  copy-to: eob-index;
-}
 div[data-type='chapter'] section.practice-test {
   move-to: eoc-practice-test;
+}
+div[data-type='chapter'] section.key-equations {
+  move-to: eoc-key-equations;
 }
 div[data-type='chapter'] section.key-concepts {
   move-to: eoc-key-concepts;
@@ -115,6 +135,11 @@ div[data-type='chapter'] section.section-exercises .solution {
 div[data-type='chapter']::after {
   content: pending(eoc-practice-test);
   class: eoc-practice-test;
+  container: div;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-key-equations);
+  class: eoc-key-equations;
   container: div;
 }
 div[data-type='chapter']::after {
@@ -136,10 +161,4 @@ body::after {
   content: pending(eob-section-exercises);
   class: eob-section-exercise;
   container: div;
-}
-body::after {
-  class: eob-index;
-  content: pending(eob-index);
-  container: div;
-  sort-by: span;
 }

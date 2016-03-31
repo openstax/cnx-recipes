@@ -3,41 +3,32 @@
 div[data-type='chapter'] {
   dl.definition {
     copy-to: eoc-key-terms;
-    display: block;
   }
   section.section-summary {
     move-to: eoc-section-summary;
-    display: block;
-  }
-  section.problems-exercises {
-    move-to: eoc-exercises;
-    display: block;
   }
   span[data-type='term'] {
     copy-to: eob-index;
-    display: block;
   }
-}
-
-
-// Containers
-div[data-type='chapter']::after {
-  class: eoc-key-terms;
-  sort-by: alphabetic;
-  content: pending(eoc-key-terms);
-}
-div[data-type='chapter']::after {
-  class: eoc-section-summary;
- // group-by: "div[data-type='page']";
-  content: pending(eoc-section-summary);
-}
-div[data-type='chapter']::after {
-  class: eoc-exercises;
-  content: pending(eoc-exercises);
+  // Containers
+  // &::after {
+  //   content: pending(eoc-key-terms);
+  //   container: div;
+  // }
+  &::after {
+    class: eoc-section-summary;
+    content: pending(eoc-section-summary);
+    container: div;
+  }
+  // &::after {
+  //   class: eoc-exercises;
+  //   content: pending(eoc-exercises);
+  //   container: div;
+  // }
 }
 body::after {
   class: eob-index;
-  group-by: first-letter;
-  sort-by: alphabetic;
   content: pending(eob-index);
+  container: div;
+  sort-by: span;
 }
