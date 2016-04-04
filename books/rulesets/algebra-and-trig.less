@@ -14,32 +14,21 @@ div[data-type='chapter'] {
 // <cnx-pi data-type="cnx.answers">class="try"</cnx-pi>
 // <cnx-pi data-type="cnx.answers">class="section-exercises"</cnx-pi>
 //eoc
+
 div[data-type='chapter'] {
 
   section.practice-test {
     move-to: eoc-practice-test;
   }
-  section.key-equations {
-    move-to: eoc-key-equations;
-  }
-  section.key-concepts {
-    move-to: eoc-key-concepts;
-  }
-  section.review-exercises {
-    move-to: eoc-review-exercises;
-  }
-  div.try .solution {
-    move-to: eob-try;
-  }
-  section.section-exercises .solution {
-    move-to: eob-section-exercises;
-  }
-  //containers
-  &::after {
+    &::after {
     content: pending(eoc-practice-test);
     class: eoc-practice-test;
     container: div;
     move-to: eoc-all;
+  }
+
+  section.key-equations {
+    move-to: eoc-key-equations;
   }
   &::after {
     content: pending(eoc-key-equations);
@@ -47,11 +36,19 @@ div[data-type='chapter'] {
     container: div;
     move-to: eoc-all;
   }
+
+  section.key-concepts {
+    move-to: eoc-key-concepts;
+  }
   &::after {
     content: pending(eoc-key-concepts);
     class: eoc-key-concepts;
     container: div;
     move-to: eoc-all;
+  }
+
+  section.review-exercises {
+    move-to: eoc-review-exercises;
   }
   &::after {
     content: pending(eoc-review-exercises);
@@ -59,6 +56,15 @@ div[data-type='chapter'] {
     container: div;
     move-to: eoc-all;
   }
+
+  div.try .solution {
+    move-to: eob-try;
+  }
+  section.section-exercises .solution {
+    move-to: eob-section-exercises;
+  }
+  //containers
+
   &::after {
     content: pending(eoc-all);
     class: end-of-chapter;
@@ -66,15 +72,25 @@ div[data-type='chapter'] {
     container: div;
   }
 }
- body::after {
-  content: pending(eob-try);
-  class:  eob-try;
-  container: div;
-}
-body::after {
-  content: pending(eob-section-exercises);
-  class: eob-section-exercise;
- container: div;
+ body {
+  &::after {
+   content: pending(eob-try);
+   class:  eob-try;
+   container: div;
+   move-to: eob-all;
+  }
+  &::after {
+   content: pending(eob-section-exercises);
+    class: eob-section-exercise;
+   container: div;
+   move-to: eob-all;
+  }
+  &::after {
+    content: pending(eob-all);
+    class: end-of-book;
+    data-type: composite-page;
+    container: div;
+  }
 }
 
 

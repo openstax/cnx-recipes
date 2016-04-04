@@ -1,7 +1,7 @@
 
 @import url("common/numbering.less");
 @import url("common/collations.less");
-
+@import url("common/summary.less");
 //numbering
 div[data-type='chapter'] {
   .art-exercise, .multiple-choice, .free-response {
@@ -24,20 +24,30 @@ div[data-type='chapter'] {
   section.free-response {
     move-to: eoc-free-response;
   }
+  &::after {
+    content: pending(eoc-art-exercise);
+    class: eoc-art-exercise;
+    container: div;
+    move-to: eoc-all;
+  }
+  &::after {
+    content: pending(eoc-multiple-choice);
+    class: eoc-multiple-choice;
+    container: div;
+    move-to: eoc-all;
+  }
+  &::after {
+    content: pending(eoc-free-response);
+    class: eoc-free-response;
+    container: div;
+    move-to: eoc-all;
+  }
+  &::after {
+    content: pending(eoc-all);
+    class: end-of-chapter;
+    data-type: composite-page;
+    container: div;
+  }
 }
 
-div[data-type='chapter']::after {
-  content: pending(eoc-art-exercise);
-  class: eoc-art-exercise;
-  container: div;
-}
-div[data-type='chapter']::after {
-  content: pending(eoc-multiple-choice);
-  class: eoc-multiple-choice;
-  container: div;
-}
-div[data-type='chapter']::after {
-  content: pending(eoc-free-response);
-  class: eoc-free-response;
-  container: div;
-}
+

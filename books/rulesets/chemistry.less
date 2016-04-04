@@ -1,7 +1,7 @@
 
 @import url("common/numbering.less");
 @import url("common/collations.less");
-
+@import url("common/summary.less");
 //numbering
 div[data-type='chapter'] {
   .key-equations, .exercises, .references {
@@ -26,21 +26,31 @@ div[data-type='chapter'] {
   section.references {
     move-to: eoc-references;
   }
-}
-
-
-div[data-type='chapter']::after {
+&::after {
   content: pending(eoc-key-equations);
   class: eoc-key-equations;
   container: div;
+  move-to: eoc-all;
 }
-div[data-type='chapter']::after {
+&::after {
   content: pending(eoc-exercises);
   class: eoc-exercises;
   container: div;
+  move-to: eoc-all;
 }
-div[data-type='chapter']::after {
+&::after {
   content: pending(eoc-references);
   class: eoc-references;
   container: div;
+  move-to: eoc-all;
 }
+  &::after {
+    content: pending(eoc-all);
+    class: end-of-chapter;
+    data-type: composite-page;
+    container: div;
+  }
+}
+
+
+
