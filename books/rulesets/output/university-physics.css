@@ -1,0 +1,165 @@
+div[data-type='book'] {
+  counter-reset: chapter;
+}
+div[data-type='chapter'] {
+  counter-reset: section figure table list;
+  counter-increment: chapter;
+}
+div[data-type='chapter'] div[data-type="page"] {
+  counter-reset: subsection;
+  counter-increment: section;
+}
+div[data-type='chapter'] .eoc-exercises {
+  counter-reset: exercise;
+}
+div[data-type='chapter'] div[data-type='exercise'] {
+  counter-increment: exercise;
+}
+div[data-type='chapter'] > div[data-type='document-title'] {
+  string-set: chapter-title content();
+  content: '';
+}
+div[data-type='chapter'] > div[data-type='document-title']::span {
+  class: 'titling';
+  content: counter(chapter);
+}
+div[data-type='chapter'] > div[data-type='document-title']::span {
+  class: 'titling';
+  content: string(chapter-title);
+}
+div[data-type='chapter'] div[data-type="page"] {
+  counter-reset: subsection;
+  counter-increment: section;
+}
+div[data-type='chapter'] div[data-type="page"] > div[data-type='document-title'] {
+  string-set: section-title content();
+  content: '';
+}
+div[data-type='chapter'] div[data-type="page"] > div[data-type='document-title']::span {
+  class: 'titling';
+  content: counter(chapter) '.' counter(section);
+}
+div[data-type='chapter'] div[data-type="page"] > div[data-type='document-title']::span {
+  class: 'titling';
+  content: string(section-title);
+}
+div[data-type='chapter'] div[data-type="page"] > section {
+  counter-increment: subsection;
+}
+div[data-type='chapter'] .eoc-section-summary > section h1.title {
+  string-set: section-title content();
+  content: '';
+}
+div[data-type='chapter'] .eoc-section-summary > section h1.title::span {
+  class: 'titling';
+  content: target-counter(attr(xref), chapter) '.' target-counter(attr(xref), section);
+}
+div[data-type='chapter'] .eoc-section-summary > section h1.title::span {
+  class: 'titling';
+  content: string(section-title);
+}
+div[data-type='chapter'] .eoc-exercises div[data-type='problem']::before {
+  content: 'Exercise ' counter(exercise);
+}
+div[data-type='chapter'] dl.definition {
+  copy-to: eoc-key-terms;
+}
+div[data-type='chapter'] span[data-type='term'] {
+  copy-to: eob-index;
+}
+body::after {
+  class: eob-index;
+  content: pending(eob-index);
+  container: div;
+  sort-by: span;
+  move-to: eob-all;
+}
+div[data-type='chapter'] .key-equations,
+div[data-type='chapter'] .key-concepts,
+div[data-type='chapter'] .review-conceptual-questions,
+div[data-type='chapter'] .review-problems,
+div[data-type='chapter'] .review-challenge {
+  counter-reset: exercise;
+}
+div[data-type='chapter'] .key-equations > section h1.title,
+div[data-type='chapter'] .key-concepts > section h1.title,
+div[data-type='chapter'] .review-conceptual-questions > section h1.title,
+div[data-type='chapter'] .review-problems > section h1.title,
+div[data-type='chapter'] .review-challenge > section h1.title {
+  string-set: section-title content();
+  content: '';
+}
+div[data-type='chapter'] .key-equations > section h1.title::span,
+div[data-type='chapter'] .key-concepts > section h1.title::span,
+div[data-type='chapter'] .review-conceptual-questions > section h1.title::span,
+div[data-type='chapter'] .review-problems > section h1.title::span,
+div[data-type='chapter'] .review-challenge > section h1.title::span {
+  class: 'titling';
+  content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
+}
+div[data-type='chapter'] .key-equations > section h1.title::span,
+div[data-type='chapter'] .key-concepts > section h1.title::span,
+div[data-type='chapter'] .review-conceptual-questions > section h1.title::span,
+div[data-type='chapter'] .review-problems > section h1.title::span,
+div[data-type='chapter'] .review-challenge > section h1.title::span {
+  class: 'titling';
+  content: string(section-title);
+}
+div[data-type='chapter'] .key-equations div[data-type='problem']::before,
+div[data-type='chapter'] .key-concepts div[data-type='problem']::before,
+div[data-type='chapter'] .review-conceptual-questions div[data-type='problem']::before,
+div[data-type='chapter'] .review-problems div[data-type='problem']::before,
+div[data-type='chapter'] .review-challenge div[data-type='problem']::before {
+  content: counter(exercise) '.';
+}
+div[data-type='chapter'] section.key-equations {
+  move-to: eoc-key-equations;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-key-equations);
+  class: eoc-key-equations;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.key-concepts {
+  move-to: eoc-key-concepts;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-key-concepts);
+  class: eoc-key-concepts;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.review-conceptual-questions {
+  move-to: eoc-review-conceptual-questionss;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-review-conceptual-questions);
+  class: eoc-review-conceptual-questions;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.review-problems {
+  move-to: eoc-review-problems;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-review-problems);
+  class: eoc-eoc-review-problems;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.review-challenge {
+  move-to: eoc-review-challenge;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-review-challenge);
+  class: eoc-review-challenge;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-all);
+  class: end-of-chapter;
+  data-type: composite-page;
+  container: div;
+}

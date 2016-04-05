@@ -1,0 +1,89 @@
+@import url("common/numbering.less");
+@import url("common/collations.less");
+
+//numbering
+div[data-type='chapter'] {
+  .practice-test, .key-equations, .key-concepts, .review-exercises {
+    .x-numb ();
+  }
+}
+
+//eoc
+div[data-type='chapter'] {
+  section.practice-test {
+    move-to: eoc-practice-test;
+  }
+  &::after {
+    content: pending(eoc-practice-test);
+    class: eoc-practice-test;
+    container: div;
+    move-to: eoc-all;
+  }
+
+  section.key-equations {
+    move-to: eoc-key-equations;
+  }
+  &::after {
+    content: pending(eoc-key-equations);
+    class: eoc-key-equations;
+    container: div;
+    move-to: eoc-all;
+  }
+
+  section.key-concepts {
+    move-to: eoc-key-concepts;
+  }
+    &::after {
+    content: pending(eoc-key-concepts);
+    class: eoc-key-concepts;
+    container: div;
+    move-to: eoc-all;
+  }
+
+  section.review-exercises {
+    move-to: eoc-review-exercises;
+  }
+    &::after {
+    content: pending(eoc-review-exercises);
+    class: eoc-review-exercises;
+    container: div;
+    move-to: eoc-all;
+  }
+
+  section.try .solution {
+    move-to: eob-try;
+  }
+  section.section-exercises .solution {
+    move-to: eob-section-exercises;
+  }
+  //containers
+
+  &::after {
+    content: pending(eoc-all);
+    class: end-of-chapter;
+    data-type: composite-page;
+    container: div;
+  }
+}
+
+//eob
+body {
+  &::after {
+    content: pending(eob-try);
+    class: eob-try;
+    container: div;
+    move-to: eob-all;
+  }
+  &::after {
+    content: pending(eob-section-exercises);
+    class: eob-section-exercise;
+    container: div;
+    move-to: eob-all;
+  }
+  &::after {
+    content: pending(eob-all);
+    class: end-of-book;
+    data-type: composite-page;
+    container: div;
+  }
+}
