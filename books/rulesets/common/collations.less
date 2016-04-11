@@ -2,32 +2,55 @@
 
 div[data-type='chapter'] {
   dl.definition {
-    copy-to: eoc-key-terms;
-  }
+    move-to: eoc-key-terms;
+   }
+   &::after {
+    class: eoc-glossary;
+    content: pending(eoc-key-terms);
+    sort-by:  dt > dl;
+    move-to: eoc-all;
+   }
   span[data-type='term'] {
     copy-to: eob-index;
   }
+  div[data-type="page"] {
+    > div[data-type="document-title"] {
+      node-set: sectionTitle;
+    }
+    section.section-summary {
+        move-to: section-summary;
+    }
+    &::after {
+      class: summary;
+     content: nodes(sectionTitle) pending(section-summary);
+      move-to: eoc-section-summary;
+    }
+  }
+  &::after {
+    class: eoc-summary;
+    content: pending(eoc-section-summary);
+    move-to: eoc-all;
+  }
 }
-body::after {
-  class: eob-index;
-  content: pending(eob-index);
-  container: div;
-  sort-by: span;
-  move-to: eob-all;
+body{
+  &::after {
+    class: eob-index;
+    content: pending(eob-index);
+    container: div;
+    sort-by: span;
+    move-to: eob-all;
+  }
+  &::after {
+    content: pending(eob-all);
+    class: end-of-book;
+    data-type: composite-page;
+    container: div;
+  }
 }
-
 
 
 // .summary()  {
 //   div[data-type='chapter'] {
-//     section.section-summary {
-//       move-to: eoc-section-summary;
-//     }
-//     &::after {
-//       class: eoc-section-summary;
-//       content: pending(eoc-section-summary);
-//       container: div;
-//       move-to: eoc-all;
-//     }
+
 //   }
 // }
