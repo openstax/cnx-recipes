@@ -1,5 +1,13 @@
+div[data-type='chapter'] h1[data-type="document-title"] {
+  node-set: chapterTitle;
+}
 div[data-type='chapter'] dl.definition {
   move-to: eoc-key-terms;
+}
+div[data-type='chapter']::after {
+  class: solutions;
+  content: nodes(chapterTitle) pending(chapterSolutions);
+  move-to: eob-solutions;
 }
 div[data-type='chapter']::after {
   class: eoc-glossary;
@@ -9,6 +17,9 @@ div[data-type='chapter']::after {
 }
 div[data-type='chapter'] span[data-type='term'] {
   copy-to: eob-index;
+}
+div[data-type='chapter'] div[data-type="page"] div[data-type="solution"] {
+  move-to: chapterSolutions;
 }
 div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
   node-set: sectionTitle;
@@ -25,6 +36,12 @@ div[data-type='chapter']::after {
   class: eoc-summary;
   content: pending(eoc-section-summary);
   move-to: eoc-all;
+}
+body::after {
+  class: eob-solutions;
+  content: pending(eob-solutions);
+  container: div;
+  move-to: eob-all;
 }
 body::after {
   class: eob-index;

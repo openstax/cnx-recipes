@@ -1,8 +1,16 @@
 //eoc
 
 div[data-type='chapter'] {
+  h1[data-type="document-title"] {
+    node-set: chapterTitle;
+  }
   dl.definition {
     move-to: eoc-key-terms;
+   }
+  &::after {
+    class: solutions;
+    content: nodes(chapterTitle) pending(chapterSolutions);
+    move-to: eob-solutions;
    }
    &::after {
     class: eoc-glossary;
@@ -14,6 +22,9 @@ div[data-type='chapter'] {
     copy-to: eob-index;
   }
   div[data-type="page"] {
+    div[data-type="solution"] {
+      move-to: chapterSolutions;
+    }
     > div[data-type="document-title"] {
       node-set: sectionTitle;
     }
@@ -33,6 +44,12 @@ div[data-type='chapter'] {
   }
 }
 body{
+  &::after {
+     class: eob-solutions;
+    content: pending(eob-solutions);
+    container: div;
+    move-to: eob-all;
+  }
   &::after {
     class: eob-index;
     content: pending(eob-index);
