@@ -1,0 +1,127 @@
+body {
+  > div[data-type="page"] {
+    > div[data-type="metadata"] {
+      > h1[data-type='document-title'] {
+      copy-to: page-title;
+      }
+    }
+    &::after {
+      content: pending(page-title);
+      move-to: eob-toc;
+      container: li;
+    }
+  }
+  > div[data-type="composite-page"] {
+    > div[data-type="metadata"] {
+      > h1[data-type='document-title'] {
+      copy-to: page-title;
+      }
+    }
+    &::after {
+      content: pending(page-title);
+      move-to: eob-toc;
+      container: li;
+    }
+  }
+  > div[data-type='chapter'] {
+      > h1[data-type='document-title'] {
+      copy-to: eoc-toc;
+      }
+    > div[data-type="page"] {
+      > div[data-type="metadata"] {
+        > h1[data-type='document-title']{
+        copy-to: page-title;
+        }
+      }
+      &::after {
+        content: pending(page-title);
+        move-to: eoc-toc-pages;
+        container: li;
+      }
+    }
+    > div[data-type="composite-page"] {
+      > div[data-type="metadata"] {
+        > h1[data-type='document-title']{
+        copy-to: page-title;
+        }
+      }
+      &::after {
+        content: pending(page-title);
+        move-to: eoc-toc-pages;
+        container: li;
+      }
+    }
+    &::after {
+    content: pending(eoc-toc-pages);
+    container: ol;
+    class: chapter;
+    move-to: eoc-toc;
+    }
+    &::after {
+    content: pending(eoc-toc);
+    container: li;
+    move-to: eob-toc;
+    }
+  }
+  > div[data-type="unit"] {
+    > h1[data-type='document-title'] {
+    copy-to: eou-toc;
+    }
+    > div[data-type='chapter'] {
+        > h1[data-type='document-title'] {
+        copy-to: eoc-toc;
+        }
+      > div[data-type="page"] {
+        > div[data-type="metadata"] {
+          > h1[data-type='document-title']{
+          copy-to: page-title;
+          }
+        }
+        &::after {
+          content: pending(page-title);
+          move-to: eoc-toc-pages;
+          container: li;
+        }
+      }
+      > div[data-type="composite-page"] {
+        > div[data-type="metadata"] {
+          > h1[data-type='document-title']{
+          copy-to: page-title;
+          }
+        }
+        &::after {
+          content: pending(page-title);
+          move-to: eoc-toc-pages;
+          container: li;
+        }
+      }
+      &::after {
+      content: pending(eoc-toc-pages);
+      container: ol;
+      class: chapter;
+      move-to: eoc-toc;
+      }
+      &::after {
+      content: pending(eoc-toc);
+      container: li;
+      move-to: eou-toc-chapters;
+      }
+    }
+    &::after {
+    content: pending(eou-toc-chapters);
+    container: ol;
+    class: unit;
+    move-to: eou-toc;
+    }
+    &::after {
+    content: pending(eou-toc);
+    container: li;
+    move-to: eob-toc;
+    }
+  }
+  &::after {
+  content: pending(eob-toc);
+  container: ol;
+  class: eob-toc
+  }
+}
