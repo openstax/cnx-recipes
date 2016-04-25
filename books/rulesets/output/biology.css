@@ -21,22 +21,6 @@ div[data-type='chapter'] span[data-type='term'] {
 div[data-type='chapter'] div[data-type="page"] div[data-type="solution"] {
   move-to: chapterSolutions;
 }
-div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
-  node-set: sectionTitle;
-}
-div[data-type='chapter'] div[data-type="page"] section.section-summary {
-  move-to: section-summary;
-}
-div[data-type='chapter'] div[data-type="page"]::after {
-  class: summary;
-  content: nodes(sectionTitle) pending(section-summary);
-  move-to: eoc-section-summary;
-}
-div[data-type='chapter']::after {
-  class: eoc-summary;
-  content: pending(eoc-section-summary);
-  move-to: eoc-all;
-}
 body::after {
   class: eob-solutions;
   content: pending(eob-solutions);
@@ -56,14 +40,36 @@ body::after {
   data-type: composite-page;
   container: div;
 }
-div[data-type='chapter'] section.art-exercise {
+div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
+  node-set: sectionTitle;
+}
+div[data-type='chapter'] div[data-type="page"] section.summary {
+  move-to: summary;
+}
+div[data-type='chapter'] div[data-type="page"] section.summary::after {
+  class: summary;
+  content: nodes(sectionTitle) pending(summary);
+  move-to: eoc-summaries;
+}
+div[data-type='chapter'] div[data-type="page"] section.art-exercise .exercise {
   move-to: eoc-art-exercise;
 }
-div[data-type='chapter'] section.multiple-choice {
+div[data-type='chapter'] div[data-type="page"] section.multiple-choice .exercise {
   move-to: eoc-multiple-choice;
 }
-div[data-type='chapter'] section.free-response {
+div[data-type='chapter'] div[data-type="page"] section.free-response .exercise {
   move-to: eoc-free-response;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: "summary-title";
+  content: "Section Summary";
+  move-to: summaryTitle;
+}
+div[data-type='chapter']::after {
+  class: eoc-summary;
+  content: pending(summaryTitle) pending(eoc-summaries);
+  move-to: eoc-all;
 }
 div[data-type='chapter']::after {
   content: pending(eoc-art-exercise);

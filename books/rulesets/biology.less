@@ -14,14 +14,38 @@ div[data-type='chapter'] {
 
 //eoc
 div[data-type='chapter'] {
-  section.art-exercise {
-    move-to: eoc-art-exercise;
+  div[data-type="page"] {
+    > div[data-type="document-title"] {
+      node-set: sectionTitle;
+    }
+    section.summary {
+      move-to: summary;
+      &::after {
+        class: summary;
+        content: nodes(sectionTitle) pending(summary);
+        move-to: eoc-summaries;
+      }
+    }
+    section.art-exercise .exercise {
+      move-to: eoc-art-exercise;
+    }
+    section.multiple-choice .exercise{
+      move-to: eoc-multiple-choice;
+    }
+    section.free-response .exercise {
+      move-to: eoc-free-response;
+    }
   }
-  section.multiple-choice {
-    move-to: eoc-multiple-choice;
+  &::before {
+    container: h1;
+    class: "summary-title";
+    content: "Section Summary";
+    move-to: summaryTitle;
   }
-  section.free-response {
-    move-to: eoc-free-response;
+  &::after {
+    class: eoc-summary;
+    content: pending(summaryTitle) pending(eoc-summaries);
+    move-to: eoc-all;
   }
   &::after {
     content: pending(eoc-art-exercise);
