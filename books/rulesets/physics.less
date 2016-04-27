@@ -18,22 +18,64 @@ div[data-type='chapter'] {
 
 //eoc
 div[data-type='chapter'] {
-
-  section.conceptual-questions {
-    move-to: eoc-conceptual-questions;
+ div[data-type="page"] {
+    > div[data-type="document-title"] {
+      node-set: sectionTitle;
+    }
+  }
+  section.section-summary {
+    move-to: summary;
+    &::after {
+      class: summary;
+      content: nodes(sectionTitle) pending(summary);
+      move-to: eoc-summaries;
+     }
+  }
+  &::before {
+    container: h1;
+    class: summary-title;
+    content: "Section Summary";
+    move-to: summaryTitle;
   }
   &::after {
-    content: pending(eoc-conceptual-questions);
+    class: eoc-summary;
+    content: pending(summaryTitle) pending(eoc-summaries);
+    move-to: eoc-all;
+  }
+
+  section.conceptual-questions {
+    move-to: trash;
+    .exercise {
+      move-to: eoc-conceptual-questions;
+    }
+  }
+  &::before {
+    container: h1;
+    class: conceptual-questions-title;
+    content: "Conceptual Questions";
+    move-to: conceptualTitle;
+  }
+  &::after {
+    content: pending(conceptualTitle) pending(eoc-conceptual-questions);
     class: eoc-conceptual-questions;
     container: div;
     move-to: eoc-all;
   }
 
   section.problems-exercises {
-    move-to: eoc-problems-exercises;
+    move-to: trash;
+    .exercise {
+      move-to: eoc-problems-exercises;
+    }
+  }
+  &::before {
+    container: h1;
+    class: problems-exercises-title;
+    content: "Problems & Exercises";
+    move-to: problemsTitle;
   }
   &::after {
-    content: pending(eoc-problems-exercises);
+    content: pending(problemsTitle) pending(eoc-problems-exercises);
     class: eoc-problems-exercises;
     container: div;
     move-to: eoc-all;
@@ -46,5 +88,4 @@ div[data-type='chapter'] {
     container: div;
   }
 }
-
 

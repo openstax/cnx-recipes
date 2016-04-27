@@ -47,7 +47,7 @@ div[data-type='chapter'] {
       &::after {
         content: pending(gloss-term) pending(link);
         class: glossary-item;
-        move-to: eob-glossary;
+        move-to: eob-index;
       }
     }
     div[data-type="solution"] {
@@ -56,24 +56,37 @@ div[data-type='chapter'] {
   }
 }
 body {
+  &::before {
+    container: h1;
+    content: "Answer Key";
+    move-to: answerTitle;
+  }
   &::after {
-     class: eob-solutions;
-    content: pending(eob-solutions);
+    class: eob-solutions;
+    content: pending(answerTitle) pending(eob-solutions);
     container: div;
     move-to: eob-all;
   }
+
+  &::before {
+    container: h1;
+    content: "Index";
+    move-to: indexTitle;
+  }
   &::after {
     class: eob-index;
-    content: pending(eob-glossary);
+    content: pending(indexTitle) pending(eob-index);
     group-by: span, "span::first-letter";
     move-to: eob-all;
   }
+
   &::after {
     content: pending(eob-all);
     class: end-of-book;
     data-type: composite-page;
     container: div;
   }
+
   &::after {
     content: clear(trash);
   }

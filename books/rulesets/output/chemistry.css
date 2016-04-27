@@ -24,36 +24,48 @@ div[data-type='chapter']::after {
   sort-by: dt > dl;
   move-to: eoc-all;
 }
-div[data-type='chapter'] span[data-type='term']::after {
+div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
+  string-set: section-title content();
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
   content: content();
   container: span;
   class: glossary-term;
   move-to: gloss-term;
 }
-div[data-type='chapter'] span[data-type='term']::after {
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
   content: string(section-title);
   container: a;
   attr-href: "#" attr(id);
   move-to: link;
 }
-div[data-type='chapter'] span[data-type='term']::after {
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
   content: pending(gloss-term) pending(link);
   class: glossary-item;
-  move-to: eob-glossary;
+  move-to: eob-index;
 }
 div[data-type='chapter'] div[data-type="page"] div[data-type="solution"] {
   move-to: chapterSolutions;
 }
+body::before {
+  container: h1;
+  content: "Answer Key";
+  move-to: answerTitle;
+}
 body::after {
   class: eob-solutions;
-  content: pending(eob-solutions);
+  content: pending(answerTitle) pending(eob-solutions);
   container: div;
   move-to: eob-all;
 }
+body::before {
+  container: h1;
+  content: "Index";
+  move-to: indexTitle;
+}
 body::after {
-  class: eob-waka;
-  class: glossary;
-  content: pending(eob-glossary);
+  class: eob-index;
+  content: pending(indexTitle) pending(eob-index);
   group-by: span, "span::first-letter";
   move-to: eob-all;
 }
@@ -66,29 +78,79 @@ body::after {
 body::after {
   content: clear(trash);
 }
-div[data-type='chapter'] section.key-equations {
+div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
+  node-set: sectionTitle;
+}
+div[data-type='chapter'] div[data-type="page"] section.key-equations {
+  move-to: trash;
+}
+div[data-type='chapter'] div[data-type="page"] section.key-equations > ul {
   move-to: eoc-key-equations;
 }
-div[data-type='chapter'] section.exercises {
+div[data-type='chapter'] div[data-type="page"] section.summary {
+  move-to: summary;
+}
+div[data-type='chapter'] div[data-type="page"] section.summary::after {
+  class: summary;
+  content: nodes(sectionTitle) pending(summary);
+  move-to: eoc-summaries;
+}
+div[data-type='chapter'] div[data-type="page"] section.exercises {
+  move-to: trash;
+}
+div[data-type='chapter'] div[data-type="page"] section.exercises .exercise {
+  move-to: exercises;
+}
+div[data-type='chapter'] div[data-type="page"] section.exercises::after {
+  content: nodes(sectionTitle) pending(exercises);
   move-to: eoc-exercises;
 }
-div[data-type='chapter'] section.references {
+div[data-type='chapter'] div[data-type="page"] section.references {
   move-to: eoc-references;
 }
+div[data-type='chapter']::before {
+  container: h1;
+  class: key-equations-title;
+  content: "Key Equations";
+  move-to: keyEquationsTitle;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: summary-title;
+  content: "Section Summary";
+  move-to: summaryTitle;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: exercises-title;
+  content: "Exercises";
+  move-to: exercisesTitle;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: references-title;
+  content: "References";
+  move-to: referencesTitle;
+}
 div[data-type='chapter']::after {
-  content: pending(eoc-key-equations);
+  content: pending(keyEquationsTitle) pending(eoc-key-equations);
   class: eoc-key-equations;
   container: div;
   move-to: eoc-all;
 }
 div[data-type='chapter']::after {
-  content: pending(eoc-exercises);
+  class: eoc-summary;
+  content: pending(summaryTitle) pending(eoc-summaries);
+  move-to: eoc-all;
+}
+div[data-type='chapter']::after {
+  content: pending(exercisesTitle) pending(eoc-exercises);
   class: eoc-exercises;
   container: div;
   move-to: eoc-all;
 }
 div[data-type='chapter']::after {
-  content: pending(eoc-references);
+  content: pending(referencesTitle) pending(eoc-references);
   class: eoc-references;
   container: div;
   move-to: eoc-all;

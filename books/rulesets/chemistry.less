@@ -15,33 +15,85 @@ div[data-type='chapter'] {
 
 //eoc
 div[data-type='chapter'] {
-  section.key-equations {
-    move-to: eoc-key-equations;
+  div[data-type="page"] {
+    > div[data-type="document-title"] {
+      node-set: sectionTitle;
+    }
+    section.key-equations {
+      move-to: trash;
+     >  ul {
+      move-to: eoc-key-equations;
+     }
+    }
+    section.summary {
+      move-to: summary;
+      &::after {
+        class: summary;
+        content: nodes(sectionTitle) pending(summary);
+        move-to: eoc-summaries;
+       }
+    }
+    section.exercises {
+      move-to: trash;
+      .exercise {
+        move-to: exercises;
+      }
+      &::after {
+        content: nodes(sectionTitle) pending(exercises);
+        move-to: eoc-exercises;
+        }
+    }
+    section.references {
+      move-to: eoc-references;
+    }
   }
-  section.exercises {
-    move-to: eoc-exercises;
+  &::before {
+    container: h1;
+    class: key-equations-title;
+    content: "Key Equations";
+    move-to: keyEquationsTitle;
   }
-  section.references {
-    move-to: eoc-references;
+  &::before {
+    container: h1;
+    class: summary-title;
+    content: "Section Summary";
+    move-to: summaryTitle;
   }
-&::after {
-  content: pending(eoc-key-equations);
-  class: eoc-key-equations;
-  container: div;
-  move-to: eoc-all;
-}
-&::after {
-  content: pending(eoc-exercises);
-  class: eoc-exercises;
-  container: div;
-  move-to: eoc-all;
-}
-&::after {
-  content: pending(eoc-references);
-  class: eoc-references;
-  container: div;
-  move-to: eoc-all;
-}
+  &::before {
+    container: h1;
+    class: exercises-title;
+    content: "Exercises";
+    move-to: exercisesTitle;
+  }
+  &::before {
+    container: h1;
+    class: references-title;
+    content: "References";
+    move-to: referencesTitle;
+  }
+  &::after {
+    content: pending(keyEquationsTitle) pending(eoc-key-equations);
+    class: eoc-key-equations;
+    container: div;
+    move-to: eoc-all;
+  }
+  &::after {
+      class: eoc-summary;
+      content: pending(summaryTitle) pending(eoc-summaries);
+      move-to: eoc-all;
+    }
+  &::after {
+    content: pending(exercisesTitle)pending(eoc-exercises);
+    class: eoc-exercises;
+    container: div;
+    move-to: eoc-all;
+  }
+  &::after {
+    content: pending(referencesTitle) pending(eoc-references);
+    class: eoc-references;
+    container: div;
+    move-to: eoc-all;
+  }
   &::after {
     content: pending(eoc-all);
     class: end-of-chapter;
