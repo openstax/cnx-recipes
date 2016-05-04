@@ -1,6 +1,29 @@
 div[data-type='chapter'] h1[data-type="document-title"] {
   node-set: chapterTitle;
 }
+div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
+  string-set: section-title content();
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: content();
+  container: span;
+  class: glossary-term;
+  move-to: gloss-term;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: string(section-title);
+  container: a;
+  attr-href: "#" attr(id);
+  move-to: link;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: pending(gloss-term) pending(link);
+  class: glossary-item;
+  move-to: eob-index;
+}
+div[data-type='chapter'] div[data-type="solution"] {
+  move-to: chapterSolutions;
+}
 div[data-type='chapter'] div[data-type="glossary"] {
   move-to: trash;
 }
@@ -23,29 +46,6 @@ div[data-type='chapter']::after {
   content: pending(sectionGlossary) pending(eoc-key-terms);
   sort-by: dt > dl;
   move-to: eoc-all;
-}
-div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
-  string-set: section-title content();
-}
-div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
-  content: content();
-  container: span;
-  class: glossary-term;
-  move-to: gloss-term;
-}
-div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
-  content: string(section-title);
-  container: a;
-  attr-href: "#" attr(id);
-  move-to: link;
-}
-div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
-  content: pending(gloss-term) pending(link);
-  class: glossary-item;
-  move-to: eob-index;
-}
-div[data-type='chapter'] div[data-type="page"] div[data-type="solution"] {
-  move-to: chapterSolutions;
 }
 body::before {
   container: h1;

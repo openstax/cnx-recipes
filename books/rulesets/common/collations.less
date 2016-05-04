@@ -4,29 +4,6 @@ div[data-type='chapter'] {
   h1[data-type="document-title"] {
     node-set: chapterTitle;
   }
-  div[data-type="glossary"] {
-    move-to: trash;
-  }
-  dl.definition {
-    move-to: eoc-key-terms;
-   }
-  &::after {
-    class: solutions;
-    content: nodes(chapterTitle) pending(chapterSolutions);
-    move-to: eob-solutions;
-   }
-  &::before {
-    container: h1;
-    class: sectionGlossary;
-    content: "Glossary";
-    move-to: sectionGlossary;
-  }
-   &::after {
-    class: eoc-glossary;
-    content: pending(sectionGlossary) pending(eoc-key-terms);
-    sort-by:  dt > dl;
-    move-to: eoc-all;
-   }
   div[data-type="page"] {
     > div[data-type="document-title"] {
       string-set: section-title content();
@@ -50,10 +27,33 @@ div[data-type='chapter'] {
         move-to: eob-index;
       }
     }
+  }
     div[data-type="solution"] {
       move-to: chapterSolutions;
     }
+  div[data-type="glossary"] {
+    move-to: trash;
   }
+  dl.definition {
+    move-to: eoc-key-terms;
+   }
+  &::after {
+    class: solutions;
+    content: nodes(chapterTitle) pending(chapterSolutions);
+    move-to: eob-solutions;
+   }
+  &::before {
+    container: h1;
+    class: sectionGlossary;
+    content: "Glossary";
+    move-to: sectionGlossary;
+  }
+   &::after {
+    class: eoc-glossary;
+    content: pending(sectionGlossary) pending(eoc-key-terms);
+    sort-by:  dt > dl;
+    move-to: eoc-all;
+   }
 }
 body {
   &::before {
@@ -92,9 +92,24 @@ body {
   }
 }
 
-
-// .summary()  {
-//   div[data-type='chapter'] {
-
-//   }
-// }
+.summary(@selectorName, @pre, @titleContainer,  @titleContent) {
+   section@{pre}@{selectorName}{
+      move-to: summary;
+      &::after {
+        class: summary;
+        content: nodes(sectionTitle) pending(summary);
+        move-to: eoc-summaries;
+    }
+  }
+  &::before {
+    container: @titleContainer;
+    class: summary-title;
+    content: @titleContent;
+    move-to: summaryTitle;
+  }
+  &::after {
+    class: eoc-summary;
+    content: pending(summaryTitle) pending(eoc-summaries);
+    move-to: eoc-all;
+  }
+}

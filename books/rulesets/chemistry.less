@@ -19,62 +19,53 @@ div[data-type='chapter'] {
     > div[data-type="document-title"] {
       node-set: sectionTitle;
     }
-    .link-to-learning {
-      &::before {
-        container: h1;
-        content: "Link to Learning" ;
-        move-to: linkToLearningTitle;
-      }
-      content: pending(linkToLearningTitle) content();
+  }
+  .link-to-learning {
+    &::before {
+      container: h1;
+      content: "Link to Learning" ;
+      move-to: linkToLearningTitle;
     }
-    section.key-equations {
-      move-to: trash;
-     >  ul {
-      move-to: eoc-key-equations;
-     }
-    }
-    section.summary {
-      move-to: summary;
-      &::after {
-        class: summary;
-        content: nodes(sectionTitle) pending(summary);
-        move-to: eoc-summaries;
-       }
-    }
-    section.exercises {
-      move-to: trash;
-      .exercise {
-        move-to: exercises;
-      }
-      &::after {
-        content: nodes(sectionTitle) pending(exercises);
-        move-to: eoc-exercises;
-        }
-    }
-    section.references {
-      move-to: eoc-references;
-    }
-    [data-type="example"] {
-      &::before {
-        container: h1;
-        content: "Example" ;
-        move-to: exampleTitle;
-      }
-      content: pending(exampleTitle) content();
+    content: pending(linkToLearningTitle) content();
+  }
+  section.key-equations {
+    move-to: trash;
+    >  ul {
+    move-to: eoc-key-equations;
     }
   }
+
+  .summary(summary, ~'.', h1, "Section Summary");
+
+  section.exercises {
+    move-to: trash;
+    .exercise {
+      move-to: exercises;
+    }
+    &::after {
+    content: nodes(sectionTitle) pending(exercises);
+    move-to: eoc-exercises;
+    }
+  }
+  section.references {
+    move-to: eoc-references;
+  }
+  [data-type="example"] {
+    &::before {
+      container: h1;
+      content: "Example" ;
+      move-to: exampleTitle;
+    }
+    content: pending(exampleTitle) content();
+  }
+
   &::before {
     container: h1;
     class: key-equations-title;
     content: "Key Equations";
     move-to: keyEquationsTitle;
   }
-  &::before {
-    container: h1;
-    class: summary-title;
-    content: "Section Summary";
-    move-to: summaryTitle;
-  }
+
   &::before {
     container: h1;
     class: exercises-title;
@@ -93,11 +84,7 @@ div[data-type='chapter'] {
     container: div;
     move-to: eoc-all;
   }
-  &::after {
-      class: eoc-summary;
-      content: pending(summaryTitle) pending(eoc-summaries);
-      move-to: eoc-all;
-    }
+
   &::after {
     content: pending(exercisesTitle)pending(eoc-exercises);
     class: eoc-exercises;
