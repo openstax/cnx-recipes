@@ -1,3 +1,60 @@
+div[data-type="chapter"] {
+  counter-reset: section;
+  counter-reset: figure;
+}
+div[data-type="chapter"] > h1[data-type="document-title"] {
+  class: "chapter-title";
+  container: h1;
+  content: pending(chapterLabel) pending(chapterNumber) pending(chapterDivider) content();
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  counter-increment: chapter;
+  container: span;
+  content: counter(chapter);
+  move-to: chapterNumber;
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  content: "Chapter";
+  container: span;
+  move-to: chapterLabel;
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  content: " | ";
+  container: span;
+  move-to: chapterDivider;
+}
+div[data-type="chapter"] div[data-type="page"] > [data-type="document-title"] {
+  class: "section-title";
+  container: h1;
+  content: pending(sectionLabel) " " pending(sectionNumber) " " pending(sectionDivider) content();
+}
+div[data-type="chapter"] div[data-type="page"] > [data-type="document-title"]::before {
+  counter-increment: section;
+  container: span;
+  content: counter(chapter) "." counter(section);
+  move-to: sectionNumber;
+}
+div[data-type="chapter"] div[data-type="page"] > [data-type="document-title"]::before {
+  content: "section";
+  container: span;
+  move-to: sectionLabel;
+}
+div[data-type="chapter"] div[data-type="page"] > [data-type="document-title"]::before {
+  content: " | ";
+  container: span;
+  move-to: sectionDivider;
+}
+div[data-type="chapter"] div[data-type="page"] figure figcaption {
+  class: "figure-title";
+  container: h1;
+  content: pending(figureNumber) content();
+}
+div[data-type="chapter"] div[data-type="page"] figure figcaption::before {
+  counter-increment: figure;
+  container: span;
+  content: "Fig." counter(chapter) "." counter(figure);
+  move-to: figureNumber;
+}
 div[data-type='chapter'] h1[data-type="document-title"] {
   node-set: chapterTitle;
 }
@@ -56,6 +113,10 @@ div[data-type='chapter']::after {
 body > [data-type="metadata"] {
   node-set: bookMetadata;
 }
+body div.end-of-chapter [data-type="cnx-archive-uri"] {
+  pass: 2;
+  move-to: trash;
+}
 body::before {
   container: h1;
   content: "Answer Key";
@@ -85,12 +146,7 @@ body::after {
   container: div;
 }
 body::after {
-  content: nodes(bookMetadata) pending(eoc-all);
-  class: end-of-chapter;
-  data-type: composite-page;
-  container: div;
-}
-body::after {
+  pass: 2;
   content: clear(trash);
 }
 div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {

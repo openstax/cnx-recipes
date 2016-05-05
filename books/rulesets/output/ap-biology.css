@@ -47,8 +47,18 @@ div[data-type='chapter']::after {
   sort-by: dt > dl;
   move-to: eoc-all;
 }
+div[data-type='chapter']::after {
+  content: nodes(bookMetadata) pending(eoc-all);
+  class: end-of-chapter;
+  data-type: composite-page;
+  container: div;
+}
 body > [data-type="metadata"] {
   node-set: bookMetadata;
+}
+body div.end-of-chapter [data-type="cnx-archive-uri"] {
+  pass: 2;
+  move-to: trash;
 }
 body::before {
   container: h1;
@@ -79,6 +89,7 @@ body::after {
   container: div;
 }
 body::after {
+  pass: 2;
   content: clear(trash);
 }
 div[data-type='chapter'] section.review {

@@ -28,9 +28,9 @@ div[data-type='chapter'] {
       }
     }
   }
-    div[data-type="solution"] {
-      move-to: chapterSolutions;
-    }
+  div[data-type="solution"] {
+    move-to: chapterSolutions;
+  }
   div[data-type="glossary"] {
     move-to: trash;
   }
@@ -62,8 +62,14 @@ div[data-type='chapter'] {
   }
 }
 body {
-  > [data-type="metadata"] {
+ > [data-type="metadata"] {
     node-set: bookMetadata;
+  }
+  div.end-of-chapter {
+   [data-type="cnx-archive-uri"] {
+      pass: 2;
+      move-to: trash;
+    }
   }
   &::before {
     container: h1;
@@ -95,24 +101,20 @@ body {
     data-type: composite-page;
     container: div;
   }
+
   &::after {
-    content: nodes(bookMetadata) pending(eoc-all);
-    class: end-of-chapter;
-    data-type: composite-page;
-    container: div;
-  }
-  &::after {
+    pass: 2;
     content: clear(trash);
   }
 }
 
 .summary(@selectorName, @pre, @titleContainer,  @titleContent) {
-   section@{pre}@{selectorName}{
-      move-to: summary;
-      &::after {
-        class: summary;
-        content: nodes(sectionTitle) pending(summary);
-        move-to: eoc-summaries;
+  section@{pre}@{selectorName}{
+    move-to: summary;
+    &::after {
+      class: summary;
+      content: nodes(sectionTitle) pending(summary);
+    move-to: eoc-summaries;
     }
   }
   &::before {
@@ -127,3 +129,4 @@ body {
     move-to: eoc-all;
   }
 }
+
