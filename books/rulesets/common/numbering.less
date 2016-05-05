@@ -1,117 +1,179 @@
-.\=(@counters) {
-  counter-reset: @counters;
-}
-.\+(@counters) {
-  counter-increment: @counters;
-}
+// .\=(@counters) {
+//   counter-reset: @counters;
+// }
+// .\+(@counters) {
+//   counter-increment: @counters;
+// }
 
-div[data-type='book']{
-  .\=(chapter);
-}
+// div[data-type='book']{
+//   .\=(chapter);
+// }
 
-div[data-type='chapter'] {
-  .\=(section figure table list);
-  .\+(chapter);
+// div[data-type='chapter'] {
+//   .\=(section figure table list);
+//   .\+(chapter);
 
-  div[data-type="page"] {
-    .\=(subsection);
-    .\+(section);
-  }
-  .eoc-exercises {
-    .\=(exercise);
-  }
-  div[data-type='exercise'] {
-    .\+(exercise);
-  }
-  // <div data-type="document-title">Stuff</div>
-  // becomes
-  // <div data-type="document-title"><span class="titling">1</span><span class="titling">Stuff</span></div>
-  > div[data-type='document-title'] {
-    string-set: chapter-title content();
-    content: '';
+//   div[data-type="page"] {
+//     .\=(subsection);
+//     .\+(section);
+//   }
+//   .eoc-exercises {
+//     .\=(exercise);
+//   }
+//   div[data-type='exercise'] {
+//     .\+(exercise);
+//   }
+//   // <div data-type="document-title">Stuff</div>
+//   // becomes
+//   // <div data-type="document-title"><span class="titling">1</span><span class="titling">Stuff</span></div>
+//   > div[data-type='document-title'] {
+//     string-set: chapter-title content();
+//     content: '';
 
-    &::span {
-      class: 'titling';
-      content: counter(chapter);
-    }
-    &::span {
-      class: 'titling';
-      content: string(chapter-title);
-    }
-  }
+//     &::span {
+//       class: 'titling';
+//       content: counter(chapter);
+//     }
+//     &::span {
+//       class: 'titling';
+//       content: string(chapter-title);
+//     }
+//   }
 
-  div[data-type="page"] {
-    .\=(subsection);
-    .\+(section);
+//   div[data-type="page"] {
+//     .\=(subsection);
+//     .\+(section);
 
-    > div[data-type='document-title'] {
-      string-set: section-title content();
-      content: '';
+//     > div[data-type='document-title'] {
+//       string-set: section-title content();
+//       content: '';
 
-      &::span {
-        class: 'titling';
-        content: counter(chapter) '.' counter(section);
-      }
-      &::span {
-        class: 'titling';
-        content: string(section-title);
-      }
-    }
-    > section {
-        .\+(subsection);
-    }
-  }
+//       &::span {
+//         class: 'titling';
+//         content: counter(chapter) '.' counter(section);
+//       }
+//       &::span {
+//         class: 'titling';
+//         content: string(section-title);
+//       }
+//     }
+//     > section {
+//         .\+(subsection);
+//     }
+//   }
 
-  .eoc-section-summary > section h1.title {
-    string-set: section-title content();
-    content: '';
+//   .eoc-section-summary > section h1.title {
+//     string-set: section-title content();
+//     content: '';
 
-    &::span {
-      class: 'titling';
-      // This implies that group-by stores a "xref" attribute
-      // with a cross reference, eg #id-5352435.
-      // These are an INTERNAL cross reference, they are not baked in
-      // to the cooked document as attributes.
-      content: target-counter(attr(xref), chapter) '.' target-counter(attr(xref), section);
-    }
-    &::span {
-      class: 'titling';
-      content: string(section-title);
-    }
-  }
-  .eoc-exercises div[data-type='problem']::before {
-    content: 'Exercise ' counter(exercise);
-  }
-}
+//     &::span {
+//       class: 'titling';
+//       // This implies that group-by stores a "xref" attribute
+//       // with a cross reference, eg #id-5352435.
+//       // These are an INTERNAL cross reference, they are not baked in
+//       // to the cooked document as attributes.
+//       content: target-counter(attr(xref), chapter) '.' target-counter(attr(xref), section);
+//     }
+//     &::span {
+//       class: 'titling';
+//       content: string(section-title);
+//     }
+//   }
+//   .eoc-exercises div[data-type='problem']::before {
+//     content: 'Exercise ' counter(exercise);
+//   }
+// }
 
 
-.x-numb () {
-  .\=(exercise);
+// .x-numb () {
+//   .\=(exercise);
 
-  > section h1.title {
-    string-set: section-title content();
-    content: '';
+//   > section h1.title {
+//     string-set: section-title content();
+//     content: '';
 
-    &::span {
-      class: 'titling';
-      content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
-    }
-    &::span {
-      class: 'titling';
-      content: string(section-title);
-    }
-  }
+//     &::span {
+//       class: 'titling';
+//       content: target-counter(attr(xhref), chapter) '.' target-counter(attr(xref), section);
+//     }
+//     &::span {
+//       class: 'titling';
+//       content: string(section-title);
+//     }
+//   }
 
-  div[data-type='exercise'] {
-  //  .\+(exercise);
-  }
-  div[data-type='problem'] {
+//   div[data-type='exercise'] {
+//   //  .\+(exercise);
+//   }
+//   div[data-type='problem'] {
+//     &::before {
+//       content: counter(exercise) '.';
+//       // If you needed to, you could also do this with
+//       // the internal cross references and target-counter
+//       // instead of "recounting" them here. Sometimes it's
+//       // basic and this "easy" way is fine, sometimes it isn't...
+//     }
+//   }
+// }
+
+div[data-type="chapter"] {
+  counter-reset: section;
+  counter-reset: figure;
+  > h1[data-type="document-title"] {
+    class: "chapter-title";
+    container: h1;
+    content: pending(chapterLabel)  pending(chapterNumber) pending(chapterDivider) content() ;
     &::before {
-      content: counter(exercise) '.';
-      // If you needed to, you could also do this with
-      // the internal cross references and target-counter
-      // instead of "recounting" them here. Sometimes it's
-      // basic and this "easy" way is fine, sometimes it isn't...
+      counter-increment: chapter;
+      container: span;
+      content: counter(chapter);
+      move-to: chapterNumber;
+    }
+    &::before {
+      content: "Chapter";
+      container: span;
+      move-to: chapterLabel;
+    }
+    &::before {
+      content: " | ";
+      container: span;
+      move-to: chapterDivider;
+    }
+  }
+  div[data-type="page"] {
+    > [data-type="document-title"] {
+      class: "section-title";
+      container: h1;
+       content: pending(sectionLabel) " " pending(sectionNumber) " "pending(sectionDivider) content() ;
+      &::before {
+        counter-increment: section;
+        container: span;
+        content: counter(chapter)"."counter(section);
+        move-to: sectionNumber;
+      }
+      &::before {
+        content: "section";
+        container: span;
+        move-to: sectionLabel;
+      }
+      &::before {
+        content: " | ";
+        container: span;
+        move-to: sectionDivider;
+      }
+    }
+    figure {
+      figcaption {
+        class: "figure-title";
+        container: h1;
+         content: pending(figureNumber) content() ;
+        &::before {
+          counter-increment: figure;
+          container: span;
+          content: "Fig." counter(chapter)"."counter(figure);
+          move-to: figureNumber;
+        }
+      }
     }
   }
 }
