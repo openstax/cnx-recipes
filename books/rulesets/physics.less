@@ -1,0 +1,73 @@
+
+// <cnx-pi data-type="cnx.eoc">class="section-summary" title="Section Summary"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="conceptual-questions" title="Conceptual Questions"</cnx-pi>
+// <cnx-pi data-type="cnx.eoc">class="problems-exercises" title="Problems &amp; Exercises"</cnx-pi>
+// <cnx-pi data-type="chapter-toc">label="Key Concepts"</cnx-pi>
+
+@import url("common/numbering.less");
+@import url("common/collations.less");
+
+//numbering
+div[data-type='chapter'] {
+  .conceptual-questions, .problems-exercises {
+  //  .x-numb ();
+  }
+}
+//eoc
+div[data-type='chapter'] {
+ div[data-type="page"] {
+    > div[data-type="document-title"] {
+      node-set: sectionTitle;
+    }
+  }
+  .glossary();
+
+  .summary(section-summary, @pre: ~'.', h1, "Section Summary");
+
+  section.conceptual-questions {
+    move-to: trash;
+    .exercise {
+      move-to: eoc-conceptual-questions;
+    }
+  }
+  &::before {
+    container: h1;
+    class: conceptual-questions-title;
+    content: "Conceptual Questions";
+    move-to: conceptualTitle;
+  }
+  &::after {
+    content: pending(conceptualTitle) pending(eoc-conceptual-questions);
+    class: eoc-conceptual-questions;
+    container: div;
+    move-to: eoc-all;
+  }
+
+  section.problems-exercises {
+    move-to: trash;
+    .exercise {
+      move-to: eoc-problems-exercises;
+    }
+  }
+  &::before {
+    container: h1;
+    class: problems-exercises-title;
+    content: "Problems & Exercises";
+    move-to: problemsTitle;
+  }
+  &::after {
+    content: pending(problemsTitle) pending(eoc-problems-exercises);
+    class: eoc-problems-exercises;
+    container: div;
+    move-to: eoc-all;
+  }
+  &::after {
+    content: nodes(bookMetadata) pending(eoc-all);
+    class: end-of-chapter;
+    data-type: composite-page;
+    container: div;
+  }
+}
+
+
+

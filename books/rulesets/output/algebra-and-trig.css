@@ -1,0 +1,161 @@
+div[data-type='chapter'] h1[data-type="document-title"] {
+  node-set: chapterTitle;
+}
+div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
+  string-set: section-title content();
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: content();
+  container: span;
+  class: glossary-term;
+  move-to: gloss-term;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: string(section-title);
+  container: a;
+  attr-href: "#" attr(id);
+  move-to: link;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: pending(gloss-term) pending(link);
+  class: glossary-item;
+  move-to: eob-index;
+}
+div[data-type='chapter'] div[data-type="solution"] {
+  move-to: chapterSolutions;
+}
+div[data-type='chapter'] div[data-type="glossary"] {
+  move-to: trash;
+}
+div[data-type='chapter'] div[data-type="glossary"] dl.definition {
+  move-to: eoc-key-terms;
+}
+div[data-type='chapter']::after {
+  class: solutions;
+  content: nodes(chapterTitle) pending(chapterSolutions);
+  move-to: eob-solutions;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: sectionGlossary;
+  content: "Glossary";
+  move-to: sectionGlossary;
+}
+div[data-type='chapter']::after {
+  class: eoc-glossary;
+  content: pending(sectionGlossary) pending(eoc-key-terms);
+  sort-by: dt > dl;
+  move-to: eoc-all;
+}
+div[data-type='chapter']::after {
+  content: nodes(bookMetadata) pending(eoc-all);
+  class: end-of-chapter;
+  data-type: composite-page;
+  container: div;
+}
+body > [data-type="metadata"] {
+  node-set: bookMetadata;
+}
+body div.end-of-chapter [data-type="cnx-archive-uri"],
+body div.end-of-book [data-type="cnx-archive-uri"] {
+  pass: 2;
+  move-to: trash;
+}
+body::before {
+  container: h1;
+  content: "Answer Key";
+  move-to: answerTitle;
+}
+body::after {
+  class: eob-solutions;
+  content: pending(answerTitle) pending(eob-solutions);
+  container: div;
+  move-to: eob-all;
+}
+body::before {
+  container: h1;
+  content: "Index";
+  move-to: indexTitle;
+}
+body::after {
+  class: eob-index;
+  content: pending(indexTitle) pending(eob-index);
+  group-by: span, "span::first-letter";
+  move-to: eob-all;
+}
+body::after {
+  content: nodes(bookMetadata) pending(eob-all);
+  class: end-of-book;
+  data-type: composite-page;
+  container: div;
+}
+body::after {
+  pass: 100;
+  content: clear(trash);
+}
+div[data-type='chapter'] section.practice-test {
+  move-to: eoc-practice-test;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-practice-test);
+  class: eoc-practice-test;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.key-equations {
+  move-to: eoc-key-equations;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-key-equations);
+  class: eoc-key-equations;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.key-concepts {
+  move-to: eoc-key-concepts;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-key-concepts);
+  class: eoc-key-concepts;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.review-exercises {
+  move-to: eoc-review-exercises;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-review-exercises);
+  class: eoc-review-exercises;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] div.try .solution {
+  move-to: eob-try;
+}
+div[data-type='chapter'] section.section-exercises .solution {
+  move-to: eob-section-exercises;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-all);
+  class: end-of-chapter;
+  data-type: composite-page;
+  container: div;
+}
+body::after {
+  content: pending(eob-try);
+  class: eob-try;
+  container: div;
+  move-to: eob-all;
+}
+body::after {
+  content: pending(eob-section-exercises);
+  class: eob-section-exercise;
+  container: div;
+  move-to: eob-all;
+}
+body::after {
+  content: pending(eob-all);
+  class: end-of-book;
+  data-type: composite-page;
+  container: div;
+}

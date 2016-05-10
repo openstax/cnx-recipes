@@ -1,0 +1,153 @@
+div[data-type='chapter'] h1[data-type="document-title"] {
+  node-set: chapterTitle;
+}
+div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
+  string-set: section-title content();
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: content();
+  container: span;
+  class: glossary-term;
+  move-to: gloss-term;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: string(section-title);
+  container: a;
+  attr-href: "#" attr(id);
+  move-to: link;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: pending(gloss-term) pending(link);
+  class: glossary-item;
+  move-to: eob-index;
+}
+div[data-type='chapter'] div[data-type="solution"] {
+  move-to: chapterSolutions;
+}
+div[data-type='chapter'] div[data-type="glossary"] {
+  move-to: trash;
+}
+div[data-type='chapter'] div[data-type="glossary"] dl.definition {
+  move-to: eoc-key-terms;
+}
+div[data-type='chapter']::after {
+  class: solutions;
+  content: nodes(chapterTitle) pending(chapterSolutions);
+  move-to: eob-solutions;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: sectionGlossary;
+  content: "Glossary";
+  move-to: sectionGlossary;
+}
+div[data-type='chapter']::after {
+  class: eoc-glossary;
+  content: pending(sectionGlossary) pending(eoc-key-terms);
+  sort-by: dt > dl;
+  move-to: eoc-all;
+}
+div[data-type='chapter']::after {
+  content: nodes(bookMetadata) pending(eoc-all);
+  class: end-of-chapter;
+  data-type: composite-page;
+  container: div;
+}
+body > [data-type="metadata"] {
+  node-set: bookMetadata;
+}
+body div.end-of-chapter [data-type="cnx-archive-uri"],
+body div.end-of-book [data-type="cnx-archive-uri"] {
+  pass: 2;
+  move-to: trash;
+}
+body::before {
+  container: h1;
+  content: "Answer Key";
+  move-to: answerTitle;
+}
+body::after {
+  class: eob-solutions;
+  content: pending(answerTitle) pending(eob-solutions);
+  container: div;
+  move-to: eob-all;
+}
+body::before {
+  container: h1;
+  content: "Index";
+  move-to: indexTitle;
+}
+body::after {
+  class: eob-index;
+  content: pending(indexTitle) pending(eob-index);
+  group-by: span, "span::first-letter";
+  move-to: eob-all;
+}
+body::after {
+  content: nodes(bookMetadata) pending(eob-all);
+  class: end-of-book;
+  data-type: composite-page;
+  container: div;
+}
+body::after {
+  pass: 100;
+  content: clear(trash);
+}
+div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
+  node-set: section-title;
+}
+div[data-type='chapter'] section.summary {
+  move-to: section-summary;
+}
+div[data-type='chapter'] section.summary::after {
+  content: nodes(section-title) pending(section-summary);
+  container: div;
+  move-to: eoc-section-summary;
+}
+div[data-type='chapter']::after {
+  class: eoc-section-summary;
+  content: pending(eoc-section-summary);
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.interactive-exercise {
+  move-to: eoc-interactive-exercise;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-interactive-exercise);
+  class: eoc-interactive-exercise;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.multiple-choice {
+  move-to: eoc-multiple-choice;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-multiple-choice);
+  class: eoc-multiple-choice;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.free-response {
+  move-to: eoc-free-response;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-free-response);
+  class: eoc-free-response;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.references {
+  move-to: eoc-references;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-references);
+  class: eoc-references;
+  container: div;
+  move-to: eoc-all;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-all);
+  class: end-of-chapter;
+  data-type: composite-page;
+  container: div;
+}
