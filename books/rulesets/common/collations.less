@@ -12,8 +12,8 @@ div[data-type='chapter'] {
       &::after {
         content: content();
         container: span;
-        class: glossary-term;
-        move-to: gloss-term;
+        class: index-term;
+        move-to: index-term;
       }
       &::after {
         content: string(section-title);
@@ -22,8 +22,8 @@ div[data-type='chapter'] {
         move-to: link;
       }
       &::after {
-        content: pending(gloss-term) pending(link);
-        class: glossary-item;
+        content: pending(index-term) pending(link);
+        class: index-item;
         move-to: eob-index;
       }
     }
@@ -31,35 +31,14 @@ div[data-type='chapter'] {
   div[data-type="solution"] {
     move-to: chapterSolutions;
   }
-  div[data-type="glossary"] {
-    move-to: trash;
-    dl.definition {
-      move-to: eoc-key-terms;
-     }
-  }
+
   &::after {
     class: solutions;
     content: nodes(chapterTitle) pending(chapterSolutions);
     move-to: eob-solutions;
    }
-  &::before {
-    container: h1;
-    class: sectionGlossary;
-    content: "Glossary";
-    move-to: sectionGlossary;
-  }
-  &::after {
-    class: eoc-glossary;
-    content: pending(sectionGlossary) pending(eoc-key-terms);
-    sort-by:  dt > dl;
-    move-to: eoc-all;
-   }
-   &::after {
-    content: nodes(bookMetadata) pending(eoc-all);
-    class: end-of-chapter;
-    data-type: composite-page;
-    container: div;
-  }
+
+
 }
 body {
  > [data-type="metadata"] {
@@ -107,6 +86,7 @@ body {
     }
 }
 
+//mixins
 .summary(@selectorName, @pre, @titleContainer,  @titleContent) {
   section@{pre}@{selectorName}{
     move-to: summary;
@@ -127,5 +107,26 @@ body {
     content: pending(summaryTitle) pending(eoc-summaries);
     move-to: eoc-all;
   }
+}
+
+.glossary() {
+  div[data-type="glossary"] {
+    move-to: trash;
+    dl.definition {
+      move-to: eoc-key-terms;
+     }
+  }
+  &::before {
+    container: h1;
+    class: sectionGlossary;
+    content: "Glossary";
+    move-to: sectionGlossary;
+  }
+  &::after {
+    class: eoc-glossary;
+    content: pending(sectionGlossary) pending(eoc-key-terms);
+    sort-by:  dt > dl;
+    move-to: eoc-all;
+   }
 }
 

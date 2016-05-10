@@ -65,8 +65,8 @@ div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"]
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
   content: content();
   container: span;
-  class: glossary-term;
-  move-to: gloss-term;
+  class: index-term;
+  move-to: index-term;
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
   content: string(section-title);
@@ -75,41 +75,17 @@ div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
   move-to: link;
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
-  content: pending(gloss-term) pending(link);
-  class: glossary-item;
+  content: pending(index-term) pending(link);
+  class: index-item;
   move-to: eob-index;
 }
 div[data-type='chapter'] div[data-type="solution"] {
   move-to: chapterSolutions;
 }
-div[data-type='chapter'] div[data-type="glossary"] {
-  move-to: trash;
-}
-div[data-type='chapter'] div[data-type="glossary"] dl.definition {
-  move-to: eoc-key-terms;
-}
 div[data-type='chapter']::after {
   class: solutions;
   content: nodes(chapterTitle) pending(chapterSolutions);
   move-to: eob-solutions;
-}
-div[data-type='chapter']::before {
-  container: h1;
-  class: sectionGlossary;
-  content: "Glossary";
-  move-to: sectionGlossary;
-}
-div[data-type='chapter']::after {
-  class: eoc-glossary;
-  content: pending(sectionGlossary) pending(eoc-key-terms);
-  sort-by: dt > dl;
-  move-to: eoc-all;
-}
-div[data-type='chapter']::after {
-  content: nodes(bookMetadata) pending(eoc-all);
-  class: end-of-chapter;
-  data-type: composite-page;
-  container: div;
 }
 body > [data-type="metadata"] {
   node-set: bookMetadata;
@@ -153,6 +129,24 @@ body::after {
 }
 div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
   node-set: sectionTitle;
+}
+div[data-type='chapter'] div[data-type="glossary"] {
+  move-to: trash;
+}
+div[data-type='chapter'] div[data-type="glossary"] dl.definition {
+  move-to: eoc-key-terms;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: sectionGlossary;
+  content: "Glossary";
+  move-to: sectionGlossary;
+}
+div[data-type='chapter']::after {
+  class: eoc-glossary;
+  content: pending(sectionGlossary) pending(eoc-key-terms);
+  sort-by: dt > dl;
+  move-to: eoc-all;
 }
 div[data-type='chapter'] section.summary {
   move-to: summary;
@@ -226,4 +220,10 @@ div[data-type='chapter']::after {
   class: eoc-free-response;
   container: div;
   move-to: eoc-all;
+}
+div[data-type='chapter']::after {
+  content: nodes(bookMetadata) pending(eoc-all);
+  class: end-of-chapter;
+  data-type: composite-page;
+  container: div;
 }
