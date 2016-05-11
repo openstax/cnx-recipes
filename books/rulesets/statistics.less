@@ -15,82 +15,110 @@ div[data-type='chapter'] {
   }
 }
 
-
-//eoc
 div[data-type='chapter'] {
-    div[data-type="page"] {
-    > div[data-type="document-title"] {
-      node-set: sectionTitle;
-    }
-  }
-    .summary(summary, ~'.', h1, "Chapter Review");
+  .glossary();
 
-  section.formula-review {
-    move-to: trash;
-    move-to: eoc-formula-review;
-  }
-  &::after {
-   content: pending(eoc-formula-review);
-   class: eoc-formula-review;
-    container: div;
-    move-to: eoc-all;
-  }
+  .summary(summary, ~'.', h1, "Chapter Review");
 
   section.practice {
     move-to: eoc-practice;
   }
-  &::after {
-    content: pending(eoc-practice);
-    class: eoc-practice;
-    container: div;
-    move-to: eoc-all;
-  }
-
-  section.bring-together-exercises {
-    move-to: eoc-bring-together-exercises;
+  &::before {
+    container: h1;
+    data-type: title;
+    content: "Practice";
+    move-to: practiceTitle;
   }
   &::after {
-    content: pending(eoc-bring-together-exercises);
-    class: eoc-bring-together-exercises;
+    content: pending(practiceTitle) pending(eoc-practice);
+    class: "eoc practice";
+    data-type: page;
     container: div;
-    move-to: eoc-all;
+    //move-to: eoc-all;
   }
 
   section.free-response {
     move-to: eoc-free-response;
+     > h1[data-type="title"] {
+      move-to: trash;
+    }
+    div[data-type="solution"]  {
+      move-to: eoc-solutions;
+    }
+  }
+  &::before {
+    container: h1;
+    data-type: title;
+    content: "Homework";
+    move-to: freeresponseTitle;
   }
   &::after {
-    content: pending(eoc-free-response);
-    class: eoc-free-response;
+    content: pending(freeresponseTitle) pending(eoc-free-response);
+    class: "eoc free-response";
     container: div;
-    move-to: eoc-all;
+   data-type: page;
+   // move-to: eoc-all;
   }
 
-  section.bring-together-homework {
-    move-to: eoc-bring-together-homework;
+  div.try div[data-type="solution"] {
+    move-to: trash;
+    p {
+      move-to: trySolution;
+     }
+     &::after {
+      class: solutions;
+      content: nodes(sectionTitle) pending(trySolution);
+      move-to: trySolutions;
+     }
+  }
+    &::before {
+    container: h1;
+    data-type: title;
+    content: "Try It Solutions";
+    move-to: tryTitle;
   }
   &::after {
-    content: pending(eoc-bring-together-homework);
-    class: eoc-bring-together-homework;
-    container: div;
-    move-to: eoc-all;
-  }
+    class: "eoc try-solutions";
+    data-type: page;
+    content: pending(tryTitle) pending(trySolutions);
+    //move-to: eoc-all;
+   }
   section.references {
     move-to: eoc-references;
   }
+  &::before {
+    container: h1;
+    data-type: title;
+    content: "References";
+    move-to: referencesTitle;
+  }
   &::after {
-    content: pending(eoc-references);
-    class: eoc-references;
+    content:pending(referencesTitle) pending(eoc-references);
+    class: "eoc references";
+    data-type: page;
     container: div;
-    move-to: eoc-all;
+   // move-to: eoc-all;
+  }
+  &::before {
+    container: h1;
+    data-type: title;
+    content: "Solutions";
+    move-to: eocSolutionsTitle;
+  }
+  &::after {
+    container: div;
+    data-type: page;
+    class: "eoc solutions";
+     data-type: page;
+    content: pending(eocSolutionsTitle)pending(eoc-solutions)
   }
 
-  &::after {
-    content: pending(eoc-all);
-    class: end-of-chapter;
-    data-type: composite-page;
-    container: div;
-  }
+  // &::after {
+  //   content: pending(eoc-all);
+  //   class: end-of-chapter;
+  //   data-type: composite-page;
+  //   container: div;
+  // }
 }
 
 

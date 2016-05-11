@@ -7,6 +7,7 @@ div[data-type='chapter'] {
   div[data-type="page"] {
     > div[data-type="document-title"] {
       string-set: section-title content();
+      node-set: sectionTitle;
     }
     span[data-type="term"] {
       &::after {
@@ -28,17 +29,14 @@ div[data-type='chapter'] {
       }
     }
   }
-  div[data-type="solution"] {
-    move-to: chapterSolutions;
-  }
-
-  &::after {
-    class: solutions;
-    content: nodes(chapterTitle) pending(chapterSolutions);
-    move-to: eob-solutions;
-   }
-
-
+  // div[data-type="solution"] {
+  //   move-to: chapterSolutions;
+  // }
+  // &::after {
+  //   class: solutions;
+  //   content: nodes(chapterTitle) pending(chapterSolutions);
+  //   move-to: eob-solutions;
+  //  }
 }
 body {
  > [data-type="metadata"] {
@@ -55,12 +53,12 @@ body {
     content: "Answer Key";
     move-to: answerTitle;
   }
-  &::after {
-    class: eob-solutions;
-    content: pending(answerTitle) pending(eob-solutions);
-    container: div;
-    move-to: eob-all;
-  }
+  // &::after {
+  //   class: eob-solutions;
+  //   content: pending(answerTitle) pending(eob-solutions);
+  //   container: div;
+  //   move-to: eob-all;
+  // }
 
   &::before {
     container: h1;
@@ -69,13 +67,13 @@ body {
   }
   &::after {
     class: eob-index;
-    content: pending(indexTitle) pending(eob-index);
+    data-type: page;
+    content: nodes(bookMetadata) pending(indexTitle) pending(eob-index);
     group-by: span, "span::first-letter";
-    move-to: eob-all;
   }
 
   &::after {
-    content: nodes(bookMetadata) pending(eob-all);
+    content: pending(eob-all);
     class: end-of-book;
     data-type: composite-page;
     container: div;
@@ -87,6 +85,8 @@ body {
 }
 
 //mixins
+//.summary(summary, ~'.', h1, "Chapter Review");
+//include within div[data-type='chapter']
 .summary(@selectorName, @pre, @titleContainer,  @titleContent) {
   section@{pre}@{selectorName}{
     move-to: summary;
@@ -109,6 +109,8 @@ body {
   }
 }
 
+//glossary
+//include within div[data-type='chapter']
 .glossary() {
   div[data-type="glossary"] {
     move-to: trash;
