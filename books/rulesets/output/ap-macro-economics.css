@@ -1,0 +1,264 @@
+div[data-type="chapter"] {
+  counter-reset: section -1;
+  counter-reset: figure;
+}
+div[data-type="chapter"] > h1[data-type="document-title"] {
+  class: "chapter-title";
+  container: h1;
+  content: pending(chapterLabel) pending(chapterNumber) pending(chapterDivider) content();
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  counter-increment: chapter;
+  container: span;
+  content: counter(chapter);
+  move-to: chapterNumber;
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  content: "Chapter";
+  container: span;
+  move-to: chapterLabel;
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  content: " | ";
+  container: span;
+  move-to: chapterDivider;
+}
+div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"] {
+  data-type: "section-title";
+  container: div;
+  content: pending(sectionLabel) " " pending(sectionNumber) " " pending(sectionDivider) content();
+}
+div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+  counter-increment: section;
+  container: span;
+  content: counter(chapter) "." counter(section);
+  move-to: sectionNumber;
+}
+div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+  content: "section";
+  container: span;
+  move-to: sectionLabel;
+}
+div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+  content: " | ";
+  container: span;
+  move-to: sectionDivider;
+}
+div[data-type="chapter"] div[data-type="page"] figure figcaption {
+  class: "figure-title";
+  container: h1;
+  content: pending(figureNumber) content();
+}
+div[data-type="chapter"] div[data-type="page"] figure figcaption::before {
+  counter-increment: figure;
+  container: a;
+  attr-href: myLinkId;
+  content: "Fig." counter(chapter) "." counter(figure);
+  move-to: figureNumber;
+}
+div[data-type='chapter'] h1[data-type="document-title"] {
+  node-set: chapterTitle;
+}
+div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"] {
+  string-set: section-title content();
+  node-set: sectionTitle;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: content();
+  container: span;
+  class: index-term;
+  move-to: index-term;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: string(section-title);
+  container: a;
+  attr-href: "#" attr(id);
+  move-to: link;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  content: pending(index-term) pending(link);
+  class: index-item;
+  move-to: eob-index;
+}
+body > [data-type="metadata"] {
+  node-set: bookMetadata;
+}
+body div.end-of-chapter [data-type="cnx-archive-uri"],
+body div.end-of-book [data-type="cnx-archive-uri"] {
+  pass: 2;
+  move-to: trash;
+}
+body::before {
+  container: h1;
+  content: "Answer Key";
+  move-to: answerTitle;
+}
+body::before {
+  container: h1;
+  content: "Index";
+  move-to: indexTitle;
+}
+body::after {
+  class: eob-index;
+  data-type: page;
+  content: nodes(bookMetadata) pending(indexTitle) pending(eob-index);
+  group-by: span, "span::first-letter";
+}
+body::after {
+  content: pending(eob-all);
+  class: end-of-book;
+  data-type: composite-page;
+  container: div;
+}
+body::after {
+  pass: 100;
+  content: clear(trash);
+}
+div[data-type='chapter'] section.summary {
+  move-to: summary;
+}
+div[data-type='chapter'] section.summary::after {
+  class: summary;
+  content: nodes(sectionTitle) pending(summary);
+  move-to: eoc-summaries;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: summary-title;
+  data-type: title;
+  content: "Key Concepts and Summary";
+  move-to: summaryTitle;
+}
+div[data-type='chapter']::after {
+  class: eoc-summary;
+  content: pending(summaryTitle) pending(eoc-summaries);
+  move-to: eoc-all;
+}
+div[data-type='chapter'] section.self-check-questions {
+  move-to: self-check;
+}
+div[data-type='chapter'] section.self-check-questions > [data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter']::after {
+  container: div;
+  class: "eoc self-check-questions";
+  data-type: page;
+  content: pending(selfTitle) pending(self-check);
+}
+div[data-type='chapter'] section.review-questions {
+  move-to: review-questions;
+}
+div[data-type='chapter'] section.review-questions > [data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter']::after {
+  container: div;
+  class: "eoc review-questions";
+  data-type: page;
+  content: pending(reviewTitle) pending(review-questions);
+}
+div[data-type='chapter'] section.critical-thinking {
+  move-to: critical-thinking;
+}
+div[data-type='chapter'] section.critical-thinking > [data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter']::after {
+  container: div;
+  class: "eoc critical-thinking";
+  data-type: page;
+  content: pending(criticalTitle) pending(critical-thinking);
+}
+div[data-type='chapter'] section.problems {
+  move-to: problems;
+}
+div[data-type='chapter'] section.problems > [data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter']::after {
+  container: div;
+  class: "eoc problems";
+  data-type: page;
+  content: pending(problems);
+}
+div[data-type='chapter'] section.references {
+  move-to: reference;
+}
+div[data-type='chapter'] section.references > [data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter']::after {
+  container: div;
+  class: "reference";
+  content: pending(chapterTitle) pending(reference);
+  move-to: references;
+}
+div[data-type='chapter'] div[data-type="glossary"] {
+  move-to: trash;
+}
+div[data-type='chapter'] div[data-type="glossary"] dl.definition {
+  move-to: eoc-key-terms;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: sectionGlossary;
+  content: "Glossary";
+  move-to: sectionGlossary;
+}
+div[data-type='chapter']::after {
+  class: eoc-glossary;
+  content: pending(sectionGlossary) pending(eoc-key-terms);
+  sort-by: dt > dl;
+  move-to: eoc-all;
+}
+div[data-type='chapter'] div[data-type="solution"] {
+  move-to: chapterSolutions;
+}
+div[data-type='chapter']::after {
+  class: solutions;
+  content: nodes(chapterTitle) pending(chapterSolutions);
+  move-to: eob-solutions;
+}
+.eoc.self-check-questions::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Self Check Questions";
+}
+.eoc.review-questions::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Review Questions";
+}
+.eoc.critical-thinking::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Critical Thinking";
+}
+.eoc.problems::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Problems";
+}
+body::before {
+  container: h1;
+  data-type: title;
+  content: "References";
+  move-to: referencesTitle;
+}
+body::after {
+  class: "eob solutions";
+  data-type: page;
+  container: div;
+  content: pending(answerTitle) pending(eob-solutions);
+}
+body::after {
+  container: div;
+  class: "eob references";
+  data-type: page;
+  content: pending(referencesTitle) pending(references);
+}
