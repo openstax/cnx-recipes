@@ -114,26 +114,20 @@ body::after {
   pass: 100;
   content: clear(trash);
 }
-div[data-type='chapter'] div[data-type="glossary"] {
-  move-to: trash;
-}
 div[data-type='chapter'] div[data-type="glossary"] dl.definition {
   move-to: eoc-key-terms;
 }
-div[data-type='chapter']::before {
-  container: h1;
-  class: sectionGlossary;
-  content: "Glossary";
-  move-to: sectionGlossary;
-}
 div[data-type='chapter']::after {
-  class: eoc-glossary;
-  content: pending(sectionGlossary) pending(eoc-key-terms);
+  class: "eoc glossary";
+  data-type: page;
+  content: pending(eoc-key-terms);
   sort-by: dt > dl;
-  move-to: eoc-all;
 }
 div[data-type='chapter'] section.summary {
   move-to: summary;
+}
+div[data-type='chapter'] section.summary > h1[data-type="title"] {
+  move-to: trash;
 }
 div[data-type='chapter'] section.summary::after {
   class: summary;
@@ -148,22 +142,23 @@ div[data-type='chapter']::before {
   move-to: summaryTitle;
 }
 div[data-type='chapter']::after {
-  class: eoc-summary;
+  class: "eoc summary";
+  data-type: page;
   content: pending(summaryTitle) pending(eoc-summaries);
-  move-to: eoc-all;
 }
 div[data-type='chapter'] section.practice {
   move-to: eoc-practice;
+  content: nodes(sectionTitle) content();
 }
-div[data-type='chapter']::before {
-  container: h1;
-  data-type: title;
-  content: "Practice";
-  move-to: practiceTitle;
+div[data-type='chapter'] section.practice > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.practice div[data-type="solution"] {
+  move-to: eoc-solutions;
 }
 div[data-type='chapter']::after {
-  content: pending(practiceTitle) pending(eoc-practice);
-  class: "eoc practice";
+  content: pending(eoc-practice);
+  class: "eoc practice-container";
   data-type: page;
   container: div;
 }
@@ -173,67 +168,100 @@ div[data-type='chapter'] section.free-response {
 div[data-type='chapter'] section.free-response > h1[data-type="title"] {
   move-to: trash;
 }
+div[data-type='chapter'] section.free-response::before {
+  content: nodes(sectionTitle);
+}
 div[data-type='chapter'] section.free-response div[data-type="solution"] {
   move-to: eoc-solutions;
 }
-div[data-type='chapter']::before {
-  container: h1;
-  data-type: title;
-  content: "Homework";
-  move-to: freeresponseTitle;
-}
 div[data-type='chapter']::after {
-  content: pending(freeresponseTitle) pending(eoc-free-response);
-  class: "eoc free-response";
+  content: pending(eoc-free-response);
+  class: "eoc free-response-container";
   container: div;
   data-type: page;
 }
-div[data-type='chapter'] div.try div[data-type="solution"] {
+div[data-type='chapter'] section.bring-together-exercises {
+  move-to: eoc-bring-together-exercises;
+}
+div[data-type='chapter'] section.bring-together-exercises > h1[data-type="title"] {
   move-to: trash;
 }
-div[data-type='chapter'] div.try div[data-type="solution"] p {
+div[data-type='chapter'] section.bring-together-exercises::before {
+  content: nodes(sectionTitle);
+}
+div[data-type='chapter'] section.bring-together-exercises div[data-type="solution"] {
+  move-to: eoc-solutions;
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-bring-together-exercises);
+  class: "eoc bring-together-exercises-container";
+  data-type: page;
+  container: div;
+}
+div[data-type='chapter'] div.try div[data-type="solution"] {
   move-to: trySolution;
+}
+div[data-type='chapter'] div.try div[data-type="solution"] > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] div.try div[data-type="solution"]::before {
+  content: nodes(sectionTitle);
 }
 div[data-type='chapter'] div.try div[data-type="solution"]::after {
   class: solutions;
-  content: nodes(sectionTitle) pending(trySolution);
+  content: pending(trySolution);
   move-to: trySolutions;
 }
-div[data-type='chapter']::before {
-  container: h1;
-  data-type: title;
-  content: "Try It Solutions";
-  move-to: tryTitle;
-}
 div[data-type='chapter']::after {
-  class: "eoc try-solutions";
+  class: "eoc try-solutions-container";
   data-type: page;
-  content: pending(tryTitle) pending(trySolutions);
+  content: pending(trySolutions);
 }
 div[data-type='chapter'] section.references {
   move-to: eoc-references;
 }
-div[data-type='chapter']::before {
+div[data-type='chapter'] section.references::before {
+  content: nodes(sectionTitle);
+}
+div[data-type='chapter']::after {
+  content: pending(eoc-references);
+  class: "eoc references-container";
+  data-type: page;
+  container: div;
+}
+div[data-type='chapter']::after {
+  container: div;
+  class: "eoc solutions-container";
+  data-type: page;
+  content: pending(eoc-solutions);
+}
+div[data-type='chapter'] .eoc.practice-container::before {
   container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Practice";
+}
+div[data-type='chapter'] .eoc.free-response-container::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Homework";
+}
+div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Bring Together Exercises";
+}
+div[data-type='chapter'] .eoc.references-container::before {
+  container: h1;
+  pass: 2;
   data-type: title;
   content: "References";
-  move-to: referencesTitle;
 }
-div[data-type='chapter']::after {
-  content: pending(referencesTitle) pending(eoc-references);
-  class: "eoc references";
-  data-type: page;
-  container: div;
-}
-div[data-type='chapter']::before {
+div[data-type='chapter'] .eoc.solutions-container::before {
   container: h1;
+  pass: 2;
   data-type: title;
   content: "Solutions";
-  move-to: eocSolutionsTitle;
-}
-div[data-type='chapter']::after {
-  container: div;
-  class: "eoc solutions";
-  data-type: page;
-  content: pending(eocSolutionsTitle) pending(eoc-solutions);
 }

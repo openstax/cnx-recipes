@@ -1,6 +1,11 @@
+
 //@import url("common/numbering.less");
 @import url("common/collations.less");
 @import url("common/toc.less");
+
+
+@import url("physics.less");
+
 //numbering
 div[data-type='chapter'] {
   .conceptual-questions, .problems-exercises, .ap-test-prep {
@@ -14,41 +19,30 @@ div[data-type='chapter'] {
 //eoc
 
 div[data-type='chapter'] {
-  section.conceptual-questions {
-    move-to: eoc-conceptual-questions;
-  }
-  &::after {
-    content: pending(eoc-conceptual-questions);
-    class: eoc-conceptual-questions;
-    container: div;
-    move-to: eoc-all;
-  }
-
-  section.problems-exercises {
-    move-to: eoc-problems-exercises;
-  }
-  &::after {
-    content: pending(eoc-problems-exercises);
-    class: eoc-problems-exercises;
-    container: div;
-    move-to: eoc-all;
-  }
-
   section.ap-test-prep {
     move-to: eoc-ap-test-prep;
+    > [data-type="title"] {
+        move-to: trash;
+    }
+    &::before {
+      content: nodes(sectionTitle);
+    }
   }
   &::after {
     content: pending(eoc-ap-test-prep);
-    class: eoc-ap-test-prep;
+    class: "eoc ap-test-prep-container";
     container: div;
-    move-to: eoc-all;
+    data-type: page;
+    //move-to: eoc-all;
   }
+}
 
-  &::after {
-    content: pending(eoc-all);
-    class: end-of-chapter;
-    data-type: composite-page;
-    container: div;
+.eoc {
+  &.ap-test-prep-container::before {
+    container: h1;
+    pass: 2;
+    data-type: title;
+    content: "Test Prep for AP Course";
   }
 }
 

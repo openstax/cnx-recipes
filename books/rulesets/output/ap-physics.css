@@ -1,3 +1,61 @@
+div[data-type="chapter"] {
+  counter-reset: section -1;
+  counter-reset: figure;
+}
+div[data-type="chapter"] > h1[data-type="document-title"] {
+  class: "chapter-title";
+  container: h1;
+  content: pending(chapterLabel) pending(chapterNumber) pending(chapterDivider) content();
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  counter-increment: chapter;
+  container: span;
+  content: counter(chapter);
+  move-to: chapterNumber;
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  content: "Chapter";
+  container: span;
+  move-to: chapterLabel;
+}
+div[data-type="chapter"] > h1[data-type="document-title"]::before {
+  content: " | ";
+  container: span;
+  move-to: chapterDivider;
+}
+div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"] {
+  data-type: "section-title";
+  container: div;
+  content: pending(sectionLabel) " " pending(sectionNumber) " " pending(sectionDivider) content();
+}
+div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+  counter-increment: section;
+  container: span;
+  content: counter(chapter) "." counter(section);
+  move-to: sectionNumber;
+}
+div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+  content: "section";
+  container: span;
+  move-to: sectionLabel;
+}
+div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+  content: " | ";
+  container: span;
+  move-to: sectionDivider;
+}
+div[data-type="chapter"] div[data-type="page"] figure figcaption {
+  class: "figure-title";
+  container: h1;
+  content: pending(figureNumber) content();
+}
+div[data-type="chapter"] div[data-type="page"] figure figcaption::before {
+  counter-increment: figure;
+  container: a;
+  attr-href: myLinkId;
+  content: "Fig." counter(chapter) "." counter(figure);
+  move-to: figureNumber;
+}
 div[data-type='chapter'] h1[data-type="document-title"] {
   node-set: chapterTitle;
 }
@@ -56,36 +114,111 @@ body::after {
   pass: 100;
   content: clear(trash);
 }
+div[data-type='chapter'] div[data-type="glossary"] dl.definition {
+  move-to: eoc-key-terms;
+}
+div[data-type='chapter']::after {
+  class: "eoc glossary";
+  data-type: page;
+  content: pending(eoc-key-terms);
+  sort-by: dt > dl;
+}
+div[data-type='chapter'] section.section-summary {
+  move-to: summary;
+}
+div[data-type='chapter'] section.section-summary > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.section-summary::after {
+  class: summary;
+  content: nodes(sectionTitle) pending(summary);
+  move-to: eoc-summaries;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  class: summary-title;
+  data-type: title;
+  content: "Section Summary";
+  move-to: summaryTitle;
+}
+div[data-type='chapter']::after {
+  class: "eoc summary";
+  data-type: page;
+  content: pending(summaryTitle) pending(eoc-summaries);
+}
 div[data-type='chapter'] section.conceptual-questions {
   move-to: eoc-conceptual-questions;
 }
+div[data-type='chapter'] section.conceptual-questions > [data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.conceptual-questions::before {
+  content: nodes(sectionTitle);
+}
 div[data-type='chapter']::after {
   content: pending(eoc-conceptual-questions);
-  class: eoc-conceptual-questions;
+  class: "eoc conceptual-questions-container";
   container: div;
-  move-to: eoc-all;
+  data-type: page;
 }
 div[data-type='chapter'] section.problems-exercises {
   move-to: eoc-problems-exercises;
 }
+div[data-type='chapter'] section.problems-exercises > [data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.problems-exercises::before {
+  content: nodes(sectionTitle);
+}
 div[data-type='chapter']::after {
   content: pending(eoc-problems-exercises);
-  class: eoc-problems-exercises;
+  class: "eoc problems-exercises-container";
   container: div;
-  move-to: eoc-all;
+  data-type: page;
+}
+div[data-type='chapter'] div[data-type="solution"] {
+  move-to: chapterSolutions;
+}
+div[data-type='chapter']::after {
+  class: solutions;
+  content: nodes(chapterTitle) pending(chapterSolutions);
+  move-to: eob-solutions;
+}
+div[data-type='chapter'] .eoc.conceptual-questions-container::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Conceptual Questions";
+}
+div[data-type='chapter'] .eoc.problems-exercises-container::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Problems &amp; Exercises";
+}
+body::after {
+  class: "eob solutions hidden";
+  content: pending(answerTitle) pending(eob-solutions);
+  container: div;
 }
 div[data-type='chapter'] section.ap-test-prep {
   move-to: eoc-ap-test-prep;
 }
-div[data-type='chapter']::after {
-  content: pending(eoc-ap-test-prep);
-  class: eoc-ap-test-prep;
-  container: div;
-  move-to: eoc-all;
+div[data-type='chapter'] section.ap-test-prep > [data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.ap-test-prep::before {
+  content: nodes(sectionTitle);
 }
 div[data-type='chapter']::after {
-  content: pending(eoc-all);
-  class: end-of-chapter;
-  data-type: composite-page;
+  content: pending(eoc-ap-test-prep);
+  class: "eoc ap-test-prep-container";
   container: div;
+  data-type: page;
+}
+.eoc.ap-test-prep-container::before {
+  container: h1;
+  pass: 2;
+  data-type: title;
+  content: "Test Prep for AP Course";
 }

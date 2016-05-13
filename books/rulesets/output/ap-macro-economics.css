@@ -117,6 +117,9 @@ body::after {
 div[data-type='chapter'] section.summary {
   move-to: summary;
 }
+div[data-type='chapter'] section.summary > h1[data-type="title"] {
+  move-to: trash;
+}
 div[data-type='chapter'] section.summary::after {
   class: summary;
   content: nodes(sectionTitle) pending(summary);
@@ -130,15 +133,21 @@ div[data-type='chapter']::before {
   move-to: summaryTitle;
 }
 div[data-type='chapter']::after {
-  class: eoc-summary;
+  class: "eoc summary";
+  data-type: page;
   content: pending(summaryTitle) pending(eoc-summaries);
-  move-to: eoc-all;
 }
 div[data-type='chapter'] section.self-check-questions {
   move-to: self-check;
 }
 div[data-type='chapter'] section.self-check-questions > [data-type="title"] {
   move-to: trash;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  data-type: title;
+  content: "Self Check Questions";
+  move-to: selfTitle;
 }
 div[data-type='chapter']::after {
   container: div;
@@ -152,6 +161,12 @@ div[data-type='chapter'] section.review-questions {
 div[data-type='chapter'] section.review-questions > [data-type="title"] {
   move-to: trash;
 }
+div[data-type='chapter']::before {
+  container: h1;
+  data-type: title;
+  content: "Review Questions";
+  move-to: reviewTitle;
+}
 div[data-type='chapter']::after {
   container: div;
   class: "eoc review-questions";
@@ -163,6 +178,12 @@ div[data-type='chapter'] section.critical-thinking {
 }
 div[data-type='chapter'] section.critical-thinking > [data-type="title"] {
   move-to: trash;
+}
+div[data-type='chapter']::before {
+  container: h1;
+  data-type: title;
+  content: "Critical Thinking";
+  move-to: criticalTitle;
 }
 div[data-type='chapter']::after {
   container: div;
@@ -176,41 +197,38 @@ div[data-type='chapter'] section.problems {
 div[data-type='chapter'] section.problems > [data-type="title"] {
   move-to: trash;
 }
+div[data-type='chapter']::before {
+  container: h1;
+  data-type: title;
+  content: "Problems";
+  move-to: problemsTitle;
+}
 div[data-type='chapter']::after {
   container: div;
   class: "eoc problems";
   data-type: page;
-  content: pending(problems);
+  content: pending(problemsTitle) pending(problems);
 }
 div[data-type='chapter'] section.references {
-  move-to: reference;
+  move-to: references;
 }
 div[data-type='chapter'] section.references > [data-type="title"] {
   move-to: trash;
 }
-div[data-type='chapter']::after {
-  container: div;
-  class: "reference";
-  content: pending(chapterTitle) pending(reference);
-  move-to: references;
-}
-div[data-type='chapter'] div[data-type="glossary"] {
-  move-to: trash;
+div[data-type='chapter']::before {
+  container: h1;
+  data-type: title;
+  content: "references";
+  move-to: referencesTitle;
 }
 div[data-type='chapter'] div[data-type="glossary"] dl.definition {
   move-to: eoc-key-terms;
 }
-div[data-type='chapter']::before {
-  container: h1;
-  class: sectionGlossary;
-  content: "Glossary";
-  move-to: sectionGlossary;
-}
 div[data-type='chapter']::after {
-  class: eoc-glossary;
-  content: pending(sectionGlossary) pending(eoc-key-terms);
+  class: "eoc glossary";
+  data-type: page;
+  content: pending(eoc-key-terms);
   sort-by: dt > dl;
-  move-to: eoc-all;
 }
 div[data-type='chapter'] div[data-type="solution"] {
   move-to: chapterSolutions;
@@ -219,36 +237,6 @@ div[data-type='chapter']::after {
   class: solutions;
   content: nodes(chapterTitle) pending(chapterSolutions);
   move-to: eob-solutions;
-}
-.eoc.self-check-questions::before {
-  container: h1;
-  pass: 2;
-  data-type: title;
-  content: "Self Check Questions";
-}
-.eoc.review-questions::before {
-  container: h1;
-  pass: 2;
-  data-type: title;
-  content: "Review Questions";
-}
-.eoc.critical-thinking::before {
-  container: h1;
-  pass: 2;
-  data-type: title;
-  content: "Critical Thinking";
-}
-.eoc.problems::before {
-  container: h1;
-  pass: 2;
-  data-type: title;
-  content: "Problems";
-}
-body::before {
-  container: h1;
-  data-type: title;
-  content: "References";
-  move-to: referencesTitle;
 }
 body::after {
   class: "eob solutions";
