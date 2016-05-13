@@ -63,19 +63,29 @@ div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"]
   string-set: section-title content();
   node-set: sectionTitle;
 }
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]:match(^[a-zA-Z]) {
+  attr-group-by: first-letter(content());
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]:match(^[^a-zA-Z]) {
+  attr-group-by: "waka!";
+}
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  pass: 2;
   content: content();
+  attr-group-by: attr(group-by);
   container: span;
-  class: index-term;
+  class: glossary-term;
   move-to: index-term;
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  pass: 2;
   content: string(section-title);
   container: a;
   attr-href: "#" attr(id);
   move-to: link;
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after {
+  pass: 2;
   content: pending(index-term) pending(link);
   class: index-item;
   move-to: eob-index;
@@ -99,16 +109,15 @@ body::before {
   move-to: indexTitle;
 }
 body::after {
-  class: eob-index;
-  data-type: page;
-  content: nodes(bookMetadata) pending(indexTitle) pending(eob-index);
-  group-by: span, "span::first-letter";
-}
-body::after {
-  content: pending(eob-all);
-  class: end-of-book;
+  pass: 2;
+  class: "eob index";
   data-type: composite-page;
-  container: div;
+  content: pending(eob-index);
+  group-by: span, "span::attr(group-by)", nocase;
+}
+body .eob.index > div.group-by:first-of-type > span.group-label {
+  pass: 3;
+  content: "Symbol";
 }
 body::after {
   pass: 100;
@@ -117,11 +126,18 @@ body::after {
 div[data-type='chapter'] div[data-type="glossary"] dl.definition {
   move-to: eoc-key-terms;
 }
+div[data-type='chapter']::before {
+  container: h1;
+  class: sectionGlossary;
+  data-type: title;
+  content: "Glossary";
+  move-to: sectionGlossary;
+}
 div[data-type='chapter']::after {
   class: "eoc glossary";
   data-type: page;
-  content: pending(eoc-key-terms);
-  sort-by: dt > dl;
+  content: pending(sectionGlossary) pending(eoc-key-terms);
+  sort-by: dl> dt;
 }
 div[data-type='chapter'] section.section-summary {
   move-to: summary;
