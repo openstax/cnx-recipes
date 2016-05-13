@@ -10,19 +10,29 @@ div[data-type='chapter'] {
       node-set: sectionTitle;
     }
     span[data-type="term"] {
-      &::after {
+    &:match(^[a-zA-Z]) {
+      attr-group-by: first-letter(content());
+    }
+    &:match(^[^a-zA-Z]) {
+      attr-group-by: "waka!";
+    }
+     &::after {
+        pass: 2;
         content: content();
+        attr-group-by: attr(group-by);
         container: span;
-        class: index-term;
+        class: glossary-term;
         move-to: index-term;
       }
       &::after {
+        pass: 2;
         content: string(section-title);
         container: a;
         attr-href: "#" attr(id);
         move-to: link;
       }
       &::after {
+        pass: 2;
         content: pending(index-term) pending(link);
         class: index-item;
         move-to: eob-index;
@@ -53,12 +63,7 @@ body {
     content: "Answer Key";
     move-to: answerTitle;
   }
-  // &::after {
-  //   class: eob-solutions;
-  //   content: pending(answerTitle) pending(eob-solutions);
-  //   container: div;
-  //   move-to: eob-all;
-  // }
+
 
   &::before {
     container: h1;
@@ -66,22 +71,27 @@ body {
     move-to: indexTitle;
   }
   &::after {
-    class: eob-index;
-    data-type: page;
-    content: nodes(bookMetadata) pending(indexTitle) pending(eob-index);
-    group-by: span, "span::first-letter";
-  }
-
-  &::after {
-    content: pending(eob-all);
-    class: end-of-book;
+    pass: 2;
+    class: "eob index" ;
     data-type: composite-page;
-    container: div;
+    content: pending(eob-index);
+    group-by: span, "span::attr(group-by)", nocase;
   }
+  .eob.index > div.group-by:first-of-type > span.group-label {
+    pass: 3;
+    content: "Symbol";
+  }
+//nodes(bookMetadata) pending(indexTitle)
+  // &::after {
+  //   content: pending(eob-all);
+  //   class: end-of-book;
+  //   data-type: composite-page;
+  //   container: div;
+  // }
     &::after {
       pass:100;
       content: clear(trash);
-    }
+  }
 }
 
 //mixins
@@ -133,7 +143,7 @@ body {
     class: "eoc glossary";
     data-type: page;
     content: pending(sectionGlossary) pending(eoc-key-terms);
-    sort-by:  dt > dl;
+    sort-by:  dl> dt;
    }
 }
 
