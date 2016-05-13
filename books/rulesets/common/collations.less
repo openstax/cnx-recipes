@@ -90,6 +90,9 @@ body {
 .summary(@selectorName, @pre, @titleContainer,  @titleContent) {
   section@{pre}@{selectorName}{
     move-to: summary;
+    > h1[data-type="title"] {
+      move-to: trash;
+    }
     &::after {
       class: summary;
       content: nodes(sectionTitle) pending(summary);
@@ -104,9 +107,10 @@ body {
     move-to: summaryTitle;
   }
   &::after {
-    class: eoc-summary;
+    class: "eoc summary";
+    data-type: page;
     content: pending(summaryTitle) pending(eoc-summaries);
-    move-to: eoc-all;
+
   }
 }
 
@@ -114,7 +118,6 @@ body {
 //include within div[data-type='chapter']
 .glossary() {
   div[data-type="glossary"] {
-    move-to: trash;
     dl.definition {
       move-to: eoc-key-terms;
      }
@@ -122,14 +125,15 @@ body {
   &::before {
     container: h1;
     class: sectionGlossary;
+    data-type: title;
     content: "Glossary";
     move-to: sectionGlossary;
   }
   &::after {
-    class: eoc-glossary;
+    class: "eoc glossary";
+    data-type: page;
     content: pending(sectionGlossary) pending(eoc-key-terms);
     sort-by:  dt > dl;
-    move-to: eoc-all;
    }
 }
 
