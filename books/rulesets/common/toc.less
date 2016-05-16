@@ -1,14 +1,23 @@
 body {
   > div[data-type="page"], > div[data-type="composite-page"] {
+    pass: 20;
+    string-set: page-id attr(id);
     > div[data-type="metadata"] {
       > h1[data-type='document-title'] {
-      pass: 20;
-      copy-to: page-title;
+          pass: 20;
+          copy-to: page-title;
       }
     }
     &::after {
       pass: 20;
       content: pending(page-title);
+      attr-href: "#" string(page-id);
+      container: a;
+      move-to: page-link;
+    }
+    &::after {
+      pass: 20;
+      content: pending(page-link);
       move-to: eob-toc;
       container: li;
     }
@@ -19,6 +28,8 @@ body {
       copy-to: eoc-toc;
       }
     > div[data-type="page"], > div[data-type="composite-page"] {
+      pass: 20;
+      string-set: page-idi attr(id);
       > div[data-type="metadata"] {
         > h1[data-type='document-title']{
         pass: 20;
@@ -27,6 +38,13 @@ body {
         &::after {
           pass: 20;
           content: pending(page-title);
+          attr-href: "#" string(page-id);
+          container: a;
+          move-to: page-link;
+        }
+        &::after {
+          pass: 20;
+          content: pending(page-link);
           move-to: eoc-toc-pages;
           container: li;
         }
