@@ -4,7 +4,7 @@ div[data-type='chapter'] {
   h1[data-type="document-title"] {
     node-set: chapterTitle;
   }
-  div[data-type="page"],   div[data-type="composite-page"]  {
+  div[data-type="page"], div[data-type="composite-page"]  {
     > div[data-type="document-title"] {
       pass: default, 2;
       string-set: section-title content();
@@ -53,9 +53,9 @@ body {
  > [data-type="metadata"] {
     node-set: bookMetadata;
   }
-  div.end-of-chapter,   div.end-of-book  {
+  div.eoc, div.eob  {
    [data-type="cnx-archive-uri"] {
-      pass: 2;
+      pass: 15;
       move-to: trash;
     }
   }
@@ -66,48 +66,21 @@ body {
     move-to: answerTitle;
   }
   .eoc {
-    .glossary {
-      &::after {
-        pass: 3;
-        content: nodes(bookMetadata);
-      }
-      [data-type="metadata"] {
-       [data-type="document-title"] {
-        pass: 4;
-        content: "Glossary";
-       }
-     }
+    &.glossary {
+   .metadata("Glossary");
     }
-    .summary {
-      &::after {
-        pass: 3;
-        content: nodes(bookMetadata);
-      }
-      [data-type="metadata"] {
-       [data-type="document-title"] {
-        pass: 4;
-        content: "Glossary";
-       }
-     }
+    &.summary {
+      .metadata("Chapter Review");
     }
   }
 .eob {
     &.index {
+      .metadata("Index");
       &::before {
       container: h1;
       pass: 3;
       data-type: document-title;
       content: "Index";
-    }
-    &::after {
-      pass: 4;
-      content: nodes(bookMetadata);
-    }
-    [data-type="metadata"] {
-       [data-type="document-title"] {
-        pass: 5;
-        content: "Index";
-       }
     }
   }
 }
@@ -190,7 +163,17 @@ body {
    }
 }
 
-
+//metadata
+.metadata(@title) {
+    pass: 5;
+      content: nodes(bookMetadata) content();
+      [data-type="metadata"] {
+        [data-type="document-title"] {
+          pass: 10;
+        content: @title;
+      }
+  }
+}
 //todo
 // .feature(@name, @title, @nameTitle(@title,  @suffix) ) {
 //     section.references {
