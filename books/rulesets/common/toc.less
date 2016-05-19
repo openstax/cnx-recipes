@@ -3,14 +3,11 @@ body {
     pass: 20;
     string-set: page-id attr(id);
     // > div[data-type="metadata"] {
-      > [data-type='document-title'] {
-          pass: 20;
-          copy-to: page-title;
-      }
-    // }
-    &::after {
+    > [data-type='document-title'] {
+      data-type: "toc-page-title";
       pass: 20;
-      content: pending(page-title);
+      copy-to: page-title;
+      content: content();
       attr-href: "#" string(page-id);
       container: a;
       move-to: page-link;
@@ -24,31 +21,32 @@ body {
   }
   > div[data-type='chapter'] {
       > h1[data-type='document-title'] {
-      pass: 20;
-      copy-to: eoc-toc;
+        data-type: "toc-title";
+        class: "toc-chapter-title";
+        pass: 20;
+        content: content();
+        attr-href: "#" string(page-id);
+        container: a;
+        copy-to: eoc-toc;
       }
     > div[data-type="page"], > div[data-type="composite-page"] {
       pass: 20;
       string-set: page-idi attr(id);
-      //> div[data-type="metadata"] {
-        > [data-type='document-title']{
+      > [data-type='document-title']{
         pass: 20;
-        copy-to: page-title;
-        }
-        &::after {
-          pass: 20;
-          content: pending(page-title);
-          attr-href: "#" string(page-id);
-          container: a;
-          move-to: page-link;
-        }
-        &::after {
-          pass: 20;
-          content: pending(page-link);
-          move-to: eoc-toc-pages;
-          container: li;
-        }
-   //   }
+        data-type: "";
+        class: "toc-section-title";
+        content: content();
+        attr-href: "#" string(page-id);
+        container: a;
+        move-to: page-link;
+      }
+      &::after {
+        pass: 20;
+        content: pending(page-link);
+        move-to: eoc-toc-pages;
+         container: li;
+      }
     }
     &::after {
     pass: 20;
@@ -71,6 +69,10 @@ body {
     }
     > div[data-type='chapter'] {
         > h1[data-type='document-title'] {
+        data-type: "toc-title";
+        content: content();
+        attr-href: "#" string(page-id);
+        container: a;
         pass: 20;
         copy-to: eoc-toc;
         }
