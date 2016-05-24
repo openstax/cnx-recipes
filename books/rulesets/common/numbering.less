@@ -139,6 +139,7 @@ body {
       content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content() ;
     }
 
+
     counter-reset: section;
     counter-reset: example;
     counter-reset: figure;
@@ -156,11 +157,24 @@ body {
           container: span;
           move-to: sectionLabel;
         }
-        &::before {
-          content: " | ";
-          container: span;
-          move-to: sectionDivider;
+    //  }
+
+
+      figure {
+        counter-increment: figure;
+        figcaption {
+          class: "figure-title";
+          container: h1;
+          content: pending(figureNumber) content() ;
+
+          &::before {
+            container: a;
+            attr-href: myLinkId;
+            content: "Fig." counter(chapter)"."counter(figure);
+            move-to: figureNumber;
+          }
         }
+
     }
       > [data-type="document-title"] {
           data-type: "document-title";
@@ -185,6 +199,10 @@ body {
         }
       }
 
+
+      }
+
+
       // table {
       //     counter-increment: table;
       //     &:before {
@@ -201,12 +219,14 @@ body {
       // }
       .example {
         counter-increment: example;
+
         &::before {
          content: counter(chapter)"."counter(example);
          container: span;
          move-to: exampleNumber;
         }
         &::before {
+
           class: "example-title";
           container: h1;
           content: "Example " pending(exampleNumber);
