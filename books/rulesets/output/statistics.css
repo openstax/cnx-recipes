@@ -1,61 +1,92 @@
-div[data-type="chapter"] {
+body {
+  counter-reset: chapter;
+}
+body div[data-type="chapter"] {
+  counter-increment: chapter;
   counter-reset: section -1;
+  counter-reset: example;
   counter-reset: figure;
 }
-div[data-type="chapter"] > h1[data-type="document-title"] {
-  class: "chapter-title";
-  container: h1;
-  content: pending(chapterLabel) pending(chapterNumber) pending(chapterDivider) content();
-}
-div[data-type="chapter"] > h1[data-type="document-title"]::before {
-  counter-increment: chapter;
+body div[data-type="chapter"]::before {
   container: span;
   content: counter(chapter);
   move-to: chapterNumber;
 }
-div[data-type="chapter"] > h1[data-type="document-title"]::before {
+body div[data-type="chapter"]::before {
   content: "Chapter";
   container: span;
   move-to: chapterLabel;
 }
-div[data-type="chapter"] > h1[data-type="document-title"]::before {
+body div[data-type="chapter"]::before {
   content: " | ";
   container: span;
   move-to: chapterDivider;
 }
-div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"] {
-  class: "section-title";
-  data-type: "document-title";
-  container: div;
-  content: pending(sectionNumber) " " pending(sectionDivider) content();
+body div[data-type="chapter"] > h1[data-type="document-title"] {
+  container: h1;
+  content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content();
 }
-div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+body div[data-type="chapter"] > div[data-type="page"]::before {
   counter-increment: section;
   container: span;
   content: counter(chapter) "." counter(section);
   move-to: sectionNumber;
 }
-div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+body div[data-type="chapter"] > div[data-type="page"]::before {
   content: "section";
   container: span;
   move-to: sectionLabel;
 }
-div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+body div[data-type="chapter"] > div[data-type="page"]::before {
   content: " | ";
   container: span;
   move-to: sectionDivider;
 }
-div[data-type="chapter"] div[data-type="page"] figure figcaption {
+body div[data-type="chapter"] > div[data-type="page"] > [data-type="document-title"] {
+  data-type: "document-title";
+  container: div;
+  content: pending(sectionNumber) " " pending(sectionDivider) content();
+}
+body div[data-type="chapter"] > div[data-type="page"] figure {
+  counter-increment: figure;
+}
+body div[data-type="chapter"] > div[data-type="page"] figure figcaption {
   class: "figure-title";
   container: h1;
   content: pending(figureNumber) content();
 }
-div[data-type="chapter"] div[data-type="page"] figure figcaption::before {
-  counter-increment: figure;
+body div[data-type="chapter"] > div[data-type="page"] figure figcaption::before {
   container: a;
   attr-href: myLinkId;
   content: "Fig." counter(chapter) "." counter(figure);
   move-to: figureNumber;
+}
+body div[data-type="chapter"] > div[data-type="page"] table {
+  counter-increment: table;
+}
+body div[data-type="chapter"] > div[data-type="page"] table:before {
+  class: "table-title";
+  container: caption;
+  content: pending(tableNumber) content();
+}
+body div[data-type="chapter"] > div[data-type="page"] table::after {
+  container: a;
+  attr-href: myLinkId;
+  content: "Table." counter(chapter) "." counter(table);
+  move-to: tableNumber;
+}
+body div[data-type="chapter"] > div[data-type="page"] .example {
+  counter-increment: example;
+}
+body div[data-type="chapter"] > div[data-type="page"] .example::after {
+  content: counter(chapter) "." counter(example);
+  container: span;
+  move-to: exampleNumber;
+}
+body div[data-type="chapter"] > div[data-type="page"] .example::before {
+  class: "example-title";
+  container: h1;
+  content: "Example " pending(exampleNumber);
 }
 div[data-type='chapter'] h1[data-type="document-title"] {
   node-set: chapterTitle;
@@ -156,131 +187,6 @@ body .eob.index > div.group-by:first-of-type > span.group-label {
 body::after {
   pass: 100;
   content: clear(trash);
-}
-body > div[data-type="page"],
-body > div[data-type="composite-page"] {
-  pass: 20;
-  string-set: page-id attr(id);
-}
-body > div[data-type="page"] > [data-type='document-title'],
-body > div[data-type="composite-page"] > [data-type='document-title'] {
-  data-type: "toc-page-title";
-  pass: 20;
-  copy-to: page-title;
-  content: content();
-  attr-href: "#" string(page-id);
-  container: a;
-  move-to: page-link;
-}
-body > div[data-type="page"]::after,
-body > div[data-type="composite-page"]::after {
-  pass: 20;
-  content: pending(page-link);
-  move-to: eob-toc;
-  container: li;
-}
-body > div[data-type='chapter'] > h1[data-type='document-title'] {
-  data-type: "toc-title";
-  class: "toc-chapter-title";
-  pass: 20;
-  content: content();
-  attr-href: "#" string(page-id);
-  container: a;
-  copy-to: eoc-toc;
-}
-body > div[data-type='chapter'] > div[data-type="page"],
-body > div[data-type='chapter'] > div[data-type="composite-page"] {
-  pass: 20;
-  string-set: page-idi attr(id);
-}
-body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
-body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
-  pass: 20;
-  data-type: "";
-  class: "toc-section-title";
-  content: content();
-  attr-href: "#" string(page-id);
-  container: a;
-  move-to: page-link;
-}
-body > div[data-type='chapter'] > div[data-type="page"]::after,
-body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
-  pass: 20;
-  content: pending(page-link);
-  move-to: eoc-toc-pages;
-  container: li;
-}
-body > div[data-type='chapter']::after {
-  pass: 20;
-  content: pending(eoc-toc-pages);
-  container: ol;
-  class: chapter;
-  move-to: eoc-toc;
-}
-body > div[data-type='chapter']::after {
-  pass: 20;
-  content: pending(eoc-toc);
-  container: li;
-  move-to: eob-toc;
-}
-body > div[data-type="unit"] > h1[data-type='document-title'] {
-  pass: 20;
-  copy-to: eou-toc;
-}
-body > div[data-type="unit"] > div[data-type='chapter'] > h1[data-type='document-title'] {
-  data-type: "toc-title";
-  content: content();
-  attr-href: "#" string(page-id);
-  container: a;
-  pass: 20;
-  copy-to: eoc-toc;
-}
-body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
-body > div[data-type="unit"] > div[data-type='chapter'] div[data-type="composite-page"] > [data-type='document-title'] {
-  pass: 20;
-  copy-to: page-title;
-}
-body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
-body > div[data-type="unit"] > div[data-type='chapter'] div[data-type="composite-page"]::after {
-  pass: 20;
-  content: pending(page-title);
-  move-to: eoc-toc-pages;
-  container: li;
-}
-body > div[data-type="unit"] > div[data-type='chapter']::after {
-  pass: 20;
-  content: pending(eoc-toc-pages);
-  container: ol;
-  class: chapter;
-  move-to: eoc-toc;
-}
-body > div[data-type="unit"] > div[data-type='chapter']::after {
-  pass: 20;
-  content: pending(eoc-toc);
-  container: li;
-  move-to: eou-toc-chapters;
-}
-body > div[data-type="unit"]::after {
-  pass: 20;
-  content: pending(eou-toc-chapters);
-  container: ol;
-  class: unit;
-  move-to: eou-toc;
-}
-body > div[data-type="unit"]::after {
-  pass: 20;
-  content: pending(eou-toc);
-  container: li;
-  move-to: eob-toc;
-}
-nav#toc {
-  pass: 30;
-  content: '';
-}
-nav#toc::after {
-  pass: 30;
-  content: pending(eob-toc);
-  container: ol;
 }
 div[data-type='chapter'] div[data-type="glossary"] {
   move-to: trash;
