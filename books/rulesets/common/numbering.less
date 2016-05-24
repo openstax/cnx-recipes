@@ -115,74 +115,103 @@
 //     }
 //   }
 // }
-
-div[data-type="chapter"] {
-  > h1[data-type="document-title"] {
-    class: "chapter-title";
-    container: h1;
-    content: pending(chapterLabel) pending(chapterNumber) pending(chapterDivider) content() ;
+body {
+  counter-reset: chapter;
+  div[data-type="chapter"] {
+    counter-increment: chapter;
     &::before {
-      counter-increment: chapter;
       container: span;
       content: counter(chapter);
       move-to: chapterNumber;
     }
-    &::before {
-      content: "Chapter";
-      container: span;
-      move-to: chapterLabel;
+      &::before {
+        content: "Chapter";
+        container: span;
+        move-to: chapterLabel;
+      }
+      &::before {
+        content: " | ";
+        container: span;
+        move-to: chapterDivider;
+      }
+    > h1[data-type="document-title"] {
+      container: h1;
+      content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content() ;
     }
-    &::before {
-      content: " | ";
-      container: span;
-      move-to: chapterDivider;
-    }
-  }
 
-  counter-reset: section -1;
-  counter-reset: figure;
+    counter-reset: section -1;
+    counter-reset: example;
+    counter-reset: figure;
+    counter-reset: table;
+    > div[data-type="page"] {
+      &::before {
+        counter-increment: section;
+        container: span;
+        content: counter(chapter)"."counter(section);
+        move-to: sectionNumber;
+      }
+      &::before {
+        content: "section";
+        container: span;
+        move-to: sectionLabel;
+      }
+      &::before {
+        content: " | ";
+        container: span;
+        move-to: sectionDivider;
+      }
+      // &:not(:first-of-type) {
+        > [data-type="document-title"] {
+          data-type: "document-title";
+          container: div;
+          content: pending(sectionNumber) " "pending(sectionDivider) content() ;
+        }
+    //  }
 
-  div[data-type="page"] {
-    &:not(:first-of-type) {
-      > [data-type="document-title"] {
-        class: "section-title";
-        data-type: "document-title";
-        container: div;
-        content: pending(sectionNumber) " "pending(sectionDivider) content() ;
-        &::before {
-          counter-increment: section;
-          container: span;
-          content: counter(chapter)"."counter(section);
-          move-to: sectionNumber;
-        }
-        &::before {
-          content: "section";
-          container: span;
-          move-to: sectionLabel;
-        }
-        &::before {
-          content: " | ";
-          container: span;
-          move-to: sectionDivider;
+
+      figure {
+        counter-increment: figure;
+        figcaption {
+          class: "figure-title";
+          container: h1;
+          content: pending(figureNumber) content() ;
+
+          &::before {
+            container: a;
+            attr-href: myLinkId;
+            content: "Fig." counter(chapter)"."counter(figure);
+            move-to: figureNumber;
+          }
         }
       }
-    }
 
-
-    figure {
-      figcaption {
-        class: "figure-title";
-        container: h1;
-        content: pending(figureNumber) content() ;
+      // table {
+      //     counter-increment: table;
+      //     &:before {
+      //       class: "table-title";
+      //       container: caption;
+      //       content: pending(tableNumber) content() ;
+      //     }
+      //     &::after {
+      //       container: a;
+      //       attr-href: myLinkId;
+      //       content: "Table." counter(chapter)"."counter(table);
+      //       move-to: tableNumber;
+      //   }
+      // }
+      .example {
+        counter-increment: example;
+        &::after {
+         content: counter(chapter)"."counter(example);
+         container: span;
+         move-to: exampleNumber;
+        }
         &::before {
-          counter-increment: figure;
-          container: a;
-          attr-href: myLinkId;
-          content: "Fig." counter(chapter)"."counter(figure);
-          move-to: figureNumber;
+          class: "example-title";
+          container: h1;
+          content: "Example " pending(exampleNumber);
         }
       }
     }
   }
 }
-
