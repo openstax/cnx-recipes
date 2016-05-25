@@ -139,41 +139,41 @@ body {
       content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content() ;
     }
 
-    counter-reset: section -1;
+    counter-reset: section;
     counter-reset: example;
     counter-reset: figure;
     counter-reset: table;
     > div[data-type="page"] {
-      &::before {
-        counter-increment: section;
-        container: span;
-        content: counter(chapter)"."counter(section);
-        move-to: sectionNumber;
-      }
-      &::before {
-        content: "section";
-        container: span;
-        move-to: sectionLabel;
-      }
-      &::before {
-        content: " | ";
-        container: span;
-        move-to: sectionDivider;
-      }
-      // &:not(:first-of-type) {
-        > [data-type="document-title"] {
+      &:not(:first-of-type) {
+        &::before {
+          counter-increment: section;
+          container: span;
+          content: counter(chapter)"."counter(section);
+          move-to: sectionNumber;
+        }
+        &::before {
+          content: "section";
+          container: span;
+          move-to: sectionLabel;
+        }
+        &::before {
+          content: " | ";
+          container: span;
+          move-to: sectionDivider;
+        }
+    }
+      > [data-type="document-title"] {
           data-type: "document-title";
           container: div;
           content: pending(sectionNumber) " "pending(sectionDivider) content() ;
-        }
-    //  }
+      }
 
 
       figure {
         counter-increment: figure;
-        figcaption {
+        &::before {
           class: "figure-title";
-          container: h1;
+          container: figcaption ;
           content: pending(figureNumber) content() ;
 
           &::before {
@@ -201,7 +201,7 @@ body {
       // }
       .example {
         counter-increment: example;
-        &::after {
+        &::before {
          content: counter(chapter)"."counter(example);
          container: span;
          move-to: exampleNumber;
