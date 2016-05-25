@@ -3,11 +3,15 @@ body {
     pass: 20;
     string-set: page-id attr(id);
     // > div[data-type="metadata"] {
-    > [data-type='document-title'] {
-      data-type: "toc-page-title";
+      > [data-type='document-title'] {
+          string-set: pageTitle content();
+          pass: 20;
+          //copy-to: page-title;
+      }
+    // }
+    &::after {
       pass: 20;
-      copy-to: page-title;
-      content: content();
+      content: string(pageTitle);
       attr-href: "#" string(page-id);
       container: a;
       move-to: page-link;
@@ -21,10 +25,13 @@ body {
   }
   > div[data-type='chapter'] {
       > h1[data-type='document-title'] {
-        data-type: "toc-title";
-        class: "toc-chapter-title";
+          string-set: chapterTitle content();
+          pass: 20;
+        //copy-to: eoc-toc;
+      }
+      &::after{
         pass: 20;
-        content: content();
+        content: string(chapterTitle);
         attr-href: "#" string(page-id);
         container: a;
         copy-to: eoc-toc;
@@ -32,21 +39,26 @@ body {
     > div[data-type="page"], > div[data-type="composite-page"] {
       pass: 20;
       string-set: page-idi attr(id);
-      > [data-type='document-title']{
+      //> div[data-type="metadata"] {
+        > [data-type='document-title']{
         pass: 20;
-        data-type: "";
-        class: "toc-section-title";
-        content: content();
-        attr-href: "#" string(page-id);
-        container: a;
-        move-to: page-link;
-      }
-      &::after {
-        pass: 20;
-        content: pending(page-link);
-        move-to: eoc-toc-pages;
-         container: li;
-      }
+        string-set: PageTitle content();
+        //copy-to: page-title;
+        }
+        &::after {
+          pass: 20;
+          content: string(PageTitle);
+          attr-href: "#" string(page-id);
+          container: a;
+          move-to: page-link;
+        }
+        &::after {
+          pass: 20;
+          content: pending(page-link);
+          move-to: eoc-toc-pages;
+          container: li;
+        }
+   //   }
     }
     &::after {
     pass: 20;
@@ -69,10 +81,8 @@ body {
     }
     > div[data-type='chapter'] {
         > h1[data-type='document-title'] {
+        container: div;
         data-type: "toc-title";
-        content: content();
-        attr-href: "#" string(page-id);
-        container: a;
         pass: 20;
         copy-to: eoc-toc;
         }

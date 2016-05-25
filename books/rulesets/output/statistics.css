@@ -113,7 +113,7 @@ body::before {
   move-to: answerTitle;
 }
 body .eoc.glossary {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 body .eoc.glossary [data-type="metadata"] [data-type="document-title"] {
@@ -121,7 +121,7 @@ body .eoc.glossary [data-type="metadata"] [data-type="document-title"] {
   content: "Glossary";
 }
 body .eoc.summary {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 body .eoc.summary [data-type="metadata"] [data-type="document-title"] {
@@ -129,7 +129,7 @@ body .eoc.summary [data-type="metadata"] [data-type="document-title"] {
   content: "Chapter Review";
 }
 body .eob.index {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 body .eob.index [data-type="metadata"] [data-type="document-title"] {
@@ -164,10 +164,13 @@ body > div[data-type="composite-page"] {
 }
 body > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type="composite-page"] > [data-type='document-title'] {
-  data-type: "toc-page-title";
+  string-set: pageTitle content();
   pass: 20;
-  copy-to: page-title;
-  content: content();
+}
+body > div[data-type="page"]::after,
+body > div[data-type="composite-page"]::after {
+  pass: 20;
+  content: string(pageTitle);
   attr-href: "#" string(page-id);
   container: a;
   move-to: page-link;
@@ -180,10 +183,12 @@ body > div[data-type="composite-page"]::after {
   container: li;
 }
 body > div[data-type='chapter'] > h1[data-type='document-title'] {
-  data-type: "toc-title";
-  class: "toc-chapter-title";
+  string-set: chapterTitle content();
   pass: 20;
-  content: content();
+}
+body > div[data-type='chapter']::after {
+  pass: 20;
+  content: string(chapterTitle);
   attr-href: "#" string(page-id);
   container: a;
   copy-to: eoc-toc;
@@ -196,9 +201,12 @@ body > div[data-type='chapter'] > div[data-type="composite-page"] {
 body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
   pass: 20;
-  data-type: "";
-  class: "toc-section-title";
-  content: content();
+  string-set: PageTitle content();
+}
+body > div[data-type='chapter'] > div[data-type="page"]::after,
+body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
+  pass: 20;
+  content: string(PageTitle);
   attr-href: "#" string(page-id);
   container: a;
   move-to: page-link;
@@ -228,10 +236,8 @@ body > div[data-type="unit"] > h1[data-type='document-title'] {
   copy-to: eou-toc;
 }
 body > div[data-type="unit"] > div[data-type='chapter'] > h1[data-type='document-title'] {
+  container: div;
   data-type: "toc-title";
-  content: content();
-  attr-href: "#" string(page-id);
-  container: a;
   pass: 20;
   copy-to: eoc-toc;
 }
@@ -321,7 +327,7 @@ div[data-type='chapter']::before {
 }
 div[data-type='chapter']::after {
   class: "eoc summary";
-  data-type: page;
+  data-type: composite-page;
   content: pending(summaryTitle) pending(eoc-summaries);
 }
 div[data-type='chapter'] section.formula-review {
@@ -439,7 +445,7 @@ div[data-type='chapter']::after {
   pass: 5;
 }
 div[data-type='chapter'] .eoc.formula-review-container {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.formula-review-container [data-type="metadata"] [data-type="document-title"] {
@@ -453,7 +459,7 @@ div[data-type='chapter'] .eoc.formula-review-container::before {
   content: "Formula Review";
 }
 div[data-type='chapter'] .eoc.practice-container {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.practice-container [data-type="metadata"] [data-type="document-title"] {
@@ -467,7 +473,7 @@ div[data-type='chapter'] .eoc.practice-container::before {
   content: "Practice";
 }
 div[data-type='chapter'] .eoc.free-response-container {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.free-response-container [data-type="metadata"] [data-type="document-title"] {
@@ -481,7 +487,7 @@ div[data-type='chapter'] .eoc.free-response-container::before {
   content: "Homework";
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container [data-type="metadata"] [data-type="document-title"] {
@@ -495,7 +501,7 @@ div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
   content: "Bringing It Together : Practice";
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container [data-type="metadata"] [data-type="document-title"] {
@@ -509,7 +515,7 @@ div[data-type='chapter'] .eoc.bring-together-homework-container::before {
   content: "Bring Together Homework";
 }
 div[data-type='chapter'] .eoc.references-container {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.references-container [data-type="metadata"] [data-type="document-title"] {
@@ -523,7 +529,7 @@ div[data-type='chapter'] .eoc.references-container::before {
   content: "References";
 }
 div[data-type='chapter'] .eoc.solutions-container {
-  pass: 5;
+  pass: 10;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.solutions-container [data-type="metadata"] [data-type="document-title"] {
@@ -532,7 +538,7 @@ div[data-type='chapter'] .eoc.solutions-container [data-type="metadata"] [data-t
 }
 div[data-type='chapter'] .eoc.solutions-container::before {
   container: h1;
-  pass: 2;
+  pass: 10;
   data-type: document-title;
   content: "Solutions";
 }
