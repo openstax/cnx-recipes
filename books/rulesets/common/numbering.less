@@ -118,7 +118,17 @@
 body {
   counter-reset: chapter;
   div[data-type="chapter"] {
+      pass: 3;
+      counter-reset: exercises;
+  }
+  div[data-type="chapter"] {
+    counter-reset: section;
+    counter-reset: example;
+    counter-reset: figure;
+    counter-reset: table;
     counter-increment: chapter;
+
+
     &::before {
       container: span;
       content: counter(chapter);
@@ -139,11 +149,6 @@ body {
       content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content() ;
     }
 
-
-    counter-reset: section;
-    counter-reset: example;
-    counter-reset: figure;
-    counter-reset: table;
     > div[data-type="page"] {
       &:not(:first-of-type) {
         &::before {
@@ -171,6 +176,7 @@ body {
 
 
 
+
       figure {
         counter-increment: figure;
         &::before {
@@ -193,22 +199,6 @@ body {
           content: pending(sectionNumber) " "pending(sectionDivider) content() ;
       }
 
-
-      figure {
-        counter-increment: figure;
-        &::before {
-          class: "figure-title";
-          container: figcaption ;
-          content: pending(figureNumber) content() ;
-
-          &::before {
-            container: a;
-            attr-href: myLinkId;
-            content: "Fig." counter(chapter)"."counter(figure);
-            move-to: figureNumber;
-          }
-        }
-      }
 
 
       }
@@ -244,4 +234,26 @@ body {
       }
     }
   }
-}
+
+  .eoc {
+    [data-type="exercise"] {
+
+         [data-type="problem"]  {
+          pass: 3;
+          counter-increment: exercises;
+          &::before {
+            pass: 3;
+            container: span;
+            content: counter(exercises);
+            node-set: exerciseNumber;
+          }
+        }
+        [data-type="solution"] {
+          &::before {
+            pass: 3;
+            content: nodes(exerciseNumber);
+        }
+       }
+     }
+    }
+  }
