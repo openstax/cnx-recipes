@@ -1,3 +1,15 @@
+/*Assign exercise solutions to migrate to their own container*/
+/*Number chapters and static sections*/
+/*Actually create solution container and move solutions*/
+/*Number solutions/EOC content*/
+/*Create everything associated with the index*/
+/*Create separate section in index for symbols*/
+/*Title existing EOC/EOB containers*/
+/*Create everything associated with the toc*/
+/*Create toc nav*/
+/*Add metadata to all locations*/
+/*Add title to metatdata sections*/
+/**/
 div[data-type="chapter"] {
   counter-reset: section -1;
   counter-reset: figure;
@@ -62,7 +74,7 @@ div[data-type='chapter'] h1[data-type="document-title"] {
 }
 div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"],
 div[data-type='chapter'] div[data-type="composite-page"] > div[data-type="document-title"] {
-  pass: default, 2;
+  pass: default, 30;
   string-set: section-title content();
   node-set: sectionTitle;
 }
@@ -76,7 +88,7 @@ div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after,
 div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]::after {
-  pass: 2;
+  pass: 25;
   content: content();
   attr-group-by: attr(group-by);
   container: span;
@@ -85,7 +97,7 @@ div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after,
 div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]::after {
-  pass: 2;
+  pass: 25;
   content: string(section-title);
   container: a;
   attr-href: "#" attr(id);
@@ -93,7 +105,7 @@ div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after,
 div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]::after {
-  pass: 2;
+  pass: 25;
   content: pending(index-term) pending(link);
   class: index-item;
   move-to: eob-index;
@@ -103,7 +115,7 @@ body > [data-type="metadata"] {
 }
 body div.eoc [data-type="cnx-archive-uri"],
 body div.eob [data-type="cnx-archive-uri"] {
-  pass: 15;
+  pass: 52;
   move-to: trash;
 }
 body::before {
@@ -113,44 +125,44 @@ body::before {
   move-to: answerTitle;
 }
 body .eoc.glossary {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 body .eoc.glossary [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Glossary";
 }
 body .eoc.summary {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 body .eoc.summary [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Chapter Review";
 }
 body .eob.index {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 body .eob.index [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Index";
 }
 body .eob.index::before {
   container: h1;
-  pass: 3;
+  pass: 30;
   data-type: document-title;
   content: "Index";
 }
 body::after {
-  pass: 2;
+  pass: 25;
   class: "eob index";
   data-type: composite-page;
   content: pending(eob-index);
   group-by: span, "span::attr(group-by)", nocase;
 }
 body .eob.index > div.group-by:first-of-type > span.group-label {
-  pass: 3;
+  pass: 26;
   content: "Symbol";
 }
 body::after {
@@ -159,17 +171,17 @@ body::after {
 }
 body > div[data-type="page"],
 body > div[data-type="composite-page"] {
-  pass: 20;
+  pass: 35;
   string-set: page-id attr(id);
 }
 body > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type="composite-page"] > [data-type='document-title'] {
   string-set: pageTitle content();
-  pass: 20;
+  pass: 35;
 }
 body > div[data-type="page"]::after,
 body > div[data-type="composite-page"]::after {
-  pass: 20;
+  pass: 35;
   content: string(pageTitle);
   attr-href: "#" string(page-id);
   container: a;
@@ -177,17 +189,17 @@ body > div[data-type="composite-page"]::after {
 }
 body > div[data-type="page"]::after,
 body > div[data-type="composite-page"]::after {
-  pass: 20;
+  pass: 35;
   content: pending(page-link);
   move-to: eob-toc;
   container: li;
 }
 body > div[data-type='chapter'] > h1[data-type='document-title'] {
   string-set: chapterTitle content();
-  pass: 20;
+  pass: 35;
 }
 body > div[data-type='chapter']::after {
-  pass: 20;
+  pass: 35;
   content: string(chapterTitle);
   attr-href: "#" string(page-id);
   container: a;
@@ -195,17 +207,17 @@ body > div[data-type='chapter']::after {
 }
 body > div[data-type='chapter'] > div[data-type="page"],
 body > div[data-type='chapter'] > div[data-type="composite-page"] {
-  pass: 20;
+  pass: 35;
   string-set: page-idi attr(id);
 }
 body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
-  pass: 20;
+  pass: 35;
   string-set: PageTitle content();
 }
 body > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
-  pass: 20;
+  pass: 35;
   content: string(PageTitle);
   attr-href: "#" string(page-id);
   container: a;
@@ -213,78 +225,78 @@ body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
 }
 body > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
-  pass: 20;
+  pass: 35;
   content: pending(page-link);
   move-to: eoc-toc-pages;
   container: li;
 }
 body > div[data-type='chapter']::after {
-  pass: 20;
+  pass: 35;
   content: pending(eoc-toc-pages);
   container: ol;
   class: chapter;
   move-to: eoc-toc;
 }
 body > div[data-type='chapter']::after {
-  pass: 20;
+  pass: 35;
   content: pending(eoc-toc);
   container: li;
   move-to: eob-toc;
 }
 body > div[data-type="unit"] > h1[data-type='document-title'] {
-  pass: 20;
+  pass: 35;
   copy-to: eou-toc;
 }
 body > div[data-type="unit"] > div[data-type='chapter'] > h1[data-type='document-title'] {
   container: div;
   data-type: "toc-title";
-  pass: 20;
+  pass: 35;
   copy-to: eoc-toc;
 }
 body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type="unit"] > div[data-type='chapter'] div[data-type="composite-page"] > [data-type='document-title'] {
-  pass: 20;
+  pass: 35;
   copy-to: page-title;
 }
 body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type="unit"] > div[data-type='chapter'] div[data-type="composite-page"]::after {
-  pass: 20;
+  pass: 35;
   content: pending(page-title);
   move-to: eoc-toc-pages;
   container: li;
 }
 body > div[data-type="unit"] > div[data-type='chapter']::after {
-  pass: 20;
+  pass: 35;
   content: pending(eoc-toc-pages);
   container: ol;
   class: chapter;
   move-to: eoc-toc;
 }
 body > div[data-type="unit"] > div[data-type='chapter']::after {
-  pass: 20;
+  pass: 35;
   content: pending(eoc-toc);
   container: li;
   move-to: eou-toc-chapters;
 }
 body > div[data-type="unit"]::after {
-  pass: 20;
+  pass: 35;
   content: pending(eou-toc-chapters);
   container: ol;
   class: unit;
   move-to: eou-toc;
 }
 body > div[data-type="unit"]::after {
-  pass: 20;
+  pass: 35;
   content: pending(eou-toc);
   container: li;
   move-to: eob-toc;
 }
 nav#toc {
-  pass: 30;
+  pass: 40;
   content: '';
 }
 nav#toc::after {
-  pass: 30;
+  pass: 40;
   content: pending(eob-toc);
   container: ol;
 }
@@ -442,103 +454,103 @@ div[data-type='chapter']::after {
   data-type: composite-page;
   class: "eoc solutions-container";
   content: pending(eoc-solutions);
-  pass: 5;
+  pass: 15;
 }
 div[data-type='chapter'] .eoc.formula-review-container {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.formula-review-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Formula Review";
 }
 div[data-type='chapter'] .eoc.formula-review-container::before {
   container: h1;
-  pass: 2;
+  pass: 30;
   data-type: document-title;
   content: "Formula Review";
 }
 div[data-type='chapter'] .eoc.practice-container {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.practice-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Practice";
 }
 div[data-type='chapter'] .eoc.practice-container::before {
   container: h1;
-  pass: 2;
+  pass: 30;
   data-type: document-title;
   content: "Practice";
 }
 div[data-type='chapter'] .eoc.free-response-container {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.free-response-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Homework";
 }
 div[data-type='chapter'] .eoc.free-response-container::before {
   container: h1;
-  pass: 2;
+  pass: 30;
   data-type: document-title;
   content: "Homework";
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Bringing It Together: Practice";
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
   container: h1;
-  pass: 2;
+  pass: 30;
   data-type: document-title;
   content: "Bringing It Together : Practice";
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Bring Together Homework";
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container::before {
   container: h1;
-  pass: 2;
+  pass: 30;
   data-type: document-title;
   content: "Bring Together Homework";
 }
 div[data-type='chapter'] .eoc.references-container {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.references-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "References";
 }
 div[data-type='chapter'] .eoc.references-container::before {
   container: h1;
-  pass: 2;
+  pass: 30;
   data-type: document-title;
   content: "References";
 }
 div[data-type='chapter'] .eoc.solutions-container {
-  pass: 10;
+  pass: 50;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.solutions-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 10;
+  pass: 51;
   content: "Solutions";
 }
 div[data-type='chapter'] .eoc.solutions-container::before {
   container: h1;
-  pass: 10;
+  pass: 30;
   data-type: document-title;
   content: "Solutions";
 }
