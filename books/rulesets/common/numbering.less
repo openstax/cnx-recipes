@@ -148,6 +148,8 @@ body {
       content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content() ;
     }
     > div[data-type="page"] {
+      counter-increment: lab;
+      counter-reset: lab;
       &:not(:first-of-type) {
         &::before {
           counter-increment: section;
@@ -213,7 +215,45 @@ body {
         &::before {
           class: "example-title";
           container: h1;
-          content: "Example " pending(exampleNumber);
+          content: "Example " nodes(exampleNumber);
+        }
+        //move me to collations
+        [data-type="solution"] {
+          &::before {
+            container: h1;
+            data-type: title;
+            content: "Solution " nodes(exampleNumber);
+          }
+        }
+      }
+      .try {
+        [data-type="problem"] {
+         //  &::before {
+         //   content: counter(chapter)"."counter(example);
+         //   container: span;
+         //   move-to: tryNumber;
+         // }
+          &::before {
+             class: "try-number";
+             container: h1;
+             content: pending(exampleNumber);
+          }
+        }
+      }
+    .lab {
+      &::before {
+        content: "Stats Lab";
+        class: "stat-lab-title";
+        data-type: "title";
+      }
+      counter-increment: lab;
+        >[data-type="title"] {
+          &::before {
+           content: counter(chapter)"."counter(lab);
+           container: span;
+           class: "lab-number";
+           node-set: labNumber;
+          }
         }
       }
     }
