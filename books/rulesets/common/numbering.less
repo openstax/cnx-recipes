@@ -175,21 +175,27 @@ body {
       }
 
 
-      // figure {
-      //   counter-increment: figure;
-      //   &::before {
-      //     class: "figure-title";
-      //     container: figcaption ;
-      //     content: pending(figureNumber) content() ;
-
-      //     &::before {
-      //       container: a;
-      //       attr-href: myLinkId;
-      //       content: "Fig." counter(chapter)"."counter(figure);
-      //       move-to: figureNumber;
-      //     }
-      //   }
-      // }
+      .figure {
+        counter-increment: figure;
+        figcaption {
+          container: div;
+          move-to: figCaption;
+        }
+        &::after {
+          container: a;
+          attr-href: myLinkId;
+          content: "Fig." counter(chapter)"."counter(figure);
+          move-to: figureNumber;
+        }
+          &::after {
+            class: "figure-title";
+            container: div ;
+            content: pending(figureNumber) content() ;
+        }
+        &::after {
+          content: pending(figCaption);
+        }
+      }
 
       // table {
       //     counter-increment: table;
@@ -227,18 +233,18 @@ body {
         }
       }
       .try {
-        [data-type="problem"] {
+       // [data-type="problem"] {
          //  &::before {
          //   content: counter(chapter)"."counter(example);
          //   container: span;
          //   move-to: tryNumber;
          // }
-          &::before {
+          &::after {
              class: "try-number";
              container: h1;
              content: pending(exampleNumber);
           }
-        }
+        //}
       }
     .lab {
       &::before {
