@@ -126,6 +126,7 @@ body {
     counter-reset: example;
     counter-reset: figure;
     counter-reset: table;
+    counter-reset: lab;
     counter-increment: chapter;
 
     &::before {
@@ -148,8 +149,8 @@ body {
       content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content() ;
     }
     > div[data-type="page"] {
-      counter-increment: lab;
-      counter-reset: lab;
+      // counter-increment: lab;
+      // counter-reset: lab;
       &:not(:first-of-type) {
         &::before {
           counter-increment: section;
@@ -221,14 +222,14 @@ body {
         &::before {
           class: "example-title";
           container: h1;
-          content: "Example " nodes(exampleNumber);
+          content: "Example " pending(exampleNumber);
         }
         //move me to collations
         [data-type="solution"] {
           &::before {
-            container: h1;
+            container: div;
             data-type: title;
-            content: "Solution " nodes(exampleNumber);
+            content: "Solution " counter(chapter)"."counter(example);
           }
         }
       }
@@ -241,8 +242,8 @@ body {
          // }
           &::after {
              class: "try-number";
-             container: h1;
-             content: pending(exampleNumber);
+             container: span;
+             content: counter(chapter)"."counter(example);
           }
         //}
       }
