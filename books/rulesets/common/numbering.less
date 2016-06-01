@@ -176,21 +176,27 @@ body {
       }
 
 
-      // figure {
-      //   counter-increment: figure;
-      //   &::before {
-      //     class: "figure-title";
-      //     container: figcaption ;
-      //     content: pending(figureNumber) content() ;
-
-      //     &::before {
-      //       container: a;
-      //       attr-href: myLinkId;
-      //       content: "Fig." counter(chapter)"."counter(figure);
-      //       move-to: figureNumber;
-      //     }
-      //   }
-      // }
+      .figure {
+        counter-increment: figure;
+        figcaption {
+          container: div;
+          move-to: figCaption;
+        }
+        &::after {
+          container: a;
+          attr-href: myLinkId;
+          content: "Fig." counter(chapter)"."counter(figure);
+          move-to: figureNumber;
+        }
+          &::after {
+            class: "figure-title";
+            container: div ;
+            content: pending(figureNumber) content() ;
+        }
+        &::after {
+          content: pending(figCaption);
+        }
+      }
 
       // table {
       //     counter-increment: table;
@@ -216,30 +222,32 @@ body {
         &::before {
           class: "example-title";
           container: h1;
-          content: "Example " nodes(exampleNumber);
+          content: "Example " pending(exampleNumber);
         }
         //move me to collations
         [data-type="solution"] {
           &::before {
-            container: h1;
+            container: div;
             data-type: title;
-            content: "Solution " nodes(exampleNumber);
+            content: "Solution " counter(chapter)"."counter(example);
           }
         }
       }
       .try {
-        [data-type="problem"] {
+       // [data-type="problem"] {
          //  &::before {
          //   content: counter(chapter)"."counter(example);
          //   container: span;
          //   move-to: tryNumber;
          // }
-          &::before {
+          .exercise {
+            &::before {
              class: "try-number";
-             container: h1;
-             content: pending(exampleNumber);
+             container: span;
+             content: counter(chapter)"."counter(example);
           }
         }
+        //}
       }
     .lab {
       &::before {

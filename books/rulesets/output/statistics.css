@@ -64,6 +64,27 @@ body div[data-type="chapter"] > div[data-type="page"] > [data-type="document-tit
   container: div;
   content: pending(sectionNumber) " " pending(sectionDivider) content();
 }
+body div[data-type="chapter"] > div[data-type="page"] .figure {
+  counter-increment: figure;
+}
+body div[data-type="chapter"] > div[data-type="page"] .figure figcaption {
+  container: div;
+  move-to: figCaption;
+}
+body div[data-type="chapter"] > div[data-type="page"] .figure::after {
+  container: a;
+  attr-href: myLinkId;
+  content: "Fig." counter(chapter) "." counter(figure);
+  move-to: figureNumber;
+}
+body div[data-type="chapter"] > div[data-type="page"] .figure::after {
+  class: "figure-title";
+  container: div ;
+  content: pending(figureNumber) content();
+}
+body div[data-type="chapter"] > div[data-type="page"] .figure::after {
+  content: pending(figCaption);
+}
 body div[data-type="chapter"] > div[data-type="page"] .example {
   counter-increment: example;
 }
@@ -75,17 +96,17 @@ body div[data-type="chapter"] > div[data-type="page"] .example::before {
 body div[data-type="chapter"] > div[data-type="page"] .example::before {
   class: "example-title";
   container: h1;
-  content: "Example " nodes(exampleNumber);
+  content: "Example " pending(exampleNumber);
 }
 body div[data-type="chapter"] > div[data-type="page"] .example [data-type="solution"]::before {
-  container: h1;
+  container: div;
   data-type: title;
-  content: "Solution " nodes(exampleNumber);
+  content: "Solution " counter(chapter) "." counter(example);
 }
-body div[data-type="chapter"] > div[data-type="page"] .try [data-type="problem"]::before {
+body div[data-type="chapter"] > div[data-type="page"] .try .exercise::before {
   class: "try-number";
-  container: h1;
-  content: pending(exampleNumber);
+  container: span;
+  content: counter(chapter) "." counter(example);
 }
 body div[data-type="chapter"] > div[data-type="page"] .lab {
   counter-increment: lab;
