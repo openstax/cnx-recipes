@@ -203,6 +203,7 @@ body {
         }
       }
 
+
       table {
         counter-increment: table;
         caption {
@@ -230,16 +231,32 @@ body {
       }
       .example {
         counter-increment: example;
+
         &::before {
-         content: counter(chapter)"."counter(example);
-         container: span;
-         move-to: exampleNumber;
+          content: counter(chapter)"."counter(example);
+          container: span;
+          move-to: exampleNumber;
         }
-        &::before {
-          class: "example-title";
-          container: h1;
-          content: "Example " pending(exampleNumber);
+        [data-type = 'title']{
+          &::before{
+            content: content();
+            container: span;
+            move-to: exampleTitle;
+          }
+          move-to: trash;
         }
+        &::after{
+            class: "example-title";
+            container: h1;
+            content: "Example " pending(exampleNumber) pending(exampleTitle);
+            move-to: exampleTitletest;
+        }
+
+        &:deferred {
+            content: pending(exampleTitletest) content();
+        }
+
+
         //move me to collations
         [data-type="solution"] {
           &::before {
