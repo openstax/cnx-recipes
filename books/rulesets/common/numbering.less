@@ -176,10 +176,12 @@ body {
       }
 
 
-      .figure {
+      figure {
         counter-increment: figure;
         figcaption {
           container: div;
+          class: caption;
+          content: content();
           move-to: figCaption;
         }
         &::after {
@@ -188,30 +190,44 @@ body {
           content: "Fig." counter(chapter)"."counter(figure);
           move-to: figureNumber;
         }
-          &::after {
-            class: "figure-title";
-            container: div ;
-            content: pending(figureNumber) content() ;
-        }
         &::after {
-          content: pending(figCaption);
+          class: "figure-number";
+          container: span ;
+          content: pending(figureNumber);
+          move-to: figNum;
+        }
+        &::outside {
+          class:  figure;
+          container: div;
+          content: content() pending(figNum) pending(figCaption);
         }
       }
 
-      // table {
-      //     counter-increment: table;
-      //     &:before {
-      //       class: "table-title";
-      //       container: caption;
-      //       content: pending(tableNumber) content() ;
-      //     }
-      //     &::after {
-      //       container: a;
-      //       attr-href: myLinkId;
-      //       content: "Table." counter(chapter)"."counter(table);
-      //       move-to: tableNumber;
-      //   }
-      // }
+      table {
+        counter-increment: table;
+        caption {
+          container: div;
+          class: caption;
+          move-to: imageCaption;
+        }
+        &::after {
+          container: a;
+          attr-href: myLinkId;
+          content: "Table." counter(chapter)"."counter(table);
+          move-to: tableNumber;
+        }
+        &:after {
+          class: "table-number";
+          container: div;
+          content: pending(tableNumber);
+          move-to: table-number;
+        }
+        &::outside {
+          class: table;
+          container: div;
+          content: content() pending(table-number) pending(imageCaption);
+        }
+      }
       .example {
         counter-increment: example;
         &::before {
