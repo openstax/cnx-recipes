@@ -174,89 +174,18 @@ body {
           container: div;
           content: pending(sectionNumber) " "pending(sectionDivider) content() ;
       }
-
-
-      figure {
-        counter-increment: figure;
-        figcaption {
-          container: div;
-          class: caption;
-          content: content();
-          move-to: figCaption;
-        }
-        &::after {
-          container: a;
-          attr-href: myLinkId;
-          content: "Fig." counter(chapter)"."counter(figure);
-          move-to: figureNumber;
-        }
-        &::after {
-          class: "figure-number";
-          container: span ;
-          content: pending(figureNumber);
-          move-to: figNum;
-        }
-        &::outside {
-          class:  figure;
-          container: div;
-          content: content() pending(figNum) pending(figCaption);
-        }
-      }
-
-
-      table {
-        counter-increment: table;
-        caption {
-          container: div;
-          class: caption;
-          move-to: imageCaption;
-        }
-        &::after {
-          container: a;
-          attr-href: myLinkId;
-          content: "Table." counter(chapter)"."counter(table);
-          move-to: tableNumber;
-        }
-        &:after {
-          class: "table-number";
-          container: div;
-          content: pending(tableNumber);
-          move-to: table-number;
-        }
-        &::outside {
-          class: table;
-          container: div;
-          content: content() pending(table-number) pending(imageCaption);
-        }
-      }
       .example {
         counter-increment: example;
-
         &::before {
-          content: counter(chapter)"."counter(example);
-          container: span;
-          move-to: exampleNumber;
+         content: counter(chapter)"."counter(example);
+         container: span;
+         move-to: exampleNumber;
         }
-        [data-type = 'title']{
-          &::before{
-            content: content();
-            container: span;
-            move-to: exampleTitle;
-          }
-          move-to: trash;
+        &::before {
+          class: "example-title";
+          container: h1;
+          content: "Example " pending(exampleNumber);
         }
-        &::after{
-            class: "example-title";
-            container: h1;
-            content: "Example " pending(exampleNumber) pending(exampleTitle);
-            move-to: exampleTitletest;
-        }
-
-        &:deferred {
-            content: pending(exampleTitletest) content();
-        }
-
-
         //move me to collations
         [data-type="solution"] {
           &::before {
@@ -296,6 +225,68 @@ body {
            class: "lab-number";
            node-set: labNumber;
           }
+        }
+      }
+    }
+  [data-type="page"], [data-type="composite-page"] {
+      > figure,
+      .note > figure,
+      .exercise > figure,
+      .solution > figure,
+      .problem > figure {
+        counter-increment: figure;
+        figcaption {
+          container: div;
+          class: caption;
+          content: content();
+          move-to: figCaption;
+        }
+        &::after {
+          container: a;
+          attr-href: myLinkId;
+          content: "Fig." counter(chapter)"."counter(figure);
+          move-to: figureNumber;
+        }
+        &::after {
+          class: "figure-number";
+          container: span ;
+          content: pending(figureNumber);
+          move-to: figNum;
+        }
+        &::outside {
+          class:  figure;
+          container: div;
+          content: content() pending(figNum) pending(figCaption);
+        }
+      }
+
+      > figure,
+      .note > figure,
+      .exercise > figure,
+      .solution > figure,
+      .problem > figure  {
+        counter-increment: table;
+        caption {
+          container: div;
+          class: caption;
+          move-to: imageCaption;
+        }
+        &::after {
+          container: a;
+          attr-href: myLinkId;
+          content: "Table." counter(chapter)"."counter(table);
+          move-to: tableNumber;
+        }
+        &:after {
+          class: "table-number";
+          container: div;
+          content: pending(tableNumber);
+          move-to: table-number;
+        }
+        &::outside {
+          class: table;
+          container: div;
+          content: content() pending(table-number) pending(imageCaption);
         }
       }
     }
