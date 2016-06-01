@@ -289,6 +289,75 @@ body {
           content: content() pending(table-number) pending(imageCaption);
         }
       }
+      .example {
+        counter-increment: example;
+
+        &::before {
+          content: counter(chapter)"."counter(example);
+          container: span;
+          move-to: exampleNumber;
+        }
+        >[data-type = 'title']{
+          &::before{
+            content: content();
+            container: span;
+            move-to: exampleTitle;
+          }
+          move-to: trash;
+        }
+        &::after{
+            class: "example-title";
+            container: h1;
+            content: "Example " pending(exampleNumber) pending(exampleTitle);
+            move-to: exampleTitletest;
+        }
+
+        &:deferred {
+            content: pending(exampleTitletest) content();
+        }
+
+
+        //move me to collations
+        [data-type="solution"] {
+          &::before {
+            container: div;
+            data-type: title;
+            content: "Solution " counter(chapter)"."counter(example);
+          }
+        }
+      }
+      .try {
+       // [data-type="problem"] {
+         //  &::before {
+         //   content: counter(chapter)"."counter(example);
+         //   container: span;
+         //   move-to: tryNumber;
+         // }
+          .exercise {
+            &::before {
+             class: "try-number";
+             container: span;
+             content: counter(chapter)"."counter(example);
+          }
+        }
+        //}
+      }
+    .lab {
+      &::before {
+        content: "Stats Lab";
+        class: "stat-lab-title";
+        data-type: "title";
+      }
+      counter-increment: lab;
+        >[data-type="title"] {
+          &::before {
+           content: counter(chapter)"."counter(lab);
+           container: span;
+           class: "lab-number";
+           node-set: labNumber;
+          }
+        }
+      }
     }
   }
 
