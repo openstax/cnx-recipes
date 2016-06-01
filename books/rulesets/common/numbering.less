@@ -124,8 +124,6 @@ body {
   div[data-type="chapter"] {
     counter-reset: section;
     counter-reset: example;
-    counter-reset: figure;
-    counter-reset: table;
     counter-reset: lab;
     counter-increment: chapter;
 
@@ -243,69 +241,95 @@ body {
         }
       }
     }
+  }
+
+
+
+[data-type="chapter"] {
+  pass: @pass-40-numbering-figs-tabs;
+  counter-reset: figure;
+  counter-reset: table;
+  counter-increment: chapNum;
+
     [data-type="page"], [data-type="composite-page"] {
       > figure,
+      section > figure,
       .note > figure,
       .exercise > figure,
+      .example > figure,
       .solution > figure,
       .problem > figure {
         counter-increment: figure;
+        pass: @pass-40-numbering-figs-tabs;
         figcaption {
           container: div;
           class: caption;
           content: content();
           move-to: figCaption;
+          pass: @pass-40-numbering-figs-tabs;
         }
         &::after {
           container: a;
           attr-href: myLinkId;
-          content: "Fig."  counter(chapter)"."counter(figure);
+          content: "Fig." counter(chapNum)"."counter(figure);
           move-to: figureNumber;
+          pass: @pass-40-numbering-figs-tabs;
         }
         &::after {
           class: "figure-number";
           container: span ;
           content: pending(figureNumber);
           move-to: figNum;
+          pass: @pass-40-numbering-figs-tabs;
         }
         &::outside {
           class:  figure;
           container: div;
           content: content() pending(figNum) pending(figCaption);
+          pass: @pass-40-numbering-figs-tabs;
         }
       }
 
       > table,
+      section > table,
       .note > table,
       .exercise > table,
+      .example > table,
       .solution > table,
       .problem > table  {
         counter-increment: table;
+        pass: @pass-40-numbering-figs-tabs;
         caption {
           container: div;
           class: caption;
           move-to: imageCaption;
+          pass: @pass-40-numbering-figs-tabs;
         }
         &::after {
           container: a;
           attr-href: myLinkId;
-          content: "Table." counter(chapter)"."counter(table);
+          content: "Table." counter(chapNum)"."counter(table);
           move-to: tableNumber;
+          pass: @pass-40-numbering-figs-tabs;
         }
         &:after {
           class: "table-number";
           container: div;
           content: pending(tableNumber);
           move-to: table-number;
+          pass: @pass-40-numbering-figs-tabs;
         }
         &::outside {
           class: table;
           container: div;
           content: content() pending(table-number) pending(imageCaption);
+          pass: @pass-40-numbering-figs-tabs;
         }
       }
     }
-  }
+}
+
+
 
   .eoc {
     [data-type="exercise"] {
