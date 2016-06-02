@@ -1,80 +1,373 @@
-/*Assign exercise solutions to migrate to their own container*/
 /*Number chapters and static sections*/
-/*Actually create solution container and move solutions*/
 /*Number solutions/EOC content*/
+/*Assign exercise solutions to migrate to their own container*/
+/*Title existing EOC/EOB containers*/
 /*Create everything associated with the index*/
 /*Create separate section in index for symbols*/
-/*Title existing EOC/EOB containers*/
 /*Create everything associated with the toc*/
 /*Create toc nav*/
 /*Add metadata to all locations*/
 /*Add title to metatdata sections*/
 /**/
-div[data-type="chapter"] {
-  counter-reset: section -1;
-  counter-reset: figure;
+body {
+  counter-reset: chapter;
 }
-div[data-type="chapter"] > h1[data-type="document-title"] {
-  class: "chapter-title";
-  container: h1;
-  content: pending(chapterLabel) pending(chapterNumber) pending(chapterDivider) content();
+body div[data-type="chapter"] {
+  pass: 20;
+  counter-reset: exercises;
 }
-div[data-type="chapter"] > h1[data-type="document-title"]::before {
+body div[data-type="chapter"] {
+  counter-reset: section;
+  counter-reset: example;
+  counter-reset: lab;
   counter-increment: chapter;
+}
+body div[data-type="chapter"]::before {
   container: span;
   content: counter(chapter);
   move-to: chapterNumber;
 }
-div[data-type="chapter"] > h1[data-type="document-title"]::before {
+body div[data-type="chapter"]::before {
   content: "Chapter";
   container: span;
   move-to: chapterLabel;
 }
-div[data-type="chapter"] > h1[data-type="document-title"]::before {
+body div[data-type="chapter"]::before {
   content: " | ";
   container: span;
   move-to: chapterDivider;
 }
-div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"] {
-  class: "section-title";
-  data-type: "document-title";
-  container: div;
-  content: pending(sectionNumber) " " pending(sectionDivider) content();
+body div[data-type="chapter"] > h1[data-type="document-title"] {
+  container: h1;
+  content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content();
 }
-div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+body div[data-type="chapter"] > div[data-type="page"]:not(:first-of-type)::before {
   counter-increment: section;
   container: span;
   content: counter(chapter) "." counter(section);
   move-to: sectionNumber;
 }
-div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+body div[data-type="chapter"] > div[data-type="page"]:not(:first-of-type)::before {
   content: "section";
   container: span;
   move-to: sectionLabel;
 }
-div[data-type="chapter"] div[data-type="page"]:not(:first-of-type) > [data-type="document-title"]::before {
+body div[data-type="chapter"] > div[data-type="page"]:not(:first-of-type)::before {
   content: " | ";
   container: span;
   move-to: sectionDivider;
 }
-div[data-type="chapter"] div[data-type="page"] figure figcaption {
-  class: "figure-title";
-  container: h1;
-  content: pending(figureNumber) content();
+body div[data-type="chapter"] > div[data-type="page"] > [data-type="document-title"] {
+  data-type: "document-title";
+  container: div;
+  content: pending(sectionNumber) " " pending(sectionDivider) content();
 }
-div[data-type="chapter"] div[data-type="page"] figure figcaption::before {
+body div[data-type="chapter"] [data-type="page"] .example {
+  counter-increment: example;
+}
+body div[data-type="chapter"] [data-type="page"] .example::before {
+  content: counter(chapter) "." counter(example);
+  container: span;
+  move-to: exampleNumber;
+}
+body div[data-type="chapter"] [data-type="page"] .example > [data-type='title'] {
+  move-to: trash;
+}
+body div[data-type="chapter"] [data-type="page"] .example > [data-type='title']::before {
+  content: content();
+  container: span;
+  move-to: exampleTitle;
+}
+body div[data-type="chapter"] [data-type="page"] .example::after {
+  class: "example-title";
+  container: h1;
+  content: "Example " pending(exampleNumber) pending(exampleTitle);
+  move-to: exampleTitletest;
+}
+body div[data-type="chapter"] [data-type="page"] .example:deferred {
+  content: pending(exampleTitletest) content();
+}
+body div[data-type="chapter"] [data-type="page"] .example [data-type="solution"]::before {
+  container: div;
+  data-type: title;
+  content: "Solution " counter(chapter) "." counter(example);
+}
+body div[data-type="chapter"] [data-type="page"] .try p:first-child::before {
+  class: "try-number";
+  container: span;
+  content: counter(chapter) "." counter(example);
+}
+body div[data-type="chapter"] [data-type="page"] .lab {
+  counter-increment: lab;
+}
+body div[data-type="chapter"] [data-type="page"] .lab::before {
+  content: "Stats Lab";
+  class: "stat-lab-title";
+  data-type: "title";
+}
+body div[data-type="chapter"] [data-type="page"] .lab > [data-type="title"]::before {
+  content: counter(chapter) "." counter(lab);
+  container: span;
+  class: "lab-number";
+  node-set: labNumber;
+}
+body [data-type="chapter"] {
+  pass: 40;
+  counter-reset: figure;
+  counter-reset: table;
+  counter-increment: chapNum;
+}
+body [data-type="chapter"] [data-type="page"] > figure,
+body [data-type="chapter"] [data-type="composite-page"] > figure,
+body [data-type="chapter"] [data-type="page"] section > figure,
+body [data-type="chapter"] [data-type="composite-page"] section > figure,
+body [data-type="chapter"] [data-type="page"] li > figure,
+body [data-type="chapter"] [data-type="composite-page"] li > figure,
+body [data-type="chapter"] [data-type="page"] .note > figure,
+body [data-type="chapter"] [data-type="composite-page"] .note > figure,
+body [data-type="chapter"] [data-type="page"] .exercise > figure,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > figure,
+body [data-type="chapter"] [data-type="page"] .example > figure,
+body [data-type="chapter"] [data-type="composite-page"] .example > figure,
+body [data-type="chapter"] [data-type="page"] .solution > figure,
+body [data-type="chapter"] [data-type="composite-page"] .solution > figure,
+body [data-type="chapter"] [data-type="page"] .problem > figure,
+body [data-type="chapter"] [data-type="composite-page"] .problem > figure,
+body [data-type="chapter"] [data-type="page"] p > figure,
+body [data-type="chapter"] [data-type="composite-page"] p > figure {
   counter-increment: figure;
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] > figure figcaption,
+body [data-type="chapter"] [data-type="page"] section > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] section > figure figcaption,
+body [data-type="chapter"] [data-type="page"] li > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] li > figure figcaption,
+body [data-type="chapter"] [data-type="page"] .note > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] .note > figure figcaption,
+body [data-type="chapter"] [data-type="page"] .exercise > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > figure figcaption,
+body [data-type="chapter"] [data-type="page"] .example > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] .example > figure figcaption,
+body [data-type="chapter"] [data-type="page"] .solution > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] .solution > figure figcaption,
+body [data-type="chapter"] [data-type="page"] .problem > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] .problem > figure figcaption,
+body [data-type="chapter"] [data-type="page"] p > figure figcaption,
+body [data-type="chapter"] [data-type="composite-page"] p > figure figcaption {
+  container: div;
+  class: caption;
+  content: content();
+  move-to: figCaption;
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] > figure::after,
+body [data-type="chapter"] [data-type="page"] section > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] section > figure::after,
+body [data-type="chapter"] [data-type="page"] li > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] li > figure::after,
+body [data-type="chapter"] [data-type="page"] .note > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .note > figure::after,
+body [data-type="chapter"] [data-type="page"] .exercise > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > figure::after,
+body [data-type="chapter"] [data-type="page"] .example > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .example > figure::after,
+body [data-type="chapter"] [data-type="page"] .solution > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .solution > figure::after,
+body [data-type="chapter"] [data-type="page"] .problem > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .problem > figure::after,
+body [data-type="chapter"] [data-type="page"] p > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] p > figure::after {
   container: a;
   attr-href: myLinkId;
-  content: "Fig." counter(chapter) "." counter(figure);
+  content: "Fig." counter(chapNum) "." counter(figure);
   move-to: figureNumber;
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] > figure::after,
+body [data-type="chapter"] [data-type="page"] section > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] section > figure::after,
+body [data-type="chapter"] [data-type="page"] li > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] li > figure::after,
+body [data-type="chapter"] [data-type="page"] .note > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .note > figure::after,
+body [data-type="chapter"] [data-type="page"] .exercise > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > figure::after,
+body [data-type="chapter"] [data-type="page"] .example > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .example > figure::after,
+body [data-type="chapter"] [data-type="page"] .solution > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .solution > figure::after,
+body [data-type="chapter"] [data-type="page"] .problem > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] .problem > figure::after,
+body [data-type="chapter"] [data-type="page"] p > figure::after,
+body [data-type="chapter"] [data-type="composite-page"] p > figure::after {
+  class: "figure-number";
+  container: span ;
+  content: pending(figureNumber);
+  move-to: figNum;
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] > figure::outside,
+body [data-type="chapter"] [data-type="page"] section > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] section > figure::outside,
+body [data-type="chapter"] [data-type="page"] li > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] li > figure::outside,
+body [data-type="chapter"] [data-type="page"] .note > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] .note > figure::outside,
+body [data-type="chapter"] [data-type="page"] .exercise > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > figure::outside,
+body [data-type="chapter"] [data-type="page"] .example > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] .example > figure::outside,
+body [data-type="chapter"] [data-type="page"] .solution > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] .solution > figure::outside,
+body [data-type="chapter"] [data-type="page"] .problem > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] .problem > figure::outside,
+body [data-type="chapter"] [data-type="page"] p > figure::outside,
+body [data-type="chapter"] [data-type="composite-page"] p > figure::outside {
+  class: figure;
+  container: div;
+  content: content() pending(figNum) pending(figCaption);
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > table,
+body [data-type="chapter"] [data-type="composite-page"] > table,
+body [data-type="chapter"] [data-type="page"] section > table,
+body [data-type="chapter"] [data-type="composite-page"] section > table,
+body [data-type="chapter"] [data-type="page"] li > table,
+body [data-type="chapter"] [data-type="composite-page"] li > table,
+body [data-type="chapter"] [data-type="page"] .note > table,
+body [data-type="chapter"] [data-type="composite-page"] .note > table,
+body [data-type="chapter"] [data-type="page"] .exercise > table,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > table,
+body [data-type="chapter"] [data-type="page"] .example > table,
+body [data-type="chapter"] [data-type="composite-page"] .example > table,
+body [data-type="chapter"] [data-type="page"] .solution > table,
+body [data-type="chapter"] [data-type="composite-page"] .solution > table,
+body [data-type="chapter"] [data-type="page"] .problem > table,
+body [data-type="chapter"] [data-type="composite-page"] .problem > table,
+body [data-type="chapter"] [data-type="page"] p > table,
+body [data-type="chapter"] [data-type="composite-page"] p > table {
+  counter-increment: table;
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > table caption,
+body [data-type="chapter"] [data-type="composite-page"] > table caption,
+body [data-type="chapter"] [data-type="page"] section > table caption,
+body [data-type="chapter"] [data-type="composite-page"] section > table caption,
+body [data-type="chapter"] [data-type="page"] li > table caption,
+body [data-type="chapter"] [data-type="composite-page"] li > table caption,
+body [data-type="chapter"] [data-type="page"] .note > table caption,
+body [data-type="chapter"] [data-type="composite-page"] .note > table caption,
+body [data-type="chapter"] [data-type="page"] .exercise > table caption,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > table caption,
+body [data-type="chapter"] [data-type="page"] .example > table caption,
+body [data-type="chapter"] [data-type="composite-page"] .example > table caption,
+body [data-type="chapter"] [data-type="page"] .solution > table caption,
+body [data-type="chapter"] [data-type="composite-page"] .solution > table caption,
+body [data-type="chapter"] [data-type="page"] .problem > table caption,
+body [data-type="chapter"] [data-type="composite-page"] .problem > table caption,
+body [data-type="chapter"] [data-type="page"] p > table caption,
+body [data-type="chapter"] [data-type="composite-page"] p > table caption {
+  container: div;
+  class: caption;
+  move-to: imageCaption;
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > table::after,
+body [data-type="chapter"] [data-type="composite-page"] > table::after,
+body [data-type="chapter"] [data-type="page"] section > table::after,
+body [data-type="chapter"] [data-type="composite-page"] section > table::after,
+body [data-type="chapter"] [data-type="page"] li > table::after,
+body [data-type="chapter"] [data-type="composite-page"] li > table::after,
+body [data-type="chapter"] [data-type="page"] .note > table::after,
+body [data-type="chapter"] [data-type="composite-page"] .note > table::after,
+body [data-type="chapter"] [data-type="page"] .exercise > table::after,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > table::after,
+body [data-type="chapter"] [data-type="page"] .example > table::after,
+body [data-type="chapter"] [data-type="composite-page"] .example > table::after,
+body [data-type="chapter"] [data-type="page"] .solution > table::after,
+body [data-type="chapter"] [data-type="composite-page"] .solution > table::after,
+body [data-type="chapter"] [data-type="page"] .problem > table::after,
+body [data-type="chapter"] [data-type="composite-page"] .problem > table::after,
+body [data-type="chapter"] [data-type="page"] p > table::after,
+body [data-type="chapter"] [data-type="composite-page"] p > table::after {
+  container: a;
+  attr-href: myLinkId;
+  content: "Table." counter(chapNum) "." counter(table);
+  move-to: tableNumber;
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > table:after,
+body [data-type="chapter"] [data-type="composite-page"] > table:after,
+body [data-type="chapter"] [data-type="page"] section > table:after,
+body [data-type="chapter"] [data-type="composite-page"] section > table:after,
+body [data-type="chapter"] [data-type="page"] li > table:after,
+body [data-type="chapter"] [data-type="composite-page"] li > table:after,
+body [data-type="chapter"] [data-type="page"] .note > table:after,
+body [data-type="chapter"] [data-type="composite-page"] .note > table:after,
+body [data-type="chapter"] [data-type="page"] .exercise > table:after,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > table:after,
+body [data-type="chapter"] [data-type="page"] .example > table:after,
+body [data-type="chapter"] [data-type="composite-page"] .example > table:after,
+body [data-type="chapter"] [data-type="page"] .solution > table:after,
+body [data-type="chapter"] [data-type="composite-page"] .solution > table:after,
+body [data-type="chapter"] [data-type="page"] .problem > table:after,
+body [data-type="chapter"] [data-type="composite-page"] .problem > table:after,
+body [data-type="chapter"] [data-type="page"] p > table:after,
+body [data-type="chapter"] [data-type="composite-page"] p > table:after {
+  class: "table-number";
+  container: div;
+  content: pending(tableNumber);
+  move-to: table-number;
+  pass: 40;
+}
+body [data-type="chapter"] [data-type="page"] > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] > table::outside,
+body [data-type="chapter"] [data-type="page"] section > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] section > table::outside,
+body [data-type="chapter"] [data-type="page"] li > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] li > table::outside,
+body [data-type="chapter"] [data-type="page"] .note > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] .note > table::outside,
+body [data-type="chapter"] [data-type="page"] .exercise > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] .exercise > table::outside,
+body [data-type="chapter"] [data-type="page"] .example > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] .example > table::outside,
+body [data-type="chapter"] [data-type="page"] .solution > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] .solution > table::outside,
+body [data-type="chapter"] [data-type="page"] .problem > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] .problem > table::outside,
+body [data-type="chapter"] [data-type="page"] p > table::outside,
+body [data-type="chapter"] [data-type="composite-page"] p > table::outside {
+  class: table;
+  container: div;
+  content: content() pending(table-number) pending(imageCaption);
+  pass: 40;
+}
+body .eoc [data-type="exercise"] [data-type="problem"] {
+  pass: 20;
+  counter-increment: exercises;
+}
+body .eoc [data-type="exercise"] [data-type="problem"]::before {
+  pass: 20;
+  container: span;
+  content: counter(exercises);
+  node-set: exerciseNumber;
+}
+body .eoc [data-type="exercise"] [data-type="solution"]::before {
+  pass: 20;
+  content: nodes(exerciseNumber);
 }
 div[data-type='chapter'] h1[data-type="document-title"] {
   node-set: chapterTitle;
 }
 div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"],
 div[data-type='chapter'] div[data-type="composite-page"] > div[data-type="document-title"] {
-  pass: default, 30;
+  pass: default, 50;
   string-set: section-title content();
   node-set: sectionTitle;
 }
@@ -88,7 +381,7 @@ div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after,
 div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]::after {
-  pass: 25;
+  pass: 50;
   content: content();
   attr-group-by: attr(group-by);
   container: span;
@@ -97,7 +390,7 @@ div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after,
 div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]::after {
-  pass: 25;
+  pass: 50;
   content: string(section-title);
   container: a;
   attr-href: "#" attr(id);
@@ -105,7 +398,7 @@ div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]::after,
 div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]::after {
-  pass: 25;
+  pass: 50;
   content: pending(index-term) pending(link);
   class: index-item;
   move-to: eob-index;
@@ -115,7 +408,7 @@ body > [data-type="metadata"] {
 }
 body div.eoc [data-type="cnx-archive-uri"],
 body div.eob [data-type="cnx-archive-uri"] {
-  pass: 52;
+  pass: 77;
   move-to: trash;
 }
 body::before {
@@ -125,44 +418,44 @@ body::before {
   move-to: answerTitle;
 }
 body .eoc.glossary {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 body .eoc.glossary [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Glossary";
 }
 body .eoc.summary {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 body .eoc.summary [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Chapter Review";
 }
 body .eob.index {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 body .eob.index [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Index";
 }
 body .eob.index::before {
+  pass: 52;
   container: h1;
-  pass: 30;
   data-type: document-title;
   content: "Index";
 }
 body::after {
-  pass: 25;
+  pass: 50;
   class: "eob index";
   data-type: composite-page;
   content: pending(eob-index);
   group-by: span, "span::attr(group-by)", nocase;
 }
 body .eob.index > div.group-by:first-of-type > span.group-label {
-  pass: 26;
+  pass: 51;
   content: "Symbol";
 }
 body::after {
@@ -171,17 +464,17 @@ body::after {
 }
 body > div[data-type="page"],
 body > div[data-type="composite-page"] {
-  pass: 35;
+  pass: 60;
   string-set: page-id attr(id);
 }
 body > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type="composite-page"] > [data-type='document-title'] {
   string-set: pageTitle content();
-  pass: 35;
+  pass: 60;
 }
 body > div[data-type="page"]::after,
 body > div[data-type="composite-page"]::after {
-  pass: 35;
+  pass: 60;
   content: string(pageTitle);
   attr-href: "#" string(page-id);
   container: a;
@@ -189,35 +482,35 @@ body > div[data-type="composite-page"]::after {
 }
 body > div[data-type="page"]::after,
 body > div[data-type="composite-page"]::after {
-  pass: 35;
+  pass: 60;
   content: pending(page-link);
   move-to: eob-toc;
   container: li;
 }
 body > div[data-type='chapter'] > h1[data-type='document-title'] {
   string-set: chapterTitle content();
-  pass: 35;
+  pass: 60;
 }
 body > div[data-type='chapter']::after {
-  pass: 35;
+  pass: 60;
   content: string(chapterTitle);
   attr-href: "#" string(page-id);
   container: a;
-  copy-to: eoc-toc;
+  move-to: eoc-toc;
 }
 body > div[data-type='chapter'] > div[data-type="page"],
 body > div[data-type='chapter'] > div[data-type="composite-page"] {
-  pass: 35;
+  pass: 60;
   string-set: page-idi attr(id);
 }
 body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
-  pass: 35;
+  pass: 60;
   string-set: PageTitle content();
 }
 body > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
-  pass: 35;
+  pass: 60;
   content: string(PageTitle);
   attr-href: "#" string(page-id);
   container: a;
@@ -225,80 +518,84 @@ body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
 }
 body > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
-  pass: 35;
+  pass: 60;
   content: pending(page-link);
   move-to: eoc-toc-pages;
   container: li;
 }
 body > div[data-type='chapter']::after {
-  pass: 35;
+  pass: 60;
   content: pending(eoc-toc-pages);
   container: ol;
   class: chapter;
   move-to: eoc-toc;
 }
 body > div[data-type='chapter']::after {
-  pass: 35;
+  pass: 60;
   content: pending(eoc-toc);
   container: li;
   move-to: eob-toc;
 }
 body > div[data-type="unit"] > h1[data-type='document-title'] {
-  pass: 35;
+  pass: 60;
   copy-to: eou-toc;
 }
 body > div[data-type="unit"] > div[data-type='chapter'] > h1[data-type='document-title'] {
   container: div;
   data-type: "toc-title";
-  pass: 35;
+  pass: 60;
   copy-to: eoc-toc;
 }
 body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type="unit"] > div[data-type='chapter'] div[data-type="composite-page"] > [data-type='document-title'] {
-  pass: 35;
+  pass: 60;
   copy-to: page-title;
 }
 body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type="unit"] > div[data-type='chapter'] div[data-type="composite-page"]::after {
-  pass: 35;
+  pass: 60;
   content: pending(page-title);
   move-to: eoc-toc-pages;
   container: li;
 }
 body > div[data-type="unit"] > div[data-type='chapter']::after {
-  pass: 35;
+  pass: 60;
   content: pending(eoc-toc-pages);
   container: ol;
   class: chapter;
   move-to: eoc-toc;
 }
 body > div[data-type="unit"] > div[data-type='chapter']::after {
-  pass: 35;
+  pass: 60;
   content: pending(eoc-toc);
   container: li;
   move-to: eou-toc-chapters;
 }
 body > div[data-type="unit"]::after {
-  pass: 35;
+  pass: 60;
   content: pending(eou-toc-chapters);
   container: ol;
   class: unit;
   move-to: eou-toc;
 }
 body > div[data-type="unit"]::after {
-  pass: 35;
+  pass: 60;
   content: pending(eou-toc);
   container: li;
   move-to: eob-toc;
 }
 nav#toc {
-  pass: 40;
+  pass: 65;
   content: '';
 }
 nav#toc::after {
-  pass: 40;
+  pass: 65;
   content: pending(eob-toc);
   container: ol;
+}
+body::after {
+  pass: default;
+  content: clear(trash);
 }
 div[data-type='chapter'] div[data-type="glossary"] {
   move-to: trash;
@@ -366,7 +663,7 @@ div[data-type='chapter'] section.practice > h1[data-type="title"] {
 }
 div[data-type='chapter'] section.practice div[data-type="solution"] {
   move-to: eoc-solutions;
-  pass: 5;
+  pass: 25;
 }
 div[data-type='chapter']::after {
   content: pending(eoc-practice);
@@ -385,7 +682,7 @@ div[data-type='chapter'] section.bring-together-exercises::before {
 }
 div[data-type='chapter'] section.bring-together-exercises div[data-type="solution"] {
   move-to: eoc-solutions;
-  pass: 5;
+  pass: 25;
 }
 div[data-type='chapter']::after {
   content: pending(eoc-bring-together-exercises);
@@ -404,7 +701,7 @@ div[data-type='chapter'] section.free-response::before {
 }
 div[data-type='chapter'] section.free-response div[data-type="solution"] {
   move-to: eoc-solutions;
-  pass: 5;
+  pass: 25;
 }
 div[data-type='chapter']::after {
   content: pending(eoc-free-response);
@@ -423,7 +720,7 @@ div[data-type='chapter'] .bring-together-homework::before {
 }
 div[data-type='chapter'] .bring-together-homework div[data-type="solution"] {
   move-to: eoc-solutions;
-  pass: 5;
+  pass: 25;
 }
 div[data-type='chapter']::after {
   content: pending(eoc-bring-together-homework);
@@ -454,14 +751,14 @@ div[data-type='chapter']::after {
   data-type: composite-page;
   class: "eoc solutions-container";
   content: pending(eoc-solutions);
-  pass: 15;
+  pass: 25;
 }
 div[data-type='chapter'] .eoc.formula-review-container {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.formula-review-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Formula Review";
 }
 div[data-type='chapter'] .eoc.formula-review-container::before {
@@ -471,11 +768,11 @@ div[data-type='chapter'] .eoc.formula-review-container::before {
   content: "Formula Review";
 }
 div[data-type='chapter'] .eoc.practice-container {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.practice-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Practice";
 }
 div[data-type='chapter'] .eoc.practice-container::before {
@@ -485,11 +782,11 @@ div[data-type='chapter'] .eoc.practice-container::before {
   content: "Practice";
 }
 div[data-type='chapter'] .eoc.free-response-container {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.free-response-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Homework";
 }
 div[data-type='chapter'] .eoc.free-response-container::before {
@@ -499,11 +796,11 @@ div[data-type='chapter'] .eoc.free-response-container::before {
   content: "Homework";
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Bringing It Together: Practice";
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
@@ -513,11 +810,11 @@ div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
   content: "Bringing It Together : Practice";
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Bring Together Homework";
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container::before {
@@ -527,11 +824,11 @@ div[data-type='chapter'] .eoc.bring-together-homework-container::before {
   content: "Bring Together Homework";
 }
 div[data-type='chapter'] .eoc.references-container {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.references-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "References";
 }
 div[data-type='chapter'] .eoc.references-container::before {
@@ -541,11 +838,11 @@ div[data-type='chapter'] .eoc.references-container::before {
   content: "References";
 }
 div[data-type='chapter'] .eoc.solutions-container {
-  pass: 50;
+  pass: 75;
   content: nodes(bookMetadata) content();
 }
 div[data-type='chapter'] .eoc.solutions-container [data-type="metadata"] [data-type="document-title"] {
-  pass: 51;
+  pass: 76;
   content: "Solutions";
 }
 div[data-type='chapter'] .eoc.solutions-container::before {
