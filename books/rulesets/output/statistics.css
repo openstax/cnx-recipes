@@ -462,6 +462,13 @@ body::after {
   pass: 100;
   content: clear(trash);
 }
+[data-type="document-title"] {
+  content: "";
+}
+[data-type="document-title"]::after {
+  content: content();
+  container: span;
+}
 body > div[data-type="page"],
 body > div[data-type="composite-page"] {
   pass: 60;
@@ -469,13 +476,13 @@ body > div[data-type="composite-page"] {
 }
 body > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type="composite-page"] > [data-type='document-title'] {
-  string-set: pageTitle content();
+  node-set: pageTitle;
   pass: 60;
 }
 body > div[data-type="page"]::after,
 body > div[data-type="composite-page"]::after {
   pass: 60;
-  content: string(pageTitle);
+  content: nodes(pageTitle);
   attr-href: "#" string(page-id);
   container: a;
   move-to: page-link;
@@ -488,12 +495,12 @@ body > div[data-type="composite-page"]::after {
   container: li;
 }
 body > div[data-type='chapter'] > h1[data-type='document-title'] {
-  string-set: chapterTitle content();
+  node-set: chapterTitle;
   pass: 60;
 }
 body > div[data-type='chapter']::after {
   pass: 60;
-  content: string(chapterTitle);
+  content: nodes(chapterTitle);
   attr-href: "#" string(page-id);
   container: a;
   move-to: eoc-toc;
@@ -506,12 +513,12 @@ body > div[data-type='chapter'] > div[data-type="composite-page"] {
 body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
   pass: 60;
-  string-set: PageTitle content();
+  node-set: PageTitle;
 }
 body > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
   pass: 60;
-  content: string(PageTitle);
+  content: nodes(PageTitle);
   attr-href: "#" string(page-id);
   container: a;
   move-to: page-link;
@@ -592,6 +599,16 @@ nav#toc::after {
   pass: 65;
   content: pending(eob-toc);
   container: ol;
+}
+nav#toc > ol > li > a > h1 > span {
+  pass: 66;
+  move-to: title-spans;
+}
+nav#toc > ol > li > a::after {
+  pass: 66;
+  content: pending(title-spans);
+  container: a;
+  attr-href: "#";
 }
 body::after {
   pass: default;
