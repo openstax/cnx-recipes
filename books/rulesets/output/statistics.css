@@ -117,6 +117,10 @@ body [data-type="chapter"] {
   counter-reset: table;
   counter-increment: chapNum;
 }
+body [data-type="chapter"] [data-target="figure"] {
+  content: "Fig." target-counter(attr(href), chapNum) "." target-counter(attr(href), figure);
+  pass: 40;
+}
 body [data-type="chapter"] [data-type="page"] > figure,
 body [data-type="chapter"] [data-type="composite-page"] > figure,
 body [data-type="chapter"] [data-type="page"] section > figure,
@@ -182,7 +186,7 @@ body [data-type="chapter"] [data-type="page"] p > figure::after,
 body [data-type="chapter"] [data-type="composite-page"] p > figure::after {
   container: a;
   attr-href: myLinkId;
-  content: "Fig." target-counter(attr(id), chapNum) "." target-counter(attr(id), figure);
+  content: "Fig." counter(chapNum) "." counter(figure);
   move-to: figureNumber;
   pass: 40;
 }
@@ -297,7 +301,7 @@ body [data-type="chapter"] [data-type="page"] p > table::after,
 body [data-type="chapter"] [data-type="composite-page"] p > table::after {
   container: a;
   attr-href: myLinkId;
-  content: "Table." counter(chapNum) "." counter(table);
+  content: "Table " target-counter("#" attr(id), chapNum) "." target-counter("#" attr(id), table);
   move-to: tableNumber;
   pass: 40;
 }

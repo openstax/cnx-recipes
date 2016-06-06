@@ -243,7 +243,14 @@ body {
   counter-reset: figure;
   counter-reset: table;
   counter-increment: chapNum;
-
+    [data-target="figure"] {
+      content: "Fig." target-counter(attr(href), chapNum)"."target-counter(attr(href), figure);
+      pass: @pass-40-numbering-figs-tabs;
+    }
+    [data-target="table"] {
+      content: "Table" target-counter(attr(href), chapNum)"."target-counter(attr(href), figure);
+      pass: @pass-40-numbering-figs-tabs;
+    }
     [data-type="page"], [data-type="composite-page"] {
       > figure,
       section > figure,
@@ -267,7 +274,7 @@ body {
         &::after {
           container: a;
           attr-href: myLinkId;
-          content: "Fig." target-counter("#" attr(id), chapNum)"."target-counter("#" attr(id), figure);
+          content: "Fig." counter(chapNum)"."counter(figure);
           move-to: figureNumber;
           pass: @pass-40-numbering-figs-tabs;
         }
@@ -307,7 +314,7 @@ body {
         &::after {
           container: a;
           attr-href: myLinkId;
-          content: "Table." counter(chapNum)"."counter(table);
+          content: "Table " target-counter("#" attr(id), chapNum)"."target-counter("#" attr(id), table);
           move-to: tableNumber;
           pass: @pass-40-numbering-figs-tabs;
         }
