@@ -125,10 +125,15 @@ body {
     }
   }
   &::before {
+    container: span;
+    content: @titleContent;
+    move-to: titleSpan;
+  }
+  &::before {
     container: @titleContainer;
     class: summary-title;
     data-type: document-title;
-    content: @titleContent;
+    content: pending(titleSpan);
     move-to: summaryTitle;
   }
   &::after {
@@ -149,10 +154,15 @@ body {
      }
   }
   &::before {
+    container: span;
+    content: @title;
+    move-to: titleSpan;
+  }
+  &::before {
     container: h1;
     class: sectionGlossary;
     data-type: document-title;
-    content: @title;
+    content: pending(titleSpan);
     move-to: sectionGlossary;
   }
   &::after {
@@ -165,8 +175,8 @@ body {
 
 //metadata
 .metadata(@title) {
-    pass: @pass-75-metadata;
-    content: nodes(bookMetadata) content();
+  pass: @pass-75-metadata;
+  content: nodes(bookMetadata) content();
   [data-type="metadata"] {
     [data-type="document-title"] {
       pass: @pass-76-meta-title;
@@ -175,24 +185,25 @@ body {
   }
 }
 
-// div[data-type="document-title"] {
-//   content: "";
-//   &::after {
-//     content: content();
-//     container: span;
-//     move-to: h-title;
-//   }
-//   &::after {
-//     content: pending(h-title);
-//     container: h1;
-//   }
-// }
+.doc-title (@title) {
+  &::before {
+    container: span;
+    pass: @pass-30-title;
+    content: @title;
+    move-to: titleSpan;
+  }
+  &::before {
+    pass: @pass-30-title;
+    container: div;
+    data-type: document-title;
+    content: pending(titleSpan);
+  }
+}
 
+//Wrap all non-generated title content within a span before numbering
 [data-type="document-title"] {
-  content: "";
-  pass: 66;
+  content: none;
   &::after {
-    pass: 66;
     content: content();
     container: span;
   }
