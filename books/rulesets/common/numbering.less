@@ -118,8 +118,8 @@
 body {
   counter-reset: chapter;
   div[data-type="chapter"] {
-      pass: @pass-20-numbering-eoc;
-      counter-reset: exercises;
+    pass: @pass-20-numbering-eoc;
+    counter-reset: exercises;
   }
   div[data-type="chapter"] {
     counter-reset: section;
@@ -132,16 +132,16 @@ body {
       content: counter(chapter);
       move-to: chapterNumber;
     }
-      &::before {
-        content: "Chapter";
-        container: span;
-        move-to: chapterLabel;
-      }
-      &::before {
-        content: " | ";
-        container: span;
-        move-to: chapterDivider;
-      }
+    &::before {
+      content: "Chapter";
+      container: span;
+      move-to: chapterLabel;
+    }
+    &::before {
+      content: " | ";
+      container: span;
+      move-to: chapterDivider;
+    }
     > h1[data-type="document-title"] {
       container: h1;
       content: pending(chapterLabel) " " pending(chapterNumber) pending(chapterDivider) content() ;
@@ -166,14 +166,14 @@ body {
           container: span;
           move-to: sectionDivider;
         }
-    }
+      }
       > [data-type="document-title"] {
-          data-type: "document-title";
-          container: div;
-          content: pending(sectionNumber) " "pending(sectionDivider) content() ;
+        data-type: "document-title";
+        container: div;
+        content: pending(sectionNumber) " "pending(sectionDivider) content() ;
       }
     }
-  [data-type="page"] {
+    [data-type="page"] {
       .example {
         counter-increment: example;
 
@@ -191,13 +191,13 @@ body {
           move-to: trash;
         }
         &::after{
-            class: "example-title";
-            container: h1;
-            content: "Example " pending(exampleNumber) pending(exampleTitle);
-            move-to: exampleTitletest;
+          class: "example-title";
+          container: h1;
+          content: "Example " pending(exampleNumber) pending(exampleTitle);
+          move-to: exampleTitletest;
         }
         &:deferred {
-            content: pending(exampleTitletest) content();
+          content: pending(exampleTitletest) content();
         }
         //move me to collations
         [data-type="solution"] {
@@ -209,32 +209,32 @@ body {
         }
       }
       .try {
-          .exercise {
-            &::before {
-             class: "try-number";
-             container: span;
-             content: counter(chapter)"."counter(example);
-          }
-        }
-      }
-    .lab {
+        .exercise {
+          &::before {
+           class: "try-number";
+           container: span;
+           content: counter(chapter)"."counter(example);
+         }
+       }
+     }
+     .lab {
       &::before {
         content: "Stats Lab";
         class: "stat-lab-title";
         data-type: "title";
       }
       counter-increment: lab;
-        >[data-type="title"] {
-          &::before {
-           content: counter(chapter)"."counter(lab);
-           container: span;
-           class: "lab-number";
-           node-set: labNumber;
-          }
-        }
-      }
-    }
-  }
+      >[data-type="title"] {
+        &::before {
+         content: counter(chapter)"."counter(lab);
+         container: span;
+         class: "lab-number";
+         node-set: labNumber;
+       }
+     }
+   }
+ }
+}
 
 
 
@@ -244,109 +244,89 @@ body {
   counter-reset: table;
   counter-increment: chapNum;
 
-    [data-type="page"], [data-type="composite-page"] {
-      > figure,
-      section > figure,
-      li > figure,
-      .note > figure,
-      .exercise > figure,
-      .example > figure,
-      .solution > figure,
-      .problem > figure,
-      //FIXME figures should not be children of p, but they are in raw HTML
-      p > figure {
-        counter-increment: figure;
-        pass: @pass-40-numbering-figs-tabs;
-        figcaption {
-          container: div;
-          class: caption;
-          content: content();
-          move-to: figCaption;
-          pass: @pass-40-numbering-figs-tabs;
-        }
-        &::after {
-          container: a;
-          attr-href: myLinkId;
-          content: "Fig." counter(chapNum)"."counter(figure);
-          move-to: figureNumber;
-          pass: @pass-40-numbering-figs-tabs;
-        }
-        &::after {
-          class: "figure-number";
-          container: span ;
-          content: pending(figureNumber);
-          move-to: figNum;
-          pass: @pass-40-numbering-figs-tabs;
-        }
-        &::outside {
-          class:  figure;
-          container: div;
-          content: content() pending(figNum) pending(figCaption);
-          pass: @pass-40-numbering-figs-tabs;
-        }
-      }
-
-      > table,
-      section > table,
-      li > table,
-      .note > table,
-      .exercise > table,
-      .example > table,
-      .solution > table,
-      .problem > table,
-      //FIXME tables should not be children of p, but they are in raw HTML
-      p > table {
-        counter-increment: table;
-        pass: @pass-40-numbering-figs-tabs;
-        caption {
-          container: div;
-          class: caption;
-          move-to: imageCaption;
-          pass: @pass-40-numbering-figs-tabs;
-        }
-        &::after {
-          container: a;
-          attr-href: myLinkId;
-          content: "Table." counter(chapNum)"."counter(table);
-          move-to: tableNumber;
-          pass: @pass-40-numbering-figs-tabs;
-        }
-        &:after {
-          class: "table-number";
-          container: div;
-          content: pending(tableNumber);
-          move-to: table-number;
-          pass: @pass-40-numbering-figs-tabs;
-        }
-        &::outside {
-          class: table;
-          container: div;
-          content: content() pending(table-number) pending(imageCaption);
-          pass: @pass-40-numbering-figs-tabs;
-        }
-      }
+  :not(figure) > figure {
+    counter-increment: figure;
+    pass: @pass-40-numbering-figs-tabs;
+    figcaption {
+      container: div;
+      class: caption;
+      content: content();
+      move-to: figCaption;
+      pass: @pass-40-numbering-figs-tabs;
     }
+    &::after {
+      container: a;
+      attr-href: myLinkId;
+      content: "Fig." counter(chapNum)"."counter(figure);
+      move-to: figureNumber;
+      pass: @pass-40-numbering-figs-tabs;
+    }
+    &::after {
+      class: "figure-number";
+      container: span ;
+      content: pending(figureNumber);
+      move-to: figNum;
+      pass: @pass-40-numbering-figs-tabs;
+    }
+    &::outside {
+      class:  figure;
+      container: div;
+      content: content() pending(figNum) pending(figCaption);
+      pass: @pass-40-numbering-figs-tabs;
+    }
+  }
+
+  :not(table) > table {
+    counter-increment: table;
+    pass: @pass-40-numbering-figs-tabs;
+    caption {
+      container: div;
+      class: caption;
+      move-to: imageCaption;
+      pass: @pass-40-numbering-figs-tabs;
+    }
+    &::after {
+      container: a;
+      attr-href: myLinkId;
+      content: "Table." counter(chapNum)"."counter(table);
+      move-to: tableNumber;
+      pass: @pass-40-numbering-figs-tabs;
+    }
+    &:after {
+      class: "table-number";
+      container: div;
+      content: pending(tableNumber);
+      move-to: table-number;
+      pass: @pass-40-numbering-figs-tabs;
+    }
+    &::outside {
+      class: table;
+      container: div;
+      content: content() pending(table-number) pending(imageCaption);
+      pass: @pass-40-numbering-figs-tabs;
+    }
+  }
 }
 
 
-  .eoc {
-    [data-type="exercise"] {
-         [data-type="problem"]  {
-          pass: @pass-20-numbering-eoc;
-          counter-increment: exercises;
-          &::before {
-            pass: @pass-20-numbering-eoc;
-            container: span;
-            content: counter(exercises);
-            node-set: exerciseNumber;
-          }
-        }
-        [data-type="solution"] {
-          &::before {
-            pass: @pass-20-numbering-eoc;
-            content: nodes(exerciseNumber);
-        }
-       }
-     }
+.eoc {
+  [data-type="exercise"] {
+   [data-type="problem"]  {
+    pass: @pass-20-numbering-eoc;
+    counter-increment: exercises;
+    &::before {
+      pass: @pass-20-numbering-eoc;
+      container: span;
+      content: counter(exercises);
+      node-set: exerciseNumber;
     }
   }
+  [data-type="solution"] {
+    &::before {
+      pass: @pass-20-numbering-eoc;
+      content: nodes(exerciseNumber);
+    }
+  }
+}
+}
+}
