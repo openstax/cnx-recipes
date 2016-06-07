@@ -1,4 +1,3 @@
-/*Number chapters and static sections*/
 /*Number solutions/EOC content*/
 /*Assign exercise solutions to migrate to their own container*/
 /*Title existing EOC/EOB containers*/
@@ -6,6 +5,7 @@
 /*Create separate section in index for symbols*/
 /*Create everything associated with the toc*/
 /*Create toc nav*/
+/*Unwrap span elements copied from doc-titles*/
 /*Add metadata to all locations*/
 /*Add title to metatdata sections*/
 /**/
@@ -463,11 +463,9 @@ body::after {
   content: clear(trash);
 }
 [data-type="document-title"] {
-  content: "";
-  pass: 66;
+  content: none;
 }
 [data-type="document-title"]::after {
-  pass: 66;
   content: content();
   container: span;
 }
@@ -602,13 +600,17 @@ nav#toc::after {
   content: pending(eob-toc);
   container: ol;
 }
+nav#toc > ol li > a {
+  pass: 66;
+  move-to: trash;
+}
 nav#toc > ol li > a > h1 > span,
 nav#toc > ol li > a > div > span {
-  pass: 67;
+  pass: 66;
   move-to: title-spans;
 }
-nav#toc > ol li > a::after {
-  pass: 67;
+nav#toc > ol li > a::outside {
+  pass: 66;
   content: pending(title-spans);
   container: a;
   attr-href: "#";
@@ -624,10 +626,15 @@ div[data-type='chapter'] div[data-type="glossary"] dl.definition {
   move-to: eoc-key-terms;
 }
 div[data-type='chapter']::before {
+  container: span;
+  content: "Key Terms";
+  move-to: titleSpan;
+}
+div[data-type='chapter']::before {
   container: h1;
   class: sectionGlossary;
   data-type: document-title;
-  content: "Key Terms";
+  content: pending(titleSpan);
   move-to: sectionGlossary;
 }
 div[data-type='chapter']::after {
@@ -648,10 +655,15 @@ div[data-type='chapter'] section.summary::after {
   move-to: eoc-summaries;
 }
 div[data-type='chapter']::before {
-  container: h1;
+  container: span;
+  content: "Chapter Review";
+  move-to: titleSpan;
+}
+div[data-type='chapter']::before {
+  container: div;
   class: summary-title;
   data-type: document-title;
-  content: "Chapter Review";
+  content: pending(titleSpan);
   move-to: summaryTitle;
 }
 div[data-type='chapter']::after {
@@ -776,10 +788,16 @@ div[data-type='chapter'] .eoc.formula-review-container [data-type="metadata"] [d
   content: "Formula Review";
 }
 div[data-type='chapter'] .eoc.formula-review-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Formula Review";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.formula-review-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.practice-container {
   pass: 75;
@@ -790,10 +808,16 @@ div[data-type='chapter'] .eoc.practice-container [data-type="metadata"] [data-ty
   content: "Practice";
 }
 div[data-type='chapter'] .eoc.practice-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Practice";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.practice-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.free-response-container {
   pass: 75;
@@ -804,10 +828,16 @@ div[data-type='chapter'] .eoc.free-response-container [data-type="metadata"] [da
   content: "Homework";
 }
 div[data-type='chapter'] .eoc.free-response-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Homework";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.free-response-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container {
   pass: 75;
@@ -818,10 +848,16 @@ div[data-type='chapter'] .eoc.bring-together-exercises-container [data-type="met
   content: "Bringing It Together: Practice";
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Bringing It Together: Practice";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container {
   pass: 75;
@@ -829,13 +865,19 @@ div[data-type='chapter'] .eoc.bring-together-homework-container {
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container [data-type="metadata"] [data-type="document-title"] {
   pass: 76;
-  content: "Bringing It Together Homework";
+  content: "Bringing It Together: Homework";
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Bringing It Together: Homework";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.bring-together-homework-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.references-container {
   pass: 75;
@@ -846,10 +888,16 @@ div[data-type='chapter'] .eoc.references-container [data-type="metadata"] [data-
   content: "References";
 }
 div[data-type='chapter'] .eoc.references-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "References";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.references-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.solutions-container {
   pass: 75;
@@ -860,8 +908,14 @@ div[data-type='chapter'] .eoc.solutions-container [data-type="metadata"] [data-t
   content: "Solutions";
 }
 div[data-type='chapter'] .eoc.solutions-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Solutions";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.solutions-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
