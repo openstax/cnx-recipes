@@ -74,13 +74,19 @@ body {
     }
   }
 .eob {
-    &.index {
-      .metadata("Index");
-      &::before {
-        pass: @pass-52-index-title;
-        container: h1;
-        data-type: document-title;
-        content: "Index";
+  &.index {
+    .metadata("Index");
+    &::before {
+      pass: @pass-52-index-title;
+      container: span;
+      content: "Index";
+      move-to: titleSpan;
+    }
+    &::before {
+      pass: @pass-52-index-title;
+      container: div;
+      data-type: document-title;
+      content: pending(titleSpan);
     }
   }
 }
@@ -201,7 +207,7 @@ body {
 }
 
 //Wrap all non-generated title content within a span before numbering
-[data-type="document-title"] {
+:not([data-type="metadata"]) > [data-type="document-title"] {
   content: none;
   &::after {
     content: content();

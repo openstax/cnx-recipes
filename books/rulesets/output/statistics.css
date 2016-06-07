@@ -443,9 +443,15 @@ body .eob.index [data-type="metadata"] [data-type="document-title"] {
 }
 body .eob.index::before {
   pass: 52;
-  container: h1;
-  data-type: document-title;
+  container: span;
   content: "Index";
+  move-to: titleSpan;
+}
+body .eob.index::before {
+  pass: 52;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 body::after {
   pass: 50;
@@ -462,10 +468,10 @@ body::after {
   pass: 100;
   content: clear(trash);
 }
-[data-type="document-title"] {
+:not([data-type="metadata"]) > [data-type="document-title"] {
   content: none;
 }
-[data-type="document-title"]::after {
+:not([data-type="metadata"]) > [data-type="document-title"]::after {
   content: content();
   container: span;
 }
