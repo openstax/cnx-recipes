@@ -26,105 +26,76 @@ div[data-type='chapter'] {
 
   .summary(summary, ~'.', div, "Chapter Review");
 
-  section.formula-review {
-    content: nodes(sectionTitle) content();
-    .composite-origin (formula-review);
-  }
-  &::after {
-    .composite-destination (formula-review);
-  }
-
-  section.practice {
-    move-to: eoc-practice;
-    content: nodes(sectionTitle) content();
-    > h1[data-type="title"] {
-      move-to: trash;
-    }
-    div[data-type="solution"] {
-      move-to: eoc-solutions;
-      pass: @pass-25-solutions;
-    }
-  }
-  &::after {
-    content: pending(eoc-practice);
-    class: "eoc practice-container";
-    data-type: composite-page;
-    container: div;
-  }
-  section.bring-together-exercises {
-    move-to: eoc-bring-together-exercises;
-    > h1[data-type="title"] {
-      move-to: trash;
-    }
-    div[data-type="solution"] {
-      move-to: eoc-solutions;
-      pass: @pass-25-solutions;
-    }
-  }
-  &::after {
-    content: pending(eoc-bring-together-exercises);
-    class: "eoc bring-together-exercises-container";
-    data-type: composite-page;
-    container: div;
-  }
-  section.free-response {
-    move-to: eoc-free-response;
-    > h1[data-type="title"] {
-      move-to: trash;
-    }
-    &::before {
-      content: nodes(sectionTitle);
-    }
-    div[data-type="solution"] {
-      move-to: eoc-solutions;
-      pass: @pass-25-solutions;
-    }
-  }
-  &::after {
-    content: pending(eoc-free-response);
-    class: "eoc free-response-container";
-    container: div;
-   data-type: composite-page;
-  }
-
-
-.bring-together-homework {
-    move-to: eoc-bring-together-homework;
-    > h1[data-type="title"] {
-      move-to: trash;
-    }
-    div[data-type="solution"] {
-      move-to: eoc-solutions;
-      pass: @pass-25-solutions;
-    }
-  }
-  &::after {
-    content: pending(eoc-bring-together-homework);
-    class: "eoc bring-together-homework-container";
-    data-type: composite-page;
-    container: div;
-  }
   .try {
     div[data-type="solution"] {
       move-to: trash;
     }
   }
 
-  section.references {
-    move-to: eoc-references;
-    h1[data-type="title"] {
-      move-to: trash;
-    }
-    &::before {
-      content: nodes(sectionTitle);
-    }
+  section.formula-review {
+    content: nodes(sectionTitle) content();
+    .composite-origin(formula-review);
+  }
+  &::after {
+    .composite-destination(formula-review);
   }
 
+  section.practice {
+    content: nodes(sectionTitle) content();
+    .composite-origin(practice);
+
+    div[data-type="solution"] {
+      move-to: eoc-solutions;
+      pass: @pass-25-solutions;
+    }
+  }
   &::after {
-    content: pending(eoc-references);
-    class: "eoc references-container";
-    data-type: composite-page;
-    container: div;
+    .composite-destination(practice);
+  }
+
+  section.bring-together-exercises {
+    .composite-origin(bring-together-exercises);
+
+    div[data-type="solution"] {
+      move-to: eoc-solutions;
+      pass: @pass-25-solutions;
+    }
+  }
+  &::after {
+    .composite-destination(bring-together-exercises);
+  }
+
+  section.free-response {
+    content: nodes(sectionTitle) content();
+    .composite-origin(free-response);
+
+    div[data-type="solution"] {
+      move-to: eoc-solutions;
+      pass: @pass-25-solutions;
+    }
+  }
+  &::after {
+    .composite-destination(free-response);
+  }
+
+  section.bring-together-homework {
+    .composite-origin(bring-together-homework);
+
+    div[data-type="solution"] {
+      move-to: eoc-solutions;
+      pass: @pass-25-solutions;
+    }
+  }
+  &::after {
+    .composite-destination(bring-together-homework);
+  }
+
+  section.references {
+    content: nodes(sectionTitle) content();
+    .composite-origin(references);
+  }
+  &::after {
+    .composite-destination(references);
   }
 
   &::after {
@@ -134,6 +105,7 @@ div[data-type='chapter'] {
     content: pending(eoc-solutions);
     pass: @pass-25-solutions;
   }
+
   .eoc {
     &.formula-review-container {
       .metadata("Formula Review");
@@ -171,5 +143,3 @@ div[data-type='chapter'] {
     }
   }
 }
-
-
