@@ -200,6 +200,7 @@ body .eoc [data-type="exercise"] [data-type="solution"]::before {
   pass: 20;
   content: nodes(exerciseNumber);
 }
+/* This file includes parts that are used only once per book */
 div[data-type='chapter'] h1[data-type="document-title"] {
   node-set: chapterTitle;
 }
@@ -250,7 +251,7 @@ body div.eob [data-type="cnx-archive-uri"] {
   move-to: trash;
 }
 body::before {
-  container: h1;
+  container: div;
   content: "Answer Key";
   data-type: document-title;
   move-to: answerTitle;
@@ -286,16 +287,16 @@ body .eob.index > div.group-by:first-of-type > span.group-label {
   pass: 51;
   content: "Symbol";
 }
+body :not([data-type="metadata"]) > [data-type="document-title"] {
+  content: none;
+}
+body :not([data-type="metadata"]) > [data-type="document-title"]::after {
+  content: content();
+  container: span;
+}
 body::after {
   pass: 100;
   content: clear(trash);
-}
-:not([data-type="metadata"]) > [data-type="document-title"] {
-  content: none;
-}
-:not([data-type="metadata"]) > [data-type="document-title"]::after {
-  content: content();
-  container: span;
 }
 body > div[data-type="page"],
 body > div[data-type="composite-page"] {
@@ -500,19 +501,11 @@ div[data-type='chapter']::after {
   content: pending(summaryTitle) pending(eoc-summaries);
 }
 div[data-type='chapter'] section.formula-review {
+  content: nodes(sectionTitle) content();
   move-to: eoc-formula-review;
 }
 div[data-type='chapter'] section.formula-review > h1[data-type="title"] {
   move-to: trash;
-}
-div[data-type='chapter'] section.formula-review::before {
-  content: nodes(sectionTitle);
-}
-div[data-type='chapter']::after {
-  content: pending(eoc-formula-review);
-  class: "eoc formula-review-container";
-  data-type: composite-page;
-  container: div;
 }
 div[data-type='chapter'] section.practice {
   move-to: eoc-practice;
