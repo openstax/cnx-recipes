@@ -1,23 +1,21 @@
-//eoc
-
 div[data-type='chapter'] {
   h1[data-type="document-title"] {
     node-set: chapterTitle;
   }
-  div[data-type="page"], div[data-type="composite-page"]  {
+  div[data-type="page"], div[data-type="composite-page"] {
     > div[data-type="document-title"] {
       pass: default, @pass-50-index;
       string-set: section-title content();
       node-set: sectionTitle;
     }
     span[data-type="term"] {
-    &:match(^[a-zA-Z]) {
+      &:match(^[a-zA-Z]) {
         attr-group-by: first-letter(content());
-    }
-    &:match(^[^a-zA-Z]) {
-      attr-group-by: "";
-    }
-     &::after {
+      }
+      &:match(^[^a-zA-Z]) {
+        attr-group-by: "";
+      }
+      &::after {
         pass: @pass-50-index;
         content: content();
         attr-group-by: attr(group-by);
@@ -40,21 +38,14 @@ div[data-type='chapter'] {
       }
     }
   }
-  // div[data-type="solution"] {
-  //   move-to: chapterSolutions;
-  // }
-  // &::after {
-  //   class: solutions;
-  //   content: nodes(chapterTitle) pending(chapterSolutions);
-  //   move-to: eob-solutions;
-  //  }
 }
+
 body {
- > [data-type="metadata"] {
+  >[data-type="metadata"] {
     node-set: bookMetadata;
   }
   div.eoc, div.eob  {
-   [data-type="cnx-archive-uri"] {
+    [data-type="cnx-archive-uri"] {
       pass: @pass-77-meta-uri;
       move-to: trash;
     }
@@ -67,30 +58,29 @@ body {
   }
   .eoc {
     &.glossary {
-   .metadata("Glossary");
+      .metadata("Glossary");
     }
     &.summary {
       .metadata("Chapter Review");
     }
   }
-.eob {
-  &.index {
-    .metadata("Index");
-    &::before {
-      pass: @pass-52-index-title;
-      container: span;
-      content: "Index";
-      move-to: titleSpan;
-    }
-    &::before {
-      pass: @pass-52-index-title;
-      container: div;
-      data-type: document-title;
-      content: pending(titleSpan);
+  .eob {
+    &.index {
+      .metadata("Index");
+      &::before {
+        pass: @pass-52-index-title;
+        container: span;
+        content: "Index";
+        move-to: titleSpan;
+      }
+      &::before {
+        pass: @pass-52-index-title;
+        container: div;
+        data-type: document-title;
+        content: pending(titleSpan);
+      }
     }
   }
-}
-
   &::after {
     pass: @pass-50-index;
     class: "eob index" ;
@@ -102,13 +92,6 @@ body {
     pass: @pass-51-index-symbol;
     content: "Symbol";
   }
-//nodes(bookMetadata) pending(indexTitle)
-  // &::after {
-  //   content: pending(eob-all);
-  //   class: end-of-book;
-  //   data-type: composite-page;
-  //   container: div;
-  // }
     &::after {
       pass:100;
       content: clear(trash);
