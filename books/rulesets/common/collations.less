@@ -74,13 +74,19 @@ body {
     }
   }
 .eob {
-    &.index {
-      .metadata("Index");
-      &::before {
-        pass: @pass-52-index-title;
-        container: h1;
-        data-type: document-title;
-        content: "Index";
+  &.index {
+    .metadata("Index");
+    &::before {
+      pass: @pass-52-index-title;
+      container: span;
+      content: "Index";
+      move-to: titleSpan;
+    }
+    &::before {
+      pass: @pass-52-index-title;
+      container: div;
+      data-type: document-title;
+      content: pending(titleSpan);
     }
   }
 }
@@ -125,10 +131,15 @@ body {
     }
   }
   &::before {
+    container: span;
+    content: @titleContent;
+    move-to: titleSpan;
+  }
+  &::before {
     container: @titleContainer;
     class: summary-title;
     data-type: document-title;
-    content: @titleContent;
+    content: pending(titleSpan);
     move-to: summaryTitle;
   }
   &::after {
@@ -149,10 +160,15 @@ body {
      }
   }
   &::before {
-    container: h1;
+    container: span;
+    content: @title;
+    move-to: titleSpan;
+  }
+  &::before {
+    container: div;
     class: sectionGlossary;
     data-type: document-title;
-    content: @title;
+    content: pending(titleSpan);
     move-to: sectionGlossary;
   }
   &::after {
@@ -165,15 +181,40 @@ body {
 
 //metadata
 .metadata(@title) {
-    pass: @pass-75-metadata;
-    content: nodes(bookMetadata) content();
-    [data-type="metadata"] {
-      [data-type="document-title"] {
-        pass: @pass-76-meta-title;
+  pass: @pass-75-metadata;
+  content: nodes(bookMetadata) content();
+  [data-type="metadata"] {
+    [data-type="document-title"] {
+      pass: @pass-76-meta-title;
       content: @title;
     }
   }
 }
+
+.doc-title (@title) {
+  &::before {
+    container: span;
+    pass: @pass-30-title;
+    content: @title;
+    move-to: titleSpan;
+  }
+  &::before {
+    pass: @pass-30-title;
+    container: div;
+    data-type: document-title;
+    content: pending(titleSpan);
+  }
+}
+
+//Wrap all non-generated title content within a span before numbering
+:not([data-type="metadata"]) > [data-type="document-title"] {
+  content: none;
+  &::after {
+    content: content();
+    container: span;
+  }
+}
+
 //todo
 // .feature(@name, @title, @nameTitle(@title,  @suffix) ) {
 //     section.references {

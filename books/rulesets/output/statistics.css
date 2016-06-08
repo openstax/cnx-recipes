@@ -1,4 +1,3 @@
-/*Number chapters and static sections*/
 /*Number solutions/EOC content*/
 /*Assign exercise solutions to migrate to their own container*/
 /*Title existing EOC/EOB containers*/
@@ -6,6 +5,7 @@
 /*Create separate section in index for symbols*/
 /*Create everything associated with the toc*/
 /*Create toc nav*/
+/*Unwrap span elements copied from doc-titles*/
 /*Add metadata to all locations*/
 /*Add title to metatdata sections*/
 /**/
@@ -443,9 +443,15 @@ body .eob.index [data-type="metadata"] [data-type="document-title"] {
 }
 body .eob.index::before {
   pass: 52;
-  container: h1;
-  data-type: document-title;
+  container: span;
   content: "Index";
+  move-to: titleSpan;
+}
+body .eob.index::before {
+  pass: 52;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 body::after {
   pass: 50;
@@ -462,6 +468,13 @@ body::after {
   pass: 100;
   content: clear(trash);
 }
+:not([data-type="metadata"]) > [data-type="document-title"] {
+  content: none;
+}
+:not([data-type="metadata"]) > [data-type="document-title"]::after {
+  content: content();
+  container: span;
+}
 body > div[data-type="page"],
 body > div[data-type="composite-page"] {
   pass: 60;
@@ -469,13 +482,13 @@ body > div[data-type="composite-page"] {
 }
 body > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type="composite-page"] > [data-type='document-title'] {
-  string-set: pageTitle content();
+  node-set: pageTitle;
   pass: 60;
 }
 body > div[data-type="page"]::after,
 body > div[data-type="composite-page"]::after {
   pass: 60;
-  content: string(pageTitle);
+  content: nodes(pageTitle);
   attr-href: "#" string(page-id);
   container: a;
   move-to: page-link;
@@ -488,12 +501,12 @@ body > div[data-type="composite-page"]::after {
   container: li;
 }
 body > div[data-type='chapter'] > h1[data-type='document-title'] {
-  string-set: chapterTitle content();
+  node-set: chapterTitle;
   pass: 60;
 }
 body > div[data-type='chapter']::after {
   pass: 60;
-  content: string(chapterTitle);
+  content: nodes(chapterTitle);
   attr-href: "#" string(page-id);
   container: a;
   move-to: eoc-toc;
@@ -506,12 +519,12 @@ body > div[data-type='chapter'] > div[data-type="composite-page"] {
 body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
   pass: 60;
-  string-set: PageTitle content();
+  node-set: PageTitle;
 }
 body > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
   pass: 60;
-  content: string(PageTitle);
+  content: nodes(PageTitle);
   attr-href: "#" string(page-id);
   container: a;
   move-to: page-link;
@@ -593,6 +606,21 @@ nav#toc::after {
   content: pending(eob-toc);
   container: ol;
 }
+nav#toc > ol li > a {
+  pass: 66;
+  move-to: trash;
+}
+nav#toc > ol li > a > h1 > span,
+nav#toc > ol li > a > div > span {
+  pass: 66;
+  move-to: title-spans;
+}
+nav#toc > ol li > a::outside {
+  pass: 66;
+  content: pending(title-spans);
+  container: a;
+  attr-href: "#";
+}
 body::after {
   pass: default;
   content: clear(trash);
@@ -604,10 +632,15 @@ div[data-type='chapter'] div[data-type="glossary"] dl.definition {
   move-to: eoc-key-terms;
 }
 div[data-type='chapter']::before {
-  container: h1;
+  container: span;
+  content: "Key Terms";
+  move-to: titleSpan;
+}
+div[data-type='chapter']::before {
+  container: div;
   class: sectionGlossary;
   data-type: document-title;
-  content: "Key Terms";
+  content: pending(titleSpan);
   move-to: sectionGlossary;
 }
 div[data-type='chapter']::after {
@@ -628,10 +661,15 @@ div[data-type='chapter'] section.summary::after {
   move-to: eoc-summaries;
 }
 div[data-type='chapter']::before {
-  container: h1;
+  container: span;
+  content: "Chapter Review";
+  move-to: titleSpan;
+}
+div[data-type='chapter']::before {
+  container: div;
   class: summary-title;
   data-type: document-title;
-  content: "Chapter Review";
+  content: pending(titleSpan);
   move-to: summaryTitle;
 }
 div[data-type='chapter']::after {
@@ -756,10 +794,16 @@ div[data-type='chapter'] .eoc.formula-review-container [data-type="metadata"] [d
   content: "Formula Review";
 }
 div[data-type='chapter'] .eoc.formula-review-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Formula Review";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.formula-review-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.practice-container {
   pass: 75;
@@ -770,10 +814,16 @@ div[data-type='chapter'] .eoc.practice-container [data-type="metadata"] [data-ty
   content: "Practice";
 }
 div[data-type='chapter'] .eoc.practice-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Practice";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.practice-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.free-response-container {
   pass: 75;
@@ -784,10 +834,16 @@ div[data-type='chapter'] .eoc.free-response-container [data-type="metadata"] [da
   content: "Homework";
 }
 div[data-type='chapter'] .eoc.free-response-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Homework";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.free-response-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container {
   pass: 75;
@@ -798,10 +854,16 @@ div[data-type='chapter'] .eoc.bring-together-exercises-container [data-type="met
   content: "Bringing It Together: Practice";
 }
 div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Bringing It Together: Practice";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.bring-together-exercises-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container {
   pass: 75;
@@ -809,13 +871,19 @@ div[data-type='chapter'] .eoc.bring-together-homework-container {
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container [data-type="metadata"] [data-type="document-title"] {
   pass: 76;
-  content: "Bringing It Together Homework";
+  content: "Bringing It Together: Homework";
 }
 div[data-type='chapter'] .eoc.bring-together-homework-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Bringing It Together: Homework";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.bring-together-homework-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.references-container {
   pass: 75;
@@ -826,10 +894,16 @@ div[data-type='chapter'] .eoc.references-container [data-type="metadata"] [data-
   content: "References";
 }
 div[data-type='chapter'] .eoc.references-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "References";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.references-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }
 div[data-type='chapter'] .eoc.solutions-container {
   pass: 75;
@@ -840,8 +914,14 @@ div[data-type='chapter'] .eoc.solutions-container [data-type="metadata"] [data-t
   content: "Solutions";
 }
 div[data-type='chapter'] .eoc.solutions-container::before {
-  container: h1;
+  container: span;
   pass: 30;
-  data-type: document-title;
   content: "Solutions";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.solutions-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }

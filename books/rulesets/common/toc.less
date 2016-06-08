@@ -4,14 +4,14 @@ body {
     string-set: page-id attr(id);
     // > div[data-type="metadata"] {
       > [data-type='document-title'] {
-          string-set: pageTitle content();
+          node-set: pageTitle;
           pass: @pass-60-toc;
           //copy-to: page-title;
       }
     // }
     &::after {
       pass: @pass-60-toc;
-      content: string(pageTitle);
+      content: nodes(pageTitle);
       attr-href: "#" string(page-id);
       container: a;
       move-to: page-link;
@@ -25,13 +25,13 @@ body {
   }
   > div[data-type='chapter'] {
       > h1[data-type='document-title'] {
-          string-set: chapterTitle content();
+          node-set: chapterTitle;
           pass: @pass-60-toc;
         //copy-to: eoc-toc;
       }
       &::after{
         pass: @pass-60-toc;
-        content: string(chapterTitle);
+        content: nodes(chapterTitle);
         attr-href: "#" string(page-id);
         container: a;
         move-to: eoc-toc;
@@ -42,12 +42,12 @@ body {
       //> div[data-type="metadata"] {
         > [data-type='document-title']{
         pass: @pass-60-toc;
-        string-set: PageTitle content();
+        node-set: PageTitle;
         //copy-to: page-title;
         }
         &::after {
           pass: @pass-60-toc;
-          content: string(PageTitle);
+          content: nodes(PageTitle);
           attr-href: "#" string(page-id);
           container: a;
           move-to: page-link;
@@ -137,5 +137,25 @@ nav#toc {
     pass: @pass-65-toc-nav;
     content: pending(eob-toc);
     container: ol;
+  }
+}
+
+nav#toc > ol {
+  li {
+    > a {
+      > h1 > span,
+      > div > span {
+        pass: @pass-66-nav-unwrap;
+        move-to: title-spans;
+      }
+      pass: @pass-66-nav-unwrap;
+      move-to:trash;
+      &::outside {
+        pass: @pass-66-nav-unwrap;
+        content: pending(title-spans);
+        container: a;
+        attr-href: "#";
+      }
+    }
   }
 }
