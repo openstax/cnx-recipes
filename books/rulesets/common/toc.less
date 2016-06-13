@@ -2,13 +2,10 @@ body {
   > div[data-type="page"], > div[data-type="composite-page"] {
     pass: @pass-60-toc;
     string-set: page-id attr(id);
-    // > div[data-type="metadata"] {
       > [data-type='document-title'] {
           node-set: pageTitle;
           pass: @pass-60-toc;
-          //copy-to: page-title;
       }
-    // }
     &::after {
       pass: @pass-60-toc;
       content: nodes(pageTitle);
@@ -27,7 +24,6 @@ body {
       > h1[data-type='document-title'] {
           node-set: chapterTitle;
           pass: @pass-60-toc;
-        //copy-to: eoc-toc;
       }
       &::after{
         pass: @pass-60-toc;
@@ -39,60 +35,55 @@ body {
     > div[data-type="page"], > div[data-type="composite-page"] {
       pass: @pass-60-toc;
       string-set: page-idi attr(id);
-      //> div[data-type="metadata"] {
-        > [data-type='document-title']{
+      > [data-type='document-title']{
         pass: @pass-60-toc;
         node-set: PageTitle;
-        //copy-to: page-title;
-        }
-        &::after {
-          pass: @pass-60-toc;
-          content: nodes(PageTitle);
-          attr-href: "#" string(page-id);
-          container: a;
-          move-to: page-link;
-        }
-        &::after {
-          pass: @pass-60-toc;
-          content: pending(page-link);
-          move-to: eoc-toc-pages;
-          container: li;
-        }
-   //   }
+      }
+      &::after {
+        pass: @pass-60-toc;
+        content: nodes(PageTitle);
+        attr-href: "#" string(page-id);
+        container: a;
+        move-to: page-link;
+      }
+      &::after {
+        pass: @pass-60-toc;
+        content: pending(page-link);
+        move-to: eoc-toc-pages;
+        container: li;
+      }
     }
     &::after {
-    pass: @pass-60-toc;
-    content: pending(eoc-toc-pages);
-    container: ol;
-    class: chapter;
-    move-to: eoc-toc;
+      pass: @pass-60-toc;
+      content: pending(eoc-toc-pages);
+      container: ol;
+      class: chapter;
+      move-to: eoc-toc;
     }
     &::after {
-    pass: @pass-60-toc;
-    content: pending(eoc-toc);
-    container: li;
-    move-to: eob-toc;
+      pass: @pass-60-toc;
+      content: pending(eoc-toc);
+      container: li;
+      move-to: eob-toc;
     }
   }
   > div[data-type="unit"] {
     > h1[data-type='document-title'] {
       pass: @pass-60-toc;
-    copy-to: eou-toc;
+      copy-to: eou-toc;
     }
     > div[data-type='chapter'] {
-        > h1[data-type='document-title'] {
+      > h1[data-type='document-title'] {
         container: div;
         data-type: "toc-title";
         pass: @pass-60-toc;
         copy-to: eoc-toc;
-        }
+      }
       > div[data-type="page"], div[data-type="composite-page"] {
-      //  > div[data-type="metadata"] {
-          > [data-type='document-title'] {
+        > [data-type='document-title'] {
           pass: @pass-60-toc;
           copy-to: page-title;
-          }
-      //  }
+        }
         &::after {
           pass: @pass-60-toc;
           content: pending(page-title);
@@ -101,31 +92,31 @@ body {
         }
       }
       &::after {
-      pass: @pass-60-toc;
-      content: pending(eoc-toc-pages);
-      container: ol;
-      class: chapter;
-      move-to: eoc-toc;
+        pass: @pass-60-toc;
+        content: pending(eoc-toc-pages);
+        container: ol;
+        class: chapter;
+        move-to: eoc-toc;
       }
       &::after {
-      pass: @pass-60-toc;
-      content: pending(eoc-toc);
-      container: li;
-      move-to: eou-toc-chapters;
+        pass: @pass-60-toc;
+        content: pending(eoc-toc);
+        container: li;
+        move-to: eou-toc-chapters;
       }
     }
     &::after {
-    pass: @pass-60-toc;
-    content: pending(eou-toc-chapters);
-    container: ol;
-    class: unit;
-    move-to: eou-toc;
+      pass: @pass-60-toc;
+      content: pending(eou-toc-chapters);
+      container: ol;
+      class: unit;
+      move-to: eou-toc;
     }
     &::after {
-    pass: @pass-60-toc;
-    content: pending(eou-toc);
-    container: li;
-    move-to: eob-toc;
+      pass: @pass-60-toc;
+      content: pending(eou-toc);
+      container: li;
+      move-to: eob-toc;
     }
   }
 }
@@ -143,13 +134,13 @@ nav#toc {
 nav#toc > ol {
   li {
     > a {
+      pass: @pass-66-nav-unwrap;
+      move-to:trash;
       > h1 > span,
       > div > span {
         pass: @pass-66-nav-unwrap;
         move-to: title-spans;
       }
-      pass: @pass-66-nav-unwrap;
-      move-to:trash;
       &::outside {
         pass: @pass-66-nav-unwrap;
         content: pending(title-spans);

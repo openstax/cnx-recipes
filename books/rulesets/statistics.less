@@ -7,9 +7,9 @@
 // <cnx-pi data-type="cnx.eoc">class="references" title="References"</cnx-pi>
 
 
-@import 'common/mixins';
+@import 'common/var-mixins';
 @import 'common/numbering';
-@import 'common/collations';
+@import 'common/single-serving';
 @import 'common/toc';
 
 body {
@@ -21,131 +21,81 @@ body {
   }
 }
 
-//numbering
-div[data-type='chapter'] {
-  .formula-review, .practice, .references {
-    //.x-numb ();
-  }
-}
-
 div[data-type='chapter'] {
   .glossary("Key Terms");
 
   .summary(summary, ~'.', div, "Chapter Review");
 
-  section.formula-review {
-    move-to: eoc-formula-review;
-     > h1[data-type="title"] {
-      move-to: trash;
-    }
-    &::before {
-      content: nodes(sectionTitle);
-    }
-  }
-  &::after {
-    content: pending(eoc-formula-review);
-    class: "eoc formula-review-container";
-    data-type: composite-page;
-    container: div;
-    //move-to: eoc-all;
-  }
-
-  section.practice {
-    move-to: eoc-practice;
-    content: nodes(sectionTitle) content();
-     > h1[data-type="title"] {
-      move-to: trash;
-    }
-    div[data-type="solution"]  {
-      move-to: eoc-solutions;
-      pass: @pass-25-solutions;
-    }
-  }
-  &::after {
-    content: pending(eoc-practice);
-    class: "eoc practice-container";
-    data-type: composite-page;
-    container: div;
-    //move-to: eoc-all;
-  }
-  section.bring-together-exercises {
-    move-to: eoc-bring-together-exercises;
-     > h1[data-type="title"] {
-      move-to: trash;
-    }
-    div[data-type="solution"]  {
-      move-to: eoc-solutions;
-      pass: @pass-25-solutions;
-    }
-  }
-  &::after {
-    content: pending(eoc-bring-together-exercises);
-    class: "eoc bring-together-exercises-container";
-    data-type: composite-page;
-    container: div;
-    //move-to: eoc-all;
-  }
-  section.free-response {
-    move-to: eoc-free-response;
-    > h1[data-type="title"] {
-      move-to: trash;
-    }
-    &::before {
-      content: nodes(sectionTitle);
-    }
-    div[data-type="solution"]  {
-      move-to: eoc-solutions;
-      pass: @pass-25-solutions;
-    }
-  }
-  &::after {
-    content: pending(eoc-free-response);
-    class: "eoc free-response-container";
-    container: div;
-   data-type: composite-page;
-   // move-to: eoc-all;
-  }
-
-
-.bring-together-homework {
-    move-to: eoc-bring-together-homework;
-     > h1[data-type="title"] {
-      move-to: trash;
-    }
-    div[data-type="solution"]  {
-      move-to: eoc-solutions;
-      pass: @pass-25-solutions;
-    }
-  }
-  &::after {
-    content: pending(eoc-bring-together-homework);
-    class: "eoc bring-together-homework-container";
-    data-type: composite-page;
-    container: div;
-    //move-to: eoc-all;
-  }
   .try {
     div[data-type="solution"] {
       move-to: trash;
     }
   }
 
-  section.references {
-    move-to: eoc-references;
-    h1[data-type="title"] {
-      move-to: trash;
-    }
-    &::before {
-    content: nodes(sectionTitle);
-    }
+  section.formula-review {
+    content: nodes(sectionTitle) content();
+    .composite-origin(formula-review);
+  }
+  &::after {
+    .composite-destination(formula-review);
   }
 
+  section.practice {
+    content: nodes(sectionTitle) content();
+    .composite-origin(practice);
+
+    div[data-type="solution"] {
+      move-to: eoc-solutions;
+      pass: @pass-25-solutions;
+    }
+  }
   &::after {
-    content: pending(eoc-references);
-    class: "eoc references-container";
-    data-type: composite-page;
-    container: div;
-   // move-to: eoc-all;
+    .composite-destination(practice);
+  }
+
+  section.bring-together-exercises {
+    .composite-origin(bring-together-exercises);
+
+    div[data-type="solution"] {
+      move-to: eoc-solutions;
+      pass: @pass-25-solutions;
+    }
+  }
+  &::after {
+    .composite-destination(bring-together-exercises);
+  }
+
+  section.free-response {
+    content: nodes(sectionTitle) content();
+    .composite-origin(free-response);
+
+    div[data-type="solution"] {
+      move-to: eoc-solutions;
+      pass: @pass-25-solutions;
+    }
+  }
+  &::after {
+    .composite-destination(free-response);
+  }
+
+  section.bring-together-homework {
+    .composite-origin(bring-together-homework);
+
+    div[data-type="solution"] {
+      move-to: eoc-solutions;
+      pass: @pass-25-solutions;
+    }
+  }
+  &::after {
+    .composite-destination(bring-together-homework);
+  }
+
+  section.references {
+    content: nodes(sectionTitle) content();
+    .composite-origin(references);
+  }
+  &::after {
+    .composite-destination(references);
   }
 
   &::after {
@@ -155,43 +105,41 @@ div[data-type='chapter'] {
     content: pending(eoc-solutions);
     pass: @pass-25-solutions;
   }
-.eoc {
-  &.formula-review-container {
-    .metadata("Formula Review");
-    .doc-title("Formula Review");
-  }
-  &.practice-container {
-    .metadata("Practice");
-    .doc-title("Practice");
-  }
-  &.free-response-container {
-    .metadata("Homework");
-    .doc-title("Homework");
-  }
-  &.bring-together-exercises-container {
-    .metadata("Bringing It Together: Practice");
-    .doc-title("Bringing It Together: Practice");
-  }
-  &.bring-together-homework-container {
-    .metadata("Bringing It Together: Homework");
-    .doc-title("Bringing It Together: Homework");
-  }
-  &.references-container {
-    .metadata("References");
-    .doc-title("References");
-  }
-  &.solutions-container {
-    .metadata("Solutions");
-    .doc-title("Solutions");
+
+  .eoc {
+    &.formula-review-container {
+      .metadata("Formula Review");
+      .doc-title("Formula Review");
+    }
+    &.practice-container {
+      .metadata("Practice");
+      .doc-title("Practice");
+    }
+    &.free-response-container {
+      .metadata("Homework");
+      .doc-title("Homework");
+    }
+    &.bring-together-exercises-container {
+      .metadata("Bringing It Together: Practice");
+      .doc-title("Bringing It Together: Practice");
+    }
+    &.bring-together-homework-container {
+      .metadata("Bringing It Together: Homework");
+      .doc-title("Bringing It Together: Homework");
+    }
+    &.references-container {
+      .metadata("References");
+      .doc-title("References");
+    }
+    &.solutions-container {
+      .metadata("Solutions");
+      .doc-title("Solutions");
+    }
+    &.glossary {
+      .metadata("Key Terms");
+    }
+     &.summary {
+      .metadata("Chapter Review");
+    }
   }
 }
-  // &::after {
-  //   content: pending(eoc-all);
-  //   class: end-of-chapter;
-  //   data-type: composite-page;
-  //   container: div;
-  // }
-}
-
-
-
