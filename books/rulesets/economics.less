@@ -7,137 +7,76 @@
 // <cnx-pi data-type="cnx.eoc">class="references" title="References"</cnx-pi>
 //glossary
 
-@import url("common/numbering.less");
-@import url("common/collations.less");
+@import 'common/var-mixins';
+@import 'common/numbering';
+@import 'common/single-serving';
+@import 'common/toc';
 
 //numbering
-div[data-type='chapter'] {
-  .self-check-questions, .review-questions, .critical-thinking, .problems, .references {
-    //.x-numb ();
-  }
-}
+// div[data-type='chapter'] {
+//   .self-check-questions, .review-questions, .critical-thinking, .problems, .references {
+//     //.x-numb ();
+//   }
+// }
 
 
 //eoc
 div[data-type='chapter'] {
+
+  .glossary('Key Terms');
   .summary(summary, ~'.', h1, "Key Concepts and Summary");
 
-   section.self-check-questions {
-    move-to: self-check;
-    > [data-type="title"] {
-      move-to: trash;
-    }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "Self Check Questions";
-    move-to: selfTitle;
-   }
-   &::after {
-    container: div;
-    class: "eoc self-check-questions";
-    data-type: page;
-    content: pending(selfTitle) pending(self-check);
-   }
+  section.self-check-questions {
 
-   section.review-questions {
-    move-to: review-questions;
-    > [data-type="title"] {
-      move-to: trash;
+    .composite-origin (self-check-questions);
+    div[data-type="solution"] {
+      .solutions-origin (self-check-solutions);
     }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "Review Questions";
-    move-to: reviewTitle;
-   }
-   &::after {
-    container: div;
-    class: "eoc review-questions";
-    data-type: page;
-    content: pending(reviewTitle) pending(review-questions);
-   }
+  }
+  &::after {
+    .composite-destination(self-check-questions);
+  }
 
-   section.critical-thinking {
-    move-to: critical-thinking;
-    > [data-type="title"] {
-      move-to: trash;
-    }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "Critical Thinking";
-    move-to: criticalTitle;
-   }
-   &::after {
-    container: div;
-    class: "eoc critical-thinking";
-    data-type: page;
-    content: pending(criticalTitle) pending(critical-thinking);
-   }
+  section.review-questions {
+    .composite-origin (review-questions);
+  }
+  &::after {
+    .composite-destination(review-questions);
+  }
 
-   section.problems {
-    move-to: problems;
-    > [data-type="title"] {
-      move-to: trash;
-    }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "Problems";
-    move-to: problemsTitle;
-   }
-   &::after {
-    container: div;
-    class: "eoc problems";
-    data-type: page;
-    content: pending(problemsTitle) pending(problems);
+  section.critical-thinking {
+    .composite-origin (critical-thinking);
+  }
+  &::after {
+    .composite-destination(critical-thinking);
+  }
+
+  section.problems {
+    .composite-origin (problems);
+  }
+  &::after {
+    .composite-destination(problems);
   }
 
   section.references {
-    move-to: references;
-    > [data-type="title"] {
-      move-to: trash;
-    }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "references";
-    move-to: referencesTitle;
-   }
-  .glossary();
-    // &::after {
-  //   content: pending(eoc-all);
-  //   class: end-of-chapter;
-  //   data-type: composite-page;
-  //   container: div;
- // }
-  div[data-type="solution"] {
-    move-to: chapterSolutions;
+    .composite-origin (references);
   }
   &::after {
-    class: solutions;
-    content: nodes(chapterTitle) pending(chapterSolutions);
-    move-to: eob-solutions;
-   }
+    .composite-destination(references);
+  }
 }
 body {
-    &::after {
-    class: "eob solutions";
-    data-type: page;
-    container: div;
-    content: pending(answerTitle) pending(eob-solutions);
+  &::after {
+     .solutions-destination (self-check-solutions; self-check-solutions);
+     move-to: eob-all;
   }
   &::after {
-    container: div;
-    class: "eob references";
-    data-type: page;
-    content: pending(referencesTitle) pending(references);
+
+  }
+  &::after {
+    class: "eob-solutions";
+    content: pending(eob-all);
+    pass: @pass-25-solutions;
   }
 }
 
