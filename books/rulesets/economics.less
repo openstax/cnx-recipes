@@ -27,7 +27,6 @@ div[data-type='chapter'] {
   .summary(summary, ~'.', h1, "Key Concepts and Summary");
 
   section.self-check-questions {
-
     .composite-origin (self-check-questions);
     div[data-type="solution"] {
       .solutions-origin (self-check-solutions);
@@ -39,6 +38,9 @@ div[data-type='chapter'] {
 
   section.review-questions {
     .composite-origin (review-questions);
+    div[data-type="solution"] {
+      .solutions-origin (review-questions-solutions);
+    }
   }
   &::after {
     .composite-destination(review-questions);
@@ -46,6 +48,9 @@ div[data-type='chapter'] {
 
   section.critical-thinking {
     .composite-origin (critical-thinking);
+    div[data-type="solution"] {
+      .solutions-origin (critical-thinking-solutions);
+    }
   }
   &::after {
     .composite-destination(critical-thinking);
@@ -53,6 +58,9 @@ div[data-type='chapter'] {
 
   section.problems {
     .composite-origin (problems);
+    div[data-type="solution"] {
+      .solutions-origin (problems-solutions);
+    }
   }
   &::after {
     .composite-destination(problems);
@@ -64,19 +72,33 @@ div[data-type='chapter'] {
   &::after {
     .composite-destination(references);
   }
+
+ // chapters
+ // &::after {
+ //  content: "Chapter";
+ //  move-to: chapterAreaTitle;
+ //  pass: @pass-25-solutions;
+ // }
+  &::after {
+    .solutions-destination (self-check-solutions; self-check-solutions);
+    move-to: chapterArea;
+  }
+  &::after {
+    .solutions-destination (review-questions-solutions; review-questions-solutions);
+    move-to: chapterArea;
+  }
+  &::after {
+    class: "chapter-area";
+    content:   pending(chapterArea);
+    move-to: eob-all;
+    pass: @pass-25-solutions;
+  }
 }
 body {
   &::after {
-     .solutions-destination (self-check-solutions; self-check-solutions);
-     move-to: eob-all;
-  }
-  &::after {
-
-  }
-  &::after {
-    class: "eob-solutions";
+    class: "eob answer-key";
     content: pending(eob-all);
-    pass: @pass-25-solutions;
+    pass: 35;
   }
 }
 
