@@ -534,10 +534,6 @@ div[data-type='chapter'] section.review-questions {
 div[data-type='chapter'] section.review-questions > h1[data-type="title"] {
   move-to: trash;
 }
-div[data-type='chapter'] section.review-questions div[data-type="solution"] {
-  move-to: review-questions-solutions;
-  pass: 25;
-}
 div[data-type='chapter']::after {
   content: pending(review-questions);
   class: "eoc review-questions-container";
@@ -583,24 +579,16 @@ div[data-type='chapter'] section.references > h1[data-type="title"] {
   move-to: trash;
 }
 div[data-type='chapter']::after {
-  content: pending(references);
-  class: "eoc references-container";
-  container: div;
-  data-type: composite-page;
-}
-div[data-type='chapter']::after {
-  container: div;
-  data-type: composite-page;
-  class: "eoc self-check-solutions-container";
-  content: pending(self-check-solutions);
+  container: h1;
+  class: "chapter-area-title";
+  content: "Chapter" nodes(nodeChapterNumber);
+  move-to: chapterAreaTitle;
   pass: 25;
-  move-to: chapterArea;
 }
 div[data-type='chapter']::after {
   container: div;
-  data-type: composite-page;
-  class: "eoc review-questions-solutions-container";
-  content: pending(review-questions-solutions);
+  class: "self-check-solutions";
+  content: pending(chapterAreaTitle) pending(self-check-solutions);
   pass: 25;
   move-to: chapterArea;
 }
@@ -610,8 +598,123 @@ div[data-type='chapter']::after {
   move-to: eob-all;
   pass: 25;
 }
+div[data-type='chapter']::after {
+  container: div;
+  class: "references";
+  content: pending(references);
+  pass: 35;
+  move-to: refArea;
+}
+div[data-type='chapter']::after {
+  class: "chapter-area";
+  content: pending(refArea);
+  move-to: eob-references;
+  pass: 35;
+}
+div[data-type='chapter'] .eoc.self-check-questions-container {
+  pass: 75;
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.self-check-questions-container [data-type="metadata"] [data-type="document-title"] {
+  pass: 76;
+  content: "Self Check Questions";
+}
+div[data-type='chapter'] .eoc.self-check-questions-container::before {
+  container: span;
+  class: "text";
+  pass: 30;
+  content: "Self Check Questions";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.self-check-questions-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.review-questions-container {
+  pass: 75;
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.review-questions-container [data-type="metadata"] [data-type="document-title"] {
+  pass: 76;
+  content: "Review Qestions";
+}
+div[data-type='chapter'] .eoc.review-questions-container::before {
+  container: span;
+  class: "text";
+  pass: 30;
+  content: "Review Qestions";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.review-questions-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.critical-thinking-container {
+  pass: 75;
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.critical-thinking-container [data-type="metadata"] [data-type="document-title"] {
+  pass: 76;
+  content: "Critical Thinking";
+}
+div[data-type='chapter'] .eoc.critical-thinking-container::before {
+  container: span;
+  class: "text";
+  pass: 30;
+  content: "Critical Thinking";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.critical-thinking-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.problems-container {
+  pass: 75;
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.problems-container [data-type="metadata"] [data-type="document-title"] {
+  pass: 76;
+  content: "Problems";
+}
+div[data-type='chapter'] .eoc.problems-container::before {
+  container: span;
+  class: "text";
+  pass: 30;
+  content: "Problems";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.problems-container::before {
+  pass: 30;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
 body::after {
   class: "eob answer-key";
   content: pending(eob-all);
   pass: 35;
+}
+body::after {
+  class: "eob references";
+  content: pending(eob-references);
+  pass: 35;
+}
+body .eob.references::before {
+  container: span;
+  class: "text";
+  pass: 50;
+  content: "References";
+  move-to: titleSpan;
+}
+body .eob.references::before {
+  pass: 50;
+  container: div;
+  data-type: document-title;
+  content: pending(titleSpan);
 }

@@ -38,9 +38,6 @@ div[data-type='chapter'] {
 
   section.review-questions {
     .composite-origin (review-questions);
-    div[data-type="solution"] {
-      .solutions-origin (review-questions-solutions);
-    }
   }
   &::after {
     .composite-destination(review-questions);
@@ -69,29 +66,59 @@ div[data-type='chapter'] {
   section.references {
     .composite-origin (references);
   }
-  &::after {
-    .composite-destination(references);
-  }
+
 
  // chapters
- // &::after {
- //  content: "Chapter";
- //  move-to: chapterAreaTitle;
- //  pass: @pass-25-solutions;
- // }
+ &::after {
+  container: h1;
+  class: "chapter-area-title";
+  content: "Chapter" nodes(nodeChapterNumber);
+  move-to: chapterAreaTitle;
+  pass: @pass-25-solutions;
+ }
   &::after {
-    .solutions-destination (self-check-solutions; self-check-solutions);
-    move-to: chapterArea;
-  }
-  &::after {
-    .solutions-destination (review-questions-solutions; review-questions-solutions);
+    container: div;
+    class: "self-check-solutions";
+    content: pending(chapterAreaTitle) pending(self-check-solutions);
+    pass: @pass-25-solutions;
     move-to: chapterArea;
   }
   &::after {
     class: "chapter-area";
-    content:   pending(chapterArea);
+    content: pending(chapterArea);
     move-to: eob-all;
     pass: @pass-25-solutions;
+  }
+  &::after {
+    container: div;
+    class: "references";
+    content: pending(references);
+    pass: 35;
+    move-to: refArea;
+  }
+  &::after {
+    class: "chapter-area";
+    content: pending(refArea);
+    move-to: eob-references;
+    pass:35;
+  }
+  .eoc {
+    &.self-check-questions-container {
+      .metadata("Self Check Questions");
+      .doc-title("Self Check Questions");
+    }
+    &.review-questions-container {
+      .metadata("Review Qestions");
+      .doc-title("Review Qestions");
+    }
+    &.critical-thinking-container {
+      .metadata("Critical Thinking");
+      .doc-title("Critical Thinking");
+    }
+    &.problems-container {
+      .metadata("Problems");
+      .doc-title("Problems");
+    }
   }
 }
 body {
@@ -99,6 +126,28 @@ body {
     class: "eob answer-key";
     content: pending(eob-all);
     pass: 35;
+  }
+  &::after {
+    class: "eob references";
+    content: pending(eob-references);
+    pass: 35;
+  }
+  .eob {
+    &.references {
+      &::before {
+        container: span;
+        class: "text";
+        pass: 50;
+        content: "References";
+        move-to: titleSpan;
+      }
+      &::before {
+        pass: 50;
+        container: div;
+        data-type: document-title;
+        content: pending(titleSpan);
+      }
+    }
   }
 }
 
