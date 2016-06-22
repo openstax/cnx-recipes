@@ -133,32 +133,43 @@ div[data-type='chapter'] {
       .metadata("Problems");
       .doc-title("Problems");
     }
+    //TODO: Refactor metadata into summary, glossary mixins??
+    &.glossary {
+      .metadata("Key Terms");
+    }
+     &.summary {
+      .metadata("Key Concepts and Summary");
+    }
   }
 }
 body {
+  //TODO: Be able to use .composite origin/destination for this
   &::after {
     class: "eob answer-key";
+    data-type: "composite-page";
     content: pending(eob-all);
     pass: 35;
   }
   &::after {
     class: "eob references";
+    data-type: "composite-page";
     content: pending(eob-references);
     pass: 35;
   }
   .eob {
     &.references {
       .metadata("References");
-      .doc-title("References");
+      //.doc-title("Answer Key");
+      //TODO: Refactor, having to not use doc-title mixin in order to change the pass
       &::before {
         container: span;
         class: "text";
-        pass: 50;
+        pass: 36;
         content: "References";
         move-to: titleSpan;
       }
       &::before {
-        pass: 50;
+        pass: 36;
         container: div;
         data-type: document-title;
         content: pending(titleSpan);
@@ -166,7 +177,21 @@ body {
     }
     &.answer-key {
       .metadata("Answer Key");
-      .doc-title("Answer Key");
+      //.doc-title("Answer Key");
+      //TODO: Refactor, having to not use doc-title mixin in order to change the pass
+      &::before {
+        container: span;
+        class: "text";
+        pass: 36;
+        content: "Answer Key";
+        move-to: titleSpan;
+      }
+      &::before {
+        pass: 36;
+        container: div;
+        data-type: document-title;
+        content: pending(titleSpan);
+      }
     }
   }
 }
