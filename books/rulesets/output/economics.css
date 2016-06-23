@@ -215,11 +215,15 @@ div[data-type='chapter'] > [data-type="document-title"] {
 }
 div[data-type='chapter'] > [data-type="document-title"] .number {
   node-set: nodeChapterNumber;
-  pass: 50;
+  pass: 25;
 }
 div[data-type='chapter'] > [data-type="document-title"] .label {
   node-set: nodeChapterLabel;
-  pass: 50;
+  pass: 25;
+}
+div[data-type='chapter'] > [data-type="document-title"] .text {
+  node-set: nodeChapterText;
+  pass: 35;
 }
 div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"],
 div[data-type='chapter'] div[data-type="composite-page"] > div[data-type="document-title"] {
@@ -575,6 +579,7 @@ div[data-type='chapter']::after {
   data-type: composite-page;
 }
 div[data-type='chapter'] section.references {
+  pass: 35;
   move-to: references;
 }
 div[data-type='chapter'] section.references > h1[data-type="title"] {
@@ -601,6 +606,13 @@ div[data-type='chapter']::after {
   pass: 25;
 }
 div[data-type='chapter']::after {
+  container: h1;
+  class: "chapter-area-text";
+  content: nodes(nodeChapterText);
+  move-to: chapterAreaText;
+  pass: 35;
+}
+div[data-type='chapter']::after {
   container: div;
   class: "references";
   content: pending(references);
@@ -609,7 +621,7 @@ div[data-type='chapter']::after {
 }
 div[data-type='chapter']::after {
   class: "chapter-area";
-  content: pending(refArea);
+  content: pending(chapterAreaText) pending(refArea);
   move-to: eob-references;
   pass: 35;
 }
@@ -713,13 +725,13 @@ div[data-type='chapter'] .eoc.critical-thinking-container {
 }
 div[data-type='chapter'] .eoc.critical-thinking-container [data-type="metadata"] [data-type="document-title"] {
   pass: 76;
-  content: "Critical Thinking";
+  content: "Critical Thinking Questions";
 }
 div[data-type='chapter'] .eoc.critical-thinking-container::before {
   container: span;
   class: "text";
   pass: 30;
-  content: "Critical Thinking";
+  content: "Critical Thinking Questions";
   move-to: titleSpan;
 }
 div[data-type='chapter'] .eoc.critical-thinking-container::before {
@@ -775,7 +787,7 @@ body::after {
   class: "eob references";
   data-type: "composite-page";
   content: pending(eob-references);
-  pass: 35;
+  pass: 36;
 }
 body .eob.references {
   pass: 75;
@@ -788,12 +800,12 @@ body .eob.references [data-type="metadata"] [data-type="document-title"] {
 body .eob.references::before {
   container: span;
   class: "text";
-  pass: 36;
+  pass: 37;
   content: "References";
   move-to: titleSpan;
 }
 body .eob.references::before {
-  pass: 36;
+  pass: 37;
   container: div;
   data-type: document-title;
   content: pending(titleSpan);
