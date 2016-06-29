@@ -299,7 +299,7 @@ body {
       }
       &::after {
         container: span;
-        content: "Fig." counter(chapNum)"."counter(figure);
+        content: "Figure " counter(chapNum)"."counter(figure);
         move-to: figureNumber;
         pass: @pass-40-numbering-figs-tabs;
       }
@@ -329,7 +329,73 @@ body {
       }
       &::after {
         container: span;
-        content: "Table." counter(chapNum)"."counter(table);
+        content: "Table " counter(chapNum)"."counter(table);
+        move-to: tableNumber;
+        pass: @pass-40-numbering-figs-tabs;
+      }
+      &:after {
+        class: "table-number";
+        container: div;
+        content: pending(tableNumber);
+        move-to: table-number;
+        pass: @pass-40-numbering-figs-tabs;
+      }
+      &::outside {
+        class: table;
+        container: div;
+        content: content() pending(table-number) pending(imageCaption);
+        pass: @pass-40-numbering-figs-tabs;
+      }
+    }
+  }
+  .appendix {
+    pass: @pass-40-numbering-figs-tabs;
+    counter-reset: figure;
+    counter-reset: table;
+    counter-increment: apNum;
+    :not(figure) > figure {
+      counter-increment: figure;
+      pass: @pass-40-numbering-figs-tabs;
+      figcaption {
+        container: div;
+        class: caption;
+        content: content();
+        move-to: figCaption;
+        pass: @pass-40-numbering-figs-tabs;
+      }
+      &::after {
+        container: span;
+        content: "Figure " counter(apNum, upper-alpha) counter(figure);
+        move-to: figureNumber;
+        pass: @pass-40-numbering-figs-tabs;
+      }
+      &::after {
+        class: "figure-number";
+        container: span ;
+        content: pending(figureNumber);
+        move-to: figNum;
+        pass: @pass-40-numbering-figs-tabs;
+      }
+      &::outside {
+        class:  figure;
+        container: div;
+        content: content() pending(figNum) pending(figCaption);
+        pass: @pass-40-numbering-figs-tabs;
+      }
+    }
+
+    :not(table) > table {
+      counter-increment: table;
+      pass: @pass-40-numbering-figs-tabs;
+      caption {
+        container: div;
+        class: caption;
+        move-to: imageCaption;
+        pass: @pass-40-numbering-figs-tabs;
+      }
+      &::after {
+        container: span;
+        content: "Table " counter(apNum, upper-alpha) counter(table);
         move-to: tableNumber;
         pass: @pass-40-numbering-figs-tabs;
       }
