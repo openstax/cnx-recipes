@@ -116,7 +116,33 @@
 //   }
 // }
 body {
+  counter-reset: appendix;
   counter-reset: chapter;
+  div.appendix {
+    counter-increment: appendix;
+    &::before {
+      container: span;
+      class: "label";
+      content: "Appendix";
+      move-to: appendixLabel
+    }
+    &::before {
+      container: span;
+      class: "number";
+      content: counter(appendix, upper-alpha);
+      move-to: appendixNumber;
+    }
+    &::before {
+      content: ": ";
+      container: span;
+      class: "divider";
+      move-to: appendixDivider;
+    }
+    > div[data-type="document-title"] {
+      container: h1;
+      content: pending(appendixLabel) " " pending(appendixNumber) pending(appendixDivider) content() ;
+    }
+  }
   div[data-type="chapter"] {
     pass: @pass-20-numbering-eoc;
     counter-reset: exercises;
