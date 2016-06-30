@@ -1,5 +1,7 @@
 /* This file includes parts that are used only once per book */
-
+body{
+  counter-reset: term-count;
+}
 div[data-type='chapter'] {
   >[data-type="document-title"] {
     node-set: chapterTitle;
@@ -20,12 +22,16 @@ div[data-type='chapter'] {
     }
   }
   div[data-type="page"], div[data-type="composite-page"] {
+    //build links from index to content
+    string-set: page-id attr(id);
     > div[data-type="document-title"] {
       pass: default, @pass-50-index;
       string-set: section-title content();
       node-set: sectionTitle;
     }
     span[data-type="term"] {
+      counter-increment: term-count;
+      attr-id: "auto_" string(page-id) "_term" counter(term-count);
       &:match(^[a-zA-Z]) {
         attr-group-by: first-letter(content());
       }
