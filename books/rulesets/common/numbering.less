@@ -284,6 +284,7 @@ body {
     counter-reset: figure;
     counter-reset: table;
     counter-increment: chapNum;
+    counter-reset: exercises-target;
     [data-target="figure"] {
       content: "Fig." target-counter(attr(href), chapNum)"."target-counter(attr(href), figure);
       pass: @pass-40-numbering-figs-tabs;
@@ -425,7 +426,12 @@ body {
   }
 
   .eoc {
+    pass: @pass-40-numbering-figs-tabs;
+    
     [data-type="exercise"] {
+      pass: @pass-40-numbering-figs-tabs;
+      counter-increment: exercises-target;
+      string-set: target-label "Exercise " counter(chapter) "." counter(exercises-target);
       [data-type="problem"]  {
         pass: @pass-20-numbering-eoc;
         counter-increment: exercises;

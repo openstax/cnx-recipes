@@ -10,7 +10,33 @@
 /*Add title to metatdata sections*/
 /**/
 body {
+  counter-reset: appendix;
   counter-reset: chapter;
+}
+body div.appendix {
+  counter-increment: appendix;
+}
+body div.appendix::before {
+  container: span;
+  class: "label";
+  content: "Appendix";
+  move-to: appendixLabel;
+}
+body div.appendix::before {
+  container: span;
+  class: "number";
+  content: counter(appendix, upper-alpha);
+  move-to: appendixNumber;
+}
+body div.appendix::before {
+  content: ": ";
+  container: span;
+  class: "divider";
+  move-to: appendixDivider;
+}
+body div.appendix > div[data-type="document-title"] {
+  container: h1;
+  content: pending(appendixLabel) " " pending(appendixNumber) pending(appendixDivider) content();
 }
 body div[data-type="chapter"] {
   pass: 20;
@@ -20,6 +46,7 @@ body div[data-type="chapter"] {
   counter-reset: section;
   counter-reset: example;
   counter-reset: lab;
+  pass: default, 40;
   counter-increment: chapter;
 }
 body div[data-type="chapter"]::before {
@@ -67,6 +94,11 @@ body div[data-type="chapter"] > div[data-type="page"] > [data-type="document-tit
   data-type: "document-title";
   container: div;
   content: pending(sectionNumber) " " pending(sectionDivider) content();
+}
+body div[data-type="chapter"] [data-type="page"] .example {
+  pass: 40;
+  counter-increment: example;
+  string-set: target-label "Example " counter(chapter) "." counter(example);
 }
 body div[data-type="chapter"] [data-type="page"] .example {
   counter-increment: example;
@@ -125,6 +157,7 @@ body [data-type="chapter"] {
   counter-reset: figure;
   counter-reset: table;
   counter-increment: chapNum;
+  counter-reset: exercises-target;
 }
 body [data-type="chapter"] [data-target="figure"] {
   content: "Fig." target-counter(attr(href), chapNum) "." target-counter(attr(href), figure);
@@ -137,6 +170,7 @@ body [data-type="chapter"] [data-target="table"] {
 body [data-type="chapter"] :not(figure) > figure {
   counter-increment: figure;
   pass: 40;
+  string-set: target-label "Figure " counter(chapNum) "." counter(figure);
 }
 body [data-type="chapter"] :not(figure) > figure figcaption {
   container: div;
@@ -146,9 +180,8 @@ body [data-type="chapter"] :not(figure) > figure figcaption {
   pass: 40;
 }
 body [data-type="chapter"] :not(figure) > figure::after {
-  container: a;
-  attr-href: myLinkId;
-  content: "Fig." counter(chapNum) "." counter(figure);
+  container: span;
+  content: string(target-label);
   move-to: figureNumber;
   pass: 40;
 }
@@ -168,6 +201,7 @@ body [data-type="chapter"] :not(figure) > figure::outside {
 body [data-type="chapter"] :not(table) > table {
   counter-increment: table;
   pass: 40;
+  string-set: target-label "Table " counter(chapNum) "." counter(table);
 }
 body [data-type="chapter"] :not(table) > table caption {
   container: div;
@@ -176,9 +210,8 @@ body [data-type="chapter"] :not(table) > table caption {
   pass: 40;
 }
 body [data-type="chapter"] :not(table) > table::after {
-  container: a;
-  attr-href: myLinkId;
-  content: "Table." counter(chapNum) "." counter(table);
+  container: span;
+  content: string(target-label);
   move-to: tableNumber;
   pass: 40;
 }
@@ -195,9 +228,85 @@ body [data-type="chapter"] :not(table) > table::outside {
   content: content() pending(table-number) pending(imageCaption);
   pass: 40;
 }
+body .appendix {
+  pass: 40;
+  counter-reset: figure;
+  counter-reset: table;
+  counter-increment: apNum;
+}
+body .appendix :not(figure) > figure {
+  counter-increment: figure;
+  string-set: target-label "Figure " counter(apNum, upper-alpha) counter(figure);
+  pass: 40;
+}
+body .appendix :not(figure) > figure figcaption {
+  container: div;
+  class: caption;
+  content: content();
+  move-to: figCaption;
+  pass: 40;
+}
+body .appendix :not(figure) > figure::after {
+  container: span;
+  content: string(target-label);
+  move-to: figureNumber;
+  pass: 40;
+}
+body .appendix :not(figure) > figure::after {
+  class: "figure-number";
+  container: span ;
+  content: pending(figureNumber);
+  move-to: figNum;
+  pass: 40;
+}
+body .appendix :not(figure) > figure::outside {
+  class: figure;
+  container: div;
+  content: content() pending(figNum) pending(figCaption);
+  pass: 40;
+}
+body .appendix :not(table) > table {
+  counter-increment: table;
+  string-set: target-label "Table " counter(apNum, upper-alpha) counter(table);
+  pass: 40;
+}
+body .appendix :not(table) > table caption {
+  container: div;
+  class: caption;
+  move-to: imageCaption;
+  pass: 40;
+}
+body .appendix :not(table) > table::after {
+  container: span;
+  content: string(target-label);
+  move-to: tableNumber;
+  pass: 40;
+}
+body .appendix :not(table) > table:after {
+  class: "table-number";
+  container: div;
+  content: pending(tableNumber);
+  move-to: table-number;
+  pass: 40;
+}
+body .appendix :not(table) > table::outside {
+  class: table;
+  container: div;
+  content: content() pending(table-number) pending(imageCaption);
+  pass: 40;
+}
+body .eoc {
+  pass: 40;
+}
+body .eoc [data-type="exercise"] {
+  pass: 40;
+  counter-increment: exercises-target;
+  string-set: target-label "Exercise " counter(chapter) "." counter(exercises-target);
+}
 body .eoc [data-type="exercise"] [data-type="problem"] {
   pass: 20;
   counter-increment: exercises;
+  string-set: exId attr(id);
 }
 body .eoc [data-type="exercise"] [data-type="problem"]::before {
   pass: 20;
@@ -206,26 +315,48 @@ body .eoc [data-type="exercise"] [data-type="problem"]::before {
   node-set: exerciseNumber;
 }
 body .eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: a;
+  attr-href: "#" string(exId);
   pass: 20;
   content: nodes(exerciseNumber);
 }
+body a.autogenerated-content {
+  content: target-string(attr(href), target-label);
+  pass: 40;
+}
 /* This file includes parts that are used only once per book */
+body {
+  counter-reset: term-count;
+}
 div[data-type='chapter'] > [data-type="document-title"] {
   node-set: chapterTitle;
 }
 div[data-type='chapter'] > [data-type="document-title"] .number {
   node-set: nodeChapterNumber;
-  pass: 50;
+  pass: 25;
 }
 div[data-type='chapter'] > [data-type="document-title"] .label {
   node-set: nodeChapterLabel;
-  pass: 50;
+  pass: 25;
+}
+div[data-type='chapter'] > [data-type="document-title"] .text {
+  node-set: nodeChapterText;
+  pass: 35;
+}
+div[data-type='chapter'] div[data-type="page"],
+div[data-type='chapter'] div[data-type="composite-page"] {
+  string-set: page-id attr(id);
 }
 div[data-type='chapter'] div[data-type="page"] > div[data-type="document-title"],
 div[data-type='chapter'] div[data-type="composite-page"] > div[data-type="document-title"] {
   pass: default, 50;
   string-set: section-title content();
   node-set: sectionTitle;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"],
+div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"] {
+  counter-increment: term-count;
+  attr-id: "auto_" string(page-id) "_term" counter(term-count);
 }
 div[data-type='chapter'] div[data-type="page"] span[data-type="term"]:match(^[a-zA-Z]),
 div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:match(^[a-zA-Z]) {
@@ -302,7 +433,17 @@ body::after {
 }
 body .eob.index > div.group-by:first-of-type > span.group-label {
   pass: 51;
-  content: "Symbol";
+  content: "Symbols";
+}
+body div[data-type="composite-page"] {
+  pass: 55;
+  counter-increment: cPage;
+  attr-id: "cPage" counter(cPage);
+}
+body > div[data-type='chapter'] > h1[data-type='document-title'] {
+  pass: 55;
+  counter-increment: chapTitleNum;
+  attr-id: "chapTitle" counter(chapTitleNum);
 }
 body :not([data-type="metadata"]) > [data-type="document-title"] {
   content: none;
@@ -344,18 +485,19 @@ body > div[data-type="composite-page"]::after {
 body > div[data-type='chapter'] > h1[data-type='document-title'] {
   node-set: chapterTitle;
   pass: 60;
+  string-set: chapTitle-id attr(id);
 }
 body > div[data-type='chapter']::after {
   pass: 60;
   content: nodes(chapterTitle);
-  attr-href: "#" string(page-id);
+  attr-href: "#" string(chapTitle-id);
   container: a;
   move-to: eoc-toc;
 }
 body > div[data-type='chapter'] > div[data-type="page"],
 body > div[data-type='chapter'] > div[data-type="composite-page"] {
   pass: 60;
-  string-set: page-idi attr(id);
+  string-set: page-id-chap attr(id);
 }
 body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
@@ -366,7 +508,7 @@ body > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
   pass: 60;
   content: nodes(PageTitle);
-  attr-href: "#" string(page-id);
+  attr-href: "#" string(page-id-chap);
   container: a;
   move-to: page-link;
 }
@@ -450,6 +592,7 @@ nav#toc::after {
 nav#toc > ol li > a {
   pass: 66;
   move-to: trash;
+  string-set: toc-ref attr(href);
 }
 nav#toc > ol li > a > h1 > span,
 nav#toc > ol li > a > div > span {
@@ -460,7 +603,7 @@ nav#toc > ol li > a::outside {
   pass: 66;
   content: pending(title-spans);
   container: a;
-  attr-href: "#";
+  attr-href: string(toc-ref);
 }
 body::after {
   pass: default;
