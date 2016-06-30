@@ -10,7 +10,33 @@
 /*Add title to metatdata sections*/
 /**/
 body {
+  counter-reset: appendix;
   counter-reset: chapter;
+}
+body div.appendix {
+  counter-increment: appendix;
+}
+body div.appendix::before {
+  container: span;
+  class: "label";
+  content: "Appendix";
+  move-to: appendixLabel;
+}
+body div.appendix::before {
+  container: span;
+  class: "number";
+  content: counter(appendix, upper-alpha);
+  move-to: appendixNumber;
+}
+body div.appendix::before {
+  content: ": ";
+  container: span;
+  class: "divider";
+  move-to: appendixDivider;
+}
+body div.appendix > div[data-type="document-title"] {
+  container: h1;
+  content: pending(appendixLabel) " " pending(appendixNumber) pending(appendixDivider) content();
 }
 body div[data-type="chapter"] {
   pass: 20;
@@ -146,9 +172,8 @@ body [data-type="chapter"] :not(figure) > figure figcaption {
   pass: 40;
 }
 body [data-type="chapter"] :not(figure) > figure::after {
-  container: a;
-  attr-href: myLinkId;
-  content: "Fig." counter(chapNum) "." counter(figure);
+  container: span;
+  content: "Figure " counter(chapNum) "." counter(figure);
   move-to: figureNumber;
   pass: 40;
 }
@@ -176,9 +201,8 @@ body [data-type="chapter"] :not(table) > table caption {
   pass: 40;
 }
 body [data-type="chapter"] :not(table) > table::after {
-  container: a;
-  attr-href: myLinkId;
-  content: "Table." counter(chapNum) "." counter(table);
+  container: span;
+  content: "Table " counter(chapNum) "." counter(table);
   move-to: tableNumber;
   pass: 40;
 }
@@ -195,9 +219,75 @@ body [data-type="chapter"] :not(table) > table::outside {
   content: content() pending(table-number) pending(imageCaption);
   pass: 40;
 }
+body .appendix {
+  pass: 40;
+  counter-reset: figure;
+  counter-reset: table;
+  counter-increment: apNum;
+}
+body .appendix :not(figure) > figure {
+  counter-increment: figure;
+  pass: 40;
+}
+body .appendix :not(figure) > figure figcaption {
+  container: div;
+  class: caption;
+  content: content();
+  move-to: figCaption;
+  pass: 40;
+}
+body .appendix :not(figure) > figure::after {
+  container: span;
+  content: "Figure " counter(apNum, upper-alpha) counter(figure);
+  move-to: figureNumber;
+  pass: 40;
+}
+body .appendix :not(figure) > figure::after {
+  class: "figure-number";
+  container: span ;
+  content: pending(figureNumber);
+  move-to: figNum;
+  pass: 40;
+}
+body .appendix :not(figure) > figure::outside {
+  class: figure;
+  container: div;
+  content: content() pending(figNum) pending(figCaption);
+  pass: 40;
+}
+body .appendix :not(table) > table {
+  counter-increment: table;
+  pass: 40;
+}
+body .appendix :not(table) > table caption {
+  container: div;
+  class: caption;
+  move-to: imageCaption;
+  pass: 40;
+}
+body .appendix :not(table) > table::after {
+  container: span;
+  content: "Table " counter(apNum, upper-alpha) counter(table);
+  move-to: tableNumber;
+  pass: 40;
+}
+body .appendix :not(table) > table:after {
+  class: "table-number";
+  container: div;
+  content: pending(tableNumber);
+  move-to: table-number;
+  pass: 40;
+}
+body .appendix :not(table) > table::outside {
+  class: table;
+  container: div;
+  content: content() pending(table-number) pending(imageCaption);
+  pass: 40;
+}
 body .eoc [data-type="exercise"] [data-type="problem"] {
   pass: 20;
   counter-increment: exercises;
+  string-set: exId attr(id);
 }
 body .eoc [data-type="exercise"] [data-type="problem"]::before {
   pass: 20;
@@ -206,6 +296,8 @@ body .eoc [data-type="exercise"] [data-type="problem"]::before {
   node-set: exerciseNumber;
 }
 body .eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: a;
+  attr-href: "#" string(exId);
   pass: 20;
   content: nodes(exerciseNumber);
 }
@@ -306,7 +398,17 @@ body::after {
 }
 body .eob.index > div.group-by:first-of-type > span.group-label {
   pass: 51;
-  content: "Symbol";
+  content: "Symbols";
+}
+body div[data-type="composite-page"] {
+  pass: 55;
+  counter-increment: cPage;
+  attr-id: "cPage" counter(cPage);
+}
+body > div[data-type='chapter'] > h1[data-type='document-title'] {
+  pass: 55;
+  counter-increment: chapTitleNum;
+  attr-id: "chapTitle" counter(chapTitleNum);
 }
 body :not([data-type="metadata"]) > [data-type="document-title"] {
   content: none;
@@ -348,18 +450,19 @@ body > div[data-type="composite-page"]::after {
 body > div[data-type='chapter'] > h1[data-type='document-title'] {
   node-set: chapterTitle;
   pass: 60;
+  string-set: chapTitle-id attr(id);
 }
 body > div[data-type='chapter']::after {
   pass: 60;
   content: nodes(chapterTitle);
-  attr-href: "#" string(page-id);
+  attr-href: "#" string(chapTitle-id);
   container: a;
   move-to: eoc-toc;
 }
 body > div[data-type='chapter'] > div[data-type="page"],
 body > div[data-type='chapter'] > div[data-type="composite-page"] {
   pass: 60;
-  string-set: page-idi attr(id);
+  string-set: page-id-chap attr(id);
 }
 body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
 body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
@@ -370,7 +473,7 @@ body > div[data-type='chapter'] > div[data-type="page"]::after,
 body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
   pass: 60;
   content: nodes(PageTitle);
-  attr-href: "#" string(page-id);
+  attr-href: "#" string(page-id-chap);
   container: a;
   move-to: page-link;
 }
@@ -454,6 +557,7 @@ nav#toc::after {
 nav#toc > ol li > a {
   pass: 66;
   move-to: trash;
+  string-set: toc-ref attr(href);
 }
 nav#toc > ol li > a > h1 > span,
 nav#toc > ol li > a > div > span {
@@ -464,7 +568,7 @@ nav#toc > ol li > a::outside {
   pass: 66;
   content: pending(title-spans);
   container: a;
-  attr-href: "#";
+  attr-href: string(toc-ref);
 }
 div[data-type='chapter'] div[data-type="glossary"] {
   move-to: trash;
@@ -588,7 +692,7 @@ div[data-type='chapter'] section.references > h1[data-type="title"] {
 div[data-type='chapter']::after {
   container: h1;
   class: "chapter-area-title";
-  content: "Chapter" nodes(nodeChapterNumber);
+  content: "Chapter " nodes(nodeChapterNumber);
   move-to: chapterAreaTitle;
   pass: 25;
 }
@@ -683,13 +787,13 @@ div[data-type='chapter'] .eoc.self-check-questions-container {
 }
 div[data-type='chapter'] .eoc.self-check-questions-container [data-type="metadata"] [data-type="document-title"] {
   pass: 76;
-  content: "Self Check Questions";
+  content: "Self-Check Questions";
 }
 div[data-type='chapter'] .eoc.self-check-questions-container::before {
   container: span;
   class: "text";
   pass: 30;
-  content: "Self Check Questions";
+  content: "Self-Check Questions";
   move-to: titleSpan;
 }
 div[data-type='chapter'] .eoc.self-check-questions-container::before {
@@ -704,13 +808,13 @@ div[data-type='chapter'] .eoc.review-questions-container {
 }
 div[data-type='chapter'] .eoc.review-questions-container [data-type="metadata"] [data-type="document-title"] {
   pass: 76;
-  content: "Review Qestions";
+  content: "Review Questions";
 }
 div[data-type='chapter'] .eoc.review-questions-container::before {
   container: span;
   class: "text";
   pass: 30;
-  content: "Review Qestions";
+  content: "Review Questions";
   move-to: titleSpan;
 }
 div[data-type='chapter'] .eoc.review-questions-container::before {
