@@ -108,7 +108,22 @@ body {
     content: "Symbols";
   }
 
-//Wrap all non-generated title content within a span before numbering
+  //Add IDs to composite pages; this method will change
+  div[data-type="composite-page"] {
+    pass: @pass-55-id-assign;
+    counter-increment: cPage;
+    attr-id: "cPage" counter(cPage);
+  }
+  //Add IDs to each chapter title; this method will change
+  > div[data-type='chapter'] {
+    > h1[data-type='document-title'] {
+      pass: @pass-55-id-assign;
+      counter-increment: chapTitleNum;
+      attr-id: "chapTitle" counter(chapTitleNum);
+    }
+  }
+
+  //Wrap all non-generated title content within a span before numbering
   :not([data-type="metadata"]) > [data-type="document-title"] {
     content: none;
     &::after {
