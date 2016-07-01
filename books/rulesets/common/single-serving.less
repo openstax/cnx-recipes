@@ -1,16 +1,37 @@
 /* This file includes parts that are used only once per book */
-
+body{
+  counter-reset: term-count;
+}
 div[data-type='chapter'] {
-  h1[data-type="document-title"] {
+  >[data-type="document-title"] {
     node-set: chapterTitle;
+    .number {
+      node-set: nodeChapterNumber;
+      //Pass 25: econ answer key
+      pass: 25;
+    }
+    .label {
+      //Unused node-set?
+      node-set: nodeChapterLabel;
+      pass: 25;
+    }
+    .text {
+      //pass 35: econ references
+      node-set: nodeChapterText;
+      pass: 35;
+    }
   }
   div[data-type="page"], div[data-type="composite-page"] {
+    //build links from index to content
+    string-set: page-id attr(id);
     > div[data-type="document-title"] {
       pass: default, @pass-50-index;
       string-set: section-title content();
       node-set: sectionTitle;
     }
     span[data-type="term"] {
+      counter-increment: term-count;
+      attr-id: "auto_" string(page-id) "_term" counter(term-count);
       &:match(^[a-zA-Z]) {
         attr-group-by: first-letter(content());
       }
@@ -90,15 +111,30 @@ body {
   }
   .eob.index > div.group-by:first-of-type > span.group-label {
     pass: @pass-51-index-symbol;
-    content: "Symbol";
+    content: "Symbols";
   }
 
-//Wrap all non-generated title content within a span before numbering
+  //Add IDs to composite pages; this method will change
+  div[data-type="composite-page"] {
+    pass: @pass-55-id-assign;
+    attr-id: uuid() "@1";
+  }
+  //Add IDs to each chapter title; this method will change
+  > div[data-type='chapter'] {
+    > h1[data-type='document-title'] {
+      pass: @pass-55-id-assign;
+      counter-increment: chapTitleNum;
+      attr-id: "chapTitle" counter(chapTitleNum);
+    }
+  }
+
+  //Wrap all non-generated title content within a span before numbering
   :not([data-type="metadata"]) > [data-type="document-title"] {
     content: none;
     &::after {
       content: content();
       container: span;
+      class: "text";
     }
   }
 
@@ -108,9 +144,6 @@ body {
     content: clear(trash);
   }
 }
-
-
-
 
 //todo
 // .feature(@name, @title, @nameTitle(@title,  @suffix) ) {

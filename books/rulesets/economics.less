@@ -7,137 +7,204 @@
 // <cnx-pi data-type="cnx.eoc">class="references" title="References"</cnx-pi>
 //glossary
 
-@import url("common/numbering.less");
-@import url("common/collations.less");
+@import 'common/var-mixins';
+@import 'common/numbering';
+@import 'common/single-serving';
+@import 'common/toc';
 
 //numbering
-div[data-type='chapter'] {
-  .self-check-questions, .review-questions, .critical-thinking, .problems, .references {
-    //.x-numb ();
-  }
-}
+// div[data-type='chapter'] {
+//   .self-check-questions, .review-questions, .critical-thinking, .problems, .references {
+//     //.x-numb ();
+//   }
+// }
 
 
 //eoc
 div[data-type='chapter'] {
-  .summary(summary, ~'.', h1, "Key Concepts and Summary");
 
-   section.self-check-questions {
-    move-to: self-check;
-    > [data-type="title"] {
-      move-to: trash;
-    }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "Self Check Questions";
-    move-to: selfTitle;
-   }
-   &::after {
-    container: div;
-    class: "eoc self-check-questions";
-    data-type: page;
-    content: pending(selfTitle) pending(self-check);
-   }
+  .glossary('Key Terms');
+  .summary(summary, ~'.', div, "Key Concepts and Summary");
 
-   section.review-questions {
-    move-to: review-questions;
-    > [data-type="title"] {
-      move-to: trash;
+  section.self-check-questions {
+    .composite-origin (self-check-questions);
+    div[data-type="solution"] {
+      .solutions-origin (self-check-solutions);
     }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "Review Questions";
-    move-to: reviewTitle;
-   }
-   &::after {
-    container: div;
-    class: "eoc review-questions";
-    data-type: page;
-    content: pending(reviewTitle) pending(review-questions);
-   }
+  }
+  &::after {
+    .composite-destination(self-check-questions);
+  }
 
-   section.critical-thinking {
-    move-to: critical-thinking;
-    > [data-type="title"] {
-      move-to: trash;
-    }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "Critical Thinking";
-    move-to: criticalTitle;
-   }
-   &::after {
-    container: div;
-    class: "eoc critical-thinking";
-    data-type: page;
-    content: pending(criticalTitle) pending(critical-thinking);
-   }
+  section.review-questions {
+    .composite-origin (review-questions);
+  }
+  &::after {
+    .composite-destination(review-questions);
+  }
 
-   section.problems {
-    move-to: problems;
-    > [data-type="title"] {
-      move-to: trash;
+  section.critical-thinking {
+    .composite-origin (critical-thinking);
+    div[data-type="solution"] {
+      .solutions-origin (critical-thinking-solutions);
     }
-   }
-   &::before {
-    container: h1;
-    data-type: title;
-    content: "Problems";
-    move-to: problemsTitle;
-   }
-   &::after {
-    container: div;
-    class: "eoc problems";
-    data-type: page;
-    content: pending(problemsTitle) pending(problems);
+  }
+  &::after {
+    .composite-destination(critical-thinking);
+  }
+
+  section.problems {
+    .composite-origin (problems);
+    div[data-type="solution"] {
+      .solutions-origin (problems-solutions);
+    }
+  }
+  &::after {
+    .composite-destination(problems);
   }
 
   section.references {
-    move-to: references;
-    > [data-type="title"] {
-      move-to: trash;
-    }
-   }
-   &::before {
+    pass: 35;
+    .composite-origin (references);
+  }
+
+
+// chapters
+
+  //Answer Key
+  &::after {
     container: h1;
-    data-type: title;
-    content: "references";
-    move-to: referencesTitle;
-   }
-  .glossary();
-    // &::after {
-  //   content: pending(eoc-all);
-  //   class: end-of-chapter;
-  //   data-type: composite-page;
-  //   container: div;
- // }
-  div[data-type="solution"] {
-    move-to: chapterSolutions;
+    class: "chapter-area-title";
+    content: "Chapter " nodes(nodeChapterNumber);
+    move-to: chapterAreaTitle;
+    pass: @pass-25-solutions;
   }
   &::after {
-    class: solutions;
-    content: nodes(chapterTitle) pending(chapterSolutions);
-    move-to: eob-solutions;
-   }
+    container: div;
+    class: "self-check-solutions";
+    content: pending(chapterAreaTitle) pending(self-check-solutions);
+    pass: @pass-25-solutions;
+    move-to: chapterArea;
+  }
+  &::after {
+    class: "chapter-area";
+    content: pending(chapterArea);
+    move-to: eob-all;
+    pass: @pass-25-solutions;
+  }
+
+  //References 
+  &::after {
+    container: h1;
+    class: "chapter-area-text";
+    content: nodes(nodeChapterText);
+    move-to: chapterAreaText;
+    pass: 35;
+  }
+  &::after {
+    container: div;
+    class: "references";
+    content: pending(references);
+    pass: 35;
+    move-to: refArea;
+  }
+  &::after {
+    class: "chapter-area";
+    content: pending(chapterAreaText) pending(refArea);
+    move-to: eob-references;
+    pass: 35;
+  }
+
+  //feature titles
+  .clearup {
+    .doc-title("Clear It Up");
+  }
+  .linkup {
+    .doc-title("Link It Up");
+  }
+  .bringhome {
+    .doc-title("Bring It Home");
+  }
+  .workout {
+    .doc-title("Work It Out");
+  }
+  .eoc {
+    &.self-check-questions-container {
+      .metadata("Self-Check Questions");
+      .doc-title("Self-Check Questions");
+    }
+    &.review-questions-container {
+      .metadata("Review Questions");
+      .doc-title("Review Questions");
+    }
+    &.critical-thinking-container {
+      .metadata("Critical Thinking Questions");
+      .doc-title("Critical Thinking Questions");
+    }
+    &.problems-container {
+      .metadata("Problems");
+      .doc-title("Problems");
+    }
+    //TODO: Refactor metadata into summary, glossary mixins??
+    &.glossary {
+      .metadata("Key Terms");
+    }
+     &.summary {
+      .metadata("Key Concepts and Summary");
+    }
+  }
 }
 body {
-    &::after {
-    class: "eob solutions";
-    data-type: page;
-    container: div;
-    content: pending(answerTitle) pending(eob-solutions);
+  //TODO: Be able to use .composite origin/destination for this
+  &::after {
+    class: "eob answer-key";
+    data-type: "composite-page";
+    content: pending(eob-all);
+    pass: 35;
   }
   &::after {
-    container: div;
     class: "eob references";
-    data-type: page;
-    content: pending(referencesTitle) pending(references);
+    data-type: "composite-page";
+    content: pending(eob-references);
+    pass: 36;
+  }
+  .eob {
+    &.references {
+      .metadata("References");
+      //.doc-title("Answer Key");
+      //TODO: Refactor, having to not use doc-title mixin in order to change the pass
+      &::before {
+        container: span;
+        class: "text";
+        pass: 37;
+        content: "References";
+        move-to: titleSpan;
+      }
+      &::before {
+        pass: 37;
+        container: div;
+        data-type: document-title;
+        content: pending(titleSpan);
+      }
+    }
+    &.answer-key {
+      .metadata("Answer Key");
+      //.doc-title("Answer Key");
+      //TODO: Refactor, having to not use doc-title mixin in order to change the pass
+      &::before {
+        container: span;
+        class: "text";
+        pass: 36;
+        content: "Answer Key";
+        move-to: titleSpan;
+      }
+      &::before {
+        pass: 36;
+        container: div;
+        data-type: document-title;
+        content: pending(titleSpan);
+      }
+    }
   }
 }
 
