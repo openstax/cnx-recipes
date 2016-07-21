@@ -118,6 +118,13 @@
 body {
   counter-reset: appendix;
   counter-reset: chapter;
+  //Refactor: Preface is not counted but has its title re-wrapped, as is done in this file for its siblings
+  div.preface {
+    > div[data-type="document-title"] {
+      container: h1;
+      content: content();
+    }
+  }
   div.appendix {
     counter-increment: appendix;
     &::before {
@@ -140,7 +147,7 @@ body {
     }
     > div[data-type="document-title"] {
       container: h1;
-      content: pending(appendixLabel) " " pending(appendixNumber) pending(appendixDivider) content() ;
+      content: pending(appendixLabel) " " pending(appendixNumber) pending(appendixDivider) content();
     }
   }
   div[data-type="chapter"] {
@@ -202,7 +209,7 @@ body {
       }
       > [data-type="document-title"] {
         data-type: "document-title";
-        container: div;
+        container: h2;
         content: pending(sectionNumber) " "pending(sectionDivider) content() ;
       }
     }
@@ -233,10 +240,10 @@ body {
           class: "example-title";
           container: h1;
           content: "Example " pending(exampleNumber) pending(exampleTitle);
-          move-to: exampleTitletest;
+          move-to: exampleTitleHeader;
         }
         &:deferred {
-          content: pending(exampleTitletest) content();
+          content: pending(exampleTitleHeader) content();
         }
         //move me to collations
         [data-type="solution"] {

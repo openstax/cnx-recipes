@@ -2,8 +2,14 @@
 body{
   counter-reset: term-count;
 }
+
+//Open a new tab for simulations
+a[href*="archive.cnx.org/specials/"] {
+  attr-target: "_blank";
+}
+
 div[data-type='chapter'] {
-  >[data-type="document-title"] {
+  > [data-type="document-title"] {
     node-set: chapterTitle;
     .number {
       node-set: nodeChapterNumber;
@@ -24,7 +30,7 @@ div[data-type='chapter'] {
   div[data-type="page"], div[data-type="composite-page"] {
     //build links from index to content
     string-set: page-id attr(id);
-    > div[data-type="document-title"] {
+    > h2[data-type="document-title"] {
       pass: default, @pass-50-index;
       string-set: section-title content();
       node-set: sectionTitle;
@@ -96,7 +102,7 @@ body {
       }
       &::before {
         pass: @pass-52-index-title;
-        container: div;
+        container: h1;
         data-type: document-title;
         content: pending(titleSpan);
       }

@@ -36,7 +36,7 @@ body {
     > div[data-type="page"], > div[data-type="composite-page"] {
       pass: @pass-60-toc;
       string-set: page-id-chap attr(id);
-      > [data-type='document-title']{
+      > [data-type='document-title'] {
         pass: @pass-60-toc;
         node-set: PageTitle;
       }
@@ -75,13 +75,13 @@ body {
     }
     > div[data-type='chapter'] {
       > h1[data-type='document-title'] {
-        container: div;
-        data-type: "toc-title";
+        // container: h1;
+        // data-type: "toc-title";
         pass: @pass-60-toc;
         copy-to: eoc-toc;
       }
       > div[data-type="page"], div[data-type="composite-page"] {
-        > [data-type='document-title'] {
+        > h2[data-type='document-title'] {
           pass: @pass-60-toc;
           copy-to: page-title;
         }
@@ -136,13 +136,22 @@ nav#toc > ol {
   li {
     > a {
       pass: @pass-66-nav-unwrap;
-      move-to:trash;
+      move-to: trash;
       string-set: toc-ref attr(href);
+      //Refactor: We are moving towards not using divs as doc-title containers, try to remove >div>span
+      // > div > span,
       > h1 > span,
-      > div > span {
+      > h2 > span {
         pass: @pass-66-nav-unwrap;
         move-to: title-spans;
       }
+      //Refactor: This puts an <a> inside an <a>? There might be a better solution (maybe deferred?)
+      // &:deferred {
+      //   pass: @pass-66-nav-unwrap;
+      //   container: a;
+      //   content: pending(title-spans);
+      //   attr-href: string(toc-ref);
+      // }
       &::outside {
         pass: @pass-66-nav-unwrap;
         content: pending(title-spans);
