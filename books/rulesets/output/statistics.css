@@ -1573,10 +1573,15 @@ body div[data-type="chapter"] > div[data-type="page"]:not(:first-of-type)::befor
   class: "divider";
   move-to: sectionDivider;
 }
-body div[data-type="chapter"] > div[data-type="page"] > [data-type="document-title"] {
+body div[data-type="chapter"] > div[data-type="page"]:not(:first-of-type) > [data-type="document-title"] {
   data-type: "document-title";
   container: h2;
   content: pending(sectionNumber) " " pending(sectionDivider) content();
+}
+body div[data-type="chapter"] > div[data-type="page"]:first-of-type > [data-type="document-title"] {
+  data-type: "document-title";
+  container: h2;
+  content: content();
 }
 body div[data-type="chapter"] [data-type="page"] .example {
   pass: 40;
@@ -1837,8 +1842,8 @@ div[data-type='chapter'] div[data-type="page"],
 div[data-type='chapter'] div[data-type="composite-page"] {
   string-set: page-id attr(id);
 }
-div[data-type='chapter'] div[data-type="page"] > h2[data-type="document-title"],
-div[data-type='chapter'] div[data-type="composite-page"] > h2[data-type="document-title"] {
+div[data-type='chapter'] div[data-type="page"] > [data-type="document-title"],
+div[data-type='chapter'] div[data-type="composite-page"] > [data-type="document-title"] {
   pass: default, 50;
   string-set: section-title content();
   node-set: sectionTitle;
