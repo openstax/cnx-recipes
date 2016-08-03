@@ -1,11 +1,18 @@
 //All mixins in one partial for now
 @import "common-refactor/stuff";
 
-//Add whether these send solutions when they move?
-//or separate list for that?
+
+//Different language mock-up
+$lang: "en";
+$chapter_en: "Chapter";
+$appendix_en: "Appendix";
+$chapter_de: "Kapitel";
+$appendix_de: "Anhang";
+
 //each item: (name, source, trashed-section, section-separated)?
-//grab solutions on different pass
+//grab solutions on different pass?
 //NOTE: Currently, this method doesn't work for glossary, but does for all other composite pages!
+//Usage: ("[source section]", [?section-separated])
 $chapterCompositePages: (
   ("glossary", false),
   ("summary", true),
@@ -34,6 +41,10 @@ $sectionTitleContent: (
   ("|", "divider")
 );
 
+$exerciseTitleContent: (
+  (counter(exercise), "number")
+);
+
 //New pass system
 // :pass(1) {
   @include titlePreface();
@@ -47,6 +58,9 @@ $sectionTitleContent: (
   @include sendSectionTitleNodeAs(sectionTitleNode);
   //NOTE: Currently, this method doesn't work for glossary, but does for all other composite pages!
   @include createChapterComposites($chapterCompositePages, sectionTitleNode);
+  @include countExercises(exercise);
+  @include numberExercises($exerciseTitleContent);
+  @include linkSolutionsToProblems();
 
   @include clearTrash();
 // }
