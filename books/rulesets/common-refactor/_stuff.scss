@@ -1,0 +1,131 @@
+@mixin clearTrash() {
+  body {
+    &::after {
+      content: clear(trash);
+    }
+  }
+}
+
+@mixin sendSectionTitleNodeAs($name) {
+  div[data-type="page"] > [data-type="document-title"] {
+    @include sendNodeAs($name);
+  }
+}
+@mixin sendNodeAs($name) {
+  node-set: $name;
+}
+
+@mixin createChapterComposites($compositePages, $sectionTitleNode) {
+  @each $sourceSelector, $section-separated in $compositePages {
+    @include createChapterComposite($sourceSelector, $section-separated, $sectionTitleNode);
+  }
+}
+
+@mixin createChapterComposite($sourceSelector, $section-separated, $sectionTitleNode) {
+  div[data-type="chapter"] {
+    section.#{$sourceSelector} {
+      @if ($section-separated) {
+        content: nodes($sectionTitleNode) content();
+      }
+      > h1[data-type="title"] {
+        move-to: trash;
+      }
+      move-to: #{$sourceSelector};
+    }
+    &::after {
+      container: div;
+      content: pending(#{$sourceSelector});
+      class: "eoc #{$sourceSelector}-container";
+      data-type: composite-page;
+    }
+  }
+}
+
+//[Document Usage]
+@mixin title($content, $bucket, $container: null, $containerClass: null, $containerDestination: null) {
+  @each $itemContent, $itemClass in $content {
+    &::before {
+      container: span;
+      content: $itemContent;
+      class: "title-#{$itemClass}";
+      move-to: $bucket;
+    }
+  }
+  @if ($container != null and $containerType != null) {
+    &::before {
+      container: $container;
+      class: $containerClass;
+      content: pending($bucket);
+      @if ($destination != null) {
+        move-to: $containerDestination;
+      }
+    }
+  }
+}
+
+//[Document Usage]
+@mixin count($name, $selector, $resetSelector) {
+  //Improvement: Resetting isn't dry, recreates selector if more than one counter resets on one element
+  #{$resetSelector} {
+    counter-reset: $name;
+  }
+  #{$selector} {
+    counter-increment: $name;
+  }
+}
+
+@mixin countChapters($name) {
+  @include count($name, "div[data-type="chapter"]", "body");
+}
+@mixin countAppendices($name) {
+  @include count($name, "div.appendix", "body");
+}
+@mixin countSections($name) {
+  @include count($name, "div[data-type="chapter"] > div[data-type="page"]:not(.introduction)", "div[data-type="chapter"]");
+}
+
+@mixin titlePreface() {
+  div.preface {
+    > [data-type="document-title"] {
+      container: h1;
+      content: content();
+    }
+  }
+}
+
+@mixin numberChapters($chapterTitleContent) {
+  div[data-type="chapter"] {
+    @include title($chapterTitleContent, bChapterLabel);
+    > [data-type="document-title"] {
+      container: h1;
+      content: pending(bChapterLabel) content();
+    }
+  }
+}
+
+@mixin numberAppendices($appendixTitleContent) {
+  div.appendix {
+    @include title($appendixTitleContent, bAppendixLabel);
+    > [data-type="document-title"] {
+      container: h1;
+      content: pending(bAppendixLabel) content();
+    }
+  }
+}
+
+@mixin numberSections($sectionTitleContent) {
+  div[data-type="chapter"] > div[data-type="page"] {
+    &:not(.introduction) {
+      @include title($sectionTitleContent, bSectionLabel);
+      > [data-type="document-title"] {
+        container: h2;
+        content: pending(bSectionLabel) content();
+      }
+    }
+    &.introduction {
+      > [data-type="document-title"] {
+        container: h2;
+      }
+    }
+  }
+}
