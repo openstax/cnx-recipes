@@ -3,15 +3,35 @@
 
 //Add whether these send solutions when they move?
 //or separate list for that?
+//each item: (name, source, trashed-section, section-separated)?
+//grab solutions on different pass
+//NOTE: Currently, this method doesn't work for glossary, but does for all other composite pages!
 $chapterCompositePages: (
-  "glossary",
-  "summary",
-  "formula-review",
-  "practice", 
-  "bring-together-exercises",
-  "free-response",
-  "bring-together-homework",
-  "references"
+  ("glossary", false),
+  ("summary", true),
+  ("formula-review", true),
+  ("practice", true),
+  ("bring-together-exercises", false),
+  ("free-response", true),
+  ("bring-together-homework", false),
+  ("references", true)
+);
+
+$chapterTitleContent: (
+  ("Chapter", "label"),
+  (counter(chapter), "number"),
+  ("|", "divider")
+);
+
+$appendixTitleContent: (
+  ("Appendix", "label"),
+  (counter(appendix, upper-alpha), "number"),
+  (":", "divider")
+);
+
+$sectionTitleContent: (
+  (counter(chapter)"."counter(section), "number"),
+  ("|", "divider")
 );
 
 //New pass system
@@ -19,9 +39,14 @@ $chapterCompositePages: (
   @include titlePreface();
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include countChapters(chapter);
-  @include numberChapters(chapter);
+  @include numberChapters($chapterTitleContent);
   @include countAppendices(appendix);
-  @include numberAppendices(appendix);
+  @include numberAppendices($appendixTitleContent);
   @include countSections(section);
-  @include numberSections(chapter, section);
+  @include numberSections($sectionTitleContent);
+  @include sendSectionTitleNodeAs(sectionTitleNode);
+  //NOTE: Currently, this method doesn't work for glossary, but does for all other composite pages!
+  @include createChapterComposites($chapterCompositePages, sectionTitleNode);
+
+  @include clearTrash();
 // }

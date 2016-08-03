@@ -6,6 +6,42 @@
   }
 }
 
+@mixin sendSectionTitleNodeAs($name) {
+  div[data-type="page"] > [data-type="document-title"] {
+    @include sendNodeAs($name);
+  }
+}
+@mixin sendNodeAs($name) {
+  node-set: $name;
+}
+
+@mixin createChapterComposites($compositePages, $sectionTitleNode) {
+  @each $sourceSelector, $section-separated in $compositePages {
+    @include createChapterComposite($sourceSelector, $section-separated, $sectionTitleNode);
+  }
+}
+
+@mixin createChapterComposite($sourceSelector, $section-separated, $sectionTitleNode) {
+  div[data-type="chapter"] {
+    section.#{$sourceSelector} {
+      @if ($section-separated) {
+        content: nodes($sectionTitleNode) content();
+      }
+      > h1[data-type="title"] {
+        move-to: trash;
+      }
+      move-to: #{$sourceSelector};
+    }
+    &::after {
+      container: div;
+      content: pending(#{$sourceSelector});
+      class: "eoc #{$sourceSelector}-container";
+      data-type: composite-page;
+    }
+  }
+}
+
+//[Document Usage]
 @mixin title($content, $bucket, $container: null, $containerClass: null, $containerDestination: null) {
   @each $itemContent, $itemClass in $content {
     &::before {
@@ -27,6 +63,7 @@
   }
 }
 
+//[Document Usage]
 @mixin count($name, $selector, $resetSelector) {
   //Improvement: Resetting isn't dry, recreates selector if more than one counter resets on one element
   #{$resetSelector} {
@@ -38,13 +75,13 @@
 }
 
 @mixin countChapters($name) {
-  @include count(chapter, "div[data-type="chapter"]", "body")
+  @include count($name, "div[data-type="chapter"]", "body");
 }
 @mixin countAppendices($name) {
-  @include count(appendix, "div.appendix", "body")
+  @include count($name, "div.appendix", "body");
 }
 @mixin countSections($name) {
-  @include count(section, "div[data-type="chapter"] > div[data-type="page"]:not(.introduction)", "div[data-type="chapter"]");
+  @include count($name, "div[data-type="chapter"] > div[data-type="page"]:not(.introduction)", "div[data-type="chapter"]");
 }
 
 @mixin titlePreface() {
@@ -56,13 +93,8 @@
   }
 }
 
-@mixin numberChapters($chapterCounter) {
+@mixin numberChapters($chapterTitleContent) {
   div[data-type="chapter"] {
-    $chapterTitleContent: (
-      ("Chapter", "label"),
-      (counter($chapterCounter), "number"),
-      ("|", "divider")
-    );
     @include title($chapterTitleContent, bChapterLabel);
     > [data-type="document-title"] {
       container: h1;
@@ -71,13 +103,8 @@
   }
 }
 
-@mixin numberAppendices($appendixCounter) {
+@mixin numberAppendices($appendixTitleContent) {
   div.appendix {
-    $appendixTitleContent: (
-      ("Appendix", "label"),
-      (counter($appendixCounter, upper-alpha), "number"),
-      (":", "divider")
-      );
     @include title($appendixTitleContent, bAppendixLabel);
     > [data-type="document-title"] {
       container: h1;
@@ -86,18 +113,19 @@
   }
 }
 
-@mixin numberSections($chapterCounter, $sectionCounter) {
+@mixin numberSections($sectionTitleContent) {
   div[data-type="chapter"] > div[data-type="page"] {
     &:not(.introduction) {
-      $sectionTitleContent: (
-        (counter($chapterCounter)"."counter($sectionCounter), "number"),
-        ("|", "divider")
-      );
       @include title($sectionTitleContent, bSectionLabel);
+      > [data-type="document-title"] {
+        container: h2;
+        content: pending(bSectionLabel) content();
+      }
     }
-    > [data-type="document-title"] {
-      container: h2;
-      content: pending(bSectionLabel) content();
+    &.introduction {
+      > [data-type="document-title"] {
+        container: h2;
+      }
     }
   }
 }
