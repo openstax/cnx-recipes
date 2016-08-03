@@ -23,7 +23,12 @@
 
 @mixin createChapterComposite($sourceSelector, $section-separated, $sectionTitleNode) {
   div[data-type="chapter"] {
-    section.#{$sourceSelector} {
+    //Slight hack: these selectors should get everything including glossary definitions
+    //Hope that structure doesn't change and that using
+    //div[data-type] wont be needed to fetch anything but definitions
+    //TODO: Separate code block to execute for selected dl, since they only need to move
+    section.#{$sourceSelector},
+    div[data-type="#{$sourceSelector}"] dl {
       @if ($section-separated) {
         content: nodes($sectionTitleNode) content();
       }
@@ -37,18 +42,38 @@
       content: pending(#{$sourceSelector});
       class: "eoc #{$sourceSelector}-container";
       data-type: composite-page;
+      //This should only really do anything for the glossary...
+      //so it feels kinda dumb to have this here for everything
+      sort-by: #{"dl > dt"};
     }
   }
 }
 
 //[Document Usage]
-@mixin title($content, $bucket, $container: null, $containerClass: null, $containerDestination: null) {
-  @each $itemContent, $itemClass in $content {
+@mixin title($content, $bucket: null, $container: null, $containerClass: null, $containerDestination: null) {
+  @if (length(nth($content, 1)) > 1) {
+    //If $content is parsed as a list of lists
+    @each $itemContent, $itemClass in $content {
+      &::before {
+        container: span;
+        content: $itemContent;
+        class: "title-#{$itemClass}";
+        @if ($bucket != null) {
+          move-to: $bucket;
+        }
+      }
+    }
+  } @else {
+    //If $content is parsed as a single list with two text elements
+    $itemContent: nth($content, 1);
+    $itemClass: nth($content, 2);
     &::before {
       container: span;
       content: $itemContent;
       class: "title-#{$itemClass}";
-      move-to: $bucket;
+      @if ($bucket != null) {
+        move-to: $bucket;
+      }
     }
   }
   @if ($container != null and $containerType != null) {
@@ -82,6 +107,9 @@
 }
 @mixin countSections($name) {
   @include count($name, "div[data-type="chapter"] > div[data-type="page"]:not(.introduction)", "div[data-type="chapter"]");
+}
+@mixin countExercises($name) {
+  @include count($name, "[data-type="exercise"]", "div[data-type="chapter"]")
 }
 
 @mixin titlePreface() {
@@ -129,3 +157,40 @@
     }
   }
 }
+
+@mixin numberExercises($exerciseTitleContent) {
+  [data-type="exercise"] {
+    [data-type="problem"] {
+      @include title($exerciseTitleContent);
+    }
+    [data-type="solution"] {
+      @include title($exerciseTitleContent);
+    }
+  }
+}
+
+@mixin linkToFrom($toSelector, $fromSelector, $toName, $toCounter: null) {
+  #{$toSelector} {
+    @if ($toCounter !=null) {
+      $toID: $toName counter($toCounter);
+      attr-id: $toID;
+      string-set: #{$toName}-ID $toID;
+    } @else {
+      string-set: #{$toName}-ID attr(id);
+    }
+
+  }
+  #{$fromSelector} {
+    &::outside {
+      container: a;
+      attr-href: "#" string(#{$toName}-ID);
+    }
+  }
+}
+
+//This will wrap the whole solution, modify the selector when the new pass system is implemented
+//to only wrap the .number inside solution on a later pass
+@mixin linkSolutionsToProblems() {
+  @include linkToFrom("[data-type="problem"]", "[data-type="solution"]", problem);
+}
+
