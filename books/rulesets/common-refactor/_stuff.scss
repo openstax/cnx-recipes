@@ -26,7 +26,7 @@
     //Slight hack: these selectors should get everything including glossary definitions
     //Hope that structure doesn't change and that using
     //div[data-type] wont be needed to fetch anything but definitions
-    //TODO: Separate code block to execute for selected dl, since they only need to move
+    //May need to eventually separate the creation of glossary type pages
     section.#{$sourceSelector},
     div[data-type="#{$sourceSelector}"] dl {
       @if ($section-separated) {
@@ -44,7 +44,7 @@
       data-type: composite-page;
       //This should only really do anything for the glossary...
       //so it feels kinda dumb to have this here for everything
-      sort-by: #{"dl > dt"};
+      sort-by: #{"dl > dt"}, nocase;
     }
   }
 }
@@ -76,12 +76,12 @@
       }
     }
   }
-  @if ($container != null and $containerType != null) {
+  @if ($container != null and $containerClass != null) {
     &::before {
       container: $container;
       class: $containerClass;
       content: pending($bucket);
-      @if ($destination != null) {
+      @if ($containerDestination != null) {
         move-to: $containerDestination;
       }
     }
@@ -110,6 +110,9 @@
 }
 @mixin countExercises($name) {
   @include count($name, "[data-type="exercise"]", "div[data-type="chapter"]")
+}
+@mixin countExamples($name) {
+  @include count($name, "div[data-type="chapter"] .example", "div[data-type="chapter"]");
 }
 
 @mixin titlePreface() {
@@ -158,13 +161,40 @@
   }
 }
 
-@mixin numberExercises($exerciseTitleContent) {
+//EOC composite pages must be created before this runs
+//TODO: Add .eoc to first selector
+@mixin numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
   [data-type="exercise"] {
     [data-type="problem"] {
       @include title($exerciseTitleContent);
     }
     [data-type="solution"] {
       @include title($exerciseTitleContent);
+    }
+  }
+}
+
+@mixin numberExamples($exampleTitleContent, $solutionTitleContent) {
+  .example {
+    @include title($exampleTitleContent, bExampleLabel);
+    > [data-type="title"] {
+      $exampleTitle: (
+        (content(), "text")
+      );
+      @include title($exampleTitle, bExampleLabel);
+      move-to: trash;
+    }
+    &::after {
+      container: h3;
+      content: pending(bExampleLabel);
+      class: "example-title";
+      move-to: bExampleHeader;
+    }
+    &:deferred {
+      content: pending(bExampleHeader) content();
+    }
+    [data-type="solution"] {
+      @include title($solutionTitleContent, bSolutionLabel, h4, "example-solution-title");
     }
   }
 }
@@ -190,7 +220,8 @@
 
 //This will wrap the whole solution, modify the selector when the new pass system is implemented
 //to only wrap the .number inside solution on a later pass
-@mixin linkSolutionsToProblems() {
+//TODO: Add .eoc to selectors
+@mixin linkEOCSolutionsToProblems() {
   @include linkToFrom("[data-type="problem"]", "[data-type="solution"]", problem);
 }
 

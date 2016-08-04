@@ -110,7 +110,7 @@ div[data-type="chapter"]::after {
   content: pending(glossary);
   class: "eoc glossary-container";
   data-type: composite-page;
-  sort-by: dl > dt;
+  sort-by: dl > dt, nocase;
 }
 
 div[data-type="chapter"] section.summary,
@@ -127,7 +127,7 @@ div[data-type="chapter"]::after {
   content: pending(summary);
   class: "eoc summary-container";
   data-type: composite-page;
-  sort-by: dl > dt;
+  sort-by: dl > dt, nocase;
 }
 
 div[data-type="chapter"] section.formula-review,
@@ -144,7 +144,7 @@ div[data-type="chapter"]::after {
   content: pending(formula-review);
   class: "eoc formula-review-container";
   data-type: composite-page;
-  sort-by: dl > dt;
+  sort-by: dl > dt, nocase;
 }
 
 div[data-type="chapter"] section.practice,
@@ -161,7 +161,7 @@ div[data-type="chapter"]::after {
   content: pending(practice);
   class: "eoc practice-container";
   data-type: composite-page;
-  sort-by: dl > dt;
+  sort-by: dl > dt, nocase;
 }
 
 div[data-type="chapter"] section.bring-together-exercises,
@@ -177,7 +177,7 @@ div[data-type="chapter"]::after {
   content: pending(bring-together-exercises);
   class: "eoc bring-together-exercises-container";
   data-type: composite-page;
-  sort-by: dl > dt;
+  sort-by: dl > dt, nocase;
 }
 
 div[data-type="chapter"] section.free-response,
@@ -194,7 +194,7 @@ div[data-type="chapter"]::after {
   content: pending(free-response);
   class: "eoc free-response-container";
   data-type: composite-page;
-  sort-by: dl > dt;
+  sort-by: dl > dt, nocase;
 }
 
 div[data-type="chapter"] section.bring-together-homework,
@@ -210,7 +210,7 @@ div[data-type="chapter"]::after {
   content: pending(bring-together-homework);
   class: "eoc bring-together-homework-container";
   data-type: composite-page;
-  sort-by: dl > dt;
+  sort-by: dl > dt, nocase;
 }
 
 div[data-type="chapter"] section.references,
@@ -227,7 +227,7 @@ div[data-type="chapter"]::after {
   content: pending(references);
   class: "eoc references-container";
   data-type: composite-page;
-  sort-by: dl > dt;
+  sort-by: dl > dt, nocase;
 }
 
 div[data-type=chapter] {
@@ -247,6 +247,62 @@ div[data-type=chapter] {
   container: span;
   content: counter(exercise);
   class: "title-number";
+}
+
+div[data-type=chapter] {
+  counter-reset: example;
+}
+
+div[data-type=chapter] .example {
+  counter-increment: example;
+}
+
+.example::before {
+  container: span;
+  content: "Example";
+  class: "title-label";
+  move-to: bExampleLabel;
+}
+.example::before {
+  container: span;
+  content: counter(chapter) "." counter(example);
+  class: "title-number";
+  move-to: bExampleLabel;
+}
+.example > [data-type="title"] {
+  move-to: trash;
+}
+.example > [data-type="title"]::before {
+  container: span;
+  content: content();
+  class: "title-text";
+  move-to: bExampleLabel;
+}
+.example::after {
+  container: h3;
+  content: pending(bExampleLabel);
+  class: "example-title";
+  move-to: bExampleHeader;
+}
+.example:deferred {
+  content: pending(bExampleHeader) content();
+}
+.example [data-type="solution"]::before {
+  container: span;
+  content: "Solution";
+  class: "title-label";
+  move-to: bSolutionLabel;
+}
+.example [data-type="solution"]::before {
+  container: span;
+  content: counter(chapter) "." counter(example);
+  class: "title-number";
+  move-to: bSolutionLabel;
+}
+.example [data-type="solution"]::before {
+  container: h4;
+  class: "example-solution-title";
+  content: pending(bSolutionLabel);
 }
 
 [data-type=problem] {

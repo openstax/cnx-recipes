@@ -45,6 +45,15 @@ $exerciseTitleContent: (
   (counter(exercise), "number")
 );
 
+$exampleTitleContent: (
+  ("Example", "label"),
+  (counter(chapter)"."counter(example), "number")
+);
+$exampleSolutionTitleContent: (
+  ("Solution", "label"),
+  (counter(chapter)"."counter(example), "number")
+);
+
 //New pass system
 // :pass(1) {
   @include titlePreface();
@@ -59,8 +68,12 @@ $exerciseTitleContent: (
   //NOTE: Currently, this method doesn't work for glossary, but does for all other composite pages!
   @include createChapterComposites($chapterCompositePages, sectionTitleNode);
   @include countExercises(exercise);
-  @include numberExercises($exerciseTitleContent);
-  @include linkSolutionsToProblems();
+  @include numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
+  @include countExamples(example);
+  @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
+
+
+  @include linkEOCSolutionsToProblems();
 
   @include clearTrash();
 // }
