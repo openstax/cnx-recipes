@@ -1,7 +1,7 @@
 Instructions for cooking content on the server
 ==============================================
 
- - From cnx-recipies in Github, get URL to raw version of the ruleset needed. Path: cnx-recipes/books/rulesets/output/
+ - From cnx-recipes in Github, get URL to the CSS version of the ruleset needed. Path: cnx-recipes/books/rulesets/output/
  >https://raw.githubusercontent.com/Connexions/cnx-recipes/master/books/rulesets/output/statistics.css
 
  - ssh into server
@@ -11,7 +11,7 @@ Instructions for cooking content on the server
 
  - Pro Tip: Remove ruleset if it already exists before running wget
 
- - Run this command
+ - Run this command to install the ruleset into the book as an attached resource.
  >/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename "ruleset.css" --media-type "text/css" /etc/cnx/archive/app.ini [book UUID with version] [ruleset file]
 
  - Example
