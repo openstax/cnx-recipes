@@ -9,10 +9,9 @@ $appendix_en: "Appendix";
 $chapter_de: "Kapitel";
 $appendix_de: "Anhang";
 
-//each item: (name, source, trashed-section, section-separated)?
-//grab solutions on different pass?
-//NOTE: Currently, this method doesn't work for glossary, but does for all other composite pages!
 //Usage: ("[source section]", [?section-separated])
+//Still need: ?solutions, actual name of section (e.g. "Key Terms")
+//Handle document-titles and metadata with this info
 $chapterCompositePages: (
   ("glossary", false),
   ("summary", true),
@@ -46,7 +45,7 @@ $exerciseTitleContent: (
 );
 
 //New pass system
-// :pass(1) {
+:pass(0) {
   @include titlePreface();
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include countChapters(chapter);
@@ -56,11 +55,25 @@ $exerciseTitleContent: (
   @include countSections(section);
   @include numberSections($sectionTitleContent);
   @include sendSectionTitleNodeAs(sectionTitleNode);
-  //NOTE: Currently, this method doesn't work for glossary, but does for all other composite pages!
   @include createChapterComposites($chapterCompositePages, sectionTitleNode);
+<<<<<<< HEAD
   @include countExercises(exercise);
   @include numberExercises($exerciseTitleContent);
   @include linkSolutionsToProblems();
 
+=======
+  @include countExamples(example);
+  @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
+}
+:pass(1) {
+  @include countEOCExercises(exercise);
+  @include numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
+}
+:pass(2) {
+  @include countEOCExercises(exercise);
+  @include linkToProblemsFromSolutionsEOC("number", "number", exercise);
+}
+:pass(100) {
+>>>>>>> Some reformatting
   @include clearTrash();
-// }
+}

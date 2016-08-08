@@ -11,8 +11,16 @@
     @include sendNodeAs($name);
   }
 }
+@mixin sendSectionTitleStringAs($name) {
+  div[data-type="page"] > [data-type="document-title"] {
+    @include sendStringAs($name);
+  }
+}
 @mixin sendNodeAs($name) {
   node-set: $name;
+}
+@mixin sendStringAs($name) {
+  string-set: $name;
 }
 
 @mixin createChapterComposites($compositePages, $sectionTitleNode) {
@@ -57,7 +65,7 @@
       &::before {
         container: span;
         content: $itemContent;
-        class: "title-#{$itemClass}";
+        class: $itemClass;
         @if ($bucket != null) {
           move-to: $bucket;
         }
@@ -70,7 +78,7 @@
     &::before {
       container: span;
       content: $itemContent;
-      class: "title-#{$itemClass}";
+      class: $itemClass;
       @if ($bucket != null) {
         move-to: $bucket;
       }
@@ -100,17 +108,50 @@
 }
 
 @mixin countChapters($name) {
-  @include count($name, "div[data-type="chapter"]", "body");
+  @include count(
+    $name,
+    "div[data-type="chapter"]",
+    "body"
+  );
 }
 @mixin countAppendices($name) {
-  @include count($name, "div.appendix", "body");
+  @include count(
+    $name,
+    "div.appendix",
+    "body"
+  );
 }
 @mixin countSections($name) {
-  @include count($name, "div[data-type="chapter"] > div[data-type="page"]:not(.introduction)", "div[data-type="chapter"]");
+  @include count(
+    $name,
+    "div[data-type="chapter"] > div[data-type="page"]:not(.introduction)",
+    "div[data-type="chapter"]"
+  );
 }
-@mixin countExercises($name) {
-  @include count($name, "[data-type="exercise"]", "div[data-type="chapter"]")
+@mixin countEOCExercises($name) {
+  @include count(
+    $name,
+    ".eoc [data-type="exercise"]",
+    "div[data-type="chapter"]"
+  );
 }
+<<<<<<< HEAD
+=======
+@mixin countExamples($name) {
+  @include count(
+    $name,
+    "div[data-type="chapter"] .example",
+    "div[data-type="chapter"]"
+  );
+}
+@mixin countTerms($name) {
+  @include count(
+    $name,
+    "div[data-type="chapter"]",
+    "body"
+  );
+}
+>>>>>>> Some reformatting
 
 @mixin titlePreface() {
   div.preface {
@@ -158,8 +199,14 @@
   }
 }
 
+<<<<<<< HEAD
 @mixin numberExercises($exerciseTitleContent) {
   [data-type="exercise"] {
+=======
+//EOC composite pages must be created before this runs
+@mixin numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
+  .eoc [data-type="exercise"] {
+>>>>>>> Some reformatting
     [data-type="problem"] {
       @include title($exerciseTitleContent);
     }
@@ -171,8 +218,8 @@
 
 @mixin linkToFrom($toSelector, $fromSelector, $toName, $toCounter: null) {
   #{$toSelector} {
-    @if ($toCounter !=null) {
-      $toID: $toName counter($toCounter);
+    @if ($toCounter != null) {
+      $toID: "#{$toName}-"counter($toCounter);
       attr-id: $toID;
       string-set: #{$toName}-ID $toID;
     } @else {
@@ -188,9 +235,20 @@
   }
 }
 
+<<<<<<< HEAD
 //This will wrap the whole solution, modify the selector when the new pass system is implemented
 //to only wrap the .number inside solution on a later pass
 @mixin linkSolutionsToProblems() {
   @include linkToFrom("[data-type="problem"]", "[data-type="solution"]", problem);
+=======
+//EOC composite pages must be created before this runs
+@mixin linkToProblemsFromSolutionsEOC($toElement, $fromElement, $problemCounter) {
+  @include linkToFrom(
+    ".eoc [data-type="problem"] .#{$toElement}",
+    ".eoc [data-type="solution"] .#{$fromElement}",
+    problem,
+    $problemCounter
+  );
+>>>>>>> Some reformatting
 }
 
