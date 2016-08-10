@@ -1,6 +1,18 @@
-//All mixins in one partial for now
+//Import order doesn't affect output
+@import "common-refactor/compose";
+@import "common-refactor/count";
+@import "common-refactor/link";
+@import "common-refactor/number";
+@import "common-refactor/reference";
+
+//Do we want the book level to import utils?
+@import "common-refactor/utils";
+
+//General stuff that we don't know if we need?
 @import "common-refactor/stuff";
 
+
+//TODO: Improve performance by using more specific selectors in libraries when possible
 
 //Different language mock-up
 $lang: "en";
@@ -9,18 +21,24 @@ $appendix_en: "Appendix";
 $chapter_de: "Kapitel";
 $appendix_de: "Anhang";
 
-//Usage: ("[source section]", [?section-separated])
+//Usage: ("[name]","[source section]", [?section-separated], [?has-solutions])
 //Still need: ?solutions, actual name of section (e.g. "Key Terms")
 //Handle document-titles and metadata with this info
+
+//currently solutions will create an empty bucket because it is only used later?
+//perhaps add another property to allow nothing to be moved? but still create container?
+
+//translate pages into map variables rather than lists for readability
 $chapterCompositePages: (
-  ("glossary", false),
-  ("summary", true),
-  ("formula-review", true),
-  ("practice", true),
-  ("bring-together-exercises", false),
-  ("free-response", true),
-  ("bring-together-homework", false),
-  ("references", true)
+  ("Key Terms", "glossary", false, false),
+  ("Chapter Review", "summary", true, false),
+  ("Formula Review", "formula-review", true, false),
+  ("Practice", "practice", true, true),
+  ("Bringing It Together: Exercises", "bring-together-exercises", false, true),
+  ("Homework", "free-response", true, true),
+  ("Bringing It Together: Homework", "bring-together-homework", false, true),
+  ("References", "references", true, false),
+  ("Solutions", "solutions", false, false)
 );
 
 $chapterTitleContent: (
@@ -75,6 +93,10 @@ $exampleSolutionTitleContent: (
 :pass(2) {
   @include countEOCExercises(exercise);
   @include linkToProblemsFromSolutionsEOC("number", "number", exercise);
+}
+:pass(3) {
+  @include sendEOCSolutions($chapterCompositePages, bSolutions);
+  @include putSolutions(bSolutions, "solutions");
 }
 :pass(100) {
   @include clearTrash();

@@ -1,0 +1,82 @@
+//[Document Usage]
+@mixin count($name, $selector, $resetSelector) {
+  //Improvement: Resetting isn't dry, recreates selector if more than one counter resets on one element
+  #{$resetSelector} {
+    counter-reset: $name;
+  }
+  #{$selector} {
+    counter-increment: $name;
+  }
+}
+
+//[Document Usage]
+@mixin title($content, $bucket: null, $container: null, $containerClass: null, $containerDestination: null) {
+  @if (length(nth($content, 1)) > 1) {
+    //If $content is parsed as a list of lists
+    @each $itemContent, $itemClass in $content {
+      &::before {
+        container: span;
+        content: $itemContent;
+        class: $itemClass;
+        @if ($bucket != null) {
+          move-to: $bucket;
+        }
+      }
+    }
+  } @else {
+    //If $content is parsed as a single list with two text elements
+    $itemContent: nth($content, 1);
+    $itemClass: nth($content, 2);
+    &::before {
+      container: span;
+      content: $itemContent;
+      class: $itemClass;
+      @if ($bucket != null) {
+        move-to: $bucket;
+      }
+    }
+  }
+  @if ($container != null and $containerClass != null) {
+    &::before {
+      container: $container;
+      class: $containerClass;
+      content: pending($bucket);
+      @if ($containerDestination != null) {
+        move-to: $containerDestination;
+      }
+    }
+  }
+}
+
+@mixin linkToFrom($toSelector, $fromSelector, $toName, $toCounter: null) {
+  #{$toSelector} {
+    @if ($toCounter != null) {
+      $toID: "#{$toName}-"counter($toCounter);
+      attr-id: $toID;
+      string-set: #{$toName}-ID $toID;
+    } @else {
+      string-set: #{$toName}-ID attr(id);
+    }
+
+  }
+  #{$fromSelector} {
+    &::outside {
+      container: a;
+      attr-href: "#" string(#{$toName}-ID);
+    }
+  }
+}
+
+@mixin refNodeAs($name) {
+  node-set: $name;
+}
+
+@mixin refStringAs($name) {
+  string-set: $name;
+}
+
+@mixin clearTrash() {
+  body::after {
+    content: clear(trash);
+  }
+}

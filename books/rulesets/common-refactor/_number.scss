@@ -1,0 +1,76 @@
+@mixin numberChapters($chapterTitleContent) {
+  div[data-type="chapter"] {
+    @include title($chapterTitleContent, bChapterLabel);
+    //use the title mixin for this?
+    > [data-type="document-title"] {
+      container: h1;
+      content: pending(bChapterLabel) content();
+    }
+  }
+}
+
+@mixin numberAppendices($appendixTitleContent) {
+  div.appendix {
+    @include title($appendixTitleContent, bAppendixLabel);
+    //use the title mixin for this?
+    > [data-type="document-title"] {
+      container: h1;
+      content: pending(bAppendixLabel) content();
+    }
+  }
+}
+
+@mixin numberSections($sectionTitleContent) {
+  div[data-type="chapter"] > div[data-type="page"] {
+    &:not(.introduction) {
+      @include title($sectionTitleContent, bSectionLabel);
+      //use the title mixin for this?
+      > [data-type="document-title"] {
+        container: h2;
+        content: pending(bSectionLabel) content();
+      }
+    }
+    &.introduction {
+      > [data-type="document-title"] {
+        container: h2;
+      }
+    }
+  }
+}
+
+//EOC composite pages must be created before this runs
+@mixin numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
+  .eoc [data-type="exercise"] {
+    [data-type="problem"] {
+      @include title($exerciseTitleContent);
+    }
+    [data-type="solution"] {
+      @include title($exerciseTitleContent);
+    }
+  }
+}
+
+@mixin numberExamples($exampleTitleContent, $solutionTitleContent) {
+  .example {
+    @include title($exampleTitleContent, bExampleLabel);
+    > [data-type="title"] {
+      $exampleTitle: (
+        (content(), "text")
+      );
+      @include title($exampleTitle, bExampleLabel);
+      move-to: trash;
+    }
+    &::after {
+      container: h3;
+      content: pending(bExampleLabel);
+      class: "example-title";
+      move-to: bExampleHeader;
+    }
+    &:deferred {
+      content: pending(bExampleHeader) content();
+    }
+    [data-type="solution"] {
+      @include title($solutionTitleContent, bSolutionLabel, h4, "example-solution-title");
+    }
+  }
+}
