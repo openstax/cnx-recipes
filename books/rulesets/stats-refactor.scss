@@ -31,7 +31,7 @@ $appendix_de: "Anhang";
 //translate pages into map variables rather than lists for readability
 
 //Base object
-$compositePage: (
+$compositePage_obj: (
   name: null,
   nameClass: null,
   source: null,
@@ -43,7 +43,7 @@ $compositePage: (
 
 //Inherit compositePage object
 @function compositePage($params) {
-  @return map-merge($compositePage, $params);
+  @return map-merge($compositePage_obj, $params);
 }
 
 $pageKeyTerms: compositePage((
@@ -122,6 +122,7 @@ $chapterCompositePages: (
   $pageSolutions
 );
 
+//make content maps, with 
 $chapterTitleContent: (
   ("Chapter", "label"),
   (counter(chapter), "number"),
@@ -176,8 +177,8 @@ $exampleSolutionTitleContent: (
   @include linkToProblemsFromSolutionsEOC("number", "number", exercise);
 }
 :pass(3) {
-  @include sendEOCSolutions($chapterCompositePages, bSolutions);
-  @include putSolutions(bSolutions, "solutions");
+  @include prepEOCSolutions($chapterCompositePages, bSolutions);
+  @include putSolutionsEOC(bSolutions, "solutions");
 }
 :pass(4) {
   @include countTables(table);

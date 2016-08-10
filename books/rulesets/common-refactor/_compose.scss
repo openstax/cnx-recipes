@@ -13,7 +13,7 @@
 
 @mixin createChapterComposites($compositePages, $sectionTitleNode) {
   @each $page in $compositePages {
-    @include createChapterComposite($compositePage, $sectionTitleNode);
+    @include createChapterComposite($page, $sectionTitleNode);
   }
 }
 
@@ -26,7 +26,7 @@
     @if ($source != null) {
       $isSeparated: map-get($page, isSeparated);
       $isGlossary: map-get($page, isGlossary);
-      $sourceSelector: if($isGlossary, "div[data-type="#{$source}"] dl", "section.#{$source}");
+      $sourceSelector: if($isGlossary, 'div[data-type="#{$source}"] dl', 'section.#{$source}');
       #{$sourceSelector} {
         @if ($isSeparated) {
           content: nodes($sectionTitleNode) content();
@@ -52,18 +52,18 @@
       container: h2;
       data-type: "document-title";
       content: pending(composite-title-TITLECONTAINER);
-      move-to: composite-title;
+      move-to: #{$source}-composite-title;
     }
 
     &::after {
       container: div;
       @if ($source != null) {
-        content: pending(composite-title) pending(#{$source}-TOCOMPOSITE);
+        content: pending(#{$source}-composite-title) pending(#{$source}-TOCOMPOSITE);
       } @else {
-        content: pending(composite-title);
+        content: pending(#{$source}-composite-title);
       }
       class: "eoc #{$source}-container";
-      data-type: composite-page;
+      data-type: "composite-page";
       @if ($sortBy != null) {
         sort-by: #{$sortBy}, nocase;
       }
@@ -122,7 +122,7 @@
   @include putSolutions($bucket, ".eoc.#{$selector}-container")
 }
 
-@mixin sendEOCSolutions($compositePages, $solutionBucket, $sectionHeaderNode: null, $chapterHeaderNode: null) {
+@mixin prepEOCSolutions($compositePages, $solutionBucket, $sectionHeaderNode: null, $chapterHeaderNode: null) {
   @each $name, $sourceSelector, $isSeparated, $hasSolutions in $compositePages {
     @if ($hasSolutions) {
       [data-type="chapter"] {

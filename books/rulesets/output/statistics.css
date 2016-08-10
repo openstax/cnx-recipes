@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/*
-Error: Undefined mixin 'sendSectionTitleNodeAs'.
-        on line 84 of books/rulesets/stats-refactor.scss, in `sendSectionTitleNodeAs'
-        from line 84 of books/rulesets/stats-refactor.scss
-=======
 :pass(0) div.preface > [data-type="document-title"] {
   container: h1;
   content: content();
@@ -93,8 +87,16 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 :pass(0) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionTitleNode;
 }
+:pass(0) div[data-type="chapter"] div[data-type="glossary"] dl {
+  move-to: glossary-TOCOMPOSITE;
+}
+:pass(0) div[data-type="chapter"] div[data-type="glossary"] dl > h1[data-type="title"] {
+  move-to: trash;
+}
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Key Terms";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -105,22 +107,34 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Key Terms";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: glossary-composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
-  class: "eoc -container";
-  data-type: composite-page;
+  content: pending(glossary-composite-title) pending(glossary-TOCOMPOSITE);
+  class: "eoc glossary-container";
+  data-type: "composite-page";
+  sort-by: dl > dt, nocase;
+}
+:pass(0) div[data-type="chapter"] section.summary {
+  content: nodes(sectionTitleNode) content();
+  move-to: summary-TOCOMPOSITE;
+}
+:pass(0) div[data-type="chapter"] section.summary > h1[data-type="title"] {
+  move-to: trash;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Chapter Review";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -131,22 +145,33 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Chapter Review";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: summary-composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
-  class: "eoc -container";
-  data-type: composite-page;
+  content: pending(summary-composite-title) pending(summary-TOCOMPOSITE);
+  class: "eoc summary-container";
+  data-type: "composite-page";
+}
+:pass(0) div[data-type="chapter"] section.formula-review {
+  content: nodes(sectionTitleNode) content();
+  move-to: formula-review-TOCOMPOSITE;
+}
+:pass(0) div[data-type="chapter"] section.formula-review > h1[data-type="title"] {
+  move-to: trash;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Formula Review";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -157,22 +182,33 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Formula Review";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: formula-review-composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
-  class: "eoc -container";
-  data-type: composite-page;
+  content: pending(formula-review-composite-title) pending(formula-review-TOCOMPOSITE);
+  class: "eoc formula-review-container";
+  data-type: "composite-page";
+}
+:pass(0) div[data-type="chapter"] section.practice {
+  content: nodes(sectionTitleNode) content();
+  move-to: practice-TOCOMPOSITE;
+}
+:pass(0) div[data-type="chapter"] section.practice > h1[data-type="title"] {
+  move-to: trash;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Practice";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -183,22 +219,32 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Practice";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: practice-composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
-  class: "eoc -container";
-  data-type: composite-page;
+  content: pending(practice-composite-title) pending(practice-TOCOMPOSITE);
+  class: "eoc practice-container";
+  data-type: "composite-page";
+}
+:pass(0) div[data-type="chapter"] section.bring-together-exercises {
+  move-to: bring-together-exercises-TOCOMPOSITE;
+}
+:pass(0) div[data-type="chapter"] section.bring-together-exercises > h1[data-type="title"] {
+  move-to: trash;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Bringing It Together: Exercises";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -209,22 +255,33 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Bringing It Together: Exercises";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: bring-together-exercises-composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
-  class: "eoc -container";
-  data-type: composite-page;
+  content: pending(bring-together-exercises-composite-title) pending(bring-together-exercises-TOCOMPOSITE);
+  class: "eoc bring-together-exercises-container";
+  data-type: "composite-page";
+}
+:pass(0) div[data-type="chapter"] section.free-response {
+  content: nodes(sectionTitleNode) content();
+  move-to: free-response-TOCOMPOSITE;
+}
+:pass(0) div[data-type="chapter"] section.free-response > h1[data-type="title"] {
+  move-to: trash;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Homework";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -235,22 +292,32 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Homework";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: free-response-composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
-  class: "eoc -container";
-  data-type: composite-page;
+  content: pending(free-response-composite-title) pending(free-response-TOCOMPOSITE);
+  class: "eoc free-response-container";
+  data-type: "composite-page";
+}
+:pass(0) div[data-type="chapter"] section.bring-together-homework {
+  move-to: bring-together-homework-TOCOMPOSITE;
+}
+:pass(0) div[data-type="chapter"] section.bring-together-homework > h1[data-type="title"] {
+  move-to: trash;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Bringing It Together: Homework";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -261,22 +328,33 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Bringing It Together: Homework";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: bring-together-homework-composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
-  class: "eoc -container";
-  data-type: composite-page;
+  content: pending(bring-together-homework-composite-title) pending(bring-together-homework-TOCOMPOSITE);
+  class: "eoc bring-together-homework-container";
+  data-type: "composite-page";
+}
+:pass(0) div[data-type="chapter"] section.references {
+  content: nodes(sectionTitleNode) content();
+  move-to: references-TOCOMPOSITE;
+}
+:pass(0) div[data-type="chapter"] section.references > h1[data-type="title"] {
+  move-to: trash;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "References";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -287,22 +365,26 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "References";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: references-composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
-  class: "eoc -container";
-  data-type: composite-page;
+  content: pending(references-composite-title) pending(references-TOCOMPOSITE);
+  class: "eoc references-container";
+  data-type: "composite-page";
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Solutions";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
@@ -313,19 +395,21 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
 }
 :pass(0) div[data-type="chapter"]::before {
   container: span;
+  content: "Solutions";
+  class: "text";
   move-to: composite-title-TITLECONTAINER;
 }
 :pass(0) div[data-type="chapter"]::before {
   container: h2;
   data-type: "document-title";
   content: pending(composite-title-TITLECONTAINER);
-  move-to: composite-title;
+  move-to: -composite-title;
 }
 :pass(0) div[data-type="chapter"]::after {
   container: div;
-  content: pending(composite-title);
+  content: pending(-composite-title);
   class: "eoc -container";
-  data-type: composite-page;
+  data-type: "composite-page";
 }
 :pass(0) div[data-type=chapter] {
   counter-reset: example;
@@ -381,80 +465,24 @@ Error: Undefined mixin 'sendSectionTitleNodeAs'.
   content: pending(bSolutionLabel-TITLECONTAINER);
   move-to: bSolutionLabel;
 }
->>>>>>> 96a4d84a7d149e06653bdb0a66d4f9184de32a23
 
-79:   @include numberChapters($chapterTitleContent);
-80:   @include countAppendices(appendix);
-81:   @include numberAppendices($appendixTitleContent);
-82:   @include countSections(section);
-83:   @include numberSections($sectionTitleContent);
-84:   @include sendSectionTitleNodeAs(sectionTitleNode);
-85:   @include createChapterComposites($chapterCompositePages, sectionTitleNode);
-86:   @include countExamples(example);
-87:   @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
-88: }
-89: :pass(1) {
+:pass(1) div[data-type=chapter] {
+  counter-reset: exercise;
+}
+:pass(1) .eoc [data-type=exercise] {
+  counter-increment: exercise;
+}
+:pass(1) .eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exercise);
+  class: "number";
+}
+:pass(1) .eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exercise);
+  class: "number";
+}
 
-<<<<<<< HEAD
-Backtrace:
-books/rulesets/stats-refactor.scss:84:in `sendSectionTitleNodeAs'
-books/rulesets/stats-refactor.scss:84
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:351:in `block in visit_mixin'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:98:in `block in with_mixin'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:115:in `with_frame'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:98:in `with_mixin'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:349:in `visit_mixin'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/base.rb:36:in `visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:79:in `block in with_base'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:115:in `with_frame'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:79:in `with_base'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:160:in `visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:433:in `block (2 levels) in visit_rule'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:433:in `map'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:433:in `block in visit_rule'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:181:in `with_environment'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:431:in `visit_rule'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/base.rb:36:in `visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:79:in `block in with_base'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:115:in `with_frame'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/stack.rb:79:in `with_base'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:160:in `visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/base.rb:52:in `map'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/base.rb:52:in `visit_children'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:169:in `block in visit_children'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:181:in `with_environment'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:168:in `visit_children'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/base.rb:36:in `block in visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:188:in `visit_root'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/base.rb:36:in `visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:159:in `visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/visitors/perform.rb:8:in `visit'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/root_node.rb:36:in `css_tree'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/engine.rb:381:in `_render_with_sourcemap'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/engine.rb:298:in `render_with_sourcemap'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:492:in `update_stylesheet'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:209:in `each'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:473:in `on_file_changed'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/lib/sass/plugin/compiler.rb:331:in `block in watch'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/vendor/listen/lib/listen/listener.rb:252:in `call'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/vendor/listen/lib/listen/listener.rb:252:in `on_change'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/vendor/listen/lib/listen/listener.rb:290:in `block in initialize_adapter'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/vendor/listen/lib/listen/adapter.rb:254:in `call'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/vendor/listen/lib/listen/adapter.rb:254:in `report_changes'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/vendor/listen/lib/listen/adapter.rb:323:in `poll_changed_directories'
-/Users/helene/.rvm/gems/ruby-2.1.3/gems/sass-3.4.22/vendor/listen/lib/listen/adapter.rb:299:in `block in start_poller'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Undefined mixin 'sendSectionTitleNodeAs'.\A         on line 84 of books/rulesets/stats-refactor.scss, in `sendSectionTitleNodeAs'\A         from line 84 of books/rulesets/stats-refactor.scss\A \A 79:   @include numberChapters($chapterTitleContent);\A 80:   @include countAppendices(appendix);\A 81:   @include numberAppendices($appendixTitleContent);\A 82:   @include countSections(section);\A 83:   @include numberSections($sectionTitleContent);\A 84:   @include sendSectionTitleNodeAs(sectionTitleNode);\A 85:   @include createChapterComposites($chapterCompositePages, sectionTitleNode);\A 86:   @include countExamples(example);\A 87:   @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);\A 88: }\A 89: :pass(1) {"; }
-=======
 :pass(2) div[data-type=chapter] {
   counter-reset: exercise;
 }
@@ -497,8 +525,20 @@ body:before {
 :pass(3) [data-type="chapter"] .eoc.nameClass text-container [data-type="solution"] {
   move-to: bSolutions;
 }
-:pass(3) solutions {
+:pass(3) .eoc.solutions-container {
   content: content() pending(bSolutions);
+}
+
+:pass(4) div[data-type="chapter"], :pass(4) div.appendix {
+  counter-reset: table;
+}
+:pass(4) div[data-type="chapter"], :pass(4) div[class="appendix"] :not(table) > table {
+  counter-increment: table;
+}
+:pass(4) :not(table) > table:outside {
+  class: table;
+  container: div;
+  content: pending(caption);
 }
 
 :pass(100) body::after {
@@ -506,4 +546,3 @@ body:before {
 }
 
 /*# sourceMappingURL=statistics.css.map */
->>>>>>> 96a4d84a7d149e06653bdb0a66d4f9184de32a23
