@@ -35,7 +35,7 @@
       } @else if ($bucket != null) {
 =======
 //[Document Usage]
-@mixin title($content, $bucket: null, $container: null, $containerClass: null, $containerDestination: null) {
+@mixin title($content, $bucket: null, $container: null, $containerType: null) {
   @if (length(nth($content, 1)) > 1) {
     //If $content is parsed as a list of lists
     @each $itemContent, $itemClass in $content {
@@ -44,7 +44,11 @@
         content: $itemContent;
         class: $itemClass;
         @if ($bucket != null) {
-          move-to: $bucket;
+          @if ($container != null and $containerType != null) {
+            move-to: #{$bucket}-TITLECONTAINER
+          } @else {
+            move-to: $bucket;
+          }
         }
       }
     }
@@ -57,6 +61,7 @@
       content: $itemContent;
       class: $itemClass;
       @if ($bucket != null) {
+<<<<<<< HEAD
 >>>>>>> Separate mixins into their respective files, do some work on solutions
         move-to: $bucket;
       }
@@ -80,6 +85,22 @@
         move-to: $containerDestination;
 >>>>>>> Separate mixins into their respective files, do some work on solutions
       }
+=======
+        @if ($container != null and $containerType != null) {
+          move-to: #{$bucket}-TITLECONTAINER
+        } @else {
+          move-to: $bucket;
+        }
+      }
+    }
+  }
+  @if ($container != null and $containerType != null) {
+    &::before {
+      container: $container;
+      data-type: $containerType;
+      content: pending(#{$bucket}-TITLECONTAINER);
+      move-to: $bucket;
+>>>>>>> Rewrite composition mixins to handle pages with mapped properties
     }
   }
 }

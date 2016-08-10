@@ -29,16 +29,97 @@ $appendix_de: "Anhang";
 //perhaps add another property to allow nothing to be moved? but still create container?
 
 //translate pages into map variables rather than lists for readability
+
+//Base object
+$compositePage: (
+  name: null,
+  nameClass: null,
+  source: null,
+  isSeparated: false,
+  hasSolutions: false,
+  isGlossary: false,
+  sortBy: null
+);
+
+//Inherit compositePage object
+@function compositePage($params) {
+  @return map-merge($compositePage, $params);
+}
+
+$pageKeyTerms: compositePage((
+  name: "Key Terms",
+  nameClass: "text",
+  source: "glossary",
+  isGlossary: true,
+  sortBy: "dl > dt"
+));
+
+$pageChapterReview: compositePage((
+  name: "Chapter Review",
+  nameClass: "text",
+  source: "summary",
+  isSeparated: true
+));
+
+$pageFormulaReview: compositePage((
+  name: "Formula Review",
+  nameClass: "text",
+  source: "formula-review",
+  isSeparated: true
+));
+
+$pagePractice: compositePage((
+  name: "Practice",
+  nameClass: "text",
+  source: "practice",
+  isSeparated: true,
+  hasSolutions: true
+));
+
+$pageBITExercises: compositePage((
+  name: "Bringing It Together: Exercises",
+  nameClass: "text",
+  source: "bring-together-exercises",
+  hasSolutions: true
+));
+
+$pageHomework: compositePage((
+  name: "Homework",
+  nameClass: "text",
+  source: "free-response",
+  isSeparated: true,
+  hasSolutions: true
+));
+
+$pageBITHomework: compositePage((
+  name: "Bringing It Together: Homework",
+  nameClass: "text",
+  source: "bring-together-homework",
+  hasSolutions: true
+));
+
+$pageReferences: compositePage((
+  name: "References",
+  nameClass: "text",
+  source: "references",
+  isSeparated: true
+));
+
+$pageSolutions: compositePage((
+  name: "Solutions",
+  nameClass: "text",
+));
+
 $chapterCompositePages: (
-  ("Key Terms", "glossary", false, false),
-  ("Chapter Review", "summary", true, false),
-  ("Formula Review", "formula-review", true, false),
-  ("Practice", "practice", true, true),
-  ("Bringing It Together: Exercises", "bring-together-exercises", false, true),
-  ("Homework", "free-response", true, true),
-  ("Bringing It Together: Homework", "bring-together-homework", false, true),
-  ("References", "references", true, false),
-  ("Solutions", "solutions", false, false)
+  $pageKeyTerms,
+  $pageChapterReview,
+  $pageFormulaReview,
+  $pagePractice,
+  $pageBITExercises,
+  $pageHomework,
+  $pageBITHomework,
+  $pageReferences,
+  $pageSolutions
 );
 
 $chapterTitleContent: (
@@ -72,7 +153,7 @@ $exerciseTitleContent: (
   @include numberAppendices($appendixTitleContent);
   @include countSections(section);
   @include numberSections($sectionTitleContent);
-  @include sendSectionTitleNodeAs(sectionTitleNode);
+  @include refSectionTitleNodeAs(sectionTitleNode);
   @include createChapterComposites($chapterCompositePages, sectionTitleNode);
 <<<<<<< HEAD
   @include countExercises(exercise);
