@@ -9,6 +9,7 @@
 ==========================================================*/
 :pass(0) div.preface > [data-type="document-title"] {
   container: h1;
+<<<<<<< HEAD
   content: content(); }
 :pass(0) :not([data-type="metadata"]) > [data-type="document-title"] {
   content: ''; }
@@ -32,6 +33,47 @@
   move-to: bChapterLabel; }
 :pass(1) div[data-type="chapter"]::before {
   container: span;
+=======
+  content: content();
+}
+body div.appendix {
+  counter-increment: appendix;
+}
+body div.appendix::before {
+  container: span;
+  class: "toc-label";
+  content: "Appendix";
+  move-to: appendixLabel;
+}
+body div.appendix::before {
+  container: span;
+  class: "number";
+  content: counter(appendix, upper-alpha);
+  move-to: appendixNumber;
+}
+body div.appendix::before {
+  content: ": ";
+  container: span;
+  class: "divider";
+  move-to: appendixDivider;
+}
+body div.appendix > div[data-type="document-title"] {
+  container: h1;
+  content: pending(appendixLabel) " " pending(appendixNumber) pending(appendixDivider) content();
+}
+body div[data-type="chapter"]:pass(20) {
+  counter-reset: exercises;
+}
+body div[data-type="chapter"] {
+  counter-reset: section;
+  counter-reset: example;
+  counter-reset: lab;
+  counter-increment: chapter;
+}
+body div[data-type="chapter"]::before {
+  container: span;
+  class: "number";
+>>>>>>> correct pass syntax for mixins; update css
   content: counter(chapter);
   class: number;
   move-to: bChapterLabel; }
@@ -81,6 +123,7 @@
   move-to: bSectionLabel; }
 :pass(1) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"] {
   container: h2;
+<<<<<<< HEAD
   content: pending(bSectionLabel) content(); }
 :pass(1) div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="document-title"] {
   container: h2; }
@@ -95,6 +138,14 @@
   move-to: bExampleLabel; }
 :pass(1) .example::before {
   container: span;
+=======
+  content: pending(sectionNumber) " " pending(sectionDivider) content();
+}
+body div[data-type="chapter"] [data-type="page"] .example {
+  counter-increment: example;
+}
+body div[data-type="chapter"] [data-type="page"] .example::before {
+>>>>>>> correct pass syntax for mixins; update css
   content: counter(chapter) "." counter(example);
   class: number;
   move-to: bExampleLabel; }
@@ -124,6 +175,7 @@
   move-to: -TITLECONTAINER; }
 :pass(1) .example [data-type="solution"]::before {
   container: div;
+<<<<<<< HEAD
   data-type: "solution-title";
   content: pending(-TITLECONTAINER); }
 :pass(1) [data-type="chapter"], :pass(1) .appendix {
@@ -281,9 +333,249 @@
   class: "term-section";
   move-to: index-section; }
 :pass(2) div[data-type="page"] span[data-type="term"]::after, :pass(2) div[data-type="composite-page"] span[data-type="term"]::after {
+=======
+  data-type: title;
+  content: "Solution " counter(chapter) "." counter(example);
+}
+body div[data-type="chapter"] [data-type="page"] .try .exercise::before {
+  class: "try-number";
+  container: span;
+  class: "number";
+  content: counter(chapter) "." counter(example);
+}
+body div[data-type="chapter"] [data-type="page"] .lab {
+  counter-increment: lab;
+}
+body div[data-type="chapter"] [data-type="page"] .lab::before {
+  content: "Stats Lab";
+  class: "stat-lab-title";
+  data-type: "title";
+}
+body div[data-type="chapter"] [data-type="page"] .lab > [data-type="title"]::before {
+  content: counter(chapter) "." counter(lab);
+  container: span;
+  class: "lab-number";
+  node-set: labNumber;
+}
+body div[data-type="chapter"]:pass(40) {
+  counter-reset: section;
+  counter-reset: example;
+  counter-reset: lab;
+  counter-increment: chapter;
+}
+body div[data-type="chapter"]:pass(40) [data-type="page"] .example {
+  counter-increment: example;
+  string-set: target-label "Example " counter(chapter) "." counter(example);
+}
+body div[data-type="chapter"]:pass(40) [data-type="page"] .try {
+  string-set: target-label "Try It";
+}
+body [data-type="chapter"]:pass(40) {
+  counter-reset: figure;
+  counter-reset: table;
+  counter-increment: chapNum;
+  counter-reset: exercises-target;
+}
+body [data-type="chapter"]:pass(40) [data-target="figure"] {
+  content: "Fig." target-counter(attr(href), chapNum) "." target-counter(attr(href), figure);
+}
+body [data-type="chapter"]:pass(40) [data-target="table"] {
+  content: "Table" target-counter(attr(href), chapNum) "." target-counter(attr(href), figure);
+}
+body [data-type="chapter"]:pass(40) :not(figure) > figure {
+  counter-increment: figure;
+  string-set: target-label "Figure " counter(chapNum) "." counter(figure);
+}
+body [data-type="chapter"]:pass(40) :not(figure) > figure figcaption {
+  container: div;
+  class: caption;
+  content: content();
+  move-to: figCaption;
+}
+body [data-type="chapter"]:pass(40) :not(figure) > figure::after {
+  container: span;
+  content: string(target-label);
+  move-to: figureNumber;
+}
+body [data-type="chapter"]:pass(40) :not(figure) > figure::after {
+  class: "figure-number";
+  container: span ;
+  content: pending(figureNumber);
+  move-to: figNum;
+}
+body [data-type="chapter"]:pass(40) :not(figure) > figure::outside {
+  class: figure;
+  container: div;
+  content: content() pending(figNum) pending(figCaption);
+}
+body [data-type="chapter"]:pass(40) :not(table) > table {
+  counter-increment: table;
+  string-set: target-label "Table " counter(chapNum) "." counter(table);
+}
+body [data-type="chapter"]:pass(40) :not(table) > table caption {
+  container: div;
+  class: caption;
+  move-to: imageCaption;
+}
+body [data-type="chapter"]:pass(40) :not(table) > table::after {
+  container: span;
+  content: string(target-label);
+  move-to: tableNumber;
+}
+body [data-type="chapter"]:pass(40) :not(table) > table:after {
+  class: "table-number";
+  container: div;
+  content: pending(tableNumber);
+  move-to: table-number;
+}
+body [data-type="chapter"]:pass(40) :not(table) > table::outside {
+  class: table;
+  container: div;
+  content: content() pending(table-number) pending(imageCaption);
+}
+body .appendix:pass(40) {
+  counter-reset: figure;
+  counter-reset: table;
+  counter-increment: apNum;
+}
+body .appendix:pass(40) :not(figure) > figure {
+  counter-increment: figure;
+  string-set: target-label "Figure " counter(apNum, upper-alpha) counter(figure);
+}
+body .appendix:pass(40) :not(figure) > figure figcaption {
+  container: div;
+  class: caption;
+  content: content();
+  move-to: figCaption;
+}
+body .appendix:pass(40) :not(figure) > figure::after {
+  container: span;
+  content: string(target-label);
+  move-to: figureNumber;
+}
+body .appendix:pass(40) :not(figure) > figure::after {
+  class: "figure-number";
+  container: span ;
+  content: pending(figureNumber);
+  move-to: figNum;
+}
+body .appendix:pass(40) :not(figure) > figure::outside {
+  class: figure;
+  container: div;
+  content: content() pending(figNum) pending(figCaption);
+}
+body .appendix:pass(40) :not(table) > table {
+  counter-increment: table;
+  string-set: target-label "Table " counter(apNum, upper-alpha) counter(table);
+}
+body .appendix:pass(40) :not(table) > table caption {
+  container: div;
+  class: caption;
+  move-to: imageCaption;
+}
+body .appendix:pass(40) :not(table) > table::after {
+  container: span;
+  content: string(target-label);
+  move-to: tableNumber;
+}
+body .appendix:pass(40) :not(table) > table:after {
+  class: "table-number";
+  container: div;
+  content: pending(tableNumber);
+  move-to: table-number;
+}
+body .appendix:pass(40) :not(table) > table::outside {
+  class: table;
+  container: div;
+  content: content() pending(table-number) pending(imageCaption);
+}
+body .eoc:pass(40) [data-type="exercise"] {
+  counter-increment: exercises-target;
+  string-set: target-label "Exercise " counter(chapter) "." counter(exercises-target);
+}
+body .eoc:pass(20) [data-type="exercise"] [data-type="problem"] {
+  counter-increment: exercises;
+  string-set: exId attr(id);
+}
+body .eoc:pass(20) [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exercises);
+  node-set: exerciseNumber;
+}
+body .eoc:pass(20) [data-type="solution"]::before {
+  container: a;
+  attr-href: "#" string(exId);
+  content: nodes(exerciseNumber);
+}
+body a.autogenerated-content:pass(40) {
+  content: target-string(attr(href), target-label);
+}
+/* This file includes parts that are used only once per book */
+body {
+  counter-reset: term-count;
+}
+a[href*="archive.cnx.org/specials/"] {
+  attr-target: "_blank";
+}
+div[data-type='chapter'] > [data-type="document-title"] {
+  node-set: chapterTitle;
+}
+div[data-type='chapter'] > [data-type="document-title"] .number:pass(25) {
+  node-set: nodeChapterNumber;
+}
+div[data-type='chapter'] > [data-type="document-title"] .toc-label:pass(25) {
+  node-set: nodeChapterLabel;
+}
+div[data-type='chapter'] > [data-type="document-title"] .text:pass(35) {
+  node-set: nodeChapterText;
+}
+div[data-type='chapter'] div[data-type="page"],
+div[data-type='chapter'] div[data-type="composite-page"] {
+  string-set: page-id attr(id);
+}
+div[data-type='chapter'] div[data-type="page"] > h2[data-type="document-title"],
+div[data-type='chapter'] div[data-type="composite-page"] > h2[data-type="document-title"] {
+  string-set: section-title content();
+  node-set: sectionTitle;
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"],
+div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"] {
+  counter-increment: term-count;
+  attr-id: "auto_" string(page-id) "_term" counter(term-count);
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]:match(^[a-zA-Z]),
+div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:match(^[a-zA-Z]) {
+  attr-group-by: first-letter(content());
+}
+div[data-type='chapter'] div[data-type="page"] span[data-type="term"]:match(^[^a-zA-Z]),
+div[data-type='chapter'] div[data-type="composite-page"] span[data-type="term"]:match(^[^a-zA-Z]) {
+  attr-group-by: "";
+}
+div[data-type='chapter'] div[data-type="page"]:pass(50),
+div[data-type='chapter'] div[data-type="composite-page"]:pass(50) {
+  string-set: page-id attr(id);
+}
+div[data-type='chapter'] div[data-type="page"]:pass(50) > h2[data-type="document-title"],
+div[data-type='chapter'] div[data-type="composite-page"]:pass(50) > h2[data-type="document-title"] {
+  string-set: section-title content();
+  node-set: sectionTitle;
+}
+div[data-type='chapter'] div[data-type="page"]:pass(50) span[data-type="term"]::after,
+div[data-type='chapter'] div[data-type="composite-page"]:pass(50) span[data-type="term"]::after {
+  content: content();
+  attr-group-by: attr(group-by);
+  container: span;
+  class: glossary-term;
+  move-to: index-term;
+}
+div[data-type='chapter'] div[data-type="page"]:pass(50) span[data-type="term"]::after,
+div[data-type='chapter'] div[data-type="composite-page"]:pass(50) span[data-type="term"]::after {
+  content: string(section-title);
+>>>>>>> correct pass syntax for mixins; update css
   container: a;
   content: pending(index-section);
   attr-href: "#" attr(id);
+<<<<<<< HEAD
   class: "term-section-link";
   move-to: index-section-link; }
 :pass(2) div[data-type="page"] span[data-type="term"]::after, :pass(2) div[data-type="composite-page"] span[data-type="term"]::after {
@@ -473,6 +765,58 @@
 :pass(5) div[data-type="composite-page"] {
   attr-id: uuid() "@1"; }
 :pass(5) div[data-type='chapter'] > h1[data-type='document-title'] {
+=======
+  move-to: link;
+}
+div[data-type='chapter'] div[data-type="page"]:pass(50) span[data-type="term"]::after,
+div[data-type='chapter'] div[data-type="composite-page"]:pass(50) span[data-type="term"]::after {
+  content: pending(index-term) pending(link);
+  class: index-item;
+  move-to: eob-index;
+}
+body > [data-type="metadata"] {
+  node-set: bookMetadata;
+}
+body div.eoc:pass(77) [data-type="cnx-archive-uri"],
+body div.eob:pass(77) [data-type="cnx-archive-uri"] {
+  move-to: trash;
+}
+body::before {
+  container: div;
+  content: "Answer Key";
+  data-type: document-title;
+  move-to: answerTitle;
+}
+body .eob.index:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+body .eob.index [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Index";
+}
+body .eob.index:pass(52)::before {
+  container: span;
+  content: "Index";
+  move-to: titleSpan;
+}
+body .eob.index:pass(52)::before {
+  container: h1;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+body:pass(50)::after {
+  class: "eob index";
+  data-type: composite-page;
+  content: pending(eob-index);
+  group-by: span, "span::attr(group-by)", nocase;
+}
+body .eob.index > div.group-by:first-of-type > span.group-label:pass(51) {
+  content: "Symbols";
+}
+body div[data-type="composite-page"]:pass(55) {
+  attr-id: uuid() "@1";
+}
+body > div[data-type='chapter'] > h1[data-type='document-title']:pass(55) {
+>>>>>>> correct pass syntax for mixins; update css
   counter-increment: chapTitleNum;
   attr-id: "chapTitle" counter(chapTitleNum); }
 :pass(5) [data-type="chapter"], :pass(5) .appendix {
@@ -485,6 +829,7 @@
   counter-increment: figure; }
 :pass(5) [data-type="chapter"] :not(table) > table::before {
   container: span;
+<<<<<<< HEAD
   content: "Table ";
   class: title-label;
   move-to: bCaption; }
@@ -682,3 +1027,426 @@
   content: clear(trash); }
 
 /*# sourceMappingURL=statistics.css.map */
+=======
+  class: "text";
+}
+body:pass(100)::after {
+  content: clear(trash);
+}
+body > div[data-type="page"],
+body > div[data-type="composite-page"]:pass(60) {
+  string-set: page-id attr(id);
+}
+body > div[data-type="page"] > [data-type='document-title'],
+body > div[data-type="composite-page"]:pass(60) > [data-type='document-title'] {
+  node-set: pageTitle;
+}
+body > div[data-type="page"]::after,
+body > div[data-type="composite-page"]:pass(60)::after {
+  content: nodes(pageTitle);
+  attr-href: "#" string(page-id);
+  container: a;
+  move-to: page-link;
+}
+body > div[data-type="page"]::after,
+body > div[data-type="composite-page"]:pass(60)::after {
+  content: pending(page-link);
+  move-to: eob-toc;
+  container: li;
+}
+body > div[data-type='chapter']:pass(60) > h1[data-type='document-title'] {
+  node-set: chapterTitle;
+  string-set: chapTitle-id attr(id);
+}
+body > div[data-type='chapter']:pass(60)::after {
+  content: nodes(chapterTitle);
+  attr-href: "#" string(chapTitle-id);
+  container: a;
+  move-to: eoc-toc;
+}
+body > div[data-type='chapter']:pass(60) > div[data-type="page"],
+body > div[data-type='chapter']:pass(60) > div[data-type="composite-page"] {
+  string-set: page-id-chap attr(id);
+}
+body > div[data-type='chapter']:pass(60) > div[data-type="page"] > [data-type='document-title'],
+body > div[data-type='chapter']:pass(60) > div[data-type="composite-page"] > [data-type='document-title'] {
+  node-set: PageTitle;
+}
+body > div[data-type='chapter']:pass(60) > div[data-type="page"]::after,
+body > div[data-type='chapter']:pass(60) > div[data-type="composite-page"]::after {
+  content: nodes(PageTitle);
+  attr-href: "#" string(page-id-chap);
+  container: a;
+  move-to: page-link;
+}
+body > div[data-type='chapter']:pass(60) > div[data-type="page"]::after,
+body > div[data-type='chapter']:pass(60) > div[data-type="composite-page"]::after {
+  content: pending(page-link);
+  move-to: eoc-toc-pages;
+  container: li;
+}
+body > div[data-type='chapter']:pass(60)::after {
+  content: pending(eoc-toc-pages);
+  container: ol;
+  class: chapter;
+  move-to: eoc-toc;
+}
+body > div[data-type='chapter']:pass(60)::after {
+  content: pending(eoc-toc);
+  container: li;
+  move-to: eob-toc;
+}
+body > div[data-type="unit"]:pass(60) > h1[data-type='document-title'] {
+  copy-to: eou-toc;
+}
+body > div[data-type="unit"]:pass(60) > div[data-type='chapter'] > h1[data-type='document-title'] {
+  copy-to: eoc-toc;
+}
+body > div[data-type="unit"]:pass(60) > div[data-type='chapter'] > div[data-type="page"] > h2[data-type='document-title'],
+body > div[data-type="unit"]:pass(60) > div[data-type='chapter'] div[data-type="composite-page"] > h2[data-type='document-title'] {
+  copy-to: page-title;
+}
+body > div[data-type="unit"]:pass(60) > div[data-type='chapter'] > div[data-type="page"]::after,
+body > div[data-type="unit"]:pass(60) > div[data-type='chapter'] div[data-type="composite-page"]::after {
+  content: pending(page-title);
+  move-to: eoc-toc-pages;
+  container: li;
+}
+body > div[data-type="unit"]:pass(60) > div[data-type='chapter']::after {
+  content: pending(eoc-toc-pages);
+  container: ol;
+  class: chapter;
+  move-to: eoc-toc;
+}
+body > div[data-type="unit"]:pass(60) > div[data-type='chapter']::after {
+  content: pending(eoc-toc);
+  container: li;
+  move-to: eou-toc-chapters;
+}
+body > div[data-type="unit"]:pass(60)::after {
+  content: pending(eou-toc-chapters);
+  container: ol;
+  class: unit;
+  move-to: eou-toc;
+}
+body > div[data-type="unit"]:pass(60)::after {
+  content: pending(eou-toc);
+  container: li;
+  move-to: eob-toc;
+}
+nav#toc:pass(65) {
+  content: '';
+}
+nav#toc:pass(65)::after {
+  content: pending(eob-toc);
+  container: ol;
+}
+nav#toc > ol:pass(66) li > a {
+  move-to: trash;
+  string-set: toc-ref attr(href);
+}
+nav#toc > ol:pass(66) li > a > h1 > span,
+nav#toc > ol:pass(66) li > a > h2 > span,
+nav#toc > ol:pass(66) li > a > div > span {
+  move-to: title-spans;
+}
+nav#toc > ol:pass(66) li > a::outside {
+  content: pending(title-spans);
+  container: a;
+  attr-href: string(toc-ref);
+}
+body::after {
+  content: clear(trash);
+}
+div[data-type='chapter'] div[data-type="glossary"] {
+  move-to: trash;
+}
+div[data-type='chapter'] div[data-type="glossary"] dl.definition {
+  move-to: eoc-glossary;
+}
+div[data-type='chapter']::before {
+  container: span;
+  content: "Key Terms";
+  move-to: titleSpan;
+}
+div[data-type='chapter']::before {
+  container: h2;
+  class: sectionGlossary;
+  data-type: document-title;
+  content: pending(titleSpan);
+  move-to: sectionGlossary;
+}
+div[data-type='chapter']::after {
+  class: "eoc glossary";
+  data-type: composite-page;
+  content: pending(sectionGlossary) pending(eoc-glossary);
+  sort-by: dl> dt;
+}
+div[data-type='chapter'] section.summary {
+  move-to: summary;
+}
+div[data-type='chapter'] section.summary > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.summary::after {
+  class: summary;
+  content: nodes(sectionTitle) pending(summary);
+  move-to: eoc-summaries;
+}
+div[data-type='chapter']::before {
+  container: span;
+  content: "Chapter Review";
+  move-to: titleSpan;
+}
+div[data-type='chapter']::before {
+  container: h2;
+  class: summary-title;
+  data-type: document-title;
+  content: pending(titleSpan);
+  move-to: summaryTitle;
+}
+div[data-type='chapter']::after {
+  class: "eoc summary";
+  data-type: composite-page;
+  content: pending(summaryTitle) pending(eoc-summaries);
+}
+div[data-type='chapter'] .try div[data-type="solution"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.formula-review {
+  content: nodes(sectionTitle) content();
+  move-to: formula-review;
+}
+div[data-type='chapter'] section.formula-review > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter']::after {
+  content: pending(formula-review);
+  class: "eoc formula-review-container";
+  container: div;
+  data-type: composite-page;
+}
+div[data-type='chapter'] section.practice {
+  content: nodes(sectionTitle) content();
+  move-to: practice;
+}
+div[data-type='chapter'] section.practice > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.practice div[data-type="solution"]:pass(25) {
+  move-to: eoc-solutions;
+}
+div[data-type='chapter']::after {
+  content: pending(practice);
+  class: "eoc practice-container";
+  container: div;
+  data-type: composite-page;
+}
+div[data-type='chapter'] section.bring-together-exercises {
+  move-to: bring-together-exercises;
+}
+div[data-type='chapter'] section.bring-together-exercises > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.bring-together-exercises div[data-type="solution"]:pass(25) {
+  move-to: eoc-solutions;
+}
+div[data-type='chapter']::after {
+  content: pending(bring-together-exercises);
+  class: "eoc bring-together-exercises-container";
+  container: div;
+  data-type: composite-page;
+}
+div[data-type='chapter'] section.free-response {
+  content: nodes(sectionTitle) content();
+  move-to: free-response;
+}
+div[data-type='chapter'] section.free-response > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.free-response div[data-type="solution"]:pass(25) {
+  move-to: eoc-solutions;
+}
+div[data-type='chapter']::after {
+  content: pending(free-response);
+  class: "eoc free-response-container";
+  container: div;
+  data-type: composite-page;
+}
+div[data-type='chapter'] section.bring-together-homework {
+  move-to: bring-together-homework;
+}
+div[data-type='chapter'] section.bring-together-homework > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter'] section.bring-together-homework div[data-type="solution"]:pass(25) {
+  move-to: eoc-solutions;
+}
+div[data-type='chapter']::after {
+  content: pending(bring-together-homework);
+  class: "eoc bring-together-homework-container";
+  container: div;
+  data-type: composite-page;
+}
+div[data-type='chapter'] section.references {
+  content: nodes(sectionTitle) content();
+  move-to: references;
+}
+div[data-type='chapter'] section.references > h1[data-type="title"] {
+  move-to: trash;
+}
+div[data-type='chapter']::after {
+  content: pending(references);
+  class: "eoc references-container";
+  container: div;
+  data-type: composite-page;
+}
+div[data-type='chapter']:pass(25)::after {
+  container: div;
+  data-type: composite-page;
+  class: "eoc solutions-container";
+  content: pending(eoc-solutions);
+}
+div[data-type='chapter'] .calculator:pass(30)::before {
+  container: span;
+  class: "text";
+  content: "Using the TI-83, 83+, 84, 84+ Calculator";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .calculator:pass(30)::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.formula-review-container:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.formula-review-container [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Formula Review";
+}
+div[data-type='chapter'] .eoc.formula-review-container:pass(30)::before {
+  container: span;
+  class: "text";
+  content: "Formula Review";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.formula-review-container:pass(30)::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.practice-container:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.practice-container [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Practice";
+}
+div[data-type='chapter'] .eoc.practice-container:pass(30)::before {
+  container: span;
+  class: "text";
+  content: "Practice";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.practice-container:pass(30)::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.free-response-container:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.free-response-container [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Homework";
+}
+div[data-type='chapter'] .eoc.free-response-container:pass(30)::before {
+  container: span;
+  class: "text";
+  content: "Homework";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.free-response-container:pass(30)::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.bring-together-exercises-container:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.bring-together-exercises-container [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Bringing It Together: Practice";
+}
+div[data-type='chapter'] .eoc.bring-together-exercises-container:pass(30)::before {
+  container: span;
+  class: "text";
+  content: "Bringing It Together: Practice";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.bring-together-exercises-container:pass(30)::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.bring-together-homework-container:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.bring-together-homework-container [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Bringing It Together: Homework";
+}
+div[data-type='chapter'] .eoc.bring-together-homework-container:pass(30)::before {
+  container: span;
+  class: "text";
+  content: "Bringing It Together: Homework";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.bring-together-homework-container:pass(30)::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.references-container:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.references-container [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "References";
+}
+div[data-type='chapter'] .eoc.references-container:pass(30)::before {
+  container: span;
+  class: "text";
+  content: "References";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.references-container:pass(30)::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.solutions-container:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.solutions-container [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Solutions";
+}
+div[data-type='chapter'] .eoc.solutions-container:pass(30)::before {
+  container: span;
+  class: "text";
+  content: "Solutions";
+  move-to: titleSpan;
+}
+div[data-type='chapter'] .eoc.solutions-container:pass(30)::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(titleSpan);
+}
+div[data-type='chapter'] .eoc.glossary:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.glossary [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Key Terms";
+}
+div[data-type='chapter'] .eoc.summary:pass(75) {
+  content: nodes(bookMetadata) content();
+}
+div[data-type='chapter'] .eoc.summary [data-type="metadata"] [data-type="document-title"]:pass(76) {
+  content: "Chapter Review";
+}
+>>>>>>> correct pass syntax for mixins; update css

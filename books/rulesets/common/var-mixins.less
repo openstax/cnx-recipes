@@ -1,26 +1,27 @@
-20
-25
-30
-40
-50
-51
-52
-55
-60
-65
-66
-75
-76
-77
+@pass-20-numbering-eoc: 20; /*Number solutions/EOC content*/
+@pass-25-solutions: 25; /*Assign exercise solutions to migrate to their own container*/
+@pass-30-title: 30; /*Title existing EOC/EOB containers*/
+@pass-40-numbering-figs-tabs: 40;
+@pass-50-index: 50; /*Create everything associated with the index*/
+@pass-51-index-symbol: 51; /*Create separate section in index for symbols*/
+@pass-52-index-title: 52;
+@pass-55-id-assign: 55;
+@pass-60-toc: 60; /*Create everything associated with the toc*/
+@pass-65-toc-nav: 65; /*Create toc nav*/
+@pass-66-nav-unwrap: 66; /*Unwrap span elements copied from doc-titles*/
+@pass-75-metadata: 75; /*Add metadata to all locations*/
+@pass-76-meta-title: 76; /*Add title to metatdata sections*/
+@pass-77-meta-uri: 77; /**/
 
 
 
-.metadata(@title):pass(75) {
+.metadata(@title) {
+  &:pass(75){
   content: nodes(bookMetadata) content();
+  }
 }
 
 .metadata(@title) {
-  content: nodes(bookMetadata) content();
   [data-type="metadata"] {
     [data-type="document-title"]:pass(76) {
       content: @title;
@@ -28,14 +29,14 @@
   }
 }
 
-.doc-title (@title):pass(30) {
-  &::before {
+.doc-title (@title) {
+  &:pass(30)::before {
     container: span;
     class: "text";
     content: @title;
     move-to: titleSpan;
   }
-  &::before {
+  &:pass(30)::before {
     container: h2;
     data-type: document-title;
     content: pending(titleSpan);
@@ -117,12 +118,16 @@
   data-type: composite-page;
 }
 
-.solutions-origin (@moveto):pass(25) {
-  move-to: @moveto;
+.solutions-origin (@moveto) {
+  &:pass(25) {
+    move-to: @moveto;
+  }
 }
-.solutions-destination (@class; @moveto; @location):pass(25) {
-  container: div;
-  data-type: composite-page;
-  class: "@{location} @{class}-container";
-  content: pending(@moveto);
+.solutions-destination (@class; @moveto; @location) {
+  &:pass(25) {
+    container: div;
+    data-type: composite-page;
+    class: "@{location} @{class}-container";
+    content: pending(@moveto);
+  }
 }
