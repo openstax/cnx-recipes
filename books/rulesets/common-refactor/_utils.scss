@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 /// Base counting mixin - creates a counter with the given name, increment location, and reset location
 /// @arg {Text} $name - The unquoted name of the counter that will be created
 /// @arg {String} $selector - A string of the selector at which the counter will increment
 /// @arg {String} $resetSelector - A string of the selector at which the counter will reset
 @mixin utils_count($name, $selector, $resetSelector) {
+=======
+//[Document Usage]
+@mixin count($name, $selector, $resetSelector) {
+>>>>>>> Separate mixins into their respective files, do some work on solutions
   //Improvement: Resetting isn't dry, recreates selector if more than one counter resets on one element
   #{$resetSelector} {
     counter-reset: $name;
@@ -12,6 +17,7 @@
   }
 }
 
+<<<<<<< HEAD
 /// Base titling and numbering mixin - Creates <span> elements before an element defined by the content passed. These <span> elements can be automatically wrapped and/or sent to a specified bucket
 /// @arg {Map} $content - A content map containing key and value pairs. Each key, value pair creates a <span> of class="key" with a text node of "value"
 /// @arg {Text} $bucket [null] - The unquoted name of the bucket to send the resulting object(s) to. If null, resulting object(s) will remain in place, before the element the mixin was called within
@@ -27,10 +33,36 @@
       @if ($container != null and $containerType != null) {
         move-to: #{$bucket}-TITLECONTAINER
       } @else if ($bucket != null) {
+=======
+//[Document Usage]
+@mixin title($content, $bucket: null, $container: null, $containerClass: null, $containerDestination: null) {
+  @if (length(nth($content, 1)) > 1) {
+    //If $content is parsed as a list of lists
+    @each $itemContent, $itemClass in $content {
+      &::before {
+        container: span;
+        content: $itemContent;
+        class: $itemClass;
+        @if ($bucket != null) {
+          move-to: $bucket;
+        }
+      }
+    }
+  } @else {
+    //If $content is parsed as a single list with two text elements
+    $itemContent: nth($content, 1);
+    $itemClass: nth($content, 2);
+    &::before {
+      container: span;
+      content: $itemContent;
+      class: $itemClass;
+      @if ($bucket != null) {
+>>>>>>> Separate mixins into their respective files, do some work on solutions
         move-to: $bucket;
       }
     }
   }
+<<<<<<< HEAD
   @if ($container != null and $containerType != null) {
     &::before {
       container: $container;
@@ -38,11 +70,21 @@
       content: pending(#{$bucket}-TITLECONTAINER);
       @if ($bucket != null) {
         move-to: $bucket;
+=======
+  @if ($container != null and $containerClass != null) {
+    &::before {
+      container: $container;
+      class: $containerClass;
+      content: pending($bucket);
+      @if ($containerDestination != null) {
+        move-to: $containerDestination;
+>>>>>>> Separate mixins into their respective files, do some work on solutions
       }
     }
   }
 }
 
+<<<<<<< HEAD
 //Relies on hitting To Selector then From Selector without anything in between repeatedly
 //:'( this is less robust and useful than originally envisioned, still works great for solutions -> exercises though
 //Additionally a counter may not need to be passed, and a new method could rely on an internal counter
@@ -56,6 +98,9 @@
 /// @arg {String} $fromSelector - The selector of the element in the pair that will be the link
 /// @arg {Text} $toCounter [null] - The counter object used to automatically ID the element to be linked to if it doesn't already have an id. If null, the link href will be to an already existing id of the linked-to element
 @mixin utils_linkToFromForward($toSelector, $fromSelector, $toName, $toCounter: null) {
+=======
+@mixin linkToFrom($toSelector, $fromSelector, $toName, $toCounter: null) {
+>>>>>>> Separate mixins into their respective files, do some work on solutions
   #{$toSelector} {
     @if ($toCounter != null) {
       $toID: "#{$toName}-"counter($toCounter);
@@ -64,6 +109,10 @@
     } @else {
       string-set: #{$toName}-ID attr(id);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> Separate mixins into their respective files, do some work on solutions
   }
   #{$fromSelector} {
     &::outside {
@@ -73,6 +122,7 @@
   }
 }
 
+<<<<<<< HEAD
 /// Simply base mixin to reference a node
 /// @arg {Text} $name - The unquoted name of the node that will be referenced
 @mixin utils_refNodeAs($name) {
@@ -89,6 +139,18 @@
 /// A simple call to clear the trash at the end of a pass/step
 @mixin utils_clearTrash() {
   body:deferred::after {
+=======
+@mixin refNodeAs($name) {
+  node-set: $name;
+}
+
+@mixin refStringAs($name) {
+  string-set: $name;
+}
+
+@mixin clearTrash() {
+  body::after {
+>>>>>>> Separate mixins into their respective files, do some work on solutions
     content: clear(trash);
   }
 }

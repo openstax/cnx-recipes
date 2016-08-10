@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import "./utils";
 
 @mixin compose_titleEOCComposites($compositePages) {
@@ -139,10 +140,49 @@
           }
         }
       }
+=======
+@mixin createChapterComposites($compositePages, $sectionTitleNode) {
+  @each $name, $sourceSelector, $isSeparated, $hasSolutions in $compositePages {
+    @include createChapterComposite(
+      $name,
+      $sourceSelector,
+      $isSeparated,
+      $sectionTitleNode
+    );
+  }
+}
+
+@mixin createChapterComposite($name, $sourceSelector, $isSeparated, $sectionTitleNode) {
+  div[data-type="chapter"] {
+    //Slight hack: these selectors should get everything including glossary definitions
+    //Hope that structure doesn't change and that using
+    //div[data-type] wont be needed to fetch anything but definitions
+    //May need to eventually separate the creation of glossary type pages
+    section.#{$sourceSelector},
+    div[data-type="#{$sourceSelector}"] dl {
+      @if ($isSeparated) {
+        content: nodes($sectionTitleNode) content();
+      }
+      > h1[data-type="title"] {
+        move-to: trash;
+      }
+      move-to: #{$sourceSelector}-TOCOMPOSITE;
+    }
+
+    &::after {
+      container: div;
+      content: pending(#{$sourceSelector}-TOCOMPOSITE);
+      class: "eoc #{$sourceSelector}-container";
+      data-type: composite-page;
+      //This should only really do anything for the glossary...
+      //so it feels kinda dumb to have this here for everything
+      sort-by: #{"dl > dt"}, nocase;
+>>>>>>> Separate mixins into their respective files, do some work on solutions
     }
   }
 }
 
+<<<<<<< HEAD
 @mixin compose_createBookComposites($compositePages) {
   @each $page in $compositePages {
     @include createBookComposite($page);
@@ -161,10 +201,30 @@
       @if ($isIndex) {
         group-by: span, "span::attr(group-by)", nocase;
       }
+=======
+@mixin putSolutions($bucket, $selector) {
+  // #{$selector} {
+  //   content: pending($bucket);
+  // }
+
+  //why does only this work? is it because createComposites creates
+  //an empty solution page and we have to recreate it?
+  //will implementing titles on composite pages so that it's not empty fix this?
+  [data-type="chapter"] {
+    &::after {
+      container: div;
+      content: pending($bucket);
+      class: "eoc #{$selector}-container";
+      data-type: composite-page;
+      //This should only really do anything for the glossary...
+      //so it feels kinda dumb to have this here for everything
+      sort-by: #{"dl > dt"}, nocase;
+>>>>>>> Separate mixins into their respective files, do some work on solutions
     }
   }
 }
 
+<<<<<<< HEAD
 //ChapterHeaderNode may be causing some weird issues? and may be copying the entire chapter?
 //See if this node needs to become a string, or if chapterHeaderNode is copying more than expected
 @mixin compose_prepChapterAreas($compositePages, $chapterHeaderNode) {
@@ -239,11 +299,49 @@
               content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
               move-to: #{$solutionSource}-TOCOMPOSITE;
             }
+=======
+@mixin putSolutionsEOC($bucket, $selector) {
+  @include putSolutions($bucket, ".eoc.#{$selector}-container")
+}
+
+@mixin sendEOCSolutions($compositePages, $solutionBucket, $sectionHeaderNode: null, $chapterHeaderNode: null) {
+  @each $name, $sourceSelector, $isSeparated, $hasSolutions in $compositePages {
+    @if ($hasSolutions) {
+      [data-type="chapter"] {
+        .eoc.#{$sourceSelector}-container {
+          [data-type="solution"] {
+            @if ($sectionHeaderNode == null and $chapterHeaderNode == null) {
+              move-to: $solutionBucket;
+            } @else if ($sectionHeaderNode != null) {
+              move-to: #{$solutionBucket}-GETSECTION;
+            } @else {
+              move-to: #{$solutionBucket}-GETCHAPTER;
+            }
+          }
+          @if ($sectionHeaderNode != null) {
+            &::after {
+              content: nodes($sectionHeaderNode) pending(#{$solutionBucket}-GETSECTION);
+              class: "section-area";
+              @if ($chapterHeaderNode != null) {
+                move-to: #{$solutionBucket}-GETCHAPTER;
+              } @else {
+                move-to: $solutionBucket;
+              }
+            }
+          }
+        }
+        @if ($chapterHeaderNode != null) {
+          &::after {
+            content: nodes($chapterHeaderNode) pending(#{$solutionBucket}-GETCHAPTER);
+            class: "chapter-area";
+            move-to: $solutionBucket;
+>>>>>>> Separate mixins into their respective files, do some work on solutions
           }
         }
       }
     }
   }
+<<<<<<< HEAD
  body {
     &::after {
       container: div;
@@ -304,3 +402,6 @@
 //     }
 //   }
 // }
+=======
+}
+>>>>>>> Separate mixins into their respective files, do some work on solutions
