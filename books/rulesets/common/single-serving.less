@@ -11,27 +11,23 @@ a[href*="archive.cnx.org/specials/"] {
 div[data-type='chapter'] {
   > [data-type="document-title"] {
     node-set: chapterTitle;
-    .number {
+    .number:pass(25) {
       node-set: nodeChapterNumber;
       //Pass 25: econ answer key
-      pass: 25;
     }
-    .toc-label {
+    .toc-label:pass(25) {
       //Unused node-set?
       node-set: nodeChapterLabel;
-      pass: 25;
     }
-    .text {
+    .text:pass(35) {
       //pass 35: econ references
       node-set: nodeChapterText;
-      pass: 35;
     }
   }
   div[data-type="page"], div[data-type="composite-page"] {
     //build links from index to content
     string-set: page-id attr(id);
     > h2[data-type="document-title"] {
-      pass: default, @pass-50-index;
       string-set: section-title content();
       node-set: sectionTitle;
     }
@@ -44,8 +40,17 @@ div[data-type='chapter'] {
       &:match(^[^a-zA-Z]) {
         attr-group-by: "";
       }
+    }
+  }
+  div[data-type="page"]:pass(50), div[data-type="composite-page"]:pass(50) {
+    //build links from index to content
+    string-set: page-id attr(id);
+    > h2[data-type="document-title"] {
+      string-set: section-title content();
+      node-set: sectionTitle;
+    }
+    span[data-type="term"] {
       &::after {
-        pass: @pass-50-index;
         content: content();
         attr-group-by: attr(group-by);
         container: span;
@@ -53,14 +58,12 @@ div[data-type='chapter'] {
         move-to: index-term;
       }
       &::after {
-        pass: @pass-50-index;
         content: string(section-title);
         container: a;
         attr-href: "#" attr(id);
         move-to: link;
       }
       &::after {
-        pass: @pass-50-index;
         content: pending(index-term) pending(link);
         class: index-item;
         move-to: eob-index;
@@ -75,9 +78,8 @@ body {
     node-set: bookMetadata;
   }
   //suppress the uri
-  div.eoc, div.eob  {
+  div.eoc:pass(77), div.eob:pass(77)  {
     [data-type="cnx-archive-uri"] {
-      pass: @pass-77-meta-uri;
       move-to: trash;
     }
   }
@@ -94,41 +96,35 @@ body {
   .eob {
     &.index {
       .metadata("Index");
-      &::before {
-        pass: @pass-52-index-title;
+      &:pass(52)::before {
         container: span;
         content: "Index";
         move-to: titleSpan;
       }
-      &::before {
-        pass: @pass-52-index-title;
+      &:pass(52)::before {
         container: h1;
         data-type: document-title;
         content: pending(titleSpan);
       }
     }
   }
-  &::after {
-    pass: @pass-50-index;
+  &:pass(50)::after {
     class: "eob index" ;
     data-type: composite-page;
     content: pending(eob-index);
     group-by: span, "span::attr(group-by)", nocase;
   }
-  .eob.index > div.group-by:first-of-type > span.group-label {
-    pass: @pass-51-index-symbol;
+  .eob.index > div.group-by:first-of-type > span.group-label:pass(51) {
     content: "Symbols";
   }
 
   //Add IDs to composite pages; this method will change
-  div[data-type="composite-page"] {
-    pass: @pass-55-id-assign;
+  div[data-type="composite-page"]:pass(55) {
     attr-id: uuid() "@1";
   }
   //Add IDs to each chapter title; this method will change
   > div[data-type='chapter'] {
-    > h1[data-type='document-title'] {
-      pass: @pass-55-id-assign;
+    > h1[data-type='document-title']:pass(55) {
       counter-increment: chapTitleNum;
       attr-id: "chapTitle" counter(chapTitleNum);
     }
@@ -145,8 +141,7 @@ body {
   }
 
   //clear trash
-  &::after {
-    pass:100;
+  &:pass(100)::after {
     content: clear(trash);
   }
 }
