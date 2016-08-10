@@ -150,15 +150,13 @@ body {
       content: pending(appendixLabel) " " pending(appendixNumber) pending(appendixDivider) content();
     }
   }
-  div[data-type="chapter"] {
-    pass: @pass-20-numbering-eoc;
+  div[data-type="chapter"]:pass(20) {
     counter-reset: exercises;
   }
   div[data-type="chapter"] {
     counter-reset: section;
     counter-reset: example;
     counter-reset: lab;
-    pass: default, @pass-40-numbering-figs-tabs;
     counter-increment: chapter;
 
     &::before {
@@ -214,11 +212,6 @@ body {
       }
     }
     [data-type="page"] {
-      .example{
-        pass: @pass-40-numbering-figs-tabs;
-        counter-increment: example;
-        string-set: target-label "Example " counter(chapter) "." counter(example);
-      }
       .example {
         counter-increment: example;
         &::before {
@@ -254,10 +247,6 @@ body {
           }
         }
       }
-      .try{
-        pass: @pass-40-numbering-figs-tabs;
-        string-set: target-label "Try It";
-      }
       .try {
         .exercise {
           &::before {
@@ -289,166 +278,158 @@ body {
       }
     }
   }
+  div[data-type="chapter"]:pass(40) {
+    counter-reset: section;
+    counter-reset: example;
+    counter-reset: lab;
+    counter-increment: chapter;
 
-  [data-type="chapter"] {
-    pass: @pass-40-numbering-figs-tabs;
+    [data-type="page"] {
+      .example{
+        counter-increment: example;
+        string-set: target-label "Example " counter(chapter) "." counter(example);
+      }
+      .try{
+        string-set: target-label "Try It";
+      }
+    }
+  }
+
+  [data-type="chapter"]:pass(40) {
     counter-reset: figure;
     counter-reset: table;
     counter-increment: chapNum;
     counter-reset: exercises-target;
     [data-target="figure"] {
       content: "Fig." target-counter(attr(href), chapNum)"."target-counter(attr(href), figure);
-      pass: @pass-40-numbering-figs-tabs;
     }
     [data-target="table"] {
       content: "Table" target-counter(attr(href), chapNum)"."target-counter(attr(href), figure);
-      pass: @pass-40-numbering-figs-tabs;
     }
     :not(figure) > figure {
       counter-increment: figure;
-      pass: @pass-40-numbering-figs-tabs;
       string-set: target-label "Figure " counter(chapNum) "." counter(figure);
       figcaption {
         container: div;
         class: caption;
         content: content();
         move-to: figCaption;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::after {
         container: span;
         content: string(target-label);
         move-to: figureNumber;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::after {
         class: "figure-number";
         container: span ;
         content: pending(figureNumber);
         move-to: figNum;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::outside {
         class:  figure;
         container: div;
         content: content() pending(figNum) pending(figCaption);
-        pass: @pass-40-numbering-figs-tabs;
       }
     }
 
     :not(table) > table {
       counter-increment: table;
-      pass: @pass-40-numbering-figs-tabs;
       string-set: target-label "Table " counter(chapNum) "." counter(table);
       caption {
         container: div;
         class: caption;
         move-to: imageCaption;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::after {
         container: span;
         content: string(target-label);
         move-to: tableNumber;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &:after {
         class: "table-number";
         container: div;
         content: pending(tableNumber);
         move-to: table-number;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::outside {
         class: table;
         container: div;
         content: content() pending(table-number) pending(imageCaption);
-        pass: @pass-40-numbering-figs-tabs;
       }
     }
   }
-  .appendix {
-    pass: @pass-40-numbering-figs-tabs;
+  .appendix:pass(40) {
     counter-reset: figure;
     counter-reset: table;
     counter-increment: apNum;
     :not(figure) > figure {
       counter-increment: figure;
       string-set: target-label "Figure " counter(apNum, upper-alpha) counter(figure);
-      pass: @pass-40-numbering-figs-tabs;
       figcaption {
         container: div;
         class: caption;
         content: content();
         move-to: figCaption;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::after {
         container: span;
         content: string(target-label);
         move-to: figureNumber;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::after {
         class: "figure-number";
         container: span ;
         content: pending(figureNumber);
         move-to: figNum;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::outside {
         class:  figure;
         container: div;
         content: content() pending(figNum) pending(figCaption);
-        pass: @pass-40-numbering-figs-tabs;
       }
     }
 
     :not(table) > table {
       counter-increment: table;
       string-set: target-label "Table " counter(apNum, upper-alpha) counter(table);
-      pass: @pass-40-numbering-figs-tabs;
       caption {
         container: div;
         class: caption;
         move-to: imageCaption;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::after {
         container: span;
         content: string(target-label);
         move-to: tableNumber;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &:after {
         class: "table-number";
         container: div;
         content: pending(tableNumber);
         move-to: table-number;
-        pass: @pass-40-numbering-figs-tabs;
       }
       &::outside {
         class: table;
         container: div;
         content: content() pending(table-number) pending(imageCaption);
-        pass: @pass-40-numbering-figs-tabs;
       }
     }
   }
 
-  .eoc {
-    pass: @pass-40-numbering-figs-tabs;
+  .eoc:pass(40)  {
     
     [data-type="exercise"] {
-      pass: @pass-40-numbering-figs-tabs;
       counter-increment: exercises-target;
       string-set: target-label "Exercise " counter(chapter) "." counter(exercises-target);
-      [data-type="problem"]  {
-        pass: @pass-20-numbering-eoc;
+    }
+  }
+  .eoc:pass(20)  {
+    
+    [data-type="exercise"] [data-type="problem"]  {
         counter-increment: exercises;
         string-set: exId attr(id);
         &::before {
-          pass: @pass-20-numbering-eoc;
           container: span;
           content: counter(exercises);
           node-set: exerciseNumber;
@@ -458,15 +439,12 @@ body {
         &::before {
           container: a;
           attr-href: "#" string(exId);
-          pass: @pass-20-numbering-eoc;
           content: nodes(exerciseNumber);
         }
       }
     }
-  }
-  a.autogenerated-content {
+  a.autogenerated-content:pass(40) {
      content: target-string(attr(href), target-label);
-     pass: @pass-40-numbering-figs-tabs;
   }
 }
 
