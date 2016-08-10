@@ -11,13 +11,11 @@
 
 //[Document Usage]
 @mixin title($content, $bucket: null, $container: null, $containerType: null) {
-  @if (length(nth($content, 1)) > 1) {
-    //If $content is parsed as a list of lists
-    @each $itemContent, $itemClass in $content {
+    @each $key in map-keys($content) {
       &::before {
         container: span;
-        content: $itemContent;
-        class: $itemClass;
+        content: map-get($content, $key);
+        class: $key;
         @if ($bucket != null) {
           @if ($container != null and $containerType != null) {
             move-to: #{$bucket}-TITLECONTAINER
@@ -26,23 +24,6 @@
           }
         }
       }
-    }
-  } @else {
-    //If $content is parsed as a single list with two text elements
-    $itemContent: nth($content, 1);
-    $itemClass: nth($content, 2);
-    &::before {
-      container: span;
-      content: $itemContent;
-      class: $itemClass;
-      @if ($bucket != null) {
-        @if ($container != null and $containerType != null) {
-          move-to: #{$bucket}-TITLECONTAINER
-        } @else {
-          move-to: $bucket;
-        }
-      }
-    }
   }
   @if ($container != null and $containerType != null) {
     &::before {
