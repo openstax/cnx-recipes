@@ -9,6 +9,14 @@
 
 
 //TODO: Improve performance by using more specific selectors in libraries when possible
+//TODO: Separate Metadata and document-titles from composite creation mixins
+//TODO: target-labels
+//TODO: Numbering Figs, Tabs, book specific items (labs, try its)
+//TODO: TOC
+//TODO: Missing IDs, modify raw objects (wrapping, ids, target: _blank)
+//TODO: URI
+//TODO: Separate object files
+//TODO: Misc books specific things
 
 //Different language mock-up
 $lang: "en";
@@ -42,6 +50,7 @@ $compositePageChapter_obj: compositePage((
 
 $compositePageBook_obj: compositePage((
   chapterSeparated: false,
+  chapterPages: false,
   isIndex: false,
 ));
 
@@ -126,11 +135,12 @@ $chapterCompositePages: (
 $pageIndex: bookComposite((
   name: "Index",
   source: "index",
-  compoundComposite: true
+  isIndex: true
 ));
 
 $bookCompositePages: (
-  $pageIndex
+  //This doesn't get parsed as a list without a comma at the end, the composite builder must account for this
+  $pageIndex,
 );
 
 //make content maps
@@ -178,19 +188,24 @@ $exampleSolutionTitleContent: (
   @include numberAppendices($appendixTitleContent);
   @include countSections(section);
   @include numberSections($sectionTitleContent);
-  @include refSectionTitleNodeAs(sectionTitleNode);
-  @include refBookMetadataNodeAs(bookMetaNode);
-  @include createChapterComposites($chapterCompositePages, sectionTitleNode, bookMetaNode);
   @include countExamples(example);
   @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
+
+  @include refSectionHeaderStringAs(sectionHeaderString);
+  @include refBookMetadataNodeAs(bookMetaNode);
+  @include createChapterComposites($chapterCompositePages, sectionHeaderString, bookMetaNode);
 
   @include countTerms(term);
   @include refPageIDStringAs(pageID);
   @include prepIndexTerms(term, pageID);
 }
 :pass(1) {
-  //Only use when all eoc composite pages are created
+  //Only use when all eoc composite pages already have metadata
   @include retitleCompositeMetadata($chapterCompositePages);
+
+  @include refSectionHeaderStringAs(sectionHeaderString);
+  @include refChapterHeaderStringAs(chapterHeaderString);
+  @include createBookComposites($bookCompositePages, sectionTitleString, chapterTitleString, bookMetaNode);
 
   @include countEOCExercises(exercise);
   @include numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
