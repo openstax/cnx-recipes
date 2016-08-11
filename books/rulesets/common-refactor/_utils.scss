@@ -11,11 +11,12 @@
 
 //[Document Usage]
 @mixin title($content, $bucket: null, $container: null, $containerType: null) {
-    @each $key in map-keys($content) {
+    //Improvement: Restrict what things titlePart can be. Currently any key will work.
+    @each $titlePart in map-keys($content) {
       &::before {
         container: span;
-        content: map-get($content, $key);
-        class: $key;
+        content: map-get($content, $titlePart);
+        class: $titlePart;
         @if ($bucket != null) {
           @if ($container != null and $containerType != null) {
             move-to: #{$bucket}-TITLECONTAINER
@@ -58,8 +59,8 @@
   node-set: $name;
 }
 
-@mixin refStringAs($name) {
-  string-set: $name;
+@mixin refStringAs($name, $string) {
+  string-set: $name $string;
 }
 
 @mixin clearTrash() {

@@ -1,0 +1,26 @@
+
+@mixin titlePreface() {
+  //This only changes a container
+  //will this be needed once the headers in raw are changed?
+  div.preface {
+    > [data-type="document-title"] {
+      container: h1;
+      content: content();
+    }
+  }
+}
+
+
+@mixin prepIndexTerms($termCounter, $pageIDString) {
+  div[data-type="page"], div[data-type="composite-page"] span[data-type="term"]{
+    attr-id: "auto_" string($pageIDString) "_term" counter($termCounter);
+    //&:match("^[a-zA-Z]") doesn't work with easybake,
+    //&:match(^[a-zA-Z]) doesn't work with sass
+    &:match("^[a-zA-Z]") {
+      attr-group-by: first-letter(content());
+    }
+    &:match("^[^a-zA-Z]") {
+      attr-group-by: "";
+    }
+  }
+}

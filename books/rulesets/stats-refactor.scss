@@ -1,15 +1,11 @@
 //Import order doesn't affect output
-@import "common-refactor/compose";
-@import "common-refactor/count";
-@import "common-refactor/link";
-@import "common-refactor/number";
-@import "common-refactor/reference";
-
-//Do we want the book level to import utils?
-@import "common-refactor/utils";
-
-//General stuff that we don't know if we need?
-@import "common-refactor/stuff";
+@import 'common-refactor/compose';
+@import 'common-refactor/count';
+@import 'common-refactor/link';
+@import 'common-refactor/modify';
+@import 'common-refactor/number';
+@import 'common-refactor/reference';
+@import 'common-refactor/utils';
 
 
 //TODO: Improve performance by using more specific selectors in libraries when possible
@@ -21,24 +17,12 @@ $appendix_en: "Appendix";
 $chapter_de: "Kapitel";
 $appendix_de: "Anhang";
 
-//Usage: ("[name]","[source section]", [?section-separated], [?has-solutions])
-//Still need: ?solutions, actual name of section (e.g. "Key Terms")
-//Handle document-titles and metadata with this info
-
-//currently solutions will create an empty bucket because it is only used later?
-//perhaps add another property to allow nothing to be moved? but still create container?
-
-//translate pages into map variables rather than lists for readability
-
-//Base object
+//Base object to be inherited
 $compositePage_obj: (
   name: null,
-  nameClass: null,
   source: null,
-  isSeparated: false,
-  hasSolutions: false,
-  isGlossary: false,
-  sortBy: null
+  sectionSeparated: false,
+  compoundComposite: false
 );
 
 //Inherit compositePage object
@@ -46,68 +30,85 @@ $compositePage_obj: (
   @return map-merge($compositePage_obj, $params);
 }
 
-$pageKeyTerms: compositePage((
+$compositePageChapter_obj: compositePage((
+  hasSolutions: false,
+  isGlossary: false,
+  sortBy: null,
+));
+
+@function chapterComposite($params) {
+  @return map-merge($compositePageChapter_obj, $params);
+}
+
+$compositePageBook_obj: compositePage((
+  chapterSeparated: false,
+  isIndex: false,
+));
+
+@function bookComposite($params) {
+  @return map-merge($compositePageBook_obj, $params);
+}
+
+// object keys can be overriden per book:
+// $compositePage_obj: map-merge($compositePage_obj,
+//   (nameClass: "text")
+// );
+
+$pageKeyTerms: chapterComposite((
   name: "Key Terms",
-  nameClass: "text",
   source: "glossary",
   isGlossary: true,
   sortBy: "dl > dt"
 ));
 
-$pageChapterReview: compositePage((
+$pageChapterReview: chapterComposite((
   name: "Chapter Review",
-  nameClass: "text",
   source: "summary",
-  isSeparated: true
+  sectionSeparated: true
 ));
 
-$pageFormulaReview: compositePage((
+$pageFormulaReview: chapterComposite((
   name: "Formula Review",
-  nameClass: "text",
   source: "formula-review",
-  isSeparated: true
+  sectionSeparated: true
 ));
 
-$pagePractice: compositePage((
+$pagePractice: chapterComposite((
   name: "Practice",
-  nameClass: "text",
   source: "practice",
-  isSeparated: true,
+  sectionSeparated: true,
   hasSolutions: true
 ));
 
-$pageBITExercises: compositePage((
+$pageBITExercises: chapterComposite((
   name: "Bringing It Together: Exercises",
-  nameClass: "text",
   source: "bring-together-exercises",
   hasSolutions: true
 ));
 
-$pageHomework: compositePage((
+$pageHomework: chapterComposite((
   name: "Homework",
-  nameClass: "text",
   source: "free-response",
-  isSeparated: true,
+  sectionSeparated: true,
   hasSolutions: true
 ));
 
-$pageBITHomework: compositePage((
+$pageBITHomework: chapterComposite((
   name: "Bringing It Together: Homework",
-  nameClass: "text",
   source: "bring-together-homework",
   hasSolutions: true
 ));
 
-$pageReferences: compositePage((
+$pageReferences: chapterComposite((
   name: "References",
-  nameClass: "text",
   source: "references",
-  isSeparated: true
+  sectionSeparated: true
 ));
 
-$pageSolutions: compositePage((
+$pageSolutions: chapterComposite((
   name: "Solutions",
-  nameClass: "text",
+  source: "solutions",
+  compoundComposite: true
 ));
 
 $chapterCompositePages: (
@@ -122,10 +123,22 @@ $chapterCompositePages: (
   $pageSolutions
 );
 
-//make content maps, with
+$pageIndex: bookComposite((
+  name: "Index",
+  source: "index",
+  compoundComposite: true
+));
+
+$bookCompositePages: (
+  $pageIndex
+);
+
+//make content maps
+//unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
+//when they need to be able to be in any order because of possible changes in titling order between books
 $chapterTitleContent: (
-  number: counter(chapter),
   label: "Chapter",
+  number: counter(chapter),
   divider: "|"
 );
 
@@ -156,6 +169,7 @@ $exampleSolutionTitleContent: (
 
 //New pass system
 :pass(0) {
+  //Possibly not needed later
   @include titlePreface();
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include countChapters(chapter);
@@ -165,11 +179,19 @@ $exampleSolutionTitleContent: (
   @include countSections(section);
   @include numberSections($sectionTitleContent);
   @include refSectionTitleNodeAs(sectionTitleNode);
-  @include createChapterComposites($chapterCompositePages, sectionTitleNode);
+  @include refBookMetadataNodeAs(bookMetaNode);
+  @include createChapterComposites($chapterCompositePages, sectionTitleNode, bookMetaNode);
   @include countExamples(example);
   @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
+
+  @include countTerms(term);
+  @include refPageIDStringAs(pageID);
+  @include prepIndexTerms(term, pageID);
 }
 :pass(1) {
+  //Only use when all eoc composite pages are created
+  @include retitleCompositeMetadata($chapterCompositePages);
+
   @include countEOCExercises(exercise);
   @include numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
 }
@@ -178,6 +200,7 @@ $exampleSolutionTitleContent: (
   @include linkToProblemsFromSolutionsEOC("number", "number", exercise);
 }
 :pass(3) {
+  //Only move solutions after exercises/solutions are numbered
   @include prepEOCSolutions($chapterCompositePages, bSolutions);
   @include putSolutionsEOC(bSolutions, "solutions");
 }
