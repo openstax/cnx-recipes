@@ -208,14 +208,40 @@
 >>>>>>> Separate mixins into their respective files, do some work on solutions
 =======
 
-@mixin numberTables () {
 
-  :not(table) > table {
-    &:outside {
-      class: table;
-      container: div;
-      content: pending(caption);
+@mixin numberCaptions ($captionNumber, $type, $hasCaption, $hasTitle) {
+    body {
+      :not(#{$type}) > #{table} {
+        @include title($captionNumber, bNumber);
+        @if  ($hasCaption) {
+          caption {
+            container: span;
+            class: "caption";
+            move-to: bImageCaption;
+          }
+       }
+      @if  ($hasTitle)  {
+        caption [data-type="title"] {
+          container: span;
+          class: "caption-title";
+          move-to: bCaptionTitle;
+        }
+       }
+      &::after {
+        container: div;
+        class: "captionContainer";
+        content: pending(bNumber) pending(bCaptionTitle) pending(bImageCaption);
+        move-to: bCaptionContainer;
+        }
+      &::outside {
+        class: table;
+        container: div;
+        content: content() pending(bCaptionContainer);
+      }
     }
   }
 }
+<<<<<<< HEAD
 >>>>>>> early table stuff
+=======
+>>>>>>> numbering tables and figs)
