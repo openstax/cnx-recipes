@@ -73,31 +73,34 @@
     $compoundComposite: map-get($page, compoundComposite);
     $isIndex: map-get($page, isIndex);
     @if (not $compoundComposite) {
-      $sourceSelector: if($isIndex, 'div[data-type="page"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
+      $sourceSelector: if($isIndex, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
       @if ($isIndex) {
-        &::before {
-          content: content();
-          attr-group-by: attr(group-by);
-          container: span;
-          class: term;
-          move-to: index-term;
-        }
-        &::before {
-          content: string(sectionHeaderString);
-          container: span;
-          move-to: index-section;
-        }
-        &::after {
-          content: pending(index-term) pending(index-section);
-          class: index-item;
-          move-to: #{$source}-TOCOMPOSITE;
+        #{$sourceSelector} {
+          &::after {
+            content: content();
+            attr-group-by: attr(group-by);
+            container: span;
+            class: term;
+            move-to: index-term;
+          }
+          &::after {
+            content: string(sectionHeaderString);
+            container: span;
+            class: term-section;
+            move-to: index-section;
+          }
+          &::after {
+            content: pending(index-term) pending(index-section);
+            class: index-item;
+            move-to: #{$source}-TOCOMPOSITE;
+          }
         }
       } @else {
         [data-type="chapter"] {
           $chapterSeparated: map-get($page, chapterSeparated);
           $sectionSeparated: map-get($page, sectionSeparated);
           $chapterPages: map-get($page, chapterPages);
-          #{sourceSelector} {
+          #{$sourceSelector} {
             > h1[data-type="title"] {
               move-to: trash;
             }
