@@ -18,6 +18,11 @@
 //TODO: Separate object files
 //TODO: Misc books specific things
 
+
+//TODO: write metadata retitling mixin to account for chapter-areas that are composites
+//TODO: separating metadata, titling from page creation makes solutions not appear, use putSolutions to make containers
+//TODO: separate initial metadata nodes() from titling??
+
 //Different language mock-up
 $lang: "en";
 $chapter_en: "Chapter";
@@ -177,6 +182,7 @@ $exampleSolutionTitleContent: (
   number: counter(chapter)"."counter(example)
 );
 
+<<<<<<< 810d85ac1a9d0d372375ede48feba1f38afa0dd2
 $captionTableNumber: (
   label: "Table.",
   number: counter(chapter)"."counter(table)
@@ -201,6 +207,8 @@ $setFigureCaption: (
   hasTitle: false
 );
 
+=======
+>>>>>>> Sort out problems with page titling and empty containers, document dependencies on the book level, add capability to separate EOB sections into chapter separated composite pages
 //New pass system
 :pass(0) {
   //Possibly not needed later
@@ -215,40 +223,54 @@ $setFigureCaption: (
   @include countExamples(example);
   @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
 
-  @include refSectionHeaderStringAs(sectionHeaderString);
-  @include refBookMetadataNodeAs(bookMetaNode);
-  @include createChapterComposites($chapterCompositePages, sectionHeaderString, bookMetaNode);
-
   @include countTerms(term);
   @include refPageIDStringAs(pageID);
   @include prepIndexTerms(term, pageID);
+
+  @include refSectionHeaderNodeAs(sectionHeaderNode);
+  @include createChapterComposites($chapterCompositePages, sectionHeaderNode);
 }
 :pass(1) {
-  //Only use when all eoc composite pages already have metadata
-  @include retitleCompositeMetadata($chapterCompositePages);
-
+  //After: ???
+  @include refSectionHeaderNodeAs(sectionHeaderNode);
   @include refSectionHeaderStringAs(sectionHeaderString);
-  @include refChapterHeaderStringAs(chapterHeaderString);
-  @include createBookComposites($bookCompositePages, sectionTitleString, chapterTitleString, bookMetaNode);
+  @include prepBookComposites($bookCompositePages, sectionHeaderNode, sectionHeaderString);
 
+  //After: createChapterComposites
   @include countEOCExercises(exercise);
   @include numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
 }
 :pass(2) {
+  //After: createChapterComposites, numberEOCExercises
   @include countEOCExercises(exercise);
   @include linkToProblemsFromSolutionsEOC("number", "number", exercise);
+
+  //After: prepBookComposites
+  @include refChapterHeaderNodeAs(chapterHeaderNode);
+  @include prepChapterAreas($bookCompositePages, chapterHeaderNode);
+
 }
 :pass(3) {
   //Only move solutions after exercises/solutions are numbered
-  @include prepEOCSolutions($chapterCompositePages, bSolutions);
-  @include putSolutionsEOC(bSolutions, "solutions");
+  @include createEOCSolutions($chapterCompositePages, $pageSolutions, sectionHeaderNode);
+
+  //After: prepBookComposites, prepChapterAreas
+  @include refChapterHeaderNodeAs(chapterHeaderNode);
+  @include createBookComposites($bookCompositePages);
 }
 :pass(4) {
+  //After: prepIndexTerms, createBookComposites
+  @include addIndexSymbolGroup("index", "Symbols");
+
+  //After: createChapterComposites, createEOCSolutions, createBookComposites
+  @include titleEOCComposites($chapterCompositePages);
+  @include titleEOBComposites($bookCompositePages);
+
   @include countFigTables(table);
   @include countFigTables(figure);
   @include setCaptions($setTableCaption, $captionTableNumber);
   @include setCaptions($setFigureCaption, $captionFigNumber);
- }
+}
 :pass(100) {
   @include clearTrash();
 }

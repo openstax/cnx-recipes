@@ -1,12 +1,47 @@
 @import "./utils";
 
-@mixin createChapterComposites($compositePages, $sectionHeaderString, $bookMetadataNode) {
+@mixin retitleCompositeMetadata($compositePages) {
   @each $page in $compositePages {
-    @include createChapterComposite($page, $sectionHeaderString, $bookMetadataNode);
+    $name: map-get($page, name);
+    $source: map-get($page, source);
+    [data-type="composite-page"].#{$source}-container > [data-type="metadata"] > [data-type="document-title"] {
+      content: $name;
+    }
   }
 }
 
-@mixin createChapterComposite($page, $sectionHeaderString, $bookMetadataNode) {
+@mixin titleEOCComposites($compositePages) {
+  @each $page in $compositePages {
+    $name: map-get($page, name);
+    $source: map-get($page, source);
+    [data-type="composite-page"].eoc.#{$source}-container {
+      $titleContent: (
+        text: $name
+      );
+      @include title($titleContent, null, h2, "document-title");
+    }
+  }
+}
+
+@mixin titleEOBComposites($compositePages) {
+  @each $page in $compositePages {
+    $name: map-get($page, name);
+    $source: map-get($page, source);
+    [data-type="composite-page"].eob.#{$source}-container {
+      $titleContent: (
+        text: $name
+      );
+      @include title($titleContent, null, h1, "document-title");
+    }
+  }
+}
+@mixin createChapterComposites($compositePages, $sectionHeaderNode) {
+  @each $page in $compositePages {
+    @include createChapterComposite($page, $sectionHeaderNode);
+  }
+}
+
+@mixin createChapterComposite($page, $sectionHeaderNode) {
   div[data-type="chapter"] {
     $name: map-get($page, name);
     $source: map-get($page, source);
@@ -21,146 +56,109 @@
           move-to: trash;
         }
         @if ($sectionSeparated) {
-          move-to: #{$source}-GETSECTION;
-        } @else {
+          content: nodes(sectionHeaderNode) content();
+        }
+        move-to: #{$source}-TOCOMPOSITE;
+      }
+      &::after {
+        container: div;
+        content: pending(#{$source}-TOCOMPOSITE);
+        class: "eoc #{$source}-container";
+        data-type: "composite-page";
+        @if ($sortBy != null) {
+          sort-by: #{$sortBy}, nocase;
+        }
+      }
+    }
+  }
+}
+
+@mixin prepBookComposites($compositePages, $sectionHeaderNode, $sectionHeaderString) {
+  @each $page in $compositePages {
+    @include prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString);
+  }
+}
+
+@mixin prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
+  $name: map-get($page, name);
+  $source: map-get($page, source);
+  $compoundComposite: map-get($page, compoundComposite);
+  $isIndex: map-get($page, isIndex);
+  @if (not $compoundComposite) {
+    $sourceSelector: if($isIndex, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
+    @if ($isIndex) {
+      #{$sourceSelector} {
+        &::after {
+          content: content();
+          attr-group-by: attr(group-by);
+          container: span;
+          class: "term";
+          move-to: index-term;
+        }
+        &::after {
+          content: string($sectionHeaderString);
+          container: span;
+          class: "term-section";
+          move-to: index-section;
+        }
+        &::after {
+          container: a;
+          content: pending(index-section);
+          attr-href: "#" attr(id);
+          class: "term-section-link";
+          move-to: index-section-link
+        }
+        &::after {
+          content: pending(index-term) pending(index-section-link);
+          class: index-item;
           move-to: #{$source}-TOCOMPOSITE;
         }
-        @if ($sectionSeparated) {
-          $sectionHeaderContent: (
-            text: string($sectionHeaderString)
-          );
-          @include title($sectionHeaderContent, #{$source}-SECTIONHEADER, h3, "section-area-title");
-          &::after {
-            content: pending(#{$source}-SECTIONHEADER) pending(#{$source}-GETSECTION);
-            class: "section-area";
-            move-to: #{$source}-TOCOMPOSITE;
-          }
-        }
       }
-    }
-
-    //BAD: there should not be titling content creation outside the book level. This should get moved
-    $pageTitleContent: (
-      text: $name
-    );
-    @include title($pageTitleContent, #{$source}-composite-title, h2, "document-title");
-    &::after {
-      container: div;
-      @if (not $compoundComposite) {
-        content: nodes($bookMetadataNode) pending(#{$source}-composite-title) pending(#{$source}-TOCOMPOSITE);
-      } @else {
-        content: nodes($bookMetadataNode) pending(#{$source}-composite-title);
-      }
-      class: "eoc #{$source}-container";
-      data-type: "composite-page";
-      @if ($sortBy != null) {
-        sort-by: #{$sortBy}, nocase;
-      }
-    }
-  }
-}
-
-@mixin createBookComposites($compositePages, $sectionHeaderString, $chapterHeaderString, $bookMetadataNode) {
-  @each $page in $compositePages {
-    @include createBookComposite($page, $sectionHeaderString, $chapterHeaderString, $bookMetadataNode);
-  }
-}
-
-@mixin createBookComposite($page, $sectionHeaderString, $chapterHeaderString, $bookMetadataNode) {
-  body {
-    $name: map-get($page, name);
-    $source: map-get($page, source);
-    $compoundComposite: map-get($page, compoundComposite);
-    $isIndex: map-get($page, isIndex);
-    @if (not $compoundComposite) {
-      $sourceSelector: if($isIndex, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
-      @if ($isIndex) {
+    } @else {
+      [data-type="chapter"] {
+        $chapterSeparated: map-get($page, chapterSeparated);
+        $sectionSeparated: map-get($page, sectionSeparated);
+        $chapterPages: map-get($page, chapterPages);
         #{$sourceSelector} {
-          &::after {
-            content: content();
-            attr-group-by: attr(group-by);
-            container: span;
-            class: term;
-            move-to: index-term;
+          > h1[data-type="title"] {
+            move-to: trash;
           }
-          &::after {
-            content: string(sectionHeaderString);
-            container: span;
-            class: term-section;
-            move-to: index-section;
-          }
-          &::after {
-            content: pending(index-term) pending(index-section);
-            class: index-item;
-            move-to: #{$source}-TOCOMPOSITE;
+          @if ($sectionSeparated) {
+            content: nodes(sectionHeaderNode) content();
+            @if ($chapterSeparated) {
+              move-to: #{$source}-GETCHAPTER;
+            } @else {
+              move-to: #{$source}-TOCOMPOSITE;
+            }
           }
         }
-      } @else {
-        [data-type="chapter"] {
-          $chapterSeparated: map-get($page, chapterSeparated);
-          $sectionSeparated: map-get($page, sectionSeparated);
-          $chapterPages: map-get($page, chapterPages);
-          #{$sourceSelector} {
-            > h1[data-type="title"] {
-              move-to: trash;
-            }
-            @if (not $sectionSeparated and not $chapterSeparated) {
-              move-to: #{$source}-TOCOMPOSITE;
-            } @else if ($sectionSeparated) {
-              move-to: #{$source}-GETSECTION;
-            } @else {
-              move-to: #{$source}-GETCHAPTER;
-            }
-            @if ($sectionSeparated) {
-              $sectionHeaderContent: (
-                text: string($sectionHeaderString)
-              );
-              $container: if($chapterSeparated, h3, h2);
-              @include title($sectionHeaderContent, #{$source}-SECTIONHEADER, $container, "section-area-title");
-              &::after {
-                content: pending(#{$source}-SECTIONHEADER) pending(#{$source}-GETSECTION);
-                class: "section-area";
-                @if ($chapterHeaderString != null) {
-                  move-to: #{$source}-GETCHAPTER;
-                } @else {
-                  move-to: #{$source}-TOCOMPOSITE;
-                }
-              }
-            }
-          }
-          @if ($chapterSeparated) {
-            $chapterHeaderContent: (
-              text: string($chapterHeaderString)
-            );
-            @if (not $chapterPages) {
-              @include title($chapterHeaderContent, #{$source}-TITLEHEADER, h2, "chapter-area-title");
-            }
-            &::after {
-              class: "chapter-area";
-              move-to: #{$source}-TOCOMPOSITE;
-              @if ($chapterPages) {
-                data-type: "composite-page";
-                content: pending(#{$source}-GETCHAPTER);
-              } @else {
-                content: pending(#{$source}-TITLEHEADER) pending(#{$source}-GETCHAPTER);
-              }
+        @if ($chapterSeparated) {
+          &::after {
+            class: "#{$source}-chapter-area";
+            content: pending(#{$source}-GETCHAPTER);
+            @if ($chapterPages) {
+              data-type: "composite-page";
             }
           }
         }
       }
     }
-    //BAD: there should not be titling content creation outside the book level. This should get moved
-    $pageTitleContent: (
-      text: $name
-    );
-    @include title($pageTitleContent, #{$source}-composite-title, h1, "document-title");
+  }
+}
+
+@mixin createBookComposites($compositePages) {
+  @each $page in $compositePages {
+    @include createBookComposite($page);
+  }
+}
+
+@mixin createBookComposite($page) {
+  body {
+    $source: map-get($page, source);
+    $isIndex: map-get($page, isIndex);
     &::after {
       container: div;
-      @if (not $compoundComposite) {
-        content: nodes($bookMetadataNode) pending(#{$source}-composite-title) pending(#{$source}-TOCOMPOSITE);
-      } @else {
-        content: nodes($bookMetadataNode) pending(#{$source}-composite-title);
-      }
+      content: pending(#{$source}-TOCOMPOSITE);
       class: "eob #{$source}-container";
       data-type: "composite-page";
       @if ($isIndex) {
@@ -170,27 +168,21 @@
   }
 }
 
-@mixin retitleCompositeMetadata($compositePages) {
+@mixin prepChapterAreas($compositePages, $chapterHeaderNode) {
   @each $page in $compositePages {
-    $name: map-get($page, name);
     $source: map-get($page, source);
-    [data-type="composite-page"].#{$source}-container > [data-type="metadata"] > [data-type="document-title"] {
-      content: $name;
+    [data-type="chapter"] {
+      .#{$source}-chapter-area {
+        content: nodes($chapterHeaderNode) content();
+        move-to: #{$source}-TOCOMPOSITE;
+      }
     }
   }
 }
 
-@mixin putSolutions($bucket, $selector) {
-  #{$selector} {
-    content: content() pending($bucket);
-  }
-}
-
-@mixin putSolutionsEOC($bucket, $selector) {
-  @include putSolutions($bucket, ".eoc.#{$selector}-container")
-}
-
-@mixin prepEOCSolutions($compositePages, $solutionBucket, $sectionHeaderString: null, $chapterHeaderString: null, $chapterPages: false) {
+@mixin createEOCSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
+  $solutionSource: map-get($solutionPage, source);
+  $sectionSeparated: map-get($solutionPage, sectionSeparated);
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $source: map-get($page, source);
@@ -198,50 +190,30 @@
       [data-type="chapter"] {
         .eoc.#{$source}-container {
           [data-type="solution"] {
-            @if ($sectionHeaderString == null and $chapterHeaderString == null) {
-              move-to: $solutionBucket;
-            } @else if ($sectionHeaderString != null) {
-              move-to: #{$solutionBucket}-GETSECTION;
+            @if ($sectionSeparated) {
+              move-to: #{$solutionSource}-GETSECTION;
             } @else {
-              move-to: #{$solutionBucket}-GETCHAPTER;
+              move-to: #{$solutionSource}-TOCOMPOSITE;;
             }
           }
-          @if ($sectionHeaderString != null) {
-            $sectionHeaderContent: (
-              text: string($sectionHeaderString)
-            );
-            $container: if($chapterHeaderString != null, h3, h2);
-            @include title($sectionHeaderContent, #{$solutionBucket}-SECTIONHEADER, $container, "section-area-title");
+          @if ($sectionSeparated) {
             &::after {
-              content: pending(#{$solutionBucket}-SECTIONHEADER) pending(#{$solutionBucket}-GETSECTION);
-              class: "section-area";
-              @if ($chapterHeaderString != null) {
-                move-to: #{$solutionBucket}-GETCHAPTER;
-              } @else {
-                move-to: $solutionBucket;
-              }
-            }
-          }
-        }
-        @if ($chapterHeaderString != null) {
-          $chapterHeaderContent: (
-            text: string($chapterHeaderString)
-          );
-          @if (not $chapterPages) {
-            @include title($chapterHeaderContent, #{$solutionBucket}-TITLEHEADER, h2, "chapter-area-title");
-          }
-          &::after {
-            class: "chapter-area";
-            move-to: $solutionBucket;
-            @if ($chapterPages) {
-              data-type: "composite-page";
-              content: pending(#{$solutionBucket}-GETCHAPTER);
-            } @else {
-              content: pending(#{$solutionBucket}-TITLEHEADER) pending(#{$solutionBucket}-GETCHAPTER);
+              container: section;
+              class: #{$solutionSource};
+              content: nodes(sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
+              move-to: #{$solutionSource}-TOCOMPOSITE;
             }
           }
         }
       }
+    }
+  }
+  [data-type="chapter"] {
+    &::after {
+      container: div;
+      content: pending(#{$solutionSource}-TOCOMPOSITE);
+      class: "eoc #{$solutionSource}-container";
+      data-type: "composite-page";
     }
   }
 }
