@@ -352,16 +352,19 @@
   data-type: "composite-page"; }
 :pass(0) body {
   counter-reset: term; }
-:pass(0) div[data-type="page"], :pass(0) div[data-type="composite-page"] span[data-type="term"] {
+:pass(0) div[data-type="page"] span[data-type="term"], :pass(0) div[data-type="composite-page"] span[data-type="term"] {
   counter-increment: term; }
 :pass(0) div[data-type="page"],
 :pass(0) div[data-type="composite-page"] {
   string-set: pageID attr(id); }
-:pass(0) div[data-type="page"], :pass(0) div[data-type="composite-page"] span[data-type="term"] {
+:pass(0) div[data-type="page"] span[data-type="term"],
+:pass(0) div[data-type="composite-page"] span[data-type="term"] {
   attr-id: "auto_" string(pageID) "_term" counter(term); }
-  :pass(0) div[data-type="page"]:match("^[a-zA-Z]"), :pass(0) div[data-type="composite-page"] span[data-type="term"]:match("^[a-zA-Z]") {
+  :pass(0) div[data-type="page"] span[data-type="term"]:match("^[a-zA-Z]"),
+  :pass(0) div[data-type="composite-page"] span[data-type="term"]:match("^[a-zA-Z]") {
     attr-group-by: first-letter(content()); }
-  :pass(0) div[data-type="page"]:match("^[^a-zA-Z]"), :pass(0) div[data-type="composite-page"] span[data-type="term"]:match("^[^a-zA-Z]") {
+  :pass(0) div[data-type="page"] span[data-type="term"]:match("^[^a-zA-Z]"),
+  :pass(0) div[data-type="composite-page"] span[data-type="term"]:match("^[^a-zA-Z]") {
     attr-group-by: ""; }
 
 :pass(1) [data-type="composite-page"].glossary-container > [data-type="metadata"] > [data-type="document-title"] {
@@ -387,17 +390,18 @@
   string-set: sectionHeaderString content(); }
 :pass(1) div[data-type="chapter"] {
   string-set: chapterHeaderString content(); }
-:pass(1) body::before {
+:pass(1) body div[data-type="page"] span[data-type="term"]::after, :pass(1) body div[data-type="composite-page"] span[data-type="term"]::after {
   content: content();
   attr-group-by: attr(group-by);
   container: span;
   class: term;
   move-to: index-term; }
-:pass(1) body::before {
+:pass(1) body div[data-type="page"] span[data-type="term"]::after, :pass(1) body div[data-type="composite-page"] span[data-type="term"]::after {
   content: string(sectionHeaderString);
   container: span;
+  class: term-section;
   move-to: index-section; }
-:pass(1) body::after {
+:pass(1) body div[data-type="page"] span[data-type="term"]::after, :pass(1) body div[data-type="composite-page"] span[data-type="term"]::after {
   content: pending(index-term) pending(index-section);
   class: index-item;
   move-to: index-TOCOMPOSITE; }
