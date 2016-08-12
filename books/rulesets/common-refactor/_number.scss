@@ -59,7 +59,7 @@
       //BAD: there should not be titling content creation outside the book level. This should get moved
       $exampleTitle: (
         text: content()
-      );
+        );
       @include title($exampleTitle, bExampleLabel);
       move-to: trash;
     }
@@ -78,30 +78,35 @@
   }
 }
 
-@mixin numberCaptions ($captionNumber, $type, $rawContainer, $hasCaption, $hasTitle) {
-    body {
-      :not(#{$type}) > #{$type} {
-        @include title($captionNumber, bNumber);
-        @if  ($hasCaption) {
-          #{$rawContainer} {
-            container: span;
-            class: "caption";
-            move-to: bImageCaption;
-          }
-       }
-      @if  ($hasTitle)  {
-        #{$rawContainer} [data-type="title"] {
+
+@mixin setCaptions ($setFigTableCaptions, $labeling) {
+  $type: map-get($setFigTableCaptions, type);
+  $defaultContainer: map-get($setFigTableCaptions, defaultContainer);
+  $hasCaption: map-get($setFigTableCaptions, hasCaption);
+  $hasTitle: map-get($setFigTableCaptions, hasTitle);
+  body {
+    :not(#{$type}) > #{$type} {
+      @include title($labeling, bNumber);
+      @if  ($hasCaption) {
+        #{$defaultContainer} {
           container: span;
-          class: "caption-title";
+          class: "caption";
+          move-to: bImageCaption;
+        }
+      }
+      @if  ($hasTitle)  {
+        #{$defaultContainer} [data-type="title"] {
+          container: span;
+          class: "title";
           move-to: bCaptionTitle;
         }
-       }
+      }
       &::after {
         container: div;
         class: "captionContainer";
         content: pending(bNumber) pending(bCaptionTitle) pending(bImageCaption);
         move-to: bCaptionContainer;
-        }
+      }
       &::outside {
         class: #{$type};
         container: div;

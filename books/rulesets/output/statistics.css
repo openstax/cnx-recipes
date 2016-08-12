@@ -462,8 +462,13 @@
   counter-increment: table; }
 :pass(4) div[data-type="chapter"], :pass(4) div.appendix {
   counter-reset: figure; }
-:pass(4) body :not(figure) > table, :pass(4) div[class="appendix"] :not(figure) > table {
+:pass(4) body :not(figure) > figure, :pass(4) div[class="appendix"] :not(figure) > figure {
   counter-increment: figure; }
+:pass(4) body :not(table) > table::before {
+  container: span;
+  content: "Table.";
+  class: label;
+  move-to: bNumber; }
 :pass(4) body :not(table) > table::before {
   container: span;
   content: counter(chapter) "." counter(table);
@@ -471,7 +476,7 @@
   move-to: bNumber; }
 :pass(4) body :not(table) > table caption [data-type="title"] {
   container: span;
-  class: "caption-title";
+  class: "title";
   move-to: bCaptionTitle; }
 :pass(4) body :not(table) > table::after {
   container: div;
@@ -482,6 +487,11 @@
   class: table;
   container: div;
   content: content() pending(bCaptionContainer); }
+:pass(4) body :not(figure) > figure::before {
+  container: span;
+  content: "Figure.";
+  class: label;
+  move-to: bNumber; }
 :pass(4) body :not(figure) > figure::before {
   container: span;
   content: counter(chapter) "." counter(figure);
