@@ -208,20 +208,19 @@
 >>>>>>> Separate mixins into their respective files, do some work on solutions
 =======
 
-
-@mixin numberCaptions ($captionNumber, $type, $hasCaption, $hasTitle) {
+@mixin numberCaptions ($captionNumber, $type, $rawContainer, $hasCaption, $hasTitle) {
     body {
-      :not(#{$type}) > #{table} {
+      :not(#{$type}) > #{$type} {
         @include title($captionNumber, bNumber);
         @if  ($hasCaption) {
-          caption {
+          #{$rawContainer} {
             container: span;
             class: "caption";
             move-to: bImageCaption;
           }
        }
       @if  ($hasTitle)  {
-        caption [data-type="title"] {
+        #{$rawContainer} [data-type="title"] {
           container: span;
           class: "caption-title";
           move-to: bCaptionTitle;
@@ -234,7 +233,7 @@
         move-to: bCaptionContainer;
         }
       &::outside {
-        class: table;
+        class: #{$type};
         container: div;
         content: content() pending(bCaptionContainer);
       }

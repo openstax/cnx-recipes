@@ -148,7 +148,7 @@ $exerciseTitleContent: (
 =======
 $exampleTitleContent: (
   label: "Example",
-  number: "Table" counter(chapter)"."counter(example)
+  number: counter(chapter)"."counter(example)
 );
 
 $exampleSolutionTitleContent: (
@@ -157,6 +157,7 @@ $exampleSolutionTitleContent: (
 );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> map conversion
 =======
 $captionNumber: (
@@ -164,6 +165,15 @@ $captionNumber: (
 );
 
 >>>>>>> numbering tables and figs)
+=======
+$captionTableNumber: (
+  number: counter(chapter)"."counter(table)
+);
+
+$captionFigNumber: (
+  number: counter(chapter)"."counter(figure)
+);
+>>>>>>> adding support for figures
 //New pass system
 :pass(0) {
   @include titlePreface();
@@ -198,8 +208,10 @@ $captionNumber: (
   @include putSolutionsEOC(bSolutions, "solutions");
 }
 :pass(4) {
-  @include countTables(table);
-  @include numberCaptions($captionNumber, table, false, true);
+  @include countFigTables(table);
+  @include countFigTables(figure);
+  @include numberCaptions($captionTableNumber, table, caption, false, true);
+  @include numberCaptions($captionFigNumber, figure, figcaption, true, false);
 }
 :pass(100) {
 >>>>>>> Some reformatting
