@@ -169,7 +169,7 @@ $exerciseTitleContent: (
 
 $exampleTitleContent: (
   label: "Example",
-  number: "Table" counter(chapter)"."counter(example)
+  number: counter(chapter)"."counter(example)
 );
 
 $exampleSolutionTitleContent: (
@@ -177,10 +177,13 @@ $exampleSolutionTitleContent: (
   number: counter(chapter)"."counter(example)
 );
 
-$captionNumber: (
+$captionTableNumber: (
   number: counter(chapter)"."counter(table)
 );
 
+$captionFigNumber: (
+  number: counter(chapter)"."counter(figure)
+);
 //New pass system
 :pass(0) {
   //Possibly not needed later
@@ -224,8 +227,10 @@ $captionNumber: (
   @include putSolutionsEOC(bSolutions, "solutions");
 }
 :pass(4) {
-  @include countTables(table);
-  @include numberCaptions($captionNumber, table, false, true);
+  @include countFigTables(table);
+  @include countFigTables(figure);
+  @include numberCaptions($captionTableNumber, table, caption, false, true);
+  @include numberCaptions($captionFigNumber, figure, figcaption, true, false);
 }
 :pass(100) {
   @include clearTrash();

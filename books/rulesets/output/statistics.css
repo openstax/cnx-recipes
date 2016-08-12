@@ -75,7 +75,7 @@
   move-to: bExampleLabel; }
 :pass(0) .example::before {
   container: span;
-  content: "Table" counter(chapter) "." counter(example);
+  content: counter(chapter) "." counter(example);
   class: number;
   move-to: bExampleLabel; }
 :pass(0) .example > [data-type="title"] {
@@ -458,8 +458,12 @@
 
 :pass(4) div[data-type="chapter"], :pass(4) div.appendix {
   counter-reset: table; }
-:pass(4) div[data-type="chapter"], :pass(4) div[class="appendix"] :not(table) > table {
+:pass(4) body :not(table) > table, :pass(4) div[class="appendix"] :not(table) > table {
   counter-increment: table; }
+:pass(4) div[data-type="chapter"], :pass(4) div.appendix {
+  counter-reset: figure; }
+:pass(4) body :not(figure) > table, :pass(4) div[class="appendix"] :not(figure) > table {
+  counter-increment: figure; }
 :pass(4) body :not(table) > table::before {
   container: span;
   content: counter(chapter) "." counter(table);
@@ -476,6 +480,24 @@
   move-to: bCaptionContainer; }
 :pass(4) body :not(table) > table::outside {
   class: table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+:pass(4) body :not(figure) > figure::before {
+  container: span;
+  content: counter(chapter) "." counter(figure);
+  class: number;
+  move-to: bNumber; }
+:pass(4) body :not(figure) > figure figcaption {
+  container: span;
+  class: "caption";
+  move-to: bImageCaption; }
+:pass(4) body :not(figure) > figure::after {
+  container: div;
+  class: "captionContainer";
+  content: pending(bNumber) pending(bCaptionTitle) pending(bImageCaption);
+  move-to: bCaptionContainer; }
+:pass(4) body :not(figure) > figure::outside {
+  class: figure;
   container: div;
   content: content() pending(bCaptionContainer); }
 
