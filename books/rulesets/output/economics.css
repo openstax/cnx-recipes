@@ -387,7 +387,7 @@ body [data-type="chapter"]:pass(40) :not(figure) > figure {
   string-set: target-label "Figure " counter(chapNum) "." counter(figure);
 }
 body [data-type="chapter"]:pass(40) :not(figure) > figure figcaption {
-  container: div;
+  container: span;
   class: caption;
   content: content();
   move-to: figCaption;
@@ -403,19 +403,29 @@ body [data-type="chapter"]:pass(40) :not(figure) > figure::after {
   content: pending(figureNumber);
   move-to: figNum;
 }
+body [data-type="chapter"]:pass(40) :not(figure) > figure::after {
+  class: "caption-container";
+  content: pending(figNum) pending(figCaption);
+  move-to: captionContainer;
+}
 body [data-type="chapter"]:pass(40) :not(figure) > figure::outside {
   class: figure;
   container: div;
-  content: content() pending(figNum) pending(figCaption);
+  content: pending(captionContainer);
 }
 body [data-type="chapter"]:pass(40) :not(table) > table {
   counter-increment: table;
   string-set: target-label "Table " counter(chapNum) "." counter(table);
 }
 body [data-type="chapter"]:pass(40) :not(table) > table caption {
-  container: div;
+  container: span;
   class: caption;
   move-to: imageCaption;
+}
+body [data-type="chapter"]:pass(40) :not(table) > table caption [data-type="title"] {
+  container: span;
+  class: "caption-title";
+  move-to: captionTitle;
 }
 body [data-type="chapter"]:pass(40) :not(table) > table::after {
   container: span;
@@ -423,15 +433,20 @@ body [data-type="chapter"]:pass(40) :not(table) > table::after {
   move-to: tableNumber;
 }
 body [data-type="chapter"]:pass(40) :not(table) > table:after {
+  container: span;
   class: "table-number";
-  container: div;
   content: pending(tableNumber);
   move-to: table-number;
+}
+body [data-type="chapter"]:pass(40) :not(table) > table::after {
+  class: "caption-container";
+  content: pending(table-number) pending(captionTitle) pending(imageCaption);
+  move-to: captionContainer;
 }
 body [data-type="chapter"]:pass(40) :not(table) > table::outside {
   class: table;
   container: div;
-  content: content() pending(table-number) pending(imageCaption);
+  content: pending(captionContainer);
 }
 body .appendix:pass(40) {
   counter-reset: figure;
@@ -443,7 +458,7 @@ body .appendix:pass(40) :not(figure) > figure {
   string-set: target-label "Figure " counter(apNum, upper-alpha) counter(figure);
 }
 body .appendix:pass(40) :not(figure) > figure figcaption {
-  container: div;
+  container: span;
   class: caption;
   content: content();
   move-to: figCaption;
@@ -459,19 +474,29 @@ body .appendix:pass(40) :not(figure) > figure::after {
   content: pending(figureNumber);
   move-to: figNum;
 }
+body .appendix:pass(40) :not(figure) > figure::after {
+  class: "caption-container";
+  content: pending(figNum) pending(figCaption);
+  move-to: captionContainer;
+}
 body .appendix:pass(40) :not(figure) > figure::outside {
   class: figure;
   container: div;
-  content: content() pending(figNum) pending(figCaption);
+  content: pending(captionContainer);
 }
 body .appendix:pass(40) :not(table) > table {
   counter-increment: table;
   string-set: target-label "Table " counter(apNum, upper-alpha) counter(table);
 }
 body .appendix:pass(40) :not(table) > table caption {
-  container: div;
+  container: span;
   class: caption;
   move-to: imageCaption;
+}
+body .appendix:pass(40) :not(table) > table caption [data-type="title"] {
+  container: span;
+  class: "caption-title";
+  move-to: captionTitle;
 }
 body .appendix:pass(40) :not(table) > table::after {
   container: span;
@@ -479,15 +504,20 @@ body .appendix:pass(40) :not(table) > table::after {
   move-to: tableNumber;
 }
 body .appendix:pass(40) :not(table) > table:after {
+  container: span;
   class: "table-number";
-  container: div;
   content: pending(tableNumber);
   move-to: table-number;
+}
+body .appendix:pass(40) :not(table) > table::after {
+  class: "caption-container";
+  content: pending(table-number) pending(captionTitle) pending(imageCaption);
+  move-to: captionContainer;
 }
 body .appendix:pass(40) :not(table) > table::outside {
   class: table;
   container: div;
-  content: content() pending(table-number) pending(imageCaption);
+  content: pending(captionContainer);
 }
 body .eoc:pass(40) [data-type="exercise"] {
   counter-increment: exercises-target;
