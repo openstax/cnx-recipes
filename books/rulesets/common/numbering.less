@@ -319,7 +319,7 @@ body {
       counter-increment: figure;
       string-set: target-label "Figure " counter(chapNum) "." counter(figure);
       figcaption {
-        container: div;
+        container: span;
         class: caption;
         content: content();
         move-to: figCaption;
@@ -335,10 +335,15 @@ body {
         content: pending(figureNumber);
         move-to: figNum;
       }
+      &::after {
+        class: "caption-container";
+        content: pending(figNum) pending(figCaption);
+        move-to: captionContainer;
+      }
       &::outside {
         class:  figure;
         container: div;
-        content: content() pending(figNum) pending(figCaption);
+        content: pending(captionContainer);
       }
     }
 
@@ -346,9 +351,14 @@ body {
       counter-increment: table;
       string-set: target-label "Table " counter(chapNum) "." counter(table);
       caption {
-        container: div;
+        container: span;
         class: caption;
         move-to: imageCaption;
+        [data-type="title"] {
+          container: span;
+          class: "caption-title";
+          move-to: captionTitle;
+        }
       }
       &::after {
         container: span;
@@ -356,15 +366,20 @@ body {
         move-to: tableNumber;
       }
       &:after {
+        container: span;
         class: "table-number";
-        container: div;
         content: pending(tableNumber);
         move-to: table-number;
+      }
+      &::after {
+        class: "caption-container";
+        content: pending(table-number) pending(captionTitle) pending(imageCaption);
+        move-to: captionContainer;
       }
       &::outside {
         class: table;
         container: div;
-        content: content() pending(table-number) pending(imageCaption);
+        content: pending(captionContainer);
       }
     }
   }
@@ -376,7 +391,7 @@ body {
       counter-increment: figure;
       string-set: target-label "Figure " counter(apNum, upper-alpha) counter(figure);
       figcaption {
-        container: div;
+        container: span;
         class: caption;
         content: content();
         move-to: figCaption;
@@ -392,10 +407,15 @@ body {
         content: pending(figureNumber);
         move-to: figNum;
       }
+      &::after {
+        class: "caption-container";
+        content: pending(figNum) pending(figCaption);
+        move-to: captionContainer;
+      }
       &::outside {
         class:  figure;
         container: div;
-        content: content() pending(figNum) pending(figCaption);
+        content: pending(captionContainer);
       }
     }
 
@@ -403,9 +423,14 @@ body {
       counter-increment: table;
       string-set: target-label "Table " counter(apNum, upper-alpha) counter(table);
       caption {
-        container: div;
+        container: span;
         class: caption;
         move-to: imageCaption;
+        [data-type="title"] {
+          container: span;
+          class: "caption-title";
+          move-to: captionTitle;
+        }
       }
       &::after {
         container: span;
@@ -413,15 +438,20 @@ body {
         move-to: tableNumber;
       }
       &:after {
+        container: span;
         class: "table-number";
-        container: div;
         content: pending(tableNumber);
         move-to: table-number;
+      }
+      &::after {
+        class: "caption-container";
+        content: pending(table-number) pending(captionTitle) pending(imageCaption);
+        move-to: captionContainer;
       }
       &::outside {
         class: table;
         container: div;
-        content: content() pending(table-number) pending(imageCaption);
+        content: pending(captionContainer);
       }
     }
   }
@@ -432,15 +462,19 @@ body {
 
 =======
   .eoc:pass(40)  {
+<<<<<<< HEAD
     
 >>>>>>> first cut - convert pass declaration to selector
+=======
+
+>>>>>>> adding container around figures and tables captions
     [data-type="exercise"] {
       counter-increment: exercises-target;
       string-set: target-label "Exercise " counter(chapter) "." counter(exercises-target);
     }
   }
   .eoc:pass(20)  {
-    
+
     [data-type="exercise"] [data-type="problem"]  {
         counter-increment: exercises;
         string-set: exId attr(id);
