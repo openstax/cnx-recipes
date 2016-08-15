@@ -11,18 +11,22 @@
 
 //[Document Usage]
 @mixin title($content, $bucket: null, $container: null, $containerType: null) {
-    //Improvement: Restrict what things titlePart can be. Currently any key will work.
-    @each $titlePart in map-keys($content) {
-      &::before {
-        container: span;
-        content: map-get($content, $titlePart);
-        class: $titlePart;
-        @if ($container != null and $containerType != null) {
-          move-to: #{$bucket}-TITLECONTAINER
-        } @else if ($bucket != null) {
-          move-to: $bucket;
-        }
+  //Warn if arguments are weird
+  @if ($bucket == null and $container == null and $containerType == null) {
+    @warn "Creating a title with no h-wrapper or destination! This may disturb target-labeling.";
+  }
+  //TODO: Restrict what things titlePart can be. Currently any key will work.
+  @each $titlePart in map-keys($content) {
+    &::before {
+      container: span;
+      content: map-get($content, $titlePart);
+      class: $titlePart;
+      @if ($container != null and $containerType != null) {
+        move-to: #{$bucket}-TITLECONTAINER
+      } @else if ($bucket != null) {
+        move-to: $bucket;
       }
+    }
   }
   @if ($container != null and $containerType != null) {
     &::before {
@@ -37,7 +41,7 @@
 }
 
 //Relies on hitting From Selector then To Selector without anything in between repeatedly
-//:'( this is less robust and useful than originally envisioned
+//:'( this is less robust and useful than originally envisioned, still works great for solutions though
 @mixin linkToFrom($toSelector, $fromSelector, $toName, $toCounter: null) {
   #{$toSelector} {
     @if ($toCounter != null) {

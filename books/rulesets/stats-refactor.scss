@@ -5,8 +5,8 @@
 @import 'common-refactor/modify';
 @import 'common-refactor/number';
 @import 'common-refactor/reference';
+@import 'common-refactor/toc';
 @import 'common-refactor/utils';
-
 
 //TODO: Improve performance by using more specific selectors in libraries when possible
 //TODO: Separate Metadata and document-titles from composite creation mixins
@@ -195,16 +195,20 @@ $captionFigNumber: (
 );
 
 $setFigureCaption: (
-   type: figure,
+  type: figure,
   defaultContainer: figcaption,
-   hasCaption: true,
+  hasCaption: true,
   hasTitle: false
 );
 
 //New pass system
 :pass(0) {
-  //Possibly not needed later
+  //Some modifications to be done to the book before any collation
   @include titlePreface();
+  @include spanWrapTitles();
+  @include simLinkTarget();
+}
+:pass(1) {
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include countChapters(chapter);
   @include numberChapters($chapterTitleContent);
@@ -215,6 +219,8 @@ $setFigureCaption: (
   @include countExamples(example);
   @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
 
+  //If this is after spanWrapTitles, we get a bunch of "Unknown term <IdentToken none>" warnings from easybake??'
+  //I'm not sure spanWrapTitles is necessarily the cause though, it's happened without it before
   @include countTerms(term);
   @include refPageIDStringAs(pageID);
   @include prepIndexTerms(term, pageID);
@@ -222,9 +228,10 @@ $setFigureCaption: (
   @include refSectionHeaderNodeAs(sectionHeaderNode);
   @include createChapterComposites($chapterCompositePages, sectionHeaderNode);
 }
-:pass(1) {
+:pass(2) {
   //After: ???
-  @include refSectionHeaderNodeAs(sectionHeaderNode);
+  @include refSectionHeaderNodeAs
+  (sectionHeaderNode);
   @include refSectionHeaderStringAs(sectionHeaderString);
   @include prepBookComposites($bookCompositePages, sectionHeaderNode, sectionHeaderString);
 
@@ -232,36 +239,58 @@ $setFigureCaption: (
   @include countEOCExercises(exercise);
   @include numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
 }
-:pass(2) {
+:pass(3) {
   //After: createChapterComposites, numberEOCExercises
-  @include countEOCExercises(exercise);
-  @include linkToProblemsFromSolutionsEOC("number", "number", exercise);
+  @include countExercises(exerciseAll);
+  @include linkToProblemsFromSolutionsEOC("number", "number", exerciseAll);
 
   //After: prepBookComposites
   @include refChapterHeaderNodeAs(chapterHeaderNode);
   @include prepChapterAreas($bookCompositePages, chapterHeaderNode);
 
 }
-:pass(3) {
+:pass(4) {
   //Only move solutions after exercises/solutions are numbered
   @include createEOCSolutions($chapterCompositePages, $pageSolutions, sectionHeaderNode);
 
   //After: prepBookComposites, prepChapterAreas
-  @include refChapterHeaderNodeAs(chapterHeaderNode);
   @include createBookComposites($bookCompositePages);
 }
-:pass(4) {
+:pass(5) {
   //After: prepIndexTerms, createBookComposites
   @include addIndexSymbolGroup("index", "Symbols");
+
+  @include refBookMetadataNodeAs(bookMetadata);
+  @include compositeMetadata(bookMetadata);
 
   //After: createChapterComposites, createEOCSolutions, createBookComposites
   @include titleEOCComposites($chapterCompositePages);
   @include titleEOBComposites($bookCompositePages);
 
-  @include countFigTables(table);
-  @include countFigTables(figure);
-  @include setCaptions($setTableCaption, $captionTableNumber);
-  @include setCaptions($setFigureCaption, $captionFigNumber);
+  @include compositeAutoID();
+  @include chapterAutoID();
+
+  // @include countFigTables(table);
+  // @include countFigTables(figure);
+  // @include setCaptions($setTableCaption, $captionTableNumber);
+  // @include setCaptions($setFigureCaption, $captionFigNumber);
+}
+:pass(6) {
+  @include retitleCompositeMetadata();
+}
+:pass(7) {
+  //After: All metadata tasks are completed
+  @include suppressURI();
+
+  @include prepTOCElements();
+}
+:pass(8) {
+  @include putTOCElements();
+}
+:pass(9) {
+  @include navTOCUnwrap();
+}
+:pass(10) {
 }
 :pass(100) {
   @include clearTrash();
