@@ -9,14 +9,7 @@
 @import 'common-refactor/utils';
 
 //TODO: Improve performance by using more specific selectors in libraries when possible
-//TODO: Separate Metadata and document-titles from composite creation mixins
-//TODO: target-labels
-//TODO: Numbering  book specific items (labs, try its)
-//TODO: TOC (Make sure pages get their IDs modified as well and that nothing got a doc-title that shouldn't have)
-//TODO: Missing IDs, modify raw objects (wrapping, ids, target: _blank)
-//TODO: URI
 //TODO: Separate object files
-//TODO: Misc books specific things
 
 //Different language mock-up
 $lang: "en";
@@ -147,20 +140,20 @@ $bookCompositePages: (
 //unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
 //when they need to be able to be in any order because of possible changes in titling order between books
 $chapterTitleContent: (
-  label: "Chapter",
+  title-label: "Chapter ",
   number: counter(chapter),
-  divider: "|"
+  divider: " | "
 );
 
 $appendixTitleContent: (
-  label: "Appendix",
+  title-label: "Appendix ",
   number: counter(appendix, upper-alpha),
-  divider: ":"
+  divider: " : "
 );
 
 $sectionTitleContent: (
-  number: counter(chapter)"."counter(section),
-  divider: "|"
+  number: counter(chapter) "." counter(section),
+  divider: " | "
 );
 
 $exerciseTitleContent: (
@@ -168,18 +161,33 @@ $exerciseTitleContent: (
 );
 
 $exampleTitleContent: (
-  label: "Example",
-  number: counter(chapter)"."counter(example)
+  title-label: "Example ",
+  number: counter(chapter) "." counter(example)
 );
 
 $exampleSolutionTitleContent: (
-  label: "Solution",
-  number: counter(chapter)"."counter(example)
+  title-label: "Solution ",
+  number: counter(chapter) "." counter(example)
+);
+
+$tryTitleContent: (
+  title-label: "Try It ",
+  number: counter(chapter) "." counter(example)
+);
+
+$calcTitleContent: (
+  title-label: "Using the TI-83, 83+, 84, 84+ Calculator"
 );
 
 $captionTableNumber: (
-  label: "Table.",
-  number: counter(chapter)"."counter(table)
+  title-label: "Table ",
+  number: counter(chapter) "." counter(table)
+);
+
+//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
+$captionTableNumberAp: (
+  title-label: "Table ",
+  number: counter(appendix, upper-alpha) "." counter(table)
 );
 
 $setTableCaption: (
@@ -190,8 +198,14 @@ $setTableCaption: (
 );
 
 $captionFigNumber: (
-  label: "Figure.",
-  number: counter(chapter)"."counter(figure)
+  title-label: "Figure ",
+  number: counter(chapter) "." counter(figure)
+);
+
+//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
+$captionFigNumberAp: (
+  title-label: "Figure ",
+  number: counter(appendix, upper-alpha) "." counter(figure)
 );
 
 $setFigureCaption: (
@@ -201,12 +215,50 @@ $setFigureCaption: (
   hasTitle: false
 );
 
+//If this method of setting the content of the label explicity becomes a problem,
+//try grabbing the numbering information from the element's header
+
+//NOTE: These selectors MUST match the counting selectors or be more specific
+//otherwise, the increment and the counter() call may fire in the wrong order
+//This may be fixed in a later version of easybake
+$targetLabels: (
+  (
+    selector: '.eoc [data-type="exercise"]',
+    label: "Exercise " counter(chapter) "." counter(exercise)
+  )
+  (
+    selector: 'div[data-type="chapter"] .example',
+    label: "Example " counter(chapter) "." counter(example)
+  )
+  (
+    selector: 'div[data-type="chapter"] .try',
+    label: "Try It"
+  )
+  (
+    selector: '[data-type="chapter"] :not(table) > table',
+    label: "Table " counter(chapter) "." counter(table)
+  )
+  (
+    selector: '[data-type="chapter"] :not(figure) > figure',
+    label: "Figure " counter(chapter) "." counter(figure)
+  )
+  (
+    selector: '[data-type="appendix"] :not(table) > table',
+    label: "Table " counter(appendix, upper-alpha) "." counter(table)
+  )
+  (
+    selector: '[data-type="appendix"] :not(figure) > figure',
+    label: "Table " counter(appendix, upper-alpha) "." counter(figure)
+  )
+);
+
 //New pass system
 :pass(0) {
   //Some modifications to be done to the book before any collation
   @include titlePreface();
   @include spanWrapTitles();
   @include simLinkTarget();
+  @include trash('.try [data-type="solution"]');
 }
 :pass(1) {
   //Come up with mixins for common numbering schemes as per Phil's suggestion
@@ -218,6 +270,9 @@ $setFigureCaption: (
   @include numberSections($sectionTitleContent);
   @include countExamples(example);
   @include numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
+  @include countNote(Try, "try");
+  @include numberNote("try", $tryTitleContent);
+  @include numberNote("calculator", $calcTitleContent);
 
   //If this is after spanWrapTitles, we get a bunch of "Unknown term <IdentToken none>" warnings from easybake??'
   //I'm not sure spanWrapTitles is necessarily the cause though, it's happened without it before
@@ -260,6 +315,16 @@ $setFigureCaption: (
   //After: prepIndexTerms, createBookComposites
   @include addIndexSymbolGroup("index", "Symbols");
 
+  //After: composite page creation
+  @include countChapters(chapter);
+  @include countAppendices(appendix);
+  @include countTables(table);
+  @include countFigures(figure);
+  @include countEOCExercises(exercise);
+  @include countExamples(example);
+  @include setTargetLabels($targetLabels);
+  @include setLinkLabels();
+
   @include refBookMetadataNodeAs(bookMetadata);
   @include compositeMetadata(bookMetadata);
 
@@ -270,10 +335,10 @@ $setFigureCaption: (
   @include compositeAutoID();
   @include chapterAutoID();
 
-  // @include countFigTables(table);
-  // @include countFigTables(figure);
-  // @include setCaptions($setTableCaption, $captionTableNumber);
-  // @include setCaptions($setFigureCaption, $captionFigNumber);
+  @include countTables(table);
+  @include countFigures(figure);
+  @include setCaptions($setTableCaption, $captionTableNumber, $captionTableNumberAp);
+  @include setCaptions($setFigureCaption, $captionFigNumber, $captionFigNumberAp);
 }
 :pass(6) {
   @include retitleCompositeMetadata();
@@ -289,8 +354,6 @@ $setFigureCaption: (
 }
 :pass(9) {
   @include navTOCUnwrap();
-}
-:pass(10) {
 }
 :pass(100) {
   @include clearTrash();

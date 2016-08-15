@@ -59,59 +59,88 @@
       //BAD: there should not be titling content creation outside the book level. This should get moved
       $exampleTitle: (
         text: content()
-        );
+      );
       @include title($exampleTitle, bExampleLabel);
       move-to: trash;
     }
     &::after {
-      container: h3;
+      container: div;
       content: pending(bExampleLabel);
-      class: "example-title";
+      class: "title";
       move-to: bExampleHeader;
     }
     &:deferred {
       content: pending(bExampleHeader) content();
     }
     [data-type="solution"] {
-      @include title($solutionTitleContent, bSolutionLabel, h4, "example-solution-title");
+      @include title($solutionTitleContent, null, div, "solution-title");
     }
   }
 }
 
+@mixin numberNote($type, $noteContent) { 
+  [data-type="note"].#{$type} {
+    @include title($noteContent, bNoteLabel-#{$type});
+    > [data-type="title"] {
+      //TODO: May want to have the option to preserve titles similarly to examples in the future.
+      move-to: trash;
+    }
+    &::after {
+      container: div;
+      content: pending(bNoteLabel-#{$type});
+      class: "title";
+      move-to: bNoteHeader;
+    }
+    &:deferred {
+      content: pending(bNoteHeader) content();
+    }
+    //TODO: Maybe want to have the option to handle solutions similarly to examples in the future
+  }
+}
 
-@mixin setCaptions ($setFigTableCaptions, $labeling) {
+@mixin setCaptions($setFigTableCaptions, $labeling, $labelingAp) {
   $type: map-get($setFigTableCaptions, type);
   $defaultContainer: map-get($setFigTableCaptions, defaultContainer);
   $hasCaption: map-get($setFigTableCaptions, hasCaption);
   $hasTitle: map-get($setFigTableCaptions, hasTitle);
-  body {
+  [data-type="chapter"] {
     :not(#{$type}) > #{$type} {
-      @include title($labeling, bNumber);
-      @if  ($hasCaption) {
-        #{$defaultContainer} {
-          container: span;
-          class: "caption";
-          move-to: bImageCaption;
-        }
-      }
-      @if  ($hasTitle)  {
-        #{$defaultContainer} [data-type="title"] {
-          container: span;
-          class: "title";
-          move-to: bCaptionTitle;
-        }
-      }
-      &::after {
-        container: div;
-        class: "captionContainer";
-        content: pending(bNumber) pending(bCaptionTitle) pending(bImageCaption);
-        move-to: bCaptionContainer;
-      }
-      &::outside {
-        class: #{$type};
-        container: div;
-        content: content() pending(bCaptionContainer);
-      }
+      @include title($labeling, bCaption);
+      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
+  }
+  .appendix {
+    :not(#{$type}) > #{$type} {
+      @include title($labelingAp, bCaption);
+      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+    }
+  }
+}
+
+@mixin setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle) {
+  @if ($hasCaption) {
+    #{$defaultContainer} {
+      container: span;
+      class: "caption";
+      move-to: bCaption;
+    }
+  }
+  @if ($hasTitle) {
+    #{$defaultContainer} [data-type="title"] {
+      container: span;
+      class: "title";
+      move-to: bCaption;
+    }
+  }
+  &::after {
+    container: div;
+    class: "captionContainer";
+    content: pending(bCaption);
+    move-to: bCaptionContainer;
+  }
+  &::outside {
+    class: #{$type};
+    container: div;
+    content: content() pending(bCaptionContainer);
   }
 }

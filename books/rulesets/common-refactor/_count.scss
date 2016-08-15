@@ -27,14 +27,14 @@
   @include count(
     $name,
     'div[data-type="chapter"] > div[data-type="page"]:not(.introduction)',
-    'div[data-type="chapter"]'
+    '[data-type="chapter"], .appendix'
   );
 }
 @mixin countEOCExercises($name) {
   @include count(
     $name,
     '.eoc [data-type="exercise"]',
-    'div[data-type="chapter"]'
+    '[data-type="chapter"], .appendix'
   );
 }
 @mixin countExercises($name) {
@@ -47,8 +47,8 @@
 @mixin countExamples($name) {
   @include count(
     $name,
-    'div[data-type="chapter"] .example',
-    'div[data-type="chapter"]'
+    'div[data-type="chapter"] [data-type="example"]',
+    '[data-type="chapter"], .appendix'
   );
 }
 @mixin countTerms($name) {
@@ -58,11 +58,25 @@
     'body'
   );
 }
-
-@mixin countFigTables($name) {
+@mixin countTables($name) {
   @include count(
     $name,
-    'body :not(#{$name}) > #{$name}, div[class="appendix"] :not(#{$name}) > #{$name}',
-    'div[data-type="chapter"], div.appendix'
-    );
+    ':not(table) > table',
+    '[data-type="chapter"], .appendix'
+  );
+}
+@mixin countFigures($name) {
+  @include count(
+    $name,
+    ':not(figure) > figure',
+    '[data-type="chapter"], .appendix'
+  );
+}
+
+@mixin countNote($name, $type) {
+  @include count(
+    $name,
+    '[data-type="note"].#{$type}',
+    '[data-type="chapter"], .appendix'
+  );
 }
