@@ -1,6 +1,6 @@
 @import "./utils";
 
-@mixin titleEOCComposites($compositePages) {
+@mixin compose_titleEOCComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
     $source: map-get($page, source);
@@ -8,12 +8,12 @@
       $titleContent: (
         text: $name
       );
-      @include title($titleContent, null, h2, "document-title");
+      @include utils_title($titleContent, null, h2, "document-title");
     }
   }
 }
 
-@mixin titleEOBComposites($compositePages) {
+@mixin compose_titleEOBComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
     $source: map-get($page, source);
@@ -21,11 +21,11 @@
       $titleContent: (
         text: $name
       );
-      @include title($titleContent, null, h1, "document-title");
+      @include utils_title($titleContent, null, h1, "document-title");
     }
   }
 }
-@mixin createChapterComposites($compositePages, $sectionHeaderNode) {
+@mixin compose_createChapterComposites($compositePages, $sectionHeaderNode) {
   @each $page in $compositePages {
     @include createChapterComposite($page, $sectionHeaderNode);
   }
@@ -63,7 +63,7 @@
   }
 }
 
-@mixin prepBookComposites($compositePages, $sectionHeaderNode, $sectionHeaderString) {
+@mixin compose_prepBookComposites($compositePages, $sectionHeaderNode, $sectionHeaderString) {
   @each $page in $compositePages {
     @include prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString);
   }
@@ -136,7 +136,7 @@
   }
 }
 
-@mixin createBookComposites($compositePages) {
+@mixin compose_createBookComposites($compositePages) {
   @each $page in $compositePages {
     @include createBookComposite($page);
   }
@@ -158,7 +158,7 @@
   }
 }
 
-@mixin prepChapterAreas($compositePages, $chapterHeaderNode) {
+@mixin compose_prepChapterAreas($compositePages, $chapterHeaderNode) {
   @each $page in $compositePages {
     $source: map-get($page, source);
     [data-type="chapter"] {
@@ -170,7 +170,7 @@
   }
 }
 
-@mixin createEOCSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
+@mixin compose_createEOCSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
   $solutionSource: map-get($solutionPage, source);
   $sectionSeparated: map-get($solutionPage, sectionSeparated);
   @each $page in $compositePages {
@@ -190,7 +190,7 @@
             &::after {
               container: section;
               class: #{$solutionSource};
-              content: nodes(sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
+              content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
               move-to: #{$solutionSource}-TOCOMPOSITE;
             }
           }

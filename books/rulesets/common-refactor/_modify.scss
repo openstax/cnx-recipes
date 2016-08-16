@@ -1,10 +1,10 @@
-@mixin trash($selector) {
+@mixin modify_trash($selector) {
   #{$selector} {
     move-to: trash;
   }
 }
 
-@mixin titlePreface() {
+@mixin modify_titlePreface() {
   //This only changes a container
   //will this be needed once the headers in raw are changed?
   div.preface {
@@ -15,13 +15,13 @@
   }
 }
 
-@mixin compositeAutoID() {
+@mixin modify_compositeAutoID() {
   div[data-type="composite-page"] {
     attr-id: uuid() "@1";
   }
 }
 
-@mixin chapterAutoID() {
+@mixin modify_chapterAutoID() {
   div[data-type='chapter'] {
     > h1[data-type='document-title'] {
       counter-increment: chapTitleNum;
@@ -30,7 +30,7 @@
   }
 }
 
-@mixin suppressURI() {
+@mixin modify_suppressURI() {
   div.eoc, div.eob  {
     [data-type="cnx-archive-uri"] {
       move-to: trash;
@@ -38,7 +38,7 @@
   }
 }
 
-@mixin spanWrapTitles() {
+@mixin modify_spanWrapTitles() {
   :not([data-type="metadata"]) > [data-type="document-title"] {
     content: '';
     &::after {
@@ -49,13 +49,13 @@
   }
 }
 
-@mixin simLinkTarget() {
+@mixin modify_simLinkTarget() {
   a[href*="archive.cnx.org/specials/"] {
     attr-target: "_blank";
   }
 }
 
-@mixin prepIndexTerms($termCounter, $pageIDString) {
+@mixin modify_prepIndexTerms($termCounter, $pageIDString) {
   div[data-type="page"],
   div[data-type="composite-page"] {
     span[data-type="term"] {
@@ -70,19 +70,19 @@
   }
 }
 
-@mixin addIndexSymbolGroup($location, $name) {
+@mixin modify_addIndexSymbolGroup($location, $name) {
   .#{$location}-container > div.group-by:first-of-type > span.group-label {
     content: $name;
   }
 }
 
-@mixin compositeMetadata($bookMetadata) {
+@mixin modify_compositeMetadata($bookMetadata) {
   [data-type="composite-page"] {
     content: nodes($bookMetadata) content();
   }
 }
 
-@mixin retitleCompositeMetadata() {
+@mixin modify_retitleCompositeMetadata() {
   [data-type="composite-page"] {
     > [data-type="document-title"] {
       string-set: doc-title-TOMETADATA content();

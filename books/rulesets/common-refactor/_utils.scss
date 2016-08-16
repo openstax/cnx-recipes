@@ -1,5 +1,5 @@
 //[Document Usage]
-@mixin count($name, $selector, $resetSelector) {
+@mixin utils_count($name, $selector, $resetSelector) {
   //Improvement: Resetting isn't dry, recreates selector if more than one counter resets on one element
   #{$resetSelector} {
     counter-reset: $name;
@@ -10,7 +10,7 @@
 }
 
 //[Document Usage]
-@mixin title($content, $bucket: null, $container: null, $containerType: null) {
+@mixin utils_title($content, $bucket: null, $container: null, $containerType: null) {
   //TODO: Restrict what things titlePart can be. Currently any key will work.
   @each $titlePart in map-keys($content) {
     &::before {
@@ -38,7 +38,7 @@
 
 //Relies on hitting From Selector then To Selector without anything in between repeatedly
 //:'( this is less robust and useful than originally envisioned, still works great for solutions though
-@mixin linkToFrom($toSelector, $fromSelector, $toName, $toCounter: null) {
+@mixin utils_linkToFrom($toSelector, $fromSelector, $toName, $toCounter: null) {
   #{$toSelector} {
     @if ($toCounter != null) {
       $toID: "#{$toName}-"counter($toCounter);
@@ -57,15 +57,15 @@
   }
 }
 
-@mixin refNodeAs($name) {
+@mixin utils_refNodeAs($name) {
   node-set: $name;
 }
 
-@mixin refStringAs($name, $string) {
+@mixin utils_refStringAs($name, $string) {
   string-set: $name $string;
 }
 
-@mixin clearTrash() {
+@mixin utils_clearTrash() {
   body::after {
     content: clear(trash);
   }
