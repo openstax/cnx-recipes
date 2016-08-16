@@ -1,0 +1,37 @@
+//Base object to be inherited
+$obj_compositePage: (
+  name: null,
+  source: null,
+  sectionSeparated: false,
+  compoundComposite: false
+);
+
+//Call this to inherit compositePage object
+@function obj_compositePage($params) {
+  @return map-merge($obj_compositePage, $params);
+}
+
+$obj_chapterCompositePage: obj_compositePage((
+  hasSolutions: false,
+  isGlossary: false,
+  sortBy: null,
+));
+
+@function obj_chapterComposite($params) {
+  @return map-merge($obj_chapterCompositePage, $params);
+}
+
+$obj_bookCompositePage: obj_compositePage((
+  chapterSeparated: false,
+  chapterPages: false,
+  isIndex: false,
+));
+
+@function obj_bookComposite($params) {
+  @return map-merge($obj_bookCompositePage, $params);
+}
+
+// object keys can be overriden per book:
+// $obj_compositePage: map-merge($obj_compositePage,
+//   (name: "defaultName")
+// );
