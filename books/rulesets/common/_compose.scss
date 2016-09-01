@@ -1,0 +1,306 @@
+@import "./utils";
+
+@mixin compose_titleEOCComposites($compositePages) {
+  @each $page in $compositePages {
+    $name: map-get($page, name);
+    $source: map-get($page, source);
+    [data-type="composite-page"].eoc.#{$source}-container {
+      $titleContent: (
+        text: $name
+      );
+      @include utils_title($titleContent, null, h1, "document-title");
+    }
+  }
+}
+
+@mixin compose_titleEOBComposites($compositePages) {
+  @each $page in $compositePages {
+    $name: map-get($page, name);
+    $source: map-get($page, source);
+    [data-type="composite-page"].eob.#{$source}-container {
+      $titleContent: (
+        text: $name
+      );
+      @include utils_title($titleContent, null, h1, "document-title");
+    }
+  }
+}
+@mixin compose_createChapterComposites($compositePages, $sectionHeaderNode) {
+  @each $page in $compositePages {
+    @include createChapterComposite($page, $sectionHeaderNode);
+  }
+}
+
+@mixin createChapterComposite($page, $sectionHeaderNode) {
+  div[data-type="chapter"] {
+    $name: map-get($page, name);
+    $source: map-get($page, source);
+    $sortBy: map-get($page, sortBy);
+    $compoundComposite: map-get($page, compoundComposite);
+    @if (not $compoundComposite) {
+      $sectionSeparated: map-get($page, sectionSeparated);
+      $isGlossary: map-get($page, isGlossary);
+      $sourceSelector: if($isGlossary, 'div[data-type="#{$source}"] dl', 'section.#{$source}');
+      @if ($isGlossary) {
+        div[data-type="#{$source}"] {
+          > h3[data-type="glossary-title"] {
+            move-to: trash;
+          }
+        }
+      }
+      #{$sourceSelector} {
+        > h3[data-type="title"] {
+          move-to: trash;
+        }
+        @if ($sectionSeparated) {
+          content: nodes(sectionHeaderNode) content();
+        }
+        move-to: #{$source}-TOCOMPOSITE;
+      }
+      &::after {
+        container: div;
+        content: pending(#{$source}-TOCOMPOSITE);
+        class: "eoc #{$source}-container";
+        data-type: "composite-page";
+        @if ($sortBy != null) {
+          sort-by: #{$sortBy}, nocase;
+        }
+      }
+    }
+  }
+}
+
+@mixin compose_prepBookComposites($compositePages, $sectionHeaderNode, $sectionHeaderString) {
+  @each $page in $compositePages {
+    @include prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString);
+  }
+}
+
+@mixin prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
+  $name: map-get($page, name);
+  $source: map-get($page, source);
+  $compoundComposite: map-get($page, compoundComposite);
+  $isIndex: map-get($page, isIndex);
+  @if (not $compoundComposite) {
+    $sourceSelector: if($isIndex, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
+    @if ($isIndex) {
+      #{$sourceSelector} {
+        &::after {
+          content: content();
+          attr-group-by: attr(group-by);
+          container: span;
+          class: "term";
+          move-to: index-term;
+        }
+        &::after {
+          content: string($sectionHeaderString);
+          container: span;
+          class: "term-section";
+          move-to: index-section;
+        }
+        &::after {
+          container: a;
+          content: pending(index-section);
+          attr-href: "#" attr(id);
+          class: "term-section-link";
+          move-to: index-section-link
+        }
+        &::after {
+          content: pending(index-term) pending(index-section-link);
+          class: index-item;
+          move-to: #{$source}-TOCOMPOSITE;
+        }
+      }
+    } @else {
+      [data-type="chapter"] {
+        $chapterSeparated: map-get($page, chapterSeparated);
+        $sectionSeparated: map-get($page, sectionSeparated);
+        $chapterPages: map-get($page, chapterPages);
+        #{$sourceSelector} {
+          > h3[data-type="title"] {
+            move-to: trash;
+          }
+          @if ($sectionSeparated) {
+            content: nodes(sectionHeaderNode) content();
+            @if ($chapterSeparated) {
+              move-to: #{$source}-GETCHAPTER;
+            } @else {
+              move-to: #{$source}-TOCOMPOSITE;
+            }
+          }
+        }
+        @if ($chapterSeparated) {
+          &::after {
+            class: "#{$source}-chapter-area";
+            content: pending(#{$source}-GETCHAPTER);
+            @if ($chapterPages) {
+              data-type: "composite-page";
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin compose_createBookComposites($compositePages) {
+  @each $page in $compositePages {
+    @include createBookComposite($page);
+  }
+}
+
+@mixin createBookComposite($page) {
+  body {
+    $source: map-get($page, source);
+    $isIndex: map-get($page, isIndex);
+    &::after {
+      container: div;
+      content: pending(#{$source}-TOCOMPOSITE);
+      class: "eob #{$source}-container";
+      data-type: "composite-page";
+      @if ($isIndex) {
+        group-by: span, "span::attr(group-by)", nocase;
+      }
+    }
+  }
+}
+
+//ChapterHeaderNode may be causing some weird issues? and may be copying the entire chapter?
+//See if this node needs to become a string, or if chapterHeaderNode is copying more than expected
+@mixin compose_prepChapterAreas($compositePages, $chapterHeaderNode) {
+  @each $page in $compositePages {
+    $source: map-get($page, source);
+    [data-type="chapter"] {
+      .#{$source}-chapter-area {
+        content: nodes($chapterHeaderNode) content();
+        move-to: #{$source}-TOCOMPOSITE;
+      }
+    }
+  }
+}
+
+@mixin compose_createEOCSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
+  $solutionSource: map-get($solutionPage, source);
+  $sectionSeparated: map-get($solutionPage, sectionSeparated);
+  @each $page in $compositePages {
+    $hasSolutions: map-get($page, hasSolutions);
+    $source: map-get($page, source);
+    @if ($hasSolutions) {
+      [data-type="chapter"] {
+        .eoc.#{$source}-container {
+          [data-type="solution"] {
+            @if ($sectionSeparated) {
+              move-to: #{$solutionSource}-GETSECTION;
+            } @else {
+              move-to: #{$solutionSource}-TOCOMPOSITE;;
+            }
+          }
+          @if ($sectionSeparated) {
+            &::after {
+              container: section;
+              class: #{$solutionSource};
+              content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
+              move-to: #{$solutionSource}-TOCOMPOSITE;
+            }
+          }
+        }
+      }
+    }
+  }
+  [data-type="chapter"] {
+    &::after {
+      container: div;
+      content: pending(#{$solutionSource}-TOCOMPOSITE);
+      class: "eoc #{$solutionSource}-container";
+      data-type: "composite-page";
+    }
+  }
+}
+@mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
+  $solutionSource: map-get($solutionPage, source);
+  $sectionSeparated: map-get($solutionPage, sectionSeparated);
+  @each $page in $compositePages {
+    $hasSolutions: map-get($page, hasSolutions);
+    $source: map-get($page, source);
+    @if ($hasSolutions) {
+      [data-type="chapter"] {
+        .eoc.#{$source}-container {
+          [data-type="solution"] {
+            @if ($sectionSeparated) {
+              move-to: #{$solutionSource}-GETSECTION;
+            } @else {
+              move-to: #{$solutionSource}-TOCOMPOSITE;;
+            }
+          }
+          @if ($sectionSeparated) {
+            &::after {
+              container: section;
+              class: #{$solutionSource};
+              content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
+              move-to: #{$solutionSource}-TOCOMPOSITE;
+            }
+          }
+        }
+      }
+    }
+  }
+ body {
+    &::after {
+      container: div;
+      content: pending(#{$solutionSource}-TOCOMPOSITE);
+      class: "eob #{$solutionSource}-container";
+      data-type: "composite-page";
+    }
+  }
+}
+
+
+// @mixin compose_createSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
+//   $solutionSource: map-get($solutionPage, source);
+//   $sectionSeparated: map-get($solutionPage, sectionSeparated);
+//   @each $page in $compositePages {
+//     $hasSolutions: map-get($page, hasSolutions);
+//     $source: map-get($page, source);
+//     $isAnswerKey: map-get($page, isAnswerKey);
+//     @if ($hasSolutions) {
+//       [data-type="chapter"] {
+//         .eoc.#{$source}-container {
+//           [data-type="solution"] {
+//             @if ($sectionSeparated) {
+//               move-to: #{$solutionSource}-GETSECTION;
+//             } @else {
+//               move-to: #{$solutionSource}-TOCOMPOSITE;;
+//             }
+//           }
+//           @if ($sectionSeparated) {
+//             &::after {
+//               container: section;
+//               class: #{$solutionSource};
+//               content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
+//               move-to: #{$solutionSource}-TOCOMPOSITE;
+//             }
+//           }
+//         }
+//       }
+//     }
+//     @if ($isAnswerKey) {
+//      body {
+//         &::after {
+//           container: div;
+//           content: pending(#{$solutionSource}-TOCOMPOSITE);
+//           class: "eob #{$solutionSource}-container";
+//           data-type: "composite-page";
+//         }
+//       }
+//     } @else {
+//       [data-type="chapter"] {
+//         &::after {
+//           container: div;
+//           content: pending(#{$solutionSource}-TOCOMPOSITE);
+//           class: "eoc #{$solutionSource}-container";
+//           data-type: "composite-page";
+//         }
+//       }
+//     }
+//   }
+// }

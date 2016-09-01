@@ -1,0 +1,96 @@
+@mixin modify_trash($selector) {
+  #{$selector} {
+    move-to: trash;
+  }
+}
+
+@mixin modify_titlePreface() {
+  //This only changes a container
+  //will this be needed once the headers in raw are changed?
+  div.preface {
+    > [data-type="document-title"] {
+      container: h1;
+      content: content();
+    }
+  }
+}
+
+@mixin modify_compositeAutoID() {
+  div[data-type="composite-page"] {
+    attr-id: uuid() "@1";
+  }
+}
+
+@mixin modify_chapterAutoID() {
+  div[data-type='chapter'] {
+    > h1[data-type='document-title'] {
+      counter-increment: chapTitleNum;
+      attr-id: "chapTitle" counter(chapTitleNum);
+    }
+  }
+}
+
+@mixin modify_suppressURI() {
+  div.eoc, div.eob  {
+    [data-type="cnx-archive-uri"] {
+      move-to: trash;
+    }
+  }
+}
+
+@mixin modify_spanWrapTitles() {
+  :not([data-type="metadata"]) > [data-type="document-title"] {
+    content: '';
+    &::after {
+      content: content();
+      container: span;
+      class: "text";
+    }
+  }
+}
+
+@mixin modify_simLinkTarget() {
+  a[href*="archive.cnx.org/specials/"] {
+    attr-target: "_blank";
+  }
+}
+
+@mixin modify_prepIndexTerms($termCounter, $pageIDString) {
+  div[data-type="page"],
+  div[data-type="composite-page"] {
+    span[data-type="term"] {
+      attr-id: "auto_" string($pageIDString) "_term" counter($termCounter);
+      &:match("^[a-zA-Z]") {
+        attr-group-by: first-letter(content());
+      }
+      &:match("^[^a-zA-Z]") {
+        attr-group-by: "";
+      }
+    }
+  }
+}
+
+@mixin modify_addIndexSymbolGroup($location, $name) {
+  .#{$location}-container > div.group-by:first-of-type > span.group-label {
+    content: $name;
+  }
+}
+
+@mixin modify_compositeMetadata($bookMetadata) {
+  [data-type="composite-page"] {
+    content: nodes($bookMetadata) content();
+  }
+}
+
+@mixin modify_retitleCompositeMetadata() {
+  [data-type="composite-page"] {
+    > [data-type="document-title"] {
+      string-set: doc-title-TOMETADATA content();
+    }
+    > [data-type="metadata"] {
+      > [data-type="document-title"] {
+        content: string(doc-title-TOMETADATA);
+      }
+    }
+  }
+}

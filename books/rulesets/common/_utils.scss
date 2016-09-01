@@ -1,0 +1,94 @@
+/// Base counting mixin - creates a counter with the given name, increment location, and reset location
+/// @arg {Text} $name - The unquoted name of the counter that will be created
+/// @arg {String} $selector - A string of the selector at which the counter will increment
+/// @arg {String} $resetSelector - A string of the selector at which the counter will reset
+@mixin utils_count($name, $selector, $resetSelector) {
+  //Improvement: Resetting isn't dry, recreates selector if more than one counter resets on one element
+  #{$resetSelector} {
+    counter-reset: $name;
+  }
+  #{$selector} {
+    counter-increment: $name;
+  }
+}
+
+/// Base titling and numbering mixin - Creates <span> elements before an element defined by the content passed. These <span> elements can be automatically wrapped and/or sent to a specified bucket
+/// @arg {Map} $content - A content map containing key and value pairs. Each key, value pair creates a <span> of class="key" with a text node of "value"
+/// @arg {Text} $bucket [null] - The unquoted name of the bucket to send the resulting object(s) to. If null, resulting object(s) will remain in place, before the element the mixin was called within
+/// @arg {Text} $container [null] - The unquoted type of container element to send the titling spans to (e.g. h1, h2, div). If null, resulting spans will not be wrapped
+/// @arg {String} $containerType [null] - The data-type to give to the created container element. If null, resulting spans will not be wrapped
+@mixin utils_title($content, $bucket: null, $container: null, $containerType: null) {
+  //TODO: Restrict what things titlePart can be. Currently any key will work.
+  @each $titlePart in map-keys($content) {
+    &::before {
+      container: span;
+      content: map-get($content, $titlePart);
+      class: $titlePart;
+      @if ($container != null and $containerType != null) {
+        move-to: #{$bucket}-TITLECONTAINER
+      } @else if ($bucket != null) {
+        move-to: $bucket;
+      }
+    }
+  }
+  @if ($container != null and $containerType != null) {
+    &::before {
+      container: $container;
+      data-type: $containerType;
+      content: pending(#{$bucket}-TITLECONTAINER);
+      @if ($bucket != null) {
+        move-to: $bucket;
+      }
+    }
+  }
+}
+
+//Relies on hitting To Selector then From Selector without anything in between repeatedly
+//:'( this is less robust and useful than originally envisioned, still works great for solutions -> exercises though
+//Additionally a counter may not need to be passed, and a new method could rely on an internal counter
+//Stronger linking idea:
+//pass1: create objects
+//pass2: give similar ids to objects to be linked (e.g. #problem-3, #solution-3)
+//pass3: link the objects in any order because you know both ids
+
+/// Links pairs of elements that occur in the tree in order: To, From, To, From, ... with no exceptions
+/// @arg {String} $toSelector - The selector of the element in the pair that will be linked to
+/// @arg {String} $fromSelector - The selector of the element in the pair that will be the link
+/// @arg {Text} $toCounter [null] - The counter object used to automatically ID the element to be linked to if it doesn't already have an id. If null, the link href will be to an already existing id of the linked-to element
+@mixin utils_linkToFromForward($toSelector, $fromSelector, $toName, $toCounter: null) {
+  #{$toSelector} {
+    @if ($toCounter != null) {
+      $toID: "#{$toName}-"counter($toCounter);
+      attr-id: $toID;
+      string-set: #{$toName}-ID $toID;
+    } @else {
+      string-set: #{$toName}-ID attr(id);
+    }
+  }
+  #{$fromSelector} {
+    &::outside {
+      container: a;
+      attr-href: "#" string(#{$toName}-ID);
+    }
+  }
+}
+
+/// Simply base mixin to reference a node
+/// @arg {Text} $name - The unquoted name of the node that will be referenced
+@mixin utils_refNodeAs($name) {
+  node-set: $name;
+}
+
+/// Simply base mixin to reference a string
+/// @arg {Text} $name - The unquoted name of the string that will be referenced
+/// @arg {String} $string - The referenced string. Often, this will be to an element's content() or an attr()
+@mixin utils_refStringAs($name, $string) {
+  string-set: $name $string;
+}
+
+/// A simple call to clear the trash at the end of a pass/step
+@mixin utils_clearTrash() {
+  body:deferred::after {
+    content: clear(trash);
+  }
+}

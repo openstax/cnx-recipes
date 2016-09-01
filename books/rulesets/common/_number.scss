@@ -1,0 +1,146 @@
+@import "./utils";
+
+@mixin number_numberChapters($chapterTitleContent) {
+  div[data-type="chapter"] {
+    @include utils_title($chapterTitleContent, bChapterLabel);
+    //use the title mixin for this? and that way content() can be wrapped
+    > [data-type="document-title"] {
+      container: h1;
+      content: pending(bChapterLabel) content();
+    }
+  }
+}
+
+@mixin number_numberAppendices($appendixTitleContent) {
+  div.appendix {
+    @include utils_title($appendixTitleContent, bAppendixLabel);
+    //use the title mixin for this? and that way content() can be wrapped
+    > [data-type="document-title"] {
+      container: h1;
+      content: pending(bAppendixLabel) content();
+    }
+  }
+}
+
+@mixin number_numberSections($sectionTitleContent) {
+  div[data-type="chapter"] > div[data-type="page"] {
+    &:not(.introduction) {
+      @include utils_title($sectionTitleContent, bSectionLabel);
+      //use the title mixin for this? and that way content() can be wrapped
+      > [data-type="document-title"] {
+        container: h2;
+        content: pending(bSectionLabel) content();
+      }
+    }
+    &.introduction {
+      > [data-type="document-title"] {
+        container: h2;
+      }
+    }
+  }
+}
+
+//EOC composite pages must be created before this runs
+@mixin number_numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
+  .eoc [data-type="exercise"] {
+    [data-type="problem"] {
+      @include utils_title($exerciseTitleContent);
+    }
+    [data-type="solution"] {
+      @include utils_title($exerciseTitleContent);
+    }
+  }
+}
+
+@mixin number_numberExamples($exampleTitleContent, $solutionTitleContent) {
+  .example {
+    @include utils_title($exampleTitleContent, bExampleLabel);
+    > [data-type="title"] {
+      //BAD: there should not be titling content creation outside the book level. This should get moved
+      $exampleTitle: (
+        text: content()
+      );
+      @include utils_title($exampleTitle, bExampleLabel);
+      move-to: trash;
+    }
+    &::after {
+      container: div;
+      content: pending(bExampleLabel);
+      class: "title";
+      move-to: bExampleHeader;
+    }
+    &:deferred {
+      content: pending(bExampleHeader) content();
+    }
+    [data-type="solution"] {
+      @include utils_title($solutionTitleContent, null, div, "solution-title");
+    }
+  }
+}
+
+@mixin number_numberNote($type, $noteContent) {
+  [data-type="note"].#{$type} {
+    @include utils_title($noteContent, bNoteLabel-#{$type});
+    > [data-type="title"] {
+      //TODO: May want to have the option to preserve titles similarly to examples in the future.
+      move-to: trash;
+    }
+    &::after {
+      container: div;
+      content: pending(bNoteLabel-#{$type});
+      class: "title";
+      move-to: bNoteHeader;
+    }
+    &:deferred {
+      content: pending(bNoteHeader) content();
+    }
+    //TODO: Maybe want to have the option to handle solutions similarly to examples in the future
+  }
+}
+
+@mixin number_setCaptions($setFigTableCaptions, $labeling, $labelingAp) {
+  $type: map-get($setFigTableCaptions, type);
+  $defaultContainer: map-get($setFigTableCaptions, defaultContainer);
+  $hasCaption: map-get($setFigTableCaptions, hasCaption);
+  $hasTitle: map-get($setFigTableCaptions, hasTitle);
+  [data-type="chapter"] {
+    :not(#{$type}) > #{$type} {
+      @include utils_title($labeling, bCaption);
+      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+    }
+  }
+  .appendix {
+    :not(#{$type}) > #{$type} {
+      @include utils_title($labelingAp, bCaption);
+      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+    }
+  }
+}
+
+@mixin setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle) {
+  @if ($hasCaption) {
+    #{$defaultContainer} {
+      container: span;
+      class: "caption";
+      move-to: bCaption;
+    }
+  }
+  @if ($hasTitle) {
+    #{$defaultContainer} [data-type="title"] {
+      container: span;
+      class: "title";
+      move-to: bCaption;
+    }
+  }
+  &::after {
+    container: div;
+    class: "caption-container";
+    content: pending(bCaption);
+    move-to: bCaptionContainer;
+  }
+  &::outside {
+    class: #{$type};
+    container: div;
+    content: content() pending(bCaptionContainer);
+  }
+}
