@@ -28,11 +28,19 @@ fi
 
 echo "Step 1/2: Generating an EPUB from the database and converting to a single HTML file (may take a minute)"
 
-COMMAND="[ -e ~/temp.internal.epub ] && rm ~/temp.internal.epub; /var/cnx/venvs/publishing/bin/cnx-archive-export_epub /etc/cnx/publishing/app.ini ${BOOK_UUID_AND_VER} ~/temp.internal.epub && /var/cnx/venvs/publishing/bin/cnx-epub-single_html ~/temp.internal.epub > ~/temp.html"
+TEMP_EPUB_PATH="~/temp.intenral.epub"
+TEMP_HTML_PATH="~/temp.html"
 
-ssh ${HOST} ${COMMAND}
+RM_TEMP_EPUB_CMD="[ -e ${TEMP_EPUB_PATH} ] && rm ${TEMP_EPUB_PATH}"
+RM_TEMP_HTML_CMD="[ -e ${TEMP_HTML_PATH} ] && rm ${TEMP_HTML_PATH}"
+GENERATE_EPUB_CMD="/var/cnx/venvs/publishing/bin/cnx-archive-export_epub /etc/cnx/publishing/app.ini ${BOOK_UUID_AND_VER} ${TEMP_EPUB_PATH}"
+GENERATE_HTML_CMD="/var/cnx/venvs/publishing/bin/cnx-epub-single_html ${TEMP_EPUB_PATH} > ${TEMP_HTML_PATH}"
+
+CMD="${RM_TEMP_EPUB_CMD}; ${RM_TEMP_HTML_CMD}; ${GENERATE_EPUB_CMD} && ${GENERATE_HTML_CMD}"
+
+ssh ${HOST} ${CMD}
 
 echo "Step 2/2: Copying HTML file from server to local machine"
-scp ${HOST}:~/temp.html ${RAW_PATH}
+scp ${HOST}:${TEMP_HTML_PATH} ${RAW_PATH}
 
 echo "Fetch is done. File is available at ${RAW_PATH}"
