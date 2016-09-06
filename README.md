@@ -14,3 +14,8 @@
 1. run `./scripts/bake-book statistics`
 
 Once you have the book, you can just run `./scripts/bake-book` to your :heart:'s content!
+
+# Documentation
+
+1. run `./scripts/generate-docs`
+2. open the generated file in your browser
