@@ -55,19 +55,36 @@
 /// @arg {String} $toSelector - The selector of the element in the pair that will be linked to
 /// @arg {String} $fromSelector - The selector of the element in the pair that will be the link
 /// @arg {Text} $toCounter [null] - The counter object used to automatically ID the element to be linked to if it doesn't already have an id. If null, the link href will be to an already existing id of the linked-to element
-@mixin utils_linkToFromForward($toSelector, $fromSelector, $toName, $toCounter: null) {
+@mixin hasSolution() {
+  .exercise {
+    .solution {
+      string-set: isSolution " hasSolution ";
+    }
+    string-set: isSolution "";
+    &::deferred {
+      class: attr(class) string(isSolution, " ") ;
+    }
+  }
+}
+@mixin utils_linkToFromForward($toSelector, $fromSelector, $toName, $fromName, $toCounter: null) {
   #{$toSelector} {
     @if ($toCounter != null) {
       $toID: "#{$toName}-"counter($toCounter);
+      $fromID: "#{$fromName}-"counter($toCounter);
+      container: a;
       attr-id: $toID;
+      attr-href: "#" #{$fromID};
       string-set: #{$toName}-ID $toID;
+      string-set: #{$fromName}-ID $fromID;
     } @else {
+      //FIXME forward links with existing ID Todo
       string-set: #{$toName}-ID attr(id);
     }
   }
   #{$fromSelector} {
     &::outside {
       container: a;
+      attr-id: string(#{$fromName}-ID);
       attr-href: "#" string(#{$toName}-ID);
     }
   }

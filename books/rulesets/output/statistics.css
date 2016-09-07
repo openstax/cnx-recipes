@@ -20,6 +20,12 @@
   attr-target: "_blank"; }
 :pass(0) .try [data-type="solution"] {
   move-to: trash; }
+:pass(0) .exercise {
+  string-set: isSolution ""; }
+  :pass(0) .exercise .solution {
+    string-set: isSolution " hasSolution "; }
+  :pass(0) .exercise::deferred {
+    class: attr(class) string(isSolution, " "); }
 
 :pass(1) body {
   counter-reset: chapter; }
@@ -307,11 +313,15 @@
   counter-reset: exerciseAll; }
 :pass(3) .eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
-:pass(3) .eoc [data-type=problem] .number {
-  attr-id: "problem-" counter(exerciseAll);
-  string-set: problem-ID "problem-" counter(exerciseAll); }
-:pass(3) .eoc [data-type=solution] .number::outside {
+:pass(3) .hasSolution [data-type=problem] .number {
   container: a;
+  attr-id: "problem-" counter(exerciseAll);
+  attr-href: "#" solution- counter(exerciseAll);
+  string-set: problem-ID "problem-" counter(exerciseAll);
+  string-set: solution-ID "solution-" counter(exerciseAll); }
+:pass(3) [data-type=solution] .number::outside {
+  container: a;
+  attr-id: string(solution-ID);
   attr-href: "#" string(problem-ID); }
 :pass(3) div[data-type="chapter"] {
   node-set: chapterHeaderNode; }
