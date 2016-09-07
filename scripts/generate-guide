@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+SASS_DIR='./books/'
+STYLEGUIDE_DIR='./styleguide/'
+SASS_PATH="${SASS_DIR}/guide.scss"
+CSS_PATH="${STYLEGUIDE_DIR}/guide.css"
+
+echo "Step 1/2: Compile the guide.scss file"
+[ ! -e ${STYLEGUIDE_DIR} ] && mkdir ${STYLEGUIDE_DIR}
+sass ${SASS_PATH} ${CSS_PATH}
+
+echo "Step 2/2: Generate the style guide"
+# The CSS path is relative to the styleguide directory, hence `./guide.css`
+./node_modules/.bin/kss-node --verbose --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${SASS_DIR}
+
+echo "Guide is available at ${STYLEGUIDE_DIR} . You can open it in a browser"

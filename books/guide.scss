@@ -1,0 +1,256 @@
+/*
+  Page
+
+  Everything in here is specific to a Page in a book.
+  A Page is usually a section inside a chapter.
+
+  Style guide: page
+*/
+[data-type='page'] {
+
+  /*
+    Metadata
+
+    This contains attribution information and is sometimes collated to the
+    back of the book.
+
+    Markup:
+    <div data-type="page">
+      <div data-type="metadata">...</div>
+    </div>
+
+    Style guide: page.0-metadata
+  */
+  > [data-type='metadata'] { }
+
+  /*
+    Page Title
+
+    The title of the page. This also contains an element that denotes the number.
+
+    Markup:
+    <div data-type="page">
+      <h2 data-type="document-title">
+        <span class="number">4.3</span>
+        <span class="divider"> | </span>
+        <span class="text">Kinematics in One Dimension</span>
+      </h2>
+    </div>
+
+    Style guide: page.0-title
+  */
+  > h2[data-type='document-title'] { }
+
+  /*
+    Processing Instruction
+
+    These are an artifact of the transforms and will disappear in the future
+
+    Markup:
+    <div data-type="page">
+      <cnx-pi />
+    </div>
+
+    Style guide: page.0-processing
+  */
+  > cnx-pi { display: none; }
+
+}
+
+// Term
+//
+// A term which is defined in a glossary
+//
+// Markup:
+// <p>The <span data-type="term">velocity</span> of an object
+//    represents the speed and the direction</p>
+//
+// Style guide: page.term
+[data-type='term'] { font-weight: bold; }
+
+
+// Note
+//
+// A note or "feature". This is usually separated visually from the rest of the
+// content in a book with a border and a separate background color.
+//
+// Contains an optional title, and optionally an additional class to help style the note
+//
+// Markup:
+// <div data-type="note">
+//   <div data-type="title">The Title</div>
+//   <p>Body of the note</p>
+// </div>
+//
+// Style guide: page.note
+[data-type='note'] {
+
+  // The title of a note
+  //
+  // Style guide: page.note.title
+  > [data-type='title'] {}
+
+}
+
+/*
+  Figure
+
+  A `<figure>` is wrapped in a `<div data-type='figure'>` which contains:
+  - optional `[data-type='title']`
+  - `figure` element
+    - `[data-type='media']` : a wrapper element which may disappear in the future
+      - `img[src][alt]` : The image for the Figure
+  - `.caption-container` : contains the figure number and caption (may be renamed to figcaption in the future and moved into figure)
+    - `.title-label` : The word `Figure`
+    - `.number` : The number of the figure (ie `3.1`)
+    - `.caption`
+
+  TODO: Maybe this should use the `<picture>` element instead:
+  http://www.html5rocks.com/en/tutorials/responsive/picture-element/
+
+  Markup:
+  <div data-type="figure">
+    <figure>
+      <div data-type="media">
+        <img
+          src="https://cnx.org/resources/d47864c2ac77d80b1f2ff4c4c7f1b2059669e3e9/Figure_01_00_01.jpg"
+          alt="The spiral galaxy Andromeda"
+        />
+      </div>
+    </figure>
+    <div class="caption-container">
+      <span class="title-label">Figure </span>
+      <span class="number">3.1</span>
+      <span class="caption">The Andromeda Galaxy is one of many spiral galaxies...</span>
+    </div>
+  </div>
+
+  Style guide: page.figure
+*/
+[data-type='figure'] {}
+
+/*
+  Paragraph
+
+  A Paragraph of text. Some of the common things it can contain are:
+
+  - `[data-type='term']` : A term that is defined elsewhere (in the glossary)
+  - `strong`
+  - `em`
+  - `[data-type='list']` : an inline list
+    - `[data-type='item']` : an item in the list
+  - `math` : MathML
+
+  Markup:
+  <p>
+    The word <span data-type="term">velocity</span> is used to describe how
+    fast an item is going as well as the direction using the equation:
+    <math>
+      <mi>V</mi>
+      <mo>=</mo>
+      <mfrac>
+        <mi>d</mi>
+        <mi>t</mi>
+      </mfrac>
+    </math>
+  </p>
+  <p>An example of speeding up would be the following velocities:
+    <span data-type="list">
+      <span data-type="item">-10</span>
+      <span data-type="item">-5</span>
+      <span data-type="item">-2</span>
+      <span data-type="item">-1</span>
+      <span data-type="item">5</span>
+      <span data-type="item">50</span>
+    </span>
+  </p>
+
+  Style guide: page.para
+*/
+p {
+  > [data-type='list'] {
+    > [data-type='item'] { }
+  }
+}
+
+/*
+  Section
+
+  A (sub)section of content which contains a title.
+
+  Markup:
+  <section>
+    <h3 data-type="title">Kinematics in One Dimension</h3>
+    <p>
+      Kinematics is a complex topics so we begin by looking at it in one
+      dimension...
+    </p>
+  </section>
+
+  Style guide: page.section
+*/
+section {
+  > [data-type='title'] {}
+}
+
+
+/*
+  Example
+
+  An example which is usually styled to not be part of the flow of normal content
+  (similar to a Note).
+
+  Markup:
+  <div data-type="example">
+    <div data-type="title">How to Calculate Velocity</div>
+    <p>
+      To determine the velocity, you will first need to find how far the
+      object travelled, and then how long it took.
+    </p>
+  </section>
+
+  Style guide: page.example
+*/
+[data-type='example'] {}
+
+
+/*
+  Exercise
+
+  An exercise contains a problem, optional title, and optional solution(s).
+
+  Markup:
+  <div data-type="exercise">
+    <div data-type="problem">
+      <p>If an apple fell 3 meters in 2 seconds, what was the speed of the apple?</p>
+    </div>
+    <div data-type="solution">
+      <p>If fell 1.5 meters per second</p>
+    </div>
+  </div>
+
+  Style guide: page.exercise
+*/
+[data-type='exercise'] {
+  > [data-type='problem'] { }
+  > [data-type='solution'] { }
+}
+
+
+/*
+  Glossary
+
+  This element occurs as a separate Page at the end of a Chapter or a Book.
+
+  Markup:
+  <dl data-type="glossary">
+    <dt>velocity</dt>
+    <dd>Speed with a direction</dd>
+  </dl>
+
+  Style guide: page.glossary
+*/
+dl[data-type='glossary'] {
+  > dt { }
+  > dd { }
+}
