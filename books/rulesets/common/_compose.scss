@@ -216,91 +216,68 @@
     }
   }
 }
-@mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
-  $solutionSource: map-get($solutionPage, source);
-  $sectionSeparated: map-get($solutionPage, sectionSeparated);
-  @each $page in $compositePages {
-    $hasSolutions: map-get($page, hasSolutions);
-    $source: map-get($page, source);
-    @if ($hasSolutions) {
-      [data-type="chapter"] {
-        .eoc.#{$source}-container {
-          [data-type="solution"] {
-            @if ($sectionSeparated) {
-              move-to: #{$solutionSource}-GETSECTION;
-            } @else {
-              move-to: #{$solutionSource}-TOCOMPOSITE;;
-            }
-          }
-          @if ($sectionSeparated) {
-            &::after {
-              container: section;
-              class: #{$solutionSource};
-              content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
-              move-to: #{$solutionSource}-TOCOMPOSITE;
+  @mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
+    $solutionSource: map-get($solutionPage, source);
+    $sectionSeparated: map-get($solutionPage, sectionSeparated);
+    $chapterSeparated: map-get($solutionPage, chapterSeparated);
+    @each $page in $compositePages {
+      $hasSolutions: map-get($page, hasSolutions);
+      $source: map-get($page, source);
+      @if ($hasSolutions) {
+        [data-type="chapter"] {
+          .eoc.#{$source}-container {
+            [data-type="solution"] {
+              @if ($sectionSeparated) {
+                move-to: #{$solutionSource}-GETSECTION;
+              }
+              @if ($chapterSeparated and not $sectionSeparated ) {
+                move-to: #{$solutionSource}-GETCHAPTER;
+              }
+              @else {
+                move-to: #{$solutionSource}-TOCOMPOSITE;;
+              }
             }
           }
         }
       }
     }
-  }
- body {
-    &::after {
-      container: div;
-      content: pending(#{$solutionSource}-TOCOMPOSITE);
-      class: "eob #{$solutionSource}-container";
-      data-type: "composite-page";
+    [data-type="chapter"] {
+
+         > h1[data-type="document-title"] .number {
+          string-set: ChapNumb content();
+        }
+      @if ($sectionSeparated) {
+        &::after {
+          container: section;
+          class: #{$solutionSource};
+          content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
+          @if ($chapterSeparated) {
+            move-to: #{$solutionSource}-GETCHAPTER;
+          }
+          @else {
+            move-to: #{$solutionSource}-TOCOMPOSITE;
+          }
+        }
+      }
+      @if ($chapterSeparated) {
+        &::before {
+          class: "title";
+          content: "Chapter " string(ChapNumb);
+          move-to: chaptTitleEOB;
+        }
+        &::after {
+          class: #{$solutionSource}-chapter-area;
+          content: pending(chaptTitleEOB) pending(#{$solutionSource}-GETCHAPTER);
+          move-to: #{$solutionSource}-TOCOMPOSITE;
+        }
+      }
+    }
+    body {
+      &::after {
+        container: div;
+        content: pending(#{$solutionSource}-TOCOMPOSITE);
+        class: "eob #{$solutionSource}-container";
+        data-type: "composite-page";
+      }
     }
   }
-}
-
-
-// @mixin compose_createSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
-//   $solutionSource: map-get($solutionPage, source);
-//   $sectionSeparated: map-get($solutionPage, sectionSeparated);
-//   @each $page in $compositePages {
-//     $hasSolutions: map-get($page, hasSolutions);
-//     $source: map-get($page, source);
-//     $isAnswerKey: map-get($page, isAnswerKey);
-//     @if ($hasSolutions) {
-//       [data-type="chapter"] {
-//         .eoc.#{$source}-container {
-//           [data-type="solution"] {
-//             @if ($sectionSeparated) {
-//               move-to: #{$solutionSource}-GETSECTION;
-//             } @else {
-//               move-to: #{$solutionSource}-TOCOMPOSITE;;
-//             }
-//           }
-//           @if ($sectionSeparated) {
-//             &::after {
-//               container: section;
-//               class: #{$solutionSource};
-//               content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
-//               move-to: #{$solutionSource}-TOCOMPOSITE;
-//             }
-//           }
-//         }
-//       }
-//     }
-//     @if ($isAnswerKey) {
-//      body {
-//         &::after {
-//           container: div;
-//           content: pending(#{$solutionSource}-TOCOMPOSITE);
-//           class: "eob #{$solutionSource}-container";
-//           data-type: "composite-page";
-//         }
-//       }
-//     } @else {
-//       [data-type="chapter"] {
-//         &::after {
-//           container: div;
-//           content: pending(#{$solutionSource}-TOCOMPOSITE);
-//           class: "eoc #{$solutionSource}-container";
-//           data-type: "composite-page";
-//         }
-//       }
-//     }
-//   }
-// }
