@@ -1,26 +1,32 @@
 #!/bin/sh
 set -e
 
-
 BOOK_NAME=$1
-DEBUG_FLAG=$2
+RAW_PATH=$2
+COOKED_PATH=$3
+DEBUG_FLAG=$4
 
 SASS_PATH="./books/rulesets/${BOOK_NAME}.scss"
 CSS_PATH="./books/rulesets/output/${BOOK_NAME}.css"
-RAW_PATH="./data/${BOOK_NAME}-raw.html"
-COOKED_PATH="./data/${BOOK_NAME}-cooked.html"
 
 # Check command line args
 
 if [ -z "${BOOK_NAME}" ]
 then
   echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  echo 'The required arguments are: BOOK_NAME, RAW_PATH, COOKED_PATH'
   exit 1
 fi
 
 if [ ! -f "${RAW_PATH}" ]
 then
-  echo 'ERROR: Could not find the raw HTML file. Have you run fetch-book yet?'
+  echo "ERROR: Could not find the raw HTML file at ${RAW_PATH}"
+  exit 1
+fi
+
+if [ -z "${COOKED_PATH}" ]
+then
+  echo 'ERROR: You must specify a cooked path'
   exit 1
 fi
 
@@ -31,13 +37,9 @@ then
 fi
 
 
-echo "Step 1/2: Compile SASS to CSS"
-sass ${SASS_PATH} ${CSS_PATH}
-
-echo "Step 2/2: Baking the book (may take a couple minutes). specify additional commandline arguments like -d to this script if you want more debugging"
-
 # Remove the cooked file if it exists
-[ -e "${COOKED_PATH}" ] && rm ${COOKED_PATH}
+# [ -e "${COOKED_PATH}" ] && rm ${COOKED_PATH}
+# commented out because it could be /dev/stdout
 
 . ./bin/activate
 

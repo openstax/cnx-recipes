@@ -1,17 +1,58 @@
 #!/bin/sh
 set -e
 
+BOOK_NAME=$1
+
+GUIDE_TYPES="page.example page.exercise page.para page.note page.figure page.equation book.glossary page.section page.term page.table book.chapter book.page"
+
 SASS_DIR='./books/'
 STYLEGUIDE_DIR='./styleguide/'
-SASS_PATH="${SASS_DIR}/guide.scss"
+SASS_PATH="${SASS_DIR}/guide/index.scss"
 CSS_PATH="${STYLEGUIDE_DIR}/guide.css"
+BOOK_CSS_PATH="${SASS_DIR}/rulesets/output/${BOOK_NAME}.css"
 
-echo "Step 1/2: Compile the guide.scss file"
+# Check command line args
+
+if [ -z "${BOOK_NAME}" ]
+then
+  echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  exit 1
+else
+  # Check that the CSS file exists
+  if [ ! -f "${BOOK_CSS_PATH}" ]
+  then
+    echo "ERROR: Could not find the CSS file to use for baking: ${BOOK_CSS_PATH}"
+    exit 1
+  fi
+
+fi
+
+
+
+echo "Step 1/4: Compile the guide.scss file"
 [ ! -e ${STYLEGUIDE_DIR} ] && mkdir ${STYLEGUIDE_DIR}
 sass ${SASS_PATH} ${CSS_PATH}
 
-echo "Step 2/2: Generate the style guide"
+
+echo "Step 2/4: Generate the cooked example HTML files"
+for FILE_NAME in ${GUIDE_TYPES}
+do
+  echo "Generating ${FILE_NAME}"
+  # commented because xmllint does not like html5 element names like <figure>
+  # ./scripts/bake-file ${BOOK_NAME} ./books/guide/${FILE_NAME}-raw.html /dev/stdout | xmllint --html --format - > ./books/guide/${FILE_NAME}-cooked.html
+  ./scripts/bake-file ${BOOK_NAME} ./books/guide/${FILE_NAME}-raw.html ./books/guide/${FILE_NAME}-cooked.html
+done
+
+echo "Step 3/4: Generate the style guide"
 # The CSS path is relative to the styleguide directory, hence `./guide.css`
 ./node_modules/.bin/kss-node --verbose --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${SASS_DIR}
+
+# Delete the temp files created above
+echo "Step 4/4: Deleting the cooked example HTML files"
+for FILE_NAME in ${GUIDE_TYPES}
+do
+  rm ./books/guide/${FILE_NAME}-cooked.html
+done
+
 
 echo "Guide is available at ${STYLEGUIDE_DIR} . You can open it in a browser"
