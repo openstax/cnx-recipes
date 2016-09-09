@@ -38,17 +38,12 @@ sass ${SASS_PATH} ${CSS_PATH}
 
 
 echo "Step 2/4: Generate the cooked example HTML files"
-for FILE_NAME in ${COMMON_GUIDE_TYPES}
+for FILE_NAME in $(find ./books/rulesets/ -name "*.html")
 do
-  echo "Generating ${FILE_NAME}"
+  echo "Generating temporary ${FILE_NAME}-cooked.html"
   # commented because xmllint does not like html5 element names like <figure>
-  # ./scripts/bake-file ${BOOK_NAME} ./books/rulesets/common/examples/${FILE_NAME}-raw.html /dev/stdout | xmllint --html --format - > ./books/rulesets/common/examples/${FILE_NAME}-cooked.html
-  ./scripts/bake-file ${BOOK_NAME} ./books/rulesets/common/examples/${FILE_NAME}-raw.html ./books/rulesets/common/examples/${FILE_NAME}-cooked.html
-done
-for FILE_NAME in ${SPECIFIC_GUIDE_TYPES}
-do
-  echo "Generating ${FILE_NAME}"
-  ./scripts/bake-file ${BOOK_NAME} ./books/rulesets/examples/${FILE_NAME}-raw.html ./books/rulesets/examples/${FILE_NAME}-cooked.html
+  # ./scripts/bake-file ${BOOK_NAME} ${FILE_NAME} /dev/stdout | xmllint --html --format - > ${FILE_NAME}-cooked.html
+  ./scripts/bake-file ${BOOK_NAME} ${FILE_NAME} ${FILE_NAME}-cooked.html
 done
 
 
@@ -58,13 +53,10 @@ echo "Step 3/4: Generate the style guide"
 
 # Delete the temp files created above
 echo "Step 4/4: Deleting the cooked example HTML files"
-for FILE_NAME in ${COMMON_GUIDE_TYPES}
+for FILE_NAME in $(find ./books/rulesets/ -name "*-cooked.html")
 do
-  rm ./books/rulesets/common/examples/${FILE_NAME}-cooked.html
-done
-for FILE_NAME in ${SPECIFIC_GUIDE_TYPES}
-do
-  rm ./books/rulesets/examples/${FILE_NAME}-cooked.html
+  echo "Removing temporary ${FILE_NAME}"
+  rm ${FILE_NAME}
 done
 
 
