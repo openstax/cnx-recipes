@@ -20,5 +20,5 @@ There are 2 major parts to cooking a book (_listed above_). You will first need 
 # Documentation
 
 1. run `./scripts/generate-docs` to generate the SASS Docs
-1. run `./scripts/generate-guide` to generate the HTML Guide
+1. run `./scripts/generate-guide statistics` to generate the HTML Guide for a book
 1. open the generated file in your browser
