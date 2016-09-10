@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+echo "Step 1/4: Installing SASS"
+gem install sass
+
+echo "Step 2/4: Setting up a python virtualenv"
+virtualenv .
+. ./bin/activate
+
+
+echo "Step 3/4: Installing python packages"
+
+pip install --quiet git+https://github.com/Connexions/cssselect2.git
+pip install --quiet git+https://github.com/Connexions/rhaptos.cnxmlutils.git
+pip install --quiet git+https://github.com/Connexions/cnx-archive.git
+pip install --quiet git+https://github.com/Connexions/cnx-easybake.git
+pip install --quiet git+https://github.com/Connexions/cnx-epub.git
+
+deactivate
+
+echo "Step 4/4: Installing sassdoc (depends on NodeJS)"
+npm install

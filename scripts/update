@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+echo 'Step 1/4: Updating SASS'
+
+gem update --quiet sass
+
+echo 'Step 2/4: Uninstalling python packages'
+
+virtualenv .
+. ./bin/activate
+
+pip uninstall --quiet --yes cssselect2
+pip uninstall --quiet --yes rhaptos.cnxmlutils
+pip uninstall --quiet --yes cnx-archive
+pip uninstall --quiet --yes cnx-easybake
+pip uninstall --quiet --yes cnx-epub
+
+
+echo 'Step 3/4: Reinstalling python packages'
+
+pip install --quiet git+https://github.com/Connexions/cssselect2.git
+pip install --quiet git+https://github.com/Connexions/rhaptos.cnxmlutils.git
+pip install --quiet git+https://github.com/Connexions/cnx-archive.git
+pip install --quiet git+https://github.com/Connexions/cnx-easybake.git
+pip install --quiet git+https://github.com/Connexions/cnx-epub.git
+
+deactivate
+
+echo "Step 4/4: Updating sassdoc to the version listed in package.json"
+npm install
