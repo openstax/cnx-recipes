@@ -17,7 +17,6 @@ try {
   // In order for a template to be "kss-node clone"-able, it must use the
   // require('kss/generator/path') syntax.
   kssHandlebarsTemplate.generator = require('kss/generator/handlebars');
-  console.log(kssHandlebarsTemplate.generator);
 } catch (e) {
   // The above require() line will always fail while testing a git clone of this
   // module because this code is not inside a "node_modules/kss" folder which
@@ -34,7 +33,7 @@ kssHandlebarsTemplate.options = {
     string: true,
     multiple: false,
     describe: 'Title of the style guide',
-    default: 'KSS Style Guide'
+    default: 'Openstax HTML Guide'
   }
 };
 
