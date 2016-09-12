@@ -13,19 +13,26 @@
     var containerToParseMarkup = document.createElement('div');
     containerToParseMarkup.innerHTML=preEl.innerText;
 
-    containerToParseMarkup.querySelectorAll('.-kss-autogen-guide-markup').forEach(function(sectionEl) {
-      var theMarkup = sectionEl.innerHTML;
-      var preNode = document.createElement('pre');
-      preNode.classList.add('prettyprint');
-      preNode.classList.add('linenums');
-      preNode.classList.add('lang-html');
-      theMarkup = theMarkup.trim();
+    // Some conversions apparently don't have a Raw HTML and a Cooked HTML.
+    // probably because they are Page or Metadata snippets and are inline in the HTML
+    // so skip them.
+    if (containerToParseMarkup.querySelector('.-kss-autogen-guide-markup')) {
 
-      preNode.innerText = theMarkup;
-      sectionEl.innerHTML = '';
-      sectionEl.appendChild(preNode);
-    })
-    markupEl.replaceChild(containerToParseMarkup, preEl);
+      containerToParseMarkup.querySelectorAll('.-kss-autogen-guide-markup').forEach(function(sectionEl) {
+        var theMarkup = sectionEl.innerHTML;
+        var preNode = document.createElement('pre');
+        preNode.classList.add('prettyprint');
+        preNode.classList.add('linenums');
+        preNode.classList.add('lang-html');
+        theMarkup = theMarkup.trim();
+
+        preNode.innerText = theMarkup;
+        sectionEl.innerHTML = '';
+        sectionEl.appendChild(preNode);
+      })
+      markupEl.replaceChild(containerToParseMarkup, preEl);
+    }
+
 
   });
 
