@@ -16,9 +16,11 @@
     containerToParseMarkup.querySelectorAll('.-kss-autogen-guide-markup').forEach(function(sectionEl) {
       var theMarkup = sectionEl.innerHTML;
       var preNode = document.createElement('pre');
-      preNode.classList.add('pretty-print');
+      preNode.classList.add('prettyprint');
       preNode.classList.add('linenums');
       preNode.classList.add('lang-html');
+      theMarkup = theMarkup.trim();
+
       preNode.innerText = theMarkup;
       sectionEl.innerHTML = '';
       sectionEl.appendChild(preNode);
@@ -34,17 +36,23 @@
 
     // Special-case when user selected to see all formats
     if (theFormat === '-all') {
-      document.querySelectorAll('.-kss-autogen-guide-markup')
+      document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup')
       .forEach(function(sectionEl) {
         sectionEl.classList.remove('-toggle-hidden');
       });
 
-    } else {
-      document.querySelectorAll('.-kss-autogen-guide-markup')
+    } else if (theFormat === '-none') {
+      document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup')
       .forEach(function(sectionEl) {
         sectionEl.classList.add('-toggle-hidden');
       });
-      document.querySelectorAll('.-kss-autogen-guide-markup[data-kss-format="' + theFormat + '"]')
+
+    } else {
+      document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup')
+      .forEach(function(sectionEl) {
+        sectionEl.classList.add('-toggle-hidden');
+      });
+      document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup[data-kss-format="' + theFormat + '"]')
       .forEach(function(sectionEl) {
         sectionEl.classList.remove('-toggle-hidden');
       });
