@@ -216,49 +216,64 @@
       }
     }
   }
+  @function map-deep-get($map, $keys...) {
+    @each $key in $keys {
+      $map: map-get($map, $key);
+    }
+    @return $map;
+  }
   @mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
     $solutionSource: map-get($solutionPage, source);
+    //$isSeparated: map-has-key($solutionPage, separated);
+    $isSeparated:  map-get($solutionPage, isSeparated);
     $sectionSeparated: map-get($solutionPage, sectionSeparated);
-    $chapterSeparated: map-get($solutionPage, chapterSeparated);
-    @each $page in $compositePages {
-      $hasSolutions: map-get($page, hasSolutions);
-      $source: map-get($page, source);
-      @if ($hasSolutions) {
-        [data-type="chapter"] {
-          .eoc.#{$source}-container {
-            [data-type="solution"] {
+    $chapterSeparated: map-deep-get($solutionPage,chapterSeparated);
+
+   // $sectionSeparated: map-get($isSeparated, sectionSeparated);
+
+   @each $page in $compositePages {
+    $hasSolutions: map-get($page, hasSolutions);
+    $source: map-get($page, source);
+    @if ($hasSolutions) {
+      [data-type="chapter"] {
+        .eoc.#{$source}-container {
+          [data-type="solution"] {
+            @if ($isSeparated) {
               @if ($sectionSeparated) {
                 move-to: #{$solutionSource}-GETSECTION;
               }
               @if ($chapterSeparated and not $sectionSeparated ) {
                 move-to: #{$solutionSource}-GETCHAPTER;
               }
-              @else {
-                move-to: #{$solutionSource}-TOCOMPOSITE;;
+            }
+            @else {
+              move-to: #{$solutionSource}-TOCOMPOSITE;;
+            }
+          }
+          @if ($sectionSeparated) {
+           .#{$source} {
+            &::after {
+              container: section;
+              class: #{$solutionSource};
+              content: pending(EOBsectionHeader) pending(#{$solutionSource}-GETSECTION);
+              @if ($chapterSeparated) {
+                move-to: #{$solutionSource}-GETCHAPTER;
               }
             }
           }
         }
       }
     }
+  }
+}
+
+
+
+  @if ($chapterSeparated) {
     [data-type="chapter"] {
-     > h1[data-type="document-title"] .number {
-      string-set: ChapNum content();
-    }
-    @if ($sectionSeparated) {
-      &::after {
-        container: section;
-        class: #{$solutionSource};
-        content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
-        @if ($chapterSeparated) {
-          move-to: #{$solutionSource}-GETCHAPTER;
+       > h1[data-type="document-title"] .number {
+         string-set: ChapNum content();
         }
-        @else {
-          move-to: #{$solutionSource}-TOCOMPOSITE;
-        }
-      }
-    }
-    @if ($chapterSeparated) {
       &::after {
           //FIXME wrap the in spans
           container: h2;
