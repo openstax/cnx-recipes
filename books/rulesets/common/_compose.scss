@@ -252,6 +252,13 @@
           }
           @if ($sectionSeparated) {
            .#{$source} {
+            > h2[data-type="document-title"] {
+              @if ($chapterSeparated) {
+                container: h3;
+              }
+              node-set: eobsectionHeader;
+              move-to: EOBsectionHeader;
+            }
             &::after {
               container: section;
               class: #{$solutionSource};
@@ -266,15 +273,12 @@
     }
   }
 }
-
-
-
-  @if ($chapterSeparated) {
-    [data-type="chapter"] {
-       > h1[data-type="document-title"] .number {
-         string-set: ChapNum content();
-        }
-      &::after {
+[data-type="chapter"] {
+ > h1[data-type="document-title"] .number {
+  string-set: ChapNum content();
+}
+@if ($chapterSeparated) {
+  &::after {
           //FIXME wrap the in spans
           container: h2;
           class: "title";
