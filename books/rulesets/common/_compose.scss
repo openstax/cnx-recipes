@@ -224,13 +224,9 @@
   }
   @mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
     $solutionSource: map-get($solutionPage, source);
-    //$isSeparated: map-has-key($solutionPage, separated);
     $isSeparated:  map-get($solutionPage, isSeparated);
     $sectionSeparated: map-get($solutionPage, sectionSeparated);
     $chapterSeparated: map-deep-get($solutionPage,chapterSeparated);
-
-   // $sectionSeparated: map-get($isSeparated, sectionSeparated);
-
    @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $source: map-get($page, source);
@@ -273,11 +269,12 @@
     }
   }
 }
-[data-type="chapter"] {
- > h1[data-type="document-title"] .number {
-  string-set: ChapNum content();
-}
+
 @if ($chapterSeparated) {
+  [data-type="chapter"] {
+    > h1[data-type="document-title"] .number {
+    string-set: ChapNum content();
+  }
   &::after {
           //FIXME wrap the in spans
           container: h2;
