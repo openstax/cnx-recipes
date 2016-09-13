@@ -1,0 +1,30 @@
+#!/bin/sh
+set -e
+
+BRANCH_WITH_NEW_STUFF=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "${BRANCH_WITH_NEW_STUFF}" = "gh-pages" ]
+then
+  echo "You are running this script in the gh-pages branch. It should be run in another branch (the one with new code changes)"
+  exit 1
+fi
+
+# Check to make sure there are no uncommitted files
+STAGED_FILES_COUNT=$(git status -s | wc -l)
+if [ ${STAGED_FILES_COUNT} -ne 0 ]
+then
+  echo "You have uncommitted files. Please commit them first. Aborting."
+  git status -s
+  exit 1
+fi
+
+git checkout gh-pages
+git pull # In case gh-pages has updated since you last pulled
+git rebase ${BRANCH_WITH_NEW_STUFF}
+
+./scripts/generate-guide statistics
+git add --all styleguide/
+git commit -m "Updating guide from ${BRANCH_WITH_NEW_STUFF} branch"
+git push --force-with-lease
+
+git checkout ${BRANCH_WITH_NEW_STUFF}
