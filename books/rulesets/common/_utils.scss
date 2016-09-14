@@ -109,3 +109,20 @@
     content: clear(trash);
   }
 }
+
+/// Utility mixin that validates the type of a variable.
+/// useful for erroring early. For example, If the developer was expecting an
+/// argument to a mixin to be a `list` but the mixin that uses it several levels
+/// deep actually expected it to be a `bool`
+@mixin utils_checkType($var, $expectedType) {
+  @if (type-of($var) != $expectedType) {
+    @error "The argument is of the wrong type. Expected: #{$expectedType} but got #{type-of($var)}";
+  }
+}
+
+/// @see {mixin} utils_checkTypeOptional
+@mixin utils_checkTypeOptional($var, $expectedType) {
+  @if ($var and type-of($var) != $expectedType) {
+    @error "The optional argument is of the wrong type. Expected: #{$expectedType} but got #{type-of($var)}";
+  }
+}
