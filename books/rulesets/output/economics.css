@@ -317,8 +317,19 @@
 :pass(4) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 :pass(4) [data-type="chapter"] .eoc.self-check-questions-container [data-type="solution"] {
-  move-to: solutions-TOCOMPOSITE; }
+  move-to: solutions-GETCHAPTER; }
 :pass(4) [data-type="chapter"] .eoc.problems-container [data-type="solution"] {
+  move-to: solutions-GETCHAPTER; }
+:pass(4) [data-type="chapter"] > h1[data-type="document-title"] .number {
+  string-set: ChapNum content(); }
+:pass(4) [data-type="chapter"]::after {
+  container: h2;
+  class: "title";
+  content: "Chapter " string(ChapNum);
+  move-to: chaptTitleEOB; }
+:pass(4) [data-type="chapter"]::after {
+  class: solutions-chapter-area;
+  content: pending(chaptTitleEOB) pending(solutions-GETCHAPTER);
   move-to: solutions-TOCOMPOSITE; }
 :pass(4) body::after {
   container: div;
