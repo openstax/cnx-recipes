@@ -1,9 +1,19 @@
 @import "./utils";
 
+/// Creates a title for a set of composite pages at the end of a chapter
+/// @arg {Map} $compositePages - each element in this must contain a `name` and `source`
 @mixin compose_titleEOCComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
     $source: map-get($page, source);
+
+    // Validate
+    @if (type-of($name) != string) {
+      @error 'the name field is required but is missing';
+    }
+    @if (type-of($source) != string) {
+      @error 'the source field is required but is missing';
+    }
     [data-type="composite-page"].eoc.#{$source}-container {
       $titleContent: (
         text: $name
@@ -13,10 +23,17 @@
   }
 }
 
+/// Creates a title for a set of composite pages at the end of the book
+/// @arg {list} $compositePages - each element in this must contain a `name` and `source`
 @mixin compose_titleEOBComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
     $source: map-get($page, source);
+
+    // Validate
+    @include utils_checkType($name, string);
+    @include utils_checkType($source, string);
+
     [data-type="composite-page"].eob.#{$source}-container {
       $titleContent: (
         text: $name
@@ -25,18 +42,38 @@
     }
   }
 }
+
+
+/// Creates a title for a set of composite pages at the end of the book
+/// @arg {list} $compositePages - each element in this must contain a `name` and `source`
+/// @arg {string} $sectionHeaderNode - a String whose value is "sectionHeaderNode" (yep, odd). Currently Unused (because of typo)
 @mixin compose_createChapterComposites($compositePages, $sectionHeaderNode) {
+  // Validate
+  @include utils_checkType($compositePages, list);
+
   @each $page in $compositePages {
     @include createChapterComposite($page, $sectionHeaderNode);
   }
 }
 
+/// Collects elements defined by `$page.source` (a selector-ish thing) and
+/// collates them at the end of a chapter.
+/// @arg {Map} $page - contains `name`, `source`, and optionally `sortBy` and `compoundComposite` and `isGlossary`
+/// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
 @mixin createChapterComposite($page, $sectionHeaderNode) {
+  $name: map-get($page, name);
+  $source: map-get($page, source);
+  $sortBy: map-get($page, sortBy);
+  $compoundComposite: map-get($page, compoundComposite);
+
+  // Validate
+  @include utils_checkType($name, string);
+  @include utils_checkType($source, string);
+  @include utils_checkTypeOptional($sortBy, string);
+  @include utils_checkTypeOptional($compoundComposite, bool);
+  @include utils_checkType($sectionHeaderNode, string);
+
   div[data-type="chapter"] {
-    $name: map-get($page, name);
-    $source: map-get($page, source);
-    $sortBy: map-get($page, sortBy);
-    $compoundComposite: map-get($page, compoundComposite);
     @if (not $compoundComposite) {
       $sectionSeparated: map-get($page, sectionSeparated);
       $isGlossary: map-get($page, isGlossary);
@@ -44,15 +81,18 @@
       @if ($isGlossary) {
         div[data-type="#{$source}"] {
           > h3[data-type="glossary-title"] {
+            // TODO: Explain why is this discarded to the trash
             move-to: trash;
           }
         }
       }
       #{$sourceSelector} {
         > h3[data-type="title"] {
+          // TODO: Explain why is this discarded to the trash
           move-to: trash;
         }
         @if ($sectionSeparated) {
+          // TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined
           content: nodes(sectionHeaderNode) content();
         }
         move-to: #{$source}-TOCOMPOSITE;
