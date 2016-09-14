@@ -38,9 +38,13 @@
     $sortBy: map-get($page, sortBy);
     $compoundComposite: map-get($page, compoundComposite);
     @if (not $compoundComposite) {
-      $sectionSeparated: map-get($page, sectionSeparated);
+      $separateOn: map-get($page, separateOn);
       $isGlossary: map-get($page, isGlossary);
       $sourceSelector: if($isGlossary, 'div[data-type="#{$source}"] dl', 'section.#{$source}');
+      // Validate input
+      @if ($separateOn and $separateOn != 'SECTION') {
+        @error "ERROR: Invalid value for separateOn in #{$name}";
+      }
       @if ($isGlossary) {
         div[data-type="#{$source}"] {
           > h3[data-type="glossary-title"] {
@@ -52,7 +56,7 @@
         > h3[data-type="title"] {
           move-to: trash;
         }
-        @if ($sectionSeparated) {
+        @if ($separateOn == 'SECTION') {
           content: nodes(sectionHeaderNode) content();
         }
         move-to: #{$source}-TOCOMPOSITE;
@@ -113,35 +117,33 @@
       }
       } @else {
         [data-type="chapter"] {
-          $chapterSeparated: map-get($page, chapterSeparated);
-          $sectionSeparated: map-get($page, sectionSeparated);
+          $separateOn: map-get($page, separateOn);
           $chapterPages: map-get($page, chapterPages);
+
           #{$sourceSelector} {
             > h3[data-type="title"] {
               move-to: trash;
             }
-            @if ($sectionSeparated) {
+            @if ($separateOn == 'SECTION') {
               content: nodes(sectionHeaderNode) content();
-              @if ($chapterSeparated) {
-                move-to: #{$source}-GETCHAPTER;
-                } @else {
-                  move-to: #{$source}-TOCOMPOSITE;
-                }
-              }
+              move-to: #{$source}-TOCOMPOSITE;
             }
-            @if ($chapterSeparated) {
-              &::after {
-                class: "#{$source}-chapter-area";
-                content: pending(#{$source}-GETCHAPTER);
-                @if ($chapterPages) {
-                  data-type: "composite-page";
-                }
+          }
+
+          @if ($separateOn == 'CHAPTER') {
+            &::after {
+              class: "#{$source}-chapter-area";
+              content: pending(#{$source}-GETCHAPTER);
+              @if ($chapterPages) {
+                data-type: "composite-page";
               }
             }
           }
+
         }
       }
     }
+  }
 
     @mixin compose_createBookComposites($compositePages) {
       @each $page in $compositePages {
@@ -181,7 +183,7 @@
 
 @mixin compose_createEOCSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
   $solutionSource: map-get($solutionPage, source);
-  $sectionSeparated: map-get($solutionPage, sectionSeparated);
+  $separateOn: map-get($solutionPage, separateOn);
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $source: map-get($page, source);
@@ -189,20 +191,22 @@
       [data-type="chapter"] {
         .eoc.#{$source}-container {
           [data-type="solution"] {
-            @if ($sectionSeparated) {
+            @if ($separateOn == 'SECTION') {
               move-to: #{$solutionSource}-GETSECTION;
-              } @else {
-                move-to: #{$solutionSource}-TOCOMPOSITE;;
-              }
+            } @else {
+              move-to: #{$solutionSource}-TOCOMPOSITE;;
             }
-            @if ($sectionSeparated) {
-              &::after {
-                container: section;
-                class: #{$solutionSource};
-                content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
-                move-to: #{$solutionSource}-TOCOMPOSITE;
-              }
+          }
+          @if ($separateOn == 'SECTION') {
+            &::after {
+              container: section;
+              class: #{$solutionSource};
+              content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
+              move-to: #{$solutionSource}-TOCOMPOSITE;
             }
+          } @else if ($separateOn) {
+            @warn "BUG: Separating on something other than 'SECTION'";
+          }
           }
         }
       }
@@ -224,77 +228,68 @@
   }
   @mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
     $solutionSource: map-get($solutionPage, source);
-    $isSeparated:  map-get($solutionPage, isSeparated);
-    $sectionSeparated: map-get($solutionPage, sectionSeparated);
-    $chapterSeparated: map-deep-get($solutionPage,chapterSeparated);
+    $separateOn: map-get($solutionPage, separateOn);
+
    @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $source: map-get($page, source);
+
     @if ($hasSolutions) {
       [data-type="chapter"] {
         .eoc.#{$source}-container {
           [data-type="solution"] {
-            @if ($isSeparated) {
-              @if ($sectionSeparated) {
-                move-to: #{$solutionSource}-GETSECTION;
+            @if ($separateOn == 'SECTION') {
+              move-to: #{$solutionSource}-GETSECTION;
+              .#{$source} {
+                > h2[data-type="document-title"] {
+                  node-set: eobsectionHeader;
+                  move-to: EOBsectionHeader;
+                }
+                &::after {
+                  container: section;
+                  class: #{$solutionSource};
+                  content: pending(EOBsectionHeader) pending(#{$solutionSource}-GETSECTION);
+                }
               }
-              @if ($chapterSeparated and not $sectionSeparated ) {
-                move-to: #{$solutionSource}-GETCHAPTER;
-              }
+            }
+            @else if ($separateOn == 'CHAPTER') {
+              move-to: #{$solutionSource}-GETCHAPTER;
+              // see below for more chapter work
             }
             @else {
-              move-to: #{$solutionSource}-TOCOMPOSITE;;
-            }
-          }
-          @if ($sectionSeparated) {
-           .#{$source} {
-            > h2[data-type="document-title"] {
-              @if ($chapterSeparated) {
-                container: h3;
-              }
-              node-set: eobsectionHeader;
-              move-to: EOBsectionHeader;
-            }
-            &::after {
-              container: section;
-              class: #{$solutionSource};
-              content: pending(EOBsectionHeader) pending(#{$solutionSource}-GETSECTION);
-              @if ($chapterSeparated) {
-                move-to: #{$solutionSource}-GETCHAPTER;
-              }
+              @error 'Separating on something other than section or chapter';
             }
           }
         }
       }
     }
   }
-}
 
-@if ($chapterSeparated) {
-  [data-type="chapter"] {
-    > h1[data-type="document-title"] .number {
-    string-set: ChapNum content();
-  }
-  &::after {
-          //FIXME wrap the in spans
-          container: h2;
-          class: "title";
-          content: "Chapter " string(ChapNum);
-          move-to: chaptTitleEOB;
-        }
-        &::after {
-          class: #{$solutionSource}-chapter-area;
-          content: pending(chaptTitleEOB) pending(#{$solutionSource}-GETCHAPTER);
-          move-to: #{$solutionSource}-TOCOMPOSITE;
-        }
+  @if ($separateOn == 'CHAPTER') {
+    [data-type="chapter"] {
+      > h1[data-type="document-title"] .number {
+        string-set: ChapNum content();
       }
-    }
-    body {
       &::after {
-        container: div;
-        content: pending(#{$solutionSource}-TOCOMPOSITE);
-        class: "eob #{$solutionSource}-container";
-        data-type: "composite-page";
+        //FIXME wrap the in spans
+        container: h2;
+        class: "title";
+        content: "Chapter " string(ChapNum);
+        move-to: chaptTitleEOB;
+      }
+      &::after {
+        class: #{$solutionSource}-chapter-area;
+        content: pending(chaptTitleEOB) pending(#{$solutionSource}-GETCHAPTER);
+        move-to: #{$solutionSource}-TOCOMPOSITE;
       }
     }
   }
+
+  body::after {
+    container: div;
+    content: pending(#{$solutionSource}-TOCOMPOSITE);
+    class: "eob #{$solutionSource}-container";
+    data-type: "composite-page";
+  }
+
+}
