@@ -13,6 +13,7 @@ STYLEGUIDE_DIR='./styleguide/'
 SASS_PATH="${SASS_DIR}/rulesets/${BOOK_NAME}.scss"
 CSS_PATH="${STYLEGUIDE_DIR}/guide.css"
 BOOK_CSS_PATH="${SASS_DIR}/rulesets/output/${BOOK_NAME}.css"
+HOMEPAGE_PATH="./guide-homepage.md" # Relative to ${SASS_DIR}/rulesets/
 
 # Check command line args
 
@@ -61,14 +62,14 @@ done
 
 echo "Step 3/4: Generate the style guide"
 # The CSS path is relative to the styleguide directory, hence `./guide.css`
-./node_modules/.bin/kss-node --template ./js/openstax-kss-builder --verbose --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${SASS_DIR}
+./node_modules/.bin/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${HOMEPAGE_PATH} --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${SASS_DIR}
 
 
 # Delete the temp files created above
 echo "Step 4/4: Deleting the cooked example HTML files"
 for FILE_NAME in $(find ./books/rulesets/ -name "*-cooked.html")
 do
-  echo "Removing temporary ${FILE_NAME}"
+  # echo "Removing temporary ${FILE_NAME}"
   rm ${FILE_NAME}
 done
 
