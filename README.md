@@ -17,6 +17,12 @@
 
 There are 2 major parts to cooking a book (_listed above_). You will first need to get the single-file HTML from the server (`fetch-book`) and then convert the single-file HTML locally into the "baked" book via `bake-book`. Once you have done the first part, you can run `./scripts/bake-book statistics` to your :heart:'s content!
 
+# Test
+
+1. run `./scripts/test`
+
+This will run the linter, generate sassdocs, and generate the guides to verify they work.
+
 # Documentation
 
 1. run `./scripts/generate-docs` to generate the SASS Docs
