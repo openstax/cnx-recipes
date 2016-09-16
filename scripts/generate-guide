@@ -13,6 +13,7 @@ STYLEGUIDE_DIR='./styleguide/'
 SASS_PATH="${SASS_DIR}/rulesets/${BOOK_NAME}.scss"
 CSS_PATH="${STYLEGUIDE_DIR}/guide.css"
 BOOK_CSS_PATH="${SASS_DIR}/rulesets/output/${BOOK_NAME}.css"
+HOMEPAGE_PATH="./guide-homepage.md" # Relative to ${SASS_DIR}/rulesets/
 
 # Check command line args
 
@@ -43,19 +44,32 @@ do
   echo "Generating temporary ${FILE_NAME}-cooked.html"
   # commented because xmllint does not like html5 element names like <figure>
   # ./scripts/bake-file ${BOOK_NAME} ${FILE_NAME} /dev/stdout | xmllint --html --format - > ${FILE_NAME}-cooked.html
-  ./scripts/bake-file ${BOOK_NAME} ${FILE_NAME} ${FILE_NAME}-cooked.html
+  ./scripts/bake-file ${BOOK_NAME} ${FILE_NAME} ${FILE_NAME}-temp1-cooked.html
+
+  # Construct an HTML file that contains both the raw and cooked HTML
+  # so it can be separated in the browser
+  # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${FILE_NAME}-cooked.html
+  cat ${FILE_NAME} >> ${FILE_NAME}-cooked.html
+  echo '</section>' >> ${FILE_NAME}-cooked.html
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-cooked">' >> ${FILE_NAME}-cooked.html
+  cat ${FILE_NAME}-temp1-cooked.html >> ${FILE_NAME}-cooked.html
+  echo '</section>' >> ${FILE_NAME}-cooked.html
+
+  rm ${FILE_NAME}-temp1-cooked.html
 done
 
 
 echo "Step 3/4: Generate the style guide"
 # The CSS path is relative to the styleguide directory, hence `./guide.css`
-./node_modules/.bin/kss-node --verbose --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${SASS_DIR}
+./node_modules/.bin/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${HOMEPAGE_PATH} --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${SASS_DIR}
+
 
 # Delete the temp files created above
 echo "Step 4/4: Deleting the cooked example HTML files"
 for FILE_NAME in $(find ./books/rulesets/ -name "*-cooked.html")
 do
-  echo "Removing temporary ${FILE_NAME}"
+  # echo "Removing temporary ${FILE_NAME}"
   rm ${FILE_NAME}
 done
 

@@ -28,3 +28,13 @@ There are 2 major parts to cooking a book (_listed above_). You will first need 
 1. run `./scripts/fetch-book ${BOOK_NAME} ${UUID}` to fetch the Raw HTML for a book
 1. run `./scripts/report-book-coverage ${BOOK_NAME}` to generate the CSS Coverage file
 1. run `genhtml ...` (exact output is shown in the previous step) to generate an HTML report
+
+
+## Experimental
+
+To update the Documentation in the gh-pages branch:
+
+1. `git checkout master`
+1. `./scripts/generate-and-update-gh-pages`
+
+**Note:** This will push changes if successful
