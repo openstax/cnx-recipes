@@ -1,0 +1,283 @@
+/*
+  Book Page
+
+  A Page is usually a section inside a chapter. It contains:
+
+  - `[data-type='metadata']` The attribution information for this Page
+  - `h2[data-type='title']` The title of the Page
+
+  Markup: ./book.page.html-cooked.html
+
+  Style guide: book.page
+*/
+
+/*
+  Page Elements
+
+  Everything in here is specific to a Page in a book.
+  A Page is usually a section inside a chapter.
+
+  Style guide: page
+*/
+[data-type='page'] {
+
+  /*
+    Metadata
+
+    This contains attribution information and is sometimes collated to the
+    back of the book.
+
+    Markup:
+    <div data-type="page">
+      <div data-type="metadata">...</div>
+    </div>
+
+    Style guide: page.0-metadata
+  */
+  > [data-type='metadata'] { }
+  > h2[data-type='document-title'] { }
+
+  /*
+    Processing Instruction
+
+    These are an artifact of the transforms and will disappear in the future
+
+    Markup:
+    <div data-type="page">
+      <cnx-pi />
+    </div>
+
+    Style guide: page.0-processing
+  */
+  > cnx-pi { display: none; }
+
+}
+
+/*
+  Term
+
+  A term which is used to make the Book Index and optionally defined again in a glossary.
+
+  Markup: ./page.term.html-cooked.html
+
+  Style guide: page.term
+*/
+[data-type='term'] { font-weight: bold; }
+
+
+/*
+  Note
+
+  A note or "feature". This is usually separated visually from the rest of the
+  content in a book with a border and a separate background color.
+
+  Contains an optional title, and optionally an additional class to help style the note
+
+  Markup: ./page.note.html-cooked.html
+
+  Style guide: page.note
+*/
+[data-type='note'] {
+
+  > [data-type='title'] {}
+
+}
+
+/*
+  Figure
+
+  A `<figure>` is wrapped in a `<div data-type='figure'>` which contains:
+  - optional `[data-type='title']`
+  - `figure` element
+    - `[data-type='media']` : a wrapper element which may disappear in the future
+      - `img[src][alt]` : The image for the Figure
+
+  TODO: Maybe this should use the `<picture>` element instead of the `[data-type='media']` element:
+  http://www.html-cooked.html5rocks.com/en/tutorials/responsive/picture-element/
+
+  Markup: ./page.figure.html-cooked.html
+
+  Style guide: page.figure
+*/
+[data-type='figure'] {
+  > figure {
+    > [data-type='media'] {
+      > img[src] {}
+    }
+  }
+  > .caption-container {}
+}
+
+
+/*
+  Paragraph
+
+  A Paragraph of text. Some of the common things it can contain are:
+
+  - `[data-type='term']` : A term that is defined elsewhere (in the glossary)
+  - `strong`
+  - `em`
+  - `[data-type='list']` : an inline list
+    - `[data-type='item']` : an item in the list
+  - `math` : MathML
+
+  TODO: Move these into a separate "inline" section in the HTML guide
+
+  Markup: ./page.para.html-cooked.html
+
+  Style guide: page.para
+*/
+/*
+  Paragraph with a Title
+
+  A Paragraph of text which contains a title. These are rare and end up having a
+  wrapping element in order to be able to insert the title.
+
+  Markup: ./page.para.with-title.html-cooked.html
+
+  Style guide: page.para.with-title
+*/
+p {
+  > [data-type='list'] {
+    > [data-type='item'] { }
+  }
+}
+
+/*
+  Section
+
+  A (sub)section of content which contains a title.
+
+  Markup: ./page.section.html-cooked.html
+
+  Style guide: page.section
+*/
+section {
+  > [data-type='title'] {}
+}
+
+
+/*
+  Example
+
+  An example which is usually styled to not be part of the flow of normal content
+  (similar to a Note).
+
+  Markup: ./page.example.html-cooked.html
+
+  Style guide: page.example
+*/
+[data-type='example'] {}
+
+
+/*
+  Exercise
+
+  An exercise contains a problem, optional title, and optional solution(s).
+
+  Exercises are usually numbered and contain a link to the solution if it exists.
+  Typically, an exercise is collated at the end of chapter.
+
+  Solutions are collated (at the end of section, end of chapter or end of book), they are numbered (the number is the same as the exercise they are associated to) and link back to their exercise.
+
+  Markup: ./page.exercise.html-cooked.html
+
+  Style guide: page.exercise
+*/
+[data-type='exercise'] {
+  > [data-type='problem'] { }
+  > [data-type='solution'] { }
+}
+
+/*
+  Equation
+
+  An equation wraps a MathML formula and is usually numbered.
+
+  Markup: ./page.equation.html-cooked.html
+
+  Style guide: page.equation
+*/
+[data-type='equation'] {}
+
+
+/*
+  Glossary
+
+  This element is often referred to as Key Terms in the textbook.
+  It is collated as a separate Page at the end of a Chapter or a Book.
+  Also, it is collected from individual glossary elements in each raw Page.
+
+  Markup: ./book.glossary.html-cooked.html
+
+  Style guide: book.glossary
+*/
+dl[data-type='glossary'] {
+  > dt { }
+  > dd { }
+}
+
+
+/*
+  Table
+
+  Without a title, the `table` element may contain a `caption`, `tbody`, `col`, and other _usual_ elements.
+
+  Markup: ./page.table.html-cooked.html
+
+  Style guide: page.table
+*/
+> table {
+  caption {}
+}
+
+/*
+  Composite Page
+
+  These are end-of-book or end-of-chapter Pages.
+
+  A Composite Page is one that is automatically generated by moving/copying content from the raw pages.
+  Examples include the end-of-chapter exercises, end-of-book solutions, end-of-chapter glossary, index.
+
+  They:
+
+  - must use data-type="composite-page".
+  - must have a unique identifier (class) for styling purposes.
+  - usually contain content separated by section(pages) or by chapter.
+  - now appear in the TOC (currently not the case in the PDF).
+  - aren't numbered in the content and in the TOC (the chapters and sections are)
+  - follow the same rules as a regular data-type="page" (header hierarchy, metadata, etc.)
+
+  Markup:
+  <div data-type="composite-page">
+    <h2>Homework Problems</h2>
+    <div data-type="exercise">
+      <div data-type="problem">What is 2+2?</div>
+    </div>
+  </div>
+
+  Style guide: book.composite
+*/
+[data-type='composite-page'] {}
+
+
+/*
+  Chapter
+
+  A Chapter contains a title and multiple Pages, one of which may be a `.introduction` Page.
+
+  The introduction page typically contains a splash image, a chapter outline and an introductory paragraph.
+  
+  Markup: ./book.chapter.html-cooked.html
+
+  Style guide: book.chapter
+*/
+[data-type='chapter'] {
+  > [data-type='page'].introduction {}
+}
+
+
+//x=new Set(Array.prototype.slice.call(document.querySelectorAll('*')).map(function(el) { if (el.getAttribute('data-type')) { return "[data-type='" + el.getAttribute('data-type') + "']"; } else if (el.className) {return el.tagName.toLowerCase() + "." + el.className.split(' ').join('.') } else {return el.tagName.toLowerCase()} }))
+
+
+// TODO: Add Lists:
