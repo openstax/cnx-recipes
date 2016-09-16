@@ -22,3 +22,9 @@ There are 2 major parts to cooking a book (_listed above_). You will first need 
 1. run `./scripts/generate-docs` to generate the SASS Docs
 1. run `./scripts/generate-guide statistics` to generate the HTML Guide for a book
 1. open the generated file in your browser
+
+## CSS Coverage
+
+1. run `./scripts/fetch-book ${BOOK_NAME} ${UUID}` to fetch the Raw HTML for a book
+1. run `./scripts/report-book-coverage ${BOOK_NAME}` to generate the CSS Coverage file
+1. run `genhtml ...` (exact output is shown in the previous step) to generate an HTML report
