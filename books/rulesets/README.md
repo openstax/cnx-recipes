@@ -85,7 +85,8 @@ These are collected into a list as `$chapterCompositePages` and `$bookCompositeP
 
 # TitleContent
 
-Describes numbering and labeling of elements. Also known as FigNumber, TableNumber
+Describes numbering and labeling of elements (mostly just table and figure).
+See `$captionFigNumber` and `$captionTableNumber`.
 
 - `title-label` - string
 - `number` - set of counters
