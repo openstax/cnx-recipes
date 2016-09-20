@@ -21,14 +21,6 @@ if [ -z "${BOOK_NAME}" ]
 then
   echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
   exit 1
-else
-  # Check that the CSS file exists
-  if [ ! -f "${BOOK_CSS_PATH}" ]
-  then
-    echo "ERROR: Could not find the CSS file to use for baking: ${BOOK_CSS_PATH}"
-    exit 1
-  fi
-
 fi
 
 
@@ -36,6 +28,7 @@ fi
 echo "Step 1/4: Compile the guide.scss file"
 [ ! -e ${STYLEGUIDE_DIR} ] && mkdir ${STYLEGUIDE_DIR}
 sass ${SASS_PATH} ${CSS_PATH}
+sass ${SASS_PATH} ${BOOK_CSS_PATH}
 
 
 echo "Step 2/4: Generate the cooked example HTML files"
