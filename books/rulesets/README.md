@@ -28,3 +28,48 @@ The common documentation is in `./common/examples/_all.scss` only because phil d
 ## Book-Specific Documentation
 
 The book-specific documentation is done as comments in the `${BOOK_NAME}.scss` and `${BOOK_NAME}-config.scss` files and the Raw HTML snippets are in `./examples/` because each book does not have a directory (yet?).
+
+
+# Mixin Types
+
+These are the Types used to configure the numbering an collation of a book.
+
+# Page
+
+- `name` - string
+- `source` - string class name (usually) sometimes it gets converted to a data-type (should probably be a data-type)
+- `isGlossary` - bool
+- `sortBy` string (selector)
+- `sectionSeparated` - bool
+- `chapterSeparated` - bool
+- `hasSolutions` - bool
+- `isIndex` - bool
+- `compoundComposite` - bool
+- `isAnswerKey` - bool
+
+
+# TitleContent
+
+Describes numbering and labeling of elements. Also known as FigNumber, TableNumber
+
+- `title-label` - string
+- `number` - set of counters
+- `divider` - string
+
+
+# setFigure(Table)Caption
+
+- `type` token (can be `table` or `figure`)
+- `defaultContainer` token (can be `caption`)
+- `hasCaption` bool
+- `hasTitle` bool
+
+
+# $targetLabels
+
+These are used when creating the text for a link (ie `See Figure 4.3`).
+
+## TargetLabel
+
+- `selector` string
+- `label` nodes? containing things like `"Figure" counter(chapter) "." counter(figure)`
