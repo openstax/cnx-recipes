@@ -1,0 +1,40 @@
+#!/bin/bash
+set -e
+
+
+BOOK_NAME=$1
+BOOK_CONFIG_FILE="./books.txt"
+
+if [ -z "${BOOK_NAME}" ]
+then
+  >&2 echo "This utility script converts a book name (like microecon)"
+  >&2 echo "to the ruleset name the should be used to generate the book"
+  >&2 echo "(like economics) by looking up the value in ./books.txt"
+  >&2 echo "but you need to enter a valid book name as the argument to"
+  >&2 echo "this file"
+  exit 1
+fi
+
+if [ ! -f "${BOOK_CONFIG_FILE}" ]
+then
+  >&2 echo "ERROR: Could not find the file named ${BOOK_CONFIG_FILE}"
+  exit 1
+fi
+
+
+# load up all the vars stored in ${BOOK_CONFIG_FILE}
+eval $(cat ${BOOK_CONFIG_FILE})
+
+
+# Pull out the ruleset name that matches the ${BOOK_NAME}
+RULESET_NAME=$(eval echo \${${BOOK_NAME}_ruleset_name})
+UUID=$(eval echo \${${BOOK_NAME}_uuid})
+
+if [ -z "${RULESET_NAME}" ]
+then
+  >&2 echo "ERROR: could not find a ruleset_name for the book named ${BOOK_NAME}"
+  >&2 echo "Please check the ${BOOK_CONFIG_FILE} file and make sure the entry exits"
+  exit 1
+fi
+
+echo ${RULESET_NAME} ${UUID}
