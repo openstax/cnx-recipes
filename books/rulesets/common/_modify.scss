@@ -94,3 +94,24 @@
     }
   }
 }
+
+
+@mixin modify_notes($type, $noteContent) {
+  [data-type="note"].#{$type} {
+    @include utils_title($noteContent, bNoteLabel-#{$type});
+    &::before {
+      container: h3;
+      content: pending(bNoteLabel-#{$type});
+      class: "title";
+      move-to: bNoteHeader;
+    }
+    &::after {
+        class: "body";
+        content: content();
+        move-to: cNote;
+    }
+    &:deferred {
+      content:pending(bNoteHeader) pending(cNote);
+    }
+  }
+}
