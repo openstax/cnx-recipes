@@ -35,6 +35,13 @@ This will run the linter, generate sassdocs, and generate the guides to verify t
 1. run `./scripts/report-book-coverage ${BOOK_NAME}` to generate the CSS Coverage file
 1. run `genhtml ...` (exact output is shown in the previous step) to generate an HTML report
 
+You can pass 3 additional arguments to `report-book-coverage` to change how it reports coverage:
+
+- `--verbose` : outputs verbose/debugging output
+- `--ignore-source-map` : covers the CSS even if a sourceMappingURL is found.
+- `--cover-declarations` : generates coverage based on the declarations, not just the selector
+
+For more details on the commandline options see the [css-coverage](https://www.npmjs.com/package/css-coverage#commandline-options) documentation.
 
 ## Experimental
 
