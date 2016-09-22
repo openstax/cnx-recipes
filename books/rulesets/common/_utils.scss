@@ -55,7 +55,7 @@
 /// @arg {String} $toSelector - The selector of the element in the pair that will be linked to
 /// @arg {String} $fromSelector - The selector of the element in the pair that will be the link
 /// @arg {Text} $toCounter [null] - The counter object used to automatically ID the element to be linked to if it doesn't already have an id. If null, the link href will be to an already existing id of the linked-to element
-@mixin hasSolution() {
+@mixin utils_hasSolution() {
   .exercise {
     .solution {
       string-set: isSolution " hasSolution ";
@@ -107,5 +107,22 @@
 @mixin utils_clearTrash() {
   body:deferred::after {
     content: clear(trash);
+  }
+}
+
+/// Utility mixin that validates the type of a variable.
+/// useful for erroring early. For example, If the developer was expecting an
+/// argument to a mixin to be a `list` but the mixin that uses it several levels
+/// deep actually expected it to be a `bool`
+@mixin utils_checkType($var, $expectedType) {
+  @if (type-of($var) != $expectedType) {
+    @error "The argument is of the wrong type. Expected: #{$expectedType} but got #{type-of($var)}";
+  }
+}
+
+/// @see {mixin} utils_checkTypeOptional
+@mixin utils_checkTypeOptional($var, $expectedType) {
+  @if ($var and type-of($var) != $expectedType) {
+    @error "The optional argument is of the wrong type. Expected: #{$expectedType} but got #{type-of($var)}";
   }
 }

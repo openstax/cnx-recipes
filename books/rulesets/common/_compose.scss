@@ -1,9 +1,16 @@
 @import "./utils";
 
+/// Creates a title for a set of composite pages at the end of a chapter
+/// @arg {Map} $compositePages - each element in this must contain a `name` and `source`
 @mixin compose_titleEOCComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
     $source: map-get($page, source);
+
+    // Validate
+    @include utils_checkType($name, string);
+    @include utils_checkType($source, string);
+
     [data-type="composite-page"].eoc.#{$source}-container {
       $titleContent: (
         text: $name
@@ -13,10 +20,17 @@
   }
 }
 
+/// Creates a title for a set of composite pages at the end of the book
+/// @arg {list} $compositePages - each element in this must contain a `name` and `source`
 @mixin compose_titleEOBComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
     $source: map-get($page, source);
+
+    // Validate
+    @include utils_checkType($name, string);
+    @include utils_checkType($source, string);
+
     [data-type="composite-page"].eob.#{$source}-container {
       $titleContent: (
         text: $name
@@ -25,18 +39,38 @@
     }
   }
 }
+
+
+/// Creates a title for a set of composite pages at the end of the book
+/// @arg {list} $compositePages - each element in this must contain a `name` and `source`
+/// @arg {string} $sectionHeaderNode - a String whose value is "sectionHeaderNode" (yep, odd). Currently Unused (because of typo)
 @mixin compose_createChapterComposites($compositePages, $sectionHeaderNode) {
+  // Validate
+  @include utils_checkType($compositePages, list);
+
   @each $page in $compositePages {
-    @include createChapterComposite($page, $sectionHeaderNode);
+    @include _createChapterComposite($page, $sectionHeaderNode);
   }
 }
 
-@mixin createChapterComposite($page, $sectionHeaderNode) {
+/// Collects elements defined by `$page.source` (a selector-ish thing) and
+/// collates them at the end of a chapter.
+/// @arg {Map} $page - contains `name`, `source`, and optionally `sortBy` and `compoundComposite` and `isGlossary`
+/// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
+@mixin _createChapterComposite($page, $sectionHeaderNode) {
+  $name: map-get($page, name);
+  $source: map-get($page, source);
+  $sortBy: map-get($page, sortBy);
+  $compoundComposite: map-get($page, compoundComposite);
+
+  // Validate
+  @include utils_checkType($name, string);
+  @include utils_checkType($source, string);
+  @include utils_checkTypeOptional($sortBy, string);
+  @include utils_checkTypeOptional($compoundComposite, bool);
+  @include utils_checkType($sectionHeaderNode, string);
+
   div[data-type="chapter"] {
-    $name: map-get($page, name);
-    $source: map-get($page, source);
-    $sortBy: map-get($page, sortBy);
-    $compoundComposite: map-get($page, compoundComposite);
     @if (not $compoundComposite) {
       $sectionSeparated: map-get($page, sectionSeparated);
       $isGlossary: map-get($page, isGlossary);
@@ -44,15 +78,18 @@
       @if ($isGlossary) {
         div[data-type="#{$source}"] {
           > h3[data-type="glossary-title"] {
+            /* Discard this Page-specific title because a chapter title is added when collated */
             move-to: trash;
           }
         }
       }
       #{$sourceSelector} {
         > h3[data-type="title"] {
+          /* Discard this Page-specific title because a chapter title is added when collated */
           move-to: trash;
         }
         @if ($sectionSeparated) {
+          /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
           content: nodes(sectionHeaderNode) content();
         }
         move-to: #{$source}-TOCOMPOSITE;
@@ -70,21 +107,39 @@
   }
 }
 
+/// @see {mixin} _prepBookComposite
 @mixin compose_prepBookComposites($compositePages, $sectionHeaderNode, $sectionHeaderString) {
   @each $page in $compositePages {
-    @include prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString);
+    @include _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString);
   }
 }
 
-@mixin prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
+/// Prepares elements that need to be collated.
+/// For example:
+/// - a `[data-type="term"]` is copied and put into the the "bucket" for the end-of-book index.
+/// - collated sections are moved into their corresponding "bucket"
+///
+/// @arg {Map} $page - contains `name`, `source`, and optionally `compoundComposite` and `isIndex`
+/// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
+/// @arg {string} $sectionHeaderString - Optional, used when `isIndex` is true
+@mixin _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
   $name: map-get($page, name);
   $source: map-get($page, source);
   $compoundComposite: map-get($page, compoundComposite);
   $isIndex: map-get($page, isIndex);
+
+  // Validate
+  @include utils_checkType($name, string);
+  @include utils_checkType($source, string);
+  @include utils_checkTypeOptional($isIndex, bool);
+  @include utils_checkTypeOptional($compoundComposite, bool);
+  @include utils_checkType($sectionHeaderString, string);
+
   @if (not $compoundComposite) {
     $sourceSelector: if($isIndex, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
     @if ($isIndex) {
       #{$sourceSelector} {
+        // Create an index entry for the term by creating a new element and then moving it
         &::after {
           content: content();
           attr-group-by: attr(group-by);
@@ -98,6 +153,7 @@
           class: "term-section";
           move-to: index-section;
         }
+        // Create a link next to the index term which points to the term in the book
         &::after {
           container: a;
           content: pending(index-section);
@@ -112,10 +168,16 @@
         }
       }
     } @else {
+      $chapterSeparated: map-get($page, chapterSeparated);
+      $sectionSeparated: map-get($page, sectionSeparated);
+      $chapterPages: map-get($page, chapterPages);
+
+      // Validate
+      @include utils_checkType($chapterSeparated, bool);
+      @include utils_checkType($sectionSeparated, bool);
+      @include utils_checkTypeOptional($chapterPages, bool);
+
       [data-type="chapter"] {
-        $chapterSeparated: map-get($page, chapterSeparated);
-        $sectionSeparated: map-get($page, sectionSeparated);
-        $chapterPages: map-get($page, chapterPages);
         #{$sourceSelector} {
           > h3[data-type="title"] {
             move-to: trash;
@@ -143,16 +205,25 @@
   }
 }
 
+/// @see {mixin} _createBookComposite
 @mixin compose_createBookComposites($compositePages) {
   @each $page in $compositePages {
-    @include createBookComposite($page);
+    @include _createBookComposite($page);
   }
 }
 
-@mixin createBookComposite($page) {
+/// Collects elements defined by `$page.source` (a selector-ish thing) and
+/// collates them at the end of the book.
+/// @arg {Map} $page - contains `source`, and optionally `isIndex`
+@mixin _createBookComposite($page) {
   body {
     $source: map-get($page, source);
     $isIndex: map-get($page, isIndex);
+
+    // Validate
+    @include utils_checkType($source, string);
+    @include utils_checkTypeOptional($isIndex, bool);
+
     &::after {
       container: div;
       content: pending(#{$source}-TOCOMPOSITE);
@@ -167,9 +238,20 @@
 
 //ChapterHeaderNode may be causing some weird issues? and may be copying the entire chapter?
 //See if this node needs to become a string, or if chapterHeaderNode is copying more than expected
+
+/// Adds the chapter name to the new Collated Page
+/// @arg {list} $compositePages - list of pages which contain a `source`
+/// @arg {string} $chapterHeaderNode - The title of what should be in here
 @mixin compose_prepChapterAreas($compositePages, $chapterHeaderNode) {
+  // Validate
+  @include utils_checkType($chapterHeaderNode, string);
+
   @each $page in $compositePages {
     $source: map-get($page, source);
+
+    // Validate
+    @include utils_checkType($source, string);
+
     [data-type="chapter"] {
       .#{$source}-chapter-area {
         content: nodes($chapterHeaderNode) content();
@@ -179,12 +261,26 @@
   }
 }
 
+/// Creates a set of exercise solutions at the end of a chapter
+/// @arg {list} $compositePages
+/// @arg {Map} $solutionPage
+/// @arg {string} $sectionHeaderNode
 @mixin compose_createEOCSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
   $solutionSource: map-get($solutionPage, source);
   $sectionSeparated: map-get($solutionPage, sectionSeparated);
+
+  // Validate
+  @include utils_checkType($solutionSource, string);
+  @include utils_checkTypeOptional($sectionSeparated, bool);
+
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $source: map-get($page, source);
+
+    // Validate
+    @include utils_checkType($source, string);
+    @include utils_checkTypeOptional($hasSolutions, bool);
+
     @if ($hasSolutions) {
       [data-type="chapter"] {
         .eoc.#{$source}-container {
@@ -207,6 +303,7 @@
       }
     }
   }
+
   [data-type="chapter"] {
     &::after {
       container: div;
@@ -218,13 +315,35 @@
 }
 
 
+/// Create solutions at the end of the book (by creating a new collated Page).
+/// These can be separated by section, chapter, both, or none.
+///
+/// When they are separated by chapter/section a new element is created with the Chapter/Section title.
+///
+/// Additionally, if sectionSeparated is selected for the EOB composite page,
+/// the originating EOC section must also contain sectionSeparated.
+///
+/// @arg {list} $compositePages - each element contains `source` and `hasSolutions`
+/// @arg {Map} $solutionPage - contains `source`, `sectionSeparated`, and `chapterSeparated`
+/// @arg {string} $sectionHeaderNode
 @mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
   $solutionSource: map-get($solutionPage, source);
   $sectionSeparated: map-get($solutionPage, sectionSeparated);
   $chapterSeparated: map-get($solutionPage,chapterSeparated);
+
+  // Validate
+  @include utils_checkType($solutionSource, string);
+  @include utils_checkTypeOptional($sectionSeparated, bool);
+  @include utils_checkType($chapterSeparated, bool);
+
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $source: map-get($page, source);
+
+    // Validate
+    @include utils_checkTypeOptional($hasSolutions, bool);
+    @include utils_checkType($source, string);
+
     @if ($hasSolutions) {
       [data-type="chapter"] {
         .eoc.#{$source}-container {
