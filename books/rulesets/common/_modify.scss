@@ -96,22 +96,36 @@
 }
 
 
-@mixin modify_notes($type, $noteContent) {
-  [data-type="note"].#{$type} {
-    @include utils_title($noteContent, bNoteLabel-#{$type});
+@mixin modify_note($noteContent) {
+  $selector: map-get($noteContent, selector);
+  $label: map-get($noteContent, label);
+  $iswrapped: map-get($noteContent, iswrapped);
+  [data-type="note"].#{$selector} {
+    &::before {
+      container: span;
+      content: $label;
+      move-to: bNoteLabel-#{$selector};
+    }
     &::before {
       container: h3;
-      content: pending(bNoteLabel-#{$type});
+      content: pending(bNoteLabel-#{$selector});
       class: "title";
       move-to: bNoteHeader;
     }
-    &::after {
-        class: "body";
-        content: content();
-        move-to: cNote;
+    @if ($iswrapped) {
+      &::after {
+          class: "body";
+          content: content();
+          move-to: cNote;
+      }
+      &::deferred {
+        content:pending(bNoteHeader) pending(cNote);
+      }
     }
-    &:deferred {
-      content:pending(bNoteHeader) pending(cNote);
+    @else {
+      &::deferred {
+        content:pending(bNoteHeader);
+      }
     }
   }
 }
