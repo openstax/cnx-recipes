@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+
+BOOK_NAME=$1
+DEBUG_FLAG=$2
+
+COOKED_PATH="./data/${BOOK_NAME}-cooked.html"
+PREPARED_PATH="./data/${BOOK_NAME}-prepared.html"
+
+# Check command line args
+
+if [ -z "${BOOK_NAME}" ]
+then
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  >&2 echo 'This script prepares the book to compare against.'
+  >&2 echo 'Typically this step is done in the master branch'
+  >&2 echo 'and then in another branch diff-book is called to see how the HTML changed.'
+  exit 1
+fi
+
+./scripts/bake-book ${BOOK_NAME}
+
+mv ${COOKED_PATH} ${PREPARED_PATH}
