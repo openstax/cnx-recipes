@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+
+BOOK_NAME=$1
+DEBUG_FLAG=$2
+
+COOKED_PATH="./data/${BOOK_NAME}-cooked.html"
+PREPARED_PATH="./data/${BOOK_NAME}-prepared.html"
+
+# Check command line args
+
+if [ -z "${BOOK_NAME}" ]
+then
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  >&2 echo 'This script bakes the book and then compares to the prepared book'
+  >&2 echo '(done earlier, usually in another branch)'
+  exit 1
+fi
+
+if [ ! -f "${PREPARED_PATH}" ]
+then
+  >&2 echo 'ERROR: This book was not prepared beforehand.'
+  >&2 echo 'Run diff-book-prepare before running this script'
+  >&2 echo 'so there is something to compare against'
+  exit 1
+fi
+
+./scripts/bake-book ${BOOK_NAME}
+
+diff ${PREPARED_PATH} ${COOKED_PATH}
