@@ -1,6 +1,16 @@
 (function() {
 
-  document.querySelectorAll('.kss-markup').forEach(function(markupEl) {
+  // Converts a NodeList to an Array
+  function toArray(obj) {
+    var array = [];
+    // iterate backwards ensuring that length is an UInt32
+    for (var i = obj.length >>> 0; i--;) {
+      array[i] = obj[i];
+    }
+    return array;
+  }
+
+  var markupNodes = toArray(document.querySelectorAll('.kss-markup')).forEach(function(markupEl) {
 
     // The <pre> tag contains text representing 2 <section> elements;
     // 1 for the Raw HTML and 1 for the cooked HTML.
@@ -18,7 +28,7 @@
     // so skip them.
     if (containerToParseMarkup.querySelector('.-kss-autogen-guide-markup')) {
 
-      containerToParseMarkup.querySelectorAll('.-kss-autogen-guide-markup').forEach(function(sectionEl) {
+      toArray(containerToParseMarkup.querySelectorAll('.-kss-autogen-guide-markup')).forEach(function(sectionEl) {
         var theMarkup = sectionEl.innerHTML;
         var preNode = document.createElement('pre');
         preNode.classList.add('prettyprint');
@@ -43,23 +53,23 @@
 
     // Special-case when user selected to see all formats
     if (theFormat === '-all') {
-      document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup')
+      toArray(document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup'))
       .forEach(function(sectionEl) {
         sectionEl.classList.remove('-toggle-hidden');
       });
 
     } else if (theFormat === '-none') {
-      document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup')
+      toArray(document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup'))
       .forEach(function(sectionEl) {
         sectionEl.classList.add('-toggle-hidden');
       });
 
     } else {
-      document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup')
+      toArray(document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup'))
       .forEach(function(sectionEl) {
         sectionEl.classList.add('-toggle-hidden');
       });
-      document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup[data-kss-format="' + theFormat + '"]')
+      toArray(document.querySelectorAll('.kss-markup .-kss-autogen-guide-markup[data-kss-format="' + theFormat + '"]'))
       .forEach(function(sectionEl) {
         sectionEl.classList.remove('-toggle-hidden');
       });
@@ -68,7 +78,7 @@
 
   document.getElementById('choose-which-format-to-look-at')
   .addEventListener('change', function(evt) {
-    var whatFormatToShow = evt.srcElement.value;
+    var whatFormatToShow = evt.target.value;
     showTheFormatAndHideOthers(whatFormatToShow);
   });
 
