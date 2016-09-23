@@ -94,3 +94,39 @@
     }
   }
 }
+
+
+@mixin modify_note($noteContent) {
+  $selector: map-get($noteContent, selector);
+  $label: map-get($noteContent, label);
+  $isBodyWrapped: map-get($noteContent, isBodyWrapped);
+  [data-type="note"].#{$selector} {
+    &::before {
+      container: span;
+      class: "title-label";
+      content: $label;
+      move-to: bNoteLabel;
+    }
+    &::before {
+      container: h3;
+      content: pending(bNoteLabel);
+      class: "title";
+      move-to: bNoteHeader;
+    }
+    @if ($isBodyWrapped) {
+      &::after {
+          class: "body";
+          content: content();
+          move-to: cNote;
+      }
+      &::deferred {
+        content:pending(bNoteHeader) pending(cNote);
+      }
+    }
+    @else {
+      &::deferred {
+        content:pending(bNoteHeader);
+      }
+    }
+  }
+}
