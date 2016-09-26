@@ -103,19 +103,19 @@
   [data-type="note"].#{$selector} {
     &::before {
       container: span;
-      class: "title-label";
+      class: "os-title-label";
       content: $label;
       move-to: bNoteLabel;
     }
     &::before {
       container: h3;
       content: pending(bNoteLabel);
-      class: "title";
+      class: "os-title";
       move-to: bNoteHeader;
     }
     @if ($isBodyWrapped) {
       &::after {
-          class: "body";
+          class: "os-body";
           content: content();
           move-to: cNote;
       }
@@ -125,7 +125,23 @@
     }
     @else {
       &::deferred {
-        content:pending(bNoteHeader);
+        content:pending(bNoteHeader)content();
+      }
+    }
+  }
+}
+
+@mixin modify_retitleHeaders () {
+  [data-type="chapter"] {
+    [data-type="page"] {
+      [data-type="note"] {
+        > .os-title {
+          container: h3;
+        }
+        .os-body > [data-type="title"] {
+          class: "os-subtitle";
+          container: h4;
+        }
       }
     }
   }
