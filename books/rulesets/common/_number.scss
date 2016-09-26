@@ -103,6 +103,8 @@
   $defaultContainer: map-get($setFigTableCaptions, defaultContainer);
   $hasCaption: map-get($setFigTableCaptions, hasCaption);
   $hasTitle: map-get($setFigTableCaptions, hasTitle);
+
+
   [data-type="chapter"] {
     :not(#{$type}) > #{$type} {
       @include utils_title($labeling, bCaption);
@@ -118,6 +120,7 @@
 }
 
 @mixin setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle) {
+
   @if ($hasCaption) {
     #{$defaultContainer} {
       container: span;
@@ -126,10 +129,19 @@
     }
   }
   @if ($hasTitle) {
-    #{$defaultContainer} [data-type="title"] {
-      container: span;
-      class: "title";
-      move-to: bCaption;
+    @if $type == "table" {
+      #{$defaultContainer} [data-type="title"] {
+        container: span;
+        class: "title";
+        move-to: bCaption;
+      }
+    }
+    @else if $type == "figure" {
+      [data-type="title"] {
+        container: span;
+        class: "title";
+        move-to: bCaption;
+      }
     }
   }
   &::after {
