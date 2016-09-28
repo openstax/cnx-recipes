@@ -11,7 +11,7 @@
     @include utils_checkType($name, string);
     @include utils_checkType($source, string);
 
-    [data-type="composite-page"].eoc.#{$source}-container {
+    [data-type="composite-page"].os-eoc.os-#{$source}-container {
       $titleContent: (
         text: $name
         );
@@ -31,7 +31,7 @@
     @include utils_checkType($name, string);
     @include utils_checkType($source, string);
 
-    [data-type="composite-page"].eob.#{$source}-container {
+    [data-type="composite-page"].os-eob.os-#{$source}-container {
       $titleContent: (
         text: $name
         );
@@ -97,7 +97,7 @@
       &::after {
         container: div;
         content: pending(#{$source}-TOCOMPOSITE);
-        class: "eoc #{$source}-container";
+        class: "os-eoc os-#{$source}-container";
         data-type: "composite-page";
         @if ($sortBy != null) {
           sort-by: #{$sortBy}, nocase;
@@ -144,13 +144,13 @@
           content: content();
           attr-group-by: attr(group-by);
           container: span;
-          class: "term";
+          class: "os-term";
           move-to: index-term;
         }
         &::after {
           content: string($sectionHeaderString);
           container: span;
-          class: "term-section";
+          class: "os-term-section";
           move-to: index-section;
         }
         // Create a link next to the index term which points to the term in the book
@@ -158,12 +158,12 @@
           container: a;
           content: pending(index-section);
           attr-href: "#" attr(id);
-          class: "term-section-link";
+          class: "os-term-section-link";
           move-to: index-section-link
         }
         &::after {
           content: pending(index-term) pending(index-section-link);
-          class: index-item;
+          class: os-index-item;
           move-to: #{$source}-TOCOMPOSITE;
         }
       }
@@ -193,7 +193,7 @@
         }
         @if ($chapterSeparated) {
           &::after {
-            class: "#{$source}-chapter-area";
+            class: "os-#{$source}-chapter-area";
             content: pending(#{$source}-GETCHAPTER);
             @if ($chapterPages) {
               data-type: "composite-page";
@@ -227,7 +227,7 @@
     &::after {
       container: div;
       content: pending(#{$source}-TOCOMPOSITE);
-      class: "eob #{$source}-container";
+      class: "os-eob os-#{$source}-container";
       data-type: "composite-page";
       @if ($isIndex) {
         group-by: span, "span::attr(group-by)", nocase;
@@ -253,7 +253,7 @@
     @include utils_checkType($source, string);
 
     [data-type="chapter"] {
-      .#{$source}-chapter-area {
+      .os-#{$source}-chapter-area {
         content: nodes($chapterHeaderNode) content();
         move-to: #{$source}-TOCOMPOSITE;
       }
@@ -283,18 +283,18 @@
 
     @if ($hasSolutions) {
       [data-type="chapter"] {
-        .eoc.#{$source}-container {
+        .os-eoc.os-#{$source}-container {
           [data-type="solution"] {
             @if ($sectionSeparated) {
               move-to: #{$solutionSource}-GETSECTION;
             } @else {
-              move-to: #{$solutionSource}-TOCOMPOSITE;;
+              move-to: #{$solutionSource}-TOCOMPOSITE;
             }
           }
           @if ($sectionSeparated) {
             &::after {
               container: section;
-              class: #{$solutionSource};
+              class: os-#{$solutionSource};
               content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
               move-to: #{$solutionSource}-TOCOMPOSITE;
             }
@@ -308,7 +308,7 @@
     &::after {
       container: div;
       content: pending(#{$solutionSource}-TOCOMPOSITE);
-      class: "eoc #{$solutionSource}-container";
+      class: "os-eoc os-#{$solutionSource}-container";
       data-type: "composite-page";
     }
   }
@@ -346,7 +346,7 @@
 
     @if ($hasSolutions) {
       [data-type="chapter"] {
-        .eoc.#{$source}-container {
+        .os-eoc.os-#{$source}-container {
           [data-type="solution"] {
             @if ($sectionSeparated) {
               move-to: #{$solutionSource}-GETSECTION;
@@ -369,7 +369,7 @@
               }
               &::after {
                 container: section;
-                class: #{$solutionSource};
+                class: os-#{$solutionSource};
                 content: pending(EOBsectionHeader) pending(#{$solutionSource}-GETSECTION);
                 @if ($chapterSeparated) {
                   move-to: #{$solutionSource}-GETCHAPTER;
@@ -387,18 +387,18 @@
 
   @if ($chapterSeparated) {
     [data-type="chapter"] {
-      > h1[data-type="document-title"] .number {
+      > h1[data-type="document-title"] .os-number {
         string-set: ChapNum content();
       }
       &::after {
         //FIXME wrap the in spans
         container: h2;
-        class: "title";
+        class: "os-title";
         content: "Chapter " string(ChapNum);
         move-to: chaptTitleEOB;
       }
       &::after {
-        class: #{$solutionSource}-chapter-area;
+        class: os-#{$solutionSource}-chapter-area;
         content: pending(chaptTitleEOB) pending(#{$solutionSource}-GETCHAPTER);
         move-to: #{$solutionSource}-TOCOMPOSITE;
       }
@@ -408,7 +408,7 @@
     &::after {
       container: div;
       content: pending(#{$solutionSource}-TOCOMPOSITE);
-      class: "eob #{$solutionSource}-container";
+      class: "os-eob os-#{$solutionSource}-container";
       data-type: "composite-page";
     }
   }
