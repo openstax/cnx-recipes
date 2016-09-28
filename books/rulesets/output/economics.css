@@ -338,59 +338,60 @@
     class: attr(class) string(isSolution, " "); }
 :pass(0) [data-type="note"].linkup::before {
   container: span;
-  class: "title-label";
+  class: "os-title-label";
   content: "Link It Up";
   move-to: bNoteLabel; }
 :pass(0) [data-type="note"].linkup::before {
   container: h3;
   content: pending(bNoteLabel);
-  class: "title";
+  class: "os-title";
   move-to: bNoteHeader; }
 :pass(0) [data-type="note"].linkup::deferred {
-  content: pending(bNoteHeader); }
+  content: pending(bNoteHeader) content(); }
 :pass(0) [data-type="note"].bringhome::before {
   container: span;
-  class: "title-label";
+  class: "os-title-label";
   content: "Bring It Home";
   move-to: bNoteLabel; }
 :pass(0) [data-type="note"].bringhome::before {
   container: h3;
   content: pending(bNoteLabel);
-  class: "title";
+  class: "os-title";
   move-to: bNoteHeader; }
 :pass(0) [data-type="note"].bringhome::after {
-  class: "body";
+  class: "os-body";
   content: content();
   move-to: cNote; }
 :pass(0) [data-type="note"].bringhome::deferred {
   content: pending(bNoteHeader) pending(cNote); }
 :pass(0) [data-type="note"].clearup::before {
   container: span;
-  class: "title-label";
+  class: "os-title-label";
   content: "Clear It Up";
   move-to: bNoteLabel; }
 :pass(0) [data-type="note"].clearup::before {
   container: h3;
   content: pending(bNoteLabel);
-  class: "title";
+  class: "os-title";
   move-to: bNoteHeader; }
 :pass(0) [data-type="note"].clearup::after {
-  class: "body";
+  class: "os-body";
   content: content();
   move-to: cNote; }
 :pass(0) [data-type="note"].clearup::deferred {
   content: pending(bNoteHeader) pending(cNote); }
 :pass(0) [data-type="note"].workout::before {
   container: span;
-  class: "title-label";
+  class: "os-title-label";
+  content: "Work It Out";
   move-to: bNoteLabel; }
 :pass(0) [data-type="note"].workout::before {
   container: h3;
   content: pending(bNoteLabel);
-  class: "title";
+  class: "os-title";
   move-to: bNoteHeader; }
 :pass(0) [data-type="note"].workout::after {
-  class: "body";
+  class: "os-body";
   content: content();
   move-to: cNote; }
 :pass(0) [data-type="note"].workout::deferred {
@@ -789,6 +790,10 @@
   content: counter(chapter) "." counter(table);
   class: number;
   move-to: bCaption; }
+:pass(5) [data-type="chapter"] :not(table) > table caption {
+  container: span;
+  class: "caption";
+  move-to: bCaption; }
 :pass(5) [data-type="chapter"] :not(table) > table caption [data-type="title"] {
   container: span;
   class: "title";
@@ -811,6 +816,10 @@
   container: span;
   content: counter(appendix,upper-alpha) "." counter(table);
   class: number;
+  move-to: bCaption; }
+:pass(5) .appendix :not(table) > table caption {
+  container: span;
+  class: "caption";
   move-to: bCaption; }
 :pass(5) .appendix :not(table) > table caption [data-type="title"] {
   container: span;
@@ -839,6 +848,10 @@
   container: span;
   class: "caption";
   move-to: bCaption; }
+:pass(5) [data-type="chapter"] :not(figure) > figure [data-type="title"] {
+  container: span;
+  class: "title";
+  move-to: bCaption; }
 :pass(5) [data-type="chapter"] :not(figure) > figure::after {
   container: div;
   class: "caption-container";
@@ -862,6 +875,10 @@
   container: span;
   class: "caption";
   move-to: bCaption; }
+:pass(5) .appendix :not(figure) > figure [data-type="title"] {
+  container: span;
+  class: "title";
+  move-to: bCaption; }
 :pass(5) .appendix :not(figure) > figure::after {
   container: div;
   class: "caption-container";
@@ -871,6 +888,11 @@
   class: figure;
   container: div;
   content: content() pending(bCaptionContainer); }
+:pass(5) [data-type="chapter"] [data-type="page"] [data-type="note"] > .os-title {
+  container: h3; }
+:pass(5) [data-type="chapter"] [data-type="page"] [data-type="note"] .os-body > [data-type="title"] {
+  class: "os-subtitle";
+  container: h4; }
 
 :pass(6) [data-type="composite-page"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
