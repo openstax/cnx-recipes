@@ -42,7 +42,7 @@
 
 //EOC composite pages must be created before this runs
 @mixin number_numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
-  .eoc [data-type="exercise"] {
+  .os-eoc [data-type="exercise"] {
     [data-type="problem"] {
       @include utils_title($exerciseTitleContent);
     }
@@ -66,7 +66,7 @@
     &::after {
       container: div;
       content: pending(bExampleLabel);
-      class: "title";
+      class: "os-title";
       move-to: bExampleHeader;
     }
     &:deferred {
@@ -88,7 +88,7 @@
     &::after {
       container: div;
       content: pending(bNoteLabel-#{$type});
-      class: "title";
+      class: "os-title";
       move-to: bNoteHeader;
     }
     &:deferred {
@@ -103,6 +103,8 @@
   $defaultContainer: map-get($setFigTableCaptions, defaultContainer);
   $hasCaption: map-get($setFigTableCaptions, hasCaption);
   $hasTitle: map-get($setFigTableCaptions, hasTitle);
+
+
   [data-type="chapter"] {
     :not(#{$type}) > #{$type} {
       @include utils_title($labeling, bCaption);
@@ -118,28 +120,38 @@
 }
 
 @mixin setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle) {
+
   @if ($hasCaption) {
     #{$defaultContainer} {
       container: span;
-      class: "caption";
+      class: "os-caption";
       move-to: bCaption;
     }
   }
   @if ($hasTitle) {
-    #{$defaultContainer} [data-type="title"] {
-      container: span;
-      class: "title";
-      move-to: bCaption;
+    @if $type == "table" {
+      #{$defaultContainer} [data-type="title"] {
+        container: span;
+        class: "os-title";
+        move-to: bCaption;
+      }
+    }
+    @if $type == "figure" {
+      [data-type="title"] {
+        container: span;
+        class: "os-title";
+        move-to: bCaption;
+      }
     }
   }
   &::after {
     container: div;
-    class: "caption-container";
+    class: "os-caption-container";
     content: pending(bCaption);
     move-to: bCaptionContainer;
   }
   &::outside {
-    class: #{$type};
+    class: os-#{$type};
     container: div;
     content: content() pending(bCaptionContainer);
   }
