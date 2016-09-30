@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
   Book Page
 
@@ -266,6 +267,16 @@
   Markup: ./examples/book.composite.problems.html-cooked.html
 
   Style guide: book.composite.problems
+*/
+/*
+  TEST PREP FOR AP® COURSES
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the chapter.
+
+  Markup: ./examples/book.composite.testPrep.html-cooked.html
+
+  Style guide: book.composite.testPrep
 */
 /*
   References
@@ -540,6 +551,16 @@
   content: pending(problems-TOCOMPOSITE);
   class: "os-eoc os-problems-container";
   data-type: "composite-page"; }
+:pass(1) div[data-type="chapter"] section.ap-test-prep {
+  move-to: ap-test-prep-TOCOMPOSITE; }
+  :pass(1) div[data-type="chapter"] section.ap-test-prep > h3[data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+:pass(1) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(ap-test-prep-TOCOMPOSITE);
+  class: "os-eoc os-ap-test-prep-container";
+  data-type: "composite-page"; }
 
 :pass(2) div[data-type="page"] > [data-type="document-title"],
 :pass(2) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -618,6 +639,8 @@
 :pass(4) [data-type="chapter"] .os-eoc.os-self-check-questions-container [data-type="solution"] {
   move-to: solutions-GETCHAPTER; }
 :pass(4) [data-type="chapter"] .os-eoc.os-problems-container [data-type="solution"] {
+  move-to: solutions-GETCHAPTER; }
+:pass(4) [data-type="chapter"] .os-eoc.os-ap-test-prep-container [data-type="solution"] {
   move-to: solutions-GETCHAPTER; }
 :pass(4) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
   string-set: ChapNum content(); }
@@ -737,6 +760,15 @@
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-problems-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
+:pass(5) [data-type="composite-page"].os-eoc.os-ap-test-prep-container::before {
+  container: span;
+  content: "TEST PREP FOR AP® COURSES";
+  class: os-text;
+  move-to: text-TITLECONTAINER; }
+:pass(5) [data-type="composite-page"].os-eoc.os-ap-test-prep-container::before {
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
