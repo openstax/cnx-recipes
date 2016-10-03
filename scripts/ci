@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+# Run the tests (which happens to re-generate the CSS files)
+./scripts/test
+
+# Verify that the CSS files were regenerated so they never become out-of-sync
+
+hasChanges=$(git diff)
+
+if [[ ! -z "${hasChanges}" ]]
+then
+  echo "ERROR: The CSS files were not regenerated. Be sure to run ./scripts/test before pushing"
+  git diff
+  exit 1
+fi
