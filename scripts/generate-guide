@@ -15,6 +15,11 @@ CSS_PATH="${STYLEGUIDE_DIR}/guide.css"
 BOOK_CSS_PATH="${SASS_DIR}/rulesets/output/${BOOK_NAME}.css"
 HOMEPAGE_PATH="./guide-homepage.md" # Relative to ${SASS_DIR}/rulesets/
 
+TEMP_DIR="./tmp/"
+COMMON_DOCUMENTATION_DIR="./books/rulesets/common"
+BOOK_DOCUMENTATION_DIR="./books/rulesets/${BOOK_NAME}"
+KSS_OUTPUT_FILE="${TEMP_DIR}/kss-output.txt"
+
 # Check command line args
 
 if [ -z "${BOOK_NAME}" ]
@@ -32,7 +37,20 @@ sass ${SASS_PATH} ${BOOK_CSS_PATH}
 
 
 echo "Step 2/4: Generate the cooked example HTML files"
-for FILE_NAME in $(find ./books/rulesets/ -name "*.html")
+
+# Create a temporary directory which contains the rulesets/common/ and rulesets/${BOOK_NAME} directories.
+# This is because we want the styleguide to contain docs of all the common/ elements
+# and the book-specific elements, and kss only allows you to point to 1 directory
+# to look at all the SASS files.
+if [ -d "${TEMP_DIR}" ]
+then
+  rm -rf "${TEMP_DIR}"
+fi
+mkdir "${TEMP_DIR}"
+cp -R "${COMMON_DOCUMENTATION_DIR}" "${TEMP_DIR}"
+cp -R "${BOOK_DOCUMENTATION_DIR}" "${TEMP_DIR}"
+
+for FILE_NAME in $(find "${TEMP_DIR}" -name "*.html")
 do
   echo "Generating temporary ${FILE_NAME}-cooked.html"
   # commented because xmllint does not like html5 element names like <figure>
@@ -56,7 +74,7 @@ done
 echo "Step 3/4: Generate the style guide"
 # The CSS path is relative to the styleguide directory, hence `./guide.css`
 # Exclude parsing the output/*.css files by setting the --mask
-./node_modules/.bin/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${HOMEPAGE_PATH} --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${SASS_DIR} --mask '*.less|*.sass|*.scss|*.styl|*.stylus'
+./node_modules/.bin/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${HOMEPAGE_PATH} --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${TEMP_DIR} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${KSS_OUTPUT_FILE}"
 
 
 # Delete the temp files created above
@@ -67,5 +85,15 @@ do
   rm ${FILE_NAME}
 done
 
+# HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
+# So, check the output of kss to see if any errors were reported.
+MISSING_FILES=$(cat "${KSS_OUTPUT_FILE}" | grep 'NOT FOUND!' )
+if [ -n "${MISSING_FILES}" ]
+then
+  echo "ERROR: Some HTML files were missing:"
+  echo "${MISSING_FILES}"
+  echo "Check ${KSS_OUTPUT_FILE} for more details"
+  exit 1
+fi
 
 echo "Guide is available at ${STYLEGUIDE_DIR} . You can open it in a browser"
