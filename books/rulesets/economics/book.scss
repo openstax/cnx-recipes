@@ -1,27 +1,19 @@
-@import 'common/_all';
+@import '../common/_all';
 
 //Import book config file
-@import './_statistics-config';
-
-//TODO: Improve performance by using more specific selectors in libraries when possible
-//TODO: Separate object files
-//TODO: Make sure mixins are "namespaced" to the file they are from
-//TODO: Internationalization Solution ->
-// Use maps to call strings ending in the language selected?
-// $lang: "en";
-// $chapter_en: "Chapter";
-// $appendix_en: "Appendix";
-// $chapter_de: "Kapitel";
-// $appendix_de: "Anhang";
-//TODO: Add warnings/flags for warnings/documentation when bundles are called in an unexpected order (dependencies for mixin calls?)
+@import './_config';
 
 :pass(0) {
   //Some modifications to be done to the book before any collation
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
   @include modify_simLinkTarget();
-  @include modify_trash('.try [data-type="solution"]');
   @include utils_hasSolution();
+  @include modify_note($linkupNote);
+  @include modify_note($bringhomeNote);
+  @include modify_note($clearupNote);
+  @include modify_note($workoutNote);
+
 }
 :pass(1) {
   //Come up with mixins for common numbering schemes as per Phil's suggestion
@@ -31,11 +23,7 @@
   @include number_numberAppendices($appendixTitleContent);
   @include count_countSections(section);
   @include number_numberSections($sectionTitleContent);
-  @include count_countExamples(example);
-  @include number_numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
-  @include count_countNote(Try, "try");
-  @include number_numberNote("try", $tryTitleContent);
-  @include number_numberNote("calculator", $calcTitleContent);
+
 
   @include count_countTerms(term);
   @include reference_refPageIDStringAs(pageID);
@@ -67,7 +55,7 @@
 :pass(4) {
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
-  @include compose_createEOCSolutions($chapterCompositePages, $pageSolutions, sectionHeaderNode);
+  @include compose_createEOBSolutions($chapterCompositePages, $pageSolutions, sectionHeaderNode);
 
   //After: prepBookComposites, prepChapterAreas
   @include compose_createBookComposites($bookCompositePages);
@@ -80,7 +68,7 @@
   @include count_countChapters(chapter);
   @include count_countAppendices(appendix);
   @include count_countEOCExercises(exercise);
-  @include count_countExamples(example);
+
   @include link_setTargetLabels($targetLabels);
   @include link_setLinkLabels();
 
@@ -91,6 +79,7 @@
   @include compose_titleEOCComposites($chapterCompositePages);
   @include compose_titleEOBComposites($bookCompositePages);
 
+
   //After: createChapterComposites, createEOCSolutions, createBookComposites
   @include modify_compositeAutoID();
   @include modify_chapterAutoID();
@@ -99,6 +88,7 @@
   @include count_countFigures(figure);
   @include number_setCaptions($setTableCaption, $captionTableNumber, $captionTableNumberAp);
   @include number_setCaptions($setFigureCaption, $captionFigNumber, $captionFigNumberAp);
+  @include modify_retitleHeaders();
 }
 :pass(6) {
   @include modify_retitleCompositeMetadata();
