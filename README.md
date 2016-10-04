@@ -9,7 +9,8 @@
 1. run `./scripts/fetch-book statistics`
   - **Note:** To see the list of books available see `./books.txt`
   - **Note:** This will require you to log in via ssh.
-  - **Note:** your can set the ssh username by running `USER=myusername ./scripts/fetch-book ...`
+  - **Note:** You can set the ssh username by running `USER=myusername ./scripts/fetch-book ...`
+  - **Note:** You can run `./scripts/fetch-book --all` to fetch all the books
 1. run `./scripts/bake-book statistics`
 
 There are 2 major parts to cooking a book (_listed above_). You will first need to get the single-file HTML from the server (`fetch-book`) and then convert the single-file HTML locally into the "baked" book via `bake-book`. Once you have done the first part, you can run `./scripts/bake-book statistics` to your :heart:'s content!
