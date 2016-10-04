@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 BOOK_NAME=$1
 
@@ -24,19 +23,22 @@ KSS_OUTPUT_FILE="${TEMP_DIR}/kss-output.txt"
 
 if [ -z "${BOOK_NAME}" ]
 then
-  echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
   exit 1
 fi
 
 
 
-echo "Step 1/4: Compile the guide.scss file"
-[ ! -e ${STYLEGUIDE_DIR} ] && mkdir ${STYLEGUIDE_DIR}
-sass ${SASS_PATH} ${CSS_PATH}
-sass ${SASS_PATH} ${BOOK_CSS_PATH}
+>&2 echo "Step 1/4: Compile the guide.scss file"
+if [ ! -e ${STYLEGUIDE_DIR} ]
+then
+  mkdir ${STYLEGUIDE_DIR} || exit 1
+fi
+sass ${SASS_PATH} ${CSS_PATH} || exit 1
+sass ${SASS_PATH} ${BOOK_CSS_PATH} || exit 1
 
 
-echo "Step 2/4: Generate the cooked example HTML files"
+>&2 echo "Step 2/4: Generate the cooked example HTML files"
 
 # Create a temporary directory which contains the rulesets/common/ and rulesets/${BOOK_NAME} directories.
 # This is because we want the styleguide to contain docs of all the common/ elements
@@ -44,45 +46,45 @@ echo "Step 2/4: Generate the cooked example HTML files"
 # to look at all the SASS files.
 if [ -d "${TEMP_DIR}" ]
 then
-  rm -rf "${TEMP_DIR}"
+  rm -rf "${TEMP_DIR}" || exit 1
 fi
-mkdir "${TEMP_DIR}"
-cp -R "${COMMON_DOCUMENTATION_DIR}" "${TEMP_DIR}"
-cp -R "${BOOK_DOCUMENTATION_DIR}" "${TEMP_DIR}"
+mkdir "${TEMP_DIR}" || exit 1
+cp -R "${COMMON_DOCUMENTATION_DIR}" "${TEMP_DIR}" || exit 1
+cp -R "${BOOK_DOCUMENTATION_DIR}" "${TEMP_DIR}" || exit 1
 
 for FILE_NAME in $(find "${TEMP_DIR}" -name "*.html")
 do
-  echo "Generating temporary ${FILE_NAME}-cooked.html"
+  >&2 echo "Generating temporary ${FILE_NAME}-cooked.html"
   # commented because xmllint does not like html5 element names like <figure>
   # ./scripts/bake-file ${BOOK_NAME} ${FILE_NAME} /dev/stdout | xmllint --html --format - > ${FILE_NAME}-cooked.html
-  ./scripts/bake-file ${BOOK_NAME} ${FILE_NAME} ${FILE_NAME}-temp1-cooked.html
+  ./scripts/bake-file ${BOOK_NAME} ${FILE_NAME} ${FILE_NAME}-temp1-cooked.html || exit 1
 
   # Construct an HTML file that contains both the raw and cooked HTML
   # so it can be separated in the browser
   # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${FILE_NAME}-cooked.html
-  cat ${FILE_NAME} >> ${FILE_NAME}-cooked.html
-  echo '</section>' >> ${FILE_NAME}-cooked.html
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-cooked">' >> ${FILE_NAME}-cooked.html
-  cat ${FILE_NAME}-temp1-cooked.html >> ${FILE_NAME}-cooked.html
-  echo '</section>' >> ${FILE_NAME}-cooked.html
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${FILE_NAME}-cooked.html || exit 1
+  cat ${FILE_NAME} >> ${FILE_NAME}-cooked.html || exit 1
+  echo '</section>' >> ${FILE_NAME}-cooked.html || exit 1
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-cooked">' >> ${FILE_NAME}-cooked.html || exit 1
+  cat ${FILE_NAME}-temp1-cooked.html >> ${FILE_NAME}-cooked.html || exit 1
+  echo '</section>' >> ${FILE_NAME}-cooked.html || exit 1
 
-  rm ${FILE_NAME}-temp1-cooked.html
+  rm ${FILE_NAME}-temp1-cooked.html || exit 1
 done
 
 
-echo "Step 3/4: Generate the style guide"
+>&2 echo "Step 3/4: Generate the style guide"
 # The CSS path is relative to the styleguide directory, hence `./guide.css`
 # Exclude parsing the output/*.css files by setting the --mask
-./node_modules/.bin/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${HOMEPAGE_PATH} --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${TEMP_DIR} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${KSS_OUTPUT_FILE}"
+./node_modules/.bin/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${HOMEPAGE_PATH} --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${TEMP_DIR} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${KSS_OUTPUT_FILE}"  || exit 1
 
 
 # Delete the temp files created above
-echo "Step 4/4: Deleting the cooked example HTML files"
+>&2 echo "Step 4/4: Deleting the cooked example HTML files"
 for FILE_NAME in $(find ./books/rulesets/ -name "*-cooked.html")
 do
   # echo "Removing temporary ${FILE_NAME}"
-  rm ${FILE_NAME}
+  rm ${FILE_NAME} || exit 1
 done
 
 # HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
@@ -90,10 +92,10 @@ done
 MISSING_FILES=$(cat "${KSS_OUTPUT_FILE}" | grep 'NOT FOUND!' )
 if [ -n "${MISSING_FILES}" ]
 then
-  echo "ERROR: Some HTML files were missing:"
-  echo "${MISSING_FILES}"
-  echo "Check ${KSS_OUTPUT_FILE} for more details"
+  >&2 echo "ERROR: Some HTML files were missing:"
+  >&2 echo "${MISSING_FILES}"
+  >&2 echo "Check ${KSS_OUTPUT_FILE} for more details"
   exit 1
 fi
 
-echo "Guide is available at ${STYLEGUIDE_DIR} . You can open it in a browser"
+>&2 echo "Guide is available at ${STYLEGUIDE_DIR} . You can open it in a browser"
