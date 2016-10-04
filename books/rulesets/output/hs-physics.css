@@ -648,11 +648,6 @@
   content: counter(chapter);
   class: os-number;
   move-to: bChapterLabel; }
-:pass(1) div[data-type="chapter"]::before {
-  container: span;
-  content: " | ";
-  class: os-divider;
-  move-to: bChapterLabel; }
 :pass(1) div[data-type="chapter"] > [data-type="document-title"] {
   container: h1;
   content: pending(bChapterLabel) content(); }
@@ -686,11 +681,6 @@
   container: span;
   content: counter(chapter) "." counter(section);
   class: os-number;
-  move-to: bSectionLabel; }
-:pass(1) div[data-type="chapter"] > div[data-type="page"]:not(.introduction)::before {
-  container: span;
-  content: " | ";
-  class: os-divider;
   move-to: bSectionLabel; }
 :pass(1) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"] {
   container: h2;
@@ -743,6 +733,8 @@
   class: "os-eoc os-summary-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.key-equations {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: key-equations-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.key-equations > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -753,6 +745,8 @@
   class: "os-eoc os-key-equations-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.concept {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: concept-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.concept > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -763,6 +757,8 @@
   class: "os-eoc os-concept-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.critical-thinking {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: critical-thinking-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.critical-thinking > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -773,6 +769,8 @@
   class: "os-eoc os-critical-thinking-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.problem {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: problem-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.problem > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -783,6 +781,8 @@
   class: "os-eoc os-problem-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.performance {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: performance-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.performance > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -793,6 +793,8 @@
   class: "os-eoc os-performance-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.multiple-choice {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: multiple-choice-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.multiple-choice > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -803,6 +805,8 @@
   class: "os-eoc os-multiple-choice-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.short-answer {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: short-answer-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.short-answer > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -813,6 +817,8 @@
   class: "os-eoc os-short-answer-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.extended-response {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: extended-response-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.extended-response > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -856,11 +862,11 @@
   counter-increment: exercise; }
 :pass(2) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
-  content: counter(exercise);
+  content: counter(chapter) "." counter(exercise);
   class: os-number; }
 :pass(2) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
   container: span;
-  content: counter(exercise);
+  content: counter(chapter) "." counter(exercise);
   class: os-number; }
 
 :pass(3) body {
@@ -931,101 +937,101 @@
   container: span;
   content: "Glossary";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-summary-container::before {
   container: span;
   content: "Section Summary";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-summary-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
   container: span;
   content: "Key Equations";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-concept-container::before {
   container: span;
   content: "Concept Items";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-concept-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-critical-thinking-container::before {
   container: span;
   content: "Critical Thinking Items";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-critical-thinking-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-problem-container::before {
   container: span;
   content: "Problems";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-problem-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-performance-container::before {
   container: span;
   content: "Performance Task";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-performance-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-multiple-choice-container::before {
   container: span;
   content: "Multiple Choice";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-multiple-choice-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-short-answer-container::before {
   container: span;
   content: "Short Answer";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-short-answer-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-extended-response-container::before {
   container: span;
   content: "Extended Response";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-extended-response-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eob.os-index-container::before {
   container: span;
   content: "Index";
   class: os-text;
-  move-to: -TITLECONTAINER; }
+  move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eob.os-index-container::before {
   container: h1;
   data-type: "document-title";
-  content: pending(-TITLECONTAINER); }
+  content: pending(h1-TITLECONTAINER); }
 :pass(5) div[data-type="composite-page"] {
   attr-id: uuid() "@1"; }
 :pass(5) div[data-type='chapter'] > h1[data-type='document-title'] {
