@@ -27,31 +27,50 @@ do
   RAW_PATH="./data/${BOOK_NAME}-raw.html"
   LCOV_PATH="./data/${BOOK_NAME}.lcov"
 
-  if [ ! -f "${RAW_PATH}" ]
+  if [ -f "${RAW_PATH}" ]
   then
-    >&2 echo "ERROR: HTML File missing at ${RAW_PATH}"
-    exit 1
+
+    RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
+    RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
+
+    CSS_PATH="./books/rulesets/output/${RULESET_NAME}.css"
+
+    if [ ! -f "${CSS_PATH}" ]
+    then
+      >&2 echo "ERROR: CSS File missing at ${CSS_PATH}"
+      exit 1
+    fi
+
+    # Print out the message first because css-coverage will set
+    # a non-zero exit status if there are unused selectors
+    # and the `set -e` at the top of this script will exit at that point
+
+    if [ "${ARG1}" == "--all" ]
+    then
+      >&2 echo "Generating coverage for ${BOOK_NAME} in ${LCOV_PATH}"
+    else
+      >&2 echo "Coverage is being generated. To see an HTML version, run the following:"
+      >&2 echo "genhtml ${LCOV_PATH} --output-directory ./coverage"
+      >&2 echo "Note: to run this you may need to install genhtml. In OSX it is 'brew install lcov'"
+    fi
+
+    ./node_modules/.bin/css-coverage --css ${CSS_PATH} --html ${RAW_PATH} --lcov ${LCOV_PATH} ${DEBUG_FLAG1} ${DEBUG_FLAG2}
+
+  else
+    if [ "${ARG1}" == "--all" ]
+    then
+      >&2 echo "WARNING: Skipping ${BOOK_NAME} because HTML File is missing at ${RAW_PATH}"
+    else
+      >&2 echo "ERROR: HTML File missing at ${RAW_PATH}"
+      exit 1
+    fi
   fi
-
-  RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
-  RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
-
-  CSS_PATH="./books/rulesets/output/${RULESET_NAME}.css"
-
-  if [ ! -f "${CSS_PATH}" ]
-  then
-    >&2 echo "ERROR: CSS File missing at ${CSS_PATH}"
-    exit 1
-  fi
-
-  # Print out the message first because css-coverage will set
-  # a non-zero exit status if there are unused selectors
-  # and the `set -e` at the top of this script will exit at that point
-
-  >&2 echo "Coverage is being generated. To see an HTML version, run the following:"
-  >&2 echo "genhtml ${LCOV_PATH} --output-directory ./coverage"
-  >&2 echo "Note: to run this you may need to install genhtml. In OSX it is 'brew install lcov'"
-
-  ./node_modules/.bin/css-coverage --css ${CSS_PATH} --html ${RAW_PATH} --lcov ${LCOV_PATH} ${DEBUG_FLAG1} ${DEBUG_FLAG2}
 
 done
+
+if [ "${ARG1}" == "--all" ]
+then
+  >&2 echo "Generated coverage for ${BOOK_LIST}. To see an HTML version, run the following:"
+  >&2 echo "genhtml ./data/*.lcov --output-directory ./coverage"
+  >&2 echo "Note: to run this you may need to install genhtml. In OSX it is 'brew install lcov'"
+fi
