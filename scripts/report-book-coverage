@@ -2,46 +2,56 @@
 set -e
 
 
-BOOK_NAME=$1
+ARG1=$1
 DEBUG_FLAG1=$2 # could be --debug or --verbose (or both)
 DEBUG_FLAG2=$3
 
-RAW_PATH="./data/${BOOK_NAME}-raw.html"
-LCOV_PATH="./data/${BOOK_NAME}.lcov"
-
 # Check command line args
 
-if [ -z "${BOOK_NAME}" ]
+if [ -z "${ARG1}" ]
 then
-  echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument or --all for all books. For example: physics'
   exit 1
 fi
 
-if [ ! -f "${RAW_PATH}" ]
+if [ "${ARG1}" == "--all" ]
 then
-  echo "ERROR: HTML File missing at ${RAW_PATH}"
-  exit 1
+  source ./books.txt
+else
+  BOOK_LIST="${ARG1}"
 fi
 
-RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
-RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
+for BOOK_NAME in ${BOOK_LIST}
+do
 
-CSS_PATH="./books/rulesets/output/${RULESET_NAME}.css"
+  RAW_PATH="./data/${BOOK_NAME}-raw.html"
+  LCOV_PATH="./data/${BOOK_NAME}.lcov"
 
-if [ ! -f "${CSS_PATH}" ]
-then
-  echo "ERROR: CSS File missing at ${CSS_PATH}"
-  exit 1
-fi
+  if [ ! -f "${RAW_PATH}" ]
+  then
+    >&2 echo "ERROR: HTML File missing at ${RAW_PATH}"
+    exit 1
+  fi
 
+  RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
+  RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
 
+  CSS_PATH="./books/rulesets/output/${RULESET_NAME}.css"
 
-# Print out the message first because css-coverage will set
-# a non-zero exit status if there are unused selectors
-# and the `set -e` at the top of this script will exit at that point
+  if [ ! -f "${CSS_PATH}" ]
+  then
+    >&2 echo "ERROR: CSS File missing at ${CSS_PATH}"
+    exit 1
+  fi
 
-echo "Coverage is being generated. To see an HTML version, run the following:"
-echo "genhtml ${LCOV_PATH} --output-directory ./coverage"
-echo "Note: to run this you may need to install genhtml. In OSX it is 'brew install lcov'"
+  # Print out the message first because css-coverage will set
+  # a non-zero exit status if there are unused selectors
+  # and the `set -e` at the top of this script will exit at that point
 
-./node_modules/.bin/css-coverage --css ${CSS_PATH} --html ${RAW_PATH} --lcov ${LCOV_PATH} ${DEBUG_FLAG1} ${DEBUG_FLAG2}
+  >&2 echo "Coverage is being generated. To see an HTML version, run the following:"
+  >&2 echo "genhtml ${LCOV_PATH} --output-directory ./coverage"
+  >&2 echo "Note: to run this you may need to install genhtml. In OSX it is 'brew install lcov'"
+
+  ./node_modules/.bin/css-coverage --css ${CSS_PATH} --html ${RAW_PATH} --lcov ${LCOV_PATH} ${DEBUG_FLAG1} ${DEBUG_FLAG2}
+
+done

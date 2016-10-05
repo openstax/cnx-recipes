@@ -49,6 +49,7 @@ You can pass 3 additional arguments to `report-book-coverage` to change how it r
 - `--verbose` : outputs verbose/debugging output
 - `--ignore-source-map` : covers the CSS even if a sourceMappingURL is found.
 - `--cover-declarations` : generates coverage based on the declarations, not just the selector
+- **Note:** You can run `./scripts/report-book-coverage --all` to generate coverage using all the books
 
 For more details on the commandline options see the [css-coverage](https://www.npmjs.com/package/css-coverage#commandline-options) documentation.
 
