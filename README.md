@@ -51,6 +51,32 @@ You can pass 3 additional arguments to `report-book-coverage` to change how it r
 
 For more details on the commandline options see the [css-coverage](https://www.npmjs.com/package/css-coverage#commandline-options) documentation.
 
+## Regression Testing
+
+To check that there were no regressions in a book what the following process does is:
+
+1. bake the book with the old code
+1. bake the book with the new code
+1. compare the 2 cooked HTML files to see if there were any differences
+
+Here are the steps to run it:
+
+```sh
+# Prep work (only have to run once)
+./scripts/setup
+./scripts/fetch-book statistics # Or any book in ./books.txt
+
+# Check out the old version (ie `master` branch)
+# Then run:
+./scripts/diff-book-prepare statistics
+
+# Check out the new code (ie `shiny-unincorns` branch)
+# Then run:
+./scripts/diff-book statistics
+
+# Any differences would pop up here
+```
+
 ## Experimental
 
 To update the Documentation in the gh-pages branch:
