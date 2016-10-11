@@ -2,6 +2,7 @@
 
 /// Creates a title for a set of composite pages at the end of a chapter
 /// @arg {Map} $compositePages - each element in this must contain a `name` and `source`
+/// @group compose
 @mixin compose_titleEOCComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
@@ -22,6 +23,7 @@
 
 /// Creates a title for a set of composite pages at the end of the book
 /// @arg {list} $compositePages - each element in this must contain a `name` and `source`
+/// @group compose
 @mixin compose_titleEOBComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
@@ -44,6 +46,7 @@
 /// Creates a title for a set of composite pages at the end of the book
 /// @arg {list} $compositePages - each element in this must contain a `name` and `source`
 /// @arg {string} $sectionHeaderNode - a String whose value is "sectionHeaderNode" (yep, odd). Currently Unused (because of typo)
+/// @group compose
 @mixin compose_createChapterComposites($compositePages, $sectionHeaderNode) {
   // Validate
   @include utils_checkType($compositePages, list);
@@ -57,6 +60,7 @@
 /// collates them at the end of a chapter.
 /// @arg {Map} $page - contains `name`, `source`, and optionally `sortBy` and `compoundComposite` and `isGlossary`
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
+/// @group compose
 @mixin _createChapterComposite($page, $sectionHeaderNode) {
   $name: map-get($page, name);
   $source: map-get($page, source);
@@ -108,6 +112,7 @@
 }
 
 /// @see {mixin} _prepBookComposite
+/// @group compose
 @mixin compose_prepBookComposites($compositePages, $sectionHeaderNode, $sectionHeaderString) {
   @each $page in $compositePages {
     @include _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString);
@@ -122,6 +127,7 @@
 /// @arg {Map} $page - contains `name`, `source`, and optionally `compoundComposite` and `isIndex`
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
 /// @arg {string} $sectionHeaderString - Optional, used when `isIndex` is true
+/// @group compose
 @mixin _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
   $name: map-get($page, name);
   $source: map-get($page, source);
@@ -206,6 +212,7 @@
 }
 
 /// @see {mixin} _createBookComposite
+/// @group compose
 @mixin compose_createBookComposites($compositePages) {
   @each $page in $compositePages {
     @include _createBookComposite($page);
@@ -215,6 +222,7 @@
 /// Collects elements defined by `$page.source` (a selector-ish thing) and
 /// collates them at the end of the book.
 /// @arg {Map} $page - contains `source`, and optionally `isIndex`
+/// @group compose
 @mixin _createBookComposite($page) {
   body {
     $source: map-get($page, source);
@@ -242,6 +250,7 @@
 /// Adds the chapter name to the new Collated Page
 /// @arg {list} $compositePages - list of pages which contain a `source`
 /// @arg {string} $chapterHeaderNode - The title of what should be in here
+/// @group compose
 @mixin compose_prepChapterAreas($compositePages, $chapterHeaderNode) {
   // Validate
   @include utils_checkType($chapterHeaderNode, string);
@@ -265,6 +274,7 @@
 /// @arg {list} $compositePages
 /// @arg {Map} $solutionPage
 /// @arg {string} $sectionHeaderNode
+/// @group compose
 @mixin compose_createEOCSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
   $solutionSource: map-get($solutionPage, source);
   $sectionSeparated: map-get($solutionPage, sectionSeparated);
@@ -326,6 +336,7 @@
 /// @arg {list} $compositePages - each element contains `source` and `hasSolutions`
 /// @arg {Map} $solutionPage - contains `source`, `sectionSeparated`, and `chapterSeparated`
 /// @arg {string} $sectionHeaderNode
+/// @group compose
 @mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
   $solutionSource: map-get($solutionPage, source);
   $sectionSeparated: map-get($solutionPage, sectionSeparated);
