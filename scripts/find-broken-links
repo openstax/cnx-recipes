@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+'use strict'
+
+var fs = require('fs')
+var path = require('path')
+var jsdom = require('jsdom')
+var argv = require('yargs')
+  .demand(['b'])
+  .alias('b', 'book')
+  .alias('t', 'type')
+  .describe('b', 'Book name (from books.txt)')
+  .describe('t', 'Type (raw or cooked)')
+  .default('t', 'cooked')
+  .argv
+
+var html = fs.readFileSync(path.join(__dirname, `../data/${argv.b}-${argv.t}.html`), 'utf-8')
+
+jsdom.env(html, [], function(err, window) {
+  var errorCount = 0 // Used for exit status
+  var links = window.document.querySelectorAll('a[href]')
+  for (var link of links) {
+    var href = link.getAttribute('href')
+    if (/^#/.test(href)) { // check if the href begins with a # (an internal link)
+      var target = window.document.getElementById(href.replace('#', ''))
+      if (!target) {
+        errorCount += 1
+        console.error(`Broken internal link: a[href]="${href}" link-text="${link.textContent}"`)
+      }
+    } else {
+      // TODO: verify external links
+    }
+  }
+  process.exit(errorCount)
+
+});
