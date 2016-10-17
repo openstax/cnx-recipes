@@ -19,6 +19,16 @@ console.log(`Checking ${htmlPath}`)
 
 var html = fs.readFileSync(htmlPath, 'utf-8')
 
+function generateSelector(el) {
+  if (el.hasAttribute('id')) {
+    return `${el.tagName.toLowerCase()}#${el.getAttribute('id')}`
+  } else if (el.className) {
+    return `${generateSelector(el.parentNode)} > ${el.tagName.toLowerCase()}.${el.className.split(' ').join('.')}` // Replace spaces with dots
+  } else {
+    return `${generateSelector(el.parentNode)} > ${el.tagName.toLowerCase()}`
+  }
+}
+
 jsdom.env(html, [], function(err, window) {
   var errorCount = 0 // Used for exit status
   var links = window.document.querySelectorAll('a[href]')
@@ -28,7 +38,7 @@ jsdom.env(html, [], function(err, window) {
       var target = window.document.getElementById(href.replace('#', ''))
       if (!target) {
         errorCount += 1
-        console.error(`Broken internal link: a[href]="${href}" link-text="${link.textContent}"`)
+        console.error(`Broken internal link: a[href]="${href}" selector="${generateSelector(link)}" link-text="${link.textContent}"`)
       }
     } else {
       // TODO: verify external links
