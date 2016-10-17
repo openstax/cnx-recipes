@@ -155,19 +155,19 @@
         }
         // Create a link next to the index term which points to the term in the book
         // Make sure there is a space between each link
-        // HACK: generate a span that only contains a space
-        &::after {
-          container: span;
-          content: ',';
-          class: "os-index-link-separator";
-          move-to: index-section-link;
-        }
+        // HACK: generate a span that only contains a comma and a space, the last-child one must be removed on the next pass. See modify_trash('.os-index-link-separator:last-child') in book.scss
         &::after {
           container: a;
           content: pending(index-section);
           attr-href: "#" attr(id);
           class: "os-term-section-link";
           move-to: index-section-link
+        }
+        &::after {
+          container: span;
+          content: ', ';
+          class: "os-index-link-separator";
+          move-to: index-section-link;
         }
         &::after {
           content: pending(index-term) pending(index-section-link);
