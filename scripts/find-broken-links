@@ -9,8 +9,10 @@ var argv = require('yargs')
   .demand(['b'])
   .alias('b', 'book')
   .alias('t', 'type')
+  .alias('v', 'verbose')
   .describe('b', 'Book name (from books.txt)')
   .describe('t', 'Type (raw or cooked)')
+  .describe('v', 'Verbose (output warnings as well as Errors)')
   .default('t', 'cooked')
   .argv
 
@@ -20,7 +22,7 @@ console.log(`Checking ${htmlPath}`)
 var html = fs.readFileSync(htmlPath, 'utf-8')
 
 function generateSelector(el) {
-  if (el.hasAttribute('id')) {
+  if (el.getAttribute('id')) {
     return `${el.tagName.toLowerCase()}#${el.getAttribute('id')}`
   } else if (el.className) {
     return `${generateSelector(el.parentNode)} > ${el.tagName.toLowerCase()}.${el.className.split(' ').join('.')}` // Replace spaces with dots
@@ -35,10 +37,20 @@ jsdom.env(html, [], function(err, window) {
   for (var link of links) {
     var href = link.getAttribute('href')
     if (/^#/.test(href)) { // check if the href begins with a # (an internal link)
-      var target = window.document.getElementById(href.replace('#', ''))
-      if (!target) {
+      var targetId = href.replace('#', '')
+      var target = window.document.getElementById(targetId)
+      if (!targetId) {
         errorCount += 1
-        console.error(`Broken internal link: a[href]="${href}" selector="${generateSelector(link)}" link-text="${link.textContent}"`)
+        console.error(`ERROR: Empty internal link: a[href]="${href}" selector="${generateSelector(link)}" link-text="${link.textContent}"`)
+      } else if (!target) {
+        // Check if there is an anchor with a name attribute
+        if (window.document.querySelectorAll(`a[name="${targetId}"]`)) {
+          if (argv.v)
+          console.warn(`WARN: Consider using an id attribute instead of a[name]. Found in name="${targetId}" selector="${generateSelector(link)}" link-text="${link.textContent}"`)
+        } else {
+          errorCount += 1
+          console.error(`ERROR: Broken internal link: a[href]="${href}" selector="${generateSelector(link)}" link-text="${link.textContent}"`)
+        }
       }
     } else {
       // TODO: verify external links

@@ -35,7 +35,12 @@ This will run the linter, generate sassdocs, and generate the guides to verify t
 ### Find broken links
 
 1. run `./scripts/bake-book ${BOOK_NAME}` to generate the cooked book
-1. run `./scripts/find-broken-links ${BOOK_NAME}` to find broken links in the cooked book or add `--type raw` to find broken links in the raw book.
+1. run `./scripts/find-broken-links ${BOOK_NAME}` to find broken links in the cooked book
+
+Notes:
+
+- add `--type raw` to find broken links in the raw book
+- add `--verbose` to see warning messages as well as errors
 
 # Documentation
 
