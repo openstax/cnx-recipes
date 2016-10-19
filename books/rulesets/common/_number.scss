@@ -109,18 +109,7 @@
       @include utils_title($labeling, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
-    :not(#{$type}) > #{$type}.unnumbered {
-      @if ($type == "table") {
-        caption {
-          move-to: trash;
-        }
-      }
-      @if ($type == "figure") {
-        figcaption {
-          move-to: trash;
-        }
-      }
-    }
+    @include trashUnnumberedCaption($type);
   }
 
   .appendix {
@@ -128,16 +117,20 @@
       @include utils_title($labelingAp, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
-    :not(#{$type}) > #{$type}.unnumbered {
-      @if ($type == "table") {
-        caption {
-          move-to: trash;
-        }
+    @include trashUnnumberedCaption($type);
+  }
+}
+
+@mixin trashUnnumberedCaption ($type) {
+  :not(#{$type}) > #{$type}.unnumbered {
+    @if ($type == "table") {
+      caption {
+        move-to: trash;
       }
-      @if ($type == "figure") {
-        figcaption {
-          move-to: trash;
-        }
+    }
+    @if ($type == "figure") {
+      figcaption {
+        move-to: trash;
       }
     }
   }
