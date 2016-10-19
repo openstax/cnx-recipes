@@ -104,17 +104,41 @@
   $hasCaption: map-get($setFigTableCaptions, hasCaption);
   $hasTitle: map-get($setFigTableCaptions, hasTitle);
 
-
   [data-type="chapter"] {
-    :not(#{$type}) > #{$type} {
+    :not(#{$type}) > #{$type}:not(.unnumbered) {
       @include utils_title($labeling, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
+    :not(#{$type}) > #{$type}.unnumbered {
+      @if ($type == "table") {
+        caption {
+          move-to: trash;
+        }
+      }
+      @if ($type == "figure") {
+        figcaption {
+          move-to: trash;
+        }
+      }
+    }
   }
+
   .appendix {
-    :not(#{$type}) > #{$type} {
+    :not(#{$type}) > #{$type}:not(.unnumbered) {
       @include utils_title($labelingAp, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+    }
+    :not(#{$type}) > #{$type}.unnumbered {
+      @if ($type == "table") {
+        caption {
+          move-to: trash;
+        }
+      }
+      @if ($type == "figure") {
+        figcaption {
+          move-to: trash;
+        }
+      }
     }
   }
 }
@@ -129,14 +153,14 @@
     }
   }
   @if ($hasTitle) {
-    @if $type == "table" {
+    @if ($type == "table") {
       #{$defaultContainer} [data-type="title"] {
         container: span;
         class: "os-title";
         move-to: bCaption;
       }
     }
-    @if $type == "figure" {
+    @if ($type == "figure") {
       [data-type="title"] {
         container: span;
         class: "os-title";
