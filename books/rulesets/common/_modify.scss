@@ -1,9 +1,14 @@
+/// Moves any matching selector to the trash
+/// @arg {String} $selector - A string of the selector that needs to be trashed
+/// @group modify
 @mixin modify_trash($selector) {
   #{$selector} {
     move-to: trash;
   }
 }
 
+/// Changes preface title's container to `<h1>`
+/// @group modify
 @mixin modify_titlePreface() {
   //This only changes a container
   //will this be needed once the headers in raw are changed?
@@ -15,12 +20,16 @@
   }
 }
 
+/// Modifies the `id` of `div[data-type="composite-page"]` to its `uuid() "@1"`
+/// @group modify
 @mixin modify_compositeAutoID() {
   div[data-type="composite-page"] {
     attr-id: uuid() "@1";
   }
 }
 
+/// Modifies the `id` of each chapter title to `"chapTitle" counter(chapTitleNum)`
+/// @group modify
 @mixin modify_chapterAutoID() {
   div[data-type='chapter'] {
     > h1[data-type='document-title'] {
@@ -30,6 +39,8 @@
   }
 }
 
+/// Trashes `[data-type="cnx-archive-uri"]` in `.os-eob` and `.os-eoc`
+/// @group modify
 @mixin modify_suppressURI() {
   div.os-eoc, div.os-eob  {
     [data-type="cnx-archive-uri"] {
@@ -38,6 +49,8 @@
   }
 }
 
+/// Wraps all `[data-type="document-title"]` (excluding in the metadata) in a span with the class `os-text`. This is done before numbering.
+/// @group modify
 @mixin modify_spanWrapTitles() {
   :not([data-type="metadata"]) > [data-type="document-title"] {
     content: '';
@@ -49,12 +62,18 @@
   }
 }
 
+/// Modifies all simulation links to open in a new browser window
+/// @group modify
 @mixin modify_simLinkTarget() {
   a[href*="archive.cnx.org/specials/"] {
     attr-target: "_blank";
   }
 }
 
+/// Prepares index terms for grouping by the glossary. Modifies the `id` attribute of the term to include the `$pageIDString` and `$termCounter`
+/// @arg {Text} $termCounter - The name of counter for terms
+/// @arg {Text} $pageIDString - The page ID where the term is found
+/// @group modify
 @mixin modify_prepIndexTerms($termCounter, $pageIDString) {
   div[data-type="page"],
   div[data-type="composite-page"] {
@@ -70,18 +89,26 @@
   }
 }
 
+/// Adds a title for the first index group. `ie. Symbols`
+/// @arg {string} $location - The string of the location where title needs to be added
+/// @arg {string} $name - The string of the title for this group
+/// @group modify
 @mixin modify_addIndexSymbolGroup($location, $name) {
   .os-#{$location}-container > div.group-by:first-of-type > span.group-label {
     content: $name;
   }
 }
-
+/// Adds metadata to the composite pages
+/// @arg {Text} $bookMetadata - The node set that contains the metadata
+/// @group modify
 @mixin modify_compositeMetadata($bookMetadata) {
   [data-type="composite-page"] {
     content: nodes($bookMetadata) content();
   }
 }
 
+/// Adds the title for each composite page
+/// @group modify
 @mixin modify_retitleCompositeMetadata() {
   [data-type="composite-page"] {
     > [data-type="document-title"] {
@@ -95,7 +122,9 @@
   }
 }
 
-
+/// Modifies note feature to add a note title and optionally wrap the body content
+/// @arg {map} $noteContent - map containing `$selector`, `$label` and `$isBodyWrapped`
+/// @group modify
 @mixin modify_note($noteContent) {
   $selector: map-get($noteContent, selector);
   $label: map-get($noteContent, label);
@@ -131,6 +160,8 @@
   }
 }
 
+/// NEEDS DOCUMENTATION
+/// @group needs-docs
 @mixin modify_retitleHeaders () {
   [data-type="chapter"] {
     [data-type="page"] {

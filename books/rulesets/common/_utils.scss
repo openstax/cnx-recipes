@@ -2,6 +2,7 @@
 /// @arg {Text} $name - The unquoted name of the counter that will be created
 /// @arg {String} $selector - A string of the selector at which the counter will increment
 /// @arg {String} $resetSelector - A string of the selector at which the counter will reset
+/// @group utils
 @mixin utils_count($name, $selector, $resetSelector) {
   //Improvement: Resetting isn't dry, recreates selector if more than one counter resets on one element
   #{$resetSelector} {
@@ -18,6 +19,7 @@
 /// @arg {Text} $bucket [null] - The unquoted name of the bucket to send the resulting object(s) to. If null, resulting object(s) will remain in place, before the element the mixin was called within
 /// @arg {Text} $container [null] - The unquoted type of container element to send the titling spans to (e.g. h1, h2, div). If null, resulting spans will not be wrapped
 /// @arg {String} $containerType [null] - The data-type to give to the created container element. If null, resulting spans will not be wrapped
+/// @group utils
 @mixin utils_title($content, $bucket: null, $container: null, $containerType: null) {
   //TODO: Restrict what things titlePart can be. Currently any key will work.
   @each $titlePart in map-keys($content) {
@@ -56,6 +58,7 @@
 /// @arg {String} $toSelector - The selector of the element in the pair that will be linked to
 /// @arg {String} $fromSelector - The selector of the element in the pair that will be the link
 /// @arg {Text} $toCounter [null] - The counter object used to automatically ID the element to be linked to if it doesn't already have an id. If null, the link href will be to an already existing id of the linked-to element
+/// @group utils
 @mixin utils_hasSolution() {
   .exercise {
     .solution {
@@ -67,6 +70,9 @@
     }
   }
 }
+
+/// NEEDS DOCUMENTATION
+/// @group needs-docs
 @mixin utils_linkToFromForward($toSelector, $fromSelector, $toName, $fromName, $toCounter: null) {
   #{$toSelector} {
     @if ($toCounter != null) {
@@ -93,6 +99,7 @@
 
 /// Simply base mixin to reference a node
 /// @arg {Text} $name - The unquoted name of the node that will be referenced
+/// @group utils
 @mixin utils_refNodeAs($name) {
   node-set: $name;
 }
@@ -100,11 +107,13 @@
 /// Simply base mixin to reference a string
 /// @arg {Text} $name - The unquoted name of the string that will be referenced
 /// @arg {String} $string - The referenced string. Often, this will be to an element's content() or an attr()
+/// @group utils
 @mixin utils_refStringAs($name, $string) {
   string-set: $name $string;
 }
 
 /// A simple call to clear the trash at the end of a pass/step
+/// @group utils
 @mixin utils_clearTrash() {
   body:deferred::after {
     content: clear(trash);
@@ -115,6 +124,7 @@
 /// useful for erroring early. For example, If the developer was expecting an
 /// argument to a mixin to be a `list` but the mixin that uses it several levels
 /// deep actually expected it to be a `bool`
+/// @group utils
 @mixin utils_checkType($var, $expectedType) {
   @if (type-of($var) != $expectedType) {
     @error "The argument is of the wrong type. Expected: #{$expectedType} but got #{type-of($var)}";
@@ -122,6 +132,7 @@
 }
 
 /// @see {mixin} utils_checkTypeOptional
+/// @group utils
 @mixin utils_checkTypeOptional($var, $expectedType) {
   @if ($var and type-of($var) != $expectedType) {
     @error "The optional argument is of the wrong type. Expected: #{$expectedType} but got #{type-of($var)}";
