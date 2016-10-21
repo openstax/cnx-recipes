@@ -4,7 +4,7 @@
 
 **Note:** To update the dependencies, run `./scripts/update`
 
-# Cook a New Book
+# Bake a New Book
 
 1. run `./scripts/fetch-book statistics`
   - **Note:** To see the list of books available see `./books.txt`
@@ -13,7 +13,7 @@
   - **Note:** You can run `./scripts/fetch-book --all` to fetch all the books
 1. run `./scripts/bake-book statistics`
 
-There are 2 major parts to cooking a book (_listed above_). You will first need to get the single-file HTML from the server (`fetch-book`) and then convert the single-file HTML locally into the "baked" book via `bake-book`. Once you have done the first part, you can run `./scripts/bake-book statistics` to your :heart:'s content!
+There are 2 major parts to baking a book (_listed above_). You will first need to get the single-file HTML from the server (`fetch-book`) and then convert the single-file HTML locally into the "baked" book via `bake-book`. Once you have done the first part, you can run `./scripts/bake-book statistics` to your :heart:'s content!
 
 
 ## Add a New Book to the config
@@ -59,7 +59,7 @@ To check that there were no regressions in a book what the following process doe
 
 1. bake the book with the old code
 1. bake the book with the new code
-1. compare the 2 cooked HTML files to see if there were any differences
+1. compare the 2 baked HTML files to see if there were any differences
 
 Here are the steps to run it:
 
