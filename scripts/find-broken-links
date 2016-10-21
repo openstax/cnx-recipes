@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+
+'use strict'
+
+var fs = require('fs')
+var path = require('path')
+var jsdom = require('jsdom')
+var argv = require('yargs')
+  .demand(['b'])
+  .alias('b', 'book')
+  .alias('t', 'type')
+  .alias('v', 'verbose')
+  .describe('b', 'Book name (from books.txt)')
+  .describe('t', 'Type (raw or cooked)')
+  .describe('v', 'Verbose (output warnings as well as Errors)')
+  .default('t', 'cooked')
+  .argv
+
+var htmlPath = path.join(__dirname, `../data/${argv.b}-${argv.t}.html`)
+console.log(`Checking ${htmlPath}`)
+
+var html = fs.readFileSync(htmlPath, 'utf-8')
+
+function generateSelector(el) {
+  if (el.getAttribute('id')) {
+    return `${el.tagName.toLowerCase()}#${el.getAttribute('id')}`
+  } else if (el.className) {
+    return `${generateSelector(el.parentNode)} > ${el.tagName.toLowerCase()}.${el.className.split(' ').join('.')}` // Replace spaces with dots
+  } else {
+    return `${generateSelector(el.parentNode)} > ${el.tagName.toLowerCase()}`
+  }
+}
+
+jsdom.env(html, [], function(err, window) {
+  var errorCount = 0 // Used for exit status
+  var links = window.document.querySelectorAll('a[href]')
+  for (var link of links) {
+    var href = link.getAttribute('href')
+    if (/^#/.test(href)) { // check if the href begins with a # (an internal link)
+      var targetId = href.replace('#', '')
+      var target = window.document.getElementById(targetId)
+      if (!targetId) {
+        errorCount += 1
+        console.error(`ERROR: Empty internal link: a[href]="${href}" selector="${generateSelector(link)}" link-text="${link.textContent}"`)
+      } else if (!target) {
+        // Check if there is an anchor with a name attribute
+        if (window.document.querySelectorAll(`a[name="${targetId}"]`)) {
+          if (argv.v)
+          console.warn(`WARN: Consider using an id attribute instead of a[name]. Found in name="${targetId}" selector="${generateSelector(link)}" link-text="${link.textContent}"`)
+        } else {
+          errorCount += 1
+          console.error(`ERROR: Broken internal link: a[href]="${href}" selector="${generateSelector(link)}" link-text="${link.textContent}"`)
+        }
+      }
+    } else {
+      // TODO: verify external links
+    }
+  }
+  process.exit(errorCount)
+
+});
