@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
   Book Page
 
@@ -220,14 +221,23 @@
   Unnumbered Content
 
   Content that has been marked with the class `.unnumbered` by the content team.
+<<<<<<< HEAD
   
   Currently, the ruleset supports only tables and figures but
   this may apply to a note, a table, an equation, a figure.
+=======
+
+  Currently, the ruleset supports only tables and figures but
+  this may apply to a note, a table, an equation, a figure. 
+>>>>>>> remove dividers
 
   Markup: ./page.unnumbered.html-cooked.html
 
   Style guide: page.unnumbered
+<<<<<<< HEAD
 
+=======
+>>>>>>> remove dividers
 */
 /*==========================================================
   PHYSICS PAGES
@@ -249,6 +259,15 @@
   Markup: ./examples/book.composite.problems.html-cooked.html
 
   Style guide: book.composite.problems
+*/
+/*
+  Test Prep for AP® Courses
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./examples/book.composite.ap-test-prep.html-cooked.html
+
+  Style guide: book.composite.ap-test-prep
 */
 /*==========================================================
   PHYSICS TITLING CONTENT
@@ -285,11 +304,6 @@
   counter-increment: chapter; }
 :pass(1) div[data-type="chapter"]::before {
   container: span;
-  content: "Chapter ";
-  class: os-title-label;
-  move-to: bChapterLabel; }
-:pass(1) div[data-type="chapter"]::before {
-  container: span;
   content: counter(chapter);
   class: os-number;
   move-to: bChapterLabel; }
@@ -309,11 +323,6 @@
   container: span;
   content: counter(appendix,upper-alpha);
   class: os-number;
-  move-to: bAppendixLabel; }
-:pass(1) div.appendix::before {
-  container: span;
-  content: " : ";
-  class: os-divider;
   move-to: bAppendixLabel; }
 :pass(1) div.appendix > [data-type="document-title"] {
   container: h1;
@@ -393,12 +402,12 @@
 :pass(1) div[data-type="page"] > [data-type="document-title"],
 :pass(1) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
-:pass(1) div[data-type="chapter"] div[data-type="glossary"] > h3[data-type="glossary-title"] {
+:pass(1) div[data-type="chapter"] div[data-type="glossary"] > [data-type="glossary-title"] {
   /* Discard this Page-specific title because a chapter title is added when collated */
   move-to: trash; }
 :pass(1) div[data-type="chapter"] div[data-type="glossary"] dl {
   move-to: glossary-TOCOMPOSITE; }
-  :pass(1) div[data-type="chapter"] div[data-type="glossary"] dl > h3[data-type="title"] {
+  :pass(1) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 :pass(1) div[data-type="chapter"]::after {
@@ -411,7 +420,7 @@
   /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
   content: nodes(sectionHeaderNode) content();
   move-to: section-summary-TOCOMPOSITE; }
-  :pass(1) div[data-type="chapter"] section.section-summary > h3[data-type="title"] {
+  :pass(1) div[data-type="chapter"] section.section-summary > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 :pass(1) div[data-type="chapter"]::after {
@@ -423,7 +432,7 @@
   /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
   content: nodes(sectionHeaderNode) content();
   move-to: conceptual-questions-TOCOMPOSITE; }
-  :pass(1) div[data-type="chapter"] section.conceptual-questions > h3[data-type="title"] {
+  :pass(1) div[data-type="chapter"] section.conceptual-questions > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 :pass(1) div[data-type="chapter"]::after {
@@ -435,13 +444,25 @@
   /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
   content: nodes(sectionHeaderNode) content();
   move-to: problems-exercises-TOCOMPOSITE; }
-  :pass(1) div[data-type="chapter"] section.problems-exercises > h3[data-type="title"] {
+  :pass(1) div[data-type="chapter"] section.problems-exercises > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 :pass(1) div[data-type="chapter"]::after {
   container: div;
   content: pending(problems-exercises-TOCOMPOSITE);
   class: "os-eoc os-problems-exercises-container";
+  data-type: "composite-page"; }
+:pass(1) div[data-type="chapter"] section.ap-test-prep {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
+  move-to: ap-test-prep-TOCOMPOSITE; }
+  :pass(1) div[data-type="chapter"] section.ap-test-prep > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+:pass(1) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(ap-test-prep-TOCOMPOSITE);
+  class: "os-eoc os-ap-test-prep-container";
   data-type: "composite-page"; }
 
 :pass(2) div[data-type="page"] > [data-type="document-title"],
@@ -575,6 +596,15 @@
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-problems-exercises-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
+:pass(5) [data-type="composite-page"].os-eoc.os-ap-test-prep-container::before {
+  container: span;
+  content: "Test Prep for AP® Courses";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+:pass(5) [data-type="composite-page"].os-eoc.os-ap-test-prep-container::before {
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
