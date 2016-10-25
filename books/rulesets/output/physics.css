@@ -297,6 +297,10 @@
   attr-target: "_blank"; }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
+:pass(0) [data-type="abstract"] {
+  move-to: objectiveAbstract; }
+:pass(0) [data-type="page"]::before {
+  content: pending(objectiveAbstract); }
 
 :pass(1) body {
   counter-reset: chapter; }
@@ -383,6 +387,14 @@
   container: div;
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
+:pass(1) [data-type="chapter"], :pass(1) .appendix {
+  counter-reset: equation; }
+:pass(1) [data-type="equation"] {
+  counter-increment: equation; }
+:pass(1) [data-type="equation"]:not(.unnumbered)::before {
+  container: span;
+  content: counter(chapter) "." counter(equation);
+  class: os-number; }
 :pass(1) body {
   counter-reset: term; }
 :pass(1) div[data-type="page"] span[data-type="term"], :pass(1) div[data-type="composite-page"] span[data-type="term"] {
