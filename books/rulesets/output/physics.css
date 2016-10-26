@@ -473,30 +473,22 @@
   class: "os-eoc os-ap-test-prep-container";
   data-type: "composite-page"; }
 :pass(1) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
-  node-set: ojectivesSectionTitle; }
+  node-set: outlineSectionTitle; }
 :pass(1) [data-type="page"]:not(.introduction):not(.preface) [data-type="abstract"] {
-  move-to: objectiveAbstract; }
-:pass(1) [data-type="page"]:not(.introduction):not(.preface)::after {
-  move-to: objSectionTitle; }
+  move-to: outlineAbstract; }
 :pass(1) [data-type="page"]:not(.introduction):not(.preface)::after {
   class: "os-chapter-objective";
-  content: nodes(ojectivesSectionTitle) pending(objectiveAbstract);
-  move-to: chapObjectives; }
+  content: nodes(outlineSectionTitle) pending(outlineAbstract);
+  move-to: chapOutline; }
 :pass(1) [data-type="chapter"]::before {
   container: h3;
   class: "title";
   content: "Chapter Outline";
-  move-to: chapObjTitle; }
+  move-to: chapOutlineTitle; }
 :pass(1) [data-type="chapter"]:deferred::before {
   class: "os-chapter-outline";
-  content: pending(chapObjTitle) pending(chapObjectives); }
+  content: pending(chapOutlineTitle) pending(chapOutline); }
 
-:pass(2) .os-chapter-outline {
-  move-to: learningObj; }
-:pass(2) .os-chapter-objective > [data-type="document-title"] {
-  container: h4; }
-:pass(2) .introduction {
-  content: pending(learningObj) content(); }
 :pass(2) div[data-type="page"] > [data-type="document-title"],
 :pass(2) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
@@ -529,6 +521,12 @@
   content: pending(index-term) pending(index-section-link);
   class: os-index-item;
   move-to: index-TOCOMPOSITE; }
+:pass(2) .os-chapter-outline {
+  move-to: ChapterOutline; }
+:pass(2) .os-chapter-objective > [data-type="document-title"] {
+  container: h4; }
+:pass(2) .introduction {
+  content: pending(ChapterOutline) content(); }
 :pass(2) [data-type="chapter"], :pass(2) .appendix {
   counter-reset: exercise; }
 :pass(2) .os-eoc [data-type="exercise"] {
@@ -624,7 +622,7 @@
   content: pending(h1-TITLECONTAINER); }
 :pass(5) [data-type="composite-page"].os-eoc.os-problems-exercises-container::before {
   container: span;
-  content: "Problems";
+  content: "Problems & Exercises";
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 :pass(5) [data-type="composite-page"].os-eoc.os-problems-exercises-container::before {
