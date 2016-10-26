@@ -20,6 +20,7 @@
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
   @include modify_simLinkTarget();
+  @include utils_hasSolution();
 
   //TODO @include modify_exercise($check-understanding); Need new mixin or update note mixin
 
@@ -39,6 +40,8 @@
   @include number_numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
   @include count_countEquations(equation);
   @include number_equations ($equationNumber);
+
+
 
   @include count_countTerms(term);
   @include reference_refPageIDStringAs(pageID);
@@ -61,18 +64,23 @@
   //After: createChapterComposites
   @include count_countEOCExercises(exercise);
   @include number_numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
+
 }
 :pass(3) {
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
-
+  @include link_linkToProblemsFromSolutionsEOC("number", "number", exerciseAll);
 
   //After: prepBookComposites
   @include reference_refChapterHeaderNodeAs(chapterHeaderNode);
   @include compose_prepChapterAreas($bookCompositePages, chapterHeaderNode);
 
+
+
 }
 :pass(4) {
+  @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
+  @include compose_createEOBSolutions($chapterCompositePages, $pageSolutions, sectionHeaderNode);
   //After: prepBookComposites, prepChapterAreas
   @include compose_createBookComposites($bookCompositePages);
 }
