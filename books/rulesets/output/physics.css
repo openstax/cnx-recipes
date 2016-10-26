@@ -297,10 +297,6 @@
   attr-target: "_blank"; }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
-:pass(0) [data-type="abstract"] {
-  move-to: objectiveAbstract; }
-:pass(0) [data-type="page"]::before {
-  content: pending(objectiveAbstract); }
 
 :pass(1) body {
   counter-reset: chapter; }
@@ -476,7 +472,31 @@
   content: pending(ap-test-prep-TOCOMPOSITE);
   class: "os-eoc os-ap-test-prep-container";
   data-type: "composite-page"; }
+:pass(1) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
+  node-set: ojectivesSectionTitle; }
+:pass(1) [data-type="page"]:not(.introduction):not(.preface) [data-type="abstract"] {
+  move-to: objectiveAbstract; }
+:pass(1) [data-type="page"]:not(.introduction):not(.preface)::after {
+  move-to: objSectionTitle; }
+:pass(1) [data-type="page"]:not(.introduction):not(.preface)::after {
+  class: "os-chapter-objective";
+  content: nodes(ojectivesSectionTitle) pending(objectiveAbstract);
+  move-to: chapObjectives; }
+:pass(1) [data-type="chapter"]::before {
+  container: h3;
+  class: "title";
+  content: "Chapter Outline";
+  move-to: chapObjTitle; }
+:pass(1) [data-type="chapter"]:deferred::before {
+  class: "os-chapter-outline";
+  content: pending(chapObjTitle) pending(chapObjectives); }
 
+:pass(2) .os-chapter-outline {
+  move-to: learningObj; }
+:pass(2) .os-chapter-objective > [data-type="document-title"] {
+  container: h4; }
+:pass(2) .introduction {
+  content: pending(learningObj) content(); }
 :pass(2) div[data-type="page"] > [data-type="document-title"],
 :pass(2) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }

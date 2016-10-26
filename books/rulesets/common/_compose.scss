@@ -432,3 +432,47 @@
     }
   }
 }
+
+//older books use the metadata to build a chapter objectives section
+@mixin compose_chapterOutline($objectiveTitle) {
+  [data-type="page"]:not(.introduction):not(.preface) {
+    > [data-type="document-title"] {
+      node-set: ojectivesSectionTitle;
+    }
+    [data-type="abstract"] {
+      move-to: objectiveAbstract;
+    }
+    &::after {
+      move-to:objSectionTitle
+    }
+    &::after {
+      class: "os-chapter-objective";
+      content: nodes(ojectivesSectionTitle) pending(objectiveAbstract);
+      move-to: chapObjectives;
+    }
+  }
+  [data-type="chapter"] {
+    &::before {
+      container: h3;
+      class: "title";
+      content: $objectiveTitle;
+      move-to: chapObjTitle;
+    }
+    &:deferred::before {
+      class: "os-chapter-outline";
+      content: pending(chapObjTitle) pending(chapObjectives);
+    }
+  }
+}
+
+@mixin compose_moveChapterOutline() {
+  .os-chapter-outline {
+    move-to: learningObj;
+  }
+  .os-chapter-objective > [data-type="document-title"] {
+    container: h4;
+  }
+  .introduction {
+    content: pending(learningObj) content();
+  }
+}
