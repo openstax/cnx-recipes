@@ -70,17 +70,21 @@ do
 
   TEMP_CSS_PATH="~/temp.css"
 
-  >&2 echo "Step 1/3: Copying CSS file from local machine to server"
+  >&2 echo "Step 1/4: Copying CSS file from local machine to server"
   scp ${CSS_PATH} ${USER}@${HOST}:${TEMP_CSS_PATH}
 
-  >&2 echo "Step 2/3: Injecting the css file into the book as ruleset.css"
+  >&2 echo "Step 2/4: Injecting the css file into the book as ruleset.css"
 
   BUILD_BOOK_CMD="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"ruleset.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${BOOK_UUID_AND_VER}@${BOOK_VERSION}\" ${TEMP_CSS_PATH}"
   ssh ${USER}@${HOST} ${BUILD_BOOK_CMD}
 
-  >&2 echo "Step 3/3: Re-baking the book (may take a couple minutes)"
+  >&2 echo "Step 3/4: Re-baking the book (may take up to 12 minutes)"
   python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${BOOK_UUID_AND_VER}@${BOOK_VERSION}/collate-content', headers={'x-api-key': 'cte-dev--sprint-6.7'}); print(resp)"
 
-  >&2 echo "Build has hopefully been triggered."
+  >&2 echo "Step 4/4: restarting varnish (optional) because the HTML files may be cached"
+  RESTART_VARNISH_CMD="sudo service varnish restart"
+  ssh ${USER}@${HOST} ${RESTART_VARNISH_CMD}
+
+  >&2 echo "Build complete."
 
 done
