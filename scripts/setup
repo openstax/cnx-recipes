@@ -1,23 +1,40 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-echo "Step 1/4: Installing SASS"
-gem install sass
-
-echo "Step 2/4: Setting up a python virtualenv"
-virtualenv .
-. ./bin/activate
+./scripts/bootstrap
 
 
-echo "Step 3/4: Installing python packages"
+if [[ ! "${CI}" = "true" ]] # Skip when running Travis
+then
+  # Only activate the virtualenv if not already in one
+  if [[ -z "${VIRTUAL_ENV}" ]]
+  then
+    echo "==> Setting up a python virtualenv"
+    virtualenv ./venv/
+    . ./venv/bin/activate
+  else
+    echo "==> Skipping virtualenv because already in one"
+  fi
+fi
 
-pip install --quiet git+https://github.com/Connexions/cssselect2.git
-pip install --quiet git+https://github.com/Connexions/rhaptos.cnxmlutils.git
-pip install --quiet git+https://github.com/Connexions/cnx-archive.git
-pip install --quiet git+https://github.com/Connexions/cnx-easybake.git
-pip install --quiet git+https://github.com/Connexions/cnx-epub.git
 
-deactivate
+if [[ ( "${CI}" = "true" ) || ( -n "${VIRTUAL_ENV}" ) ]]
+then
 
-echo "Step 4/4: Installing sassdoc (depends on NodeJS)"
+  echo "==> Installing python packages"
+
+  pip install --quiet git+https://github.com/Connexions/cssselect2.git
+  pip install --quiet git+https://github.com/Connexions/rhaptos.cnxmlutils.git
+  pip install --quiet git+https://github.com/Connexions/cnx-archive.git
+  pip install --quiet git+https://github.com/Connexions/cnx-easybake.git
+  pip install --quiet git+https://github.com/Connexions/cnx-epub.git
+
+  deactivate
+
+else
+  echo "ERROR. Not in a virtualenv"
+  exit 1
+fi
+
+echo "==> Installing sassdoc (depends on NodeJS)"
 npm install

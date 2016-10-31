@@ -41,7 +41,11 @@ fi
 # [ -e "${COOKED_PATH}" ] && rm ${COOKED_PATH}
 # commented out because it could be /dev/stdout
 
-. ./bin/activate
+# Activate the venv if not running Travis or already in a virtualenv
+if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
+then
+  . ./venv/bin/activate
+fi
 
 cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${COOKED_PATH}
 
