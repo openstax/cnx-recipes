@@ -53,6 +53,16 @@ You can pass 3 additional arguments to `report-book-coverage` to change how it r
 
 For more details on the commandline options see the [css-coverage](https://www.npmjs.com/package/css-coverage#commandline-options) documentation.
 
+
+# Deploy
+
+To update a development instance you need to rebake a book.
+To do that, you will need to upload a CSS ruleset file, trigger a rebake, and then clear the cache.
+
+1. run `./scripts/compile-books` to generate the rulesets CSS file
+1. run `./scripts/bake-book-remote ${BOOK_NAME} ${VERSION}` to upload, trigger, and clear the cache
+
+
 ## Regression Testing
 
 To check that there were no regressions in a book what the following process does is:

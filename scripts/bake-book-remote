@@ -79,12 +79,13 @@ do
   ssh ${USER}@${HOST} ${BUILD_BOOK_CMD}
 
   >&2 echo "Step 3/4: Re-baking the book (may take up to 12 minutes)"
+  >&2 echo "          Afterwards, it will prompt you for a password to reset the server cache"
   python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${BOOK_UUID_AND_VER}@${BOOK_VERSION}/collate-content', headers={'x-api-key': 'cte-dev--sprint-6.7'}); print(resp)"
 
   >&2 echo "Step 4/4: restarting varnish (optional) because the HTML files may be cached"
   RESTART_VARNISH_CMD="sudo service varnish restart"
   ssh -t ${USER}@${HOST} ${RESTART_VARNISH_CMD}
 
-  >&2 echo "Build complete."
+  >&2 echo "Build complete. See the changes by going to http://${HOST}/contents/${BOOK_UUID_AND_VER}@${BOOK_VERSION}"
 
 done
