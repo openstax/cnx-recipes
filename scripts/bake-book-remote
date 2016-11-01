@@ -39,10 +39,12 @@ else
   BOOK_LIST="${ARG1}"
 fi
 
-. ./bin/activate
+# Activate the venv if not running Travis or already in a virtualenv
+if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
+then
+  . ./venv/bin/activate
+fi
 
-
->&2 echo "Preparing to fetch book(s): ${BOOK_LIST}"
 
 for BOOK_NAME in ${BOOK_LIST}
 do
@@ -67,22 +69,22 @@ do
     exit 1
   fi
 
-  >&2 echo "Baking book ${BOOK_NAME} ${BOOK_UUID_AND_VER} on ${HOST}"
+  >&2 echo "==> Baking book ${BOOK_NAME} ${BOOK_UUID_AND_VER} on ${HOST} ..."
 
   TEMP_CSS_PATH="~/temp.css"
 
-  >&2 echo "Step 1/4: Copying CSS file from local machine to server"
+  >&2 echo "==> Copying CSS file from local machine to server"
   scp ${CSS_PATH} ${USER}@${HOST}:${TEMP_CSS_PATH}
 
-  >&2 echo "Step 2/4: Injecting the css file into the book as ruleset.css"
+  >&2 echo "==> Injecting the css file into the book as ruleset.css"
 
   BUILD_BOOK_CMD="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"ruleset.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${BOOK_UUID_AND_VER}@${BOOK_VERSION}\" ${TEMP_CSS_PATH}"
   ssh ${USER}@${HOST} ${BUILD_BOOK_CMD}
 
-  >&2 echo "Step 3/4: Re-baking the book (may take up to 12 minutes)"
+  >&2 echo "==> Re-baking the book (may take up to 12 minutes)"
   python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${BOOK_UUID_AND_VER}@${BOOK_VERSION}/collate-content', headers={'x-api-key': 'cte-dev--sprint-6.7'}); print(resp)"
 
-  >&2 echo "Step 4/4: restarting varnish because the HTML files may be cached"
+  >&2 echo "==> restarting varnish because the HTML files may be cached"
   RESTART_VARNISH_CMD="varnishadm ban req.url '~' ."
   ssh ${USER}@${HOST} ${RESTART_VARNISH_CMD}
 
