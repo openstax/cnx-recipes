@@ -1,31 +1,35 @@
 #!/bin/sh
 set -e
 
-echo 'Step 1/4: Updating SASS'
+scripts/bootstrap
 
-gem update --quiet sass
+# Activate the venv if not running Travis or already in a virtualenv
+if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
+then
+  . ./venv/bin/activate
+fi
 
-echo 'Step 2/4: Uninstalling python packages'
+if [[ ( "${CI}" = "true" ) || ( -n "${VIRTUAL_ENV}" ) ]]
+then
+  echo '==> Uninstalling python packages'
 
-virtualenv .
-. ./bin/activate
-
-pip uninstall --quiet --yes cssselect2
-pip uninstall --quiet --yes rhaptos.cnxmlutils
-pip uninstall --quiet --yes cnx-archive
-pip uninstall --quiet --yes cnx-easybake
-pip uninstall --quiet --yes cnx-epub
+  pip uninstall --quiet --yes requests # Used for rebaking a book
+  pip uninstall --quiet --yes cssselect2
+  pip uninstall --quiet --yes cnx-easybake
+  pip uninstall --quiet --yes cnx-epub
 
 
-echo 'Step 3/4: Reinstalling python packages'
+  echo '==> Reinstalling python packages'
 
-pip install --quiet git+https://github.com/Connexions/cssselect2.git
-pip install --quiet git+https://github.com/Connexions/rhaptos.cnxmlutils.git
-pip install --quiet git+https://github.com/Connexions/cnx-archive.git
-pip install --quiet git+https://github.com/Connexions/cnx-easybake.git
-pip install --quiet git+https://github.com/Connexions/cnx-epub.git
+  pip install requests # Used for rebaking a book
+  pip install --quiet git+https://github.com/Connexions/cssselect2.git
+  pip install --quiet git+https://github.com/Connexions/cnx-easybake.git
+  pip install --quiet git+https://github.com/Connexions/cnx-epub.git
 
-deactivate
+else
+  echo "Error. Not in a virtualenv"
+  exit 1
+fi
 
-echo "Step 4/4: Updating sassdoc to the version listed in package.json"
+echo "==> Updating sassdoc to the version listed in package.json"
 npm install
