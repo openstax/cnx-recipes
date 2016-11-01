@@ -21,7 +21,7 @@ BOOK_VERSION=$2
 
 if [ -z "${ARG1}" ]
 then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument or --all for all books. For example: physics'
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument or --all for all books (see books.txt). For example: physics'
   exit 1
 fi
 
@@ -62,6 +62,7 @@ do
   if [ -z "${BOOK_VERSION}" ]
   then
     >&2 echo 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
+    >&2 echo 'The version is the @#.## in the target collection URL'
     >&2 echo "You can visit http://${HOST}/contents/${BOOK_UUID_AND_VER} to get the version number"
     exit 1
   fi
@@ -79,7 +80,9 @@ do
   ssh ${USER}@${HOST} ${BUILD_BOOK_CMD}
 
   >&2 echo "Step 3/4: Re-baking the book (may take up to 12 minutes)"
-  >&2 echo "          Afterwards, it will prompt you for a password to reset the server cache"
+  >&2 echo ""
+  >&2 echo "In a few minutes (~7) you will be prompted"
+  >&2 echo "for a password to reset the server cache"
   python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${BOOK_UUID_AND_VER}@${BOOK_VERSION}/collate-content', headers={'x-api-key': 'cte-dev--sprint-6.7'}); print(resp)"
 
   >&2 echo "Step 4/4: restarting varnish (optional) because the HTML files may be cached"

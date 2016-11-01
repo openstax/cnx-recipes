@@ -62,6 +62,9 @@ To do that, you will need to upload a CSS ruleset file, trigger a rebake, and th
 1. run `./scripts/compile-books` to generate the rulesets CSS file
 1. run `./scripts/bake-book-remote ${BOOK_NAME} ${VERSION}` to upload, trigger, and clear the cache
 
+  - `${BOOK_NAME]` is the book’s name in the book list of `/books.txt`
+  - `${VERSION]` is the `@#.##` in the target collection URL
+
 ### Example
 
 For example, you want to rebake the "cooking" book:
