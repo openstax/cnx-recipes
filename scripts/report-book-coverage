@@ -2,23 +2,23 @@
 set -e
 
 
-ARG1=$1
+arg1=$1
 debugFlag1=$2 # could be --debug or --verbose (or both)
 debugFlag2=$3
 
 # Check command line args
 
-if [ -z "${ARG1}" ]
+if [ -z "${arg1}" ]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument or --all for all books. For example: physics'
   exit 1
 fi
 
-if [ "${ARG1}" == "--all" ]
+if [ "${arg1}" == "--all" ]
 then
   source ./books.txt
 else
-  BOOK_LIST="${ARG1}"
+  BOOK_LIST="${arg1}"
 fi
 
 for bookName in ${BOOK_LIST}
@@ -45,7 +45,7 @@ do
     # a non-zero exit status if there are unused selectors
     # and the `set -e` at the top of this script will exit at that point
 
-    if [ "${ARG1}" == "--all" ]
+    if [ "${arg1}" == "--all" ]
     then
       >&2 echo "Generating coverage for ${bookName} in ${LCOV_PATH}"
     else
@@ -57,7 +57,7 @@ do
     ./node_modules/.bin/css-coverage --css ${cssFile} --html ${rawFile} --lcov ${LCOV_PATH} ${debugFlag1} ${debugFlag2}
 
   else
-    if [ "${ARG1}" == "--all" ]
+    if [ "${arg1}" == "--all" ]
     then
       >&2 echo "WARNING: Skipping ${bookName} because HTML File is missing at ${rawFile}"
     else
@@ -68,7 +68,7 @@ do
 
 done
 
-if [ "${ARG1}" == "--all" ]
+if [ "${arg1}" == "--all" ]
 then
   >&2 echo "Generated coverage for ${BOOK_LIST}. To see an HTML version, run the following:"
   >&2 echo "genhtml ./data/*.lcov --output-directory ./coverage"
