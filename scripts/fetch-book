@@ -28,10 +28,10 @@ fi
 for bookName in ${BOOK_LIST}
 do
 
-  RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
-  BOOK_UUID_AND_VER=${RULESET_NAME_AND_UUID[1]}
+  rulesetNameAndUuid=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
+  BOOK_UUID_AND_VER=${rulesetNameAndUuid[1]}
 
-  RAW_PATH="./data/${bookName}-raw.html"
+  rawFile="./data/${bookName}-raw.html"
 
   if [ -z "${BOOK_UUID_AND_VER}" ]
   then
@@ -55,8 +55,8 @@ do
   ssh ${USER}@${HOST} ${CMD}
 
   >&2 echo "==> Copying HTML file from server to local machine"
-  scp ${USER}@${HOST}:${TEMP_HTML_PATH} ${RAW_PATH}
+  scp ${USER}@${HOST}:${TEMP_HTML_PATH} ${rawFile}
 
-  >&2 echo "Fetch is Done. File is available at ${RAW_PATH}"
+  >&2 echo "Fetch is Done. File is available at ${rawFile}"
 
 done

@@ -3,10 +3,10 @@ set -e
 
 
 bookName=$1
-DEBUG_FLAG=$2
+debugFlag=$2
 
-RAW_PATH="./data/${bookName}-raw.html"
-BAKED_PATH="./data/${bookName}-baked.html"
+rawFile="./data/${bookName}-raw.html"
+bakedFile="./data/${bookName}-baked.html"
 
 # Check command line args
 
@@ -16,12 +16,12 @@ then
   exit 1
 fi
 
-RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
-RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
-sassFile="./books/rulesets/${RULESET_NAME}/book.scss"
-cssFile="./books/rulesets/output/${RULESET_NAME}.css"
+rulesetNameAndUuid=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
+rulesetName=${rulesetNameAndUuid[0]}
+sassFile="./books/rulesets/${rulesetName}/book.scss"
+cssFile="./books/rulesets/output/${rulesetName}.css"
 
-if [ ! -f "${RAW_PATH}" ]
+if [ ! -f "${rawFile}" ]
 then
   >&2 echo 'ERROR: Could not find the raw HTML file. Have you run fetch-book yet?'
   exit 1
@@ -39,10 +39,10 @@ bundle exec sass ${sassFile} ${cssFile}
 
 >&2 echo "==> Baking the book (may take a couple minutes)"
 >&2 echo "Specify additional commandline arguments like -d to this script if you want more debugging"
->&2 echo "Info: Baking ${RAW_PATH} to ${BAKED_PATH} using ${cssFile}"
+>&2 echo "Info: Baking ${rawFile} to ${bakedFile} using ${cssFile}"
 
 # Remove the baked file if it exists
-[ -e "${BAKED_PATH}" ] && rm ${BAKED_PATH}
+[ -e "${bakedFile}" ] && rm ${bakedFile}
 
 # Activate the venv if not running Travis or already in a virtualenv
 if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
@@ -50,7 +50,7 @@ then
   . ./venv/bin/activate
 fi
 
-cnx-easybake ${DEBUG_FLAG} ${cssFile} ${RAW_PATH} ${BAKED_PATH}
+cnx-easybake ${DEBUG_FLAG} ${cssFile} ${RAW_PATH} ${bakedFile}
 
 # Validate the cooked file
-cnx-epub-validate-collated ${BAKED_PATH}
+cnx-epub-validate-collated ${bakedFile}

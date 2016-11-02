@@ -3,8 +3,8 @@ set -e
 
 
 ARG1=$1
-DEBUG_FLAG1=$2 # could be --debug or --verbose (or both)
-DEBUG_FLAG2=$3
+debugFlag1=$2 # could be --debug or --verbose (or both)
+debugFlag2=$3
 
 # Check command line args
 
@@ -24,16 +24,16 @@ fi
 for bookName in ${BOOK_LIST}
 do
 
-  RAW_PATH="./data/${bookName}-raw.html"
+  rawFile="./data/${bookName}-raw.html"
   LCOV_PATH="./data/${bookName}.lcov"
 
-  if [ -f "${RAW_PATH}" ]
+  if [ -f "${rawFile}" ]
   then
 
-    RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
-    RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
+    rulesetNameAndUuid=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
+    rulesetName=${rulesetNameAndUuid[0]}
 
-    cssFile="./books/rulesets/output/${RULESET_NAME}.css"
+    cssFile="./books/rulesets/output/${rulesetName}.css"
 
     if [ ! -f "${cssFile}" ]
     then
@@ -54,14 +54,14 @@ do
       >&2 echo "Note: to run this you may need to install genhtml. In OSX it is 'brew install lcov'"
     fi
 
-    ./node_modules/.bin/css-coverage --css ${cssFile} --html ${RAW_PATH} --lcov ${LCOV_PATH} ${DEBUG_FLAG1} ${DEBUG_FLAG2}
+    ./node_modules/.bin/css-coverage --css ${cssFile} --html ${rawFile} --lcov ${LCOV_PATH} ${debugFlag1} ${debugFlag2}
 
   else
     if [ "${ARG1}" == "--all" ]
     then
-      >&2 echo "WARNING: Skipping ${bookName} because HTML File is missing at ${RAW_PATH}"
+      >&2 echo "WARNING: Skipping ${bookName} because HTML File is missing at ${rawFile}"
     else
-      >&2 echo "ERROR: HTML File missing at ${RAW_PATH}"
+      >&2 echo "ERROR: HTML File missing at ${rawFile}"
       exit 1
     fi
   fi
