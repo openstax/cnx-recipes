@@ -2,10 +2,10 @@
 set -e
 
 
-BOOK_NAME=$1
+bookName=$1
 BOOK_CONFIG_FILE="./books.txt"
 
-if [ -z "${BOOK_NAME}" ]
+if [ -z "${bookName}" ]
 then
   >&2 echo "This utility script converts a book name (like microecon)"
   >&2 echo "to the ruleset name the should be used to generate the book"
@@ -26,13 +26,13 @@ fi
 eval $(cat ${BOOK_CONFIG_FILE})
 
 
-# Pull out the ruleset name that matches the ${BOOK_NAME}
-RULESET_NAME=$(eval echo \${${BOOK_NAME}_ruleset_name})
-UUID=$(eval echo \${${BOOK_NAME}_uuid})
+# Pull out the ruleset name that matches the ${bookName}
+RULESET_NAME=$(eval echo \${${bookName}_ruleset_name})
+UUID=$(eval echo \${${bookName}_uuid})
 
 if [ -z "${RULESET_NAME}" ]
 then
-  >&2 echo "ERROR: could not find a ruleset_name for the book named ${BOOK_NAME}"
+  >&2 echo "ERROR: could not find a ruleset_name for the book named ${bookName}"
   >&2 echo "Please check the ${BOOK_CONFIG_FILE} file and make sure the entry exits"
   exit 1
 fi

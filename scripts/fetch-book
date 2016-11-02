@@ -25,22 +25,22 @@ fi
 
 >&2 echo "Preparing to fetch book(s): ${BOOK_LIST}"
 
-for BOOK_NAME in ${BOOK_LIST}
+for bookName in ${BOOK_LIST}
 do
 
-  RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
+  RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
   BOOK_UUID_AND_VER=${RULESET_NAME_AND_UUID[1]}
 
-  RAW_PATH="./data/${BOOK_NAME}-raw.html"
+  RAW_PATH="./data/${bookName}-raw.html"
 
   if [ -z "${BOOK_UUID_AND_VER}" ]
   then
-    >&2 echo "ERROR: Could not find Book UUID for book named ${BOOK_NAME}"
+    >&2 echo "ERROR: Could not find Book UUID for book named ${bookName}"
     exit 1
   fi
 
   >&2 echo "==> Generating an EPUB from the database and converting to a single HTML file (may take a minute)"
-  >&2 echo "Book name: ${BOOK_NAME} ${BOOK_UUID_AND_VER}"
+  >&2 echo "Book name: ${bookName} ${BOOK_UUID_AND_VER}"
 
   TEMP_EPUB_PATH="~/temp.intenral.epub"
   TEMP_HTML_PATH="~/temp.html"

@@ -1,20 +1,20 @@
 #!/bin/bash
 set -e
 
-BOOK_NAME=$1
+bookName=$1
 RAW_PATH=$2
 BAKED_PATH=$3
 DEBUG_FLAG=$4
 
-SASS_PATH="./books/rulesets/${BOOK_NAME}/book.scss"
-CSS_PATH="./books/rulesets/output/${BOOK_NAME}.css"
+sassFile="./books/rulesets/${bookName}/book.scss"
+cssFile="./books/rulesets/output/${bookName}.css"
 
 # Check command line args
 
-if [ -z "${BOOK_NAME}" ]
+if [ -z "${bookName}" ]
 then
   echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  echo 'The required arguments are: BOOK_NAME, RAW_PATH, BAKED_PATH'
+  echo 'The required arguments are: bookName, RAW_PATH, BAKED_PATH'
   exit 1
 fi
 
@@ -30,9 +30,9 @@ then
   exit 1
 fi
 
-if [ ! -f "${SASS_PATH}" ]
+if [ ! -f "${sassFile}" ]
 then
-  echo "ERROR: Could not find the raw SCSS file at ${SASS_PATH}"
+  echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
   exit 1
 fi
 
@@ -47,7 +47,7 @@ then
   . ./venv/bin/activate
 fi
 
-cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${BAKED_PATH}
+cnx-easybake ${DEBUG_FLAG} ${cssFile} ${RAW_PATH} ${BAKED_PATH}
 # Validate the cooked file.
 # Commented because snippets do not pass the data-type="metadata" validation
 # and adding in all those metadata blocks would be cumbersome and distract

@@ -2,24 +2,24 @@
 set -e
 
 
-BOOK_NAME=$1
+bookName=$1
 DEBUG_FLAG=$2
 
-RAW_PATH="./data/${BOOK_NAME}-raw.html"
-BAKED_PATH="./data/${BOOK_NAME}-baked.html"
+RAW_PATH="./data/${bookName}-raw.html"
+BAKED_PATH="./data/${bookName}-baked.html"
 
 # Check command line args
 
-if [ -z "${BOOK_NAME}" ]
+if [ -z "${bookName}" ]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
   exit 1
 fi
 
-RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
+RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
 RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
-SASS_PATH="./books/rulesets/${RULESET_NAME}/book.scss"
-CSS_PATH="./books/rulesets/output/${RULESET_NAME}.css"
+sassFile="./books/rulesets/${RULESET_NAME}/book.scss"
+cssFile="./books/rulesets/output/${RULESET_NAME}.css"
 
 if [ ! -f "${RAW_PATH}" ]
 then
@@ -27,19 +27,19 @@ then
   exit 1
 fi
 
-if [ ! -f "${SASS_PATH}" ]
+if [ ! -f "${sassFile}" ]
 then
-  >&2 echo "ERROR: Could not find the raw SCSS file at ${SASS_PATH}"
+  >&2 echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
   exit 1
 fi
 
 
->&2 echo "==> Compile SASS to CSS (${SASS_PATH})"
-bundle exec sass ${SASS_PATH} ${CSS_PATH}
+>&2 echo "==> Compile SASS to CSS (${sassFile})"
+bundle exec sass ${sassFile} ${cssFile}
 
 >&2 echo "==> Baking the book (may take a couple minutes)"
 >&2 echo "Specify additional commandline arguments like -d to this script if you want more debugging"
->&2 echo "Info: Baking ${RAW_PATH} to ${BAKED_PATH} using ${CSS_PATH}"
+>&2 echo "Info: Baking ${RAW_PATH} to ${BAKED_PATH} using ${cssFile}"
 
 # Remove the baked file if it exists
 [ -e "${BAKED_PATH}" ] && rm ${BAKED_PATH}
@@ -50,7 +50,7 @@ then
   . ./venv/bin/activate
 fi
 
-cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${BAKED_PATH}
+cnx-easybake ${DEBUG_FLAG} ${cssFile} ${RAW_PATH} ${BAKED_PATH}
 
 # Validate the cooked file
 cnx-epub-validate-collated ${BAKED_PATH}
