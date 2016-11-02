@@ -39,18 +39,35 @@ then
   fi
 fi
 
+<<<<<<< 9aeda933def33063eaf6271d2b6b33729b3fbe52
 for bookConfig in "${BOOK_CONFIGS[@]}"
+=======
+for bookName in ${BOOK_LIST}
+>>>>>>> camelCase vars in generate-guide
 do
   read -r bookName rulesetName uuid _ <<< "${bookConfig}"
 
+<<<<<<< 9aeda933def33063eaf6271d2b6b33729b3fbe52
   rawFile="./data/${bookName}-raw.html"
   lcovFile="./data/${bookName}.lcov"
+=======
+  RAW_PATH="./data/${bookName}-raw.html"
+  LCOV_PATH="./data/${bookName}.lcov"
+>>>>>>> camelCase vars in generate-guide
 
   if [ -f "${rawFile}" ]
   then
 
+<<<<<<< 9aeda933def33063eaf6271d2b6b33729b3fbe52
     cssFile="./books/rulesets/output/${rulesetName}.css"
 
+=======
+    RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
+    RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
+
+    cssFile="./books/rulesets/output/${RULESET_NAME}.css"
+
+>>>>>>> camelCase vars in generate-guide
     if [ ! -f "${cssFile}" ]
     then
       >&2 echo "ERROR: CSS File missing at ${cssFile}"
@@ -61,13 +78,30 @@ do
     # a non-zero exit status if there are unused selectors
     # and the `set -e` at the top of this script will exit at that point
 
+<<<<<<< 9aeda933def33063eaf6271d2b6b33729b3fbe52
     >&2 echo "==> Generating coverage for ${bookName} in ${lcovFile}"
     $(npm bin)/css-coverage --css ${cssFile} --html ${rawFile} --lcov ${lcovFile} ${debugFlag1} ${debugFlag2}
+=======
+    if [ "${ARG1}" == "--all" ]
+    then
+      >&2 echo "Generating coverage for ${bookName} in ${LCOV_PATH}"
+    else
+      >&2 echo "Coverage is being generated. To see an HTML version, run the following:"
+      >&2 echo "genhtml ${LCOV_PATH} --output-directory ./coverage"
+      >&2 echo "Note: to run this you may need to install genhtml. In OSX it is 'brew install lcov'"
+    fi
+
+    ./node_modules/.bin/css-coverage --css ${cssFile} --html ${RAW_PATH} --lcov ${LCOV_PATH} ${DEBUG_FLAG1} ${DEBUG_FLAG2}
+>>>>>>> camelCase vars in generate-guide
 
   else
     if [ "${arg1}" == "--all" ]
     then
+<<<<<<< 9aeda933def33063eaf6271d2b6b33729b3fbe52
       >&2 echo "WARNING: Skipping ${bookName} because HTML File is missing at ${rawFile}"
+=======
+      >&2 echo "WARNING: Skipping ${bookName} because HTML File is missing at ${RAW_PATH}"
+>>>>>>> camelCase vars in generate-guide
     else
       >&2 echo "ERROR: HTML File missing at ${rawFile}"
       exit 1
