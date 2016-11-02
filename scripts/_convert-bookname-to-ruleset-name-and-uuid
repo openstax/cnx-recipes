@@ -3,7 +3,7 @@ set -e
 
 
 bookName=$1
-BOOK_CONFIG_FILE="./books.txt"
+bookConfigFile="./books.txt"
 
 if [ -z "${bookName}" ]
 then
@@ -15,26 +15,29 @@ then
   exit 1
 fi
 
-if [ ! -f "${BOOK_CONFIG_FILE}" ]
+if [ ! -f "${bookConfigFile}" ]
 then
-  >&2 echo "ERROR: Could not find the file named ${BOOK_CONFIG_FILE}"
+  >&2 echo "ERROR: Could not find the file named ${bookConfigFile}"
   exit 1
 fi
 
 
-# load up all the vars stored in ${BOOK_CONFIG_FILE}
-eval $(cat ${BOOK_CONFIG_FILE})
+# load up all the vars stored in ${bookConfigFile}
+source ${bookConfigFile}
 
+# Loop through all the configs and find the one that matches the book we want
+for bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r bookConfigName rulesetName uuid <<< "${bookConfig}"
 
-# Pull out the ruleset name that matches the ${bookName}
-RULESET_NAME=$(eval echo \${${bookName}_ruleset_name})
-UUID=$(eval echo \${${bookName}_uuid})
+  if [[ "${bookName}" = "${bookConfigName}" ]]
+  then
+    echo ${rulesetName} ${uuid}
+    exit 0
+  fi
 
-if [ -z "${RULESET_NAME}" ]
-then
-  >&2 echo "ERROR: could not find a ruleset_name for the book named ${bookName}"
-  >&2 echo "Please check the ${BOOK_CONFIG_FILE} file and make sure the entry exits"
-  exit 1
-fi
+done
 
-echo ${RULESET_NAME} ${UUID}
+>&2 echo "ERROR: could not find a ruleset_name for the book named ${bookName}"
+>&2 echo "Please check the ${bookConfigFile} file and make sure the entry exits"
+exit 1
