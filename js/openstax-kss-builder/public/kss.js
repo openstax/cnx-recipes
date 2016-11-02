@@ -13,7 +13,7 @@
   var markupNodes = toArray(document.querySelectorAll('.kss-markup')).forEach(function(markupEl) {
 
     // The <pre> tag contains text representing 2 <section> elements;
-    // 1 for the Raw HTML and 1 for the cooked HTML.
+    // 1 for the Raw HTML and 1 for the baked HTML.
     //
     // 1. Pull them into a div (so the extra <html> and <body> tags are removed)
     // 2. Insert them back into the DOM with a little heading describing what they do
@@ -23,7 +23,7 @@
     var containerToParseMarkup = document.createElement('div');
     containerToParseMarkup.innerHTML=preEl.innerText;
 
-    // Some conversions apparently don't have a Raw HTML and a Cooked HTML.
+    // Some conversions apparently don't have a Raw HTML and a Baked HTML.
     // probably because they are Page or Metadata snippets and are inline in the HTML
     // so skip them.
     if (containerToParseMarkup.querySelector('.-kss-autogen-guide-markup')) {

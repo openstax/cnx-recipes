@@ -3,7 +3,7 @@ set -e
 
 BOOK_NAME=$1
 RAW_PATH=$2
-COOKED_PATH=$3
+BAKED_PATH=$3
 DEBUG_FLAG=$4
 
 SASS_PATH="./books/rulesets/${BOOK_NAME}/book.scss"
@@ -14,7 +14,7 @@ CSS_PATH="./books/rulesets/output/${BOOK_NAME}.css"
 if [ -z "${BOOK_NAME}" ]
 then
   echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  echo 'The required arguments are: BOOK_NAME, RAW_PATH, COOKED_PATH'
+  echo 'The required arguments are: BOOK_NAME, RAW_PATH, BAKED_PATH'
   exit 1
 fi
 
@@ -24,9 +24,9 @@ then
   exit 1
 fi
 
-if [ -z "${COOKED_PATH}" ]
+if [ -z "${BAKED_PATH}" ]
 then
-  echo 'ERROR: You must specify a cooked path'
+  echo 'ERROR: You must specify a baked path'
   exit 1
 fi
 
@@ -37,8 +37,8 @@ then
 fi
 
 
-# Remove the cooked file if it exists
-# [ -e "${COOKED_PATH}" ] && rm ${COOKED_PATH}
+# Remove the baked file if it exists
+# [ -e "${BAKED_PATH}" ] && rm ${BAKED_PATH}
 # commented out because it could be /dev/stdout
 
 # Activate the venv if not running Travis or already in a virtualenv
@@ -47,7 +47,7 @@ then
   . ./venv/bin/activate
 fi
 
-cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${COOKED_PATH}
+cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${BAKED_PATH}
 # Validate the cooked file.
 # Commented because snippets do not pass the data-type="metadata" validation
 # and adding in all those metadata blocks would be cumbersome and distract
