@@ -1,22 +1,22 @@
 #!/bin/sh
 
-bookName=$1
+rulesetName=$1
 
 sassDir='./books/'
 styleguideDir='./styleguide/'
-sassFile="${sassDir}/rulesets/${bookName}/book.scss"
+sassFile="${sassDir}/rulesets/${rulesetName}/book.scss"
 cssFile="${styleguideDir}/guide.css"
-bookCssFile="${sassDir}/rulesets/output/${bookName}.css"
+bookCssFile="${sassDir}/rulesets/output/${rulesetName}.css"
 guideHomepageFile="./guide-homepage.md" # Relative to ${sassDir}/rulesets/
 
 tempDir="./tmp/"
 commonDocumentationDir="./books/rulesets/common"
-bookDocumentationDir="./books/rulesets/${bookName}"
+bookDocumentationDir="./books/rulesets/${rulesetName}"
 kssOutputFile="${tempDir}/kss-output.txt"
 
 # Check command line args
 
-if [ -z "${bookName}" ]
+if [ -z "${rulesetName}" ]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
   exit 1
@@ -24,7 +24,7 @@ fi
 
 
 
->&2 echo "==> Compiling the guide.scss file"
+>&2 echo "==> Compiling the guide.scss file for ${rulesetName}"
 if [ ! -e ${styleguideDir} ]
 then
   mkdir ${styleguideDir} || exit 1
@@ -35,7 +35,7 @@ bundle exec sass ${sassFile} ${bookCssFile} || exit 1
 
 >&2 echo "==> Generating the baked example HTML files"
 
-# Create a temporary directory which contains the rulesets/common/ and rulesets/${bookName} directories.
+# Create a temporary directory which contains the rulesets/common/ and rulesets/${rulesetName} directories.
 # This is because we want the styleguide to contain docs of all the common/ elements
 # and the book-specific elements, and kss only allows you to point to 1 directory
 # to look at all the SASS files.
@@ -51,8 +51,8 @@ for snippetFileName in $(find "${tempDir}" -name "*.html")
 do
   >&2 echo "Generating temporary ${snippetFileName}-baked.html"
   # commented because xmllint does not like html5 element names like <figure>
-  # ./scripts/bake-file ${bookName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.html
-  ./scripts/bake-file ${bookName} ${snippetFileName} ${snippetFileName}-temp1-baked.html || exit 1
+  # ./scripts/bake-file ${rulesetName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.html
+  ./scripts/bake-file ${rulesetName} ${snippetFileName} ${snippetFileName}-temp1-baked.html || exit 1
 
   # Construct an HTML file that contains both the raw and baked HTML
   # so it can be separated in the browser

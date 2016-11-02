@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Find all the rulesets that need to be generated
-for bookName in $(cd ./books/rulesets/ && ls -d -- */ )
-do
-  bookName=$(basename "${bookName}") # Strip the trailing /
-  if [[ ! "${bookName}" = 'output' && ! "${bookName}" = 'common' ]]
-  then
-    sassFile="./books/rulesets/${bookName}/book.scss"
-    cssFile="./books/rulesets/output/${bookName}.css"
+# Pull in the BOOK_CONFIGS and RULESET_NAMES
+source ./books.txt || exit 1
 
-    >&2 echo "==> Generating ${cssFile}"
-    bundle exec sass ${sassFile} ${cssFile} || exit 1
-  fi
+for rulesetName in "${RULESET_NAMES[@]}"
+do
+
+  sassFile="./books/rulesets/${rulesetName}/book.scss"
+  cssFile="./books/rulesets/output/${rulesetName}.css"
+
+  >&2 echo "==> Generating ${cssFile}"
+
+  bundle exec sass ${sassFile} ${cssFile} || exit 1
 done

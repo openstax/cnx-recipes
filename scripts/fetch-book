@@ -16,37 +16,47 @@ then
   exit 1
 fi
 
-if [ "${arg1}" == "--all" ]
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [ ! "${arg1}" == "--all" ]
 then
-  source ./books.txt
-else
-  BOOK_LIST="${arg1}"
-fi
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for bookConfig in "${BOOK_CONFIGS[@]}"
+  do
+    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
 
->&2 echo "Preparing to fetch book(s): ${BOOK_LIST}"
+    if [[ "${arg1}" = "${bookConfigName}" ]]
+    then
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      foundConfig=1
+      break
+    fi
+  done
 
-for bookName in ${BOOK_LIST}
-do
-
-  rulesetNameAndUuid=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
-  bookUuidAndVer=${rulesetNameAndUuid[1]}
-  rawFile="./data/${bookName}-raw.html"
-
-  if [ -z "${bookUuidAndVer}" ]
+  if [[ ! 1 -eq "${foundConfig}" ]]
   then
-    >&2 echo "ERROR: Could not find Book UUID for book named ${bookName}"
+    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
+    >&2 echo "check ./books.txt"
     exit 1
   fi
+fi
 
-  >&2 echo "==> Generating an EPUB from the database and converting to a single HTML file (may take a minute)"
-  >&2 echo "Book name: ${bookName} ${bookUuidAndVer}"
+for bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+  rawFile="./data/${bookName}-raw.html"
+
+  >&2 echo "==> Fetching ${bookName}"
+  >&2 echo "generating an EPUB from the database and converting to a single HTML file"
+  >&2 echo "(may take a minute)..."
 
   tempEpubFile="~/temp.intenral.epub"
   tempHtmlFile="~/temp.html"
 
   rmTempEpubCmd="[ -e ${tempEpubFile} ] && rm ${tempEpubFile}"
   rmTempHtmlCmd="[ -e ${tempHtmlFile} ] && rm ${tempHtmlFile}"
-  generateEpubCmd="/var/cnx/venvs/publishing/bin/cnx-archive-export_epub /etc/cnx/publishing/app.ini ${bookUuidAndVer} ${tempEpubFile}"
+  generateEpubCmd="/var/cnx/venvs/publishing/bin/cnx-archive-export_epub /etc/cnx/publishing/app.ini ${uuid} ${tempEpubFile}"
   generateHtmlCmd="/var/cnx/venvs/publishing/bin/cnx-epub-single_html ${tempEpubFile} > ${tempHtmlFile}"
 
   commands="${rmTempEpubCmd}; ${rmTempHtmlCmd}; ${generateEpubCmd} && ${generateHtmlCmd}"

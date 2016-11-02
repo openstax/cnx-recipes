@@ -1,1 +1,2 @@
 brew "rbenv"
+brew "lcov"

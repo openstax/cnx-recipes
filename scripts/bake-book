@@ -1,56 +1,84 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 
-bookName=$1
+arg1=$1
 debugFlag=$2
-
-rawFile="./data/${bookName}-raw.html"
-bakedFile="./data/${bookName}-baked.html"
 
 # Check command line args
 
-if [ -z "${bookName}" ]
+if [ -z "${arg1}" ]
 then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  exit 1
-fi
-
-rulesetNameAndUuid=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${bookName}))
-rulesetName=${rulesetNameAndUuid[0]}
-sassFile="./books/rulesets/${rulesetName}/book.scss"
-cssFile="./books/rulesets/output/${rulesetName}.css"
-
-if [ ! -f "${rawFile}" ]
-then
-  >&2 echo 'ERROR: Could not find the raw HTML file. Have you run fetch-book yet?'
-  exit 1
-fi
-
-if [ ! -f "${sassFile}" ]
-then
-  >&2 echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument (or --all). For example: physics'
+  >&2 echo "You can specify additional commandline arguments like -d to this script if you want more debugging"
   exit 1
 fi
 
 
->&2 echo "==> Compile SASS to CSS (${sassFile})"
-bundle exec sass ${sassFile} ${cssFile}
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
 
->&2 echo "==> Baking the book (may take a couple minutes)"
->&2 echo "Specify additional commandline arguments like -d to this script if you want more debugging"
->&2 echo "Info: Baking ${rawFile} to ${bakedFile} using ${cssFile}"
-
-# Remove the baked file if it exists
-[ -e "${bakedFile}" ] && rm ${bakedFile}
-
-# Activate the venv if not running Travis or already in a virtualenv
-if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
+if [ ! "${arg1}" == "--all" ]
 then
-  source ./venv/bin/activate
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for bookConfig in "${BOOK_CONFIGS[@]}"
+  do
+    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
+
+    if [[ "${arg1}" = "${bookConfigName}" ]]
+    then
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      foundConfig=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${foundConfig}" ]]
+  then
+    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
+    >&2 echo "check ./books.txt"
+    exit 1
+  fi
 fi
 
-cnx-easybake ${debugFlag} ${cssFile} ${rawFile} ${bakedFile}
 
-# Validate the cooked file
-cnx-epub-validate-collated ${bakedFile}
+./scripts/compile-books || exit 1
+
+for bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+
+  rawFile="./data/${bookName}-raw.html"
+  bakedFile="./data/${bookName}-baked.html"
+  sassFile="./books/rulesets/${rulesetName}/book.scss"
+  cssFile="./books/rulesets/output/${rulesetName}.css"
+
+  if [ ! -f "${rawFile}" ]
+  then
+    >&2 echo 'ERROR: Could not find the raw HTML file. Have you run fetch-book yet?'
+    exit 1
+  fi
+
+  if [ ! -f "${sassFile}" ]
+  then
+    >&2 echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
+    exit 1
+  fi
+
+
+  >&2 echo "==> Baking ${rawFile} using ${rulesetName} (may take a few minutes)"
+
+  # Remove the baked file if it exists
+  [ -e "${bakedFile}" ] && rm ${bakedFile}
+
+  # Activate the venv if not running Travis or already in a virtualenv
+  if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
+  then
+    source ./venv/bin/activate
+  fi
+
+  cnx-easybake ${debugFlag} ${cssFile} ${rawFile} ${bakedFile}
+
+  # Validate the cooked file
+  cnx-epub-validate-collated ${bakedFile}
+done

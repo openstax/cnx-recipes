@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Run the linter
 npm test
@@ -10,13 +9,10 @@ npm test
 # Make sure the docs and guides still generate
 ./scripts/generate-docs
 
-# Find all the rulesets that need to be generated
-for bookName in $(cd ./books/rulesets/ && ls -d -- */ )
+# Pull in the BOOK_CONFIGS and BOOK_NAMES
+source ./books.txt || exit 1
+
+for rulesetName in "${RULESET_NAMES[@]}"
 do
-  bookName=$(basename "${bookName}") # Strip the trailing /
-  if [[ ! "${bookName}" = 'output' && ! "${bookName}" = 'common' ]]
-  then
-    >&2 echo "==> Generating Guide for ${bookName}"
-    ./scripts/generate-guide "${bookName}" || exit 1
-  fi
+  ./scripts/generate-guide "${rulesetName}"
 done
