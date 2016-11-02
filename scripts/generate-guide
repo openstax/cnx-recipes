@@ -29,7 +29,7 @@ fi
 
 
 
->&2 echo "Step 1/4: Compile the guide.scss file"
+>&2 echo "==> Compiling the guide.scss file"
 if [ ! -e ${STYLEGUIDE_DIR} ]
 then
   mkdir ${STYLEGUIDE_DIR} || exit 1
@@ -38,7 +38,7 @@ bundle exec sass ${SASS_PATH} ${CSS_PATH} || exit 1
 bundle exec sass ${SASS_PATH} ${BOOK_CSS_PATH} || exit 1
 
 
->&2 echo "Step 2/4: Generate the baked example HTML files"
+>&2 echo "==> Generating the baked example HTML files"
 
 # Create a temporary directory which contains the rulesets/common/ and rulesets/${BOOK_NAME} directories.
 # This is because we want the styleguide to contain docs of all the common/ elements
@@ -73,14 +73,14 @@ do
 done
 
 
->&2 echo "Step 3/4: Generate the style guide"
+>&2 echo "==> Generating the style guide"
 # The CSS path is relative to the styleguide directory, hence `./guide.css`
 # Exclude parsing the output/*.css files by setting the --mask
-./node_modules/.bin/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${HOMEPAGE_PATH} --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${TEMP_DIR} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${KSS_OUTPUT_FILE}"  || exit 1
+$(npm bin)/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${HOMEPAGE_PATH} --destination ${STYLEGUIDE_DIR} --css ./guide.css --source ${TEMP_DIR} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${KSS_OUTPUT_FILE}"  || exit 1
 
 
 # Delete the temp files created above
->&2 echo "Step 4/4: Deleting the baked example HTML files"
+>&2 echo "==> Deleting the baked example HTML files"
 for FILE_NAME in $(find ./books/rulesets/ -name "*-baked.html")
 do
   # echo "Removing temporary ${FILE_NAME}"
