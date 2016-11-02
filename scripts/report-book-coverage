@@ -25,7 +25,7 @@ for bookName in ${BOOK_LIST}
 do
 
   rawFile="./data/${bookName}-raw.html"
-  LCOV_PATH="./data/${bookName}.lcov"
+  lcovFile="./data/${bookName}.lcov"
 
   if [ -f "${rawFile}" ]
   then
@@ -47,14 +47,14 @@ do
 
     if [ "${arg1}" == "--all" ]
     then
-      >&2 echo "Generating coverage for ${bookName} in ${LCOV_PATH}"
+      >&2 echo "Generating coverage for ${bookName} in ${lcovFile}"
     else
       >&2 echo "Coverage is being generated. To see an HTML version, run the following:"
-      >&2 echo "genhtml ${LCOV_PATH} --output-directory ./coverage"
+      >&2 echo "genhtml ${lcovFile} --output-directory ./coverage"
       >&2 echo "Note: to run this you may need to install genhtml. In OSX it is 'brew install lcov'"
     fi
 
-    ./node_modules/.bin/css-coverage --css ${cssFile} --html ${rawFile} --lcov ${LCOV_PATH} ${debugFlag1} ${debugFlag2}
+    ./node_modules/.bin/css-coverage --css ${cssFile} --html ${rawFile} --lcov ${lcovFile} ${debugFlag1} ${debugFlag2}
 
   else
     if [ "${arg1}" == "--all" ]
