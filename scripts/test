@@ -16,3 +16,10 @@ for rulesetName in "${RULESET_NAMES[@]}"
 do
   ./scripts/generate-guide "${rulesetName}"
 done
+
+# Generate an HTML report (if genhtml is installed)
+if [[ -n "$(which genhtml)" ]]
+then
+  >&2 echo "==> Generating HTML Coverage report at ./coverage/"
+  genhtml --quiet --output ./coverage/ $(find ./tmp/ -name "*.lcov")
+fi

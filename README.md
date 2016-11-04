@@ -1,3 +1,5 @@
+[![Coverage][coveralls-image]][coveralls-url]
+
 # Install
 
 1. run `./scripts/setup` to install the dependencies. You only have to run this once!
@@ -108,3 +110,7 @@ To update the Documentation in the gh-pages branch:
 1. `./scripts/generate-and-update-gh-pages`
 
 **Note:** This will push changes if successful
+
+
+[coveralls-image]: https://img.shields.io/coveralls/connexions/cnx-recipes.svg
+[coveralls-url]: https://coveralls.io/github/Connexions/cnx-recipes

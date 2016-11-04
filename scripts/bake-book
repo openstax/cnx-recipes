@@ -77,8 +77,18 @@ do
     source ./venv/bin/activate
   fi
 
-  cnx-easybake ${debugFlag} ${cssFile} ${rawFile} ${bakedFile}
+  lcovFile="${rawFile}.lcov"
+
+  cnx-easybake --lcov "${lcovFile}" ${debugFlag} "${cssFile}" "${rawFile}" "${bakedFile}"
+
+  # Generate an HTML report (if genhtml is installed)
+  if [[ -n "$(which genhtml)" ]]
+  then
+    >&2 echo "==> Generating HTML coverage report at ./coverage/"
+    genhtml --quiet --output ./coverage/ "${lcovFile}"
+  fi
 
   # Validate the cooked file
+  >&2 echo "==> Validating ${bakedFile}"
   cnx-epub-validate-collated ${bakedFile}
 done

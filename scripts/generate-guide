@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 rulesetName=$1
 
@@ -10,6 +10,7 @@ bookCssFile="${sassDir}/rulesets/output/${rulesetName}.css"
 guideHomepageFile="./guide-homepage.md" # Relative to ${sassDir}/rulesets/
 
 tempDir="./tmp/"
+tempRulesetDir="${tempDir}/${rulesetName}/"
 commonDocumentationDir="./books/rulesets/common"
 bookDocumentationDir="./books/rulesets/${rulesetName}"
 kssOutputFile="${tempDir}/kss-output.txt"
@@ -39,15 +40,24 @@ bundle exec sass ${sassFile} ${bookCssFile} || exit 1
 # This is because we want the styleguide to contain docs of all the common/ elements
 # and the book-specific elements, and kss only allows you to point to 1 directory
 # to look at all the SASS files.
-if [ -d "${tempDir}" ]
+if [[ ! -d "${tempDir}" ]]
 then
-  rm -rf "${tempDir}" || exit 1
+  mkdir "${tempDir}" || exit 1
+# Commented so we keep the directory because the lcov files are useful
+# else
+#   rm -rf "${tempDir}" || exit 1
 fi
-mkdir "${tempDir}" || exit 1
-cp -R "${commonDocumentationDir}" "${tempDir}" || exit 1
-cp -R "${bookDocumentationDir}" "${tempDir}" || exit 1
 
-for snippetFileName in $(find "${tempDir}" -name "*.html")
+if [[ -d "${tempRulesetDir}" ]]
+then
+  rm -rf "${tempRulesetDir}" || exit 1
+fi
+mkdir "${tempRulesetDir}" || exit 1
+
+cp -R "${commonDocumentationDir}" "${tempRulesetDir}" || exit 1
+cp -R "${bookDocumentationDir}" "${tempRulesetDir}" || exit 1
+
+for snippetFileName in $(find "${tempRulesetDir}" -name "*.html")
 do
   >&2 echo "Generating temporary ${snippetFileName}-baked.html"
   # commented because xmllint does not like html5 element names like <figure>
@@ -71,16 +81,16 @@ done
 >&2 echo "==> Generating the style guide"
 # The CSS path is relative to the styleguide directory, hence `./guide.css`
 # Exclude parsing the output/*.css files by setting the --mask
-$(npm bin)/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${guideHomepageFile} --destination ${styleguideDir} --css ./guide.css --source ${tempDir} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"  || exit 1
+$(npm bin)/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${guideHomepageFile} --destination ${styleguideDir} --css ./guide.css --source ${tempRulesetDir} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"  || exit 1
 
 
 # Delete the temp files created above
->&2 echo "==> Deleting the baked example HTML files"
-for snippetFileName in $(find ./books/rulesets/ -name "*-baked.html")
-do
-  # echo "Removing temporary ${snippetFileName}"
-  rm ${snippetFileName} || exit 1
-done
+# >&2 echo "==> Deleting the baked example HTML files"
+# for snippetFileName in $(find ./books/rulesets/ -name "*-baked.html")
+# do
+#   # echo "Removing temporary ${snippetFileName}"
+#   rm ${snippetFileName} || exit 1
+# done
 
 # HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
 # So, check the output of kss to see if any errors were reported.
@@ -91,6 +101,12 @@ then
   >&2 echo "${missingFiles}"
   >&2 echo "Check ${kssOutputFile} for more details"
   exit 1
+fi
+
+# Generate an HTML report (if genhtml is installed)
+if [[ -n "$(which genhtml)" ]]
+then
+  genhtml --quiet --output ./coverage/ $(find "${tempRulesetDir}" -name "*.lcov")
 fi
 
 >&2 echo "Guide is available at ${styleguideDir} . You can open it in a browser"
