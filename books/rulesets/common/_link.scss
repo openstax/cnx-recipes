@@ -1,14 +1,24 @@
-@import "./utils";
-
 //EOC composite pages must be created before this runs
-@mixin link_linkToProblemsFromSolutionsEOC($toElement, $fromElement, $problemCounter) {
-  @include utils_linkToFromForward(
-    ".os-hasSolution [data-type="problem"] .os-#{$toElement}",
-    "[data-type="solution"] .os-#{$fromElement}",
-    problem,
-    solution,
-    $problemCounter
-  );
+/// Creates a link to the solution and a link back to the problem for an exercise
+/// Note: This replaces the solution id with a new id whose value is `${EXERCISEID}-solution`
+@mixin link_linkToProblemsFromSolutionsEOC() {
+
+  [data-type="exercise"].os-hasSolution {
+    string-set: exerciseId attr(id);
+
+    [data-type="problem"] .os-number {
+      container: a;
+      attr-href: "#" string(exerciseId) '-solution';
+    }
+
+    [data-type="solution"] {
+      attr-id: string(exerciseId) '-solution';
+      .os-number {
+        container: a;
+        attr-href: "#" string(exerciseId);
+      }
+    }
+  }
 }
 
 

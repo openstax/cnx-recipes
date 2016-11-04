@@ -363,11 +363,11 @@
     class: "os-text"; }
 :pass(0) a[href*="archive.cnx.org/specials/"] {
   attr-target: "_blank"; }
-:pass(0) .exercise {
+:pass(0) [data-type="exercise"] {
   string-set: isSolution ""; }
-  :pass(0) .exercise .solution {
+  :pass(0) [data-type="exercise"] [data-type="solution"] {
     string-set: isSolution " os-hasSolution "; }
-  :pass(0) .exercise::deferred {
+  :pass(0) [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
 :pass(0) [data-type="note"].linkup::before {
   container: span;
@@ -648,16 +648,16 @@
   counter-reset: exerciseAll; }
 :pass(3) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
-:pass(3) .os-hasSolution [data-type=problem] .os-number {
-  container: a;
-  attr-id: "problem-" counter(exerciseAll);
-  attr-href: "#" solution- counter(exerciseAll);
-  string-set: problem-ID "problem-" counter(exerciseAll);
-  string-set: solution-ID "solution-" counter(exerciseAll); }
-:pass(3) [data-type=solution] .os-number::outside {
-  container: a;
-  attr-id: string(solution-ID);
-  attr-href: "#" string(problem-ID); }
+:pass(3) [data-type="exercise"].os-hasSolution {
+  string-set: exerciseId attr(id); }
+  :pass(3) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
+    container: a;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(3) [data-type="exercise"].os-hasSolution [data-type="solution"] {
+    attr-id: string(exerciseId) "-solution"; }
+    :pass(3) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
+      container: a;
+      attr-href: "#" string(exerciseId); }
 :pass(3) div[data-type="chapter"] {
   node-set: chapterHeaderNode; }
 :pass(3) [data-type="chapter"] .os-solutions-chapter-area {
