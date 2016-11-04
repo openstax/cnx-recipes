@@ -6,7 +6,7 @@
   - `[data-type='metadata']` The attribution information for this Page
   - `[data-type='document-title']` The title of the Page
 
-  Markup: ./book.page.html-cooked.html
+  Markup: ./book.page.html-baked.html
 
   Style guide: book.page
 */
@@ -51,7 +51,7 @@
 
   **TODO:** Discuss how to automate glossary-creation
 
-  Markup: ./page.term.html-cooked.html
+  Markup: ./page.term.html-baked.html
 
   Style guide: page.term
 */
@@ -63,7 +63,7 @@
 
   Contains an optional title, and optionally an additional class to help style the note
 
-  Markup: ./page.note.html-cooked.html
+  Markup: ./page.note.html-baked.html
 
   Style guide: page.note
 */
@@ -77,15 +77,15 @@
       - `img[src][alt]` : The image for the Figure
 
   TODO: Maybe this should use the `<picture>` element instead of the `[data-type='media']` element:
-  http://www.html-cooked.html5rocks.com/en/tutorials/responsive/picture-element/
+  http://www.html-baked.html5rocks.com/en/tutorials/responsive/picture-element/
 
   # TODO
 
-  - Decide on what the cooked markup for a figure with a title and caption should look like.
+  - Decide on what the baked markup for a figure with a title and caption should look like.
     - Proposals have mentioned using `<figcaption>` most of the time.
     - Maybe what is in the Raw HTML is _good enough_?
 
-  Markup: ./page.figure.html-cooked.html
+  Markup: ./page.figure.html-baked.html
 
   Style guide: page.figure
 */
@@ -103,7 +103,7 @@
 
   TODO: Move these into a separate "inline" section in the HTML guide
 
-  Markup: ./page.para.html-cooked.html
+  Markup: ./page.para.html-baked.html
 
   Style guide: page.para
 */
@@ -112,7 +112,7 @@
 
   A (sub)section of content which contains a title.
 
-  Markup: ./page.section.html-cooked.html
+  Markup: ./page.section.html-baked.html
 
   Style guide: page.section
 */
@@ -122,7 +122,7 @@
   An example which is usually styled to not be part of the flow of normal content
   (similar to a Note).
 
-  Markup: ./page.example.html-cooked.html
+  Markup: ./page.example.html-baked.html
 
   Style guide: page.example
 */
@@ -136,7 +136,7 @@
 
   Solutions are collated (at the end of section, end of chapter or end of book), they are numbered (the number is the same as the exercise they are associated to) and link back to their exercise.
 
-  Markup: ./page.exercise.html-cooked.html
+  Markup: ./page.exercise.html-baked.html
 
   Style guide: page.exercise
 */
@@ -145,7 +145,7 @@
 
   An equation wraps a MathML formula and is usually numbered.
 
-  Markup: ./page.equation.html-cooked.html
+  Markup: ./page.equation.html-baked.html
 
   Style guide: page.equation
 */
@@ -156,7 +156,7 @@
   It is collated as a separate Page at the end of a Chapter or a Book.
   Also, it is collected from individual glossary elements in each raw Page.
 
-  Markup: ./book.glossary.html-cooked.html
+  Markup: ./book.glossary.html-baked.html
 
   Style guide: book.glossary
 */
@@ -165,7 +165,7 @@
 
   The book Index contains terms and links to their occurences in the book.
 
-  Markup: ./book.index.html-cooked.html
+  Markup: ./book.index.html-baked.html
 
   Style guide: book.index
 */
@@ -178,11 +178,11 @@
 
   # TODO
 
-  - Decide on what the cooked markup for a table with a title and caption should look like.
+  - Decide on what the baked markup for a table with a title and caption should look like.
     - Proposals have mentioned wrapping the `<table>` element with a `.os-table-container` element.
     - Maybe what is in the Raw HTML is _good enough_?
 
-  Markup: ./page.table.html-cooked.html
+  Markup: ./page.table.html-baked.html
 
   Style guide: page.table
 */
@@ -212,7 +212,7 @@
 
   The introduction page typically contains a splash image, a chapter outline and an introductory paragraph.
 
-  Markup: ./book.chapter.html-cooked.html
+  Markup: ./book.chapter.html-baked.html
 
   Style guide: book.chapter
 */
@@ -224,7 +224,7 @@
   Currently, the ruleset supports only tables and figures but
   this may apply to a note, a table, an equation, a figure.
 
-  Markup: ./page.unnumbered.html-cooked.html
+  Markup: ./page.unnumbered.html-baked.html
 
   Style guide: page.unnumbered
 
@@ -913,16 +913,16 @@
   counter-reset: exerciseAll; }
 :pass(3) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
-:pass(3) .os-hasSolution [data-type=problem] .os-number {
-  container: a;
-  attr-id: "problem-" counter(exerciseAll);
-  attr-href: "#" solution- counter(exerciseAll);
-  string-set: problem-ID "problem-" counter(exerciseAll);
-  string-set: solution-ID "solution-" counter(exerciseAll); }
-:pass(3) [data-type=solution] .os-number::outside {
-  container: a;
-  attr-id: string(solution-ID);
-  attr-href: "#" string(problem-ID); }
+:pass(3) [data-type="exercise"].os-hasSolution {
+  string-set: exerciseId attr(id); }
+  :pass(3) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
+    container: a;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(3) [data-type="exercise"].os-hasSolution [data-type="solution"] {
+    attr-id: string(exerciseId) "-solution"; }
+    :pass(3) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
+      container: a;
+      attr-href: "#" string(exerciseId); }
 :pass(3) div[data-type="chapter"] {
   node-set: chapterHeaderNode; }
 :pass(3) [data-type="chapter"] .os-index-chapter-area {
