@@ -9,11 +9,11 @@ then
   # Only activate the virtualenv if not already in one
   if [[ -z "${VIRTUAL_ENV}" ]]
   then
-    echo "==> Setting up a python virtualenv"
+    >&2 echo "==> Setting up a python virtualenv"
     virtualenv ./venv/
     . ./venv/bin/activate
   else
-    echo "==> Skipping virtualenv because already in one"
+    >&2 echo "==> Skipping virtualenv because already in one"
   fi
 fi
 
@@ -21,17 +21,13 @@ fi
 if [[ ( "${CI}" = "true" ) || ( -n "${VIRTUAL_ENV}" ) ]]
 then
 
-  echo "==> Installing python packages"
-
-  pip install --quiet requests # Used for rebaking a book
-  pip install --quiet git+https://github.com/Connexions/cssselect2.git
-  pip install --quiet git+https://github.com/Connexions/cnx-easybake.git
-  pip install --quiet git+https://github.com/Connexions/cnx-epub.git
+  >&2 echo "==> Installing python packages"
+  pip install -r ./requirements.txt
 
 else
   echo "ERROR. Not in a virtualenv"
   exit 1
 fi
 
-echo "==> Installing sassdoc (depends on NodeJS)"
+>&2 echo "==> Installing sassdoc (depends on NodeJS)"
 npm install

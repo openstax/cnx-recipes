@@ -6,7 +6,7 @@ BOOK_NAME=$1
 DEBUG_FLAG=$2
 
 RAW_PATH="./data/${BOOK_NAME}-raw.html"
-COOKED_PATH="./data/${BOOK_NAME}-cooked.html"
+BAKED_PATH="./data/${BOOK_NAME}-baked.html"
 
 # Check command line args
 
@@ -38,10 +38,10 @@ fi
 bundle exec sass ${SASS_PATH} ${CSS_PATH}
 
 >&2 echo "Step 2/2: Baking the book (may take a couple minutes). specify additional commandline arguments like -d to this script if you want more debugging"
->&2 echo "Info: Baking ${RAW_PATH} to ${COOKED_PATH} using ${CSS_PATH}"
+>&2 echo "Info: Baking ${RAW_PATH} to ${BAKED_PATH} using ${CSS_PATH}"
 
-# Remove the cooked file if it exists
-[ -e "${COOKED_PATH}" ] && rm ${COOKED_PATH}
+# Remove the baked file if it exists
+[ -e "${BAKED_PATH}" ] && rm ${BAKED_PATH}
 
 # Activate the venv if not running Travis or already in a virtualenv
 if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
@@ -49,4 +49,6 @@ then
   . ./venv/bin/activate
 fi
 
-cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${COOKED_PATH}
+cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${BAKED_PATH}
+# Validate the cooked file
+cnx-epub-validate-collated ${BAKED_PATH}

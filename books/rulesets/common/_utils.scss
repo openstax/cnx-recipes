@@ -60,39 +60,13 @@
 /// @arg {Text} $toCounter [null] - The counter object used to automatically ID the element to be linked to if it doesn't already have an id. If null, the link href will be to an already existing id of the linked-to element
 /// @group utils
 @mixin utils_hasSolution() {
-  .exercise {
-    .solution {
+  [data-type="exercise"] {
+    [data-type="solution"] {
       string-set: isSolution " os-hasSolution ";
     }
     string-set: isSolution "";
     &::deferred {
       class: attr(class) string(isSolution, " ") ;
-    }
-  }
-}
-
-/// NEEDS DOCUMENTATION
-/// @group needs-docs
-@mixin utils_linkToFromForward($toSelector, $fromSelector, $toName, $fromName, $toCounter: null) {
-  #{$toSelector} {
-    @if ($toCounter != null) {
-      $toID: "#{$toName}-"counter($toCounter);
-      $fromID: "#{$fromName}-"counter($toCounter);
-      container: a;
-      attr-id: $toID;
-      attr-href: "#" #{$fromID};
-      string-set: #{$toName}-ID $toID;
-      string-set: #{$fromName}-ID $fromID;
-    } @else {
-      //FIXME forward links with existing ID Todo
-      string-set: #{$toName}-ID attr(id);
-    }
-  }
-  #{$fromSelector} {
-    &::outside {
-      container: a;
-      attr-id: string(#{$fromName}-ID);
-      attr-href: "#" string(#{$toName}-ID);
     }
   }
 }

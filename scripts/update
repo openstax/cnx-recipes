@@ -11,25 +11,16 @@ fi
 
 if [[ ( "${CI}" = "true" ) || ( -n "${VIRTUAL_ENV}" ) ]]
 then
-  echo '==> Uninstalling python packages'
+  >&2 echo '==> Uninstalling python packages'
+  pip uninstall --yes -r requirements.txt
 
-  pip uninstall --quiet --yes requests # Used for rebaking a book
-  pip uninstall --quiet --yes cssselect2
-  pip uninstall --quiet --yes cnx-easybake
-  pip uninstall --quiet --yes cnx-epub
-
-
-  echo '==> Reinstalling python packages'
-
-  pip install requests # Used for rebaking a book
-  pip install --quiet git+https://github.com/Connexions/cssselect2.git
-  pip install --quiet git+https://github.com/Connexions/cnx-easybake.git
-  pip install --quiet git+https://github.com/Connexions/cnx-epub.git
+  >&2 echo '==> Reinstalling python packages'
+  pip install -r requirements.txt
 
 else
   echo "Error. Not in a virtualenv"
   exit 1
 fi
 
-echo "==> Updating sassdoc to the version listed in package.json"
+>&2 echo "==> Updating sassdoc to the version listed in package.json"
 npm install
