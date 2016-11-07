@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Resolve all dependencies that the application requires to run.
 # From https://github.com/github/scripts-to-rule-them-all/blob/master/script/bootstrap
@@ -33,3 +33,37 @@ if [ -f "Gemfile" ]; then
     bundle install --path vendor/gems --quiet --without production
   }
 fi
+
+
+
+
+>&2 echo "==> Setting up node version"
+# if [[ -z $(which nvm) ]]
+# then
+#
+#   # check that nvm was installed
+#   if [[ ! -f ~/.nvm/nvm.sh ]]
+#   then
+#     >&2 echo "==> Downloading nvm"
+#     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
+#   fi
+#
+#   # check that nvm was installed
+#   if [[ ! -f ~/.nvm/nvm.sh ]]
+#   then
+#     >&2 echo "Skipping the node version setup because nvm does not appear to be installed."
+#     >&2 echo "See https://github.com/creationix/nvm for install instructions."
+#   else
+#     >&2 echo "==> Activating nvm"
+#     source ~/.nvm/nvm.sh
+#     >&2 echo "nvm is activated"
+#   fi
+# fi
+#
+# nvm use || echo "Problem switching node versions"
+
+>&2 echo "Using node: $(node --version)"
+>&2 echo "Using npm: $(npm --version)"
+
+>&2 echo "==> Installing Node package dependencies"
+npm install || exit 1
