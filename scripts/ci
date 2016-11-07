@@ -5,7 +5,8 @@ set -e
 if [[ -z "$(which n)" ]]
 then
   npm install n
-  $(npm bin)/n $(cat .nvmrc) || exit 1
+  # Since Travis does not like changing system directories create a local one
+  N_PREFIX="~/.node-versions" $(npm bin)/n $(cat .nvmrc) || exit 1
 else
   n $(cat .nvmrc) || exit 1
 fi
