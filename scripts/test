@@ -1,25 +1,25 @@
 #!/bin/bash
 
 # Run the linter
-npm test
+npm test || exit 1
 
 # Generate the CSS files for books
-./scripts/compile-books
+./scripts/compile-books || exit 1
 
 # Make sure the docs and guides still generate
-./scripts/generate-docs
+./scripts/generate-docs || exit 1
 
 # Pull in the BOOK_CONFIGS and BOOK_NAMES
 source ./books.txt || exit 1
 
 for rulesetName in "${RULESET_NAMES[@]}"
 do
-  ./scripts/generate-guide "${rulesetName}"
+  ./scripts/generate-guide "${rulesetName}" || exit 1
 done
 
 # Generate an HTML report (if genhtml is installed)
 if [[ -n "$(which genhtml)" ]]
 then
   >&2 echo "==> Generating HTML Coverage report at ./coverage/"
-  genhtml --quiet --output ./coverage/ $(find ./tmp/ -name "*.lcov")
+  genhtml --quiet --output ./coverage/ $(find ./tmp/ -name "*.lcov") || exit 1
 fi
