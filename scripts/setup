@@ -4,21 +4,18 @@ set -e
 ./scripts/bootstrap
 
 
-if [[ ! "${CI}" = "true" ]] # Skip when running Travis
+# Only activate the virtualenv if not already in one
+if [[ -z "${VIRTUAL_ENV}" ]]
 then
-  # Only activate the virtualenv if not already in one
-  if [[ -z "${VIRTUAL_ENV}" ]]
-  then
-    >&2 echo "==> Setting up a python virtualenv"
-    virtualenv ./venv/
-    source ./venv/bin/activate
-  else
-    >&2 echo "==> Skipping virtualenv because already in one"
-  fi
+  >&2 echo "==> Setting up a python virtualenv"
+  virtualenv ./venv/
+  source ./venv/bin/activate
+else
+  >&2 echo "==> Skipping virtualenv because already in one"
 fi
 
 
-if [[ ( "${CI}" = "true" ) || ( -n "${VIRTUAL_ENV}" ) ]]
+if [[ -n "${VIRTUAL_ENV}" ]]
 then
 
   >&2 echo "==> Installing python packages"
@@ -28,6 +25,3 @@ else
   echo "ERROR. Not in a virtualenv"
   exit 1
 fi
-
->&2 echo "==> Installing sassdoc (depends on NodeJS)"
-npm install
