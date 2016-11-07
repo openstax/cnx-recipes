@@ -1,6 +1,15 @@
 #!/bin/bash
 set -e
 
+# Switch Travis to use a newer version of node (it seems to be defaulting to 0.10)
+if [[ -z "$(which n)" ]]
+then
+  npm install n
+  $(npm bin)/n $(cat .nvmrc) || exit 1
+else
+  n $(cat .nvmrc) || exit 1
+fi
+
 # Run the tests (which happens to re-generate the CSS files)
 ./scripts/test
 
