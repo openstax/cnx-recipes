@@ -7,6 +7,14 @@ set -e
 # Only activate the virtualenv if not already in one
 if [[ -z "${VIRTUAL_ENV}" ]]
 then
+
+  # This is mostly for travis
+  if [[ -z "$(which virtualenv)" ]]
+  then
+    >&2 echo "==> Installing Python virtualenv (pip install virtualenv)"
+    pip install virtualenv
+  fi
+
   >&2 echo "==> Setting up a python virtualenv"
   virtualenv ./venv/
   source ./venv/bin/activate
