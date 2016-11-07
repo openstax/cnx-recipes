@@ -1,18 +1,28 @@
 #!/bin/bash
-set -e
 
 # Switch Travis to use a newer version of node (it seems to be defaulting to 0.10)
 if [[ -z "$(which n)" ]]
 then
-  npm install n
+  npm install n || exit 1
   # Since Travis does not like changing system directories create a local one
+  mkdir ~/.node-versions
   N_PREFIX="~/.node-versions" $(npm bin)/n $(cat .nvmrc) || exit 1
+  echo "==> .node-versions/"
+  ls ~/.node-versions/
+  echo "==> .node-versions/n"
+  ls ~/.node-versions/n/
+  echo "==> .node-versions/n/versions"
+  ls ~/.node-versions/n/versions/
+  echo "==> .node-versions/n/versions/node"
+  ls ~/.node-versions/n/versions/node/
+  echo "==> .node-versions/n/versions/6.9.1"
+  ls ~/.node-versions/n/versions/node/6.9.1/
 else
   n $(cat .nvmrc) || exit 1
 fi
 
 # Run the tests (which happens to re-generate the CSS files)
-./scripts/test
+./scripts/test || exit 1
 
 # Verify that the CSS files were regenerated so they never become out-of-sync
 
@@ -27,4 +37,4 @@ then
 fi
 
 # report lcov data to coveralls
-npm run-script coveralls
+npm run-script coveralls || exit 1
