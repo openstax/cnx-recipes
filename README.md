@@ -43,8 +43,8 @@ This will run the linter, generate sassdocs, and generate the guides to verify t
 ## CSS Coverage
 
 1. run `./scripts/fetch-book ${bookName}` to fetch the Raw HTML for a book
-1. run `./scripts/report-book-coverage ${bookName}` to generate the CSS Coverage file
-1. run `genhtml ...` (exact output is shown in the previous step) to generate an HTML report
+1. run `./scripts/bake-book ${bookName}`
+1. The HTML Report should now be available at `./coverage/`
 
 You can pass 3 additional arguments to `report-book-coverage` to change how it reports coverage:
 
