@@ -22,7 +22,7 @@
 }
 
 /// A basic mixin for counting appendices using css counters
-/// @arg {Text} $name - Name of the css counter that will control appendix numbering
+/// @arg {Text} $name - Name of the css counter that will control appendix numbering`
 /// @group count
 @mixin count_countAppendices($name) {
   @include utils_count(
@@ -48,11 +48,12 @@
 /// Resets at the chapter level.
 /// @arg {Text} $name - Name of the css counter that will control exercise numbering
 /// @group count
-@mixin count_countEOCExercises($name) {
+
+@mixin count_countEOCExercises($name, $resetSelector) {
   @include utils_count(
     $name,
     '.os-eoc [data-type="exercise"]',
-    '[data-type="chapter"], .appendix'
+    '#{$resetSelector}, .appendix'
   );
 }
 
@@ -120,6 +121,17 @@
   @include utils_count(
     $name,
     '[data-type="note"].#{$type}',
+    '[data-type="chapter"], .appendix'
+  );
+}
+
+/// A basic mixin for counting equations using css counters
+/// @arg {Text} $name - Name of the css counter that will control equation numbering
+/// @group count
+@mixin count_countEquations($name) {
+  @include utils_count(
+    $name,
+    '[data-type="equation"]',
     '[data-type="chapter"], .appendix'
   );
 }

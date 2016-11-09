@@ -1,10 +1,15 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
-for BOOK_NAME in statistics economics
+# Find all the rulesets that need to be generated
+for bookName in $(cd ./books/rulesets/ && ls -d -- */ )
 do
-  SASS_PATH="./books/rulesets/${BOOK_NAME}/book.scss"
-  CSS_PATH="./books/rulesets/output/${BOOK_NAME}.css"
+  bookName=$(basename "${bookName}") # Strip the trailing /
+  if [[ ! "${bookName}" = 'output' && ! "${bookName}" = 'common' ]]
+  then
+    sassFile="./books/rulesets/${bookName}/book.scss"
+    cssFile="./books/rulesets/output/${bookName}.css"
 
-  bundle exec sass ${SASS_PATH} ${CSS_PATH}
+    >&2 echo "==> Generating ${cssFile}"
+    bundle exec sass ${sassFile} ${cssFile} || exit 1
+  fi
 done

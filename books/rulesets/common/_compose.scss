@@ -432,3 +432,45 @@
     }
   }
 }
+
+/// older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
+@mixin compose_chapterOutline($objectiveTitle) {
+  [data-type="page"]:not(.introduction):not(.preface) {
+    > [data-type="document-title"] {
+      node-set: outlineSectionTitle;
+    }
+    [data-type="abstract"] {
+      move-to: outlineAbstract;
+    }
+    &::after {
+      class: "os-chapter-objective";
+      content: nodes(outlineSectionTitle) pending(outlineAbstract);
+      move-to: chapOutline;
+    }
+  }
+  [data-type="chapter"] {
+    &::before {
+      container: h3;
+      class: "os-title";
+      content: $objectiveTitle;
+      move-to: chapOutlineTitle;
+    }
+    &:deferred::before {
+      class: "os-chapter-outline";
+      content: pending(chapOutlineTitle) pending(chapOutline);
+    }
+  }
+}
+
+/// move the chapter objectives to the intro module
+@mixin compose_moveChapterOutline() {
+  .os-chapter-outline {
+    move-to: ChapterOutline;
+  }
+  .os-chapter-objective > [data-type="document-title"] {
+    container: h4;
+  }
+  .introduction {
+    content: pending(ChapterOutline) content();
+  }
+}
