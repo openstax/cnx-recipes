@@ -3,13 +3,13 @@ set -e
 
 scripts/bootstrap
 
-# Activate the venv if not running Travis or already in a virtualenv
-if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
+# Activate the venv if not already in a virtualenv
+if [[ -z "${VIRTUAL_ENV}" ]]
 then
-  . ./venv/bin/activate
+  source ./venv/bin/activate
 fi
 
-if [[ ( "${CI}" = "true" ) || ( -n "${VIRTUAL_ENV}" ) ]]
+if [[ -n "${VIRTUAL_ENV}" ]]
 then
   >&2 echo '==> Uninstalling python packages'
   pip uninstall --yes -r requirements.txt

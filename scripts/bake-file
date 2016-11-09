@@ -1,55 +1,57 @@
 #!/bin/bash
 set -e
 
-BOOK_NAME=$1
-RAW_PATH=$2
-BAKED_PATH=$3
-DEBUG_FLAG=$4
+bookName=$1
+rawFile=$2
+bakedFile=$3
+debugFlag=$4
 
-SASS_PATH="./books/rulesets/${BOOK_NAME}/book.scss"
-CSS_PATH="./books/rulesets/output/${BOOK_NAME}.css"
+sassFile="./books/rulesets/${bookName}/book.scss"
+cssFile="./books/rulesets/output/${bookName}.css"
 
 # Check command line args
 
-if [ -z "${BOOK_NAME}" ]
+if [ -z "${bookName}" ]
 then
   echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  echo 'The required arguments are: BOOK_NAME, RAW_PATH, BAKED_PATH'
+  echo 'The required arguments are: bookName, rawFile, bakedFile'
   exit 1
 fi
 
-if [ ! -f "${RAW_PATH}" ]
+if [ ! -f "${rawFile}" ]
 then
-  echo "ERROR: Could not find the raw HTML file at ${RAW_PATH}"
+  echo "ERROR: Could not find the raw HTML file at ${rawFile}"
   exit 1
 fi
 
-if [ -z "${BAKED_PATH}" ]
+if [ -z "${bakedFile}" ]
 then
   echo 'ERROR: You must specify a baked path'
   exit 1
 fi
 
-if [ ! -f "${SASS_PATH}" ]
+if [ ! -f "${sassFile}" ]
 then
-  echo "ERROR: Could not find the raw SCSS file at ${SASS_PATH}"
+  echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
   exit 1
 fi
 
 
 # Remove the baked file if it exists
-# [ -e "${BAKED_PATH}" ] && rm ${BAKED_PATH}
+# [ -e "${bakedFile}" ] && rm ${bakedFile}
 # commented out because it could be /dev/stdout
 
-# Activate the venv if not running Travis or already in a virtualenv
-if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
+# Activate the venv if not already in a virtualenv
+if [[ -z "${VIRTUAL_ENV}" ]]
 then
-  . ./venv/bin/activate
+  source ./venv/bin/activate
 fi
 
-cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${BAKED_PATH}
+lcovFile="${rawFile}.lcov"
+
+cnx-easybake --coverage-file "${lcovFile}" ${debugFlag} "${cssFile}" "${rawFile}" "${bakedFile}"
 # Validate the cooked file.
 # Commented because snippets do not pass the data-type="metadata" validation
 # and adding in all those metadata blocks would be cumbersome and distract
 # from the actual use-case which is to show snippets.
-# cnx-epub-validate-collated ${BAKED_PATH}
+# cnx-epub-validate-collated ${bakedFile}

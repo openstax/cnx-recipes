@@ -5,59 +5,67 @@ set -e
 
 HOST='cte-cnx-dev.cnx.org'
 
-ARG1=$1
+arg1=$1
 
 
 # Check command line args
 
-if [ -z "${ARG1}" ]
+if [ -z "${arg1}" ]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument or --all for all books. For example: physics'
   exit 1
 fi
 
-if [ "${ARG1}" == "--all" ]
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [ ! "${arg1}" == "--all" ]
 then
-  source ./books.txt
-else
-  BOOK_LIST="${ARG1}"
-fi
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for bookConfig in "${BOOK_CONFIGS[@]}"
+  do
+    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
 
->&2 echo "Preparing to fetch book(s): ${BOOK_LIST}"
+    if [[ "${arg1}" = "${bookConfigName}" ]]
+    then
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      foundConfig=1
+      break
+    fi
+  done
 
-for BOOK_NAME in ${BOOK_LIST}
-do
-
-  RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
-  BOOK_UUID_AND_VER=${RULESET_NAME_AND_UUID[1]}
-
-  RAW_PATH="./data/${BOOK_NAME}-raw.html"
-
-  if [ -z "${BOOK_UUID_AND_VER}" ]
+  if [[ ! 1 -eq "${foundConfig}" ]]
   then
-    >&2 echo "ERROR: Could not find Book UUID for book named ${BOOK_NAME}"
+    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
+    >&2 echo "check ./books.txt"
     exit 1
   fi
+fi
 
-  >&2 echo "Fetching book ${BOOK_NAME} ${BOOK_UUID_AND_VER}"
+for bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+  rawFile="./data/${bookName}-raw.html"
 
-  >&2 echo "Step 1/2: Generating an EPUB from the database and converting to a single HTML file (may take a minute)"
+  >&2 echo "==> Fetching ${bookName}"
+  >&2 echo "generating an EPUB from the database and converting to a single HTML file"
+  >&2 echo "(may take a minute)..."
 
-  TEMP_EPUB_PATH="~/temp.intenral.epub"
-  TEMP_HTML_PATH="~/temp.html"
+  tempEpubFile="~/temp.internal.epub"
+  tempHtmlFile="~/temp.html"
 
-  RM_TEMP_EPUB_CMD="[ -e ${TEMP_EPUB_PATH} ] && rm ${TEMP_EPUB_PATH}"
-  RM_TEMP_HTML_CMD="[ -e ${TEMP_HTML_PATH} ] && rm ${TEMP_HTML_PATH}"
-  GENERATE_EPUB_CMD="/var/cnx/venvs/publishing/bin/cnx-archive-export_epub /etc/cnx/publishing/app.ini ${BOOK_UUID_AND_VER} ${TEMP_EPUB_PATH}"
-  GENERATE_HTML_CMD="/var/cnx/venvs/publishing/bin/cnx-epub-single_html ${TEMP_EPUB_PATH} > ${TEMP_HTML_PATH}"
+  rmTempEpubCmd="[ -e ${tempEpubFile} ] && rm ${tempEpubFile}"
+  rmTempHtmlCmd="[ -e ${tempHtmlFile} ] && rm ${tempHtmlFile}"
+  generateEpubCmd="/var/cnx/venvs/publishing/bin/cnx-archive-export_epub /etc/cnx/publishing/app.ini ${uuid} ${tempEpubFile}"
+  generateHtmlCmd="/var/cnx/venvs/publishing/bin/cnx-epub-single_html ${tempEpubFile} > ${tempHtmlFile}"
 
-  CMD="${RM_TEMP_EPUB_CMD}; ${RM_TEMP_HTML_CMD}; ${GENERATE_EPUB_CMD} && ${GENERATE_HTML_CMD}"
+  commands="${rmTempEpubCmd}; ${rmTempHtmlCmd}; ${generateEpubCmd} && ${generateHtmlCmd}"
 
-  ssh ${USER}@${HOST} ${CMD}
+  ssh ${USER}@${HOST} ${commands}
 
-  >&2 echo "Step 2/2: Copying HTML file from server to local machine"
-  scp ${USER}@${HOST}:${TEMP_HTML_PATH} ${RAW_PATH}
+  >&2 echo "==> Copying HTML file from server to local machine"
+  scp ${USER}@${HOST}:${tempHtmlFile} ${rawFile}
 
-  >&2 echo "Fetch is done. File is available at ${RAW_PATH}"
+  >&2 echo "Fetch is Done. File is available at ${rawFile}"
 
 done

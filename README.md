@@ -1,3 +1,5 @@
+[![Coverage][coveralls-image]][coveralls-url]
+
 # Install
 
 1. run `./scripts/setup` to install the dependencies. You only have to run this once!
@@ -40,9 +42,9 @@ This will run the linter, generate sassdocs, and generate the guides to verify t
 
 ## CSS Coverage
 
-1. run `./scripts/fetch-book ${BOOK_NAME}` to fetch the Raw HTML for a book
-1. run `./scripts/report-book-coverage ${BOOK_NAME}` to generate the CSS Coverage file
-1. run `genhtml ...` (exact output is shown in the previous step) to generate an HTML report
+1. run `./scripts/fetch-book ${bookName}` to fetch the Raw HTML for a book
+1. run `./scripts/bake-book ${bookName}`
+1. The HTML Report should now be available at `./coverage/`
 
 You can pass 3 additional arguments to `report-book-coverage` to change how it reports coverage:
 
@@ -108,3 +110,7 @@ To update the Documentation in the gh-pages branch:
 1. `./scripts/generate-and-update-gh-pages`
 
 **Note:** This will push changes if successful
+
+
+[coveralls-image]: https://img.shields.io/coveralls/connexions/cnx-recipes.svg
+[coveralls-url]: https://coveralls.io/github/Connexions/cnx-recipes

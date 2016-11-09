@@ -1,60 +1,38 @@
-BOOK_LIST="statistics statshigh econ econap macroecon macroeconap microecon microeconap TEAmacroeconap TEAmicroeconap physics apphysics hsphysics"
+#!/bin/bash
 
-statistics_uuid=30189442-6998-4686-ac05-ed152b91b9de
-statistics_ruleset_name=statistics
+BOOK_CONFIGS=(
+  "statistics         statistics        30189442-6998-4686-ac05-ed152b91b9de"
+  "statshigh          statistics        ace2ec2d-778e-44aa-82c2-57a4e5c3de69"
+  "econ               economics         69619d2b-68f0-44b0-b074-a9b2bf90b2c6"
+  "econap             economics         69619d2b-68f0-44b0-b074-a9b2bf90b2c6"
+  "macroecon          economics         4061c832-098e-4b3c-a1d9-7eb593a2cb31"
+  "macroeconap        economics         33076054-ec1d-4417-8824-ce354efe42d0"
+  "microecon          economics         ea2f225e-6063-41ca-bcd8-36482e15ef65"
+  "microeconap        economics         ca344e2d-6731-43cd-b851-a7b3aa0b37aa"
+  "TEAmacroeconap     economics         3353a691-0c52-4691-8f36-65490cd3d962"
+  "TEAmicroeconap     economics         7f6fbc5b-6f3b-40a8-87ac-b14adc941e5e"
+  "physics            physics           031da8d3-b525-429c-80cf-6c8ed997733a"
+  "apphysics          physics           8d04a686-d5e8-4798-a27d-c608e4d0e187"
+  "hsphysics          hs-physics        051ff00c-34b9-4547-ab03-fe5b1b95cf62"
+)
 
-statshigh_uuid=ace2ec2d-778e-44aa-82c2-57a4e5c3de69
-statshigh_ruleset_name=statistics
+BOOK_NAMES=()
+RULESET_NAMES=()
 
-econ_uuid=69619d2b-68f0-44b0-b074-a9b2bf90b2c6
-econ_ruleset_name=economics
+# From http://stackoverflow.com/a/8574392
+containsElement () {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
 
-econap_uuid=69619d2b-68f0-44b0-b074-a9b2bf90b2c6
-econap_ruleset_name=economics
+# Use double-underscores so the name does not conflict with other scripts' local vars
+# since this is loaded using 'source ./books.txt'
+for __bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r __bookName __rulesetName uuid _ <<< "${__bookConfig}"
+  # Add to the list of BOOK_NAMES and RULESET_NAMES
+  containsElement "${__bookName}" "${BOOK_NAMES[@]}" || BOOK_NAMES+=("${__bookName}")
+  containsElement "${__rulesetName}" "${RULESET_NAMES[@]}" || RULESET_NAMES+=("${__rulesetName}")
 
-macroecon_uuid=4061c832-098e-4b3c-a1d9-7eb593a2cb31
-macroecon_ruleset_name=economics
-
-macroeconap_uuid=33076054-ec1d-4417-8824-ce354efe42d0
-macroeconap_ruleset_name=economics
-
-microecon_uuid=ea2f225e-6063-41ca-bcd8-36482e15ef65
-microecon_ruleset_name=economics
-
-microeconap_uuid=ca344e2d-6731-43cd-b851-a7b3aa0b37aa
-microeconap_ruleset_name=economics
-
-TEAmacroeconap_uuid=3353a691-0c52-4691-8f36-65490cd3d962
-TEAmacroeconap_ruleset_name=economics
-
-TEAmicroeconap_uuid=7f6fbc5b-6f3b-40a8-87ac-b14adc941e5e
-TEAmicroeconap_ruleset_name=economics
-
-physics_uuid=031da8d3-b525-429c-80cf-6c8ed997733a
-physics_ruleset_name=physics
-
-apphysics_uuid=8d04a686-d5e8-4798-a27d-c608e4d0e187
-physics_ruleset_name=physics
-
-hsphysics_uuid=051ff00c-34b9-4547-ab03-fe5b1b95cf62
-hsphysics_ruleset_name=hs-physics
-
-
-
-# These are set as environment variables in the various scripts and are unset when the script is done
-#
-# This way you can just run "fetch-book statshigh" or "bake-book statshigh"
-# without having to provide the UUID or which ruleset to use.
-
-
-# Economics: 69619d2b-68f0-44b0-b074-a9b2bf90b2c6@11.330
-# Principles of Macroeconomics for AP® Courses: 33076054-ec1d-4417-8824-ce354efe42d0@2.145
-# Macroeconomics: 4061c832-098e-4b3c-a1d9-7eb593a2cb31@10.235
-# Principles of Economics: 69619d2b-68f0-44b0-b074-a9b2bf90b2c6@11.330
-# Microeconomics: ea2f225e-6063-41ca-bcd8-36482e15ef65@10.174
-# Principles of Microeconomics for AP® Courses: ca344e2d-6731-43cd-b851-a7b3aa0b37aa@4.109
-# Statistics: 30189442-6998-4686-ac05-ed152b91b9de@19.2
-# High School Statistics: ace2ec2d-778e-44aa-82c2-57a4e5c3de69@7.16
-# Physics: 031da8d3-b525-429c-80cf-6c8ed997733a@10.1
-# AP Physics: 8d04a686-d5e8-4798-a27d-c608e4d0e187@13.41
-# High School Physics: 051ff00c-34b9-4547-ab03-fe5b1b95cf62@1.1
+done

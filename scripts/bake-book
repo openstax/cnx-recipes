@@ -1,54 +1,94 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 
-BOOK_NAME=$1
-DEBUG_FLAG=$2
-
-RAW_PATH="./data/${BOOK_NAME}-raw.html"
-BAKED_PATH="./data/${BOOK_NAME}-baked.html"
+arg1=$1
+debugFlag=$2
 
 # Check command line args
 
-if [ -z "${BOOK_NAME}" ]
+if [ -z "${arg1}" ]
 then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  exit 1
-fi
-
-RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
-RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
-SASS_PATH="./books/rulesets/${RULESET_NAME}/book.scss"
-CSS_PATH="./books/rulesets/output/${RULESET_NAME}.css"
-
-if [ ! -f "${RAW_PATH}" ]
-then
-  >&2 echo 'ERROR: Could not find the raw HTML file. Have you run fetch-book yet?'
-  exit 1
-fi
-
-if [ ! -f "${SASS_PATH}" ]
-then
-  >&2 echo "ERROR: Could not find the raw SCSS file at ${SASS_PATH}"
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument (or --all). For example: physics'
+  >&2 echo "You can specify additional commandline arguments like -d to this script if you want more debugging"
   exit 1
 fi
 
 
->&2 echo "Step 1/2: Compile SASS to CSS (${SASS_PATH})"
-bundle exec sass ${SASS_PATH} ${CSS_PATH}
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
 
->&2 echo "Step 2/2: Baking the book (may take a couple minutes). specify additional commandline arguments like -d to this script if you want more debugging"
->&2 echo "Info: Baking ${RAW_PATH} to ${BAKED_PATH} using ${CSS_PATH}"
-
-# Remove the baked file if it exists
-[ -e "${BAKED_PATH}" ] && rm ${BAKED_PATH}
-
-# Activate the venv if not running Travis or already in a virtualenv
-if [[ ! "${CI}" = "true" && -z "${VIRTUAL_ENV}" ]]
+if [ ! "${arg1}" == "--all" ]
 then
-  . ./venv/bin/activate
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for bookConfig in "${BOOK_CONFIGS[@]}"
+  do
+    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
+
+    if [[ "${arg1}" = "${bookConfigName}" ]]
+    then
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      foundConfig=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${foundConfig}" ]]
+  then
+    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
+    >&2 echo "check ./books.txt"
+    exit 1
+  fi
 fi
 
-cnx-easybake ${DEBUG_FLAG} ${CSS_PATH} ${RAW_PATH} ${BAKED_PATH}
-# Validate the cooked file
-cnx-epub-validate-collated ${BAKED_PATH}
+
+./scripts/compile-books || exit 1
+
+for bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+
+  rawFile="./data/${bookName}-raw.html"
+  bakedFile="./data/${bookName}-baked.html"
+  sassFile="./books/rulesets/${rulesetName}/book.scss"
+  cssFile="./books/rulesets/output/${rulesetName}.css"
+
+  if [ ! -f "${rawFile}" ]
+  then
+    >&2 echo 'ERROR: Could not find the raw HTML file. Have you run fetch-book yet?'
+    exit 1
+  fi
+
+  if [ ! -f "${sassFile}" ]
+  then
+    >&2 echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
+    exit 1
+  fi
+
+
+  >&2 echo "==> Baking ${rawFile} using ${rulesetName} (may take a few minutes)"
+
+  # Remove the baked file if it exists
+  [ -e "${bakedFile}" ] && rm ${bakedFile}
+
+  # Activate the venv if not already in a virtualenv
+  if [[ -z "${VIRTUAL_ENV}" ]]
+  then
+    source ./venv/bin/activate
+  fi
+
+  lcovFile="${rawFile}.lcov"
+
+  cnx-easybake --coverage-file "${lcovFile}" ${debugFlag} "${cssFile}" "${rawFile}" "${bakedFile}"
+
+  # Generate an HTML report (if genhtml is installed)
+  if [[ -n "$(which genhtml)" ]]
+  then
+    >&2 echo "==> Generating HTML coverage report at ./coverage/"
+    genhtml --quiet --output ./coverage/ "${lcovFile}"
+  fi
+
+  # Validate the cooked file
+  >&2 echo "==> Validating ${bakedFile}"
+  cnx-epub-validate-collated ${bakedFile}
+done

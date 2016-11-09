@@ -1,8 +1,7 @@
 #!/bin/bash
-set -e
 
 # Run the tests (which happens to re-generate the CSS files)
-./scripts/test
+./scripts/test || exit 1
 
 # Verify that the CSS files were regenerated so they never become out-of-sync
 
@@ -15,3 +14,6 @@ then
   git diff
   exit 1
 fi
+
+# report lcov data to coveralls
+npm run-script coveralls || exit 1

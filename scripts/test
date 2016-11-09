@@ -1,22 +1,25 @@
 #!/bin/bash
-set -e
 
 # Run the linter
-npm test
+npm test || exit 1
 
 # Generate the CSS files for books
-./scripts/compile-books
+./scripts/compile-books || exit 1
 
 # Make sure the docs and guides still generate
-./scripts/generate-docs
+./scripts/generate-docs || exit 1
 
-# Find all the rulesets that need to be generated
-for bookName in $(cd ./books/rulesets/ && ls -d -- */ )
+# Pull in the BOOK_CONFIGS and BOOK_NAMES
+source ./books.txt || exit 1
+
+for rulesetName in "${RULESET_NAMES[@]}"
 do
-  bookName=$(basename "${bookName}") # Strip the trailing /
-  if [[ ! "${bookName}" = 'output' && ! "${bookName}" = 'common' ]]
-  then
-    >&2 echo "==> Generating Guide for ${bookName}"
-    ./scripts/generate-guide "${bookName}" || exit 1
-  fi
+  ./scripts/generate-guide "${rulesetName}" || exit 1
 done
+
+# Generate an HTML report (if genhtml is installed)
+if [[ -n "$(which genhtml)" ]]
+then
+  >&2 echo "==> Generating HTML Coverage report at ./coverage/"
+  genhtml --quiet --output ./coverage/ $(find ./tmp/ -name "*.lcov") || exit 1
+fi
