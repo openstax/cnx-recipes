@@ -14,30 +14,57 @@ set -e
 
 HOST='cte-cnx-dev.cnx.org'
 
-ARG1=$1
-BOOK_VERSION=$2
+arg1=$1
+bookVersion=$2
 
 # Check command line args
 
-if [ -z "${ARG1}" ]
+if [ -z "${arg1}" ]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument or --all for all books (see books.txt). For example: physics'
   exit 1
 fi
 
-# if [ "${ARG1}" == "--all" ]
-# then
-#   source ./books.txt
-# else
-#   BOOK_LIST="${ARG1}"
-# fi
-if [ "${ARG1}" == "--all" ]
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [[ "${arg1}" == "--all" ]]
 then
-  >&2 echo "--all is not a valid option because you have to specify a version for the book you want to rebake"
+  >&2 echo "--all is not supported because you have to specify the version of the book to bake"
   exit 1
 else
-  BOOK_LIST="${ARG1}"
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for bookConfig in "${BOOK_CONFIGS[@]}"
+  do
+    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
+
+    if [[ "${arg1}" = "${bookConfigName}" ]]
+    then
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      foundConfig=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${foundConfig}" ]]
+  then
+    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
+    >&2 echo "check ./books.txt"
+    exit 1
+  fi
 fi
+
+if [ -z "${bookVersion}" ]
+then
+
+  # The first entry is always the book info because "--all" is not a valid commandline arg
+  read -r bookName rulesetName uuid _ <<< "${BOOK_CONFIGS[0]}"
+  >&2 echo 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
+  >&2 echo 'The version is the @#.## in the target collection URL'
+  >&2 echo "You can visit http://${HOST}/contents/${uuid} to get the version number"
+  exit 1
+fi
+
 
 # Activate the venv if not already in a virtualenv
 if [[ -z "${VIRTUAL_ENV}" ]]
@@ -45,49 +72,39 @@ then
   . ./venv/bin/activate
 fi
 
+./scripts/compile-books || exit 1
 
-for BOOK_NAME in ${BOOK_LIST}
+for bookConfig in "${BOOK_CONFIGS[@]}"
 do
+  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
 
-  RULESET_NAME_AND_UUID=($(./scripts/_convert-bookname-to-ruleset-name-and-uuid ${BOOK_NAME}))
-  RULESET_NAME=${RULESET_NAME_AND_UUID[0]}
-  BOOK_UUID_AND_VER=${RULESET_NAME_AND_UUID[1]}
+  cssFile="./books/rulesets/output/${rulesetName}.css"
 
-  CSS_PATH="./books/rulesets/output/${RULESET_NAME}.css"
-
-  if [ -z "${BOOK_UUID_AND_VER}" ]
+  if [ -z "${uuid}" ]
   then
-    >&2 echo "ERROR: Could not find Book UUID for book named ${BOOK_NAME}"
+    >&2 echo "ERROR: Could not find Book UUID for book named ${bookName}"
     exit 1
   fi
 
-  if [ -z "${BOOK_VERSION}" ]
-  then
-    >&2 echo 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
-    >&2 echo 'The version is the @#.## in the target collection URL'
-    >&2 echo "You can visit http://${HOST}/contents/${BOOK_UUID_AND_VER} to get the version number"
-    exit 1
-  fi
+  >&2 echo "==> Baking book ${bookName} ${uuid} on ${HOST} ..."
 
-  >&2 echo "==> Baking book ${BOOK_NAME} ${BOOK_UUID_AND_VER} on ${HOST} ..."
-
-  TEMP_CSS_PATH="~/temp.css"
+  tempCssFile="~/temp.css"
 
   >&2 echo "==> Copying CSS file from local machine to server"
-  scp ${CSS_PATH} ${USER}@${HOST}:${TEMP_CSS_PATH}
+  scp ${cssFile} ${USER}@${HOST}:${tempCssFile} || exit 1
 
   >&2 echo "==> Injecting the css file into the book as ruleset.css"
 
-  BUILD_BOOK_CMD="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"ruleset.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${BOOK_UUID_AND_VER}@${BOOK_VERSION}\" ${TEMP_CSS_PATH}"
-  ssh ${USER}@${HOST} ${BUILD_BOOK_CMD}
+  buildBookCmd="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"ruleset.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${uuid}@${bookVersion}\" ${tempCssFile}"
+  ssh ${USER}@${HOST} ${buildBookCmd} || exit 1
 
   >&2 echo "==> Re-baking the book (may take up to 12 minutes)"
-  python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${BOOK_UUID_AND_VER}@${BOOK_VERSION}/collate-content', headers={'x-api-key': 'cte-dev--sprint-6.7'}); print(resp)"
+  python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${uuid}@${bookVersion}/collate-content', headers={'x-api-key': 'cte-dev--sprint-6.7'}); print(resp)" || exit 1
 
   >&2 echo "==> restarting varnish because the HTML files may be cached"
-  RESTART_VARNISH_CMD="varnishadm ban req.url '~' ."
-  ssh ${USER}@${HOST} ${RESTART_VARNISH_CMD}
+  restartVarnishCmd="varnishadm ban req.url '~' ."
+  ssh ${USER}@${HOST} ${restartVarnishCmd} || exit 1
 
-  >&2 echo "Build complete. See the changes by going to http://${HOST}/contents/${BOOK_UUID_AND_VER}@${BOOK_VERSION}"
+  >&2 echo "Build complete. See the changes by going to http://${HOST}/contents/${uuid}@${bookVersion}"
 
 done
