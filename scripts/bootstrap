@@ -21,11 +21,17 @@ fi
 if [ ! "${CI}" = "true" ] && [ -f ".ruby-version" ] && [ -z "$(rbenv version-name 2>/dev/null)" ]; then
   >&2 echo "==> Installing Ruby…"
   rbenv install --skip-existing
-  which bundle >/dev/null 2>&1  || {
-    gem install bundler
-    rbenv rehash
-  }
 fi
+
+>&2 echo "Using ruby via rbenv:"
+rbenv version
+
+which bundle >/dev/null 2>&1  || {
+  >&2 echo "==> Installing Ruby Bundler gem…"
+  rbenv version
+  gem install bundler
+  rbenv rehash
+}
 
 if [ -f "Gemfile" ]; then
   >&2 echo "==> Installing gem dependencies…"
