@@ -51,8 +51,25 @@ do
   bakedFile="./data/${bookName}-baked.html"
   preparedFile="./data/${bookName}-prepared.html"
 
-  ./scripts/bake-book ${bookName} || exit 1
+  if [[ -s "${preparedFile}" ]]
+  then
 
-  diff ${preparedFile} ${bakedFile} || exit 1
+    ./scripts/bake-book ${bookName} || exit 1
+
+    diffCount=$(diff ${preparedFile} ${bakedFile} | wc -l)
+
+    if [[ 0 -ne "${diffCount}" ]]
+    then
+      >&2 echo "There were ${diffCount} differences found"
+      >&2 echo "To see all of them run the following:"
+      >&2 echo "diff ${preparedFile} ${bakedFile}"
+    fi
+
+  else
+
+    >&2 echo "SKIPPING ${bookName} because the prepared file was not found."
+    >&2 echo "Did you run './scripts/diff-book-prepare ${bookName}' earlier?"
+  fi
+
 
 done
