@@ -1,6 +1,6 @@
 # About the Rulesets
 
-The generated CSS is stored in the [./rulesets/output](./rulesets/output) directory.
+The generated CSS is stored in the [./output](./output) directory.
 
 ## Relevant Scripts
 
