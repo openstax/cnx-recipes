@@ -2,15 +2,12 @@
 set -e
 
 
-bookName=$1
+arg1=$1
 debugFlag=$2
-
-bakedFile="./data/${bookName}-baked.html"
-preparedFile="./data/${bookName}-prepared.html"
 
 # Check command line args
 
-if [ -z "${bookName}" ]
+if [ -z "${arg1}" ]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
   >&2 echo 'This script prepares the book to compare against.'
@@ -19,6 +16,42 @@ then
   exit 1
 fi
 
-./scripts/bake-book ${bookName}
 
-mv ${bakedFile} ${preparedFile}
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [ ! "${arg1}" == "--all" ]
+then
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for bookConfig in "${BOOK_CONFIGS[@]}"
+  do
+    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
+
+    if [[ "${arg1}" = "${bookConfigName}" ]]
+    then
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      foundConfig=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${foundConfig}" ]]
+  then
+    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
+    >&2 echo "check ./books.txt"
+    exit 1
+  fi
+fi
+
+for bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+  rawFile="./data/${bookName}-raw.html"
+
+  bakedFile="./data/${bookName}-baked.html"
+  preparedFile="./data/${bookName}-prepared.html"
+
+  ./scripts/bake-book ${bookName}
+
+  mv ${bakedFile} ${preparedFile}
+done
