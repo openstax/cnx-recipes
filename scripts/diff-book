@@ -1,31 +1,58 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
 
-bookName=$1
+arg1=$1
 debugFlag=$2
-
-bakedFile="./data/${bookName}-baked.html"
-preparedFile="./data/${bookName}-prepared.html"
 
 # Check command line args
 
-if [ -z "${bookName}" ]
+if [[ -z "${arg1}" ]]
 then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument'
+  >&2 echo ' or --all for all books.'
+  >&2 echo ''
   >&2 echo 'This script bakes the book and then compares to the prepared book'
   >&2 echo '(done earlier, usually in another branch)'
   exit 1
 fi
 
-if [ ! -f "${preparedFile}" ]
+
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [[ ! "${arg1}" == "--all" ]]
 then
-  >&2 echo 'ERROR: This book was not prepared beforehand.'
-  >&2 echo 'Run diff-book-prepare before running this script'
-  >&2 echo 'so there is something to compare against'
-  exit 1
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for bookConfig in "${BOOK_CONFIGS[@]}"
+  do
+    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
+
+    if [[ "${arg1}" = "${bookConfigName}" ]]
+    then
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      foundConfig=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${foundConfig}" ]]
+  then
+    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
+    >&2 echo "check ./books.txt"
+    exit 1
+  fi
 fi
 
-./scripts/bake-book ${bookName}
+for bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+  rawFile="./data/${bookName}-raw.html"
 
-diff ${preparedFile} ${bakedFile}
+  bakedFile="./data/${bookName}-baked.html"
+  preparedFile="./data/${bookName}-prepared.html"
+
+  ./scripts/bake-book ${bookName} || exit 1
+
+  diff ${preparedFile} ${bakedFile} || exit 1
+
+done

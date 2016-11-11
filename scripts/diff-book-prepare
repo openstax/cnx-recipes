@@ -1,5 +1,4 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
 
 arg1=$1
@@ -7,9 +6,10 @@ debugFlag=$2
 
 # Check command line args
 
-if [ -z "${arg1}" ]
+if [[ -z "${arg1}" ]]
 then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument'
+  >&2 echo ' or --all for all books.'
   >&2 echo 'This script prepares the book to compare against.'
   >&2 echo 'Typically this step is done in the master branch'
   >&2 echo 'and then in another branch diff-book is called to see how the HTML changed.'
@@ -20,7 +20,7 @@ fi
 # Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
 
-if [ ! "${arg1}" == "--all" ]
+if [[ ! "${arg1}" == "--all" ]]
 then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for bookConfig in "${BOOK_CONFIGS[@]}"
