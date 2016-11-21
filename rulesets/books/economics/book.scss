@@ -1,19 +1,7 @@
-@import '../common/_all';
+@import '../../common/_all';
 
 //Import book config file
 @import './_config';
-
-//TODO: Improve performance by using more specific selectors in libraries when possible
-//TODO: Separate object files
-//TODO: Make sure mixins are "namespaced" to the file they are from
-//TODO: Internationalization Solution ->
-// Use maps to call strings ending in the language selected?
-// $lang: "en";
-// $chapter_en: "Chapter";
-// $appendix_en: "Appendix";
-// $chapter_de: "Kapitel";
-// $appendix_de: "Anhang";
-//TODO: Add warnings/flags for warnings/documentation when bundles are called in an unexpected order (dependencies for mixin calls?)
 
 :pass(0) {
   //Some modifications to be done to the book before any collation
@@ -21,12 +9,12 @@
   @include modify_spanWrapTitles();
   @include modify_simLinkTarget();
   @include utils_hasSolution();
-
-  //TODO @include modify_exercise($check-understanding); Need new mixin or update note mixin
-
+  @include modify_note($linkupNote);
+  @include modify_note($bringhomeNote);
+  @include modify_note($clearupNote);
+  @include modify_note($workoutNote);
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
-
 }
 :pass(1) {
   //Come up with mixins for common numbering schemes as per Phil's suggestion
@@ -36,11 +24,6 @@
   @include number_numberAppendices($appendixTitleContent);
   @include count_countSections(section);
   @include number_numberSections($sectionTitleContent);
-  @include count_countExamples(example);
-  @include number_numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
-  @include count_countEquations(equation);
-  @include number_equations ($equationNumber);
-
 
 
   @include count_countTerms(term);
@@ -49,22 +32,16 @@
 
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include compose_createChapterComposites($chapterCompositePages, sectionHeaderNode);
-  //create a chapter outline
-  @include compose_chapterOutline($objectivesTitleContent);
 }
 :pass(2) {
-
   //After: ???
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include reference_refSectionHeaderStringAs(sectionHeaderString);
   @include compose_prepBookComposites($bookCompositePages, sectionHeaderNode, sectionHeaderString);
-  //move the chapter outline to the introduction module
-  @include compose_moveChapterOutline();
 
   //After: createChapterComposites
-  @include count_countEOCExercises(exercise, '[data-type="composite-page"]');
+  @include count_countEOCExercises(exercise, '[data-type="chapter"]');
   @include number_numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
-
 }
 :pass(3) {
   //After: createChapterComposites, numberEOCExercises
@@ -75,12 +52,12 @@
   @include reference_refChapterHeaderNodeAs(chapterHeaderNode);
   @include compose_prepChapterAreas($bookCompositePages, chapterHeaderNode);
 
-
-
 }
 :pass(4) {
+  //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include compose_createEOBSolutions($chapterCompositePages, $pageSolutions, sectionHeaderNode);
+
   //After: prepBookComposites, prepChapterAreas
   @include compose_createBookComposites($bookCompositePages);
 }
@@ -91,8 +68,8 @@
   //After: composite page creation
   @include count_countChapters(chapter);
   @include count_countAppendices(appendix);
-  @include count_countEOCExercises(exercise, '[data-type="composite-page"]');
-  @include count_countExamples(example);
+  @include count_countEOCExercises(exercise, '[data-type="chapter"]');
+
   @include link_setTargetLabels($targetLabels);
   @include link_setLinkLabels();
 
@@ -103,6 +80,7 @@
   @include compose_titleEOCComposites($chapterCompositePages);
   @include compose_titleEOBComposites($bookCompositePages);
 
+
   //After: createChapterComposites, createEOCSolutions, createBookComposites
   @include modify_compositeAutoID();
   @include modify_chapterAutoID();
@@ -111,6 +89,7 @@
   @include count_countFigures(figure);
   @include number_setCaptions($setTableCaption, $captionTableNumber, $captionTableNumberAp);
   @include number_setCaptions($setFigureCaption, $captionFigNumber, $captionFigNumberAp);
+  @include modify_retitleHeaders();
 }
 :pass(6) {
   @include modify_trash('.os-index-link-separator:last-child');
