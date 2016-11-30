@@ -12,6 +12,7 @@
   - **Note:** To see the list of books available see `./books.txt`
   - **Note:** This will require you to log in via ssh.
   - **Note:** You can set the ssh username by running `USER=myusername ./scripts/fetch-book ...`
+  - **Note:** You can set the remote server to pull from by running `HOST=dev.cnx.org ./scripts/fetch-book ...`
   - **Note:** You can run `./scripts/fetch-book --all` to fetch all the books
 1. run `./scripts/bake-book statistics`
 
