@@ -9,10 +9,10 @@ set -e
 # - Inject a ruleset into the archive in association with the book to be collated.
 # `wget https://raw.githubusercontent.com/Connexions/cte/rulesets/books/rulesets/output/physics.css`
 # `/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename "ruleset.css" --media-type "text/css" /etc/cnx/archive/app.ini 031da8d3-b525-429c-80cf-6c8ed997733a@9.30 physics.css`
-# - Invoke the collation via a the python interpreter `import requests; resp = requests.post('http://cte-cnx-dev.cnx.org:6543/contents/031da8d3-b525-429c-80cf-6c8ed997733a/collate-content', headers={'x-api-key': 'cte-dev--sprint-6.7'}); print(resp)`
+# - Invoke the collation via a the python interpreter `import requests; resp = requests.post('http://dev00.cnx.org.cnx.org:6543/contents/031da8d3-b525-429c-80cf-6c8ed997733a/collate-content', headers={'x-api-key': 'b07'}); print(resp)`
 # Originally from: https://gist.github.com/pumazi/93f5ed32cb9e094e5a97415ced480a16
 
-HOST=${HOST:-'cte-cnx-dev.cnx.org'}
+HOST=${HOST:-'dev00.cnx.org'}
 
 arg1=$1
 bookVersion=$2
@@ -99,7 +99,7 @@ do
   ssh ${USER}@${HOST} ${buildBookCmd} || exit 1
 
   >&2 echo "==> Re-baking the book (may take up to 12 minutes)"
-  python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${uuid}@${bookVersion}/collate-content', headers={'x-api-key': 'cte-dev--sprint-6.7'}); print(resp)" || exit 1
+  python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${uuid}@${bookVersion}/collate-content',  headers={'x-api-key': 'b07'}); print(resp)" || exit 1
 
   >&2 echo "==> restarting varnish because the HTML files may be cached"
   restartVarnishCmd="varnishadm ban req.url '~' ."
