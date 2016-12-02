@@ -99,13 +99,23 @@
 }
 
 @mixin number_setCaptions($setFigTableCaptions, $labeling, $labelingAp) {
-  $type: map-get($setFigTableCaptions, type);
-  $defaultContainer: map-get($setFigTableCaptions, defaultContainer);
-  $hasCaption: map-get($setFigTableCaptions, hasCaption);
-  $hasTitle: map-get($setFigTableCaptions, hasTitle);
+  $type:                map-get($setFigTableCaptions, type);
+  $defaultContainer:    map-get($setFigTableCaptions, defaultContainer);
+  $hasCaption:          map-get($setFigTableCaptions, hasCaption);
+  $hasTitle:            map-get($setFigTableCaptions, hasTitle);
+  $exceptionClassNames: map-get($setFigTableCaptions, exceptionClassNames);
+
+  $exceptionsStr: ('.unnumbered');
+  @include utils_checkTypeOptional($exceptionClassNames, list);
+  @if $exceptionClassNames {
+    @each $item in $exceptionClassNames {
+      @include utils_checkType($item, string);
+      $exceptionsStr: append($exceptionsStr, unquote('.#{$item}'), 'comma');
+    }
+  }
 
   [data-type="chapter"] {
-    :not(#{$type}) > #{$type}:not(.unnumbered) {
+    :not(#{$type}) > #{$type}:not(#{$exceptionsStr}) {
       @include utils_title($labeling, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
