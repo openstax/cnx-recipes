@@ -105,17 +105,17 @@
   $hasTitle:            map-get($setFigTableCaptions, hasTitle);
   $exceptionClassNames: map-get($setFigTableCaptions, exceptionClassNames);
 
-  $exceptionsStr: ('.unnumbered');
+  $exceptionsStr: (':not(.unnumbered)');
   @include utils_checkTypeOptional($exceptionClassNames, list);
   @if $exceptionClassNames {
     @each $item in $exceptionClassNames {
       @include utils_checkType($item, string);
-      $exceptionsStr: append($exceptionsStr, unquote('.#{$item}'), 'comma');
+      $exceptionsStr: unquote("#{$exceptionsStr}:not(.#{$item})");
     }
   }
 
   [data-type="chapter"] {
-    :not(#{$type}) > #{$type}:not(#{$exceptionsStr}) {
+    :not(#{$type}) > #{$type}#{$exceptionsStr} {
       @include utils_title($labeling, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
@@ -123,7 +123,7 @@
   }
 
   .appendix {
-    :not(#{$type}) > #{$type}:not(.unnumbered) {
+    :not(#{$type}) > #{$type}#{$exceptionsStr} {
       @include utils_title($labelingAp, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
