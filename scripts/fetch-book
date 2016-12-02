@@ -1,9 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-# This fetches the raw HTML for a book (or all books if using the --all argument) from ${HOST}
-
-HOST=${HOST:-'dev00.cnx.org'}
+# This fetches the raw HTML for a book (or all books if using the --all argument) from ${hostName}
 
 arg1=$1
 
@@ -24,11 +22,13 @@ then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for bookConfig in "${BOOK_CONFIGS[@]}"
   do
-    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
+    read -r bookConfigName rulesetName uuid hostName _ <<< "${bookConfig}"
 
     if [[ "${arg1}" = "${bookConfigName}" ]]
     then
-      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid} ${hostName} ${_}")
+      hostName=${HOST:-${hostName}}
+
       foundConfig=1
       break
     fi
@@ -44,10 +44,13 @@ fi
 
 for bookConfig in "${BOOK_CONFIGS[@]}"
 do
-  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+  read -r bookName rulesetName uuid hostName _ <<< "${bookConfig}"
+  # Allow user to override the hostname
+  hostName=${HOST:-${hostName}}
+
   rawFile="./data/${bookName}-raw.html"
 
-  >&2 echo "==> Fetching ${bookName}"
+  >&2 echo "==> Fetching ${bookName} from ${hostName}"
   >&2 echo "generating an EPUB from the database and converting to a single HTML file"
   >&2 echo "(may take a minute)..."
 
@@ -61,10 +64,10 @@ do
 
   commands="${rmTempEpubCmd}; ${rmTempHtmlCmd}; ${generateEpubCmd} && ${generateHtmlCmd}"
 
-  ssh ${USER}@${HOST} ${commands}
+  ssh ${USER}@${hostName} ${commands}
 
   >&2 echo "==> Copying HTML file from server to local machine"
-  scp ${USER}@${HOST}:${tempHtmlFile} ${rawFile}
+  scp ${USER}@${hostName}:${tempHtmlFile} ${rawFile}
 
   >&2 echo "Fetch is Done. File is available at ${rawFile}"
 

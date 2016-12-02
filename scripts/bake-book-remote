@@ -12,8 +12,6 @@ set -e
 # - Invoke the collation via a the python interpreter `import requests; resp = requests.post('http://dev00.cnx.org.cnx.org:6543/contents/031da8d3-b525-429c-80cf-6c8ed997733a/collate-content', headers={'x-api-key': 'b07'}); print(resp)`
 # Originally from: https://gist.github.com/pumazi/93f5ed32cb9e094e5a97415ced480a16
 
-HOST=${HOST:-'dev00.cnx.org'}
-
 arg1=$1
 bookVersion=$2
 
@@ -36,11 +34,12 @@ else
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for bookConfig in "${BOOK_CONFIGS[@]}"
   do
-    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
+    read -r bookConfigName rulesetName uuid hostName _ <<< "${bookConfig}"
 
     if [[ "${arg1}" = "${bookConfigName}" ]]
     then
       BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      hostName=${HOST:-${hostName}}
       foundConfig=1
       break
     fi
@@ -58,10 +57,12 @@ if [ -z "${bookVersion}" ]
 then
 
   # The first entry is always the book info because "--all" is not a valid commandline arg
-  read -r bookName rulesetName uuid _ <<< "${BOOK_CONFIGS[0]}"
+  read -r bookName rulesetName uuid hostName _ <<< "${BOOK_CONFIGS[0]}"
+  hostName=${HOST:-${hostName}}
+
   >&2 echo 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
   >&2 echo 'The version is the @#.## in the target collection URL'
-  >&2 echo "You can visit http://${HOST}/contents/${uuid} to get the version number"
+  >&2 echo "You can visit http://${hostName}/contents/${uuid} to get the version number"
   exit 1
 fi
 
@@ -76,7 +77,9 @@ fi
 
 for bookConfig in "${BOOK_CONFIGS[@]}"
 do
-  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+  read -r bookName rulesetName uuid hostName _ <<< "${bookConfig}"
+
+  hostName=${HOST:-${hostName}}
 
   cssFile="./books/rulesets/output/${rulesetName}.css"
 
@@ -86,25 +89,25 @@ do
     exit 1
   fi
 
-  >&2 echo "==> Baking book ${bookName} ${uuid} on ${HOST} ..."
+  >&2 echo "==> Baking book ${bookName} ${uuid} on ${hostName} ..."
 
   tempCssFile="~/temp.css"
 
   >&2 echo "==> Copying CSS file from local machine to server"
-  scp ${cssFile} ${USER}@${HOST}:${tempCssFile} || exit 1
+  scp ${cssFile} ${USER}@${hostName}:${tempCssFile} || exit 1
 
   >&2 echo "==> Injecting the css file into the book as ruleset.css"
 
   buildBookCmd="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"ruleset.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${uuid}@${bookVersion}\" ${tempCssFile}"
-  ssh ${USER}@${HOST} ${buildBookCmd} || exit 1
+  ssh ${USER}@${hostName} ${buildBookCmd} || exit 1
 
   >&2 echo "==> Re-baking the book (may take up to 12 minutes)"
-  python -c "import requests; resp = requests.post('http://${HOST}:6543/contents/${uuid}@${bookVersion}/collate-content',  headers={'x-api-key': 'b07'}); print(resp)" || exit 1
+  python -c "import requests; resp = requests.post('http://${hostName}:6543/contents/${uuid}@${bookVersion}/collate-content',  headers={'x-api-key': 'b07'}); print(resp)" || exit 1
 
   >&2 echo "==> restarting varnish because the HTML files may be cached"
   restartVarnishCmd="varnishadm ban req.url '~' ."
-  ssh ${USER}@${HOST} ${restartVarnishCmd} || exit 1
+  ssh ${USER}@${hostName} ${restartVarnishCmd} || exit 1
 
-  >&2 echo "Build complete. See the changes by going to http://${HOST}/contents/${uuid}@${bookVersion}"
+  >&2 echo "Build complete. See the changes by going to http://${hostName}/contents/${uuid}@${bookVersion}"
 
 done
