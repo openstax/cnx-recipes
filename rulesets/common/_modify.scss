@@ -180,7 +180,7 @@
 }
 
 /// This moves the data-label attribute off of a list and into a new element so it is visible
-@mixin modify_listMakeLabelVisible () {
+@mixin modify_listMakeLabelVisible() {
   ol,
   ul {
     &[data-label] {
@@ -190,7 +190,7 @@
       //
       //   &::before {
       //     content: attr(data-label);
-      //     set-classes: os-label-title-thingy;
+      //     class-add: os-label-title-thingy;
       //   }
       // }
       // GAAAH the previous does not work. Instead, we have to do the following
@@ -204,6 +204,36 @@
         attr-data-type: "list-wrapper";
         container: div;
         content: pending(bListLabel) content();
+      }
+
+    }
+  }
+}
+
+/// This moves the data-label attribute off of an exercise and into a new element so it is visible
+@mixin modify_exerciseMakeLabelVisible() {
+  [data-type="exercise"] {
+    &[data-label] {
+      // &::outside {
+      //   set-tag-name: div;
+      //   set-attrs: data-type list-wrapper;
+      //
+      //   &::before {
+      //     content: attr(data-label);
+      //     class-add: os-label-title-thingy;
+      //   }
+      // }
+      // GAAAH the previous does not work. Instead, we have to do the following
+      &::after {
+        container: div;
+        class: "os-label-title-thingy";
+        content: attr(data-label);
+        move-to: bTitleLabel;
+      }
+      &::outside {
+        attr-data-type: "exercise-wrapper";
+        container: div;
+        content: pending(bTitleLabel) content();
       }
 
     }
