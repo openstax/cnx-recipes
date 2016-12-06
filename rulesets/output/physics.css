@@ -284,23 +284,23 @@
 
   Style guide: page.note.chapter-objectives
 */
-:pass(0) [data-type="exercise"][data-label]::after {
+:pass(0) [data-type="exercise"][data-label]:not([data-label=""])::after {
   container: div;
   class: "os-label-title-thingy";
   content: attr(data-label);
   move-to: bTitleLabel; }
-:pass(0) [data-type="exercise"][data-label]::outside {
+:pass(0) [data-type="exercise"][data-label]:not([data-label=""])::outside {
   attr-data-type: "exercise-wrapper";
   container: div;
   content: pending(bTitleLabel) content(); }
-:pass(0) ol[data-label]::after,
-:pass(0) ul[data-label]::after {
+:pass(0) ol[data-label]:not([data-label=""])::after,
+:pass(0) ul[data-label]:not([data-label=""])::after {
   container: div;
   class: "os-label-title-thingy";
   content: attr(data-label);
   move-to: bListLabel; }
-:pass(0) ol[data-label]::outside,
-:pass(0) ul[data-label]::outside {
+:pass(0) ol[data-label]:not([data-label=""])::outside,
+:pass(0) ul[data-label]:not([data-label=""])::outside {
   attr-data-type: "list-wrapper";
   container: div;
   content: pending(bListLabel) content(); }
@@ -687,11 +687,24 @@
   class: os-table;
   container: div;
   content: content() pending(bCaptionContainer); }
+:pass(5) [data-type="chapter"] > table.unnumbered caption [data-type="title"],
+:pass(5) [data-type="chapter"] :not(table) > table.unnumbered caption [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaption; }
+:pass(5) [data-type="chapter"] > table.unnumbered::after,
+:pass(5) [data-type="chapter"] :not(table) > table.unnumbered::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption);
+  move-to: bCaptionContainer; }
+:pass(5) [data-type="chapter"] > table.unnumbered::outside,
+:pass(5) [data-type="chapter"] :not(table) > table.unnumbered::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
 :pass(5) [data-type="chapter"] > table.unnumbered caption,
 :pass(5) [data-type="chapter"] :not(table) > table.unnumbered caption {
-  move-to: trash; }
-:pass(5) [data-type="chapter"] > table caption:empty,
-:pass(5) [data-type="chapter"] :not(table) > table caption:empty {
   move-to: trash; }
 :pass(5) .appendix > table:not(.unnumbered)::before,
 :pass(5) .appendix :not(table) > table:not(.unnumbered)::before {
@@ -721,11 +734,24 @@
   class: os-table;
   container: div;
   content: content() pending(bCaptionContainer); }
+:pass(5) .appendix > table.unnumbered caption [data-type="title"],
+:pass(5) .appendix :not(table) > table.unnumbered caption [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaption; }
+:pass(5) .appendix > table.unnumbered::after,
+:pass(5) .appendix :not(table) > table.unnumbered::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption);
+  move-to: bCaptionContainer; }
+:pass(5) .appendix > table.unnumbered::outside,
+:pass(5) .appendix :not(table) > table.unnumbered::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
 :pass(5) .appendix > table.unnumbered caption,
 :pass(5) .appendix :not(table) > table.unnumbered caption {
-  move-to: trash; }
-:pass(5) .appendix > table caption:empty,
-:pass(5) .appendix :not(table) > table caption:empty {
   move-to: trash; }
 :pass(5) [data-type="chapter"] > figure:not(.unnumbered)::before,
 :pass(5) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
@@ -757,9 +783,22 @@
   content: content() pending(bCaptionContainer); }
 :pass(5) [data-type="chapter"] > figure.unnumbered figcaption,
 :pass(5) [data-type="chapter"] :not(figure) > figure.unnumbered figcaption {
-  move-to: trash; }
-:pass(5) [data-type="chapter"] > figure figcaption:empty,
-:pass(5) [data-type="chapter"] :not(figure) > figure figcaption:empty {
+  container: span;
+  class: "os-caption";
+  move-to: bCaption; }
+:pass(5) [data-type="chapter"] > figure.unnumbered::after,
+:pass(5) [data-type="chapter"] :not(figure) > figure.unnumbered::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption);
+  move-to: bCaptionContainer; }
+:pass(5) [data-type="chapter"] > figure.unnumbered::outside,
+:pass(5) [data-type="chapter"] :not(figure) > figure.unnumbered::outside {
+  class: os-figure;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+:pass(5) [data-type="chapter"] > figure.unnumbered figcaption,
+:pass(5) [data-type="chapter"] :not(figure) > figure.unnumbered figcaption {
   move-to: trash; }
 :pass(5) .appendix > figure:not(.unnumbered)::before,
 :pass(5) .appendix :not(figure) > figure:not(.unnumbered)::before {
@@ -791,9 +830,22 @@
   content: content() pending(bCaptionContainer); }
 :pass(5) .appendix > figure.unnumbered figcaption,
 :pass(5) .appendix :not(figure) > figure.unnumbered figcaption {
-  move-to: trash; }
-:pass(5) .appendix > figure figcaption:empty,
-:pass(5) .appendix :not(figure) > figure figcaption:empty {
+  container: span;
+  class: "os-caption";
+  move-to: bCaption; }
+:pass(5) .appendix > figure.unnumbered::after,
+:pass(5) .appendix :not(figure) > figure.unnumbered::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption);
+  move-to: bCaptionContainer; }
+:pass(5) .appendix > figure.unnumbered::outside,
+:pass(5) .appendix :not(figure) > figure.unnumbered::outside {
+  class: os-figure;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+:pass(5) .appendix > figure.unnumbered figcaption,
+:pass(5) .appendix :not(figure) > figure.unnumbered figcaption {
   move-to: trash; }
 :pass(5) [data-type="chapter"] [data-type="page"] [data-type="note"] > .os-title,
 :pass(5) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title {

@@ -105,19 +105,26 @@
   $hasTitle:            map-get($setFigTableCaptions, hasTitle);
   $exceptionClassNames: map-get($setFigTableCaptions, exceptionClassNames);
 
-  $exceptionsStr: (':not(.unnumbered)');
+  // $noTitleContent: (); // For the exceptions, this is the "titleContent" that will be used
+
   @include utils_checkTypeOptional($exceptionClassNames, list);
+  // These selectors are of the form:
+  // `table:not(.unnumbered):not(.custom1):not(.custom2)` (everything that is not an exception)
+  // `table.unnumbered, table.custom1, table.custom2`     (everything that is an exception)
+  $notAnExceptionSel: unquote("#{$type}:not(.unnumbered)");
+  $exceptionsSel: unquote("#{$type}.unnumbered");
   @if $exceptionClassNames {
     @each $item in $exceptionClassNames {
       @include utils_checkType($item, string);
-      $exceptionsStr: unquote("#{$exceptionsStr}:not(.#{$item})");
+      $notAnExceptionSel: unquote("#{$notAnExceptionSel}:not(.#{$item})");
+      $exceptionsSel: unquote("#{$exceptionsSel}, #{$type}.#{$item}");
     }
   }
 
   // /* The :not(#{$type}) is here because of subfigures (I think) */
   [data-type="chapter"],
   [data-type="chapter"] :not(#{$type}) {
-    > #{$type}#{$exceptionsStr} {
+    > #{$notAnExceptionSel} {
 
       // If the figure/table has a caption/title then set a boolean
       // (essentially, implement `:has(caption)`)
@@ -126,18 +133,26 @@
       @include utils_title($labeling, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
+    > #{$exceptionsSel} {
+      // @include utils_title($noTitleContent, bCaption);
+      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+    }
     @include trashUnnumberedCaption($type, $defaultContainer);
-    @include trashEmptyCaption($type, $defaultContainer);
+    // TODO: uncomment me but it will cause minor regressions in existing books: @include trashEmptyCaption($type, $defaultContainer);
   }
 
   .appendix,
   .appendix :not(#{$type}) {
-    > #{$type}#{$exceptionsStr} {
+    > #{$notAnExceptionSel} {
       @include utils_title($labelingAp, bCaption);
       @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
     }
+    > #{$exceptionsSel} {
+      // @include utils_title($noTitleContent, bCaption);
+      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+    }
     @include trashUnnumberedCaption($type, $defaultContainer);
-    @include trashEmptyCaption($type, $defaultContainer);
+    // TODO: uncomment me but it will cause minor regressions in existing books: @include trashEmptyCaption($type, $defaultContainer);
   }
 }
 
