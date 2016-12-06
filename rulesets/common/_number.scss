@@ -111,8 +111,8 @@
   // These selectors are of the form:
   // `table:not(.unnumbered):not(.custom1):not(.custom2)` (everything that is not an exception)
   // `table.unnumbered, table.custom1, table.custom2`     (everything that is an exception)
-  $notAnExceptionSel: unquote("#{$type}:not(.unnumbered)");
-  $exceptionsSel: unquote("#{$type}.unnumbered");
+  $notAnExceptionSel: "#{$type}";
+  $exceptionsSel: unquote("#{$type}.HACK_DOES_NOT_EXIST");
   @if $exceptionClassNames {
     @each $item in $exceptionClassNames {
       @include utils_checkType($item, string);
@@ -124,18 +124,28 @@
   // /* The :not(#{$type}) is here because of subfigures (I think) */
   [data-type="chapter"],
   [data-type="chapter"] :not(#{$type}) {
-    > #{$notAnExceptionSel} {
+    > {
+      #{$notAnExceptionSel} {
 
-      // If the figure/table has a caption/title then set a boolean
-      // (essentially, implement `:has(caption)`)
-      // hmm, this may not be possible in 1 pass
+        // If the figure/table has a caption/title then set a boolean
+        // (essentially, implement `:has(caption)`)
+        // hmm, this may not be possible in 1 pass
 
-      @include utils_title($labeling, bCaption);
-      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
-    }
-    > #{$exceptionsSel} {
-      // @include utils_title($noTitleContent, bCaption);
-      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+        @include utils_title($labeling, bCaption);
+        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+      }
+      // A bug in easybake does not allow 2 selectors with `::outside` to match an element.
+      // in hs-physics the `.key-terms` table is also marked as `.unnumbered`
+      // see https://github.com/Connexions/cnx-easybake/issues/48
+      //
+      // TODO: Maybe these selectors can be simplified to just always call setCaptionsHelper
+      #{$exceptionsSel} {
+        // @include utils_title($noTitleContent, bCaption);
+        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+      }
+      .unnumbered#{$notAnExceptionSel} {
+        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+      }
     }
     @include trashUnnumberedCaption($type, $defaultContainer);
     // TODO: uncomment me but it will cause minor regressions in existing books: @include trashEmptyCaption($type, $defaultContainer);
@@ -143,13 +153,23 @@
 
   .appendix,
   .appendix :not(#{$type}) {
-    > #{$notAnExceptionSel} {
-      @include utils_title($labelingAp, bCaption);
-      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
-    }
-    > #{$exceptionsSel} {
-      // @include utils_title($noTitleContent, bCaption);
-      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+    > {
+      #{$notAnExceptionSel} {
+        @include utils_title($labelingAp, bCaption);
+        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+      }
+      // A bug in easybake does not allow 2 selectors with `::outside` to match an element.
+      // in hs-physics the `.key-terms` table is also marked as `.unnumbered`
+      // see https://github.com/Connexions/cnx-easybake/issues/48
+      //
+      // TODO: Maybe these selectors can be simplified to just always call setCaptionsHelper
+      #{$exceptionsSel} {
+        // @include utils_title($noTitleContent, bCaption);
+        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+      }
+      .unnumbered#{$notAnExceptionSel} {
+        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+      }
     }
     @include trashUnnumberedCaption($type, $defaultContainer);
     // TODO: uncomment me but it will cause minor regressions in existing books: @include trashEmptyCaption($type, $defaultContainer);
