@@ -86,13 +86,32 @@ $pageShortAnswer            : ( name: "Short Answer", source: "short-answer", se
 $pageExtendedResponse       : ( name: "Extended Response", source: "extended-response", sectionSeparated: true );
 $pageIndex                  : ( name: "Index", source: "index", isIndex: true );
 
-$chapterCompositePages: (
-  $pageKeyTerms, $pageSummary, $pageKeyEquations, $pageConceptItems, $pageCriticalThinking, $pageProblems, $pagePerformance, $pageMultipleChoice, $pageShortAnswer, $pageExtendedResponse,
-  );
 
+
+
+$compoundReview: (
+  $pageCriticalThinking, $pageConceptItems, $pageProblems, $pagePerformance,
+);
+
+$compoundTestPrep: (
+  $pageMultipleChoice, $pageShortAnswer,  $pageExtendedResponse
+);
+
+
+$pageChapterReview            : ( name: "Chapter Review", source: "chapter-review", contains: $compoundReview, EOCcompoundComposite: true );
+
+$pageTestPrep                 : ( name: "Test Prep", source: "test-prep", contains: $compoundTestPrep, EOCcompoundComposite: true );
+
+
+$chapterCompositePages        : (
+  $pageKeyTerms, $pageSummary, $pageKeyEquations, $pageChapterReview, $pageTestPrep
+);
+
+$EOCcompoundComposites         : (
+  $pageChapterReview, $pageTestPrep
+);
 $bookCompositePages: (
-  //This does not get parsed as a list without a comma at the end
-  //the composite builder should account for this rather than using hacky syntax,
+  //This does not get parsed as a list without a comma at the endthe composite builder should account for this rather than using hacky syntax,
   $pageIndex,
 );
 
