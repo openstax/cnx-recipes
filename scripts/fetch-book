@@ -52,7 +52,7 @@ do
 
   >&2 echo "==> Fetching ${bookName} from ${hostName}"
   >&2 echo "generating an EPUB from the database and converting to a single HTML file"
-  >&2 echo "(may take a minute)..."
+  >&2 echo "(may take a up to 20 minutes if you are getting a book with exercises that need to be converted)..."
 
   tempEpubFile="~/temp.internal.epub"
   tempHtmlFile="~/temp.html"
@@ -60,7 +60,7 @@ do
   rmTempEpubCmd="[ -e ${tempEpubFile} ] && rm ${tempEpubFile}"
   rmTempHtmlCmd="[ -e ${tempHtmlFile} ] && rm ${tempHtmlFile}"
   generateEpubCmd="/var/cnx/venvs/publishing/bin/cnx-archive-export_epub /etc/cnx/publishing/app.ini ${uuid} ${tempEpubFile}"
-  generateHtmlCmd="/var/cnx/venvs/publishing/bin/cnx-epub-single_html ${tempEpubFile} > ${tempHtmlFile}"
+  generateHtmlCmd="/var/cnx/venvs/publishing/bin/cnx-epub-single_html --exercise_host exercises.openstax.org --mathmlcloud_url http://mathmlcloud.cnx.org:1337/equation/ ${tempEpubFile} > ${tempHtmlFile}"
 
   commands="${rmTempEpubCmd}; ${rmTempHtmlCmd}; ${generateEpubCmd} && ${generateHtmlCmd}"
 
