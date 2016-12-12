@@ -130,10 +130,14 @@
 /// @group compose
 
 
+//TODO: verify that the empty chapter areas are not displayed, currently working better than previous commit but still displays empty sections. The exercises are empty, why?
+//TODO: add/fix numbering
+//TODO: Optional, try to use isCompoundCompsite instad of loop inside a loop
+
 @mixin processComposites ($compounds) {
   [data-type="chapter"] {
     [data-type="page"] {
-      > [data-type="document-title"] {
+      > h2[data-type="document-title"] {
         node-set: CompoundSectionHeaderNode;
       }
     }
@@ -147,20 +151,19 @@
           move-to: trash;
         }
         @if ($sectionSeparated) {
-          content: nodes(CompoundSectionHeaderNode) content();
           move-to: #{$compositeSource}-separated;
         } @else {
           move-to: #{$compositeSource}-DESTINATION;
         }
       }
       @if ($sectionSeparated) {
-
+        [data-type="page"] {
           &::after {
             class: "os-#{$compositeSource}-chapter-area";
-            content: pending(#{$compositeSource}-separated);
+            content: nodes(CompoundSectionHeaderNode) pending(#{$compositeSource}-separated);
             move-to: #{$compositeSource}-sectionSeparatedContainer;
           }
-
+        }
         &::after {
           container: h2;
           data-type: "title";
@@ -168,36 +171,26 @@
           move-to: #{$compositeSource}-title;
         }
         &::after {
-          class: os-#{$compositeSource}-chapter-area;
-          content: pending(#{$compositeSource}-title) pending(#{$compositeSource}-sectionSeparatedContainer);
+          class: os-#{$compositeSource};
+          content: pending(#{$compositeSource}-sectionSeparatedContainer);
           move-to: #{$compositeSource}-DESTINATION;
         }
       }
       &::after {
         class: "#{$compositeSource}-container";
-        content: pending(#{$compositeSource}-DESTINATION);
+        content: pending(#{$compositeSource}-title) pending(#{$compositeSource}-DESTINATION);
         move-to: composite-DESTINATION;
       }
     }
   }
 }
-// change the $allComposites to pull the current composite
+
 @mixin EOCcompoundCompositesPages ($getAllComposites) {
 
-  //remove this loop
   @each $compositePage in $getAllComposites {
-    //get it from the bundle (now known as composite)
     $name: map-get($compositePage, name);
     $source: map-get($compositePage, source);
-    //this is for the current composite
     $allComposites: map-get($compositePage, contains);
-    //TODO: add title
-    //TODO: try to stick in compound if you can
-    //TODO: remove the empty sections
-    //TODO: fix the sectionSeparated (not working, empty element, probably an order of execution problem)
-    //TODO: remove the all composite loop, call it directly from the compositepage, just git it from there, use the if is compoundComposite, list all of them in contains:, get info from that map instead, not from the map of maps
-
-
     @include processComposites($allComposites);
     [data-type="chapter"] {
       &::after {
