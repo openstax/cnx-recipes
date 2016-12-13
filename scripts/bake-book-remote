@@ -38,8 +38,7 @@ else
 
     if [[ "${arg1}" = "${bookConfigName}" ]]
     then
-      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
-      hostName=${HOST:-${hostName}}
+      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid} ${hostName}")
       foundConfig=1
       break
     fi
@@ -58,7 +57,6 @@ then
 
   # The first entry is always the book info because "--all" is not a valid commandline arg
   read -r bookName rulesetName uuid hostName _ <<< "${BOOK_CONFIGS[0]}"
-  hostName=${HOST:-${hostName}}
 
   >&2 echo 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
   >&2 echo 'The version is the @#.## in the target collection URL'
@@ -79,9 +77,7 @@ for bookConfig in "${BOOK_CONFIGS[@]}"
 do
   read -r bookName rulesetName uuid hostName _ <<< "${bookConfig}"
 
-  hostName=${HOST:-${hostName}}
-
-  cssFile="./books/rulesets/output/${rulesetName}.css"
+  cssFile="./rulesets/output/${rulesetName}.css"
 
   if [ -z "${uuid}" ]
   then

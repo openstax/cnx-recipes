@@ -101,7 +101,12 @@ Here are the steps to run it:
 ./scripts/diff-book statistics
 
 # Any differences would pop up here
+
+# Optional: Create a diff and give it to a GUI
+diff ./data/statistics-prepared.html ./data/statistics-baked.html > foo.diff
 ```
+
+**Note:** You can specify `--all` instead of `statistics` to diff all the books (assuming they have been fetched)
 
 ## Experimental
 
