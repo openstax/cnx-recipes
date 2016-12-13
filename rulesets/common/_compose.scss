@@ -131,7 +131,6 @@
 
 
 //TODO: verify that the empty chapter areas are not displayed, currently working better than previous commit but still displays empty sections. The exercises are empty, why?
-//TODO: add/fix numbering
 //TODO: Optional, try to use isCompoundCompsite instad of loop inside a loop
 
 @mixin processComposites ($compounds) {
@@ -178,7 +177,7 @@
       }
 
       &::after {
-        class: "#{$compositeSource}-container";
+        class: "os-#{$compositeSource}-container";
         content: pending(#{$compositeSource}-title) pending(#{$compositeSource}-DESTINATION);
         move-to: composite-DESTINATION;
       }
@@ -195,14 +194,10 @@
     @include processComposites($allComposites);
     [data-type="chapter"] {
       &::after {
-        content: $name;
-        class: "document-title";
-        container: h1;
-        move-to: compsiteTitle;
-      }
-      &::after {
-        content: pending(compsiteTitle) pending(composite-DESTINATION);
         class: "os-eoc os-#{$source}-container";
+        data-type: composite-page;
+        content: pending(composite-DESTINATION);
+
       }
     }
   }
