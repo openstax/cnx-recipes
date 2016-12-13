@@ -110,22 +110,38 @@ $pageShortAnswer            : ( name: "Short Answer", source: "short-answer" );
 
   Style guide: book.composite.extendedresponse
 */
-$pageExtendedResponse       : ( name: "Extended Response", source: "extended-response" );
-$pageIndex                  : ( name: "Index", source: "index", isIndex: true );
+$pageExtendedResponse        : ( name: "Extended Response", source: "extended-response" );
+
+$pageIndex                   : ( name: "Index", source: "index", isIndex: true );
 
 
+/*
+  Chapter Review
 
+  These should be collated at the end of a chapter.
+  
+  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task 
 
-$compoundReview              : (
-  $pageCriticalThinking, $pageConceptItems, $pageProblems, $pagePerformance,
-);
+  Markup: ./styleguide/book.compoundcomposite.chapterreview.html-baked.html
 
-$compoundTestPrep            : (
-  $pageMultipleChoice, $pageShortAnswer,  $pageExtendedResponse
-);
-
+  Style guide: book.compoundcomposite.chapterreview
+*/
+$compoundReview               : ( $pageConceptItems, $pageCriticalThinking, $pageProblems, $pagePerformance,);
 
 $pageChapterReview            : ( name: "Chapter Review", source: "chapter-review", contains: $compoundReview, EOCcompoundComposite: true );
+
+/*
+  Test Prep 
+
+  These should be collated at the end of a chapter.
+  
+  Compound Composite that contains: Test Prep Multiple Choice, Test Prep Short Answer, Test Prep Extended Response
+
+  Markup: ./styleguide/book.compoundcomposite.testprep.html-baked.html
+
+  Style guide: book.compoundcomposite.testprep
+*/
+$compoundTestPrep             : ( $pageMultipleChoice, $pageShortAnswer,  $pageExtendedResponse );
 
 $pageTestPrep                 : ( name: "Test Prep", source: "test-prep", contains: $compoundTestPrep, EOCcompoundComposite: true );
 
@@ -134,9 +150,8 @@ $chapterCompositePages        : (
   $pageKeyTerms, $pageSummary, $pageKeyEquations, $pageChapterReview, $pageTestPrep
 );
 
-$EOCcompoundComposites         : (
-  $pageChapterReview, $pageTestPrep
-);
+$EOCcompoundComposites         : ( $pageChapterReview, $pageTestPrep );
+
 $bookCompositePages: (
   //This does not get parsed as a list without a comma at the endthe composite builder should account for this rather than using hacky syntax,
   $pageIndex,
