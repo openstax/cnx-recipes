@@ -111,13 +111,13 @@
   // These selectors are of the form:
   // `table:not(.unnumbered):not(.custom1):not(.custom2)` (everything that is not an exception)
   // `table.unnumbered, table.custom1, table.custom2`     (everything that is an exception)
-  $notAnExceptionSel: "#{$type}";
-  $exceptionsSel: unquote("#{$type}.HACK_DOES_NOT_EXIST");
+  $notAnExceptionSelector: "#{$type}";
+  $exceptionsSelector: unquote("#{$type}.HACK_DOES_NOT_EXIST");
   @if $exceptionClassNames {
     @each $item in $exceptionClassNames {
       @include utils_checkType($item, string);
-      $notAnExceptionSel: unquote("#{$notAnExceptionSel}:not(.#{$item})");
-      $exceptionsSel: unquote("#{$exceptionsSel}, #{$type}.#{$item}");
+      $notAnExceptionSelector: unquote("#{$notAnExceptionSelector}:not(.#{$item})");
+      $exceptionsSelector: unquote("#{$exceptionsSelector}, #{$type}.#{$item}");
     }
   }
 
@@ -125,7 +125,7 @@
   [data-type="chapter"],
   [data-type="chapter"] :not(#{$type}) {
     > {
-      #{$notAnExceptionSel} {
+      #{$notAnExceptionSelector} {
 
         // If the figure/table has a caption/title then set a boolean
         // (essentially, implement `:has(caption)`)
@@ -139,11 +139,11 @@
       // see https://github.com/Connexions/cnx-easybake/issues/48
       //
       // TODO: Maybe these selectors can be simplified to just always call setCaptionsHelper
-      #{$exceptionsSel} {
+      #{$exceptionsSelector} {
         // @include utils_title($noTitleContent, bCaption);
         @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
       }
-      .unnumbered#{$notAnExceptionSel} {
+      .unnumbered#{$notAnExceptionSelector} {
         @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
       }
     }
@@ -154,7 +154,7 @@
   .appendix,
   .appendix :not(#{$type}) {
     > {
-      #{$notAnExceptionSel} {
+      #{$notAnExceptionSelector} {
         @include utils_title($labelingAp, bCaption);
         @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
       }
@@ -163,11 +163,11 @@
       // see https://github.com/Connexions/cnx-easybake/issues/48
       //
       // TODO: Maybe these selectors can be simplified to just always call setCaptionsHelper
-      #{$exceptionsSel} {
+      #{$exceptionsSelector} {
         // @include utils_title($noTitleContent, bCaption);
         @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
       }
-      .unnumbered#{$notAnExceptionSel} {
+      .unnumbered#{$notAnExceptionSelector} {
         @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
       }
     }
