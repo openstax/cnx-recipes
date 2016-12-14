@@ -5,9 +5,6 @@
 @import './config';
 
 :pass(0) {
-  @include modify_exerciseMakeLabelVisible(); // no dependencies
-  @include modify_listMakeLabelVisible(); // no dependencies
-
   //Some modifications to be done to the book before any collation
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
@@ -28,10 +25,19 @@
   @include modify_note($linksPhysicsNote);
   @include modify_note($watchPhysicsNote);
   @include modify_note($virtualPhysicsNote);
+
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
 }
 :pass(1) {
+  // These have no dependencies so I do not know why they require having to be here
+  // (as opposed to being right at the top of :pass(0) )
+  // but the fact that the list is inside a note seems to be the culprit.
+  // maybe the modify_note code runs first and makes a copy of the element `::before`
+  // This list code runs? (even though the listMakeLabelVisible was listed above modify_note)
+  @include modify_exerciseMakeLabelVisible(); // no dependencies
+  @include modify_listMakeLabelVisible(); // no dependencies
+
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include count_countChapters(chapter);
   @include number_numberChapters($chapterTitleContent);
@@ -96,11 +102,11 @@
   //After: createChapterComposites, createEOCSolutions, createBookComposites
   @include modify_compositeAutoID();
   @include modify_chapterAutoID();
-  
+
   //After: createChapterComposites
   @include count_countEOCExercises(exercise, '[data-type="composite-page"]');
   @include number_numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
-  
+
   @include count_countTables(table);
   @include count_countFigures(figure);
   @include number_setCaptions($setTableCaption, $captionTableNumber, $captionTableNumberAp);
