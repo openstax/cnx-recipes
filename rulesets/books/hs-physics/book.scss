@@ -9,6 +9,7 @@
   @include modify_spanWrapTitles();
   @include modify_simLinkTarget();
   //@include utils_hasSolution();
+
   @include modify_note($teacherSupportNote);
   @include modify_note($boundlessPhysicsNote);
   @include modify_note($learningObjectivesNote);
@@ -23,10 +24,19 @@
   @include modify_note($linksPhysicsNote);
   @include modify_note($watchPhysicsNote);
   @include modify_note($virtualPhysicsNote);
+
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
 }
 :pass(1) {
+  // These have no dependencies so I do not know why they require having to be here
+  // (as opposed to being right at the top of :pass(0) )
+  // but the fact that the list is inside a note seems to be the culprit.
+  // maybe the modify_note code runs first and makes a copy of the element `::before`
+  // This list code runs? (even though the listMakeLabelVisible was listed above modify_note)
+  @include modify_wrapExercises(); // no dependencies
+  @include modify_wrapLists(); // no dependencies
+
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include count_countChapters(chapter);
   @include number_numberChapters($chapterTitleContent);
@@ -34,10 +44,6 @@
   @include number_numberAppendices($appendixTitleContent);
   @include count_countSections(section);
   @include number_numberSections($sectionTitleContent);
-  @include count_countEquations(equation);
-  @include number_equations ($equationNumber, $sectionSummaryClass);
-
-
   @include count_countTerms(term);
   @include reference_refPageIDStringAs(pageID);
   @include modify_prepIndexTerms(term, pageID);
@@ -50,15 +56,11 @@
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include reference_refSectionHeaderStringAs(sectionHeaderString);
   @include compose_prepBookComposites($bookCompositePages, sectionHeaderNode, sectionHeaderString);
-
-  //After: createChapterComposites
-  @include count_countEOCExercises(exercise, '[data-type="composite-page"]');
-  @include number_numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
 }
 :pass(3) {
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
-  @include link_linkToProblemsFromSolutionsEOC();
+  //@include link_linkToProblemsFromSolutionsEOC();
 
   //After: prepBookComposites
   @include reference_refChapterHeaderNodeAs(chapterHeaderNode);
@@ -72,6 +74,7 @@
 
   //After: prepBookComposites, prepChapterAreas
   @include compose_createBookComposites($bookCompositePages);
+  @include compose_EOCcompoundCompositesPages ($EOCcompoundComposites);
 }
 :pass(5) {
   //After: prepIndexTerms, createBookComposites
@@ -80,10 +83,13 @@
   //After: composite page creation
   @include count_countChapters(chapter);
   @include count_countAppendices(appendix);
-  @include count_countEOCExercises(exercise, '[data-type="composite-page"]');
 
   @include link_setTargetLabels($targetLabels);
   @include link_setLinkLabels();
+
+  // Number the equations _AFTER_ they have been moved
+  @include count_countEquations(equation);
+  @include number_equations ($equationNumber, $sectionSummaryClass);
 
   @include reference_refBookMetadataNodeAs(bookMetadata);
   @include modify_compositeMetadata(bookMetadata);
@@ -92,10 +98,13 @@
   @include compose_titleEOCComposites($chapterCompositePages);
   @include compose_titleEOBComposites($bookCompositePages);
 
-
   //After: createChapterComposites, createEOCSolutions, createBookComposites
   @include modify_compositeAutoID();
   @include modify_chapterAutoID();
+
+  //After: createChapterComposites
+  @include count_countEOCExercises(exercise, '[data-type="composite-page"]');
+  @include number_numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
 
   @include count_countTables(table);
   @include count_countFigures(figure);

@@ -44,7 +44,7 @@ $pageKeyEquations           : ( name: "Key Equations", source: "key-equations", 
   Style guide: book.composite.concept
 */
 
-$pageConceptItems           : ( name: "Concept Items", source: "concept", sectionSeparated: true );
+$pageConceptItems           : ( name: "Concept Items", source: "concept");
 
 /*
   Critical Thinking Items
@@ -55,7 +55,7 @@ $pageConceptItems           : ( name: "Concept Items", source: "concept", sectio
 
   Style guide: book.composite.critical-thinking
 */
-$pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critical-thinking", sectionSeparated: true );
+$pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critical-thinking" );
 
 /*
   Problems
@@ -66,7 +66,7 @@ $pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critic
 
   Style guide: book.composite.problems
 */
-$pageProblems               : ( name: "Problems", source: "problem", sectionSeparated: true );
+$pageProblems               : ( name: "Problems", source: "ost-chapter-review.problem");
 
 /*
   Performance Task
@@ -77,7 +77,7 @@ $pageProblems               : ( name: "Problems", source: "problem", sectionSepa
 
   Style guide: book.composite.performance
 */
-$pagePerformance            : ( name: "Performance Task", source: "performance", sectionSeparated: true );
+$pagePerformance            : ( name: "Performance Task", source: "performance" );
 
 /*
   Multiple Choice
@@ -88,7 +88,7 @@ $pagePerformance            : ( name: "Performance Task", source: "performance",
 
   Style guide: book.composite.multiplechoice
 */
-$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice", sectionSeparated: true );
+$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice");
 
 /*
   Short Answer
@@ -99,7 +99,7 @@ $pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choic
 
   Style guide: book.composite.shortanswer
 */
-$pageShortAnswer            : ( name: "Short Answer", source: "short-answer", sectionSeparated: true );
+$pageShortAnswer            : ( name: "Short Answer", source: "short-answer" );
 
 /*
   Extended Response
@@ -110,16 +110,50 @@ $pageShortAnswer            : ( name: "Short Answer", source: "short-answer", se
 
   Style guide: book.composite.extendedresponse
 */
-$pageExtendedResponse       : ( name: "Extended Response", source: "extended-response", sectionSeparated: true );
-$pageIndex                  : ( name: "Index", source: "index", isIndex: true );
+$pageExtendedResponse        : ( name: "Extended Response", source: "extended-response" );
 
-$chapterCompositePages: (
-  $pageKeyTerms, $pageSummary, $pageKeyEquations, $pageConceptItems, $pageCriticalThinking, $pageProblems, $pagePerformance, $pageMultipleChoice, $pageShortAnswer, $pageExtendedResponse,
-  );
+$pageIndex                   : ( name: "Index", source: "index", isIndex: true );
+
+
+/*
+  Chapter Review
+
+  These should be collated at the end of a chapter.
+  
+  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task 
+
+  Markup: ./styleguide/book.compoundcomposite.chapterreview.html-baked.html
+
+  Style guide: book.compoundcomposite.chapterreview
+*/
+$compoundReview               : ( $pageConceptItems, $pageCriticalThinking, $pageProblems, $pagePerformance,);
+
+$pageChapterReview            : ( name: "Chapter Review", source: "chapter-review", contains: $compoundReview, EOCcompoundComposite: true );
+
+/*
+  Test Prep 
+
+  These should be collated at the end of a chapter.
+  
+  Compound Composite that contains: Test Prep Multiple Choice, Test Prep Short Answer, Test Prep Extended Response
+
+  Markup: ./styleguide/book.compoundcomposite.testprep.html-baked.html
+
+  Style guide: book.compoundcomposite.testprep
+*/
+$compoundTestPrep             : ( $pageMultipleChoice, $pageShortAnswer,  $pageExtendedResponse );
+
+$pageTestPrep                 : ( name: "Test Prep", source: "test-prep", contains: $compoundTestPrep, EOCcompoundComposite: true );
+
+
+$chapterCompositePages        : (
+  $pageKeyTerms, $pageSummary, $pageKeyEquations, $pageChapterReview, $pageTestPrep
+);
+
+$EOCcompoundComposites         : ( $pageChapterReview, $pageTestPrep );
 
 $bookCompositePages: (
-  //This does not get parsed as a list without a comma at the end
-  //the composite builder should account for this rather than using hacky syntax,
+  //This does not get parsed as a list without a comma at the endthe composite builder should account for this rather than using hacky syntax,
   $pageIndex,
 );
 
@@ -136,7 +170,7 @@ $appendixTitleContent       : ( title-label : "Appendix ", number : counter(appe
 
 $sectionTitleContent        : ( number : counter(chapter) "." counter(section), );
 
-$exerciseTitleContent       : ( divider : ".", number : counter(chapter) "." counter(exercise) );
+$exerciseTitleContent       : ( divider : "", number : counter(chapter) "." counter(exercise) );
 $equationNumber             : ( number : counter(chapter) "." counter(equation) );
 
 /*
@@ -305,7 +339,7 @@ $symbolsSectionTitle: "Symbols";
   HIGH SCHOOL PHYSICS CONFIG
 ==========================================================*/
 
-$setTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true );
+$setTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true, exceptionClassNames: ('key-terms',) );
 
 $setFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
 
@@ -341,3 +375,15 @@ $targetLabels: (
     label       : "Figure " counter(appendix, upper-alpha) "." counter(figure)
   )
 );
+
+
+/*
+  Grasp Check
+
+  This is an exercise that is fetched from exercises.openstax.org.
+  It should be rendered with the label "Grasp Check" (from the data-label attribute).
+
+  Markup: ./styleguide/page.exercise.grasp-check.html-baked.html
+
+  Style guide: page.exercise.grasp-check
+*/

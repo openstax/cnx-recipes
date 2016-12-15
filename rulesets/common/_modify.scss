@@ -178,3 +178,64 @@
     }
   }
 }
+
+/// This moves the data-label attribute off of a list and into a new element so it is visible
+@mixin modify_wrapLists() {
+  ol,
+  ul {
+    &[data-label]:not([data-label=""]) {
+      // &::outside {
+      //   set-tag-name: div;
+      //   set-attrs: data-type list-container;
+      //
+      //   &::before {
+      //     content: attr(data-label);
+      //     class-add: os-label;
+      //   }
+      // }
+      // GAAAH the previous does not work. Instead, we have to do the following
+      &::after {
+        container: div;
+        class: "os-label";
+        content: attr(data-label);
+        move-to: bListLabel;
+      }
+      &::outside {
+        data-type: "list-container";
+        container: div;
+        content: pending(bListLabel) content();
+      }
+
+    }
+  }
+}
+
+/// This moves the data-label attribute off of an exercise and into a new element so it is visible
+@mixin modify_wrapExercises() {
+  [data-type="exercise"] {
+    &[data-label]:not([data-label=""]) {
+      // &::outside {
+      //   set-tag-name: div;
+      //   set-attrs: data-type list-container;
+      //
+      //   &::before {
+      //     content: attr(data-label);
+      //     class-add: os-label;
+      //   }
+      // }
+      // GAAAH the previous does not work. Instead, we have to do the following
+      &::after {
+        container: div;
+        class: "os-label";
+        content: attr(data-label);
+        move-to: bTitleLabel;
+      }
+      &::outside {
+        data-type: "exercise-container";
+        container: div;
+        content: pending(bTitleLabel) content();
+      }
+
+    }
+  }
+}

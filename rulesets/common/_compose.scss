@@ -126,7 +126,82 @@
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
 /// @arg {string} $sectionHeaderString - Optional, used when `isIndex` is true
 /// @group compose
-@mixin _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
+
+
+//TODO: verify that the empty chapter areas are not displayed, currently working better than previous commit but still displays empty sections. The exercises are empty, why?
+//TODO: Optional, try to use isCompoundCompsite instad of loop inside a loop
+
+@mixin _processComposites ($allCompoundCompositePages) {
+  [data-type="chapter"] {
+    [data-type="page"] {
+      > [data-type="document-title"] {
+        node-set: CompoundSectionHeaderNode;
+      }
+    }
+    @each $composite in $allCompoundCompositePages {
+      $compositeSource: map-get($composite, source);
+      $compositeName: map-get($composite, name);
+      $sectionSeparated: map-get($composite, sectionSeparated);
+
+      .#{$compositeSource} {
+        > [data-type="title"] {
+          move-to: trash;
+        }
+        @if ($sectionSeparated) {
+          move-to: #{$compositeSource}-separated;
+        } @else {
+          move-to: #{$compositeSource}-DESTINATION;
+        }
+      }
+      @if ($sectionSeparated) {
+        [data-type="page"] {
+          &::after {
+            class: "os-#{$compositeSource}-chapter-area";
+            content: nodes(CompoundSectionHeaderNode) pending(#{$compositeSource}-separated);
+            move-to: #{$compositeSource}-sectionSeparatedContainer;
+          }
+        }
+        &::after {
+          class: os-#{$compositeSource};
+          content: pending(#{$compositeSource}-sectionSeparatedContainer);
+          move-to: #{$compositeSource}-DESTINATION;
+        }
+      }
+      &::after {
+        container: h2;
+        data-type: "title";
+        content: $compositeName;
+        move-to: #{$compositeSource}-title;
+      }
+
+      &::after {
+        class: "os-#{$compositeSource}-container";
+        content: pending(#{$compositeSource}-title) pending(#{$compositeSource}-DESTINATION);
+        move-to: composite-DESTINATION;
+      }
+    }
+  }
+}
+
+@mixin compose_EOCcompoundCompositesPages ($getAllComposites) {
+
+  @each $compositePage in $getAllComposites {
+    $name: map-get($compositePage, name);
+    $source: map-get($compositePage, source);
+    $allComposites: map-get($compositePage, contains);
+    @include _processComposites($allComposites);
+    [data-type="chapter"] {
+      &::after {
+        class: "os-eoc os-#{$source}-container";
+        data-type: composite-page;
+        content: pending(composite-DESTINATION);
+
+      }
+    }
+  }
+}
+
+ @mixin _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
   $name: map-get($page, name);
   $source: map-get($page, source);
   $compoundComposite: map-get($page, compoundComposite);
