@@ -88,21 +88,41 @@
     }
     > div[data-type="unit"] {
       > [data-type='document-title'] {
-        copy-to: eou-toc;
+        node-set: unitTitle;
+        string-set: uTitle-id attr(id);
+      }
+      &::after {
+        content: nodes(unitTitle);
+        attr-href: "#" string(uTitle-id);
+        container: a;
+        move-to: eou-toc;
       }
       > div[data-type='chapter'] {
         > [data-type='document-title'] {
-          // container: h1;
-          // data-type: "toc-title";
-          copy-to: eoc-toc;
+          node-set: chapterTitle;
+          string-set: chapTitle-id attr(id);
+          //copy-to: eoc-toc;
+        }
+        &::after {
+          content: nodes(chapterTitle);
+          attr-href: "#" string(chapTitle-id);
+          container: a;
+          move-to: eoc-toc;
         }
         > div[data-type="page"],
         > div[data-type="composite-page"] {
+          string-set: page-id-chap attr(id);
           > [data-type='document-title'] {
-            copy-to: page-title;
+            node-set: PageTitle;
           }
           &::after {
-            content: pending(page-title);
+            content: nodes(PageTitle);
+            attr-href: "#" string(page-id-chap);
+            container: a;
+            move-to: page-link;
+          }
+          &::after {
+            content: pending(page-link);
             move-to: eoc-toc-pages;
             container: li;
           }

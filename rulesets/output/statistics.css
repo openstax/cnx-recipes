@@ -1053,17 +1053,38 @@
   container: li;
   move-to: eob-toc; }
 :pass(7) body > div[data-type="unit"] > [data-type='document-title'] {
-  copy-to: eou-toc; }
+  node-set: unitTitle;
+  string-set: uTitle-id attr(id); }
+:pass(7) body > div[data-type="unit"]::after {
+  content: nodes(unitTitle);
+  attr-href: "#" string(uTitle-id);
+  container: a;
+  move-to: eou-toc; }
 :pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > [data-type='document-title'] {
-  copy-to: eoc-toc; }
-:pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
-:pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
-  copy-to: page-title; }
-:pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
-:pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after {
-  content: pending(page-title);
-  move-to: eoc-toc-pages;
-  container: li; }
+  node-set: chapterTitle;
+  string-set: chapTitle-id attr(id); }
+:pass(7) body > div[data-type="unit"] > div[data-type='chapter']::after {
+  content: nodes(chapterTitle);
+  attr-href: "#" string(chapTitle-id);
+  container: a;
+  move-to: eoc-toc; }
+:pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"],
+:pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] {
+  string-set: page-id-chap attr(id); }
+  :pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
+  :pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
+    node-set: PageTitle; }
+  :pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
+  :pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after {
+    content: nodes(PageTitle);
+    attr-href: "#" string(page-id-chap);
+    container: a;
+    move-to: page-link; }
+  :pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
+  :pass(7) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after {
+    content: pending(page-link);
+    move-to: eoc-toc-pages;
+    container: li; }
 :pass(7) body > div[data-type="unit"] > div[data-type='chapter']::after {
   content: pending(eoc-toc-pages);
   container: ol;
