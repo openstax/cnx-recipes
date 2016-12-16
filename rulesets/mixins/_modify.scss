@@ -185,15 +185,15 @@
   ul {
     &[data-label]:not([data-label=""]) {
       // &::outside {
-      //   set-tag-name: div;
-      //   set-attrs: data-type list-container;
+      //   tag-name-set: div;
+      //   attrs-set: data-type list-container;
       //
       //   &::before {
       //     content: attr(data-label);
       //     class-add: os-label;
       //   }
       // }
-      // GAAAH the previous does not work. Instead, we have to do the following
+      // The previous does not work. Instead, we have to do the following (& use a bucket)
       &::after {
         container: div;
         class: "os-label";
@@ -215,15 +215,15 @@
   [data-type="exercise"] {
     &[data-label]:not([data-label=""]) {
       // &::outside {
-      //   set-tag-name: div;
-      //   set-attrs: data-type list-container;
+      //   tag-name-set: div;
+      //   attrs-set: data-type list-container;
       //
       //   &::before {
       //     content: attr(data-label);
       //     class-add: os-label;
       //   }
       // }
-      // GAAAH the previous does not work. Instead, we have to do the following
+      // The previous does not work. Instead, we have to do the following (& use a bucket)
       &::after {
         container: div;
         class: "os-label";
@@ -234,6 +234,50 @@
         data-type: "exercise-container";
         container: div;
         content: pending(bTitleLabel) content();
+      }
+
+    }
+  }
+}
+
+/// This wraps every iframe with an element that has classes on it
+/// saying which alternatives are present,
+/// and adds a link that opens in a new window.
+@mixin modify_wrapIframesWithAlternatives() {
+  // just a guard to make sure we did not already convert the iframe
+  :not([data-type="alternatives"]) {
+    // > iframe {
+    //   class-add: os-is-iframe;
+    //   &::outside {
+    //     tag-name-set: "div";
+    //     attrs-set: data-type "alternatives";
+    //     class-add: "os-has-iframe" "os-has-link";
+    //
+    //     &::before {
+    //       tag-name-set: "a";
+    //       attrs-set: href attr(src), target "_window";
+    //       class-add: "os-is-link";
+    //       content: "link";
+    //     }
+    //   }
+    // }
+    //
+    // The previous does not work. Instead, we have to do the following (& use a bucket)
+    > iframe {
+      class: attr(class) "os-is-iframe";
+      &::after {
+        container: a;
+        class: "os-is-link";
+        attr-target: "_window";
+        attr-href: attr(src);
+        content: "link";
+        move-to: bIframeLink;
+      }
+      &::outside {
+        container: div;
+        data-type: "alternatives";
+        class: "os-has-iframe os-has-link";
+        content: pending(bIframeLink) content();
       }
 
     }
