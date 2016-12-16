@@ -9,8 +9,8 @@
     $source: map-get($page, source);
 
     // Validate
-    @include utils_checkType($name, string);
-    @include utils_checkType($source, string);
+    @include validate_type($name, string);
+    @include validate_type($source, string);
 
     [data-type="composite-page"].os-eoc.os-#{$source}-container {
       $titleContent: (
@@ -30,8 +30,8 @@
     $source: map-get($page, source);
 
     // Validate
-    @include utils_checkType($name, string);
-    @include utils_checkType($source, string);
+    @include validate_type($name, string);
+    @include validate_type($source, string);
 
     [data-type="composite-page"].os-eob.os-#{$source}-container {
       $titleContent: (
@@ -49,7 +49,7 @@
 /// @group compose
 @mixin compose_createChapterComposites($compositePages, $sectionHeaderNode) {
   // Validate
-  @include utils_checkType($compositePages, list);
+  @include validate_type($compositePages, list);
 
   @each $page in $compositePages {
     @include _createChapterComposite($page, $sectionHeaderNode);
@@ -68,11 +68,11 @@
   $compoundComposite: map-get($page, compoundComposite);
 
   // Validate
-  @include utils_checkType($name, string);
-  @include utils_checkType($source, string);
-  @include utils_checkTypeOptional($sortBy, string);
-  @include utils_checkTypeOptional($compoundComposite, bool);
-  @include utils_checkType($sectionHeaderNode, string);
+  @include validate_type($name, string);
+  @include validate_type($source, string);
+  @include validate_typeOptional($sortBy, string);
+  @include validate_typeOptional($compoundComposite, bool);
+  @include validate_type($sectionHeaderNode, string);
 
   div[data-type="chapter"] {
     @if (not $compoundComposite) {
@@ -208,11 +208,11 @@
   $isIndex: map-get($page, isIndex);
 
   // Validate
-  @include utils_checkType($name, string);
-  @include utils_checkType($source, string);
-  @include utils_checkTypeOptional($isIndex, bool);
-  @include utils_checkTypeOptional($compoundComposite, bool);
-  @include utils_checkType($sectionHeaderString, string);
+  @include validate_type($name, string);
+  @include validate_type($source, string);
+  @include validate_typeOptional($isIndex, bool);
+  @include validate_typeOptional($compoundComposite, bool);
+  @include validate_type($sectionHeaderString, string);
 
   @if (not $compoundComposite) {
     $sourceSelector: if($isIndex, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
@@ -260,9 +260,9 @@
       $chapterPages: map-get($page, chapterPages);
 
       // Validate
-      @include utils_checkType($chapterSeparated, bool);
-      @include utils_checkType($sectionSeparated, bool);
-      @include utils_checkTypeOptional($chapterPages, bool);
+      @include validate_type($chapterSeparated, bool);
+      @include validate_type($sectionSeparated, bool);
+      @include validate_typeOptional($chapterPages, bool);
 
       [data-type="chapter"] {
         #{$sourceSelector} {
@@ -310,8 +310,8 @@
     $isIndex: map-get($page, isIndex);
 
     // Validate
-    @include utils_checkType($source, string);
-    @include utils_checkTypeOptional($isIndex, bool);
+    @include validate_type($source, string);
+    @include validate_typeOptional($isIndex, bool);
 
     &::after {
       container: div;
@@ -334,13 +334,13 @@
 /// @group compose
 @mixin compose_prepChapterAreas($compositePages, $chapterHeaderNode) {
   // Validate
-  @include utils_checkType($chapterHeaderNode, string);
+  @include validate_type($chapterHeaderNode, string);
 
   @each $page in $compositePages {
     $source: map-get($page, source);
 
     // Validate
-    @include utils_checkType($source, string);
+    @include validate_type($source, string);
 
     [data-type="chapter"] {
       .os-#{$source}-chapter-area {
@@ -361,16 +361,16 @@
   $sectionSeparated: map-get($solutionPage, sectionSeparated);
 
   // Validate
-  @include utils_checkType($solutionSource, string);
-  @include utils_checkTypeOptional($sectionSeparated, bool);
+  @include validate_type($solutionSource, string);
+  @include validate_typeOptional($sectionSeparated, bool);
 
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $source: map-get($page, source);
 
     // Validate
-    @include utils_checkType($source, string);
-    @include utils_checkTypeOptional($hasSolutions, bool);
+    @include validate_type($source, string);
+    @include validate_typeOptional($hasSolutions, bool);
 
     @if ($hasSolutions) {
       [data-type="chapter"] {
@@ -424,17 +424,17 @@
   $chapterSeparated: map-get($solutionPage,chapterSeparated);
 
   // Validate
-  @include utils_checkType($solutionSource, string);
-  @include utils_checkTypeOptional($sectionSeparated, bool);
-  @include utils_checkType($chapterSeparated, bool);
+  @include validate_type($solutionSource, string);
+  @include validate_typeOptional($sectionSeparated, bool);
+  @include validate_type($chapterSeparated, bool);
 
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $source: map-get($page, source);
 
     // Validate
-    @include utils_checkTypeOptional($hasSolutions, bool);
-    @include utils_checkType($source, string);
+    @include validate_typeOptional($hasSolutions, bool);
+    @include validate_type($source, string);
 
     @if ($hasSolutions) {
       [data-type="chapter"] {

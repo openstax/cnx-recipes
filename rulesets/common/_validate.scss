@@ -1,0 +1,49 @@
+/// Utility mixin that validates the type of a variable.
+/// useful for erroring early. For example, If the developer was expecting an
+/// argument to a mixin to be a `list` but the mixin that uses it several levels
+/// deep actually expected it to be a `bool`
+/// @group validate
+@mixin validate_type($var, $expectedType) {
+  @if (type-of($var) != $expectedType) {
+    @error "BUG: The argument is of the wrong type. Expected: #{$expectedType} but got #{type-of($var)}";
+  }
+}
+
+/// @see {mixin} validate_type
+/// @group validate
+@mixin validate_typeOptional($var, $expectedType) {
+  @if ($var and type-of($var) != $expectedType) {
+    @error "BUG: The optional argument is of the wrong type. Expected: #{$expectedType} but got #{type-of($var)}";
+  }
+}
+
+/// Utility mixin that checks that the argument is an Enum (like `$MOVE_TO_###` or `$RESET_###`)
+/// by checking that the value of the enum begins with `$startsWithStr`.
+/// This is sort of a hack because SASS does not have Enums (or typed Enums).
+/// @group validate
+@mixin validate_enum($val, $startsWithStr) {
+  @include validate_type($val, string);
+  @include validate_type($startsWithStr, string);
+
+  @if str-index($val, $startsWithStr) >= 1 {
+  } @else {
+    @error "BUG: Invalid enum used. You must pass in a string that begins with '#{$startsWithStr}' but got '#{$val}'";
+  }
+}
+
+/// @see {mixin} validate_enum
+/// @group validate
+@mixin validate_enumOptional($val, $startsWithStr) {
+  @if $val {
+    @include validate_enum($val, $startsWithStr);
+  }
+}
+
+/// Checks that the value exists (is not null)
+/// @group validate
+@mixin validate_exists($val) {
+  @if $val { }
+  @else {
+    @error "BUG: A value is required for this field";
+  }
+}
