@@ -14,8 +14,8 @@
   @each $note in $Config_Notes {
     $className: map-get($note, className);
     $moveSolutionTo: map-get($note, moveSolutionTo);
-    // @include validate_type($className, string);
-    // @include validate_enumOptional($moveSolutionTo, $AREA__PREFIX__);
+    @include validate_type($className, string);
+    @include validate_enumOptional($moveSolutionTo, $AREA__PREFIX__);
 
     @if $moveSolutionTo == $AREA_TRASH {
       @include modify_trash('.#{$className} [data-type="solution"]');
@@ -24,7 +24,7 @@
       $label: map-get($note, label);
       $isBodyWrapped: map-get($note, isBodyWrapped);
 
-      // @include validate_typeOptional($label, string);
+      @include validate_typeOptional($label, string);
 
       @if $label {
         @include modify_note((selector: $className, label: $label, isBodyWrapped: $isBodyWrapped));
@@ -51,7 +51,7 @@
   @include number_numberSections($Config_SectionTitleContent);
 
   // Count examples when moveTo: $AREA_NONE (no moving)
-  // @include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);
+  @include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
@@ -61,13 +61,13 @@
   }
 
   // Number equations if they have a titleContent
-  // // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
+  // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
   $excludeNumberingInClassName: map-get($Config_PartType_Equation, excludeNumberingInClassName);
   $numberAt                   : map-get($Config_PartType_Equation, numberAt);
   @if $titleContent {
-    // @include validate_type($excludeNumberingInClassName, string);
-    // @include validate_enum($numberAt, $NUMBER__PREFIX__);
+    @include validate_type($excludeNumberingInClassName, string);
+    @include validate_enum($numberAt, $NUMBER__PREFIX__);
     @include count_countEquations(equation);
     @if $numberAt == $NUMBER_BEFORE_MOVE {
       @include number_equations($titleContent, $excludeNumberingInClassName);
@@ -81,7 +81,7 @@
   @each $note in $Config_Notes {
     $className: map-get($note, className);
     $titleContent: map-get($note, titleContent);
-    // @include validate_type($className, string);
+    @include validate_type($className, string);
 
     @if $titleContent {
       @include number_numberNote($className, $titleContent);
@@ -97,7 +97,7 @@
 
   //create a chapter outline
   $outlineTitle: map-get($Config_PartType_Chapter, outlineTitle);
-  // @include validate_typeOptional($outlineTitle, string);
+  @include validate_typeOptional($outlineTitle, string);
   @if $outlineTitle {
     @include compose_chapterOutline($outlineTitle);
   }
@@ -118,11 +118,11 @@
   //After: createChapterComposites
 
   // Count exercises that were marked as moveTo: $AREA_EOC
-  // @include validate_enum(map-get($Config_PartType_Exercise, moveTo), $AREA__PREFIX__);
+  @include validate_enum(map-get($Config_PartType_Exercise, moveTo), $AREA__PREFIX__);
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
     $titleContent:  map-get($Config_PartType_Exercise, titleContent);
-    // @include validate_enum($resetAt, $RESET__PREFIX__);
+    @include validate_enum($resetAt, $RESET__PREFIX__);
 
     $resetSel: null;
     @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
@@ -156,8 +156,8 @@
   @each $page in $Config_ChapterCompositePages {
     $name: map-get($page, name);
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    // @include validate_type($name, string);
-    // @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+    @include validate_type($name, string);
+    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
 
     @if $moveSolutionsTo == $AREA_EOC {
       @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
@@ -170,7 +170,7 @@
   // TODO: Combine bookCompositePages and chapterCompositePages in the config and then split them out in this file
   @each $page in $Config_BookCompositePages {
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    // @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
 
     @if $moveSolutionsTo == $AREA_EOB {
       @include compose_createEOBSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
@@ -194,7 +194,7 @@
   // This is mostly copy/pasta from above
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
-    // @include validate_enum($resetAt, $RESET__PREFIX__);
+    @include validate_enum($resetAt, $RESET__PREFIX__);
 
     $resetSel: null;
     @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
@@ -209,13 +209,13 @@
   @include link_setLinkLabels();
 
   // Number equations if they have a titleContent
-  // // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
+  // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
   $excludeNumberingInClassName: map-get($Config_PartType_Equation, excludeNumberingInClassName);
   $numberAt                   : map-get($Config_PartType_Equation, numberAt);
   @if $titleContent {
-    // @include validate_type($excludeNumberingInClassName, string);
-    // @include validate_enum($numberAt, $NUMBER__PREFIX__);
+    @include validate_type($excludeNumberingInClassName, string);
+    @include validate_enum($numberAt, $NUMBER__PREFIX__);
     @if $numberAt == $NUMBER_AFTER_MOVE {
       @include count_countEquations(equation);
       @include number_equations($titleContent, $excludeNumberingInClassName);
