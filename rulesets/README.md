@@ -16,14 +16,14 @@ The source for the documentation is in CSS comments and is split into `common` a
 
 ## Directory Organizational Map
 
-- `./rulesets/common/styleguide/*.html` : The Raw HTML snippets for "common" elements in a Page
-- `./rulesets/common/styleguide/_all.scss`: The documentation for "common" elements in a Page
+- `./rulesets/mixins/styleguide/*.html` : The Raw HTML snippets for "common" elements in a Page
+- `./rulesets/mixins/styleguide/_all.scss`: The documentation for "common" elements in a Page
 - `./rulesets/books/${bookName}/styleguide/*.html` : The Raw HTML snippets for book-specific collated pages and any other customizations
 - `./rulesets/books/${bookName}/book.scss`: Added CSS docs that are slurped in when generating the styleguide
 
 ## Book-Agnostic Documentation
 
-The common documentation is in `./rulesets/common/styleguide/_all.scss` only because phil didn't know of a better place to put them but wanted them "near" the common code. That directory also contains the Raw HTML snippets.
+The common documentation is in `./rulesets/mixins/styleguide/_all.scss` only because phil didn't know of a better place to put them but wanted them "near" the common code. That directory also contains the Raw HTML snippets.
 
 ## Book-Specific Documentation
 
