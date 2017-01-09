@@ -8,14 +8,21 @@
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
   @include modify_simLinkTarget();
+  @include modify_wrapExercises(); // no dependencies
+  @include modify_wrapLists(); // no dependencies
+  @include modify_wrapIframesWithAlternatives(); // no dependencies
   //@include utils_hasSolution();
 
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
 }
-:pass(0) {
+:pass(1) {
   // These need to be in a separate pass because modify_note seems to pull things out of the DOM
-  // so the other rules (in pass0) do not end up getting executed
+  // so the other rules (in pass0) do not end up getting executed.
+  // The following mixins were not being run:
+  // @include modify_wrapExercises(); // no dependencies
+  // @include modify_wrapLists(); // no dependencies
+  // @include modify_simLinkTarget();
   @include modify_note($teacherSupportNote);
   @include modify_note($boundlessPhysicsNote);
   @include modify_note($learningObjectivesNote);
@@ -32,15 +39,6 @@
   @include modify_note($virtualPhysicsNote);
 }
 :pass(2) {
-  // These have no dependencies so I do not know why they require having to be here
-  // (as opposed to being right at the top of :pass(0) )
-  // but the fact that the list is inside a note seems to be the culprit.
-  // maybe the modify_note code runs first and makes a copy of the element `::before`
-  // This list code runs? (even though the listMakeLabelVisible was listed above modify_note)
-  @include modify_wrapExercises(); // no dependencies
-  @include modify_wrapLists(); // no dependencies
-  @include modify_wrapIframesWithAlternatives(); // no dependencies
-
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include count_countChapters(chapter);
   @include number_numberChapters($chapterTitleContent);

@@ -300,6 +300,40 @@
     class: "os-text"; }
 :pass(0) a[href*="archive.cnx.org/specials/"] {
   attr-target: "_blank"; }
+:pass(0) [data-type="exercise"][data-label]:not([data-label=""])::after {
+  container: div;
+  class: "os-label";
+  content: attr(data-label);
+  move-to: bTitleLabel; }
+:pass(0) [data-type="exercise"][data-label]:not([data-label=""])::outside {
+  data-type: "exercise-container";
+  container: div;
+  content: pending(bTitleLabel) content(); }
+:pass(0) ol[data-label]:not([data-label=""])::after,
+:pass(0) ul[data-label]:not([data-label=""])::after {
+  container: div;
+  class: "os-label";
+  content: attr(data-label);
+  move-to: bListLabel; }
+:pass(0) ol[data-label]:not([data-label=""])::outside,
+:pass(0) ul[data-label]:not([data-label=""])::outside {
+  data-type: "list-container";
+  container: div;
+  content: pending(bListLabel) content(); }
+:pass(0) :not([data-type="alternatives"]) > iframe {
+  class: attr(class) "os-is-iframe"; }
+  :pass(0) :not([data-type="alternatives"]) > iframe::after {
+    container: a;
+    class: "os-is-link";
+    attr-target: "_window";
+    attr-href: attr(src);
+    content: "Click to view content";
+    move-to: bIframeLink; }
+  :pass(0) :not([data-type="alternatives"]) > iframe::outside {
+    container: div;
+    data-type: "alternatives";
+    class: "os-has-iframe os-has-link";
+    content: pending(bIframeLink) content(); }
 :pass(0) .try [data-type="solution"] {
   move-to: trash; }
 :pass(0) [data-type="exercise"] {
@@ -311,40 +345,6 @@
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
 
-:pass(2) [data-type="exercise"][data-label]:not([data-label=""])::after {
-  container: div;
-  class: "os-label";
-  content: attr(data-label);
-  move-to: bTitleLabel; }
-:pass(2) [data-type="exercise"][data-label]:not([data-label=""])::outside {
-  data-type: "exercise-container";
-  container: div;
-  content: pending(bTitleLabel) content(); }
-:pass(2) ol[data-label]:not([data-label=""])::after,
-:pass(2) ul[data-label]:not([data-label=""])::after {
-  container: div;
-  class: "os-label";
-  content: attr(data-label);
-  move-to: bListLabel; }
-:pass(2) ol[data-label]:not([data-label=""])::outside,
-:pass(2) ul[data-label]:not([data-label=""])::outside {
-  data-type: "list-container";
-  container: div;
-  content: pending(bListLabel) content(); }
-:pass(2) :not([data-type="alternatives"]) > iframe {
-  class: attr(class) "os-is-iframe"; }
-  :pass(2) :not([data-type="alternatives"]) > iframe::after {
-    container: a;
-    class: "os-is-link";
-    attr-target: "_window";
-    attr-href: attr(src);
-    content: "Click to view content";
-    move-to: bIframeLink; }
-  :pass(2) :not([data-type="alternatives"]) > iframe::outside {
-    container: div;
-    data-type: "alternatives";
-    class: "os-has-iframe os-has-link";
-    content: pending(bIframeLink) content(); }
 :pass(2) body {
   counter-reset: chapter; }
 :pass(2) div[data-type="chapter"] {
