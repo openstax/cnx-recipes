@@ -72,12 +72,26 @@
 
 /// A basic mixin for counting all exercises within `.os-eoc` using css counters.
 /// Resets at the body.
+/// TODO Rename me to `count_countEOCExercisesWithoutReset` or something
 /// @arg {Text} $name - Name of the css counter that will control all exercise numbering
 /// @group count
 @mixin count_countExercises($name) {
   @include _count(
     $name,
     '.os-eoc [data-type="exercise"]',
+    'body'
+  );
+}
+
+/// A basic mixin for counting all exercises within `.os-eoc` using css counters.
+/// Resets at the body.
+/// TODO Rename me to `count_countEOCExercisesWithoutReset` or something
+/// @arg {Text} $name - Name of the css counter that will control all exercise numbering
+/// @group count
+@mixin count_countExercisesInContentButNotInExample($name) {
+  @include utils_count(
+    $name,
+    ':not([data-type="example"]) > [data-type="exercise"]',
     'body'
   );
 }
