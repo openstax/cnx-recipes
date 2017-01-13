@@ -40,6 +40,22 @@
   }
 }
 
+/// This has to run before number_numberEOCExercises because its selector is more general
+/// @group number
+@mixin number_numberContentExercises($exerciseTitleContent, $solutionTitleContent) {
+  :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
+    [data-type="problem"] {
+      @include utils_title($exerciseTitleContent);
+    }
+    @if $solutionTitleContent {
+      [data-type="solution"] {
+        @include utils_title($solutionTitleContent);
+      }
+    }
+  }
+}
+
+
 //EOC composite pages must be created before this runs
 @mixin number_numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
   .os-eoc [data-type="exercise"] {

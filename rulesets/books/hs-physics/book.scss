@@ -61,7 +61,6 @@
 }
 :pass(4) {
   //After: createChapterComposites, numberEOCExercises
-  @include count_countExercisesInContentButNotInExample(exerciseAll);
   @include count_countExercises(exerciseAll);
   //@include link_linkToProblemsFromSolutionsEOC();
 
@@ -104,6 +103,10 @@
   //After: createChapterComposites, createEOCSolutions, createBookComposites
   @include modify_compositeAutoID();
   @include modify_chapterAutoID();
+
+  @include count_countExercisesInContentButNotInExample(exerciseMaybeInContent);
+  // This has to run before number_numberEOCExercises because its selector is more general than the EOC selector
+  @include number_numberContentExercises($exerciseContentTitleContent, null);
 
   //After: createChapterComposites
   @include count_countEOCExercises(exercise, '[data-type="composite-page"]');
