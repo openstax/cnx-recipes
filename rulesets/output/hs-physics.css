@@ -828,8 +828,6 @@
   data-type: "composite-page";
   sort-by: dl > dt, nocase; }
 :pass(1) div[data-type="chapter"] section.summary {
-  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-  content: nodes(sectionHeaderNode) content();
   move-to: summary-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.summary > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -840,8 +838,6 @@
   class: "os-eoc os-summary-container";
   data-type: "composite-page"; }
 :pass(1) div[data-type="chapter"] section.key-equations {
-  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-  content: nodes(sectionHeaderNode) content();
   move-to: key-equations-TOCOMPOSITE; }
   :pass(1) div[data-type="chapter"] section.key-equations > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -927,9 +923,17 @@
 :pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
   node-set: CompoundSectionHeaderNode; }
 :pass(4) [data-type="chapter"] .concept {
-  move-to: concept-DESTINATION; }
+  move-to: concept-separated; }
   :pass(4) [data-type="chapter"] .concept > [data-type="title"] {
     move-to: trash; }
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-concept-chapter-area";
+  content: nodes(CompoundSectionHeaderNode) pending(concept-separated);
+  move-to: concept-sectionSeparatedContainer; }
+:pass(4) [data-type="chapter"]::after {
+  class: os-concept;
+  content: pending(concept-sectionSeparatedContainer);
+  move-to: concept-DESTINATION; }
 :pass(4) [data-type="chapter"]::after {
   container: h2;
   data-type: "title";
@@ -940,9 +944,17 @@
   content: pending(concept-title) pending(concept-DESTINATION);
   move-to: composite-DESTINATION; }
 :pass(4) [data-type="chapter"] .critical-thinking {
-  move-to: critical-thinking-DESTINATION; }
+  move-to: critical-thinking-separated; }
   :pass(4) [data-type="chapter"] .critical-thinking > [data-type="title"] {
     move-to: trash; }
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-critical-thinking-chapter-area";
+  content: nodes(CompoundSectionHeaderNode) pending(critical-thinking-separated);
+  move-to: critical-thinking-sectionSeparatedContainer; }
+:pass(4) [data-type="chapter"]::after {
+  class: os-critical-thinking;
+  content: pending(critical-thinking-sectionSeparatedContainer);
+  move-to: critical-thinking-DESTINATION; }
 :pass(4) [data-type="chapter"]::after {
   container: h2;
   data-type: "title";
@@ -953,9 +965,17 @@
   content: pending(critical-thinking-title) pending(critical-thinking-DESTINATION);
   move-to: composite-DESTINATION; }
 :pass(4) [data-type="chapter"] .ost-chapter-review.problem {
-  move-to: ost-chapter-review.problem-DESTINATION; }
+  move-to: ost-chapter-review.problem-separated; }
   :pass(4) [data-type="chapter"] .ost-chapter-review.problem > [data-type="title"] {
     move-to: trash; }
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-ost-chapter-review.problem-chapter-area";
+  content: nodes(CompoundSectionHeaderNode) pending(ost-chapter-review.problem-separated);
+  move-to: ost-chapter-review.problem-sectionSeparatedContainer; }
+:pass(4) [data-type="chapter"]::after {
+  class: os-ost-chapter-review.problem;
+  content: pending(ost-chapter-review.problem-sectionSeparatedContainer);
+  move-to: ost-chapter-review.problem-DESTINATION; }
 :pass(4) [data-type="chapter"]::after {
   container: h2;
   data-type: "title";
@@ -966,9 +986,17 @@
   content: pending(ost-chapter-review.problem-title) pending(ost-chapter-review.problem-DESTINATION);
   move-to: composite-DESTINATION; }
 :pass(4) [data-type="chapter"] .performance {
-  move-to: performance-DESTINATION; }
+  move-to: performance-separated; }
   :pass(4) [data-type="chapter"] .performance > [data-type="title"] {
     move-to: trash; }
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-performance-chapter-area";
+  content: nodes(CompoundSectionHeaderNode) pending(performance-separated);
+  move-to: performance-sectionSeparatedContainer; }
+:pass(4) [data-type="chapter"]::after {
+  class: os-performance;
+  content: pending(performance-sectionSeparatedContainer);
+  move-to: performance-DESTINATION; }
 :pass(4) [data-type="chapter"]::after {
   container: h2;
   data-type: "title";
@@ -985,9 +1013,17 @@
 :pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
   node-set: CompoundSectionHeaderNode; }
 :pass(4) [data-type="chapter"] .multiple-choice {
-  move-to: multiple-choice-DESTINATION; }
+  move-to: multiple-choice-separated; }
   :pass(4) [data-type="chapter"] .multiple-choice > [data-type="title"] {
     move-to: trash; }
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-multiple-choice-chapter-area";
+  content: nodes(CompoundSectionHeaderNode) pending(multiple-choice-separated);
+  move-to: multiple-choice-sectionSeparatedContainer; }
+:pass(4) [data-type="chapter"]::after {
+  class: os-multiple-choice;
+  content: pending(multiple-choice-sectionSeparatedContainer);
+  move-to: multiple-choice-DESTINATION; }
 :pass(4) [data-type="chapter"]::after {
   container: h2;
   data-type: "title";
@@ -998,9 +1034,17 @@
   content: pending(multiple-choice-title) pending(multiple-choice-DESTINATION);
   move-to: composite-DESTINATION; }
 :pass(4) [data-type="chapter"] .short-answer {
-  move-to: short-answer-DESTINATION; }
+  move-to: short-answer-separated; }
   :pass(4) [data-type="chapter"] .short-answer > [data-type="title"] {
     move-to: trash; }
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-short-answer-chapter-area";
+  content: nodes(CompoundSectionHeaderNode) pending(short-answer-separated);
+  move-to: short-answer-sectionSeparatedContainer; }
+:pass(4) [data-type="chapter"]::after {
+  class: os-short-answer;
+  content: pending(short-answer-sectionSeparatedContainer);
+  move-to: short-answer-DESTINATION; }
 :pass(4) [data-type="chapter"]::after {
   container: h2;
   data-type: "title";
@@ -1011,9 +1055,17 @@
   content: pending(short-answer-title) pending(short-answer-DESTINATION);
   move-to: composite-DESTINATION; }
 :pass(4) [data-type="chapter"] .extended-response {
-  move-to: extended-response-DESTINATION; }
+  move-to: extended-response-separated; }
   :pass(4) [data-type="chapter"] .extended-response > [data-type="title"] {
     move-to: trash; }
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-extended-response-chapter-area";
+  content: nodes(CompoundSectionHeaderNode) pending(extended-response-separated);
+  move-to: extended-response-sectionSeparatedContainer; }
+:pass(4) [data-type="chapter"]::after {
+  class: os-extended-response;
+  content: pending(extended-response-sectionSeparatedContainer);
+  move-to: extended-response-DESTINATION; }
 :pass(4) [data-type="chapter"]::after {
   container: h2;
   data-type: "title";
