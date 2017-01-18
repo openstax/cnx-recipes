@@ -15,16 +15,23 @@ set -e
 arg1=$1
 bookVersion=$2
 
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
 # Check command line args
 
 if [ -z "${arg1}" ]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument or --all for all books (see books.txt). For example: physics'
+  >&2 echo ''
+  >&2 echo "Valid books are (from ./books.txt):"
+  for bookConfig in "${BOOK_CONFIGS[@]}"
+  do
+    read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+    >&2 echo "${bookName}"
+  done
   exit 1
 fi
-
-# Pull in the BOOK_CONFIGS
-source ./books.txt || exit 1
 
 if [[ "${arg1}" == "--all" ]]
 then
@@ -47,7 +54,12 @@ else
   if [[ ! 1 -eq "${foundConfig}" ]]
   then
     >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
-    >&2 echo "check ./books.txt"
+    >&2 echo "Valid books are (from ./books.txt):"
+    for bookConfig in "${BOOK_CONFIGS[@]}"
+    do
+      read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+      >&2 echo "${bookName}"
+    done
     exit 1
   fi
 fi

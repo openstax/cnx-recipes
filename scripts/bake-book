@@ -39,7 +39,12 @@ then
   if [[ ! 1 -eq "${foundConfig}" ]]
   then
     >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
-    >&2 echo "check ./books.txt"
+    >&2 echo "Valid books are (from ./books.txt):"
+    for bookConfig in "${BOOK_CONFIGS[@]}"
+    do
+      read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+      >&2 echo "${bookName}"
+    done
     exit 1
   fi
 fi
