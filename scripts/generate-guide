@@ -11,7 +11,6 @@ guideHomepageFile="./guide-homepage.md" # Relative to ${sassDir}/rulesets/
 
 tempDir="./tmp/"
 tempRulesetDir="${tempDir}/${rulesetName}/"
-commonDocumentationDir="./rulesets/mixins"
 bookDocumentationDir="./rulesets/books/${rulesetName}"
 kssOutputFile="${tempDir}/kss-output.txt"
 
@@ -56,9 +55,40 @@ then
 fi
 mkdir "${tempRulesetDir}" || exit 1
 
-cp -R "${commonDocumentationDir}" "${tempRulesetDir}" || exit 1
+# Copy over all the dirs containing the styleguide comments that need to be included
+
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+# Filter BOOK_CONFIGS to only contain the book you want to fetch
+for bookConfig in "${BOOK_CONFIGS[@]}"
+do
+  read -r bookConfigName rulesetConfigName uuid hostName basedOns <<< "${bookConfig}"
+
+  if [[ "${rulesetName}" = "${rulesetConfigName}" ]]
+  then
+    # Actually copy the directories over (like common/,books/physics/)
+    IFS=',' read -ra basedOnDirs <<< "$basedOns"
+    for basedOnDirName in "${basedOnDirs[@]}"; do
+      echo "==> Including ${sassDir}/${basedOnDirName}"
+      cp -R "${sassDir}/${basedOnDirName}" "${tempRulesetDir}/$(basename ${basedOnDirName})" || exit 1
+    done
+    foundConfig=1
+    break
+  fi
+done
+
+if [[ ! 1 -eq "${foundConfig}" ]]
+then
+  >&2 echo "ERROR: Could not find Book info for book named ${rulesetName}"
+  >&2 echo "check ./books.txt"
+  exit 1
+fi
+
 cp -R "${bookDocumentationDir}" "${tempRulesetDir}" || exit 1
 
+
+# Find all the styleguide html files and convert them
 for snippetFileName in $(find "${tempRulesetDir}" -name "*.html")
 do
   >&2 echo "Generating temporary ${snippetFileName}-baked.html"
