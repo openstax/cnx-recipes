@@ -2,7 +2,7 @@
 
 # Install
 
-1. run `./scripts/setup` to install the dependencies. You only have to run this once!
+1. run `./scripts/setup` to install the dependencies.
 
 **Note:** To update the dependencies, run `./scripts/update`
 
@@ -16,15 +16,15 @@
   - **Note:** You can run `./scripts/fetch-html --all` to fetch all the books
 1. run `./scripts/bake-book statistics`
 
-There are 2 major parts to baking a book (_listed above_). You will first need to get the single-file HTML from the server (`fetch-html`) and then convert the single-file HTML locally into the "baked" book via `bake-book`. Once you have done the first part, you can run `./scripts/bake-book statistics` to your :heart:'s content!
+You will first need to get the single-file HTML from the server (`fetch-html`) and then convert the single-file HTML locally into the "baked" book via `bake-book`. Once you have done the first part, you can run `./scripts/bake-book statistics` to your :heart:'s content!
 
 
 ## Add a New Book to the config
 
-Sometimes you need to add a new book (like "dark-matter-for-dummies") into this repo. Here are the steps to add it:
+The steps to add a new book (like `dark-matter-for-dummies`) are:
 
 1. Find the UUID of the book you want
-  - point your browser to `cte-cnx-dev.cnx.org` and find a book you want.
+  - point your browser to the server containing the book (ie `cnx.org`) and find a book you want.
   - click "More Information" and copy the **ID**
 1. add an entry to `./books.txt`
 
@@ -47,11 +47,11 @@ This will run the linter, generate sassdocs, and generate the guides to verify t
 1. run `./scripts/bake-book ${bookName}`
 1. The HTML Report should now be available at `./coverage/`
 
-You can pass 3 additional arguments to `report-book-coverage` to change how it reports coverage:
+You can pass 3 arguments to `report-book-coverage` to change how it reports coverage:
 
 - `--verbose` : outputs verbose/debugging output
-- `--ignore-source-map` : covers the CSS even if a sourceMappingURL is found.
-- `--cover-declarations` : generates coverage based on the declarations, not just the selector
+- `--ignore-source-map` : covers the CSS even if a sourceMappingURL exists.
+- `--cover-declarations` : generates coverage based on the declarations, as well as the selector
 - **Note:** You can run `./scripts/report-book-coverage --all` to generate coverage using all the books
 
 For more details on the commandline options see the [css-coverage](https://www.npmjs.com/package/css-coverage#commandline-options) documentation.
@@ -88,7 +88,7 @@ To check that there were no regressions in a book what the following process doe
 Here are the steps to run it:
 
 ```sh
-# Prep work (only have to run once)
+# Prep work (run once)
 ./scripts/setup
 ./scripts/fetch-html statistics # Or any book in ./books.txt
 
@@ -106,7 +106,7 @@ Here are the steps to run it:
 diff ./data/statistics-prepared.html ./data/statistics-baked.html > foo.diff
 ```
 
-**Note:** You can specify `--all` instead of `statistics` to diff all the books (assuming they have been fetched)
+**Note:** You can specify `--all` instead of `statistics` to diff all the books (after fetching them earlier)
 
 ## Experimental
 
