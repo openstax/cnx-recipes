@@ -1,4 +1,4 @@
-[![Coverage][coveralls-image]][coveralls-url]
+[![Coverage][codecov-image]][codecov-url]
 
 # Install
 
@@ -118,5 +118,7 @@ To update the Documentation in the gh-pages branch:
 **Note:** This will push changes if successful
 
 
+[codecov-image]: https://img.shields.io/codecov/c/github/connexions/cnx-recipes.svg
+[codecov-url]: https://codecov.io/gh/Connexions/cnx-recipes
 [coveralls-image]: https://img.shields.io/coveralls/connexions/cnx-recipes.svg
 [coveralls-url]: https://coveralls.io/github/Connexions/cnx-recipes
