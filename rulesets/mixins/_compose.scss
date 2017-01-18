@@ -12,7 +12,7 @@
     @include validate_type($name, string);
     @include validate_type($source, string);
 
-    [data-type="composite-page"].os-eoc.os-#{$source}-container {
+    [data-type="composite-page"].ox-eoc.ox-#{$source}-container {
       $titleContent: (
         text: $name
         );
@@ -33,7 +33,7 @@
     @include validate_type($name, string);
     @include validate_type($source, string);
 
-    [data-type="composite-page"].os-eob.os-#{$source}-container {
+    [data-type="composite-page"].ox-eob.ox-#{$source}-container {
       $titleContent: (
         text: $name
         );
@@ -100,7 +100,7 @@
       &::after {
         container: div;
         content: pending(#{$source}-TOCOMPOSITE);
-        class: "os-eoc os-#{$source}-container";
+        class: "ox-eoc ox-#{$source}-container";
         data-type: "composite-page";
         data-uuid-key: "#{$keyName}";
         @if ($sortBy != null) {
@@ -159,13 +159,13 @@
       @if ($sectionSeparated) {
         [data-type="page"] {
           &::after {
-            class: "os-chapter-area";
+            class: "ox-chapter-area";
             content: pending(#{$compositeSource}-separated);
             move-to: #{$compositeSource}-sectionSeparatedContainer;
           }
         }
         &::after {
-          class: os-#{$compositeSource};
+          class: ox-#{$compositeSource};
           content: pending(#{$compositeSource}-sectionSeparatedContainer);
           move-to: #{$compositeSource}-DESTINATION;
         }
@@ -178,7 +178,7 @@
       }
 
       &::after {
-        class: "os-#{$compositeSource}-container";
+        class: "ox-#{$compositeSource}-container";
         content: pending(#{$compositeSource}-title) pending(#{$compositeSource}-DESTINATION);
         move-to: composite-DESTINATION;
       }
@@ -198,7 +198,7 @@
     @include _processComposites($allComposites);
     [data-type="chapter"] {
       &::after {
-        class: "os-eoc os-#{$source}-container";
+        class: "ox-eoc ox-#{$source}-container";
         data-type: composite-page;
         data-uuid-key: "#{$keyName}";
         content: pending(composite-DESTINATION);
@@ -230,34 +230,34 @@
           content: content();
           attr-group-by: attr(group-by);
           container: span;
-          class: "os-term";
+          class: "ox-term";
           move-to: index-term;
         }
         &::after {
           content: string($sectionHeaderString);
           container: span;
-          class: "os-term-section";
+          class: "ox-term-section";
           move-to: index-section;
         }
         // Create a link next to the index term which points to the term in the book
         // Make sure there is a space between each link
-        // HACK: generate a span that only contains a comma and a space, the last-child one must be removed on the next pass. See modify_trash('.os-index-link-separator:last-child') in book.scss
+        // HACK: generate a span that only contains a comma and a space, the last-child one must be removed on the next pass. See modify_trash('.ox-index-link-separator:last-child') in book.scss
         &::after {
           container: a;
           content: pending(index-section);
           attr-href: "#" attr(id);
-          class: "os-term-section-link";
+          class: "ox-term-section-link";
           move-to: index-section-link
         }
         &::after {
           container: span;
           content: ', ';
-          class: "os-index-link-separator";
+          class: "ox-index-link-separator";
           move-to: index-section-link;
         }
         &::after {
           content: pending(index-term) pending(index-section-link);
-          class: os-index-item;
+          class: ox-index-item;
           move-to: #{$source}-TOCOMPOSITE;
         }
       }
@@ -301,7 +301,7 @@
             }
           }
           &::after {
-            class: "os-chapter-area";
+            class: "ox-chapter-area";
             content: pending(chapterTitleHeaderText) pending(#{$source}-GETCHAPTER);
             move-to: #{$source}-TOCOMPOSITE;
             @if ($chapterPages) {
@@ -347,7 +347,7 @@
     &::after {
       container: div;
       content: pending(#{$source}-TOCOMPOSITE);
-      class: "os-eob os-#{$source}-container";
+      class: "ox-eob ox-#{$source}-container";
       data-type: "composite-page";
       data-uuid-key: "#{$keyName}";
       @if ($isIndex) {
@@ -375,7 +375,7 @@
     @include validate_type($source, string);
 
     [data-type="chapter"] {
-      .os-chapter-area {
+      .ox-chapter-area {
         content: nodes($chapterHeaderNode) content();
         move-to: #{$source}-TOCOMPOSITE;
       }
@@ -406,7 +406,7 @@
 
     @if ($hasSolutions) {
       [data-type="chapter"] {
-        .os-eoc.os-#{$source}-container {
+        .ox-eoc.ox-#{$source}-container {
           [data-type="solution"] {
             @if ($sectionSeparated) {
               move-to: #{$solutionSource}-GETSECTION;
@@ -417,7 +417,7 @@
           @if ($sectionSeparated) {
             &::after {
               container: section;
-              class: os-#{$solutionSource};
+              class: ox-#{$solutionSource};
               content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
               move-to: #{$solutionSource}-TOCOMPOSITE;
             }
@@ -431,7 +431,7 @@
     &::after {
       container: div;
       content: pending(#{$solutionSource}-TOCOMPOSITE);
-      class: "os-eoc os-#{$solutionSource}-container";
+      class: "ox-eoc ox-#{$solutionSource}-container";
       data-type: "composite-page";
       data-uuid-key: "solutions";
     }
@@ -471,7 +471,7 @@
 
     @if ($hasSolutions) {
       [data-type="chapter"] {
-        .os-eoc.os-#{$source}-container {
+        .ox-eoc.ox-#{$source}-container {
           [data-type="solution"] {
             @if ($sectionSeparated) {
               move-to: #{$solutionSource}-GETSECTION;
@@ -494,7 +494,7 @@
               }
               &::after {
                 container: section;
-                class: os-#{$solutionSource};
+                class: ox-#{$solutionSource};
                 content: pending(EOBsectionHeader) pending(#{$solutionSource}-GETSECTION);
                 @if ($chapterSeparated) {
                   move-to: #{$solutionSource}-GETCHAPTER;
@@ -512,18 +512,18 @@
 
   @if ($chapterSeparated) {
     [data-type="chapter"] {
-      > h1[data-type="document-title"] .os-number {
+      > h1[data-type="document-title"] .ox-number {
         string-set: ChapNum content();
       }
       &::after {
         //FIXME wrap the in spans
         container: h2;
-        class: "os-title";
+        class: "ox-title";
         content: "Chapter " string(ChapNum);
         move-to: chaptTitleEOB;
       }
       &::after {
-        class: os-chapter-area;
+        class: ox-chapter-area;
         content: pending(chaptTitleEOB) pending(#{$solutionSource}-GETCHAPTER);
         move-to: #{$solutionSource}-TOCOMPOSITE;
       }
@@ -533,7 +533,7 @@
     &::after {
       container: div;
       content: pending(#{$solutionSource}-TOCOMPOSITE);
-      class: "os-eob os-#{$solutionSource}-container";
+      class: "ox-eob ox-#{$solutionSource}-container";
       data-type: "composite-page";
       data-uuid-key: ".#{$solutionSource}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
     }
@@ -550,7 +550,7 @@
       move-to: outlineAbstract;
     }
     &::after {
-      class: "os-chapter-objective";
+      class: "ox-chapter-objective";
       content: nodes(outlineSectionTitle) pending(outlineAbstract);
       move-to: chapOutline;
     }
@@ -558,12 +558,12 @@
   [data-type="chapter"] {
     &::before {
       container: h3;
-      class: "os-title";
+      class: "ox-title";
       content: $objectiveTitle;
       move-to: chapOutlineTitle;
     }
     &:deferred::before {
-      class: "os-chapter-outline";
+      class: "ox-chapter-outline";
       content: pending(chapOutlineTitle) pending(chapOutline);
     }
   }
@@ -571,10 +571,10 @@
 
 /// move the chapter objectives to the intro module
 @mixin compose_moveChapterOutline() {
-  .os-chapter-outline {
+  .ox-chapter-outline {
     move-to: ChapterOutline;
   }
-  .os-chapter-objective > [data-type="document-title"] {
+  .ox-chapter-objective > [data-type="document-title"] {
     container: h4;
   }
   .introduction {
