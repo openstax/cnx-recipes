@@ -239,6 +239,19 @@
   Style guide: page.list
 
 */
+/*
+  Iframe
+
+  An iframe can show an embedded simulation or video. Some formats cannot or would
+  rather not show the iframe and present a link instead.
+
+  So we wrap the element inside a `[data-type="alternatives"]` element and add
+  enough classes to be able to select which alternative to show and which to hide.
+
+  Markup: ./page.iframe.html-baked.html
+
+  Style guide: page.iframe
+*/
 /*==========================================================
   PHYSICS PAGES
 ==========================================================*/
@@ -318,6 +331,20 @@
   data-type: "list-container";
   container: div;
   content: pending(bListLabel) content(); }
+:pass(1) :not([data-type="alternatives"]) > iframe {
+  class: attr(class) "os-is-iframe"; }
+  :pass(1) :not([data-type="alternatives"]) > iframe::after {
+    container: a;
+    class: "os-is-link";
+    attr-target: "_window";
+    attr-href: attr(src);
+    content: "Click to view content";
+    move-to: bIframeLink; }
+  :pass(1) :not([data-type="alternatives"]) > iframe::outside {
+    container: div;
+    data-type: "alternatives";
+    class: "os-has-iframe os-has-link";
+    content: pending(bIframeLink) content(); }
 :pass(1) body {
   counter-reset: chapter; }
 :pass(1) div[data-type="chapter"] {
