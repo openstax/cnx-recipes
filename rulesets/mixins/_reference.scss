@@ -1,10 +1,24 @@
-@import "./utils";
+/// Simply base mixin to reference a string
+/// @arg {Text} $name - The unquoted name of the string that will be referenced
+/// @arg {String} $string - The referenced string. Often, this will be to an element's content() or an attr()
+/// @group reference
+@mixin _refStringAs($name, $string) {
+  string-set: $name $string;
+}
+
+/// Simply base mixin to reference a node
+/// @arg {Text} $name - The unquoted name of the node that will be referenced
+/// @group reference
+@mixin _refNodeAs($name) {
+  node-set: $name;
+}
+
 
 @mixin reference_refSectionHeaderNodeAs($name) {
   div[data-type="page"],
   div[data-type="composite-page"] {
     > [data-type="document-title"] {
-      @include utils_refNodeAs($name);
+      @include _refNodeAs($name);
     }
   }
 }
@@ -12,32 +26,32 @@
   div[data-type="page"],
   div[data-type="composite-page"] {
     > [data-type="document-title"] {
-      @include utils_refStringAs($name, content());
+      @include _refStringAs($name, content());
     }
   }
 }
 
 @mixin reference_refChapterHeaderNodeAs($name) {
   div[data-type="chapter"] {
-    @include utils_refNodeAs($name);
+    @include _refNodeAs($name);
   }
 }
 
 @mixin reference_refChapterHeaderStringAs($name) {
   div[data-type="chapter"] {
-    @include utils_refStringAs($name, content());
+    @include _refStringAs($name, content());
   }
 }
 
 @mixin reference_refPageIDStringAs($name) {
   div[data-type="page"],
   div[data-type="composite-page"] {
-    @include utils_refStringAs($name, attr(id))
+    @include _refStringAs($name, attr(id))
   }
 }
 
 @mixin reference_refBookMetadataNodeAs($name) {
   body > [data-type="metadata"] {
-    @include utils_refNodeAs($name);
+    @include _refNodeAs($name);
   }
 }
