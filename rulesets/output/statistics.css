@@ -290,8 +290,21 @@
     class: "os-text"; }
 :pass(0) a[href*="archive.cnx.org/specials/"] {
   attr-target: "_blank"; }
-:pass(0) .try [data-type="solution"] {
+:pass(0) div[class="note"] > div[data-type="title"] {
+  string-set: noteTitle content();
   move-to: trash; }
+  :pass(0) div[class="note"] > div[data-type="title"]::before {
+    container: span;
+    class: "os-title-label";
+    content: string(noteTitle);
+    move-to: genericNoteLabel; }
+:pass(0) div[class="note"]::after {
+  container: div;
+  content: pending(genericNoteLabel);
+  class: "os-title";
+  move-to: genericNote; }
+:pass(0) div[class="note"]:deferred {
+  content: pending(genericNote) content(); }
 :pass(0) [data-type="exercise"] {
   string-set: isSolution ""; }
   :pass(0) [data-type="exercise"] [data-type="solution"] {
@@ -472,6 +485,18 @@
   move-to: bNoteHeader; }
 :pass(1) [data-type="note"].calculator:deferred {
   content: pending(bNoteHeader) content(); }
+:pass(1) [data-type="note"].collab::before {
+  container: span;
+  class: "os-title-label";
+  content: "Collaborative Excerise";
+  move-to: bNoteLabel; }
+:pass(1) [data-type="note"].collab::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  move-to: bNoteHeader; }
+:pass(1) [data-type="note"].collab:deferred {
+  content: pending(bNoteHeader) content(); }
 :pass(1) body {
   counter-reset: term; }
 :pass(1) div[data-type="page"] span[data-type="term"], :pass(1) div[data-type="composite-page"] span[data-type="term"] {
@@ -585,6 +610,10 @@
   content: pending(references-TOCOMPOSITE);
   class: "os-eoc os-references-container";
   data-type: "composite-page"; }
+:pass(1) .try [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+:pass(1) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
 
 :pass(2) div[data-type="page"] > [data-type="document-title"],
 :pass(2) div[data-type="composite-page"] > [data-type="document-title"] {
