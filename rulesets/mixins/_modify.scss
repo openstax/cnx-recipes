@@ -125,6 +125,8 @@
 /// Modifies note feature to add a note title and optionally wrap the body content
 /// @arg {map} $noteContent - map containing `$selector`, `$label` and `$isBodyWrapped`
 /// @group modify
+
+//modify GenericNote: in stats, many notes have  different title, the only way to keep those was to pass noteTitle to the title. However, the titles are inconsistent. It might be better to define the title via variables like any other notes and fix the content.
 @mixin modify_GenericNote() {
  div[class="note"] {
     >div[data-type="title"] {
@@ -154,6 +156,9 @@
   $label: map-get($noteContent, label);
   $isBodyWrapped: map-get($noteContent, isBodyWrapped);
   [data-type="note"].#{$selector} {
+    >div[data-type="title"] {
+      move-to: trash;
+    }
     &::before {
       container: span;
       class: "os-title-label";
