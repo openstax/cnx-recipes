@@ -130,6 +130,30 @@
 /// Modifies note feature to add a note title and optionally wrap the body content
 /// @arg {map} $noteContent - map containing `$selector`, `$label` and `$isBodyWrapped`
 /// @group modify
+@mixin modify_GenericNote() {
+ div[class="note"] {
+    >div[data-type="title"] {
+      string-set: noteTitle content();
+      &::before {
+       container: span;
+       class: "os-title-label";
+       content: string(noteTitle);
+       move-to: genericNoteLabel;
+     }
+     move-to: trash;
+    }
+    &::after {
+      container: div;
+      content: pending(genericNoteLabel);
+      class: "os-title";
+      move-to: genericNote;
+     }
+     &:deferred {
+      content: pending(genericNote) content();
+     }
+   }
+}
+
 @mixin modify_note($noteContent) {
   $selector: map-get($noteContent, selector);
   $label: map-get($noteContent, label);
@@ -287,7 +311,7 @@
 
 
 @mixin modify_addUnnumbered ($sourceSelector, $element) {
-  .#{$sourceSelector} {
+  #{$sourceSelector} {
     #{$element}:not(.unnumbered) {
       class: attr(class) " unnumbered";
     }

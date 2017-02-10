@@ -16,6 +16,7 @@
 //TODO: Add warnings/flags for warnings/documentation when bundles are called in an unexpected order (dependencies for mixin calls?)
 
 :pass(0) {
+
   //Some modifications to be done to the book before any collation
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
@@ -24,6 +25,7 @@
   @include modify_wrapLists(); // no dependencies
   @include modify_wrapIframesWithAlternatives(); // no dependencies
   @include modify_trash('.try [data-type="solution"]');
+  @include modify_GenericNote();
   @include utils_hasSolution();
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
@@ -41,6 +43,7 @@
   @include count_countNote(Try, "try");
   @include number_numberNote("try", $tryTitleContent);
   @include number_numberNote("calculator", $calcTitleContent);
+  @include modify_note($collabNote);
 
   @include count_countTerms(term);
   @include reference_refPageIDStringAs(pageID);
@@ -48,6 +51,8 @@
 
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include compose_createChapterComposites($chapterCompositePages, sectionHeaderNode);
+  @include modify_addUnnumbered ('.try', '[data-type="exercise"]');
+  @include modify_addUnnumbered ('[data-type="example"]', '[data-type="exercise"]');
 }
 :pass(3) {
   //After: ???
