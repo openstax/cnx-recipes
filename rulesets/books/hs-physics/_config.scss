@@ -1,13 +1,14 @@
+@import '../_common-stuff';
+
 /*==========================================================
   HIGH SCHOOL PHYSICS PAGES
 ==========================================================*/
-$sectionSummaryClass: "summary";
+
 //Make pages
-$pageKeyTerms               : ( name: "Glossary", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
+$PageKeyTerms               : ( name: "Glossary", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
 
 /*
   Section Summary
-
   These should be collated at the end of a chapter
   and separated by which section they came from.
 
@@ -15,13 +16,11 @@ $pageKeyTerms               : ( name: "Glossary", source: "glossary", isGlossary
 
   Style guide: book.composite.summary
 */
-$pageSummary                : ( name: "Section Summary", source: "#{$sectionSummaryClass}", sectionSeparated: true );
+$pageSummary                : ( name: "Section Summary", source: "summary", sectionSeparated: true );
 
 /*
   Key Equations
-
   These should be collated at the end of a chapter
-
   **Notes:** Even without the styling you can see a few problems with the ruleset code:
   1. the rulesets use the class attribute when they should use the `data-type`
   1. the solution is being duplicated
@@ -36,7 +35,6 @@ $pageKeyEquations           : ( name: "Key Equations", source: "key-equations", 
 
 /*
   Concept Items
-
   These should be collated at the end of a chapter
 
   Markup: ./styleguide/book.composite.concept.html-baked.html
@@ -44,18 +42,17 @@ $pageKeyEquations           : ( name: "Key Equations", source: "key-equations", 
   Style guide: book.composite.concept
 */
 
-$pageConceptItems           : ( name: "Concept Items", source: "concept");
+$pageConceptItems           : ( name: "Concept Items", source: "concept", sectionSeparated: true );
 
 /*
   Critical Thinking Items
-
   These should be collated at the end of a chapter
 
   Markup: ./styleguide/book.composite.critical-thinking.html-baked.html
 
   Style guide: book.composite.critical-thinking
 */
-$pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critical-thinking" );
+$pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critical-thinking", sectionSeparated: true );
 
 /*
   Problems
@@ -66,95 +63,58 @@ $pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critic
 
   Style guide: book.composite.problems
 */
-$pageProblems               : ( name: "Problems", source: "ost-chapter-review.problem");
+$pageProblems               : ( name: "Problems", source: "problem", sectionSeparated: true );
 
 /*
   Performance Task
-
   These should be collated at the end of a chapter
 
   Markup: ./styleguide/book.composite.performance.html-baked.html
 
   Style guide: book.composite.performance
 */
-$pagePerformance            : ( name: "Performance Task", source: "performance" );
+$pagePerformance            : ( name: "Performance Task", source: "performance", sectionSeparated: true );
 
 /*
   Multiple Choice
-
   These should be collated at the end of a chapter
 
   Markup: ./styleguide/book.composite.multiplechoice.html-baked.html
 
   Style guide: book.composite.multiplechoice
 */
-$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice");
+$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice", sectionSeparated: true );
 
 /*
   Short Answer
-
   These should be collated at the end of a chapter
 
   Markup: ./styleguide/book.composite.shortanswer.html-baked.html
 
   Style guide: book.composite.shortanswer
 */
-$pageShortAnswer            : ( name: "Short Answer", source: "short-answer" );
+$pageShortAnswer            : ( name: "Short Answer", source: "short-answer", sectionSeparated: true );
 
 /*
   Extended Response
-
   These should be collated at the end of a chapter
 
   Markup: ./styleguide/book.composite.extendedresponse.html-baked.html
 
   Style guide: book.composite.extendedresponse
 */
-$pageExtendedResponse        : ( name: "Extended Response", source: "extended-response" );
+$pageExtendedResponse       : ( name: "Extended Response", source: "extended-response", sectionSeparated: true );
 
-$pageIndex                   : ( name: "Index", source: "index", isIndex: true );
+$PageIndex                  : ( name: "Index", source: "index", isIndex: true );
 
-
-/*
-  Chapter Review
-
-  These should be collated at the end of a chapter.
-  
-  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task 
-
-  Markup: ./styleguide/book.compoundcomposite.chapterreview.html-baked.html
-
-  Style guide: book.compoundcomposite.chapterreview
-*/
-$compoundReview               : ( $pageConceptItems, $pageCriticalThinking, $pageProblems, $pagePerformance,);
-
-$pageChapterReview            : ( name: "Chapter Review", source: "chapter-review", contains: $compoundReview, EOCcompoundComposite: true );
-
-/*
-  Test Prep 
-
-  These should be collated at the end of a chapter.
-  
-  Compound Composite that contains: Test Prep Multiple Choice, Test Prep Short Answer, Test Prep Extended Response
-
-  Markup: ./styleguide/book.compoundcomposite.testprep.html-baked.html
-
-  Style guide: book.compoundcomposite.testprep
-*/
-$compoundTestPrep             : ( $pageMultipleChoice, $pageShortAnswer,  $pageExtendedResponse );
-
-$pageTestPrep                 : ( name: "Test Prep", source: "test-prep", contains: $compoundTestPrep, EOCcompoundComposite: true );
-
-
-$chapterCompositePages        : (
-  $pageKeyTerms, $pageSummary, $pageKeyEquations, $pageChapterReview, $pageTestPrep
+$Config_ChapterCompositePages: (
+  $PageKeyTerms, $pageSummary, $pageKeyEquations, $pageConceptItems, $pageCriticalThinking, $pageProblems, $pagePerformance, $pageMultipleChoice, $pageShortAnswer, $pageExtendedResponse,
 );
 
-$EOCcompoundComposites         : ( $pageChapterReview, $pageTestPrep );
-
-$bookCompositePages: (
-  //This does not get parsed as a list without a comma at the endthe composite builder should account for this rather than using hacky syntax,
-  $pageIndex,
+$Config_BookCompositePages: (
+  //This doesn't get parsed as a list without a comma at the end
+  //the composite builder should account for this rather than using hacky syntax
+  $PageIndex,
 );
 
 /*==========================================================
@@ -164,226 +124,157 @@ $bookCompositePages: (
 //unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
 //when they need to be able to be in any order because of possible changes in titling order between books
 //Usage Note: key: class of the containing span, value: text that will go inside span
-$chapterTitleContent        : ( number : counter(chapter), );
+$Config_ChapterTitleContent        : ( number : counter(chapter), );
 
-$appendixTitleContent       : ( title-label : "Appendix ", number : counter(appendix, upper-alpha), );
+$Config_AppendixTitleContent       : ( title-label : "Appendix ", number : counter(appendix, upper-alpha), );
 
-$sectionTitleContent        : ( number : counter(chapter) "." counter(section), );
+$Config_SectionTitleContent        : ( number : counter(chapter) "." counter(section), );
 
-$exerciseTitleContent       : ( divider : "", number : counter(chapter) "." counter(exercise) );
-$equationNumber             : ( number : counter(chapter) "." counter(equation) );
+$_exerciseTitleContent       : ( divider : ".", number : counter(chapter) "." counter(exercise) );
+$_equationNumber             : ( number : counter(chapter) "." counter(equation) );
+
+
+/*==========================================================
+  HIGH SCHOOL PHYSICS CONFIG
+==========================================================*/
+
+$Config_SetTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true );
+
+$Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
+
+
 
 /*
   Teacher Support  note
-
   Contains a title "Teacher Support"
 
   Markup: ./styleguide/page.note.teacher.html-baked.html
 
   Style guide: page.note.teacher
 */
-$teacherSupportNote         : ( label : "Teacher Support", selector : os-teacher );
-
 /*
   Section Learning Objectives note
-
   Contains a title "Section Learning Objectives"
 
   Markup: ./styleguide/page.note.learningobjectives.html-baked.html
 
   Style guide: page.note.learningobjectives
 */
-$learningObjectivesNote     : ( label : "Section Learning Objectives", selector : learning-objectives );
 /*
   Boundless Physics note
-
   Contains a title "Boundless Physics" and a body containing a title and the contents of the note.
 
   Markup: ./styleguide/page.note.boundlessphysics.html-baked.html
 
   Style guide: page.note.boundlessphysics
 */
-$boundlessPhysicsNote       : ( label : "Boundless Physics", selector : boundless-physics, isBodyWrapped: true );
-
 /*
   Misconception Alert note
-
   Contains a title "Misconception Alert".
 
   Markup: ./styleguide/page.note.misconception.html-baked.html
 
   Style guide: page.note.misconception
 */
-$misconceptionNote          : ( label : "Misconception Alert", selector : ost-misconception, );
-
 /*
   Teacher Demonstration note
-
   Contains a title "Teacher Demonstration".
 
   Markup: ./styleguide/page.note.workout.html-baked.html
 
   Style guide: page.note.workout
 */
-$teacherDemonstrationNote   : ( label : "Teacher Demonstration", selector : ost-teacher-demonstration, );
-
 /*
   Grasp Check note
-
   Contains a title "Grasp Check".
 
   Markup: ./styleguide/page.note.grasp-check.html-baked.html
 
   Style guide: page.note.grasp-check
 */
-$graspCheckNote             : ( label : "Grasp Check", selector : grasp-check, );
-
 /*
   Snap Lab note
-
   Contains a title "Snap Lab" and wrap the body.
 
   Markup: ./styleguide/page.note.snap-lab.html-baked.html
 
   Style guide: page.note.snap-lab
 */
-$snapLabNote                : ( label: "Snap Lab", selector: snap-lab, isBodyWrapped: true, );
-
 /*
   Worked Example note
-
   Contains a title "Worked Example" and wraps the body.
 
   Markup: ./styleguide/page.note.worked-example.html-baked.html
 
   Style guide: page.note.worked-example
 */
-$workedExampleNote           : ( label: "Worked Example", selector: worked-example, isBodyWrapped: true );
 /*
   Tips For Success note
-
   Contains a title "Tips For Success".
 
   Markup: ./styleguide/page.note.tips-for-success.html-baked.html
 
   Style guide: page.note.tips-for-success
 */
-$tipsSuccessNote            : ( label: "Tips For Success", selector: tips-for-success, );
-
 /*
   Work In Physics note
-
   Contains a title "Work In Physics" and wraps body.
 
   Markup: ./styleguide/page.note.work-in-physics.html-baked.html
 
   Style guide: page.note.work-in-physics
 */
-$workedPhysicsNote          : ( label: "Work In Physics", selector: work-in-physics, isBodyWrapped: true );
-
 /*
   Fun In Physics note
-
   Contains a title "Fun In Physics".
 
   Markup: ./styleguide/page.note.fun-in-physics.html-baked.html
 
   Style guide: page.note.fun-in-physics
 */
-$funPhysicsNote             : ( label: "Fun In Physics", selector: fun-in-physics, );
-
 /*
   Links to Physics note
-
   Contains a title "Links to Physics" and wraps body.
 
   Markup: ./styleguide/page.note.links-to-physics.html-baked.html
 
   Style guide: page.note.links-to-physics
 */
-$linksPhysicsNote            : ( label: "Links To Physics", selector: links-to-physics, isBodyWrapped: true );
-
 /*
   Watch Physics note
-
   Contains a title "Watch Physics" and wraps body.
 
   Markup: ./styleguide/page.note.watch-physics.html-baked.html
 
   Style guide: page.note.watch-physics
 */
-$watchPhysicsNote           : ( label: "Watch Physics", selector: watch-physics, isBodyWrapped: true );
-
 /*
   Virtual Physics note
-  
   Contains a title "Virtual Physics" and wraps the body.
 
   Markup: ./styleguide/page.note.virtual-physics.html-baked.html
 
   Style guide: page.note.virtual-physics
 */
-$virtualPhysicsNote         : ( label: "Virtual Physics", selector: virtual-physics, isBodyWrapped: true );
-
-$captionTableNumber         : ( title-label: "Table ", number: counter(chapter) "." counter(table) );
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$captionTableNumberAp       : ( title-label: "Table ", number: counter(appendix, upper-alpha) "." counter(table) );
-
-$captionFigNumber           : ( title-label: "Figure ", number: counter(chapter) "." counter(figure) );
-
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$captionFigNumberAp         : ( title-label: "Figure ", number: counter(appendix, upper-alpha) "." counter(figure) );
-$symbolsSectionTitle: "Symbols";
-
-/*==========================================================
-  HIGH SCHOOL PHYSICS CONFIG
-==========================================================*/
-
-$setTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true, exceptionClassNames: ('key-terms',) );
-
-$setFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
-
-//If this method of setting the content of the label explicity becomes a problem,
-//try grabbing the numbering information from the element's header
-
-//NOTE: These selectors MUST match the counting selectors or be more specific
-//otherwise, the increment and the counter() call may fire in the wrong order
-//This may be fixed in a later version of easybake
-$targetLabels: (
-  (
-    selector    : '.os-eoc [data-type="exercise"]',
-    label       : "Exercise " counter(chapter) "." counter(exercise)
-  ),
-  (
-    selector    : 'div[data-type="chapter"] .example',
-    label       : "Example " counter(chapter) "." counter(example)
-  ),
-  (
-    selector    : '[data-type="chapter"] :not(table) > table',
-    label       : "Table " counter(chapter) "." counter(table)
-  ),
-  (
-    selector    : '[data-type="chapter"] :not(figure) > figure',
-    label       : "Figure " counter(chapter) "." counter(figure)
-  ),
-  (
-    selector    : '[data-type="appendix"] :not(table) > table',
-    label       : "Table " counter(appendix, upper-alpha) "." counter(table)
-  ),
-  (
-    selector    : '[data-type="appendix"] :not(figure) > figure',
-    label       : "Figure " counter(appendix, upper-alpha) "." counter(figure)
-  )
+$Config_Notes: (
+  ( className: 'os-teacher',           label: "Teacher Support" ),
+  ( className: 'boundless-physics',    label: "Boundless Physics", isBodyWrapped: true ),
+  ( className: 'learning-objectives',  label: "Section Learning Objectives" ),
+  ( className: 'ost-teacher-demonstration', label: "Teacher Demonstration" ),
+  ( className: 'ost-misconception',    label: "Misconception Alert" ),
+  ( className: 'grasp-check',          label: "Grasp Check" ),
+  ( className: 'snap-lab',             label: "Snap Lab",          isBodyWrapped: true ),
+  ( className: 'worked-example',       label: "Worked Example",    isBodyWrapped: true ),
+  ( className: 'tips-for-success',     label: "Tips For Success" ),
+  ( className: 'work-in-physics',      label: "Work In Physics",   isBodyWrapped: true ),
+  ( className: 'fun-in-physics',       label: "Fun In Physics" ),
+  ( className: 'links-to-physics',     label: "Links To Physics",  isBodyWrapped: true ),
+  ( className: 'watch-physics',        label: "Watch Physics",     isBodyWrapped: true ),
+  ( className: 'virtual-physics',      label: "Virtual Physics",   isBodyWrapped: true ),
 );
 
-
-/*
-  Grasp Check
-
-  This is an exercise that is fetched from exercises.openstax.org.
-  It should be rendered with the label "Grasp Check" (from the data-label attribute).
-
-  Markup: ./styleguide/page.exercise.grasp-check.html-baked.html
-
-  Style guide: page.exercise.grasp-check
-*/
+$Config_PartType_Chapter:  (outlineTitle: null);
+$Config_PartType_Equation: (moveTo: $AREA_NONE, titleContent: $_equationNumber, numberAt: $NUMBER_BEFORE_MOVE, excludeNumberingInClassName: "summary");
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_COMPOSITE_PAGE,  titleContent: $_exerciseTitleContent);
+$Config_PartType_Example:  ();
+$Config_PartType_Solution: (moveTo: $AREA_TRASH); // FIXME: change this to $AREA_NONE once cnx-easybake is fixed or the order of operations is fixed

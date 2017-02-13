@@ -358,9 +358,6 @@
 
   Style guide: page.note.link-to-learning
 */
-/*==========================================================
-  BIOLOGY CONFIG
-==========================================================*/
 :pass(0) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
@@ -406,14 +403,6 @@
     data-type: "alternatives";
     class: "os-has-iframe os-has-link";
     content: pending(bIframeLink) content(); }
-:pass(0) [data-type="exercise"] {
-  string-set: isSolution ""; }
-  :pass(0) [data-type="exercise"] [data-type="solution"] {
-    string-set: isSolution " os-hasSolution "; }
-  :pass(0) [data-type="exercise"]::deferred {
-    class: attr(class) string(isSolution, " "); }
-:pass(0) [data-type="metadata"] > [data-type="description"] {
-  move-to: trash; }
 
 :pass(1) [data-type="note"].art-connection::before {
   container: span;
@@ -508,6 +497,14 @@
 :pass(1) [data-type="note"].interactive::deferred {
   content: pending(bNoteHeader) content(); }
 
+:pass(2) [data-type="exercise"] {
+  string-set: isSolution ""; }
+  :pass(2) [data-type="exercise"] [data-type="solution"] {
+    string-set: isSolution " os-hasSolution "; }
+  :pass(2) [data-type="exercise"]::deferred {
+    class: attr(class) string(isSolution, " "); }
+:pass(2) [data-type="metadata"] > [data-type="description"] {
+  move-to: trash; }
 :pass(2) body {
   counter-reset: chapter; }
 :pass(2) div[data-type="chapter"] {
@@ -769,12 +766,14 @@
   counter-reset: exercise; }
 :pass(6) .os-eoc [data-type="exercise"] {
   counter-increment: exercise; }
+:pass(6) [data-type="chapter"], :pass(6) .appendix {
+  counter-reset: example; }
+:pass(6) div[data-type="chapter"] [data-type="example"] {
+  counter-increment: example; }
 :pass(6) .os-eoc [data-type="exercise"] {
   string-set: target-label "Exercise " counter(chapter) "." counter(exercise); }
 :pass(6) div[data-type="chapter"] .example {
   string-set: target-label "Example " counter(chapter) "." counter(example); }
-:pass(6) div[data-type="chapter"] .try {
-  string-set: target-label "Try It"; }
 :pass(6) [data-type="chapter"] :not(table) > table {
   string-set: target-label "Table " counter(chapter) "." counter(table); }
 :pass(6) [data-type="chapter"] :not(figure) > figure {
