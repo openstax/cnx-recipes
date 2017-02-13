@@ -339,6 +339,21 @@ Usage Note: key: class of the containing span, value: text that will go inside s
     string-set: isSolution " os-hasSolution "; }
   :pass(0) [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
+:pass(0) div[class="note"] > div[data-type="title"] {
+  string-set: noteTitle content();
+  move-to: trash; }
+  :pass(0) div[class="note"] > div[data-type="title"]::before {
+    container: span;
+    class: "os-title-label";
+    content: string(noteTitle);
+    move-to: genericNoteLabel; }
+:pass(0) div[class="note"]::after {
+  container: div;
+  content: pending(genericNoteLabel);
+  class: "os-title";
+  move-to: genericNote; }
+:pass(0) div[class="note"]:deferred {
+  content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
 
@@ -454,7 +469,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: div-TITLECONTAINER; }
 :pass(2) .example [data-type="solution"]::before {
   container: span;
-  content: counter(chapter) "." counter(example);
+  content: counter(chapter) ". " counter(example);
   class: os-number;
   move-to: div-TITLECONTAINER; }
 :pass(2) .example [data-type="solution"]::before {
@@ -558,6 +573,10 @@ Usage Note: key: class of the containing span, value: text that will go inside s
 :pass(2) [data-type="chapter"]:deferred::before {
   class: "os-chapter-outline";
   content: pending(chapOutlineTitle) pending(chapOutline); }
+:pass(1) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+:pass(1) [data-element-type="check-understanding"][data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
 
 :pass(3) div[data-type="page"] > [data-type="document-title"],
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -708,7 +727,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   counter-increment: equation; }
 :pass(6) section:not(.section-summary) [data-type="equation"]:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) "." counter(equation);
+  content: counter(chapter) ". " counter(equation);
   class: os-number; }
 :pass(6) body > [data-type="metadata"] {
   node-set: bookMetadata; }
@@ -809,7 +828,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(table) > table:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) "." counter(table);
+  content: counter(chapter) ". " counter(table);
   class: os-number;
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption [data-type="title"] {
@@ -834,7 +853,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered)::before {
   container: span;
-  content: counter(appendix,upper-alpha) "." counter(table);
+  content: counter(appendix,upper-alpha) ". " counter(table);
   class: os-number;
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered) caption [data-type="title"] {
@@ -859,7 +878,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) "." counter(figure);
+  content: counter(chapter) ". " counter(figure);
   class: os-number;
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption {
@@ -884,7 +903,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: bCaption; }
 :pass(6) .appendix :not(figure) > figure:not(.unnumbered)::before {
   container: span;
-  content: counter(appendix,upper-alpha) "." counter(figure);
+  content: counter(appendix,upper-alpha) ". " counter(figure);
   class: os-number;
   move-to: bCaption; }
 :pass(6) .appendix :not(figure) > figure:not(.unnumbered) figcaption {
