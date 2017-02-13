@@ -1,6 +1,7 @@
 #!/bin/bash
 
 rulesetName=$1
+bakedOrPreparedSuffix=$2 # Overridden when running ./diff-guide-prepare
 
 sassDir='./rulesets/'
 styleguideDir='./styleguide/'
@@ -20,6 +21,13 @@ if [ -z "${rulesetName}" ]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
   exit 1
+fi
+
+if [ -z "${bakedOrPreparedSuffix}" ]
+then
+  bakedOrPreparedSuffix="baked"
+else
+  >&2 echo "INFO: Generating -${bakedOrPreparedSuffix}.html files instead of -baked.html files"
 fi
 
 # Initialize rbenv (if installed)
@@ -49,11 +57,14 @@ then
 #   rm -rf "${tempDir}" || exit 1
 fi
 
-if [[ -d "${tempRulesetDir}" ]]
+# Keep the tempRulesetDir around because it could have been created by diff-guide-prepare
+if [[ ! -d "${tempRulesetDir}" ]]
 then
-  rm -rf "${tempRulesetDir}" || exit 1
+  mkdir "${tempRulesetDir}" || exit 1
+# else
+#   # rm -rf "${tempRulesetDir}" || exit 1
 fi
-mkdir "${tempRulesetDir}" || exit 1
+
 
 # Copy over all the dirs containing the styleguide comments that need to be included
 
@@ -91,54 +102,69 @@ cp -R "${bookDocumentationDir}" "${tempRulesetDir}" || exit 1
 # Find all the styleguide html files and convert them
 for snippetFileName in $(find "${tempRulesetDir}" -name "*.html")
 do
-  >&2 echo "Generating temporary ${snippetFileName}-baked.html"
-  # commented because xmllint does not like html5 element names like <figure>
-  # ./scripts/bake-file ${rulesetName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.html
-  ./scripts/bake-file ${rulesetName} ${snippetFileName} ${snippetFileName}-temp1-baked.html || exit 1
 
-  # Construct an HTML file that contains both the raw and baked HTML
-  # so it can be separated in the browser
-  # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${snippetFileName}-baked.html || exit 1
-  cat ${snippetFileName} >> ${snippetFileName}-baked.html || exit 1
-  echo '</section>' >> ${snippetFileName}-baked.html || exit 1
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> ${snippetFileName}-baked.html || exit 1
-  cat ${snippetFileName}-temp1-baked.html >> ${snippetFileName}-baked.html || exit 1
-  echo '</section>' >> ${snippetFileName}-baked.html || exit 1
+  if [[ ! "${snippetFileName}" =~ "-baked.html" ]]
+  then
+    if [[ ! "${snippetFileName}" =~ "-prepared.html" ]]
+    then
 
-  rm ${snippetFileName}-temp1-baked.html || exit 1
+      >&2 echo "Generating temporary ${snippetFileName}-${bakedOrPreparedSuffix}.html"
+      # commented because xmllint does not like html5 element names like <figure>
+      # ./scripts/bake-file ${rulesetName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.html
+      ./scripts/bake-file ${rulesetName} ${snippetFileName} ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.html --use-repeatable-ids  || exit 1
+
+      # Construct an HTML file that contains both the raw and baked HTML
+      # so it can be separated in the browser
+      # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
+      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      cat ${snippetFileName} >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      cat ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.html >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+
+      rm ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.html || exit 1
+    fi
+  fi
 done
 
 
->&2 echo "==> Generating the style guide"
-# The CSS path is relative to the styleguide directory, hence `./guide.css`
-# Exclude parsing the output/*.css files by setting the --mask
-$(npm bin)/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${guideHomepageFile} --destination ${styleguideDir} --css ./guide.css --source ${tempRulesetDir} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"  || exit 1
-
-
-# Delete the temp files created above
-# >&2 echo "==> Deleting the baked example HTML files"
-# for snippetFileName in $(find ./rulesets/books/ -name "*-baked.html")
-# do
-#   # echo "Removing temporary ${snippetFileName}"
-#   rm ${snippetFileName} || exit 1
-# done
-
-# HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
-# So, check the output of kss to see if any errors were reported.
-missingFiles=$(cat "${kssOutputFile}" | grep 'NOT FOUND!' )
-if [ -n "${missingFiles}" ]
+if [[ "${bakedOrPreparedSuffix}" == "baked" ]]
 then
-  >&2 echo "ERROR: Some HTML files were missing:"
-  >&2 echo "${missingFiles}"
-  >&2 echo "Check ${kssOutputFile} for more details"
-  exit 1
-fi
 
-# Generate an HTML report (if genhtml is installed)
-if [[ -n "$(which genhtml)" ]]
-then
-  genhtml --quiet --output ./coverage/ $(find "${tempRulesetDir}" -name "*.lcov")
-fi
+  >&2 echo "==> Generating the style guide"
+  # The CSS path is relative to the styleguide directory, hence `./guide.css`
+  # Exclude parsing the output/*.css files by setting the --mask
+  $(npm bin)/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${guideHomepageFile} --destination ${styleguideDir} --css ./guide.css --source ${tempRulesetDir} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"  || exit 1
 
->&2 echo "Guide is available at ${styleguideDir} . You can open it in a browser"
+
+  # Delete the temp files created above
+  # >&2 echo "==> Deleting the baked example HTML files"
+  # for snippetFileName in $(find ./rulesets/books/ -name "*-${bakedOrPreparedSuffix}.html")
+  # do
+  #   # echo "Removing temporary ${snippetFileName}"
+  #   rm ${snippetFileName} || exit 1
+  # done
+
+  # HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
+  # So, check the output of kss to see if any errors were reported.
+  missingFiles=$(cat "${kssOutputFile}" | grep 'NOT FOUND!' )
+  if [ -n "${missingFiles}" ]
+  then
+    >&2 echo "ERROR: Some HTML files were missing:"
+    >&2 echo "${missingFiles}"
+    >&2 echo "Check ${kssOutputFile} for more details"
+    exit 1
+  fi
+
+  # Generate an HTML report (if genhtml is installed)
+  if [[ -n "$(which genhtml)" ]]
+  then
+    genhtml --quiet --output ./coverage/ $(find "${tempRulesetDir}" -name "*.lcov")
+  fi
+
+  >&2 echo "Guide is available at ${styleguideDir} . You can open it in a browser"
+
+else
+  >&2 echo "INFO: Skipping actual styleguide generation because the additional arg '${bakedOrPreparedSuffix}' was provided (probably for diff-guide-prepare)"
+fi
