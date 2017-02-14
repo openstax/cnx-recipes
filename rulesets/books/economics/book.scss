@@ -8,24 +8,27 @@
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
   @include modify_simLinkTarget();
+  @include modify_wrapExercises(); // no dependencies
+  @include modify_GenericNote();
+  @include modify_wrapLists(); // no dependencies
+  @include modify_wrapIframesWithAlternatives(); // no dependencies
   @include utils_hasSolution();
-  @include modify_note($linkupNote);
-  @include modify_note($bringhomeNote);
-  @include modify_note($clearupNote);
-  @include modify_note($workoutNote);
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
 }
 :pass(1) {
-  // These have no dependencies so I do not know why they require having to be here
-  // (as opposed to being right at the top of :pass(0) )
-  // but the fact that the list is inside a note seems to be the culprit.
-  // maybe the modify_note code runs first and makes a copy of the element `::before`
-  // This list code runs? (even though the listMakeLabelVisible was listed above modify_note)
-  @include modify_wrapExercises(); // no dependencies
-  @include modify_wrapLists(); // no dependencies
-  @include modify_wrapIframesWithAlternatives(); // no dependencies
-
+  // These need to be in a separate pass because modify_note seems to pull things out of the DOM
+  // so the other rules (in pass0) do not end up getting executed.
+  // The following mixins were not being run:
+  // @include modify_wrapExercises(); // no dependencies
+  // @include modify_wrapLists(); // no dependencies
+  // @include modify_simLinkTarget();
+  @include modify_note($linkupNote);
+  @include modify_note($bringhomeNote);
+  @include modify_note($clearupNote);
+  @include modify_note($workoutNote);
+}
+:pass(2) {
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include count_countChapters(chapter);
   @include number_numberChapters($chapterTitleContent);
@@ -42,7 +45,7 @@
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include compose_createChapterComposites($chapterCompositePages, sectionHeaderNode);
 }
-:pass(2) {
+:pass(3) {
   //After: ???
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include reference_refSectionHeaderStringAs(sectionHeaderString);
@@ -52,7 +55,7 @@
   @include count_countEOCExercises(exercise, '[data-type="chapter"]');
   @include number_numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
 }
-:pass(3) {
+:pass(4) {
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
   @include link_linkToProblemsFromSolutionsEOC();
@@ -62,7 +65,7 @@
   @include compose_prepChapterAreas($bookCompositePages, chapterHeaderNode);
 
 }
-:pass(4) {
+:pass(5) {
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include compose_createEOBSolutions($chapterCompositePages, $pageSolutions, sectionHeaderNode);
@@ -70,7 +73,7 @@
   //After: prepBookComposites, prepChapterAreas
   @include compose_createBookComposites($bookCompositePages);
 }
-:pass(5) {
+:pass(6) {
   //After: prepIndexTerms, createBookComposites
   @include modify_addIndexSymbolGroup("index", $symbolsSectionTitle);
 
@@ -104,20 +107,20 @@
   @include number_setCaptions($setFigureCaption, $captionFigNumber, $captionFigNumberAp);
   @include modify_retitleHeaders();
 }
-:pass(6) {
+:pass(7) {
   @include modify_trash('.os-index-link-separator:last-child');
   @include modify_retitleCompositeMetadata();
 }
-:pass(7) {
+:pass(8) {
   //After: All metadata tasks are completed
   @include modify_suppressURI();
 
   @include toc_prepTOCElements();
 }
-:pass(8) {
+:pass(9) {
   @include toc_putTOCElements();
 }
-:pass(9) {
+:pass(10) {
   @include toc_navTOCUnwrap();
 }
 :pass(100) {
