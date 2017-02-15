@@ -6,8 +6,53 @@
 @import './_config';
 
 
+// HACK
+// SASS has a bug where it allows you to write `:not(.foo)` but not the following:
+// `:not(:has(foo))` , `:not(a, b)`
+//
+// So to get around that, there is code below that looks like this: `&:not(:not(SASS_HACK):has(`
+
+
+
 @mixin sectionNumber() {
-  content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '.' ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) ' ';
+  content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '.' ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) ' ';
+}
+
+@mixin sectionTitleAndLink() {
+  // x-assert: x-is('[data-type="page"]');
+
+  &:has(> [data-type="metadata"] > [data-type="document-title"]) {
+    &:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+      /* Number the non-Introduction Pages */
+      &::before {
+        tag-name-set: "h3";
+        class-add: "section-title";
+        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+
+        &::before {
+          /* Section Numbering */
+          tag-name-set: "a";
+          attrs-add: "href" "#" attr(id);
+          @include sectionNumber();
+        }
+      }
+    }
+    &:has(cnx-pi[data-type="cnx.flag.introduction"]) {
+      /* Add a title but do not number the Introduction modules */
+      &::before {
+        tag-name-set: "h3";
+        class-add: "section-title";
+        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+      }
+    }
+
+  }
+  // &:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])) {
+  //   &::before {
+  //     class-add: "section-title";
+  //     x-log: "ERROR: mangled HTML";
+  //   }
+  // }
 }
 
 // /* Just for testing memory/processing limits */
@@ -59,7 +104,7 @@ $exerciseSolutionSelectorAccumulator: ();
       }
 
       /* Make links from exercise to solution and from solution to exercise */
-      [data-type="exercise"]:not(:has([data-type="solution"]))::before {
+      [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
         /* Make the number for an exercise without solution bold */
         tag-name-set: "strong";
       }
@@ -130,24 +175,7 @@ $exerciseSolutionSelectorAccumulator: ();
             /* Is sectionSeparated */
             &::for-each-descendant(1, '> [data-type="page"]') {
               &:has(#{$selector}) {
-                &:has(> [data-type="metadata"] > [data-type="document-title"]) {
-                  &::before {
-                    tag-name-set: "h3";
-                    class-add: "section-title";
-                    content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
-                    &::before {
-                      /* Section Numbering */
-                      tag-name-set: "span";
-                      content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '.' ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) ' ';
-                    }
-                  }
-                }
-                // &:not(:has(> [data-type="metadata"] > [data-type="document-title"])) {
-                //   &::before {
-                //     class-add: "section-title";
-                //     x-log: "ERROR: mangled HTML";
-                //   }
-                // }
+                @include sectionTitleAndLink();
                 class-add: "eoc-section";
 
                 content: move-here($selectorChildren);
@@ -162,7 +190,7 @@ $exerciseSolutionSelectorAccumulator: ();
         }
       }
       // // Example of Logging when a end-of-chapter page was not generated
-      // &:not(:has(.#{$source})) {
+      // &:not(:not(SASS_HACK):has(.#{$source})) {
       //   x-log: "WARNING: Skipping end-of-chapter page for .#{$source} for chapter " ancestor-context('body', count-of-type('[data-type="chapter"]')) " because no items were found";
       // }
     }
@@ -184,13 +212,39 @@ $exerciseSolutionSelectorAccumulator: ();
       /* TODO: Move this to an attribution section at the end of the book */
       display: none;
     }
-    &::before {
-      tag-name-set: "h2";
-      content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
-
+    &:has(> [data-type="metadata"] > [data-type="document-title"]) {
       &::before {
-        tag-name-set: "span";
-        @include sectionNumber();
+        tag-name-set: "h2";
+        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+
+        &::before {
+          tag-name-set: "span";
+          @include sectionNumber();
+        }
+      }
+    }
+    /* The following are hacks for the styleguide since they are missing metadata */
+    &:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])) {
+      x-log: "Probably generating a styleguide so there is no metadata element";
+      &:has(> [data-type="document-title"]) {
+        &::before {
+          tag-name-set: "h2";
+          content: descendant-context('> [data-type="document-title"]', text-contents());
+          &::before {
+            tag-name-set: "span";
+            @include sectionNumber();
+          }
+        }
+      }
+      &:not(:not(SASS_HACK):has(> [data-type="document-title"])) {
+        &::before {
+          tag-name-set: "h2";
+          content: "STYLEGUIDE_TITLE_PLACEHOLDER";
+          &::before {
+            tag-name-set: "span";
+            @include sectionNumber();
+          }
+        }
       }
     }
   }
@@ -203,15 +257,27 @@ body::after(1) {
   }
   &::for-each-descendant(1, '[data-type="chapter"]'):has(#{$exerciseSolutionSelectorAccumulator}) {
     /* Chapter title */
-    &::before {
+    &:has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])) { /* This guard is just for the styleguide */
       &::before {
-        tag-name-set: "span";
-        content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
+        &::before {
+          content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
+          // tag-name-set: "span";
+          // Link to the introduction module (TODO: when subcollections have id's then this will not be necessary)
+          tag-name-set: "a";
+          attrs-add: "href" "#" descendant-context('[data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])', attr(id));
+        }
+        tag-name-set: "h2";
+        content: descendant-context('> [data-type="document-title"]', text-contents());
       }
-      tag-name-set: "h2";
-      content: descendant-context('> [data-type="document-title"]', text-contents());
+      /* Chapter Answers */
+      content: move-here('#{$exerciseSolutionSelectorAccumulator}');
     }
-    /* Chapter Answers */
-    content: move-here('#{$exerciseSolutionSelectorAccumulator}');
+  }
+}
+
+/* Discard all processing instructions */
+[data-type="page"] {
+  cnx-pi {
+    display: none;
   }
 }

@@ -282,7 +282,7 @@
     [data-type="chapter"] section.glossary [data-type="exercise"]::before,
     [data-type="chapter"] section.glossary [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', count-of-type('section.glossary [data-type="exercise"]')); }
-    [data-type="chapter"] section.glossary [data-type="exercise"]::before {
+    [data-type="chapter"] section.glossary [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.glossary [data-type="exercise"]:has([data-type="solution"])::before {
@@ -322,7 +322,7 @@
     [data-type="chapter"] section.summary [data-type="exercise"]::before,
     [data-type="chapter"] section.summary [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"]'), count-of-type('section.summary [data-type="exercise"]'))); }
-    [data-type="chapter"] section.summary [data-type="exercise"]::before {
+    [data-type="chapter"] section.summary [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.summary [data-type="exercise"]:has([data-type="solution"])::before {
@@ -340,14 +340,23 @@
     [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary) {
       class-add: "eoc-section";
       content: move-here('section.summary > *:not([data-type="title"])'); }
-      [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"])::before {
-        tag-name-set: "h3";
-        class-add: "section-title";
-        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
-        [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
-          /* Section Numbering */
-          tag-name-set: "span";
-          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
+      [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+        /* Number the non-Introduction Pages */ }
+        [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+          [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before::before {
+            /* Section Numbering */
+            tag-name-set: "a";
+            attrs-add: "href" "#" attr(id);
+            content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
+      [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"]) {
+        /* Add a title but do not number the Introduction modules */ }
+        [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"])::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
 
 /* End-of-chapter page for section.formula-review */
 [data-type="chapter"] {
@@ -359,7 +368,7 @@
     [data-type="chapter"] section.formula-review [data-type="exercise"]::before,
     [data-type="chapter"] section.formula-review [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"]'), count-of-type('section.formula-review [data-type="exercise"]'))); }
-    [data-type="chapter"] section.formula-review [data-type="exercise"]::before {
+    [data-type="chapter"] section.formula-review [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.formula-review [data-type="exercise"]:has([data-type="solution"])::before {
@@ -377,14 +386,23 @@
     [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review) {
       class-add: "eoc-section";
       content: move-here('section.formula-review > *:not([data-type="title"])'); }
-      [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"])::before {
-        tag-name-set: "h3";
-        class-add: "section-title";
-        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
-        [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
-          /* Section Numbering */
-          tag-name-set: "span";
-          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
+      [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+        /* Number the non-Introduction Pages */ }
+        [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+          [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before::before {
+            /* Section Numbering */
+            tag-name-set: "a";
+            attrs-add: "href" "#" attr(id);
+            content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
+      [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"]) {
+        /* Add a title but do not number the Introduction modules */ }
+        [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"])::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
 
 /* End-of-chapter page for section.practice */
 [data-type="chapter"] {
@@ -396,7 +414,7 @@
     [data-type="chapter"] section.practice [data-type="exercise"]::before,
     [data-type="chapter"] section.practice [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"]'), count-of-type('section.practice [data-type="exercise"]'))); }
-    [data-type="chapter"] section.practice [data-type="exercise"]::before {
+    [data-type="chapter"] section.practice [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.practice [data-type="exercise"]:has([data-type="solution"])::before {
@@ -414,14 +432,23 @@
     [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice) {
       class-add: "eoc-section";
       content: move-here('section.practice > *:not([data-type="title"])'); }
-      [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"])::before {
-        tag-name-set: "h3";
-        class-add: "section-title";
-        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
-        [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
-          /* Section Numbering */
-          tag-name-set: "span";
-          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
+      [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+        /* Number the non-Introduction Pages */ }
+        [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+          [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before::before {
+            /* Section Numbering */
+            tag-name-set: "a";
+            attrs-add: "href" "#" attr(id);
+            content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
+      [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"]) {
+        /* Add a title but do not number the Introduction modules */ }
+        [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"])::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
 
 /* End-of-chapter page for section.bring-together-exercises */
 [data-type="chapter"] {
@@ -433,7 +460,7 @@
     [data-type="chapter"] section.bring-together-exercises [data-type="exercise"]::before,
     [data-type="chapter"] section.bring-together-exercises [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"]'), count-of-type('section.bring-together-exercises [data-type="exercise"]'))); }
-    [data-type="chapter"] section.bring-together-exercises [data-type="exercise"]::before {
+    [data-type="chapter"] section.bring-together-exercises [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.bring-together-exercises [data-type="exercise"]:has([data-type="solution"])::before {
@@ -460,7 +487,7 @@
     [data-type="chapter"] section.free-response [data-type="exercise"]::before,
     [data-type="chapter"] section.free-response [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"], section.bring-together-exercises [data-type="exercise"]'), count-of-type('section.free-response [data-type="exercise"]'))); }
-    [data-type="chapter"] section.free-response [data-type="exercise"]::before {
+    [data-type="chapter"] section.free-response [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.free-response [data-type="exercise"]:has([data-type="solution"])::before {
@@ -478,14 +505,23 @@
     [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response) {
       class-add: "eoc-section";
       content: move-here('section.free-response > *:not([data-type="title"])'); }
-      [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"])::before {
-        tag-name-set: "h3";
-        class-add: "section-title";
-        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
-        [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
-          /* Section Numbering */
-          tag-name-set: "span";
-          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
+      [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+        /* Number the non-Introduction Pages */ }
+        [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+          [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before::before {
+            /* Section Numbering */
+            tag-name-set: "a";
+            attrs-add: "href" "#" attr(id);
+            content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
+      [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"]) {
+        /* Add a title but do not number the Introduction modules */ }
+        [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"])::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
 
 /* End-of-chapter page for section.bring-together-homework */
 [data-type="chapter"] {
@@ -497,7 +533,7 @@
     [data-type="chapter"] section.bring-together-homework [data-type="exercise"]::before,
     [data-type="chapter"] section.bring-together-homework [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"], section.bring-together-exercises [data-type="exercise"], section.free-response [data-type="exercise"]'), count-of-type('section.bring-together-homework [data-type="exercise"]'))); }
-    [data-type="chapter"] section.bring-together-homework [data-type="exercise"]::before {
+    [data-type="chapter"] section.bring-together-homework [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.bring-together-homework [data-type="exercise"]:has([data-type="solution"])::before {
@@ -524,7 +560,7 @@
     [data-type="chapter"] section.references [data-type="exercise"]::before,
     [data-type="chapter"] section.references [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"], section.bring-together-exercises [data-type="exercise"], section.free-response [data-type="exercise"], section.bring-together-homework [data-type="exercise"]'), count-of-type('section.references [data-type="exercise"]'))); }
-    [data-type="chapter"] section.references [data-type="exercise"]::before {
+    [data-type="chapter"] section.references [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.references [data-type="exercise"]:has([data-type="solution"])::before {
@@ -542,14 +578,23 @@
     [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references) {
       class-add: "eoc-section";
       content: move-here('section.references > *:not([data-type="title"])'); }
-      [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"])::before {
-        tag-name-set: "h3";
-        class-add: "section-title";
-        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
-        [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
-          /* Section Numbering */
-          tag-name-set: "span";
-          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
+      [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+        /* Number the non-Introduction Pages */ }
+        [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+          [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"]):not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"]))::before::before {
+            /* Section Numbering */
+            tag-name-set: "a";
+            attrs-add: "href" "#" attr(id);
+            content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
+      [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"]) {
+        /* Add a title but do not number the Introduction modules */ }
+        [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"]):has(cnx-pi[data-type="cnx.flag.introduction"])::before {
+          tag-name-set: "h3";
+          class-add: "section-title";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
 
 /* End-of-chapter page for section.solutions */
 [data-type="chapter"] {
@@ -561,7 +606,7 @@
     [data-type="chapter"] section.solutions [data-type="exercise"]::before,
     [data-type="chapter"] section.solutions [data-type="exercise"] [data-type="solution"]::before {
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"], section.bring-together-exercises [data-type="exercise"], section.free-response [data-type="exercise"], section.bring-together-homework [data-type="exercise"], section.references [data-type="exercise"]'), count-of-type('section.solutions [data-type="exercise"]'))); }
-    [data-type="chapter"] section.solutions [data-type="exercise"]::before {
+    [data-type="chapter"] section.solutions [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
       /* Make the number for an exercise without solution bold */
       tag-name-set: "strong"; }
     [data-type="chapter"] section.solutions [data-type="exercise"]:has([data-type="solution"])::before {
@@ -584,28 +629,51 @@
   [data-type="chapter"] > [data-type="document-title"]::before {
     tag-name-set: "span";
     content: ancestor-context("body", count-of-type('[data-type="chapter"]')) ". "; }
-  [data-type="chapter"] [data-type="page"] > [data-type="metadata"] {
-    /* TODO: Move this to an attribution section at the end of the book */
-    display: none; }
-  [data-type="chapter"] [data-type="page"]::before {
-    tag-name-set: "h2";
-    content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
-    [data-type="chapter"] [data-type="page"]::before::before {
-      tag-name-set: "span";
-      content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
+  [data-type="chapter"] [data-type="page"] {
+    /* The following are hacks for the styleguide since they are missing metadata */ }
+    [data-type="chapter"] [data-type="page"] > [data-type="metadata"] {
+      /* TODO: Move this to an attribution section at the end of the book */
+      display: none; }
+    [data-type="chapter"] [data-type="page"]:has(> [data-type="metadata"] > [data-type="document-title"])::before {
+      tag-name-set: "h2";
+      content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+      [data-type="chapter"] [data-type="page"]:has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
+        tag-name-set: "span";
+        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
+    [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])) {
+      x-log: "Probably generating a styleguide so there is no metadata element"; }
+      [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])):has(> [data-type="document-title"])::before {
+        tag-name-set: "h2";
+        content: descendant-context('> [data-type="document-title"]', text-contents()); }
+        [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])):has(> [data-type="document-title"])::before::before {
+          tag-name-set: "span";
+          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
+      [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])):not(:not(SASS_HACK):has(> [data-type="document-title"]))::before {
+        tag-name-set: "h2";
+        content: "STYLEGUIDE_TITLE_PLACEHOLDER"; }
+        [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])):not(:not(SASS_HACK):has(> [data-type="document-title"]))::before::before {
+          tag-name-set: "span";
+          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
 
 body::after(1)::before {
   tag-name-set: "h1";
   content: "Answer Key"; }
 body::after(1)::for-each-descendant(1, '[data-type="chapter"]'):has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]) {
-  /* Chapter title */
-  /* Chapter Answers */
-  content: move-here('section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]'); }
-  body::after(1)::for-each-descendant(1, '[data-type="chapter"]'):has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"])::before {
-    tag-name-set: "h2";
-    content: descendant-context('> [data-type="document-title"]', text-contents()); }
-    body::after(1)::for-each-descendant(1, '[data-type="chapter"]'):has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"])::before::before {
-      tag-name-set: "span";
-      content: ancestor-context("body", count-of-type('[data-type="chapter"]')) ". "; }
+  /* Chapter title */ }
+  body::after(1)::for-each-descendant(1, '[data-type="chapter"]'):has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]):has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])) {
+    /* This guard is just for the styleguide */
+    /* Chapter Answers */
+    content: move-here('section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]'); }
+    body::after(1)::for-each-descendant(1, '[data-type="chapter"]'):has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]):has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"]))::before {
+      tag-name-set: "h2";
+      content: descendant-context('> [data-type="document-title"]', text-contents()); }
+      body::after(1)::for-each-descendant(1, '[data-type="chapter"]'):has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]):has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"]))::before::before {
+        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) ". ";
+        tag-name-set: "a";
+        attrs-add: "href" "#" descendant-context('[data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])', attr(id)); }
+
+/* Discard all processing instructions */
+[data-type="page"] cnx-pi {
+  display: none; }
 
 /*# sourceMappingURL=statistics.css.map */
