@@ -276,11 +276,15 @@
   /* Number the exercises for each section */
   /* Discard the old section-level glossary element */ }
   [data-type="chapter"] section.glossary {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.glossary [data-type="exercise"]::before,
     [data-type="chapter"] section.glossary [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', count-of-type('section.glossary [data-type="exercise"]')); }
+    [data-type="chapter"] section.glossary [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.glossary [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -312,11 +316,15 @@
 [data-type="chapter"] {
   /* Number the exercises for each section */ }
   [data-type="chapter"] section.summary {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.summary [data-type="exercise"]::before,
     [data-type="chapter"] section.summary [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"]'), count-of-type('section.summary [data-type="exercise"]'))); }
+    [data-type="chapter"] section.summary [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.summary [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -324,28 +332,36 @@
       tag-name-set: "a";
       attrs-add: "href" "#" parent-context(attr(id)); }
   [data-type="chapter"]:has(section.summary)::after(2) {
-    /* Title */ }
+    /* Title */
+    /* Is sectionSeparated */ }
     [data-type="chapter"]:has(section.summary)::after(2)::before {
+      tag-name-set: "h2";
       content: "Chapter Review"; }
-      [data-type="chapter"]:has(section.summary)::after(2)::before::before {
-        class-add: "number";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
     [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary) {
       class-add: "eoc-section";
-      content: move-here("section.summary"); }
+      content: move-here('section.summary > *:not([data-type="title"])'); }
       [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"])::before {
+        tag-name-set: "h3";
         class-add: "section-title";
         content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+        [data-type="chapter"]:has(section.summary)::after(2)::for-each-descendant(1, '> [data-type="page"]'):has(section.summary):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
+          /* Section Numbering */
+          tag-name-set: "span";
+          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
 /* End-of-chapter page for section.formula-review */
 [data-type="chapter"] {
   /* Number the exercises for each section */ }
   [data-type="chapter"] section.formula-review {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.formula-review [data-type="exercise"]::before,
     [data-type="chapter"] section.formula-review [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"]'), count-of-type('section.formula-review [data-type="exercise"]'))); }
+    [data-type="chapter"] section.formula-review [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.formula-review [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -353,28 +369,36 @@
       tag-name-set: "a";
       attrs-add: "href" "#" parent-context(attr(id)); }
   [data-type="chapter"]:has(section.formula-review)::after(3) {
-    /* Title */ }
+    /* Title */
+    /* Is sectionSeparated */ }
     [data-type="chapter"]:has(section.formula-review)::after(3)::before {
+      tag-name-set: "h2";
       content: "Formula Review"; }
-      [data-type="chapter"]:has(section.formula-review)::after(3)::before::before {
-        class-add: "number";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
     [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review) {
       class-add: "eoc-section";
-      content: move-here("section.formula-review"); }
+      content: move-here('section.formula-review > *:not([data-type="title"])'); }
       [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"])::before {
+        tag-name-set: "h3";
         class-add: "section-title";
         content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+        [data-type="chapter"]:has(section.formula-review)::after(3)::for-each-descendant(1, '> [data-type="page"]'):has(section.formula-review):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
+          /* Section Numbering */
+          tag-name-set: "span";
+          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
 /* End-of-chapter page for section.practice */
 [data-type="chapter"] {
   /* Number the exercises for each section */ }
   [data-type="chapter"] section.practice {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.practice [data-type="exercise"]::before,
     [data-type="chapter"] section.practice [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"]'), count-of-type('section.practice [data-type="exercise"]'))); }
+    [data-type="chapter"] section.practice [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.practice [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -382,28 +406,36 @@
       tag-name-set: "a";
       attrs-add: "href" "#" parent-context(attr(id)); }
   [data-type="chapter"]:has(section.practice)::after(4) {
-    /* Title */ }
+    /* Title */
+    /* Is sectionSeparated */ }
     [data-type="chapter"]:has(section.practice)::after(4)::before {
+      tag-name-set: "h2";
       content: "Practice"; }
-      [data-type="chapter"]:has(section.practice)::after(4)::before::before {
-        class-add: "number";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
     [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice) {
       class-add: "eoc-section";
-      content: move-here("section.practice"); }
+      content: move-here('section.practice > *:not([data-type="title"])'); }
       [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"])::before {
+        tag-name-set: "h3";
         class-add: "section-title";
         content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+        [data-type="chapter"]:has(section.practice)::after(4)::for-each-descendant(1, '> [data-type="page"]'):has(section.practice):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
+          /* Section Numbering */
+          tag-name-set: "span";
+          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
 /* End-of-chapter page for section.bring-together-exercises */
 [data-type="chapter"] {
   /* Number the exercises for each section */ }
   [data-type="chapter"] section.bring-together-exercises {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.bring-together-exercises [data-type="exercise"]::before,
     [data-type="chapter"] section.bring-together-exercises [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"]'), count-of-type('section.bring-together-exercises [data-type="exercise"]'))); }
+    [data-type="chapter"] section.bring-together-exercises [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.bring-together-exercises [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -412,22 +444,25 @@
       attrs-add: "href" "#" parent-context(attr(id)); }
   [data-type="chapter"]:has(section.bring-together-exercises)::after(5) {
     /* Title */
-    content: ancestor-context('[data-type="chapter"]', move-here("section.bring-together-exercises")); }
+    /* Not sectionSeparated */
+    content: ancestor-context('[data-type="chapter"]', move-here('section.bring-together-exercises > *:not([data-type="title"])')); }
     [data-type="chapter"]:has(section.bring-together-exercises)::after(5)::before {
+      tag-name-set: "h2";
       content: "Bringing It Together: Exercises"; }
-      [data-type="chapter"]:has(section.bring-together-exercises)::after(5)::before::before {
-        class-add: "number";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
 /* End-of-chapter page for section.free-response */
 [data-type="chapter"] {
   /* Number the exercises for each section */ }
   [data-type="chapter"] section.free-response {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.free-response [data-type="exercise"]::before,
     [data-type="chapter"] section.free-response [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"], section.bring-together-exercises [data-type="exercise"]'), count-of-type('section.free-response [data-type="exercise"]'))); }
+    [data-type="chapter"] section.free-response [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.free-response [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -435,28 +470,36 @@
       tag-name-set: "a";
       attrs-add: "href" "#" parent-context(attr(id)); }
   [data-type="chapter"]:has(section.free-response)::after(6) {
-    /* Title */ }
+    /* Title */
+    /* Is sectionSeparated */ }
     [data-type="chapter"]:has(section.free-response)::after(6)::before {
+      tag-name-set: "h2";
       content: "Homework"; }
-      [data-type="chapter"]:has(section.free-response)::after(6)::before::before {
-        class-add: "number";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
     [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response) {
       class-add: "eoc-section";
-      content: move-here("section.free-response"); }
+      content: move-here('section.free-response > *:not([data-type="title"])'); }
       [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"])::before {
+        tag-name-set: "h3";
         class-add: "section-title";
         content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+        [data-type="chapter"]:has(section.free-response)::after(6)::for-each-descendant(1, '> [data-type="page"]'):has(section.free-response):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
+          /* Section Numbering */
+          tag-name-set: "span";
+          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
 /* End-of-chapter page for section.bring-together-homework */
 [data-type="chapter"] {
   /* Number the exercises for each section */ }
   [data-type="chapter"] section.bring-together-homework {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.bring-together-homework [data-type="exercise"]::before,
     [data-type="chapter"] section.bring-together-homework [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"], section.bring-together-exercises [data-type="exercise"], section.free-response [data-type="exercise"]'), count-of-type('section.bring-together-homework [data-type="exercise"]'))); }
+    [data-type="chapter"] section.bring-together-homework [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.bring-together-homework [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -465,22 +508,25 @@
       attrs-add: "href" "#" parent-context(attr(id)); }
   [data-type="chapter"]:has(section.bring-together-homework)::after(7) {
     /* Title */
-    content: ancestor-context('[data-type="chapter"]', move-here("section.bring-together-homework")); }
+    /* Not sectionSeparated */
+    content: ancestor-context('[data-type="chapter"]', move-here('section.bring-together-homework > *:not([data-type="title"])')); }
     [data-type="chapter"]:has(section.bring-together-homework)::after(7)::before {
+      tag-name-set: "h2";
       content: "Bringing It Together: Homework"; }
-      [data-type="chapter"]:has(section.bring-together-homework)::after(7)::before::before {
-        class-add: "number";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
 /* End-of-chapter page for section.references */
 [data-type="chapter"] {
   /* Number the exercises for each section */ }
   [data-type="chapter"] section.references {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.references [data-type="exercise"]::before,
     [data-type="chapter"] section.references [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"], section.bring-together-exercises [data-type="exercise"], section.free-response [data-type="exercise"], section.bring-together-homework [data-type="exercise"]'), count-of-type('section.references [data-type="exercise"]'))); }
+    [data-type="chapter"] section.references [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.references [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -488,28 +534,36 @@
       tag-name-set: "a";
       attrs-add: "href" "#" parent-context(attr(id)); }
   [data-type="chapter"]:has(section.references)::after(8) {
-    /* Title */ }
+    /* Title */
+    /* Is sectionSeparated */ }
     [data-type="chapter"]:has(section.references)::after(8)::before {
+      tag-name-set: "h2";
       content: "References"; }
-      [data-type="chapter"]:has(section.references)::after(8)::before::before {
-        class-add: "number";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
     [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references) {
       class-add: "eoc-section";
-      content: move-here("section.references"); }
+      content: move-here('section.references > *:not([data-type="title"])'); }
       [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"])::before {
+        tag-name-set: "h3";
         class-add: "section-title";
         content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+        [data-type="chapter"]:has(section.references)::after(8)::for-each-descendant(1, '> [data-type="page"]'):has(section.references):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
+          /* Section Numbering */
+          tag-name-set: "span";
+          content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
 /* End-of-chapter page for section.solutions */
 [data-type="chapter"] {
   /* Number the exercises for each section */ }
   [data-type="chapter"] section.solutions {
+    /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+    display: none;
     /* Make links from exercise to solution and from solution to exercise */ }
     [data-type="chapter"] section.solutions [data-type="exercise"]::before,
     [data-type="chapter"] section.solutions [data-type="exercise"] [data-type="solution"]::before {
-      tag-name-set: "strong";
       content: ancestor-context('[data-type="chapter"]', add(count-all-of-type('section.glossary [data-type="exercise"], section.summary [data-type="exercise"], section.formula-review [data-type="exercise"], section.practice [data-type="exercise"], section.bring-together-exercises [data-type="exercise"], section.free-response [data-type="exercise"], section.bring-together-homework [data-type="exercise"], section.references [data-type="exercise"]'), count-of-type('section.solutions [data-type="exercise"]'))); }
+    [data-type="chapter"] section.solutions [data-type="exercise"]::before {
+      /* Make the number for an exercise without solution bold */
+      tag-name-set: "strong"; }
     [data-type="chapter"] section.solutions [data-type="exercise"]:has([data-type="solution"])::before {
       tag-name-set: "a";
       attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id)); }
@@ -518,19 +572,27 @@
       attrs-add: "href" "#" parent-context(attr(id)); }
   [data-type="chapter"]:has(section.solutions)::after(9) {
     /* Title */
-    content: ancestor-context('[data-type="chapter"]', move-here("section.solutions")); }
+    /* Not sectionSeparated */
+    content: ancestor-context('[data-type="chapter"]', move-here('section.solutions > *:not([data-type="title"])')); }
     [data-type="chapter"]:has(section.solutions)::after(9)::before {
+      tag-name-set: "h2";
       content: "Solutions"; }
-      [data-type="chapter"]:has(section.solutions)::after(9)::before::before {
-        class-add: "number";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
-[data-type="chapter"] > [data-type="document-title"]::before {
-  tag-name-set: "span";
-  content: ancestor-context("body", count-of-type('[data-type="chapter"]')) ". "; }
-[data-type="chapter"] [data-type="page"] > [data-type="metadata"] > [data-type="document-title"]::before {
-  tag-name-set: "span";
-  content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
+[data-type="chapter"] {
+  /* Numbers on chapters and sections */
+  /* Discard Page metadata but keep the title (and add its number) */ }
+  [data-type="chapter"] > [data-type="document-title"]::before {
+    tag-name-set: "span";
+    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) ". "; }
+  [data-type="chapter"] [data-type="page"] > [data-type="metadata"] {
+    /* TODO: Move this to an attribution section at the end of the book */
+    display: none; }
+  [data-type="chapter"] [data-type="page"]::before {
+    tag-name-set: "h2";
+    content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+    [data-type="chapter"] [data-type="page"]::before::before {
+      tag-name-set: "span";
+      content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) " "; }
 
 body::after(1)::before {
   tag-name-set: "h1";

@@ -29,6 +29,7 @@ $exerciseSolutionSelectorAccumulator: ();
   // $moveSolutionsTo: map-get($item, moveSolutionsTo);
 
   $selector: "section.#{$source}";
+  $selectorChildren: '#{$selector} > *:not([data-type="title"])'; // For moving, we want to move all the children in the collated section
   $exerciseSelector: '#{$selector} [data-type="exercise"]';
   $selectorsToAddForCounting: $selectorsToAddForCountingAccumulator;
   $selectorsToAddForCountingAccumulator: append($selectorsToAddForCountingAccumulator, $exerciseSelector, comma);
@@ -43,6 +44,9 @@ $exerciseSolutionSelectorAccumulator: ();
 
     /* Number the exercises for each section */
     #{$selector} {
+      /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+      display: none;
+
       // Number the Solutions and exercises the same way
       // TODO: sass does not show sourcemap info when selectors have a comma GRRRRR, hence copy-pasta
       [data-type="exercise"]::before,
@@ -67,7 +71,6 @@ $exerciseSolutionSelectorAccumulator: ();
         tag-name-set: "a";
         attrs-add: "href" "#" parent-context(attr(id));
       }
-
 
     }
 
@@ -118,26 +121,27 @@ $exerciseSolutionSelectorAccumulator: ();
         &::after(#{$index}) {
           /* Title */
           &::before {
-            &::before {
-              class-add: "number";
-              @include sectionNumber();
-            }
+            tag-name-set: "h2";
             content: $name;
           }
 
           // add a section separator
           @if $sectionSeparated {
-            // Note: Can't use `>` below because the HTML is mangled because of self-closing elements
+            /* Is sectionSeparated */
             &::for-each-descendant(1, '> [data-type="page"]') {
               &:has(#{$selector}) {
                 &:has(> [data-type="metadata"] > [data-type="document-title"]) {
                   &::before {
+                    tag-name-set: "h3";
                     class-add: "section-title";
-                    // Note: Can't use `>` below because the HTML is mangled because of self-closing elements
                     content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+                    &::before {
+                      /* Section Numbering */
+                      tag-name-set: "span";
+                      content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '.' ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]')) ' ';
+                    }
                   }
                 }
-                // // Note: The HTML is currently pretty mangled. This message just shows how much
                 // &:not(:has(> [data-type="metadata"] > [data-type="document-title"])) {
                 //   &::before {
                 //     class-add: "section-title";
@@ -146,12 +150,13 @@ $exerciseSolutionSelectorAccumulator: ();
                 // }
                 class-add: "eoc-section";
 
-                content: move-here($selector);
+                content: move-here($selectorChildren);
               }
             }
 
           } @else {
-            content: ancestor-context('[data-type="chapter"]', move-here($selector));
+            /* Not sectionSeparated */
+            content: ancestor-context('[data-type="chapter"]', move-here($selectorChildren));
           }
           // x-log: "INFO: Generating end-of-chapter page for .#{$source} for chapter " ancestor-context('body', count-of-type('[data-type="chapter"]'));
         }
@@ -165,17 +170,29 @@ $exerciseSolutionSelectorAccumulator: ();
 }
 
 
-// Numbers on chapters and sections
 [data-type="chapter"] {
 
+  /* Numbers on chapters and sections */
   > [data-type="document-title"]::before {
     tag-name-set: "span";
     content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
   }
 
-  [data-type="page"] > [data-type="metadata"] > [data-type="document-title"]::before {
-    tag-name-set: "span";
-    @include sectionNumber();
+  /* Discard Page metadata but keep the title (and add its number) */
+  [data-type="page"] {
+    > [data-type="metadata"] {
+      /* TODO: Move this to an attribution section at the end of the book */
+      display: none;
+    }
+    &::before {
+      tag-name-set: "h2";
+      content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+
+      &::before {
+        tag-name-set: "span";
+        @include sectionNumber();
+      }
+    }
   }
 }
 
