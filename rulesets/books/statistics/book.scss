@@ -120,42 +120,47 @@ $exerciseSolutionSelectorAccumulator: ();
     }
 
     @if $isGlossary {
-      /* Discard the old section-level glossary element */
-      [data-type="glossary"] {
-        display: none;
-      }
-      &::after(#{$index}) {
-        &::before {
-          tag-name-set: "h2";
-          content: $name;
+      &:has([data-type="glossary"] > dl > dt) {
+        /* Only generate a glossary if there are terms in this chapter */
+        /* Discard the old section-level glossary element */
+        [data-type="glossary"] {
+          display: none;
         }
+        &::after(#{$index}) {
+          &::before {
+            tag-name-set: "h2";
+            content: $name;
+          }
 
-        // TODO: Make this a <dl> and make it sorted
-        &::after {
-          tag-name-set: "ul";
+          // TODO: Make this a <dl> and make it sorted
+          &::after {
+            tag-name-set: "ul";
 
-          &::for-each-descendant(1, '[data-type="glossary"] > dl > dt') {
-            tag-name-set: "li";
+            &::for-each-descendant(1, '[data-type="glossary"] > dl > dt') {
+              tag-name-set: "li";
 
-            // Add the term
-            &::after(1) {
-              tag-name-set: "strong";
-              class-add: "term";
-              // TODO: use contents() instead of text-contents()
-              content: text-contents();
-            }
-            &::after(2) {
-              tag-name-set: "span";
-              class-add: "separator";
-              content: ": ";
-            }
-            &::after(3) {
-              class-add: "definition";
-              // TODO: use contents() instead of text-contents()
-              content: next-sibling-context('dd:first', text-contents());
+              // Add the term
+              &::after(1) {
+                tag-name-set: "strong";
+                class-add: "term";
+                // TODO: use contents() instead of text-contents()
+                content: text-contents();
+              }
+              &::after(2) {
+                tag-name-set: "span";
+                class-add: "separator";
+                content: ": ";
+              }
+              &::after(3) {
+                class-add: "definition";
+                // TODO: use contents() instead of text-contents()
+                content: next-sibling-context('dd:first', text-contents());
+              }
             }
           }
         }
+
+
       }
 
     } @else {
@@ -225,7 +230,7 @@ $exerciseSolutionSelectorAccumulator: ();
     }
     /* The following are hacks for the styleguide since they are missing metadata */
     &:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])) {
-      x-log: "Probably generating a styleguide so there is no metadata element";
+      // x-log: "Probably generating a styleguide so there is no metadata element";
       &:has(> [data-type="document-title"]) {
         &::before {
           tag-name-set: "h2";
@@ -250,31 +255,34 @@ $exerciseSolutionSelectorAccumulator: ();
   }
 }
 
-body::after(1) {
-  &::before {
-    tag-name-set: "h1";
-    content: "Answer Key";
-  }
-  &::for-each-descendant(1, '[data-type="chapter"]'):has(#{$exerciseSolutionSelectorAccumulator}) {
-    /* Chapter title */
-    &:has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])) { /* This guard is just for the styleguide */
+body {
+  &:has([data-type="chapter"]:has(#{$exerciseSolutionSelectorAccumulator})) {
+    &::after(1) {
       &::before {
-        &::before {
-          content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
-          // tag-name-set: "span";
-          // Link to the introduction module (TODO: when subcollections have id's then this will not be necessary)
-          tag-name-set: "a";
-          attrs-add: "href" "#" descendant-context('[data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])', attr(id));
-        }
-        tag-name-set: "h2";
-        content: descendant-context('> [data-type="document-title"]', text-contents());
+        tag-name-set: "h1";
+        content: "Answer Key";
       }
-      /* Chapter Answers */
-      content: move-here('#{$exerciseSolutionSelectorAccumulator}');
+      &::for-each-descendant(1, '[data-type="chapter"]'):has(#{$exerciseSolutionSelectorAccumulator}) {
+        /* Chapter title */
+        &:has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])) { /* This guard is just for the styleguide */
+          &::before {
+            &::before {
+              content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
+              // tag-name-set: "span";
+              // Link to the introduction module (TODO: when subcollections have id's then this will not be necessary)
+              tag-name-set: "a";
+              attrs-add: "href" "#" descendant-context('[data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])', attr(id));
+            }
+            tag-name-set: "h2";
+            content: descendant-context('> [data-type="document-title"]', text-contents());
+          }
+          /* Chapter Answers */
+          content: move-here('#{$exerciseSolutionSelectorAccumulator}');
+        }
+      }
     }
   }
 }
-
 /* Discard all processing instructions */
 [data-type="page"] {
   cnx-pi {
