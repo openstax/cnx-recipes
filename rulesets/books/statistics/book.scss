@@ -217,17 +217,29 @@ $exerciseSolutionSelectorAccumulator: ();
       /* TODO: Move this to an attribution section at the end of the book */
       display: none;
     }
-    &:has(> [data-type="metadata"] > [data-type="document-title"]) {
-      &::before {
-        tag-name-set: "h2";
-        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
-
+    &:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+      &:has(> [data-type="metadata"] > [data-type="document-title"]) {
         &::before {
-          tag-name-set: "span";
-          @include sectionNumber();
+          tag-name-set: "h2";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+
+          &::before {
+            tag-name-set: "span";
+            @include sectionNumber();
+          }
         }
       }
     }
+    &:has(cnx-pi[data-type="cnx.flag.introduction"]) {
+      &:has(> [data-type="metadata"] > [data-type="document-title"]) {
+        &::before {
+          /* Label the Introduction but do not add a number */
+          tag-name-set: "h2";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+        }
+      }
+    }
+
     /* The following are hacks for the styleguide since they are missing metadata */
     &:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])) {
       // x-log: "Probably generating a styleguide so there is no metadata element";

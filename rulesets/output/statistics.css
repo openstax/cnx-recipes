@@ -636,12 +636,16 @@
     [data-type="chapter"] [data-type="page"] > [data-type="metadata"] {
       /* TODO: Move this to an attribution section at the end of the book */
       display: none; }
-    [data-type="chapter"] [data-type="page"]:has(> [data-type="metadata"] > [data-type="document-title"])::before {
+    [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])):has(> [data-type="metadata"] > [data-type="document-title"])::before {
       tag-name-set: "h2";
       content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
-      [data-type="chapter"] [data-type="page"]:has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
+      [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])):has(> [data-type="metadata"] > [data-type="document-title"])::before::before {
         tag-name-set: "span";
         content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
+    [data-type="chapter"] [data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"]):has(> [data-type="metadata"] > [data-type="document-title"])::before {
+      /* Label the Introduction but do not add a number */
+      tag-name-set: "h2";
+      content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
     [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])):has(> [data-type="document-title"])::before {
       tag-name-set: "h2";
       content: descendant-context('> [data-type="document-title"]', text-contents()); }
