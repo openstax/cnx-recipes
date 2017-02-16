@@ -3,7 +3,7 @@
 ==========================================================*/
 $sectionSummaryClass: "summary";
 //Make pages
-$pageKeyTerms               : ( name: "Glossary", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
+$pageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
 
 /*
   Section Summary
@@ -15,7 +15,7 @@ $pageKeyTerms               : ( name: "Glossary", source: "glossary", isGlossary
 
   Style guide: book.composite.summary
 */
-$pageSummary                : ( name: "Section Summary", source: "#{$sectionSummaryClass}", sectionSeparated: true );
+$pageSummary                : ( name: "Section Summary", source: "#{$sectionSummaryClass}", sectionSeparated: false );
 
 /*
   Key Equations
@@ -32,7 +32,7 @@ $pageSummary                : ( name: "Section Summary", source: "#{$sectionSumm
 
   Style guide: book.composite.key-equations
 */
-$pageKeyEquations           : ( name: "Key Equations", source: "key-equations", sectionSeparated: true );
+$pageKeyEquations           : ( name: "Key Equations", source: "key-equations", sectionSeparated: false );
 
 /*
   Concept Items
@@ -44,7 +44,7 @@ $pageKeyEquations           : ( name: "Key Equations", source: "key-equations", 
   Style guide: book.composite.concept
 */
 
-$pageConceptItems           : ( name: "Concept Items", source: "concept");
+$pageConceptItems           : ( name: "Concept Items", source: "concept", sectionSeparated: true );
 
 /*
   Critical Thinking Items
@@ -55,7 +55,7 @@ $pageConceptItems           : ( name: "Concept Items", source: "concept");
 
   Style guide: book.composite.critical-thinking
 */
-$pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critical-thinking" );
+$pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critical-thinking", sectionSeparated: true );
 
 /*
   Problems
@@ -66,7 +66,7 @@ $pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critic
 
   Style guide: book.composite.problems
 */
-$pageProblems               : ( name: "Problems", source: "ost-chapter-review.problem");
+$pageProblems               : ( name: "Problems", source: "ost-chapter-review.problem", sectionSeparated: true );
 
 /*
   Performance Task
@@ -77,7 +77,7 @@ $pageProblems               : ( name: "Problems", source: "ost-chapter-review.pr
 
   Style guide: book.composite.performance
 */
-$pagePerformance            : ( name: "Performance Task", source: "performance" );
+$pagePerformance            : ( name: "Performance Task", source: "performance", sectionSeparated: true );
 
 /*
   Multiple Choice
@@ -88,7 +88,7 @@ $pagePerformance            : ( name: "Performance Task", source: "performance" 
 
   Style guide: book.composite.multiplechoice
 */
-$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice");
+$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice", sectionSeparated: true);
 
 /*
   Short Answer
@@ -99,7 +99,7 @@ $pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choic
 
   Style guide: book.composite.shortanswer
 */
-$pageShortAnswer            : ( name: "Short Answer", source: "short-answer" );
+$pageShortAnswer            : ( name: "Short Answer", source: "short-answer", sectionSeparated: true );
 
 /*
   Extended Response
@@ -110,7 +110,7 @@ $pageShortAnswer            : ( name: "Short Answer", source: "short-answer" );
 
   Style guide: book.composite.extendedresponse
 */
-$pageExtendedResponse        : ( name: "Extended Response", source: "extended-response" );
+$pageExtendedResponse        : ( name: "Extended Response", source: "extended-response", sectionSeparated: true );
 
 $pageIndex                   : ( name: "Index", source: "index", isIndex: true );
 
@@ -119,8 +119,8 @@ $pageIndex                   : ( name: "Index", source: "index", isIndex: true )
   Chapter Review
 
   These should be collated at the end of a chapter.
-  
-  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task 
+
+  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task
 
   Markup: ./styleguide/book.compoundcomposite.chapterreview.html-baked.html
 
@@ -131,10 +131,10 @@ $compoundReview               : ( $pageConceptItems, $pageCriticalThinking, $pag
 $pageChapterReview            : ( name: "Chapter Review", source: "chapter-review", contains: $compoundReview, EOCcompoundComposite: true );
 
 /*
-  Test Prep 
+  Test Prep
 
   These should be collated at the end of a chapter.
-  
+
   Compound Composite that contains: Test Prep Multiple Choice, Test Prep Short Answer, Test Prep Extended Response
 
   Markup: ./styleguide/book.compoundcomposite.testprep.html-baked.html
@@ -170,8 +170,13 @@ $appendixTitleContent       : ( title-label : "Appendix ", number : counter(appe
 
 $sectionTitleContent        : ( number : counter(chapter) "." counter(section), );
 
-$exerciseTitleContent       : ( divider : "", number : counter(chapter) "." counter(exercise) );
+$exerciseTitleContent       : ( divider : ". ", number : counter(exercise) );
 $equationNumber             : ( number : counter(chapter) "." counter(equation) );
+
+// FIXME: The fields in this list are generated in reverse order for some reason
+$exerciseContentTitleContent: ( number : counter(exerciseMaybeInContent), title-label : "Exercise" );
+$solutionContentTitleContent: null;
+
 
 /*
   Teacher Support  note
@@ -316,7 +321,7 @@ $watchPhysicsNote           : ( label: "Watch Physics", selector: watch-physics,
 
 /*
   Virtual Physics note
-  
+
   Contains a title "Virtual Physics" and wraps the body.
 
   Markup: ./styleguide/page.note.virtual-physics.html-baked.html
@@ -359,19 +364,19 @@ $targetLabels: (
     label       : "Example " counter(chapter) "." counter(example)
   ),
   (
-    selector    : '[data-type="chapter"] :not(table) > table',
+    selector    : '[data-type="chapter"] :not(table) > table:not(.unnumbered)',
     label       : "Table " counter(chapter) "." counter(table)
   ),
   (
-    selector    : '[data-type="chapter"] :not(figure) > figure',
+    selector    : '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',
     label       : "Figure " counter(chapter) "." counter(figure)
   ),
   (
-    selector    : '[data-type="appendix"] :not(table) > table',
+    selector    : '[data-type="appendix"] :not(table) > table:not(.unnumbered)',
     label       : "Table " counter(appendix, upper-alpha) "." counter(table)
   ),
   (
-    selector    : '[data-type="appendix"] :not(figure) > figure',
+    selector    : '[data-type="appendix"] :not(figure) > figure:not(.unnumbered)',
     label       : "Figure " counter(appendix, upper-alpha) "." counter(figure)
   )
 );
