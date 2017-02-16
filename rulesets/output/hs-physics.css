@@ -565,6 +565,21 @@
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
 
+:pass(1) div[class="note"] > div[data-type="title"] {
+  string-set: noteTitle content();
+  move-to: trash; }
+  :pass(1) div[class="note"] > div[data-type="title"]::before {
+    container: span;
+    class: "os-title-label";
+    content: string(noteTitle);
+    move-to: genericNoteLabel; }
+:pass(1) div[class="note"]::after {
+  container: div;
+  content: pending(genericNoteLabel);
+  class: "os-title";
+  move-to: genericNote; }
+:pass(1) div[class="note"]:deferred {
+  content: pending(genericNote) content(); }
 :pass(1) [data-type="note"].os-teacher::before {
   container: span;
   class: "os-title-label";
@@ -750,8 +765,6 @@
 :pass(1) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
 :pass(1) div.missing-exercise {
-  move-to: trash; }
-:pass(1) [data-type="solution"] {
   move-to: trash; }
 :pass(1) .key-equations table:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1358,6 +1371,8 @@
   container: h4; }
 
 :pass(7) .os-index-link-separator:last-child {
+  move-to: trash; }
+:pass(7) .os-eoc [data-type="solution"] {
   move-to: trash; }
 :pass(7) [data-type="composite-page"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
