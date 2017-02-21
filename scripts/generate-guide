@@ -4,7 +4,7 @@ rulesetName=$1
 bakedOrPreparedSuffix=$2 # Overridden when running ./diff-guide-prepare
 
 sassDir='./rulesets/'
-styleguideDir='./styleguide/'
+styleguideDir="./styleguide/${rulesetName}"
 sassFile="${sassDir}/books/${rulesetName}/book.scss"
 cssFile="${styleguideDir}/guide.css"
 bookCssFile="${sassDir}/output/${rulesetName}.css"
@@ -37,7 +37,7 @@ fi
 >&2 echo "==> Compiling the guide.scss file for ${rulesetName}"
 if [ ! -e ${styleguideDir} ]
 then
-  mkdir ${styleguideDir} || exit 1
+  mkdir -p ${styleguideDir} || exit 1
 fi
 bundle exec sass ${sassFile} ${cssFile} || exit 1
 bundle exec sass ${sassFile} ${bookCssFile} || exit 1
