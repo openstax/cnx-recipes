@@ -108,6 +108,13 @@ diff ./data/statistics-prepared.html ./data/statistics-baked.html > foo.diff
 
 **Note:** You can specify `--all` instead of `statistics` to diff all the books (after fetching them earlier)
 
+### Finding differences in the styleguide
+
+Instead of diffing the whole book, you can find differences in the styleguide for a ruleset (faster and easier to find errors because the HTML files are much smaller than an entire book).
+
+To do this, just replace every occurrence of `./scripts/diff-book ${BOOK_NAME}` (and `./scripts/diff-book-prepare`) with `diff-guide ${RULESET_NAME}`.
+
+
 ## Experimental
 
 To update the Documentation in the gh-pages branch:
