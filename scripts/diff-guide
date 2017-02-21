@@ -1,0 +1,76 @@
+#!/bin/bash
+
+
+arg1=$1
+debugFlag=$2
+
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+# Check command line args
+
+./scripts/diff-guide-prepare "${arg1}" "baked"
+
+
+if [[ ! "${arg1}" == "--all" ]]
+then
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for rulesetName in "${RULESET_NAMES[@]}"
+  do
+
+    if [[ "${arg1}" = "${rulesetName}" ]]
+    then
+      RULESET_NAMES=("${rulesetName}")
+      foundConfig=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${foundConfig}" ]]
+  then
+    >&2 echo "ERROR: Could not find Book info for ruleset named ${arg1}"
+    >&2 echo "Valid books are (from ./books.txt):"
+    for rulesetName in "${RULESET_NAMES[@]}"
+    do
+      >&2 echo "${rulesetName}"
+    done
+    exit 1
+  fi
+fi
+
+diffFound=0
+for rulesetName in "${RULESET_NAMES[@]}"
+do
+
+  >&2 echo "==> Checking for differences in '${rulesetName}'"
+
+  for bakedFile in $(find ./tmp/${rulesetName} -name "*-baked.html")
+  do
+
+    preparedFile="${bakedFile/-baked/-prepared}"
+    if [[ -s "${preparedFile}" ]]
+    then
+
+      diffCount=$(diff ${preparedFile} ${bakedFile} | wc -l)
+
+      if [[ 0 -ne "${diffCount}" ]]
+      then
+        >&2 echo "ERROR: There were ${diffCount} differences found. To see all of them run the following:"
+        >&2 echo "diff ${preparedFile} ${bakedFile}"
+        diffFound=1
+      fi
+
+    else
+      >&2 echo "FAILING ${rulesetName} because the prepared file '${preparedFile}' was not found."
+      >&2 echo "Did you run './scripts/diff-guide-prepare ${rulesetName}' earlier?"
+      exit 1
+    fi
+
+  done
+done
+
+if [[ ! "${diffFound}" -eq "0" ]]
+then
+  >&2 echo "ERROR: There were differences found so failing"
+  exit 1
+fi
