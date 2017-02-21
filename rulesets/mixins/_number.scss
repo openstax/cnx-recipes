@@ -40,6 +40,24 @@
   }
 }
 
+/// This has to run before number_numberEOCExercises because its selector is more general
+/// @group number
+@mixin number_numberContentExercises($exerciseTitleContent, $solutionTitleContent) {
+  [data-type="page"] [data-type="exercise"]:not(.unnumbered) {
+    @if $exerciseTitleContent {
+      [data-type="problem"] {
+        @include utils_title($exerciseTitleContent);
+      }
+    }
+    @if $solutionTitleContent {
+      [data-type="solution"] {
+        @include utils_title($solutionTitleContent);
+      }
+    }
+  }
+}
+
+
 //EOC composite pages must be created before this runs
 @mixin number_numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
   .os-eoc [data-type="exercise"] {
@@ -142,10 +160,10 @@
     @include trashUnnumberedCaption($type, $defaultContainer);
   }
 
-  // /* The :not(#{$type}) is here because of subfigures (I think) */
+ // /* The :not(#{$type}) is here because of subfigures (I think) */
   //[data-type="chapter"],
   //[data-type="chapter"] :not(#{$type}) {
-  //  > {
+//    > {
   //    #{$notAnExceptionSelector} {
 
         // If the figure/table has a caption/title then set a boolean
@@ -160,45 +178,45 @@
       // see https://github.com/Connexions/cnx-easybake/issues/48
       //
       // TODO: Maybe these selectors can be simplified to just always call setCaptionsHelper
-    //  @if $exceptionsSelector != "" {
+  //    @if $exceptionsSelector != "" {
     //    #{$exceptionsSelector} {
           // @include utils_title($noTitleContent, bCaption);
-    //      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
-    //  }
-    //  }
-    //  .unnumbered#{$notAnExceptionSelector} {
-    //    @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
-    //  }
+  //        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+  //      }
+  //    }
+//      .unnumbered#{$notAnExceptionSelector} {
+  //      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+  //    }
   //  }
   //  @include trashUnnumberedCaption($type, $defaultContainer);
     // TODO: uncomment me but it will cause minor regressions in existing books: @include trashEmptyCaption($type, $defaultContainer);
-  //}
+//  }
 
-  //.appendix,
-  //.appendix :not(#{$type}) {
-    //> {
-    //  #{$notAnExceptionSelector} {
-    //    @include utils_title($labelingAp, bCaption);
-    //    @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
-    //  }
+//  .appendix,
+//  .appendix :not(#{$type}) {
+//    > {
+//      #{$notAnExceptionSelector} {
+//        @include utils_title($labelingAp, bCaption);
+//        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+//      }
       // A bug in easybake does not allow 2 selectors with `::outside` to match an element.
       // in hs-physics the `.key-terms` table is also marked as `.unnumbered`
       // see https://github.com/Connexions/cnx-easybake/issues/48
       //
       // TODO: Maybe these selectors can be simplified to just always call setCaptionsHelper
-    //  @if $exceptionsSelector != "" {
-    //    #{$exceptionsSelector} {
+//      @if $exceptionsSelector != "" {
+//        #{$exceptionsSelector} {
           // @include utils_title($noTitleContent, bCaption);
-    //      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
-    //    }
-    //  }
-    //  .unnumbered#{$notAnExceptionSelector} {
-    //    @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
-    //  }
+//          @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+//        }
+//      }
+//      .unnumbered#{$notAnExceptionSelector} {
+//        @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+  //    }
   //  }
-    //@include trashUnnumberedCaption($type, $defaultContainer);
+//    @include trashUnnumberedCaption($type, $defaultContainer);
     // TODO: uncomment me but it will cause minor regressions in existing books: @include trashEmptyCaption($type, $defaultContainer);
-  //}
+//  }
 }
 
 
