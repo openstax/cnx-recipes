@@ -272,17 +272,29 @@
           }
           @if ($sectionSeparated) {
             content: nodes(sectionHeaderNode) content();
-            @if ($chapterSeparated) {
+          }
+          @if ($chapterSeparated) {
               move-to: #{$source}-GETCHAPTER;
             } @else {
               move-to: #{$source}-TOCOMPOSITE;
             }
-          }
         }
         @if ($chapterSeparated) {
+          >[data-type="document-title"] {
+            .os-text {
+              node-set: chapterTitle;
+            }
+            &::after {
+              container: h2;
+              data-type: document-title;
+              content: nodes(chapterTitle);
+              move-to: chapterTitleHeader;
+            }
+          }
           &::after {
             class: "os-#{$source}-chapter-area";
-            content: pending(#{$source}-GETCHAPTER);
+            content: pending(chapterTitleHeader) pending(#{$source}-GETCHAPTER);
+            move-to: #{$source}-TOCOMPOSITE;
             @if ($chapterPages) {
               data-type: "composite-page";
             }
@@ -309,11 +321,18 @@
   body {
     $source: map-get($page, source);
     $isIndex: map-get($page, isIndex);
-
+    $chapterSeparated: map-get($page, chapterSeparated);
     // Validate
     @include validate_type($source, string);
     @include validate_typeOptional($isIndex, bool);
 
+       @if ($chapterSeparated) {
+        body::after {
+          class: "os-eob os-#{$source}-container";
+          data-type: "composite-page";
+          content: pending(#{$source}-TOCOMPOSITE);
+        }
+      }
     &::after {
       container: div;
       content: pending(#{$source}-TOCOMPOSITE);
