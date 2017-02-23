@@ -85,7 +85,7 @@ $exerciseSolutionSelectorAccumulator: ();
 
 
   /* End-of-chapter page for #{$selector} */
-  [data-type="chapter"] {
+  body > [data-type="chapter"] {
 
     /* Number the exercises for each section */
     #{$selector} {
@@ -203,7 +203,7 @@ $exerciseSolutionSelectorAccumulator: ();
 }
 
 
-[data-type="chapter"] {
+body > [data-type="chapter"] {
 
   /* Numbers on chapters and sections */
   > [data-type="document-title"]::before {
@@ -268,7 +268,7 @@ $exerciseSolutionSelectorAccumulator: ();
 }
 
 body {
-  &:has([data-type="chapter"]:has(#{$exerciseSolutionSelectorAccumulator})) {
+  &:has(> [data-type="chapter"]:has(#{$exerciseSolutionSelectorAccumulator})) {
     &::after(1) {
       &::before {
         tag-name-set: "h1";
@@ -282,8 +282,8 @@ body {
               content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
               // tag-name-set: "span";
               // Link to the introduction module (TODO: when subcollections have id's then this will not be necessary)
-              tag-name-set: "a";
-              attrs-add: "href" "#" descendant-context('[data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])', attr(id));
+              // tag-name-set: "a";
+              // attrs-add: "href" "#" descendant-context('[data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])', attr(id));
             }
             tag-name-set: "h2";
             content: descendant-context('> [data-type="document-title"]', text-contents());
@@ -296,7 +296,7 @@ body {
   }
 }
 /* Discard all processing instructions */
-[data-type="page"] {
+/* body > [data-type="chapter"] > */ [data-type="page"] {
   cnx-pi {
     display: none;
   }
