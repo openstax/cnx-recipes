@@ -78,6 +78,7 @@
     @if (not $compoundComposite) {
       $sectionSeparated: map-get($page, sectionSeparated);
       $isGlossary: map-get($page, isGlossary);
+      $keyName: if($isGlossary, '<glossary>', '.#{$source}');
       $sourceSelector: if($isGlossary, 'div[data-type="#{$source}"] dl', 'section.#{$source}');
       @if ($isGlossary) {
         div[data-type="#{$source}"] {
@@ -101,7 +102,7 @@
         content: pending(#{$source}-TOCOMPOSITE);
         class: "os-eoc os-#{$source}-container";
         data-type: "composite-page";
-        data-uuid-key: "#{$source}";
+        data-uuid-key: "#{$keyName}";
         @if ($sortBy != null) {
           sort-by: #{$sortBy}, nocase;
         }
@@ -191,12 +192,15 @@
     $name: map-get($compositePage, name);
     $source: map-get($compositePage, source);
     $allComposites: map-get($compositePage, contains);
+    $isGlossary: map-get($compositePage, isGlossary);
+    $keyName: if($isGlossary, '<glossary>', '.#{$source}');
+
     @include _processComposites($allComposites);
     [data-type="chapter"] {
       &::after {
         class: "os-eoc os-#{$source}-container";
         data-type: composite-page;
-        data-uuid-key: "#{$source}";
+        data-uuid-key: "#{$keyName}";
         content: pending(composite-DESTINATION);
 
       }
@@ -261,6 +265,8 @@
       $chapterSeparated: map-get($page, chapterSeparated);
       $sectionSeparated: map-get($page, sectionSeparated);
       $chapterPages: map-get($page, chapterPages);
+      $isGlossary: map-get($page, isGlossary);
+      $keyName: if($isGlossary, '<glossary>', '.#{$source}');
 
       // Validate
       @include validate_type($chapterSeparated, bool);
@@ -287,7 +293,7 @@
             content: pending(#{$source}-GETCHAPTER);
             @if ($chapterPages) {
               data-type: "composite-page";
-              data-uuid-key: "#{$source}";
+              data-uuid-key: "#{$keyName}";
             }
           }
         }
@@ -312,6 +318,7 @@
   body {
     $source: map-get($page, source);
     $isIndex: map-get($page, isIndex);
+    $keyName: if($isIndex, '<index>', '.#{$source}');
 
     // Validate
     @include validate_type($source, string);
@@ -322,7 +329,7 @@
       content: pending(#{$source}-TOCOMPOSITE);
       class: "os-eob os-#{$source}-container";
       data-type: "composite-page";
-      data-uuid-key: "#{$source}";
+      data-uuid-key: "#{$keyName}";
       @if ($isIndex) {
         group-by: span, "span::attr(group-by)", nocase;
       }
@@ -406,7 +413,7 @@
       content: pending(#{$solutionSource}-TOCOMPOSITE);
       class: "os-eoc os-#{$solutionSource}-container";
       data-type: "composite-page";
-      data-uuid-key: "chapter-solutions";  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+      data-uuid-key: "solutions";
     }
   }
 }
@@ -508,7 +515,7 @@
       content: pending(#{$solutionSource}-TOCOMPOSITE);
       class: "os-eob os-#{$solutionSource}-container";
       data-type: "composite-page";
-      data-uuid-key: "#{$solutionSource}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+      data-uuid-key: ".#{$solutionSource}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
     }
   }
 }
