@@ -123,6 +123,31 @@
 /// @arg {map} $noteContent - map containing `$selector`, `$label` and `$isBodyWrapped`
 /// @group modify
 
+/// Modify the title of any container based on data-type and/or class. This is useful for oddball elements such as exercises used as notes.
+@mixin modify_anyContainerTitle ($dataType, $selector) {
+  div#{$dataType}#{$selector}  {
+      >div[data-type="title"] {
+        string-set: containerTitle content();
+       &::before {
+         container: span;
+         class: "os-title-label";
+         content: string(containerTitle);
+         move-to: anyContainerLabel;
+     }
+     move-to: trash;
+    }
+    &::after {
+      container: div;
+      content: pending(anyContainerLabel);
+      class: "os-title";
+      move-to: anyContainer;
+     }
+     &:deferred {
+      content: pending(anyContainer) content();
+     }
+  }
+}
+
 /// Modify GenericNote: Many notes have  different title, the only way to keep those was to pass noteTitle to the title. However, the titles are inconsistent. It might be better to define the title via variables like any other notes and fix the content.
 
 @mixin modify_GenericNote() {
@@ -194,7 +219,8 @@
   [data-type="chapter"] {
     [data-type="page"] {
       [data-type="note"],
-      [data-type="example"] {
+      [data-type="example"],
+      [data-type="exercise"] {
         > .os-title {
           container: h3;
         }
