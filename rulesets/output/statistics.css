@@ -266,7 +266,25 @@
   STATISTICS PAGES
 ==========================================================*/
 /*
-  Practice Problems
+  Chapter Review page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.review.html-baked.html
+
+  Style guide: book.composite.review
+*/
+/*
+Formula Review page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.formulareview.html-baked.html
+
+  Style guide: book.composite.formulareview
+*/
+/*
+  Practice Problems page
 
   These should be collated at the end of a chapter.
 
@@ -274,9 +292,99 @@
 
   Style guide: book.2-composite.practice
 */
+/*
+  Bringing It Together: Exercises page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.BITExercises.html-baked.html
+
+  Style guide: book.composite.BITExercises
+*/
+/*
+  Homework page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.homework.html-baked.html
+
+  Style guide: book.composite.homework
+*/
+/*
+  Bringing It Together: Homework page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.BITHomework.html-baked.html
+
+  Style guide: book.composite.BITHomework
+*/
+/*
+  References page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.references.html-baked.html
+
+  Style guide: book.composite.references
+*/
+/*
+  Solutions page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.solutions.html-baked.html
+
+  Style guide: book.composite.solutions
+*/
 /*==========================================================
   STATISTICS TITLING CONTENT
 ==========================================================*/
+/*
+  Example
+
+  Contains a title "Example". Titles are numbered. Exercises inside aren't numbered.
+
+  Markup: ./styleguide/page.example.html-baked.html
+
+  Style guide: page.example
+*/
+/*
+  Try It note
+
+  Contains a title "Try It" and the content of the note. Titles are numbered. Exercises inside aren't numbered.
+
+  Markup: ./styleguide/page.note.try.html-baked.html
+
+  Style guide: page.note.try
+*/
+/*
+  Using the TI-83, 83+, 84, 84+ Calculator note
+
+  Contains a title "Using the TI-83, 83+, 84, 84+ Calculator" and the content of the note.
+
+  Markup: ./styleguide/page.note.calculator.html-baked.html
+
+  Style guide: page.note.calculator
+*/
+/*
+  Note
+
+  Contains a title "Note" and the content of the note. This note can be distinguished visually via css
+
+  Markup: ./styleguide/page.note.finger.html-baked.html
+
+  Style guide: page.note.finger
+*/
+/*
+  Stats Lab note
+
+  Contains a title "Stats Lab" and the content of the note.
+
+  Markup: ./styleguide/page.note.lab.html-baked.html
+
+  Style guide: page.note.lab
+*/
 /*
   Collaborative Excerise note
 
@@ -345,27 +453,83 @@
     content: pending(bIframeLink) content(); }
 :pass(0) .try [data-type="solution"] {
   move-to: trash; }
-:pass(0) div[class="note"] > div[data-type="title"] {
+:pass(0) :not([data-type="example"]) > [data-type="exercise"] {
+  string-set: isSolution ""; }
+  :pass(0) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
+    string-set: isSolution " os-hasSolution "; }
+  :pass(0) :not([data-type="example"]) > [data-type="exercise"]::deferred {
+    class: attr(class) string(isSolution, " "); }
+:pass(0) [data-type="note"].calculator::before {
+  container: span;
+  class: "os-title-label";
+  content: "Using the TI-83, 83+, 84, 84+ Calculator";
+  move-to: bNoteLabel; }
+:pass(0) [data-type="note"].calculator::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  move-to: bNoteHeader; }
+:pass(0) [data-type="note"].calculator > div[data-type="title"] {
+  move-to: trash; }
+:pass(0) [data-type="note"].calculator:deferred {
+  content: pending(bNoteHeader) content(); }
+:pass(0) [data-type="note"].finger::before {
+  container: span;
+  class: "os-title-label";
+  content: "Note";
+  move-to: bNoteLabel; }
+:pass(0) [data-type="note"].finger::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  move-to: bNoteHeader; }
+:pass(0) [data-type="note"].finger > div[data-type="title"] {
+  move-to: trash; }
+:pass(0) [data-type="note"].finger:deferred {
+  content: pending(bNoteHeader) content(); }
+:pass(0) [data-type="note"].lab::before {
+  container: span;
+  class: "os-title-label";
+  content: "Stats Lab";
+  move-to: bNoteLabel; }
+:pass(0) [data-type="note"].lab::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  move-to: bNoteHeader; }
+:pass(0) [data-type="note"].lab > div[data-type="title"] {
+  move-to: trash; }
+:pass(0) [data-type="note"].lab:deferred {
+  content: pending(bNoteHeader) content(); }
+:pass(0) [data-type="note"].collab::before {
+  container: span;
+  class: "os-title-label";
+  content: "Collaborative Excerise";
+  move-to: bNoteLabel; }
+:pass(0) [data-type="note"].collab::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  move-to: bNoteHeader; }
+:pass(0) [data-type="note"].collab > div[data-type="title"] {
+  move-to: trash; }
+:pass(0) [data-type="note"].collab:deferred {
+  content: pending(bNoteHeader) content(); }
+:pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
   string-set: noteTitle content();
   move-to: trash; }
-  :pass(0) div[class="note"] > div[data-type="title"]::before {
+  :pass(0) div[data-type="note"][class="note"] > div[data-type="title"]::before {
     container: span;
     class: "os-title-label";
     content: string(noteTitle);
     move-to: genericNoteLabel; }
-:pass(0) div[class="note"]::after {
+:pass(0) div[data-type="note"][class="note"]::after {
   container: div;
   content: pending(genericNoteLabel);
   class: "os-title";
   move-to: genericNote; }
-:pass(0) div[class="note"]:deferred {
+:pass(0) div[data-type="note"][class="note"]:deferred {
   content: pending(genericNote) content(); }
-:pass(0) [data-type="exercise"] {
-  string-set: isSolution ""; }
-  :pass(0) [data-type="exercise"] [data-type="solution"] {
-    string-set: isSolution " os-hasSolution "; }
-  :pass(0) [data-type="exercise"]::deferred {
-    class: attr(class) string(isSolution, " "); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
 
@@ -462,7 +626,7 @@
   move-to: div-TITLECONTAINER; }
 :pass(2) .example [data-type="solution"]::before {
   container: span;
-  content: counter(chapter) "." counter(example);
+  content: counter(chapter) ". " counter(example);
   class: os-number;
   move-to: div-TITLECONTAINER; }
 :pass(2) .example [data-type="solution"]::before {
@@ -491,32 +655,6 @@
   class: "os-title";
   move-to: bNoteHeader; }
 :pass(2) [data-type="note"].try:deferred {
-  content: pending(bNoteHeader) content(); }
-:pass(2) [data-type="note"].calculator::before {
-  container: span;
-  content: "Using the TI-83, 83+, 84, 84+ Calculator";
-  class: os-title-label;
-  move-to: bNoteLabel-calculator; }
-:pass(2) [data-type="note"].calculator > [data-type="title"] {
-  move-to: trash; }
-:pass(2) [data-type="note"].calculator::after {
-  container: div;
-  content: pending(bNoteLabel-calculator);
-  class: "os-title";
-  move-to: bNoteHeader; }
-:pass(2) [data-type="note"].calculator:deferred {
-  content: pending(bNoteHeader) content(); }
-:pass(2) [data-type="note"].collab::before {
-  container: span;
-  class: "os-title-label";
-  content: "Collaborative Excerise";
-  move-to: bNoteLabel; }
-:pass(2) [data-type="note"].collab::before {
-  container: h3;
-  content: pending(bNoteLabel);
-  class: "os-title";
-  move-to: bNoteHeader; }
-:pass(2) [data-type="note"].collab:deferred {
   content: pending(bNoteHeader) content(); }
 :pass(2) body {
   counter-reset: term; }
@@ -713,7 +851,7 @@
       attr-href: "#" string(exerciseId); }
 :pass(4) div[data-type="chapter"] {
   node-set: chapterHeaderNode; }
-:pass(4) [data-type="chapter"] .os-index-chapter-area {
+:pass(4) [data-type="chapter"] .os-chapter-area {
   content: nodes(chapterHeaderNode) content();
   move-to: index-TOCOMPOSITE; }
 
@@ -996,10 +1134,21 @@
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] > .os-title,
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title {
   container: h3; }
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="solution"] .solution-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] .solution-title {
+  container: h4; }
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] .os-note-body > [data-type="title"],
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] .os-note-body > [data-type="title"] {
   class: "os-subtitle";
   container: h4; }
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="note"] > .os-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="note"] > .os-title {
+  class: "os-title";
+  container: h4; }
+:pass(6) [data-type="composite-page"].os-eob > .chapter-area > [data-type="document-title"] {
+  container: h2; }
+:pass(6) [data-type="composite-page"].os-eob > .chapter-area > section > [data-type="document-title"] {
+  container: h3; }
 
 :pass(7) .os-index-link-separator:last-child {
   move-to: trash; }

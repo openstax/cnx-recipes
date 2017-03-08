@@ -267,7 +267,7 @@
   AP PHYSICS PAGES
 ==========================================================*/
 /*
-  Section Review
+  Section Summary
 
   These should be collated at the end of a chapter.
 
@@ -333,26 +333,26 @@ Usage Note: key: class of the containing span, value: text that will go inside s
     class: "os-text"; }
 :pass(0) a.os-interactive-link {
   attr-target: "_blank"; }
-:pass(0) [data-type="exercise"] {
+:pass(0) :not([data-type="example"]) > [data-type="exercise"] {
   string-set: isSolution ""; }
-  :pass(0) [data-type="exercise"] [data-type="solution"] {
+  :pass(0) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
     string-set: isSolution " os-hasSolution "; }
-  :pass(0) [data-type="exercise"]::deferred {
+  :pass(0) :not([data-type="example"]) > [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
-:pass(0) div[class="note"] > div[data-type="title"] {
+:pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
   string-set: noteTitle content();
   move-to: trash; }
-  :pass(0) div[class="note"] > div[data-type="title"]::before {
+  :pass(0) div[data-type="note"][class="note"] > div[data-type="title"]::before {
     container: span;
     class: "os-title-label";
     content: string(noteTitle);
     move-to: genericNoteLabel; }
-:pass(0) div[class="note"]::after {
+:pass(0) div[data-type="note"][class="note"]::after {
   container: div;
   content: pending(genericNoteLabel);
   class: "os-title";
   move-to: genericNote; }
-:pass(0) div[class="note"]:deferred {
+:pass(0) div[data-type="note"][class="note"]:deferred {
   content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
@@ -650,10 +650,10 @@ Usage Note: key: class of the containing span, value: text that will go inside s
       attr-href: "#" string(exerciseId); }
 :pass(4) div[data-type="chapter"] {
   node-set: chapterHeaderNode; }
-:pass(4) [data-type="chapter"] .os-solutions-chapter-area {
+:pass(4) [data-type="chapter"] .os-chapter-area {
   content: nodes(chapterHeaderNode) content();
   move-to: solutions-TOCOMPOSITE; }
-:pass(4) [data-type="chapter"] .os-index-chapter-area {
+:pass(4) [data-type="chapter"] .os-chapter-area {
   content: nodes(chapterHeaderNode) content();
   move-to: index-TOCOMPOSITE; }
 
@@ -674,7 +674,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   content: "Chapter " string(ChapNum);
   move-to: chaptTitleEOB; }
 :pass(5) [data-type="chapter"]::after {
-  class: os-solutions-chapter-area;
+  class: os-chapter-area;
   content: pending(chaptTitleEOB) pending(solutions-GETCHAPTER);
   move-to: solutions-TOCOMPOSITE; }
 :pass(5) body::after {
@@ -684,6 +684,10 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   data-type: "composite-page";
   data-uuid-key: ".solutions";
   /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
+:pass(5) body body::after {
+  class: "os-eob os-solutions-container";
+  data-type: "composite-page";
+  content: pending(solutions-TOCOMPOSITE); }
 :pass(5) body::after {
   container: div;
   content: pending(solutions-TOCOMPOSITE);
@@ -753,7 +757,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   content: pending(h1-TITLECONTAINER); }
 :pass(6) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
   container: span;
-  content: "Section Review";
+  content: "Section Summary";
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 :pass(6) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
@@ -931,10 +935,21 @@ Usage Note: key: class of the containing span, value: text that will go inside s
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] > .os-title,
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title {
   container: h3; }
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="solution"] .solution-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] .solution-title {
+  container: h4; }
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] .os-note-body > [data-type="title"],
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] .os-note-body > [data-type="title"] {
   class: "os-subtitle";
   container: h4; }
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="note"] > .os-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="note"] > .os-title {
+  class: "os-title";
+  container: h4; }
+:pass(6) [data-type="composite-page"].os-eob > .chapter-area > [data-type="document-title"] {
+  container: h2; }
+:pass(6) [data-type="composite-page"].os-eob > .chapter-area > section > [data-type="document-title"] {
+  container: h3; }
 
 :pass(7) .os-index-link-separator:last-child {
   move-to: trash; }

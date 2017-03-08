@@ -406,12 +406,27 @@
     data-type: "alternatives";
     class: "os-has-iframe os-has-link";
     content: pending(bIframeLink) content(); }
-:pass(0) [data-type="exercise"] {
+:pass(0) :not([data-type="example"]) > [data-type="exercise"] {
   string-set: isSolution ""; }
-  :pass(0) [data-type="exercise"] [data-type="solution"] {
+  :pass(0) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
     string-set: isSolution " os-hasSolution "; }
-  :pass(0) [data-type="exercise"]::deferred {
+  :pass(0) :not([data-type="example"]) > [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
+:pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
+  string-set: noteTitle content();
+  move-to: trash; }
+  :pass(0) div[data-type="note"][class="note"] > div[data-type="title"]::before {
+    container: span;
+    class: "os-title-label";
+    content: string(noteTitle);
+    move-to: genericNoteLabel; }
+:pass(0) div[data-type="note"][class="note"]::after {
+  container: div;
+  content: pending(genericNoteLabel);
+  class: "os-title";
+  move-to: genericNote; }
+:pass(0) div[data-type="note"][class="note"]:deferred {
+  content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
 
@@ -425,8 +440,13 @@
   content: pending(bNoteLabel);
   class: "os-title";
   move-to: bNoteHeader; }
+:pass(1) [data-type="note"].art-connection > div[data-type="title"] {
+  class: "os-subtitle";
+  container: h4;
+  move-to: noteSubtitle; }
 :pass(1) [data-type="note"].art-connection::inside {
-  class: "os-note-body"; }
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
 :pass(1) [data-type="note"].art-connection:deferred {
   content: pending(bNoteHeader) content(); }
 :pass(1) [data-type="note"].career::before {
@@ -439,8 +459,13 @@
   content: pending(bNoteLabel);
   class: "os-title";
   move-to: bNoteHeader; }
+:pass(1) [data-type="note"].career > div[data-type="title"] {
+  class: "os-subtitle";
+  container: h4;
+  move-to: noteSubtitle; }
 :pass(1) [data-type="note"].career::inside {
-  class: "os-note-body"; }
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
 :pass(1) [data-type="note"].career:deferred {
   content: pending(bNoteHeader) content(); }
 :pass(1) [data-type="note"].everyday::before {
@@ -453,8 +478,13 @@
   content: pending(bNoteLabel);
   class: "os-title";
   move-to: bNoteHeader; }
+:pass(1) [data-type="note"].everyday > div[data-type="title"] {
+  class: "os-subtitle";
+  container: h4;
+  move-to: noteSubtitle; }
 :pass(1) [data-type="note"].everyday::inside {
-  class: "os-note-body"; }
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
 :pass(1) [data-type="note"].everyday:deferred {
   content: pending(bNoteHeader) content(); }
 :pass(1) [data-type="note"].evolution::before {
@@ -467,8 +497,13 @@
   content: pending(bNoteLabel);
   class: "os-title";
   move-to: bNoteHeader; }
+:pass(1) [data-type="note"].evolution > div[data-type="title"] {
+  class: "os-subtitle";
+  container: h4;
+  move-to: noteSubtitle; }
 :pass(1) [data-type="note"].evolution::inside {
-  class: "os-note-body"; }
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
 :pass(1) [data-type="note"].evolution:deferred {
   content: pending(bNoteHeader) content(); }
 :pass(1) [data-type="note"].experiment::before {
@@ -481,8 +516,13 @@
   content: pending(bNoteLabel);
   class: "os-title";
   move-to: bNoteHeader; }
+:pass(1) [data-type="note"].experiment > div[data-type="title"] {
+  class: "os-subtitle";
+  container: h4;
+  move-to: noteSubtitle; }
 :pass(1) [data-type="note"].experiment::inside {
-  class: "os-note-body"; }
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
 :pass(1) [data-type="note"].experiment:deferred {
   content: pending(bNoteHeader) content(); }
 :pass(1) [data-type="note"].interactive::before {
@@ -495,6 +535,8 @@
   content: pending(bNoteLabel);
   class: "os-title";
   move-to: bNoteHeader; }
+:pass(1) [data-type="note"].interactive > div[data-type="title"] {
+  move-to: trash; }
 :pass(1) [data-type="note"].interactive:deferred {
   content: pending(bNoteHeader) content(); }
 
@@ -706,10 +748,10 @@
       attr-href: "#" string(exerciseId); }
 :pass(4) div[data-type="chapter"] {
   node-set: chapterHeaderNode; }
-:pass(4) [data-type="chapter"] .os-solutions-chapter-area {
+:pass(4) [data-type="chapter"] .os-chapter-area {
   content: nodes(chapterHeaderNode) content();
   move-to: solutions-TOCOMPOSITE; }
-:pass(4) [data-type="chapter"] .os-index-chapter-area {
+:pass(4) [data-type="chapter"] .os-chapter-area {
   content: nodes(chapterHeaderNode) content();
   move-to: index-TOCOMPOSITE; }
 
@@ -730,7 +772,7 @@
   content: "Chapter " string(ChapNum);
   move-to: chaptTitleEOB; }
 :pass(5) [data-type="chapter"]::after {
-  class: os-solutions-chapter-area;
+  class: os-chapter-area;
   content: pending(chaptTitleEOB) pending(solutions-GETCHAPTER);
   move-to: solutions-TOCOMPOSITE; }
 :pass(5) body::after {
@@ -740,6 +782,10 @@
   data-type: "composite-page";
   data-uuid-key: ".solutions";
   /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
+:pass(5) body body::after {
+  class: "os-eob os-solutions-container";
+  data-type: "composite-page";
+  content: pending(solutions-TOCOMPOSITE); }
 :pass(5) body::after {
   container: div;
   content: pending(solutions-TOCOMPOSITE);
@@ -993,10 +1039,21 @@
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] > .os-title,
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title {
   container: h3; }
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="solution"] .solution-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] .solution-title {
+  container: h4; }
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] .os-note-body > [data-type="title"],
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] .os-note-body > [data-type="title"] {
   class: "os-subtitle";
   container: h4; }
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="note"] > .os-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="note"] > .os-title {
+  class: "os-title";
+  container: h4; }
+:pass(6) [data-type="composite-page"].os-eob > .chapter-area > [data-type="document-title"] {
+  container: h2; }
+:pass(6) [data-type="composite-page"].os-eob > .chapter-area > section > [data-type="document-title"] {
+  container: h3; }
 
 :pass(7) .os-index-link-separator:last-child {
   move-to: trash; }

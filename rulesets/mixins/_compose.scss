@@ -159,7 +159,7 @@
       @if ($sectionSeparated) {
         [data-type="page"] {
           &::after {
-            class: "os-#{$compositeSource}-chapter-area";
+            class: "os-chapter-area";
             content: pending(#{$compositeSource}-separated);
             move-to: #{$compositeSource}-sectionSeparatedContainer;
           }
@@ -280,17 +280,30 @@
           }
           @if ($sectionSeparated) {
             content: nodes(sectionHeaderNode) content();
-            @if ($chapterSeparated) {
+          }
+          @if ($chapterSeparated) {
               move-to: #{$source}-GETCHAPTER;
             } @else {
               move-to: #{$source}-TOCOMPOSITE;
             }
-          }
         }
         @if ($chapterSeparated) {
+          >[data-type="document-title"] {
+            //based on Econ References, only the chapter text is needed. We might need to extend this mixin to allow for more than just the text value of a chapter title.
+            .os-text {
+              node-set: chapterTitle;
+            }
+            &::after {
+              container: h2;
+              data-type: document-title;
+              content: nodes(chapterTitle);
+              move-to: chapterTitleHeaderText;
+            }
+          }
           &::after {
-            class: "os-#{$source}-chapter-area";
-            content: pending(#{$source}-GETCHAPTER);
+            class: "os-chapter-area";
+            content: pending(chapterTitleHeaderText) pending(#{$source}-GETCHAPTER);
+            move-to: #{$source}-TOCOMPOSITE;
             @if ($chapterPages) {
               data-type: "composite-page";
               data-uuid-key: "#{$keyName}";
@@ -318,12 +331,19 @@
   body {
     $source: map-get($page, source);
     $isIndex: map-get($page, isIndex);
+    $chapterSeparated: map-get($page, chapterSeparated);
     $keyName: if($isIndex, '<index>', '.#{$source}');
-
     // Validate
     @include validate_type($source, string);
     @include validate_typeOptional($isIndex, bool);
 
+       @if ($chapterSeparated) {
+        body::after {
+          class: "os-eob os-#{$source}-container";
+          data-type: "composite-page";
+          content: pending(#{$source}-TOCOMPOSITE);
+        }
+      }
     &::after {
       container: div;
       content: pending(#{$source}-TOCOMPOSITE);
@@ -355,7 +375,7 @@
     @include validate_type($source, string);
 
     [data-type="chapter"] {
-      .os-#{$source}-chapter-area {
+      .os-chapter-area {
         content: nodes($chapterHeaderNode) content();
         move-to: #{$source}-TOCOMPOSITE;
       }
@@ -503,7 +523,7 @@
         move-to: chaptTitleEOB;
       }
       &::after {
-        class: os-#{$solutionSource}-chapter-area;
+        class: os-chapter-area;
         content: pending(chaptTitleEOB) pending(#{$solutionSource}-GETCHAPTER);
         move-to: #{$solutionSource}-TOCOMPOSITE;
       }

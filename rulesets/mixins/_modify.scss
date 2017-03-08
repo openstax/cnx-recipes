@@ -122,8 +122,11 @@
 /// Modifies note feature to add a note title and optionally wrap the body content
 /// @arg {map} $noteContent - map containing `$selector`, `$label` and `$isBodyWrapped`
 /// @group modify
+
+/// Modify GenericNote: Many notes have  different title, the only way to keep those was to pass noteTitle to the title. However, the titles are inconsistent. It might be better to define the title via variables like any other notes and fix the content.
+
 @mixin modify_GenericNote() {
- div[class="note"] {
+ div[data-type="note"][class="note"] {
     >div[data-type="title"] {
       string-set: noteTitle content();
       &::before {
@@ -164,9 +167,20 @@
       move-to: bNoteHeader;
     }
     @if ($isBodyWrapped) {
+      >div[data-type="title"] {
+        class: "os-subtitle";
+        container: h4;
+        move-to: noteSubtitle;
+     }
       &::inside {
           class: "os-note-body";
+          content: pending(noteSubtitle) content();
       }
+    }
+    @else {
+      >div[data-type="title"] {
+       move-to: trash;
+     }
     }
     &:deferred {
       content:pending(bNoteHeader)content();
@@ -184,9 +198,32 @@
         > .os-title {
           container: h3;
         }
+        [data-type="solution"] {
+          .solution-title {
+          container: h4;
+          }
+        }
         .os-note-body > [data-type="title"] {
           class: "os-subtitle";
           container: h4;
+        }
+        [data-type="note"] {
+          > .os-title {
+            class: "os-title";
+            container: h4;
+          }
+        }
+      }
+    }
+  }
+ [data-type="composite-page"].os-eob {
+    >.chapter-area {
+      >[data-type="document-title"] {
+        container: h2;
+      }
+      >section {
+        >[data-type="document-title"] {
+          container: h3;
         }
       }
     }
