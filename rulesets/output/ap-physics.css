@@ -339,6 +339,21 @@ Usage Note: key: class of the containing span, value: text that will go inside s
     string-set: isSolution " os-hasSolution "; }
   :pass(0) :not([data-type="example"]) > [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
+:pass(0) div[data-element-type="check-understanding"] > div[data-type="title"] {
+  string-set: containerTitle content();
+  move-to: trash; }
+  :pass(0) div[data-element-type="check-understanding"] > div[data-type="title"]::before {
+    container: span;
+    class: "os-title-label";
+    content: string(containerTitle);
+    move-to: anyContainerLabel; }
+:pass(0) div[data-element-type="check-understanding"]::after {
+  container: div;
+  content: pending(anyContainerLabel);
+  class: "os-title";
+  move-to: anyContainer; }
+:pass(0) div[data-element-type="check-understanding"]:deferred {
+  content: pending(anyContainer) content(); }
 :pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
   string-set: noteTitle content();
   move-to: trash; }
@@ -933,17 +948,21 @@ Usage Note: key: class of the containing span, value: text that will go inside s
 :pass(6) .appendix > figure.unnumbered figcaption {
   move-to: trash; }
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] > .os-title,
-:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title {
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
   container: h3; }
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="solution"] .solution-title,
-:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] .solution-title {
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] .solution-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] .os-note-body > [data-type="title"],
-:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] .os-note-body > [data-type="title"] {
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] .os-note-body > [data-type="title"],
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="exercise"] .os-note-body > [data-type="title"] {
   class: "os-subtitle";
   container: h4; }
 :pass(6) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="note"] > .os-title,
-:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="note"] > .os-title {
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="note"] > .os-title,
+:pass(6) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="note"] > .os-title {
   class: "os-title";
   container: h4; }
 :pass(6) [data-type="composite-page"].os-eob > .chapter-area > [data-type="document-title"] {
