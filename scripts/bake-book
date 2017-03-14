@@ -60,6 +60,7 @@ do
   bakedFile="./data/${bookName}-baked.html"
   sassFile="./rulesets/books/${rulesetName}/book.scss"
   cssFile="./rulesets/output/${rulesetName}.css"
+  bakingLogFile="${bakedFile}.log"
 
   if [ ! -f "${rawFile}" ]
   then
@@ -87,7 +88,12 @@ do
 
   lcovFile="${rawFile}.lcov"
 
-  cnx-easybake --coverage-file "${lcovFile}" ${debugFlag1} ${debugFlag2} ${debugFlag3} ${debugFlag4} "${cssFile}" "${rawFile}" "${bakedFile}"
+  cnx-easybake --debug --coverage-file "${lcovFile}" ${debugFlag1} ${debugFlag2} ${debugFlag3} ${debugFlag4} "${cssFile}" "${rawFile}" "${bakedFile}" 2> "${bakingLogFile}"
+  if [[ $? -ne 0 ]]
+  then
+    >&2 echo "==> ERROR: baking failed. Check ${bakingLogFile}"
+    exit 1
+  fi
 
   # Generate an HTML report (if genhtml is installed)
   if [[ -n "$(which genhtml)" ]]
