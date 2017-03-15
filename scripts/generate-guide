@@ -27,7 +27,7 @@ if [ -z "${bakedOrPreparedSuffix}" ]
 then
   bakedOrPreparedSuffix="baked"
 else
-  >&2 echo "INFO: Generating -${bakedOrPreparedSuffix}.html files instead of -baked.html files"
+  >&2 echo "INFO: Generating -${bakedOrPreparedSuffix}.xhtml files instead of -baked.xhtml files"
 fi
 
 # Initialize rbenv (if installed)
@@ -100,30 +100,30 @@ cp -R "${bookDocumentationDir}" "${tempRulesetDir}" || exit 1
 
 
 # Find all the styleguide html files and convert them
-for snippetFileName in $(find "${tempRulesetDir}" -name "*.html")
+for snippetFileName in $(find "${tempRulesetDir}" -name "*.xhtml")
 do
 
-  if [[ ! "${snippetFileName}" =~ "-baked.html" ]]
+  if [[ ! "${snippetFileName}" =~ "-baked.xhtml" ]]
   then
-    if [[ ! "${snippetFileName}" =~ "-prepared.html" ]]
+    if [[ ! "${snippetFileName}" =~ "-prepared.xhtml" ]]
     then
 
-      >&2 echo "Generating temporary ${snippetFileName}-${bakedOrPreparedSuffix}.html"
+      >&2 echo "Generating temporary ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml"
       # commented because xmllint does not like html5 element names like <figure>
-      # ./scripts/bake-file ${rulesetName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.html
-      ./scripts/bake-file ${rulesetName} ${snippetFileName} ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.html --use-repeatable-ids  || exit 1
+      # ./scripts/bake-file ${rulesetName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.xhtml
+      ./scripts/bake-file ${rulesetName} ${snippetFileName} ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml --use-repeatable-ids  || exit 1
 
       # Construct an HTML file that contains both the raw and baked HTML
       # so it can be separated in the browser
       # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
-      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      cat ${snippetFileName} >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      cat ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.html >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
+      cat ${snippetFileName} >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
+      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
+      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
+      cat ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
+      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
 
-      rm ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.html || exit 1
+      rm ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml || exit 1
     fi
   fi
 done
@@ -137,10 +137,9 @@ then
   # Exclude parsing the output/*.css files by setting the --mask
   $(npm bin)/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${guideHomepageFile} --destination ${styleguideDir} --css ./guide.css --source ${tempRulesetDir} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"  || exit 1
 
-
   # Delete the temp files created above
   # >&2 echo "==> Deleting the baked example HTML files"
-  # for snippetFileName in $(find ./rulesets/books/ -name "*-${bakedOrPreparedSuffix}.html")
+  # for snippetFileName in $(find ./rulesets/books/ -name "*-${bakedOrPreparedSuffix}.xhtml")
   # do
   #   # echo "Removing temporary ${snippetFileName}"
   #   rm ${snippetFileName} || exit 1
