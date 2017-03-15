@@ -352,6 +352,8 @@
     data-type: "alternatives";
     class: "os-has-iframe os-has-link";
     content: pending(bIframeLink) content(); }
+:pass(0) cnx-pi {
+  move-to: trash; }
 :pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
   string-set: noteTitle content();
   move-to: trash; }
@@ -368,8 +370,6 @@
 :pass(0) div[data-type="note"][class="note"]:deferred {
   content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
-  move-to: trash; }
-:pass(0) cnx-pi {
   move-to: trash; }
 
 :pass(2) body {
@@ -616,6 +616,9 @@
   content: nodes(chapterHeaderNode) content();
   move-to: index-TOCOMPOSITE; }
 
+:pass(5) div[data-type="page"] > [data-type="document-title"],
+:pass(5) div[data-type="composite-page"] > [data-type="document-title"] {
+  node-set: sectionHeaderNode; }
 :pass(5) body::after {
   container: div;
   content: pending(index-TOCOMPOSITE);
@@ -760,7 +763,7 @@
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered)::before {
   container: span;
-  content: counter(appendix,upper-alpha) "." counter(table) " ";
+  content: counter(appendix,upper-alpha) "." counter(table);
   class: os-number;
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered) caption [data-type="title"] {
