@@ -264,10 +264,10 @@
 
 */
 /*==========================================================
-  AP PHYSICS PAGES
+  PHYSICS PAGES
 ==========================================================*/
 /*
-  Section Summary
+  Section Review
 
   These should be collated at the end of a chapter.
 
@@ -283,7 +283,7 @@
   Markup: ./styleguide/book.composite.conceptual.xhtml-baked.xhtml
 
   Style guide: book.2-composite.conceptual
-  */
+*/
 /*
   Problems and Exercises
 
@@ -293,25 +293,11 @@
 
   Style guide: book.2-composite.problems
 */
-/*
-  Test Prep for AP® Courses
-
-  These should be collated at the end of a chapter.
-
-  Markup: ./styleguide/book.composite.ap-test-prep.xhtml-baked.xhtml
-
-  Style guide: book.2-composite.ap-test-prep
-*/
 /*==========================================================
-  AP PHYSICS TITLING CONTENT
+  PHYSICS TITLING CONTENT
 ==========================================================*/
-/*
-Unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
-//when they need to be able to be in any order because of possible changes in titling order between books
-Usage Note: key: class of the containing span, value: text that will go inside span
-*/
 /*==========================================================
-  AP PHYSICS CONFIG
+  PHYSICS CONFIG
 ==========================================================*/
 /*
   Chapter Objectives
@@ -321,6 +307,14 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   Markup: ./styleguide/page.note.chapter-objectives.xhtml-baked.xhtml
 
   Style guide: page.note.chapter-objectives
+*/
+/*
+  Test Prep for AP® Courses
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.ap-test-prep.xhtml-baked.xhtml
+
+  Style guide: book.composite.ap-test-prep
 */
 :pass(0) div.preface > [data-type="document-title"] {
   container: h1;
@@ -333,6 +327,42 @@ Usage Note: key: class of the containing span, value: text that will go inside s
     class: "os-text"; }
 :pass(0) a.os-interactive-link {
   attr-target: "_blank"; }
+:pass(0) [data-type="exercise"][data-label]:not([data-label=""])::after {
+  container: div;
+  class: "os-label";
+  content: attr(data-label);
+  move-to: bTitleLabel; }
+:pass(0) [data-type="exercise"][data-label]:not([data-label=""])::outside {
+  data-type: "exercise-container";
+  container: div;
+  content: pending(bTitleLabel) content(); }
+:pass(0) ol[data-label]:not([data-label=""])::after,
+:pass(0) ul[data-label]:not([data-label=""])::after {
+  container: div;
+  class: "os-label";
+  content: attr(data-label);
+  move-to: bListLabel; }
+:pass(0) ol[data-label]:not([data-label=""])::outside,
+:pass(0) ul[data-label]:not([data-label=""])::outside {
+  data-type: "list-container";
+  container: div;
+  content: pending(bListLabel) content(); }
+:pass(0) :not([data-type="alternatives"]) > iframe {
+  class: attr(class) "os-is-iframe"; }
+  :pass(0) :not([data-type="alternatives"]) > iframe::after {
+    container: a;
+    class: "os-is-link";
+    attr-target: "_window";
+    attr-href: attr(src);
+    content: "Click to view content";
+    move-to: bIframeLink; }
+  :pass(0) :not([data-type="alternatives"]) > iframe::outside {
+    container: div;
+    data-type: "alternatives";
+    class: "os-has-iframe os-has-link";
+    content: pending(bIframeLink) content(); }
+:pass(0) cnx-pi {
+  move-to: trash; }
 :pass(0) :not([data-type="example"]) > [data-type="exercise"] {
   string-set: isSolution ""; }
   :pass(0) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
@@ -371,43 +401,9 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
-:pass(0) cnx-pi {
+:pass(0) div.missing-exercise {
   move-to: trash; }
 
-:pass(2) [data-type="exercise"][data-label]:not([data-label=""])::after {
-  container: div;
-  class: "os-label";
-  content: attr(data-label);
-  move-to: bTitleLabel; }
-:pass(2) [data-type="exercise"][data-label]:not([data-label=""])::outside {
-  data-type: "exercise-container";
-  container: div;
-  content: pending(bTitleLabel) content(); }
-:pass(2) ol[data-label]:not([data-label=""])::after,
-:pass(2) ul[data-label]:not([data-label=""])::after {
-  container: div;
-  class: "os-label";
-  content: attr(data-label);
-  move-to: bListLabel; }
-:pass(2) ol[data-label]:not([data-label=""])::outside,
-:pass(2) ul[data-label]:not([data-label=""])::outside {
-  data-type: "list-container";
-  container: div;
-  content: pending(bListLabel) content(); }
-:pass(2) :not([data-type="alternatives"]) > iframe {
-  class: attr(class) "os-is-iframe"; }
-  :pass(2) :not([data-type="alternatives"]) > iframe::after {
-    container: a;
-    class: "os-is-link";
-    attr-target: "_window";
-    attr-href: attr(src);
-    content: "Click to view content";
-    move-to: bIframeLink; }
-  :pass(2) :not([data-type="alternatives"]) > iframe::outside {
-    container: div;
-    data-type: "alternatives";
-    class: "os-has-iframe os-has-link";
-    content: pending(bIframeLink) content(); }
 :pass(2) body {
   counter-reset: chapter; }
 :pass(2) div[data-type="chapter"] {
@@ -506,13 +502,17 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: div-TITLECONTAINER; }
 :pass(2) .example [data-type="solution"]::before {
   container: span;
-  content: counter(chapter) ". " counter(example);
+  content: counter(chapter) "." counter(example);
   class: os-number;
   move-to: div-TITLECONTAINER; }
 :pass(2) .example [data-type="solution"]::before {
   container: div;
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
+:pass(2) [data-type="chapter"], :pass(2) .appendix {
+  counter-reset: equation; }
+:pass(2) [data-type="equation"] {
+  counter-increment: equation; }
 :pass(2) body {
   counter-reset: term; }
 :pass(2) div[data-type="page"] span[data-type="term"], :pass(2) div[data-type="composite-page"] span[data-type="term"] {
@@ -599,6 +599,10 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   class: "os-eoc os-ap-test-prep-container";
   data-type: "composite-page";
   data-uuid-key: ".ap-test-prep"; }
+:pass(2) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+:pass(2) [data-type="exercise"][data-element-type="check-understanding"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
 :pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
   node-set: outlineSectionTitle; }
 :pass(2) [data-type="page"]:not(.introduction):not(.preface) [data-type="abstract"] {
@@ -615,10 +619,6 @@ Usage Note: key: class of the containing span, value: text that will go inside s
 :pass(2) [data-type="chapter"]:deferred::after {
   class: "os-chapter-outline";
   content: pending(chapOutlineTitle) pending(chapOutline); }
-:pass(2) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
-:pass(2) [data-type="exercise"][data-element-type="check-understanding"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
 
 :pass(3) div[data-type="page"] > [data-type="document-title"],
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -777,7 +777,11 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   counter-increment: equation; }
 :pass(6) section:not(.section-summary) [data-type="equation"]:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) ". " counter(equation);
+  content: " ";
+  class: os-divider; }
+:pass(6) section:not(.section-summary) [data-type="equation"]:not(.unnumbered)::before {
+  container: span;
+  content: counter(chapter) "." counter(equation);
   class: os-number; }
 :pass(6) body > [data-type="metadata"] {
   node-set: bookMetadata; }
@@ -906,7 +910,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered)::before {
   container: span;
-  content: counter(appendix,upper-alpha) ". " counter(table);
+  content: counter(appendix,upper-alpha) "." counter(table);
   class: os-number;
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered)::before {
@@ -936,7 +940,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) ". " counter(figure);
+  content: counter(chapter) "." counter(figure);
   class: os-number;
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
@@ -966,7 +970,7 @@ Usage Note: key: class of the containing span, value: text that will go inside s
   move-to: bCaption; }
 :pass(6) .appendix :not(figure) > figure:not(.unnumbered)::before {
   container: span;
-  content: counter(appendix,upper-alpha) ". " counter(figure);
+  content: counter(appendix,upper-alpha) "." counter(figure);
   class: os-number;
   move-to: bCaption; }
 :pass(6) .appendix :not(figure) > figure:not(.unnumbered)::before {
