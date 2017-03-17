@@ -1,9 +1,11 @@
+@import '../_common-stuff';
+
 /*==========================================================
   HIGH SCHOOL PHYSICS PAGES
 ==========================================================*/
-$sectionSummaryClass: "summary";
+
 //Make pages
-$pageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
+$PageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
 
 /*
   Section Summary
@@ -15,7 +17,7 @@ $pageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossar
 
   Style guide: book.2-composite.summary
 */
-$pageSummary                : ( name: "Section Summary", source: "#{$sectionSummaryClass}", sectionSeparated: false );
+$pageSummary                : ( name: "Section Summary", source: "summary", sectionSeparated: false );
 
 /*
   Key Equations
@@ -66,7 +68,7 @@ $pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critic
 
   Style guide: book.2-composite.problems
 */
-$pageProblems               : ( name: "Problems", source: "ost-chapter-review.problem", sectionSeparated: true );
+$pageProblems               : ( name: "Problems", source: "ost-chapter-review.problem", sectionSeparated: true ); // TODO: Change `source:` to `selector:` because this part is unclear
 
 /*
   Performance Task
@@ -88,7 +90,7 @@ $pagePerformance            : ( name: "Performance Task", source: "performance",
 
   Style guide: book.2-composite.multiplechoice
 */
-$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice", sectionSeparated: true);
+$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice", sectionSeparated: true );
 
 /*
   Short Answer
@@ -110,10 +112,7 @@ $pageShortAnswer            : ( name: "Short Answer", source: "short-answer", se
 
   Style guide: book.2-composite.extendedresponse
 */
-$pageExtendedResponse        : ( name: "Extended Response", source: "extended-response", sectionSeparated: true );
-
-$pageIndex                   : ( name: "Index", source: "index", isIndex: true );
-
+$pageExtendedResponse       : ( name: "Extended Response", source: "extended-response", sectionSeparated: true );
 
 /*
   Chapter Review
@@ -127,9 +126,7 @@ $pageIndex                   : ( name: "Index", source: "index", isIndex: true )
   Style guide: book.compoundcomposite.chapterreview
 */
 $compoundReview               : ( $pageConceptItems, $pageCriticalThinking, $pageProblems, $pagePerformance,);
-
-$pageChapterReview            : ( name: "Chapter Review", source: "chapter-review", contains: $compoundReview, EOCcompoundComposite: true );
-
+$pageChapterReview            : ( name: "Chapter Review", source: "chapter-review", contains: $compoundReview, EOCcompoundComposite: true ); // TODO rename contains to childComposites or something easy to search for
 /*
   Test Prep
 
@@ -142,41 +139,35 @@ $pageChapterReview            : ( name: "Chapter Review", source: "chapter-revie
   Style guide: book.compoundcomposite.testprep
 */
 $compoundTestPrep             : ( $pageMultipleChoice, $pageShortAnswer,  $pageExtendedResponse );
-
 $pageTestPrep                 : ( name: "Test Prep", source: "test-prep", contains: $compoundTestPrep, EOCcompoundComposite: true );
 
 
-$chapterCompositePages        : (
-  $pageKeyTerms, $pageSummary, $pageKeyEquations, $pageChapterReview, $pageTestPrep
+$PageIndex                  : ( name: "Index", source: "index", isIndex: true );
+
+$Config_ChapterCompositePages: (
+  $PageKeyTerms, $pageSummary, $pageKeyEquations, $pageChapterReview, $pageTestPrep,
 );
 
-$EOCcompoundComposites         : ( $pageChapterReview, $pageTestPrep );
+$Config_ChapterCompoundCompositePages: ( $pageChapterReview, $pageTestPrep );
 
-$bookCompositePages: (
-  //This does not get parsed as a list without a comma at the endthe composite builder should account for this rather than using hacky syntax,
-  $pageIndex,
+$Config_BookCompositePages: (
+  //This doesn't get parsed as a list without a comma at the end
+  //the composite builder should account for this rather than using hacky syntax
+  $PageIndex,
 );
-
 /*==========================================================
   HIGH SCHOOL PHYSICS TITLING CONTENT
 ==========================================================*/
-
 //unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
 //when they need to be able to be in any order because of possible changes in titling order between books
 //Usage Note: key: class of the containing span, value: text that will go inside span
-$chapterTitleContent        : ( number : counter(chapter), divider: " " );
-
-$appendixTitleContent       : ( title-label : "Appendix ", number : counter(appendix, upper-alpha), divider: " ");
-
-$sectionTitleContent        : ( number : counter(chapter) "." counter(section), divider: " " );
-
-$exerciseTitleContent       : ( divider : ". ", number : counter(exercise) );
-$equationNumber              : ( number : counter(chapter) ". " counter(equation) );
-
-// FIXME: The fields in this list are generated in reverse order for some reason
-$exerciseContentTitleContent: ( number : counter(exerciseMaybeInContent), title-label : "Exercise" );
-$solutionContentTitleContent: null;
-
+$_exerciseTitleContent       : ( divider: ". ", number: counter(exercise) ); // TODO: Remove this space?
+$_equationNumber             : ( number: counter(chapter) "." counter(equation) );
+/*==========================================================
+  HIGH SCHOOL PHYSICS CONFIG
+==========================================================*/
+$Config_SetTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true );
+$Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
 /*
   Teacher Support  note
 
@@ -186,8 +177,6 @@ $solutionContentTitleContent: null;
 
   Style guide: page.note.teacher
 */
-$teacherSupportNote         : ( label : "Teacher Support", selector : os-teacher );
-
 /*
   Section Learning Objectives note
 
@@ -197,7 +186,6 @@ $teacherSupportNote         : ( label : "Teacher Support", selector : os-teacher
 
   Style guide: page.note.learningobjectives
 */
-$learningObjectivesNote     : ( label : "Section Learning Objectives", selector : learning-objectives );
 /*
   Boundless Physics note
 
@@ -207,8 +195,6 @@ $learningObjectivesNote     : ( label : "Section Learning Objectives", selector 
 
   Style guide: page.note.boundlessphysics
 */
-$boundlessPhysicsNote       : ( label : "Boundless Physics", selector : boundless-physics, isBodyWrapped: true );
-
 /*
   Misconception Alert note
 
@@ -218,8 +204,6 @@ $boundlessPhysicsNote       : ( label : "Boundless Physics", selector : boundles
 
   Style guide: page.note.misconception
 */
-$misconceptionNote          : ( label : "Misconception Alert", selector : ost-misconception, );
-
 /*
   Teacher Demonstration note
 
@@ -229,8 +213,6 @@ $misconceptionNote          : ( label : "Misconception Alert", selector : ost-mi
 
   Style guide: page.note.workout
 */
-$teacherDemonstrationNote   : ( label : "Teacher Demonstration", selector : ost-teacher-demonstration, );
-
 /*
   Grasp Check note
 
@@ -240,8 +222,6 @@ $teacherDemonstrationNote   : ( label : "Teacher Demonstration", selector : ost-
 
   Style guide: page.note.grasp-check
 */
-$graspCheckNote             : ( label : "Grasp Check", selector : grasp-check, );
-
 /*
   Snap Lab note
 
@@ -251,8 +231,6 @@ $graspCheckNote             : ( label : "Grasp Check", selector : grasp-check, )
 
   Style guide: page.note.snap-lab
 */
-$snapLabNote                : ( label: "Snap Lab", selector: snap-lab, isBodyWrapped: true, );
-
 /*
   Worked Example note
 
@@ -262,7 +240,6 @@ $snapLabNote                : ( label: "Snap Lab", selector: snap-lab, isBodyWra
 
   Style guide: page.note.worked-example
 */
-$workedExampleNote           : ( label: "Worked Example", selector: worked-example, isBodyWrapped: true );
 /*
   Tips For Success note
 
@@ -272,8 +249,6 @@ $workedExampleNote           : ( label: "Worked Example", selector: worked-examp
 
   Style guide: page.note.tips-for-success
 */
-$tipsSuccessNote            : ( label: "Tips For Success", selector: tips-for-success, );
-
 /*
   Work In Physics note
 
@@ -283,8 +258,6 @@ $tipsSuccessNote            : ( label: "Tips For Success", selector: tips-for-su
 
   Style guide: page.note.work-in-physics
 */
-$workedPhysicsNote          : ( label: "Work In Physics", selector: work-in-physics, isBodyWrapped: true );
-
 /*
   Fun In Physics note
 
@@ -294,8 +267,6 @@ $workedPhysicsNote          : ( label: "Work In Physics", selector: work-in-phys
 
   Style guide: page.note.fun-in-physics
 */
-$funPhysicsNote             : ( label: "Fun In Physics", selector: fun-in-physics, );
-
 /*
   Links to Physics note
 
@@ -305,8 +276,6 @@ $funPhysicsNote             : ( label: "Fun In Physics", selector: fun-in-physic
 
   Style guide: page.note.links-to-physics
 */
-$linksPhysicsNote            : ( label: "Links To Physics", selector: links-to-physics, isBodyWrapped: true );
-
 /*
   Watch Physics note
 
@@ -316,8 +285,6 @@ $linksPhysicsNote            : ( label: "Links To Physics", selector: links-to-p
 
   Style guide: page.note.watch-physics
 */
-$watchPhysicsNote           : ( label: "Watch Physics", selector: watch-physics, isBodyWrapped: true );
-
 /*
   Virtual Physics note
 
@@ -327,59 +294,22 @@ $watchPhysicsNote           : ( label: "Watch Physics", selector: watch-physics,
 
   Style guide: page.note.virtual-physics
 */
-$virtualPhysicsNote         : ( label: "Virtual Physics", selector: virtual-physics, isBodyWrapped: true );
-
-$captionTableNumber         : ( title-label: "Table ", number: counter(chapter) "." counter(table) " " );
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$captionTableNumberAp       : ( title-label: "Table ", number: counter(appendix, upper-alpha) "." counter(table) " ");
-
-$captionFigNumber           : ( title-label: "Figure ", number: counter(chapter) "." counter(figure) " " );
-
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$captionFigNumberAp         : ( title-label: "Figure ", number: counter(appendix, upper-alpha) "." counter(figure) " ");
-$symbolsSectionTitle: "Symbols";
-
-/*==========================================================
-  HIGH SCHOOL PHYSICS CONFIG
-==========================================================*/
-
-$setTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true, exceptionClassNames: ('key-terms',) );
-
-$setFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
-
-//If this method of setting the content of the label explicity becomes a problem,
-//try grabbing the numbering information from the element's header
-
-//NOTE: These selectors MUST match the counting selectors or be more specific
-//otherwise, the increment and the counter() call may fire in the wrong order
-//This may be fixed in a later version of easybake
-$targetLabels: (
-  (
-    selector    : '.os-eoc [data-type="exercise"]',
-    label       : "Exercise " counter(chapter) ". " counter(exercise)
-  ),
-  (
-    selector    : 'div[data-type="chapter"] .example',
-    label       : "Example " counter(chapter) "." counter(example)
-  ),
-  (
-    selector    : '[data-type="chapter"] :not(table) > table:not(.unnumbered)',
-    label       : "Table " counter(chapter) "." counter(table)
-  ),
-  (
-    selector    : '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',
-    label       : "Figure " counter(chapter) "." counter(figure)
-  ),
-  (
-    selector    : '[data-type="appendix"] :not(table) > table:not(.unnumbered)',
-    label       : "Table " counter(appendix, upper-alpha) "." counter(table)
-  ),
-  (
-    selector    : '[data-type="appendix"] :not(figure) > figure:not(.unnumbered)',
-    label       : "Figure " counter(appendix, upper-alpha) "." counter(figure)
-  )
+$Config_Notes: (
+  ( className: 'os-teacher',           label: "Teacher Support" ),
+  ( className: 'boundless-physics',    label: "Boundless Physics", isBodyWrapped: true ),
+  ( className: 'learning-objectives',  label: "Section Learning Objectives" ),
+  ( className: 'ost-teacher-demonstration', label: "Teacher Demonstration" ),
+  ( className: 'ost-misconception',    label: "Misconception Alert" ),
+  ( className: 'grasp-check',          label: "Grasp Check" ),
+  ( className: 'snap-lab',             label: "Snap Lab",          isBodyWrapped: true ),
+  ( className: 'worked-example',       label: "Worked Example",    isBodyWrapped: true ),
+  ( className: 'tips-for-success',     label: "Tips For Success" ),
+  ( className: 'work-in-physics',      label: "Work In Physics",   isBodyWrapped: true ),
+  ( className: 'fun-in-physics',       label: "Fun In Physics" ),
+  ( className: 'links-to-physics',     label: "Links To Physics",  isBodyWrapped: true ),
+  ( className: 'watch-physics',        label: "Watch Physics",     isBodyWrapped: true ),
+  ( className: 'virtual-physics',      label: "Virtual Physics",   isBodyWrapped: true ),
 );
-
 
 /*
   Grasp Check
@@ -391,3 +321,15 @@ $targetLabels: (
 
   Style guide: page.exercise.grasp-check
 */
+$Config_UnnumberedExercises: (
+  (contextSelector: '.key-equations',                     childSelector: 'table'),
+  (contextSelector: '.worked-example',                    childSelector: '[data-type="exercise"]'),
+  (contextSelector: '[data-type="exercise"].grasp-check', childSelector: null),
+  (contextSelector: '.os-practice-problems',              childSelector: '[data-type="exercise"]'),
+);
+
+$Config_PartType_Chapter:  (outlineTitle: null);
+$Config_PartType_Equation: (moveTo: $AREA_NONE, titleContent: $_equationNumber, numberAt: $NUMBER_AFTER_MOVE, excludeNumberingInClassName: "summary");
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_COMPOSITE_PAGE,  numberAt: $NUMBER_AFTER_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Example:  ();
+$Config_PartType_Solution: (moveTo: $AREA_TRASH, HACKRemoveAllSolutionsNotJustEoC: true); // FIXME: change this to $AREA_NONE once cnx-easybake is fixed or the order of operations is fixed

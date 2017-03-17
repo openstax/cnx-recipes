@@ -378,6 +378,9 @@
 /*==========================================================
   HIGH SCHOOL PHYSICS TITLING CONTENT
 ==========================================================*/
+/*==========================================================
+  HIGH SCHOOL PHYSICS CONFIG
+==========================================================*/
 /*
   Teacher Support  note
 
@@ -504,9 +507,6 @@
 
   Style guide: page.note.virtual-physics
 */
-/*==========================================================
-  HIGH SCHOOL PHYSICS CONFIG
-==========================================================*/
 /*
   Grasp Check
 
@@ -562,6 +562,8 @@
     data-type: "alternatives";
     class: "os-has-iframe os-has-link";
     content: pending(bIframeLink) content(); }
+:pass(0) cnx-pi {
+  move-to: trash; }
 :pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
   string-set: noteTitle content();
   move-to: trash; }
@@ -578,6 +580,8 @@
 :pass(0) div[data-type="note"][class="note"]:deferred {
   content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
+  move-to: trash; }
+:pass(0) div.missing-exercise {
   move-to: trash; }
 
 :pass(1) [data-type="note"].os-teacher::before {
@@ -811,20 +815,6 @@
   content: pending(noteSubtitle) content(); }
 :pass(1) [data-type="note"].virtual-physics:deferred {
   content: pending(bNoteHeader) content(); }
-:pass(1) [data-type="metadata"] > [data-type="description"] {
-  move-to: trash; }
-:pass(1) div.missing-exercise {
-  move-to: trash; }
-:pass(1) [data-type="solution"] {
-  move-to: trash; }
-:pass(1) .key-equations table:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
-:pass(1) .worked-example [data-type="exercise"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
-:pass(1) [data-type="exercise"].grasp-check:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
-:pass(1) .os-practice-problems [data-type="exercise"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
 
 :pass(2) body {
   counter-reset: chapter; }
@@ -884,6 +874,10 @@
   content: pending(bSectionLabel) content(); }
 :pass(2) div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="document-title"] {
   container: h2; }
+:pass(2) [data-type="chapter"], :pass(2) .appendix {
+  counter-reset: equation; }
+:pass(2) [data-type="equation"] {
+  counter-increment: equation; }
 :pass(2) body {
   counter-reset: term; }
 :pass(2) div[data-type="page"] span[data-type="term"], :pass(2) div[data-type="composite-page"] span[data-type="term"] {
@@ -962,6 +956,14 @@
   class: "os-eoc os-test-prep-container";
   data-type: "composite-page";
   data-uuid-key: ".test-prep"; }
+:pass(2) .key-equations table:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+:pass(2) .worked-example [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+:pass(2) [data-type="exercise"].grasp-check:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+:pass(2) .os-practice-problems [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
 
 :pass(3) div[data-type="page"] > [data-type="document-title"],
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -1195,8 +1197,32 @@
   counter-reset: appendix; }
 :pass(6) div.appendix {
   counter-increment: appendix; }
+:pass(6) [data-type="composite-page"], :pass(6) .appendix {
+  counter-reset: exercise; }
 :pass(6) .os-eoc [data-type="exercise"] {
-  string-set: target-label "Exercise " counter(chapter) ". " counter(exercise); }
+  counter-increment: exercise; }
+:pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+:pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+:pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+:pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+:pass(6) [data-type="chapter"], :pass(6) .appendix {
+  counter-reset: example; }
+:pass(6) div[data-type="chapter"] [data-type="example"] {
+  counter-increment: example; }
+:pass(6) .os-eoc [data-type="exercise"] {
+  string-set: target-label "Exercise " counter(chapter) "." counter(exercise); }
 :pass(6) div[data-type="chapter"] .example {
   string-set: target-label "Example " counter(chapter) "." counter(example); }
 :pass(6) [data-type="chapter"] :not(table) > table:not(.unnumbered) {
@@ -1215,7 +1241,7 @@
   counter-increment: equation; }
 :pass(6) section:not(.summary) [data-type="equation"]:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) ". " counter(equation);
+  content: counter(chapter) "." counter(equation);
   class: os-number; }
 :pass(6) body > [data-type="metadata"] {
   node-set: bookMetadata; }
@@ -1290,26 +1316,6 @@
   container: span;
   content: "Exercise";
   class: os-title-label; }
-:pass(6) [data-type="composite-page"], :pass(6) .appendix {
-  counter-reset: exercise; }
-:pass(6) .os-eoc [data-type="exercise"] {
-  counter-increment: exercise; }
-:pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
-  container: span;
-  content: ". ";
-  class: os-divider; }
-:pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
-  container: span;
-  content: counter(exercise);
-  class: os-number; }
-:pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
-  container: span;
-  content: ". ";
-  class: os-divider; }
-:pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
-  container: span;
-  content: counter(exercise);
-  class: os-number; }
 :pass(6) [data-type="chapter"], :pass(6) .appendix {
   counter-reset: table; }
 :pass(6) :not(table) > table:not(.unnumbered) {
@@ -1354,7 +1360,7 @@
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered)::before {
   container: span;
-  content: counter(appendix,upper-alpha) "." counter(table) " ";
+  content: counter(appendix,upper-alpha) "." counter(table);
   class: os-number;
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered) caption {
@@ -1465,11 +1471,9 @@
 :pass(6) .appendix > section > section {
   container: h3; }
 
+:pass(7) [data-type="solution"] {
+  move-to: trash; }
 :pass(7) .os-index-link-separator:last-child {
-  move-to: trash; }
-:pass(7) .os-eoc [data-type="solution"] {
-  move-to: trash; }
-:pass(7) cnx-pi {
   move-to: trash; }
 :pass(7) [data-type="composite-page"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
