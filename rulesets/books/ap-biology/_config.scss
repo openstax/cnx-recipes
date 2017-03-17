@@ -1,15 +1,4 @@
-/*==========================================================
-  BIOLOGY PAGES
-==========================================================*/
-
-//Make pages
-$pageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
-
-// These are copy/pasta from biology
-$pageSummary                : ( name: "Chapter Summary", source: "summary", sectionSeparated: true );
-$pageArtConnection          : ( name: "Art Connection Questions", source: "art-exercise", hasSolutions: true );
-$pageReviewQuestions        : ( name: "Review Questions", source: "multiple-choice", hasSolutions: true );
-$pageCriticalThinking       : ( name: "Critical Thinking Questions", source: "free-response", hasSolutions: true );
+@import '../biology/_config';
 
 /*==========================================================
   AP BIOLOGY PAGES
@@ -52,14 +41,15 @@ $pageIndex                  : ( name: "Index", source: "index", isIndex: true );
 
 $pageSolutions              : ( name: "Answer Key", source: "solutions", chapterSeparated: true, compoundComposite: true, isAnswerKey: true, );
 
-$chapterCompositePages: (
+
+$Config_ChapterCompositePages: (
   $pageKeyTerms, $pageSummary, $pageArtConnection, $pageReviewQuestions, $pageCriticalThinking, $APpageReviewQuestions, $APpageCriticalThinking, $pageApTestPrep
 );
 
-$bookCompositePages: (
+$Config_BookCompositePages: (
   //This doesn't get parsed as a list without a comma at the end
   //the composite builder should account for this rather than using hacky syntax
-  $pageSolutions, $pageIndex
+  $pageSolutions, $pageIndex,
 );
 
 /*==========================================================
@@ -69,85 +59,13 @@ $bookCompositePages: (
 //unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
 //when they need to be able to be in any order because of possible changes in titling order between books
 //Usage Note: key: class of the containing span, value: text that will go inside span
-$chapterTitleContent        : ( number: counter(chapter), divider: ' ' );
 
-$appendixTitleContent       : ( title-label         :"Appendix ", number: counter(appendix, upper-alpha), divider: ' ' );
+$_exerciseTitleContent      : ( divider: ".", number: counter(exercise) );
 
-$sectionTitleContent        : ( number: counter(chapter) "." counter(section), divider: ' ' );
-
-$exerciseTitleContent       : ( divider: ".", number: counter(exercise), );
-
-/*
-  Art Connection note
-
-  Contains a title "Art Connection" and a body containing a title and the contents of the note.
-
-  Markup: ./styleguide/page.note.art-connection.xhtml-baked.xhtml
-
-  Style guide: page.note.art-connection
-*/
-$artConnectionNote          : ( label: "Art Connection", selector: art-connection, isBodyWrapped: true );
-
-/*
-  Career Connection note
-
-  Contains a title "Career Connection" and a body containing a title and the contents of the note.
-
-  Markup: ./styleguide/page.note.career-connection.xhtml-baked.xhtml
-
-  Style guide: page.note.career-connection
-*/
-
-$careerConnectionNote       : ( label: "Career Connection Note", selector: career, isBodyWrapped: true );
-
-/*
-  Everyday Connection note
-
-  Contains a title "Everyday Connection" and a body containing a title and the contents of the note.
-
-  Markup: ./styleguide/page.note.everyday-connection.xhtml-baked.xhtml
-
-  Style guide: page.note.everyday-connection
-*/
-$everydayConnectionNote     : ( label: "Everyday Connection", selector: everyday, isBodyWrapped: true );
-
-/*
-  Evolution Connection note
-
-  Contains a title "Evolution Connection" and a body containing a title and the contents of the note.
-
-  Markup: ./styleguide/page.note.evolution-connection.xhtml-baked.xhtml
-
-  Style guide: page.note.evolution-connection
-*/
-$evolutionConnectionNote    : ( label: "Evolution Connection", selector: evolution, isBodyWrapped: true );
-
-/*
-  Scientific Method Connection note
-
-  Contains a title "Scientific Method Connection" and a body containing a title and the contents of the note.
-
-  Markup: ./styleguide/page.note.scientific-method-connection.xhtml-baked.xhtml
-
-  Style guide: page.note.scientific-method-connection
-*/
-$scientificMethodConnectionNote: ( label: "Scientific Method Connection", selector: experiment, isBodyWrapped: true );
-
-/*
-  Link to Learning note
-
-  Contains a title "Link to Learning"
-
-  Markup: ./styleguide/page.note.link-to-learning.xhtml-baked.xhtml
-
-  Style guide: page.note.link-to-learning
-*/
-$linkToLearningNote         : ( label: "Link to Learning", selector: interactive );
 
 /*==========================================================
   AP BIOLOGY NOTES
 ==========================================================*/
-
 /*
   Connection for AP Courses note
 
@@ -157,19 +75,15 @@ $linkToLearningNote         : ( label: "Link to Learning", selector: interactive
 
   Style guide: page.note.connection-ap-courses
 */
-$connectionApCoursesNote: ( label: "Connection for AP\00ae\00a0 Courses", selector: ap-connection, isBodyWrapped: true );
-
 /*
   Teacher Support note
 
   Contains a title "Teacher Support" and a body containing a title and the contents of the note.
 
-  Markup: ./styleguide/page.note.teacher-support.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.os-teacher.xhtml-baked.xhtml
 
-  Style guide: page.note.teacher-support
+  Style guide: page.note.os-teacher
 */
-$teacherSupportNote: ( label: "Teacher Support", selector: os-teacher, isBodyWrapped: true );
-
 /*
   Visual Connection note
 
@@ -179,8 +93,6 @@ $teacherSupportNote: ( label: "Teacher Support", selector: os-teacher, isBodyWra
 
   Style guide: page.note.visual-connection
 */
-$visualConnectionNote: ( label: "Visual Connection", selector: visual-connection, isBodyWrapped: true );
-
 /*
   Everyday Connection for AP Courses note
 
@@ -190,8 +102,6 @@ $visualConnectionNote: ( label: "Visual Connection", selector: visual-connection
 
   Style guide: page.note.ap-everyday
 */
-$apEverydayNote: ( label: "Everyday Connection for AP\00ae\00a0 Courses", selector: ap-everyday, isBodyWrapped: true );
-
 /*
   Science Practice Connection for AP Courses note
 
@@ -201,78 +111,32 @@ $apEverydayNote: ( label: "Everyday Connection for AP\00ae\00a0 Courses", select
 
   Style guide: page.note.ap-science-practices
 */
-$apSciencePracticesNote: ( label: "Science Practice Connection for AP\00ae\00a0 Courses", selector: ap-science-practices);
-
 /*
   Think About It note
 
   Contains a title "Think About It"
 
-  Markup: ./styleguide/page.note.think.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.ost-sciprac-scithink.xhtml-baked.xhtml
 
-  Style guide: page.note.think
+  Style guide: page.note.ost-sciprac-scithink
 */
-$thinkNote         : ( label: "Think About It", selector: ost-sciprac-scithink );
-
 /*
   Activity note
 
   Contains a title "Activity"
 
-  Markup: ./styleguide/page.note.activity.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.ost-sciprac-activity.xhtml-baked.xhtml
 
-  Style guide: page.note.activity
+  Style guide: page.note.ost-sciprac-activity
 */
-$activityNote         : ( label: "Activity", selector: ost-sciprac-activity );
 
-$captionTableNumber         : ( title-label: "Table ", number: counter(chapter) "." counter(table) " ");
 
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$captionTableNumberAp       : ( title-label: "Table ", number: counter(appendix, upper-alpha)  counter(table) );
-
-$captionFigNumber           : ( title-label: "Figure ", number: counter(chapter) "." counter(figure) " ");
-
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$captionFigNumberAp         : ( title-label: "Figure ", number: counter(appendix, upper-alpha) counter(figure) " " );
-
-$symbolsSectionTitle: "Symbols";
-
-/*==========================================================
-  BIOLOGY CONFIG
-==========================================================*/
-
-$setTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true );
-
-$setFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
-//If this method of setting the content of the label explicity becomes a problem,
-//try grabbing the numbering information from the element's header
-
-//NOTE: These selectors MUST match the counting selectors or be more specific
-//otherwise, the increment and the counter() call may fire in the wrong order
-//This may be fixed in a later version of easybake
-$targetLabels: (
-  (
-    selector    : '.os-eoc [data-type="exercise"]',
-    label       : "Exercise " counter(chapter) "." counter(exercise)
-  ),
-  (
-    selector    : 'div[data-type="chapter"] .example',
-    label       : "Example " counter(chapter) "." counter(example)
-  ),
-  (
-    selector    : '[data-type="chapter"] :not(table) > table:not(.unnumbered)',
-    label       : "Table " counter(chapter) "." counter(table)
-  ),
-  (
-    selector    : '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',
-    label       : "Figure " counter(chapter) "." counter(figure)
-  ),
-  (
-    selector    : '[data-type="appendix"] :not(table) > table:not(.unnumbered)',
-    label       : "Table " counter(appendix, upper-alpha) "." counter(table)
-  ),
-  (
-    selector    : '[data-type="appendix"] :not(figure) > figure:not(.unnumbered)',
-    label       : "Table " counter(appendix, upper-alpha) "." counter(figure)
-  )
-);
+$Config_Notes: join($Config_Notes, (
+  (className: "ap-connection",        moveSolutionTo: $AREA_NONE, isBodyWrapped: true,  label: "Connection for AP\00ae\00a0 Courses"),
+  (className: "os-teacher",           moveSolutionTo: $AREA_NONE, isBodyWrapped: true,  label: "Teacher Support"),
+  (className: "visual-connection",    moveSolutionTo: $AREA_NONE, isBodyWrapped: true,  label: "Visual Connection"),
+  (className: "ap-everyday",          moveSolutionTo: $AREA_NONE, isBodyWrapped: true,  label: "Everyday Connection for AP\00ae\00a0 Courses"),
+  (className: "ap-science-practices", moveSolutionTo: $AREA_NONE, isBodyWrapped: false, label: "Science Practice Connection for AP\00ae\00a0 Courses"),
+  (className: "ost-sciprac-activity", moveSolutionTo: $AREA_NONE, isBodyWrapped: false, label: "Activity"),
+  (className: "ost-sciprac-scithink", moveSolutionTo: $AREA_NONE, isBodyWrapped: false, label: "Think About It"),
+));
