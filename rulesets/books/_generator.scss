@@ -22,7 +22,7 @@
 
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
-
+  @include modify_trash('div.missing-exercise');
 }
 :pass(1) {
 
@@ -125,7 +125,7 @@
     $contextSelector: map-get($unnumberedExercise, contextSelector);
     $childSelector: map-get($unnumberedExercise, childSelector);
     @include validate_type($contextSelector, string);
-    @include validate_type($childSelector, string);
+    @include validate_typeOptional($childSelector, string);
     @include modify_addUnnumbered($contextSelector, $childSelector);
   }
 
@@ -155,16 +155,22 @@
   @include validate_enum(map-get($Config_PartType_Exercise, moveTo), $AREA__PREFIX__);
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
+    $numberAt:      map-get($Config_PartType_Exercise, numberAt);
     $titleContent:  map-get($Config_PartType_Exercise, titleContent);
     @include validate_enum($resetAt, $RESET__PREFIX__);
+    @include validate_enum($numberAt, $NUMBER__PREFIX__);
     @include validate_exists($titleContent);
 
     $resetSel: null;
     @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
-    @include count_countEOCExercises(exercise, $resetSel);
-    @include number_numberEOCExercises($titleContent, $titleContent);
+
+    @if $numberAt == $NUMBER_BEFORE_MOVE {
+      @include count_countEOCExercises(exercise, $resetSel);
+      @include number_numberEOCExercises($titleContent, $titleContent);
+    } @else if $numberAt == $NUMBER_AFTER_MOVE {
+    } @else { @error 'BUG: Invalid enum'; }
   }
 }
 :pass(4) {
@@ -206,6 +212,7 @@
   }
   //After: prepBookComposites, prepChapterAreas
   @include compose_createBookComposites($Config_BookCompositePages);
+  @include compose_EOCcompoundCompositesPages($Config_ChapterCompoundCompositePages);
 }
 :pass(6) {
   //After: prepIndexTerms, createBookComposites
@@ -218,12 +225,23 @@
   // This is mostly copy/pasta from above
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
+    $numberAt:      map-get($Config_PartType_Exercise, numberAt);
+    $titleContent:  map-get($Config_PartType_Exercise, titleContent);
+
     @include validate_enum($resetAt, $RESET__PREFIX__);
+    @include validate_enum($numberAt, $NUMBER__PREFIX__);
+    @include validate_type($titleContent, map);
+
     $resetSel: null;
     @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
     @include count_countEOCExercises(exercise, $resetSel);
+
+    @if $numberAt == $NUMBER_AFTER_MOVE {
+      @include number_numberEOCExercises($titleContent, $titleContent);
+    } @else if $numberAt == $NUMBER_BEFORE_MOVE {
+    } @else { @error 'BUG: Invalid enum'; }
   }
   @include count_countExamples(example);
   @include link_setTargetLabels($Config_TargetLabels);
@@ -261,7 +279,11 @@
 :pass(7) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
-    @include modify_trash('.os-eoc [data-type="solution"]');
+    @if map-get($Config_PartType_Solution, HACKRemoveAllSolutionsNotJustEoC) == true {
+      @include modify_trash('[data-type="solution"]');
+    } @else {
+      @include modify_trash('.os-eoc [data-type="solution"]');
+    }
   }
   @include modify_trash('.os-index-link-separator:last-child');
   @include modify_retitleCompositeMetadata();
