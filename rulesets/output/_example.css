@@ -321,22 +321,6 @@
     string-set: isSolution " os-hasSolution "; }
   :pass(0) :not([data-type="example"]) > [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
-:pass(0) .try [data-type="solution"] {
-  move-to: trash; }
-:pass(0) [data-type="note"].calculator::before {
-  container: span;
-  class: "os-title-label";
-  content: "Using the TI-83, 83+, 84, 84+ Calculator";
-  move-to: bNoteLabel; }
-:pass(0) [data-type="note"].calculator::before {
-  container: h3;
-  content: pending(bNoteLabel);
-  class: "os-title";
-  move-to: bNoteHeader; }
-:pass(0) [data-type="note"].calculator > div[data-type="title"] {
-  move-to: trash; }
-:pass(0) [data-type="note"].calculator:deferred {
-  content: pending(bNoteHeader) content(); }
 :pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
   string-set: noteTitle content();
   move-to: trash; }
@@ -354,6 +338,25 @@
   content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
+:pass(0) div.missing-exercise {
+  move-to: trash; }
+
+:pass(1) .try [data-type="solution"] {
+  move-to: trash; }
+:pass(1) [data-type="note"].calculator::before {
+  container: span;
+  class: "os-title-label";
+  content: "Using the TI-83, 83+, 84, 84+ Calculator";
+  move-to: bNoteLabel; }
+:pass(1) [data-type="note"].calculator::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  move-to: bNoteHeader; }
+:pass(1) [data-type="note"].calculator > div[data-type="title"] {
+  move-to: trash; }
+:pass(1) [data-type="note"].calculator:deferred {
+  content: pending(bNoteHeader) content(); }
 
 :pass(2) body {
   counter-reset: chapter; }
@@ -727,6 +730,79 @@
   data-type: "composite-page";
   data-uuid-key: "<index>";
   group-by: span, "span::attr(group-by)", nocase; }
+:pass(5) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  node-set: CompoundSectionHeaderNode; }
+:pass(5) [data-type="chapter"] .multiple-choice {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: multiple-choice-separated; }
+  :pass(5) [data-type="chapter"] .multiple-choice > [data-type="title"] {
+    move-to: trash; }
+:pass(5) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-chapter-area";
+  content: pending(multiple-choice-separated);
+  move-to: multiple-choice-sectionSeparatedContainer; }
+:pass(5) [data-type="chapter"]::after {
+  class: os-multiple-choice;
+  content: pending(multiple-choice-sectionSeparatedContainer);
+  move-to: multiple-choice-DESTINATION; }
+:pass(5) [data-type="chapter"]::after {
+  container: h3;
+  data-type: "title";
+  content: "Multiple Choice";
+  move-to: multiple-choice-title; }
+:pass(5) [data-type="chapter"]::after {
+  class: "os-multiple-choice-container";
+  content: pending(multiple-choice-title) pending(multiple-choice-DESTINATION);
+  move-to: composite-DESTINATION; }
+:pass(5) [data-type="chapter"] .short-answer {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: short-answer-separated; }
+  :pass(5) [data-type="chapter"] .short-answer > [data-type="title"] {
+    move-to: trash; }
+:pass(5) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-chapter-area";
+  content: pending(short-answer-separated);
+  move-to: short-answer-sectionSeparatedContainer; }
+:pass(5) [data-type="chapter"]::after {
+  class: os-short-answer;
+  content: pending(short-answer-sectionSeparatedContainer);
+  move-to: short-answer-DESTINATION; }
+:pass(5) [data-type="chapter"]::after {
+  container: h3;
+  data-type: "title";
+  content: "Short Answer";
+  move-to: short-answer-title; }
+:pass(5) [data-type="chapter"]::after {
+  class: "os-short-answer-container";
+  content: pending(short-answer-title) pending(short-answer-DESTINATION);
+  move-to: composite-DESTINATION; }
+:pass(5) [data-type="chapter"] .extended-response {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: extended-response-separated; }
+  :pass(5) [data-type="chapter"] .extended-response > [data-type="title"] {
+    move-to: trash; }
+:pass(5) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-chapter-area";
+  content: pending(extended-response-separated);
+  move-to: extended-response-sectionSeparatedContainer; }
+:pass(5) [data-type="chapter"]::after {
+  class: os-extended-response;
+  content: pending(extended-response-sectionSeparatedContainer);
+  move-to: extended-response-DESTINATION; }
+:pass(5) [data-type="chapter"]::after {
+  container: h3;
+  data-type: "title";
+  content: "Extended Response";
+  move-to: extended-response-title; }
+:pass(5) [data-type="chapter"]::after {
+  class: "os-extended-response-container";
+  content: pending(extended-response-title) pending(extended-response-DESTINATION);
+  move-to: composite-DESTINATION; }
+:pass(5) [data-type="chapter"]::after {
+  class: "os-eoc os-test-prep-container";
+  data-type: composite-page;
+  data-uuid-key: ".test-prep";
+  content: pending(composite-DESTINATION); }
 
 :pass(6) .os-index-container > div.group-by:first-of-type > span.group-label {
   content: "Symbols"; }
