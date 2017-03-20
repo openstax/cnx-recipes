@@ -4,9 +4,6 @@
   ECONOMICS PAGES
 ==========================================================*/
 
-//Make pages
-$pageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
-
 /*
   Key Concepts and Summary
 
@@ -16,8 +13,6 @@ $pageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossar
 
   Style guide: book.2-composite.summary
 */
-$pageSummary                : ( name: "Key Concepts and Summary", source: "summary", sectionSeparated: true );
-
 /*
   Self-Check Questions
 
@@ -33,8 +28,6 @@ $pageSummary                : ( name: "Key Concepts and Summary", source: "summa
 
   Style guide: book.2-composite.self-check-questions
 */
-$pageSelfCheck              : ( name: "Self-Check Questions", source: "self-check-questions", hasSolutions: true);
-
 /*
   Review Questions
 
@@ -44,8 +37,6 @@ $pageSelfCheck              : ( name: "Self-Check Questions", source: "self-chec
 
   Style guide: book.2-composite.review-questions
 */
-$pageReviewQuestions        : ( name: "Review Questions", source: "review-questions", hasSolutions: false );
-
 /*
   Critical Thinking Questions
 
@@ -56,8 +47,6 @@ $pageReviewQuestions        : ( name: "Review Questions", source: "review-questi
 
   Style guide: book.2-composite.critical-thinking
 */
-$pageCriticalThinking       : ( name: "Critical Thinking Questions", source: "critical-thinking", );
-
 /*
   Problems
 
@@ -68,7 +57,6 @@ $pageCriticalThinking       : ( name: "Critical Thinking Questions", source: "cr
 
   Style guide: book.2-composite.problems
 */
-$pageProblems               : ( name: "Problems", source: "problems", hasSolutions: true, );
 /*
   Test Prep For AP® Courses
 
@@ -79,7 +67,6 @@ $pageProblems               : ( name: "Problems", source: "problems", hasSolutio
 
   Style guide: book.2-composite.test-prep
 */
-$pageTestPrep               : ( name: "Test Prep For AP® Courses", source: "ap-test-prep", hasSolutions: true, );
 
 /*
   References
@@ -91,25 +78,26 @@ $pageTestPrep               : ( name: "Test Prep For AP® Courses", source: "ap-
 
   Style guide: book.2-composite.references
 */
-$pageReferences             : ( name: "References", source: "references", sectionSeparated: false, chapterSeparated: true, );
-
-$pageIndex                  : ( name: "Index", source: "index", isIndex: true );
-
-$pageSolutions              : ( name: "Answer Key", source: "solutions", chapterSeparated: true, compoundComposite: true, isAnswerKey: true, moveSolutionsTo: $AREA_EOB);
-
 $Config_ChapterCompositePages: (
-  $pageKeyTerms, $pageSummary, $pageSelfCheck, $pageReviewQuestions, $pageCriticalThinking, $pageProblems, $pageTestPrep
+  (source: "glossary", isGlossary: true, sortBy: "dl > dt", name: "Key Terms"),
+  (source: "summary",               hasSolutions: false, sectionSeparated: true, name: "Key Concepts and Summary"),
+  (source: "self-check-questions",  hasSolutions: true,   name: "Self-Check Questions"),
+  (source: "review-questions",      hasSolutions: false,  name: "Review Questions"),
+  (source: "critical-thinking",     hasSolutions: false,  name: "Critical Thinking Questions"),
+  (source: "problems",              hasSolutions: true,   name: "Problems"),
+  (source: "ap-test-prep",          hasSolutions: true,   name: "Test Prep For AP® Courses"),
 );
 
 $Config_BookCompositePages: (
   //This doesn't get parsed as a list without a comma at the end
   //the composite builder should account for this rather than using hacky syntax
-  $pageSolutions, $pageReferences, $pageIndex,
+  (source: "solutions",   isAnswerKey: true,  chapterSeparated: true, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (source: "references",                      chapterSeparated: true, sectionSeparated: false, name: "References"),
+  (source: "index",       isIndex: true, name: "Index"),
 );
 /*==========================================================
   ECONOMICS TITLING CONTENT
 ==========================================================*/
-$_exerciseTitleContent       : ( divider: ".", number: counter(exercise), );
 /*==========================================================
   ECONOMICS CONFIG
 ==========================================================*/
@@ -160,7 +148,7 @@ $Config_Notes: (
 
 $Config_UnnumberedExercises: (); // There are no unnumbered exercises
 
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (divider: ".", number: counter(exercise)));
 $Config_PartType_Example:  ();
 $Config_PartType_Chapter:  ();
 $Config_PartType_Equation: ();
