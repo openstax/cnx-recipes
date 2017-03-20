@@ -4,9 +4,6 @@
   HIGH SCHOOL PHYSICS PAGES
 ==========================================================*/
 
-//Make pages
-$PageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
-
 /*
   Section Summary
 
@@ -17,8 +14,6 @@ $PageKeyTerms               : ( name: "Key Terms", source: "glossary", isGlossar
 
   Style guide: book.2-composite.summary
 */
-$pageSummary                : ( name: "Section Summary", source: "summary", sectionSeparated: false );
-
 /*
   Key Equations
 
@@ -34,7 +29,7 @@ $pageSummary                : ( name: "Section Summary", source: "summary", sect
 
   Style guide: book.2-composite.key-equations
 */
-$pageKeyEquations           : ( name: "Key Equations", source: "key-equations", sectionSeparated: false );
+
 
 /*
   Concept Items
@@ -45,9 +40,6 @@ $pageKeyEquations           : ( name: "Key Equations", source: "key-equations", 
 
   Style guide: book.2-composite.concept
 */
-
-$pageConceptItems           : ( name: "Concept Items", source: "concept", sectionSeparated: true );
-
 /*
   Critical Thinking Items
 
@@ -57,8 +49,6 @@ $pageConceptItems           : ( name: "Concept Items", source: "concept", sectio
 
   Style guide: book.2-composite.critical-thinking
 */
-$pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critical-thinking", sectionSeparated: true );
-
 /*
   Problems
 
@@ -68,8 +58,6 @@ $pageCriticalThinking       : ( name: "Critical Thinking Items", source: "critic
 
   Style guide: book.2-composite.problems
 */
-$pageProblems               : ( name: "Problems", source: "ost-chapter-review.problem", sectionSeparated: true ); // TODO: Change `source:` to `selector:` because this part is unclear
-
 /*
   Performance Task
 
@@ -79,41 +67,12 @@ $pageProblems               : ( name: "Problems", source: "ost-chapter-review.pr
 
   Style guide: book.2-composite.performance
 */
-$pagePerformance            : ( name: "Performance Task", source: "performance", sectionSeparated: true );
-
-/*
-  Multiple Choice
-
-  These should be collated at the end of a chapter
-
-  Markup: ./styleguide/book.composite.multiplechoice.xhtml-baked.xhtml
-
-  Style guide: book.2-composite.multiplechoice
-*/
-$pageMultipleChoice         : ( name: "Multiple Choice", source: "multiple-choice", sectionSeparated: true );
-
-/*
-  Short Answer
-
-  These should be collated at the end of a chapter
-
-  Markup: ./styleguide/book.composite.shortanswer.xhtml-baked.xhtml
-
-  Style guide: book.2-composite.shortanswer
-*/
-$pageShortAnswer            : ( name: "Short Answer", source: "short-answer", sectionSeparated: true );
-
-/*
-  Extended Response
-
-  These should be collated at the end of a chapter
-
-  Markup: ./styleguide/book.composite.extendedresponse.xhtml-baked.xhtml
-
-  Style guide: book.2-composite.extendedresponse
-*/
-$pageExtendedResponse       : ( name: "Extended Response", source: "extended-response", sectionSeparated: true );
-
+$_chapterReviewChildPages: (
+  (source: "concept",                     sectionSeparated: true, name: "Concept Items"),
+  (source: "critical-thinking",           sectionSeparated: true, name: "Critical Thinking Items"),
+  (source: "ost-chapter-review.problem",  sectionSeparated: true, name: "Problems"), // TODO: Change `source:` to `selector:` because this part is unclear,
+  (source: "performance",                 sectionSeparated: true, name: "Performance Task"),
+);
 /*
   Chapter Review
 
@@ -125,8 +84,42 @@ $pageExtendedResponse       : ( name: "Extended Response", source: "extended-res
 
   Style guide: book.compoundcomposite.chapterreview
 */
-$compoundReview               : ( $pageConceptItems, $pageCriticalThinking, $pageProblems, $pagePerformance,);
-$pageChapterReview            : ( name: "Chapter Review", source: "chapter-review", contains: $compoundReview, EOCcompoundComposite: true ); // TODO rename contains to childComposites or something easy to search for
+$_pageChapterReview: (source: "chapter-review", EOCcompoundComposite: true, contains: $_chapterReviewChildPages, name: "Chapter Review"); // TODO rename contains to childComposites or something easy to search for
+
+
+
+/*
+  Multiple Choice
+
+  These should be collated at the end of a chapter
+
+  Markup: ./styleguide/book.composite.multiplechoice.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.multiplechoice
+*/
+/*
+  Short Answer
+
+  These should be collated at the end of a chapter
+
+  Markup: ./styleguide/book.composite.shortanswer.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.shortanswer
+*/
+/*
+  Extended Response
+
+  These should be collated at the end of a chapter
+
+  Markup: ./styleguide/book.composite.extendedresponse.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.extendedresponse
+*/
+$_testPrepChildPages: (
+  (source: "multiple-choice",   sectionSeparated: true, name: "Multiple Choice"),
+  (source: "short-answer",      sectionSeparated: true, name: "Short Answer"),
+  (source: "extended-response", sectionSeparated: true, name: "Extended Response"),
+);
 /*
   Test Prep
 
@@ -138,23 +131,24 @@ $pageChapterReview            : ( name: "Chapter Review", source: "chapter-revie
 
   Style guide: book.compoundcomposite.testprep
 */
-$compoundTestPrep             : ( $pageMultipleChoice, $pageShortAnswer,  $pageExtendedResponse );
-$pageTestPrep                 : ( name: "Test Prep", source: "test-prep", contains: $compoundTestPrep, EOCcompoundComposite: true );
+$_pageTestPrep: (source: "test-prep", EOCcompoundComposite: true, contains: $_testPrepChildPages, name: "Test Prep");
 
-
-$PageIndex                  : ( name: "Index", source: "index", isIndex: true );
 
 $Config_ChapterCompositePages: (
-  $PageKeyTerms, $pageSummary, $pageKeyEquations, $pageChapterReview, $pageTestPrep,
+  (source: "glossary", isGlossary: true, sortBy: "dl > dt", name: "Key Terms"),
+  (source: "summary",       sectionSeparated: false, name: "Section Summary"),
+  (source: "key-equations", sectionSeparated: false, name: "Key Equations"),
+
+  $_pageChapterReview,
+  $_pageTestPrep,
 );
 
-$Config_ChapterCompoundCompositePages: ( $pageChapterReview, $pageTestPrep );
+$Config_ChapterCompoundCompositePages: ( $_pageChapterReview, $_pageTestPrep );
 
 $Config_BookCompositePages: (
-  //This doesn't get parsed as a list without a comma at the end
-  //the composite builder should account for this rather than using hacky syntax
-  $PageIndex,
+  (source: "index", isIndex: true, name: "Index"),
 );
+
 /*==========================================================
   HIGH SCHOOL PHYSICS TITLING CONTENT
 ==========================================================*/
@@ -168,6 +162,8 @@ $_equationNumber             : ( number: counter(chapter) "." counter(equation) 
 ==========================================================*/
 $Config_SetTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true );
 $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
+
+
 /*
   Teacher Support  note
 
