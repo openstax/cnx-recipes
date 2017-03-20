@@ -5,10 +5,14 @@
   //Some modifications to be done to the book before any collation
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
-  @include modify_simLinkTarget();
+  @if $Config_Cover_MayHaveSimlinks == true {
+    @include modify_simLinkTarget();
+  }
   @include modify_wrapExercises(); // no dependencies
   @include modify_wrapLists(); // no dependencies
-  @include modify_wrapIframesWithAlternatives(); // no dependencies
+  @if $Config_Cover_MayHaveIframes == true {
+    @include modify_wrapIframesWithAlternatives(); // no dependencies
+  }
 
   @include modify_trash("cnx-pi");
 
@@ -25,7 +29,9 @@
 
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
-  @include modify_trash('div.missing-exercise');
+  @if $Config_Cover_MayHaveMissingExercises == true {
+    @include modify_trash('div.missing-exercise');
+  }
 }
 :pass(1) {
 
