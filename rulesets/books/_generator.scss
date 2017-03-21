@@ -222,7 +222,16 @@ $_symbolsSectionTitle: "Symbols";
   }
   //After: prepBookComposites, prepChapterAreas
   @include compose_createBookComposites($Config_BookCompositePages);
-  @include compose_EOCcompoundCompositesPages($Config_ChapterCompoundCompositePages);
+
+  // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
+  // and finding all that have a `contains:` field
+  $_chapterCompoundCompositePages: ();
+  @each $page in $Config_ChapterCompositePages {
+    @if map-get($page, contains) != null {
+      $_chapterCompoundCompositePages: append($_chapterCompoundCompositePages, $page);
+    }
+  }
+  @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
 }
 :pass(6) {
   //After: prepIndexTerms, createBookComposites

@@ -32,6 +32,17 @@
 
 
 /*
+  Chapter Review
+
+  These should be collated at the end of a chapter.
+
+  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task
+
+  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.xhtml
+
+  Style guide: book.compoundcomposite.chapterreview
+*/
+/*
   Concept Items
 
   These should be collated at the end of a chapter
@@ -73,21 +84,20 @@ $_chapterReviewChildPages: (
   (source: "ost-chapter-review.problem",  sectionSeparated: true, name: "Problems"), // TODO: Change `source:` to `selector:` because this part is unclear,
   (source: "performance",                 sectionSeparated: true, name: "Performance Task"),
 );
+
+
+
 /*
-  Chapter Review
+  Test Prep
 
   These should be collated at the end of a chapter.
 
-  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task
+  Compound Composite that contains: Test Prep Multiple Choice, Test Prep Short Answer, Test Prep Extended Response
 
-  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.xhtml
+  Markup: ./styleguide/book.compoundcomposite.testprep.xhtml-baked.xhtml
 
-  Style guide: book.compoundcomposite.chapterreview
+  Style guide: book.compoundcomposite.testprep
 */
-$_pageChapterReview: (source: "chapter-review", EOCcompoundComposite: true, contains: $_chapterReviewChildPages, name: "Chapter Review"); // TODO rename contains to childComposites or something easy to search for
-
-
-
 /*
   Multiple Choice
 
@@ -120,18 +130,6 @@ $_testPrepChildPages: (
   (source: "short-answer",      sectionSeparated: true, name: "Short Answer"),
   (source: "extended-response", sectionSeparated: true, name: "Extended Response"),
 );
-/*
-  Test Prep
-
-  These should be collated at the end of a chapter.
-
-  Compound Composite that contains: Test Prep Multiple Choice, Test Prep Short Answer, Test Prep Extended Response
-
-  Markup: ./styleguide/book.compoundcomposite.testprep.xhtml-baked.xhtml
-
-  Style guide: book.compoundcomposite.testprep
-*/
-$_pageTestPrep: (source: "test-prep", EOCcompoundComposite: true, contains: $_testPrepChildPages, name: "Test Prep");
 
 
 $Config_ChapterCompositePages: (
@@ -139,11 +137,10 @@ $Config_ChapterCompositePages: (
   (source: "summary",       sectionSeparated: false, name: "Section Summary"),
   (source: "key-equations", sectionSeparated: false, name: "Key Equations"),
 
-  $_pageChapterReview,
-  $_pageTestPrep,
+  // compoundComposite pages:
+  (source: "chapter-review",  contains: $_chapterReviewChildPages,  name: "Chapter Review"), // TODO rename contains to childComposites or something easy to search for
+  (source: "test-prep",       contains: $_testPrepChildPages,       name: "Test Prep"),
 );
-
-$Config_ChapterCompoundCompositePages: ( $_pageChapterReview, $_pageTestPrep );
 
 $Config_BookCompositePages: (
   (source: "index", isIndex: true, name: "Index"),
