@@ -1,13 +1,13 @@
 Instructions for cooking content on the server
 ==============================================
 
- - From cnx-recipes in Github, get URL to the CSS version of the ruleset needed. Path: cnx-recipes/books/rulesets/output/
- >https://raw.githubusercontent.com/Connexions/cnx-recipes/master/books/rulesets/output/statistics.css
+ - From cnx-rulesets in Github, get URL to the CSS version of the ruleset needed. Path: cnx-rulesets/books/rulesets/output/
+ >https://raw.githubusercontent.com/Connexions/cnx-rulesets/master/books/rulesets/output/statistics.css
 
  - ssh into server
 
  - wget the ruleset
- >wget https://raw.githubusercontent.com/Connexions/cnx-recipes/master/books/rulesets/output/statistics.css
+ >wget https://raw.githubusercontent.com/Connexions/cnx-rulesets/master/books/rulesets/output/statistics.css
 
  - Pro Tip: Remove ruleset if it already exists before running wget
 
