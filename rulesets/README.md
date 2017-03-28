@@ -47,7 +47,6 @@ These are the Types used to configure the numbering an collation of a book.
 
 - `name` - string
 - `source` - string class name (usually) sometimes it gets converted to a data-type (should probably be a data-type)
-- `isGlossary` - bool
 - `sortBy` string (selector)
 - `sectionSeparated` - bool
 - `chapterSeparated` - bool

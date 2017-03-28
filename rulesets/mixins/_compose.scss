@@ -58,7 +58,7 @@
 
 /// Collects elements defined by `$page.source` (a selector-ish thing) and
 /// collates them at the end of a chapter.
-/// @arg {Map} $page - contains `name`, `source`, and optionally `sortBy` and `compoundComposite` and `isGlossary`
+/// @arg {Map} $page - contains `name`, `source`, and optionally `sortBy` and `compoundComposite` and `specialPageType`
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
 /// @group compose
 @mixin _createChapterComposite($page, $sectionHeaderNode) {
@@ -66,6 +66,7 @@
   $source: map-get($page, source);
   $sortBy: map-get($page, sortBy);
   $compoundComposite: map-get($page, compoundComposite);
+  $specialPageType: map-get($page, specialPageType);
 
   // Validate
   @include validate_type($name, string);
@@ -73,14 +74,14 @@
   @include validate_typeOptional($sortBy, string);
   @include validate_typeOptional($compoundComposite, bool);
   @include validate_type($sectionHeaderNode, string);
+  @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
   div[data-type="chapter"] {
     @if (not $compoundComposite) {
       $sectionSeparated: map-get($page, sectionSeparated);
-      $isGlossary: map-get($page, isGlossary);
-      $keyName: if($isGlossary, '<glossary>', '.#{$source}');
-      $sourceSelector: if($isGlossary, 'div[data-type="#{$source}"] dl', 'section.#{$source}');
-      @if ($isGlossary) {
+      $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$source}');
+      $sourceSelector: if($specialPageType == $PAGE_GLOSSARY, 'div[data-type="#{$source}"] dl', 'section.#{$source}');
+      @if ($specialPageType == $PAGE_GLOSSARY) {
         div[data-type="#{$source}"] {
           /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
           move-to: trash;
@@ -192,8 +193,11 @@
     $name: map-get($compositePage, name);
     $source: map-get($compositePage, source);
     $allComposites: map-get($compositePage, contains);
-    $isGlossary: map-get($compositePage, isGlossary);
-    $keyName: if($isGlossary, '<glossary>', '.#{$source}');
+    $specialPageType: map-get($compositePage, specialPageType);
+
+    @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
+
+    $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$source}');
 
     @include _processComposites($allComposites);
     [data-type="chapter"] {
