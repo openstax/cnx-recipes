@@ -53,7 +53,6 @@ These are the Types used to configure the numbering an collation of a book.
 - `hasSolutions` - bool
 - `specialPageType` - enum
 - `compoundComposite` - bool
-- `isAnswerKey` - bool
 
 These are collected into a list as `$chapterCompositePages` and `$bookCompositePages` in the config file.
 
