@@ -52,7 +52,7 @@ These are the Types used to configure the numbering an collation of a book.
 - `sectionSeparated` - bool
 - `chapterSeparated` - bool
 - `hasSolutions` - bool
-- `isIndex` - bool
+- `specialPageType` - enum
 - `compoundComposite` - bool
 - `isAnswerKey` - bool
 

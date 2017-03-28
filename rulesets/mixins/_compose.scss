@@ -124,9 +124,9 @@
 /// - a `[data-type="term"]` is copied and put into the the "bucket" for the end-of-book index.
 /// - collated sections are moved into their corresponding "bucket"
 ///
-/// @arg {Map} $page - contains `name`, `source`, and optionally `compoundComposite` and `isIndex`
+/// @arg {Map} $page - contains `name`, `source`, and optionally `compoundComposite` and `specialPageType`
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
-/// @arg {string} $sectionHeaderString - Optional, used when `isIndex` is true
+/// @arg {string} $sectionHeaderString - Optional, used when `specialPageType` is `$PAGE_INDEX`
 /// @group compose
 
 
@@ -212,18 +212,18 @@
   $name: map-get($page, name);
   $source: map-get($page, source);
   $compoundComposite: map-get($page, compoundComposite);
-  $isIndex: map-get($page, isIndex);
+  $specialPageType: map-get($page, specialPageType);
 
   // Validate
   @include validate_type($name, string);
   @include validate_type($source, string);
-  @include validate_typeOptional($isIndex, bool);
   @include validate_typeOptional($compoundComposite, bool);
   @include validate_type($sectionHeaderString, string);
+  @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
   @if (not $compoundComposite) {
-    $sourceSelector: if($isIndex, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
-    @if ($isIndex) {
+    $sourceSelector: if($specialPageType == $PAGE_INDEX, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
+    @if ($specialPageType == $PAGE_INDEX) {
       #{$sourceSelector} {
         // Create an index entry for the term by creating a new element and then moving it
         &::after {
@@ -265,8 +265,7 @@
       $chapterSeparated: map-get($page, chapterSeparated);
       $sectionSeparated: map-get($page, sectionSeparated);
       $chapterPages: map-get($page, chapterPages);
-      $isGlossary: map-get($page, isGlossary);
-      $keyName: if($isGlossary, '<glossary>', '.#{$source}');
+      $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$source}');
 
       // Validate
       @include validate_type($chapterSeparated, bool);
@@ -325,32 +324,33 @@
 
 /// Collects elements defined by `$page.source` (a selector-ish thing) and
 /// collates them at the end of the book.
-/// @arg {Map} $page - contains `source`, and optionally `isIndex`
+/// @arg {Map} $page - contains `source`, and optionally `specialPageType`
 /// @group compose
 @mixin _createBookComposite($page) {
   body {
     $source: map-get($page, source);
-    $isIndex: map-get($page, isIndex);
+    $specialPageType: map-get($page, specialPageType);
     $chapterSeparated: map-get($page, chapterSeparated);
-    $keyName: if($isIndex, '<index>', '.#{$source}');
     // Validate
     @include validate_type($source, string);
-    @include validate_typeOptional($isIndex, bool);
+    @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
-       @if ($chapterSeparated) {
-        body::after {
-          class: "os-eob os-#{$source}-container";
-          data-type: "composite-page";
-          content: pending(#{$source}-TOCOMPOSITE);
-        }
+    $keyName: if($specialPageType == $PAGE_INDEX, '<index>', '.#{$source}');
+
+     @if ($chapterSeparated) {
+      body::after {
+        class: "os-eob os-#{$source}-container";
+        data-type: "composite-page";
+        content: pending(#{$source}-TOCOMPOSITE);
       }
+    }
     &::after {
       container: div;
       content: pending(#{$source}-TOCOMPOSITE);
       class: "os-eob os-#{$source}-container";
       data-type: "composite-page";
       data-uuid-key: "#{$keyName}";
-      @if ($isIndex) {
+      @if ($specialPageType == $PAGE_INDEX) {
         group-by: span, "span::attr(group-by)", nocase;
       }
     }
