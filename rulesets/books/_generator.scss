@@ -47,20 +47,20 @@ $_symbolsSectionTitle: "Symbols";
       @include modify_trash('.#{$className} [data-type="solution"]');
     } @else {
       // TODO Skip reconstructing a new object for modify_note
-      $label: map-get($note, label);
+      $labelText: map-get($note, labelText);
       $titleContent: map-get($note, titleContent);
       $isBodyWrapped: map-get($note, isBodyWrapped);
 
-      @include validate_typeOptional($label, string);
+      @include validate_typeOptional($labelText, string);
       @include validate_typeOptional($titleContent, map);
 
       // Check that there is not both a label AND a titleContent
-      @if $label and $titleContent {
+      @if $labelText and $titleContent {
         @error "BUG: Specified both a label and a titleContent";
       } @else {
         // Phil does not know how to do `@else @if { ... }`
-        @if $label {
-          @include modify_note((selector: $className, label: $label, isBodyWrapped: $isBodyWrapped));
+        @if $labelText {
+          @include modify_note((selector: $className, labelText: $labelText, isBodyWrapped: $isBodyWrapped));
         } @else {
           @if $titleContent {
             @include number_numberNote($className, $titleContent);
