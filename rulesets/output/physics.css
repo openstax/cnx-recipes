@@ -316,8 +316,6 @@
     content: content();
     container: span;
     class: "os-text"; }
-:pass(0) a.os-interactive-link {
-  attr-target: "_blank"; }
 :pass(0) [data-type="exercise"][data-label]:not([data-label=""])::after {
   container: div;
   class: "os-label";
@@ -338,20 +336,8 @@
   data-type: "list-container";
   container: div;
   content: pending(bListLabel) content(); }
-:pass(0) :not([data-type="alternatives"]) > iframe {
-  class: attr(class) "os-is-iframe"; }
-  :pass(0) :not([data-type="alternatives"]) > iframe::after {
-    container: a;
-    class: "os-is-link";
-    attr-target: "_window";
-    attr-href: attr(src);
-    content: "Click to view content";
-    move-to: bIframeLink; }
-  :pass(0) :not([data-type="alternatives"]) > iframe::outside {
-    container: div;
-    data-type: "alternatives";
-    class: "os-has-iframe os-has-link";
-    content: pending(bIframeLink) content(); }
+:pass(0) cnx-pi {
+  move-to: trash; }
 :pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
   string-set: noteTitle content();
   move-to: trash; }
@@ -369,8 +355,6 @@
   content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
-:pass(0) cnx-pi {
-  move-to: trash; }
 
 :pass(2) body {
   counter-reset: chapter; }
@@ -380,6 +364,11 @@
   container: span;
   content: counter(chapter);
   class: os-number;
+  move-to: bChapterLabel; }
+:pass(2) div[data-type="chapter"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
   move-to: bChapterLabel; }
 :pass(2) div[data-type="chapter"] > [data-type="document-title"] {
   container: h1;
@@ -398,6 +387,11 @@
   content: counter(appendix,upper-alpha);
   class: os-number;
   move-to: bAppendixLabel; }
+:pass(2) div.appendix::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bAppendixLabel; }
 :pass(2) div.appendix > [data-type="document-title"] {
   container: h1;
   content: pending(bAppendixLabel) content(); }
@@ -409,6 +403,11 @@
   container: span;
   content: counter(chapter) "." counter(section);
   class: os-number;
+  move-to: bSectionLabel; }
+:pass(2) div[data-type="chapter"] > div[data-type="page"]:not(.introduction)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
   move-to: bSectionLabel; }
 :pass(2) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"] {
   container: h2;
@@ -428,6 +427,11 @@
   container: span;
   content: counter(chapter) "." counter(example);
   class: os-number;
+  move-to: bExampleLabel; }
+:pass(2) .example::before {
+  container: span;
+  content: " ";
+  class: os-divider;
   move-to: bExampleLabel; }
 :pass(2) .example > [data-type="title"] {
   move-to: trash; }
@@ -616,6 +620,9 @@
   content: nodes(chapterHeaderNode) content();
   move-to: index-TOCOMPOSITE; }
 
+:pass(5) div[data-type="page"] > [data-type="document-title"],
+:pass(5) div[data-type="composite-page"] > [data-type="document-title"] {
+  node-set: sectionHeaderNode; }
 :pass(5) body::after {
   container: div;
   content: pending(index-TOCOMPOSITE);
@@ -718,7 +725,7 @@
   class: os-number; }
 :pass(6) [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
   container: span;
-  content: "Exercise";
+  content: "Exercise ";
   class: os-title-label; }
 :pass(6) [data-type="chapter"], :pass(6) .appendix {
   counter-reset: table; }
@@ -735,8 +742,13 @@
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(table) > table:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) "." counter(table) " ";
+  content: counter(chapter) "." counter(table);
   class: os-number;
+  move-to: bCaption; }
+:pass(6) [data-type="chapter"] :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption [data-type="title"] {
   container: span;
@@ -760,8 +772,13 @@
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered)::before {
   container: span;
-  content: counter(appendix,upper-alpha) "." counter(table) " ";
+  content: counter(appendix,upper-alpha) "." counter(table);
   class: os-number;
+  move-to: bCaption; }
+:pass(6) .appendix :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
   move-to: bCaption; }
 :pass(6) .appendix :not(table) > table:not(.unnumbered) caption [data-type="title"] {
   container: span;
@@ -785,8 +802,13 @@
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) "." counter(figure) " ";
+  content: counter(chapter) "." counter(figure);
   class: os-number;
+  move-to: bCaption; }
+:pass(6) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
   move-to: bCaption; }
 :pass(6) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption {
   container: span;
@@ -810,8 +832,13 @@
   move-to: bCaption; }
 :pass(6) .appendix :not(figure) > figure:not(.unnumbered)::before {
   container: span;
-  content: counter(appendix,upper-alpha) "." counter(figure) " ";
+  content: counter(appendix,upper-alpha) "." counter(figure);
   class: os-number;
+  move-to: bCaption; }
+:pass(6) .appendix :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
   move-to: bCaption; }
 :pass(6) .appendix :not(figure) > figure:not(.unnumbered) figcaption {
   container: span;

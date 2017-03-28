@@ -29,6 +29,15 @@ The common documentation is in `./rulesets/mixins/styleguide/_all.scss` only bec
 
 The book-specific documentation is done as comments in the `./rulesets/books/${bookName}/book.scss` and `./rulesets/books/${bookName}/_config.scss` files and the Raw HTML snippets are in `./books/${bookName}/styleguide/`.
 
+# Variable Naming Conventions
+
+There are 4 different types of variables used in the SASS files:
+
+- starts with `Config_`: these are defined in the config file and are the **only** ones used as input to `_generator.scss`
+- `$UPPER_CASE`: these are enums (SASS does not have native enums) and are used when you must select 1 of several options.
+  - Example: `$AREA_NONE`, `$AREA_EOC`, `$AREA_EOB`
+- `$_privateVar`: these are declared and used **within** the SCSS file
+- `$PascalCase`: these are defined in one `_config.scss` file but are used in another `_config.scss` file
 
 # Mixin Types
 

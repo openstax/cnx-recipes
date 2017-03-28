@@ -1,9 +1,9 @@
+@import '../_common-stuff';
+
 /*==========================================================
   STATISTICS PAGES
 ==========================================================*/
 
-//Make pages
-$pageKeyTerms                     : ( name: "Key Terms", source: "glossary", isGlossary: true, sortBy: "dl > dt" );
 /*
   Chapter Review page
 
@@ -13,8 +13,6 @@ $pageKeyTerms                     : ( name: "Key Terms", source: "glossary", isG
 
   Style guide: book.composite.review
 */
-$pageChapterReview          : ( name: "Chapter Review", source: "summary", sectionSeparated: true );
-
 /*
 Formula Review page
 
@@ -24,8 +22,6 @@ Formula Review page
 
   Style guide: book.composite.formulareview
 */
-$pageFormulaReview          : ( name: "Formula Review", source: "formula-review", sectionSeparated: true );
-
 /*
   Practice Problems page
 
@@ -35,7 +31,6 @@ $pageFormulaReview          : ( name: "Formula Review", source: "formula-review"
 
   Style guide: book.2-composite.practice
 */
-$pagePractice                   : ( name: "Practice", source: "practice", sectionSeparated: true, hasSolutions: true );
 /*
   Bringing It Together: Exercises page
 
@@ -45,8 +40,6 @@ $pagePractice                   : ( name: "Practice", source: "practice", sectio
 
   Style guide: book.composite.BITExercises
 */
-$pageBITExercises           : ( name: "Bringing It Together: Exercises", source: "bring-together-exercises", hasSolutions: true );
-
 /*
   Homework page
 
@@ -56,8 +49,6 @@ $pageBITExercises           : ( name: "Bringing It Together: Exercises", source:
 
   Style guide: book.composite.homework
 */
-$pageHomework              : ( name: "Homework", source: "free-response", sectionSeparated: true, hasSolutions: true );
-
 /*
   Bringing It Together: Homework page
 
@@ -67,8 +58,6 @@ $pageHomework              : ( name: "Homework", source: "free-response", sectio
 
   Style guide: book.composite.BITHomework
 */
-$pageBITHomework         : ( name: "Bringing It Together: Homework", source: "bring-together-homework", hasSolutions: true );
-
 /*
   References page
 
@@ -78,8 +67,6 @@ $pageBITHomework         : ( name: "Bringing It Together: Homework", source: "br
 
   Style guide: book.composite.references
 */
-$pageReferences            : ( name: "References", source: "references", sectionSeparated: true );
-
 /*
   Solutions page
 
@@ -89,39 +76,50 @@ $pageReferences            : ( name: "References", source: "references", section
 
   Style guide: book.composite.solutions
 */
-$pageSolutions                : ( name: "Solutions", source: "solutions", compoundComposite: true, );
-
-$pageIndex                        : ( name: "Index", source: "index", isIndex: true );
-
-$chapterCompositePages: (
-  $pageKeyTerms, $pageChapterReview, $pageFormulaReview, $pagePractice, $pageBITExercises, $pageHomework, $pageBITHomework, $pageReferences, $pageSolutions
+$Config_ChapterCompositePages: (
+  (source: "glossary",        isGlossary: true, sortBy: "dl > dt",                  name: "Key Terms"),
+  (source: "summary",         sectionSeparated: true,                               name: "Chapter Review"),
+  (source: "formula-review",  sectionSeparated: true,                               name: "Formula Review"),
+  (source: "practice",        sectionSeparated: true, hasSolutions: true,           name: "Practice"),
+  (source: "bring-together-exercises",                hasSolutions: true,           name: "Bringing It Together: Exercises"),
+  (source: "free-response",   sectionSeparated: true, hasSolutions: true,           name: "Homework"),
+  (source: "bring-together-homework",                 hasSolutions: true,           name: "Bringing It Together: Homework"),
+  (source: "references",      sectionSeparated: true,                               name: "References"),
+  (source: "solutions",       compoundComposite: true, moveSolutionsTo: $AREA_EOC,  name: "Solutions"),
 );
 
-$bookCompositePages: (
+$Config_BookCompositePages: (
+  (source: "index",           isIndex: true,                              name: "Index"),
   //This doesn't get parsed as a list without a comma at the end
   //the composite builder should account for this rather than using hacky syntax
-  $pageIndex,
 );
-
 /*==========================================================
   STATISTICS TITLING CONTENT
 ==========================================================*/
-
 //unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
 //when they need to be able to be in any order because of possible changes in titling order between books
 //Usage Note: key: class of the containing span, value: text that will go inside span
-$chapterTitleContent        : ( number: counter(chapter), divider:" " );
+// Drat, the order of title-label, number, divider matters ;(
+$_exerciseTitleContent       : (divider: ".", number: counter(exercise) );
+$_exampleTitleContent        : (title-label: "Example ", number: counter(chapter) "." counter(example), divider: " ");
+$_exampleSolutionTitleContent: (title-label: "Solution ", number: counter(chapter) "." counter(example), divider: " ");
+$_tryTitleContent            : (title-label: "Try It ", number: counter(chapter) "." counter(example)); // Try it notes are numbered based on the example preceeding them
 
-$appendixTitleContent       : ( title-label: "Appendix ", number: counter(appendix, upper-alpha), divider:" " );
 
-$sectionTitleContent        : ( number: counter(chapter) "." counter(section), divider: " " );
+/*==========================================================
+  STATISTICS CONFIG
+==========================================================*/
+$Config_SetTableCaption            : (type: table, defaultContainer: caption, hasCaption: false, hasTitle: true);
+$Config_SetFigureCaption           : (type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: false);
+//If this method of setting the content of the label explicity becomes a problem,
+//try grabbing the numbering information from the element's header
 
-$exerciseTitleContent       : ( divider: ".", number: counter(exercise) );
-
-// NOTE: This is unused in this book but is copy/pasta'd just to make it easier to find when switching to a config scheme
-$exerciseContentTitleContent: ( number : counter(exerciseMaybeInContent), title-label : "Exercise" );
-$solutionContentTitleContent: null;
-
+//NOTE: These selectors MUST match the counting selectors or be more specific
+//otherwise, the increment and the counter() call may fire in the wrong order
+//This may be fixed in a later version of easybake
+$Config_TargetLabels: append($Config_TargetLabels,
+  (selector: 'div[data-type="chapter"] .try', label: "Try It")
+);
 
 /*
   Example
@@ -132,9 +130,6 @@ $solutionContentTitleContent: null;
 
   Style guide: page.example
 */
-$exampleTitleContent        : ( title-label: "Example ", number: counter(chapter) "." counter(example) );
-
-$exampleSolutionTitleContent: ( title-label: "Solution ", number: counter(chapter) ". " counter(example) );
 /*
   Try It note
 
@@ -144,7 +139,6 @@ $exampleSolutionTitleContent: ( title-label: "Solution ", number: counter(chapte
 
   Style guide: page.note.try
 */
-$tryTitleContent                     : ( title-label: "Try It ", number: counter(chapter) "." counter(example) );
 /*
   Using the TI-83, 83+, 84, 84+ Calculator note
 
@@ -154,8 +148,6 @@ $tryTitleContent                     : ( title-label: "Try It ", number: counter
 
   Style guide: page.note.calculator
 */
-$calculatorNote                       : ( label : "Using the TI-83, 83+, 84, 84+ Calculator", selector : calculator, );
-
 /*
   Note
 
@@ -165,7 +157,6 @@ $calculatorNote                       : ( label : "Using the TI-83, 83+, 84, 84+
 
   Style guide: page.note.finger
 */
-$fingerNote                               : ( label : "Note", selector : finger, );
 /*
   Stats Lab note
 
@@ -175,8 +166,6 @@ $fingerNote                               : ( label : "Note", selector : finger,
 
   Style guide: page.note.lab
 */
-$statsLabNote                            : ( label : "Stats Lab", selector : lab, );
-
 /*
   Collaborative Excerise note
 
@@ -186,73 +175,18 @@ $statsLabNote                            : ( label : "Stats Lab", selector : lab
 
   Style guide: page.note.collab
 */
+$Config_Notes: (
+  (className: 'calculator', moveSolutionTo: $AREA_NONE,  label: "Using the TI-83, 83+, 84, 84+ Calculator"),
+  (className: 'finger',     moveSolutionTo: $AREA_NONE,  label: "Note"),
+  (className: 'lab',        moveSolutionTo: $AREA_NONE,  label: "Stats Lab"),
+  (className: 'collab',     moveSolutionTo: $AREA_NONE,  label: "Collaborative Excerise"),
+  (className: 'chapter-objectives', moveSolutionTo: $AREA_NONE,  label: "Chapter Objectives"),
+  (className: 'try',        moveSolutionTo: $AREA_TRASH, counterName: Try, titleContent: $_tryTitleContent), // try it notes are numbered based on the example preceeding them
+);
 
-$collabNote                             : ( label : "Collaborative Excerise", selector : collab, );
-
-
-$captionTableNumber         : ( title-label: "Table ", number: counter(chapter) "." counter(table) " " );
-
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$captionTableNumberAp       : ( title-label: "Table ", number: counter(appendix, upper-alpha) "." counter(table) );
-
-$captionFigNumber           : ( title-label: "Figure ", number: counter(chapter) "." counter(figure) " " );
-
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$captionFigNumberAp         : ( title-label: "Figure ", number: counter(appendix, upper-alpha) "." counter(figure) " " );
-
-$symbolsSectionTitle        : "Symbols";
-
-/*==========================================================
-  STATISTICS CONFIG
-==========================================================*/
-
-$setTableCaption            : ( type: table, defaultContainer: caption, hasCaption: false, hasTitle: true );
-
-$setFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: false );
-
-//If this method of setting the content of the label explicity becomes a problem,
-//try grabbing the numbering information from the element's header
-
-//NOTE: These selectors MUST match the counting selectors or be more specific
-//otherwise, the increment and the counter() call may fire in the wrong order
-//This may be fixed in a later version of easybake
-$targetLabels: (
-  (
-    selector    : '.os-eoc [data-type="exercise"]',
-    label       : "Exercise " counter(chapter) "." counter(exercise)
-  ),
-  (
-    selector    : 'div[data-type="chapter"] .example',
-    label       : "Example " counter(chapter) "." counter(example)
-  ),
-  (
-    selector    : '[data-type="chapter"] :not(table) > table:not(.unnumbered)',
-    label       : "Table " counter(chapter) "." counter(table)
-  ),
-  (
-    selector    : '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',
-    label       : "Figure " counter(chapter) "." counter(figure)
-  ),
-  (
-    selector    : '[data-type="appendix"] :not(table) > table:not(.unnumbered)',
-    label       : "Table " counter(appendix, upper-alpha) "." counter(table)
-  ),
-  (
-    selector    : '[data-type="appendix"] :not(figure) > figure:not(.unnumbered)',
-    label       : "Figure " counter(appendix, upper-alpha) "." counter(figure)
-  ),
-  // Book-specific link to Try It
-  /*
-    Try It Feature
-
-    This is a note that is numbered based on the example before it
-
-    Style guide: page.note.try
-  */
-  (
-    selector    : 'div[data-type="chapter"] .try',
-    label       :     "Try It"
-  ),
+$Config_UnnumberedExercises: (
+  (contextSelector: '.try',                   childSelector: '[data-type="exercise"]'),
+  (contextSelector: '[data-type="example"]',  childSelector: '[data-type="exercise"]'),
 );
 
 /*
@@ -264,5 +198,14 @@ $targetLabels: (
 
   Style guide: page.note.chapter-objectives
 */
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER,  numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Example:  (moveTo: $AREA_NONE,                          titleContent: $_exampleTitleContent,
+                                                                  solutionTitleContent: $_exampleSolutionTitleContent);
+$Config_PartType_Chapter:  ();
+$Config_PartType_Equation: ();
+$Config_PartType_Solution: ();
 
-$chapter-objectivesNote                             : ( label : "Chapter Objectives", selector : chapter-objectives, );
+// Coverage optimizations
+$Config_Cover_MayHaveSimlinks: false;
+$Config_Cover_MayHaveIframes: false;
+$Config_Cover_MayHaveMissingExercises: false;
