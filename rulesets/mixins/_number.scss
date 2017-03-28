@@ -117,7 +117,7 @@
 }
 
 @mixin number_setCaptions($setFigTableCaptions, $labeling, $labelingAp) {
-  $type:                map-get($setFigTableCaptions, type);
+  $captionType:         map-get($setFigTableCaptions, captionType);
   $defaultContainer:    map-get($setFigTableCaptions, defaultContainer);
   $hasCaption:          map-get($setFigTableCaptions, hasCaption);
   $hasTitle:            map-get($setFigTableCaptions, hasTitle);
@@ -125,11 +125,20 @@
 
   // $noTitleContent: (); // For the exceptions, this is the "titleContent" that will be used
 
+  @include validate_enum($captionType, $CAPTION__PREFIX__);
   @include validate_typeOptional($exceptionClassNames, list);
   // These selectors are of the form:
   // `table:not(.unnumbered):not(.custom1):not(.custom2)` (everything that is not an exception)
   // `table.unnumbered, table.custom1, table.custom2`     (everything that is an exception)
-  $notAnExceptionSelector: "#{$type}";
+  $elementName: "INVALID_ELEMENT_NAME";
+  @if $captionType == $CAPTION_TABLE {
+    $elementName: "table";
+  } @else if $captionType == $CAPTION_FIGURE {
+    $elementName: "figure";
+  } @else {
+    @error "BUG: Invalid captionType '#{$captionType}'";
+  }
+  $notAnExceptionSelector: "#{elementName}";
   $exceptionsSelector: "";
   @if $exceptionClassNames {
     @each $item in $exceptionClassNames {
@@ -137,27 +146,27 @@
       $notAnExceptionSelector: unquote("#{$notAnExceptionSelector}:not(.#{$item})");
       // Only add a comma if there is already an $exceptionsSelector
       @if $exceptionsSelector == "" {
-        $exceptionsSelector: unquote("#{$type}.#{$item}");
+        $exceptionsSelector: unquote("#{$elementName}.#{$item}");
       } @else {
-        $exceptionsSelector: unquote("#{$exceptionsSelector}, #{$type}.#{$item}");
+        $exceptionsSelector: unquote("#{$exceptionsSelector}, #{$elementName}.#{$item}");
       }
 
     }
   }
 
   [data-type="chapter"] {
-    :not(#{$type}) > #{$type}:not(.unnumbered) {
+    :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
       @include utils_title($labeling, bCaption);
-      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle);
     }
-    @include trashUnnumberedCaption($type, $defaultContainer);
+    @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
   .appendix {
-    :not(#{$type}) > #{$type}:not(.unnumbered) {
+    :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
       @include utils_title($labelingAp, bCaption);
-      @include setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle);
+      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle);
     }
-    @include trashUnnumberedCaption($type, $defaultContainer);
+    @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
 
  // /* The :not(#{$type}) is here because of subfigures (I think) */
@@ -231,15 +240,15 @@
 /// Unnumbered captions are currently trashed (even if they contain content) because
 /// of some contract that the XML teams had which stated something along the lines
 /// of "If a table/figure is unnumbered then openstax will discard the caption"
-@mixin trashUnnumberedCaption ($type, $defaultContainer) {
-  > #{$type}.unnumbered {
+@mixin trashUnnumberedCaption ($elementName, $defaultContainer) {
+  > #{$elementName}.unnumbered {
     #{$defaultContainer} {
       move-to: trash;
     }
   }
 }
 
-@mixin setCaptionsHelper($type, $defaultContainer, $hasCaption, $hasTitle) {
+@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle) {
 
   @if ($hasCaption) {
     #{$defaultContainer} {
@@ -249,19 +258,20 @@
     }
   }
   @if ($hasTitle) {
-    @if ($type == "table") {
+    @if ($captionType == $CAPTION_TABLE) {
       #{$defaultContainer} [data-type="title"] {
         container: span;
         class: "os-title";
         move-to: bCaption;
       }
-    }
-    @if ($type == "figure") {
+    } @else if ($captionType == $CAPTION_FIGURE) {
       [data-type="title"] {
         container: span;
         class: "os-title";
         move-to: bCaption;
       }
+    } @else {
+      @error "BUG: Invalid captionType '#{$captionType}'";
     }
   }
   &::after {
@@ -271,7 +281,13 @@
     move-to: bCaptionContainer;
   }
   &::outside {
-    class: os-#{$type};
+    @if $captionType == $CAPTION_TABLE {
+      class: os-table;
+    } @else if $captionType == $CAPTION_FIGURE {
+      class: os-figure;
+    } @else {
+      @error "BUG: Invalid captionType '#{$captionType}'";
+    }
     container: div;
     content: content() pending(bCaptionContainer);
   }
