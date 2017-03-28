@@ -60,6 +60,7 @@ A `Page` contains the following fields:
   - A header is added which contains the section number and title
 - `specialPageType`: (optional) There are also a couple of "special" pages: `$PAGE_INDEX` and `$PAGE_GLOSSARY`
 which contain additional configuration fields.
+- `childPages`: (optional) Some generated pages are just a container for other Pages. This contains the list of child Pages that need to be generated
 
 Also, a set of styleguide comments occur above for each composite page.
 Having it here makes it easy to remember to update the documentation and by having it above the `$Config_ChapterCompositePages` helps make this area

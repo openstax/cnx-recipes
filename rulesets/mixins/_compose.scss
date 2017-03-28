@@ -192,14 +192,15 @@
   @each $page in $getAllComposites {
     $name: map-get($page, name);
     $className: map-get($page, className);
-    $allComposites: map-get($page, contains);
+    $childPages: map-get($page, childPages);
     $specialPageType: map-get($page, specialPageType);
 
+    @include validate_type($childPages, list);
     @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
     $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
 
-    @include _processComposites($allComposites);
+    @include _processComposites($childPages);
     [data-type="chapter"] {
       &::after {
         class: "os-eoc os-#{$className}-container";
