@@ -29,6 +29,7 @@ The common documentation is in `./rulesets/mixins/styleguide/_all.scss` only bec
 
 The book-specific documentation is done as comments in the `./rulesets/books/${bookName}/book.scss` and `./rulesets/books/${bookName}/_config.scss` files and the Raw HTML snippets are in `./books/${bookName}/styleguide/`.
 
+
 # Variable Naming Conventions
 
 There are 4 different types of variables used in the SASS files:
@@ -39,163 +40,132 @@ There are 4 different types of variables used in the SASS files:
 - `$_privateVar`: these are declared and used **within** the SCSS file
 - `$PascalCase`: these are defined in one `_config.scss` file but are used in another `_config.scss` file
 
-# Mixin Types
 
-These are the Types used to configure the numbering an collation of a book.
+# Config Settings Hierarchy
 
-# Page
+The config settings are variables that start with `$Config_` and have the following structure:
 
-- `name` - string
-- `source` - string class name (usually) sometimes it gets converted to a data-type (should probably be a data-type)
-- `sortBy` string (selector)
-- `sectionSeparated` - bool
-- `chapterSeparated` - bool
-- `hasSolutions` - bool
-- `specialPageType` - enum
-- `compoundComposite` - bool
-
-These are collected into a list as `$chapterCompositePages` and `$bookCompositePages` in the config file.
-
-
-### Mixins
-
-```sass
-@include reference_refSectionHeaderNodeAs(sectionHeaderNode);
-@include compose_createChapterComposites($chapterCompositePages, sectionHeaderNode);
-
-//After: ???
-@include reference_refSectionHeaderNodeAs(sectionHeaderNode);
-@include reference_refSectionHeaderStringAs(sectionHeaderString);
-@include compose_prepBookComposites($bookCompositePages, sectionHeaderNode, sectionHeaderString);
-
-//Only move solutions after exercises/solutions are numbered
-@include reference_refSectionHeaderNodeAs(sectionHeaderNode);
-@include compose_createEOBSolutions($chapterCompositePages, $pageSolutions, sectionHeaderNode);
-
-//After: prepBookComposites
-@include reference_refChapterHeaderNodeAs(chapterHeaderNode);
-@include compose_prepChapterAreas($bookCompositePages, chapterHeaderNode);
-
-//After: prepBookComposites, prepChapterAreas
-@include compose_createBookComposites($bookCompositePages);
-
-//After: createChapterComposites, createEOCSolutions, createBookComposites
-@include compose_titleEOCComposites($chapterCompositePages);
-@include compose_titleEOBComposites($bookCompositePages);
-
-//After: createChapterComposites, createEOCSolutions, createBookComposites
-@include modify_compositeAutoID();
-@include modify_chapterAutoID();
-
-@include modify_retitleCompositeMetadata();
-```
-
-# TitleContent
-
-Describes numbering and labeling of elements (mostly just table and figure).
-See `$captionFigNumber` and `$captionTableNumber`.
-
-- `title-label` - string
-- `number` - set of counters
-- `divider` - string
-
-### Mixins
-
-```sass
-//Come up with mixins for common numbering schemes as per Phil's suggestion
-@include count_countChapters(chapter);
-@include number_numberChapters($chapterTitleContent);
-@include count_countAppendices(appendix);
-@include number_numberAppendices($appendixTitleContent);
-@include count_countSections(section);
-@include number_numberSections($sectionTitleContent);
-@include count_countExamples(example);
-@include number_numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
-@include count_countNote(Try, "try");
-@include number_numberNote("try", $tryTitleContent);
-@include number_numberNote("calculator", $calcTitleContent);
+- `$Config_ChapterTitleContent`: A [TitleContent](#titlecontent)
+- `$Config_AppendixTitleContent`: A [TitleContent](#titlecontent)
+- `$Config_SectionTitleContent`: A [TitleContent](#titlecontent)
+- `$Config_CaptionTableNumber`: A [TitleContent](#titlecontent)
+- `$Config_CaptionTableNumberAp`: A [TitleContent](#titlecontent)
+- `$Config_CaptionFigNumber`: A [TitleContent](#titlecontent)
+- `$Config_CaptionFigNumberAp`: A [TitleContent](#titlecontent)
+- `$Config_ChapterCompositePages`: A list of [Pages](#page)
+- `$Config_BookCompositePages`: A list of [Pages](#page)
+- `$Config_SetTableCaption`
+- `$Config_SetFigureCaption`
+- `$Config_TargetLabels`: A list of [TargetLabels](#targetlabel)
+- `$Config_Notes`: A list of [Notes](#note)
+- `$Config_UnnumberedExercises`: A list of [UnnumberedExercises](#unnumberedexercise)
+- `$Config_PartType_*`
+  - `$Config_PartType_Exercise`: A [CustomPart](#custompart)
+  - `$Config_PartType_Example`: A [CustomPart](#custompart)
+  - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
+  - `$Config_PartType_Equation`: A [CustomPart](#custompart)
+  - `$Config_PartType_Solution`: A [CustomPart](#custompart)
+- `$Config_Coverage_*`
+  - `$Config_Coverage_MayHaveSimlinks`: a boolean
+  - `$Config_Coverage_MayHaveIframes`: a boolean
+  - `$Config_Coverage_MayHaveMissingExercises`: a boolean
+- `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
 
 
-//After: createChapterComposites
-@include count_countEOCExercises(exercise);
-@include number_numberEOCExercises($exerciseTitleContent, $exerciseTitleContent);
-```
+## TitleContent
 
-# setFigure(Table)Caption(Number)
+This is a map whose keys are the `className` of the element that will be created (ie `os-divider` or `os-number`) and the values are the css that will be used (ie `"|"` or `counter(exercise)`).
 
-- `type` token (can be `table` or `figure`)
-- `defaultContainer` token (can be `caption`)
-- `hasCaption` bool
-- `hasTitle` bool
+Example:
 
-### Mixins
-
-```sass
-@include count_countTables(table);
-@include count_countFigures(figure);
-@include number_setCaptions($setTableCaption, $captionTableNumber, $captionTableNumberAp);
-@include number_setCaptions($setFigureCaption, $captionFigNumber, $captionFigNumberAp);
-```
-
-# TargetLabel
-
-These are used when creating the text for a link (ie `See Figure 4.3`).
-
-- `selector` string
-- `label` nodes? containing things like `"Figure" counter(chapter) "." counter(figure)`
-
-These are collected in `$targetLabels`.
-
-```sass
-//After: composite page creation
-@include count_countChapters(chapter);
-@include count_countAppendices(appendix);
-@include count_countEOCExercises(exercise);
-@include count_countExamples(example);
-@include link_setTargetLabels($targetLabels);
-@include link_setLinkLabels();
+```scss
+(
+  os-title-label: "Example",
+  os-divider: " ",
+  os-number: counter(chapter) "." counter(example),
+  os-divider: ":",
+)
 ```
 
 
-# ToC
+## Page
 
-Generating to Table of Contents requires the following mixins (each done in a separate pass).
+These are the end-of-chapter/book pages that are autogenerated.
 
-```sass
-@include toc_prepTOCElements();
-@include toc_putTOCElements();
-@include toc_navTOCUnwrap();
-```
+A `Page` contains the following fields:
+- `className`: the class name (and bucket) of the page
+- `name`: The title of the new page (TODO rename?)
+- `hasSolutions`: `true` when this item contains exercises that contain solutions
+  - (TODO: why is this necessary?)
+- `sectionSeparated`: `true` when items on this page should be organized by Section
+  - A header is added which contains the section number and title
+- `chapterSeparated`: `true` when items on this page should be organized by Chapter (only for end-of-book Pages)
+  - A header is added which contains the section number and title
+- `specialPageType`: (optional) There are also a couple of "special" pages: `$PAGE_INDEX` and `$PAGE_GLOSSARY`
+which contain additional configuration fields.
+- `childPages`: (optional) Some generated pages are just a container for other Pages. This contains the list of child Pages that need to be generated
+
+Also, a set of styleguide comments occur above for each composite page.
+Having it here makes it easy to remember to update the documentation and by having it above the `$Config_ChapterCompositePages` helps make this area
+more readable (since it sort of looks like a table).
 
 
-# Misc mixins
+## TargetLabel
 
-These are a grab-bag of the rest of mixins that are used. They should eventually be grouped into categories.
+Configure the labels of links. You will likely just extend the default set with a label for items specific to this book, like links to `Try It` notes.
 
-```sass
-//Some modifications to be done to the book before any collation
-@include modify_titlePreface();
-@include modify_spanWrapTitles();
-@include modify_simLinkTarget();
-@include modify_trash('.try [data-type="solution"]');
-@include utils_hasSolution();
+(TODO: maybe this should be the default for links to Notes?)
+**NOTE:** These selectors MUST match the counting selectors or be more specific
+otherwise, the increment and the counter() call may fire in the wrong order.
 
-@include count_countTerms(term);
-@include reference_refPageIDStringAs(pageID);
-@include modify_prepIndexTerms(term, pageID);
+A `TargetLabel` contains the following fields:
 
-//After: createChapterComposites, numberEOCExercises
-@include count_countExercises(exerciseAll);
-@include link_linkToProblemsFromSolutionsEOC("number", "number", exerciseAll);
+- `selector`: This a selector that matches the target of a link
+- `labelText`: This is the text that will be inside the link
 
-//After: prepIndexTerms, createBookComposites
-@include modify_addIndexSymbolGroup("index", $symbolsSectionTitle);
 
-@include reference_refBookMetadataNodeAs(bookMetadata);
-@include modify_compositeMetadata(bookMetadata);
+## Note
 
-//After: All metadata tasks are completed
-@include modify_suppressURI();
+These are a Set of "Feature boxes" that are specific to the book.
 
-@include utils_clearTrash();
-```
+A `Note` contains the following fields:
+- `className`: the class name of the Note
+- `moveSolutionTo`: Where the solution can be moved to.
+  - `$AREA_NONE` keeps the solution in place
+  - `$AREA_TRASH` discards the solution
+  - `$AREA_EOC` moves the solutions to the end of a chapter
+  - `$AREA_EOB` moves the solutions to the end of the book
+- `labelText`: A simple string for the title. cannot be used with `titleContent`
+- `titleContent`: what the autogenerated title should look like.
+  - Most notes are just a string but some, like "Try It"
+    are prefaced with which section they occur in
+- `counterName`: (optional) used in conjunction with titleContent to specify the name of the counter
+
+
+## UnnumberedExercise
+
+Sometimes exercises in notes should not be numbered. This shows which ones.
+TODO: It would be nice to move these into the note config but it seems like
+the context is not always a note, and the child is not always an exercise.
+so the proper place to put this requires a bit more thought
+
+It contains the following fields:
+
+- `contextSelector`
+- `childSelector`: (optional)
+
+
+## CustomPart
+
+This contains additional elements in the book (like an equation, exercises, solutions)
+Each entry has a few common fields that can be set:
+- `moveTo`: specifies where to move this element to
+- `resetAt`: specifies when the counters should reset
+  - `$RESET_CHAPTER` resets for each chapter
+  - `$RESET_COMPOSITE_PAGE` resets for each autogenerated page
+- `titleContent`: The generated title for this element
+
+- `outlineTitle`: (optional) Only used by `Chapter`
+- `numberAt`: (optional) Only used by `Exercise`
+- `solutionTitleContent`: (optional) Only used by `Example`
+- `excludeNumberingInClassName`: (optional) Only used by `Equation`
