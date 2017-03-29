@@ -54,8 +54,8 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_CaptionFigNumberAp`: A [TitleContent](#titlecontent)
 - `$Config_ChapterCompositePages`: A list of [Pages](#page)
 - `$Config_BookCompositePages`: A list of [Pages](#page)
-- `$Config_SetTableCaption`
-- `$Config_SetFigureCaption`
+- `$Config_SetTableCaption`: A [Caption](#caption)
+- `$Config_SetFigureCaption`: A [Caption](#caption)
 - `$Config_TargetLabels`: A list of [TargetLabels](#targetlabel)
 - `$Config_Notes`: A list of [Notes](#note)
 - `$Config_UnnumberedExercises`: A list of [UnnumberedExercises](#unnumberedexercise)
@@ -109,6 +109,19 @@ Also, a set of styleguide comments occur above for each composite page.
 Having it here makes it easy to remember to update the documentation and by having it above the `$Config_ChapterCompositePages` helps make this area
 more readable (since it sort of looks like a table).
 
+
+## Caption
+
+This configures a Table or Figure caption.
+
+A `Caption` contains the following fields:
+
+- `captionType`: whether this is for a table or a figure
+  - `$CAPTION_TABLE`
+  - `$CAPTION_FIGURE`
+- `defaultContainer`: An element that is created to contain the caption
+- `hasCaption`: a boolean
+- `hasTitle`: a boolean
 
 ## TargetLabel
 
