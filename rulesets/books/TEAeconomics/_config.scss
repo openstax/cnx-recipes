@@ -1,0 +1,155 @@
+@import '../_common-stuff';
+
+/*==========================================================
+  ECONOMICS PAGES
+==========================================================*/
+
+/*
+  Key Concepts and Summary
+
+  These should be collated at the end of a chapter and separated by which section they came from.
+
+  Markup: ./styleguide/book.composite.summary.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.summary
+*/
+/*
+  Self-Check Questions
+
+  These should be collated at the end of a chapter and have answers collated at the end of the chapter.
+
+  **Notes:** Even without the styling you can see a few problems with the ruleset code:
+  1. the rulesets use the class attribute when they should use the `data-type`
+  1. the solution is being duplicated
+  1. the solution is inside the link text that points back to the problem
+  1. new id's are generated rather than using the existing id attributes for the problem and solution
+
+  Markup: ./styleguide/book.composite.self-check-questions.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.self-check-questions
+*/
+/*
+  Review Questions
+
+  These should be collated at the end of a chapter and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.review-questions.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.review-questions
+*/
+/*
+  Critical Thinking Questions
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.critical-thinking.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.critical-thinking
+*/
+/*
+  Problems
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.problems.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.problems
+*/
+/*
+  Test Prep For AP® Courses
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.test-prep.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.test-prep
+*/
+
+/*
+  References
+  These should be collated at the end of a chapter
+
+  and separated by which section they came from.
+
+  Markup: ./styleguide/book.composite.references.xhtml-baked.xhtml
+
+  Style guide: book.2-composite.references
+*/
+$Config_ChapterCompositePages: (
+  (source: "glossary", isGlossary: true, sortBy: "dl > dt", name: "Key Terms"),
+  (source: "summary",               hasSolutions: false, sectionSeparated: true, name: "Key Concepts and Summary"),
+  (source: "self-check-questions",  hasSolutions: true,   name: "Self-Check Questions"),
+  (source: "review-questions",      hasSolutions: false,  name: "Review Questions"),
+  (source: "critical-thinking",     hasSolutions: false,  name: "Critical Thinking Questions"),
+  (source: "problems",              hasSolutions: true,   name: "Problems"),
+  (source: "ap-test-prep",          hasSolutions: true,   name: "Test Prep For AP® Courses"),
+);
+
+$Config_BookCompositePages: (
+  //This doesn't get parsed as a list without a comma at the end
+  //the composite builder should account for this rather than using hacky syntax
+  (source: "solutions",   isAnswerKey: true,  chapterSeparated: true, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (source: "references",                      chapterSeparated: true, sectionSeparated: false, name: "References"),
+  (source: "index",       isIndex: true, name: "Index"),
+);
+/*==========================================================
+  ECONOMICS TITLING CONTENT
+==========================================================*/
+/*==========================================================
+  ECONOMICS CONFIG
+==========================================================*/
+$Config_SetTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true );
+$Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
+/*
+  Link It Up note
+
+  Contains a title "Link It Up"
+
+  Markup: ./styleguide/page.note.linkup.xhtml-baked.xhtml
+
+  Style guide: page.note.linkup
+*/
+/*
+  Bring It Home note
+
+  Contains a title "Bring It Home" and a body containing a title and the contents of the note.
+
+  Markup: ./styleguide/page.note.bringhome.xhtml-baked.xhtml
+
+  Style guide: page.note.bringhome
+*/
+/*
+  Clear It Up note
+
+  Contains a title "Clear It Up" and a body containing a title and the contents of the note.
+
+  Markup: ./styleguide/page.note.clearup.xhtml-baked.xhtml
+
+  Style guide: page.note.clearup
+*/
+/*
+  Work It Out note
+
+  Contains a title "Work It Out" and a body containing a title and the contents of the note.
+
+  Markup: ./styleguide/page.note.workout.xhtml-baked.xhtml
+
+  Style guide: page.note.workout
+*/
+$Config_Notes: (
+  (className: 'linkup',     moveSolutionTo: $AREA_NONE,  label: "Link It Up",    isBodyWrapped: false),
+  (className: 'bringhome',  moveSolutionTo: $AREA_NONE,  label: "Bring It Home", isBodyWrapped: true ),
+  (className: 'clearup',    moveSolutionTo: $AREA_NONE,  label: "Clear It Up",   isBodyWrapped: true ),
+  (className: 'workout',    moveSolutionTo: $AREA_NONE,  label: "Work It Out",   isBodyWrapped: true ),
+);
+
+$Config_UnnumberedExercises: (); // There are no unnumbered exercises
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (divider: ".", number: counter(exercise)));
+$Config_PartType_Example:  ();
+$Config_PartType_Chapter:  ();
+$Config_PartType_Equation: ();
+$Config_PartType_Solution: ();
