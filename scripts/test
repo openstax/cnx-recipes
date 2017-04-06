@@ -18,6 +18,17 @@ do
   ./scripts/generate-guide "${rulesetName}" || exit 1
 done
 
+# Generate an index.html page for the styleguide
+styleguideDir="./styleguide/"
+
+echo "<html><body><ul>" > "${styleguideDir}/index.html"
+for rulesetName in "${RULESET_NAMES[@]}"
+do
+  echo "<li><a href='./${rulesetName}/'>${rulesetName}</a></li>" >> "${styleguideDir}/index.html"
+done
+echo "</ul></body></html>" >> "${styleguideDir}/index.html"
+
+
 # Generate an HTML report (if genhtml is installed)
 if [[ -n "$(which genhtml)" ]]
 then
