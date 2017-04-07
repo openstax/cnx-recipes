@@ -1,0 +1,46 @@
+@import '../mixins/_all';
+
+@import "./statistics/_config.scss";
+
+@each $item in $Config_ChapterCompositePages {
+  $name:    map-get($item, name);
+  $groupBy: map-get($item, groupBy);
+
+
+  @debug "End of Chapter:";
+  @debug "                - Title displays '#{$name}'";
+  @if $groupBy == $GROUP_SECTION {
+    @debug "                - Separated by sections";
+    @debug "                - Section subheaders contain with chapter and module number and the module title, e.g. 1.3 Frequency";
+  } @else if $groupBy == $GROUP_CHAPTER {
+    @debug "                - Separated by chapter";
+  } @else if $groupBy == $GROUP_NONE {
+    @debug "                - No module subheaders";
+  } @else {
+    @error "BUG";
+  }
+}
+
+@each $item in $Config_Notes {
+  // (className: 'calculator', moveSolutionTo: $AREA_NONE,  labelText: "Using the TI-83, 83+, 84, 84+ Calculator"),
+  // (className: 'try',        moveSolutionTo: $AREA_TRASH, counterName: Try, titleContent: $_tryTitleContent),
+  $className:       map-get($item, className);
+  $moveSolutionTo:  map-get($item, moveSolutionTo);
+  $labelText:       map-get($item, labelText);
+  $titleContent:    map-get($item, titleContent);
+  $counterName:     map-get($item, counterName);
+
+  @debug "Feature:";
+  @if $labelText {
+    @debug "      - Display a title '#{$labelText}'";
+
+  } @else if $titleContent {
+    @debug "      - Display a title '#{map-get($titleContent, os-title-label)}'";
+  } @else {
+    @debug "      - No custom title";
+  }
+
+  @if $counterName {
+    @debug "      - Restart each chapter";
+  }
+}
