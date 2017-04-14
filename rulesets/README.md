@@ -45,13 +45,6 @@ There are 4 different types of variables used in the SASS files:
 
 The config settings are variables that start with `$Config_` and have the following structure:
 
-- `$Config_ChapterTitleContent`: A [TitleContent](#titlecontent)
-- `$Config_AppendixTitleContent`: A [TitleContent](#titlecontent)
-- `$Config_SectionTitleContent`: A [TitleContent](#titlecontent)
-- `$Config_CaptionTableNumber`: A [TitleContent](#titlecontent)
-- `$Config_CaptionTableNumberAp`: A [TitleContent](#titlecontent)
-- `$Config_CaptionFigNumber`: A [TitleContent](#titlecontent)
-- `$Config_CaptionFigNumberAp`: A [TitleContent](#titlecontent)
 - `$Config_ChapterCompositePages`: A list of [Pages](#page)
 - `$Config_BookCompositePages`: A list of [Pages](#page)
 - `$Config_SetTableCaption`: A [Caption](#caption)
@@ -65,6 +58,13 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
   - `$Config_PartType_Equation`: A [CustomPart](#custompart)
   - `$Config_PartType_Solution`: A [CustomPart](#custompart)
+  - `$Config_PartType_Chapter_TitleContent`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Appendix_TitleContent`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Section_TitleContent`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Table_CaptionContent`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Table_CaptionContentAp`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Figure_CaptionContent`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Figure_CaptionContentAp`: A [TitleContent](#titlecontent)
 - `$Config_Coverage_*`
   - `$Config_Coverage_MayHaveSimlinks`: a boolean
   - `$Config_Coverage_MayHaveIframes`: a boolean
