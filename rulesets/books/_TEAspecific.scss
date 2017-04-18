@@ -1,0 +1,122 @@
+
+//ad hoc TEAspecific specific requirements for the TEG Gateway imports process
+@if $Config_TEAspecificLOHeaders {
+  :pass(0) {
+    .learning-objectives {
+      &::before {
+        container: h3;
+        data-type: "title";
+        content: "Learning Objectives";
+      }
+    }
+  }
+}
+
+@if $Config_TEAspecificAppendicesHeaders {
+  :pass(1) {
+    body {
+      .appendix {
+        move-to: chapterAppendices;
+      }
+      &::after {
+        container: h1;
+        data-type: "document-title";
+        content: "Appendices";
+        move-to: appendicesTitle;
+      }
+      &::after {
+        data-type: metadata;
+        content: nodes(appendicesTitle);
+        move-to: CCmetadata;
+      }
+      &::after {
+        data-type: composite-chapter;
+        data-uuid-key: appendicesChapter;
+        // attr-id: uuid() "@1";
+        content: pending(CCmetadata) pending(appendicesTitle) pending(chapterAppendices);
+      }
+    }
+  }
+  :pass(3) {
+    .appendix {
+      &::inside {
+        container: section;
+        class: "appendix-container";
+      }
+    }
+  }
+  :pass(4) {
+    .appendix {
+      .appendix-container {
+      > h1[data-type="document-title"] {
+        copy-to: appendixTitle;
+     }
+      [data-type="metadata"] {
+        move-to: appendixMetadata;
+      }
+     }
+     &:deferred {
+      content: pending(appendixTitle)  pending(appendixMetadata) content();
+     }
+    }
+  }
+:pass(6) {
+  .appendix {
+    [data-type="title"], [data-type="document-title"]  {
+      container: h2;
+    }
+    > section {
+      [data-type="title"], [data-type="document-title"] {
+          container: h3;
+          data-type: "title";
+      }
+     }
+    }
+  }
+}
+
+// @if $Config_TEAspecificEOBHeaders {
+//   :pass(6) {
+//     .os-eob {
+//       &::inside {
+//         container: section;
+//         class: "eob-inner-container";
+//       }
+//     }
+//    }
+//   :pass(7) {
+//     .os-eob {
+//       .eob-inner-container {
+//         > h1[data-type="document-title"] {
+//           move-to: eobMainTitle;
+//           //node-set: appendixHeaderNode;
+//        }
+//         [data-type="metadata"] {
+//           move-to: eobMetadata;
+//        }
+//       }
+//       &:deferred {
+//         content: pending(eobMainTitle) pending(eobMetadata) content();
+//      }
+//     }
+//   }
+
+//   :pass(8) {
+//     .os-eob {
+//       > h1[data-type="document-title"] {
+//         node-set: eobSubTitle;
+//       }
+//       .eob-inner-container {
+//         content: nodes(eobSubTitle) content();
+//       }
+//     }
+//   }
+
+//   :pass(9) {
+//     .eob-inner-container {
+//       > [data-type="document-title"] {
+//         container: h2;
+//       }
+//     }
+//   }
+// }
