@@ -686,6 +686,22 @@
   class: "os-eoc os-ap-test-prep-container";
   data-type: "composite-page";
   data-uuid-key: ".ap-test-prep"; }
+:pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
+  node-set: outlineSectionTitle; }
+:pass(2) [data-type="page"]:not(.introduction):not(.preface) [data-type="abstract"] {
+  move-to: outlineAbstract; }
+:pass(2) [data-type="page"]:not(.introduction):not(.preface)::after {
+  class: "os-chapter-objective";
+  content: nodes(outlineSectionTitle) pending(outlineAbstract);
+  move-to: chapOutline; }
+:pass(2) [data-type="chapter"]::before {
+  container: h3;
+  class: "os-title";
+  content: "Chapter Objectives";
+  move-to: chapOutlineTitle; }
+:pass(2) [data-type="chapter"]:deferred::before {
+  class: "os-chapter-outline";
+  content: pending(chapOutlineTitle) pending(chapOutline); }
 
 :pass(3) div[data-type="page"] > [data-type="document-title"],
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -734,6 +750,12 @@
   content: pending(index-term) pending(index-section-link);
   class: os-index-item;
   move-to: index-TOCOMPOSITE; }
+:pass(3) .os-chapter-outline {
+  move-to: ChapterOutline; }
+:pass(3) .os-chapter-objective > [data-type="document-title"] {
+  container: h4; }
+:pass(3) .introduction {
+  content: pending(ChapterOutline) content(); }
 :pass(3) [data-type="chapter"], :pass(3) .appendix {
   counter-reset: exercise; }
 :pass(3) .os-eoc [data-type="exercise"] {
@@ -1315,5 +1337,46 @@
 
 :pass(100) body:deferred::after {
   content: clear(trash); }
+
+:pass(0) .learning-objectives::before {
+  container: h3;
+  class: "title";
+  content: "Learning Objectives"; }
+
+:pass(3) .appendix::inside {
+  container: section;
+  class: "appendix-container"; }
+
+:pass(4) .appendix .appendix-container > h1[data-type="document-title"] {
+  move-to: appendixMainTitle;
+  node-set: appendixHeaderNode; }
+:pass(4) .appendix .appendix-container [data-type="metadata"] {
+  move-to: appendixMetadata; }
+:pass(4) .appendix:deferred {
+  content: pending(appendixMainTitle) pending(appendixMetadata) content(); }
+
+:pass(5) .appendix > h1[data-type="document-title"] {
+  node-set: appendixSubTitle; }
+:pass(5) .appendix .appendix-container {
+  content: nodes(appendixSubTitle) content(); }
+
+:pass(6) .os-eob::inside {
+  container: section;
+  class: "eob-inner-container"; }
+
+:pass(7) .os-eob .eob-inner-container > h1[data-type="document-title"] {
+  move-to: eobMainTitle; }
+:pass(7) .os-eob .eob-inner-container [data-type="metadata"] {
+  move-to: eobMetadata; }
+:pass(7) .os-eob:deferred {
+  content: pending(eobMainTitle) pending(eobMetadata) content(); }
+
+:pass(8) .os-eob > h1[data-type="document-title"] {
+  node-set: eobSubTitle; }
+:pass(8) .os-eob .eob-inner-container {
+  content: nodes(eobSubTitle) content(); }
+
+:pass(9) .eob-inner-container > [data-type="document-title"] {
+  container: h2; }
 
 /*# sourceMappingURL=TEAeconomics.css.map */
