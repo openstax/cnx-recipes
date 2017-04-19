@@ -53,72 +53,33 @@
       .appendix-container {
       > h1[data-type="document-title"] {
         copy-to: appendixTitle;
-     }
+       }
+       [data-type="metadata"] {
+        move-to: metadata;
+       }
      }
      &:deferred {
-      content: pending(appendixTitle)  content();
-     }
-    }
-  }
-:pass(6) {
-  .appendix {
-    [data-type="title"], [data-type="document-title"]  {
-      container: h2;
-    }
-    > section {
-      [data-type="title"], [data-type="document-title"] {
-          container: h3;
-          data-type: "title";
-      }
+      content:  pending(metadata) pending(appendixTitle)  content();
      }
     }
   }
 }
+
+@if $Config_TEAspecificReferencePage {
+  :pass(6) {
+    .os-eob {
+      > [data-type="document-title"] {
+        node-set: eobTitle;
+      }
+      &::outside{
+        data-type: "composite-chapter";
+        content: nodes(eobTitle) pending(referencesTitle) content();
+      }
+    }
+  }
+}
+
 :pass(9) {
+  @include modify_retitleHeaders();
   @include modify_trash(".os-index-container");
 }
-// @if $Config_TEAspecificEOBHeaders {
-//   :pass(6) {
-//     .os-eob {
-//       &::inside {
-//         container: section;
-//         class: "eob-inner-container";
-//       }
-//     }
-//    }
-//   :pass(7) {
-//     .os-eob {
-//       .eob-inner-container {
-//         > h1[data-type="document-title"] {
-//           move-to: eobMainTitle;
-//           //node-set: appendixHeaderNode;
-//        }
-//         [data-type="metadata"] {
-//           move-to: eobMetadata;
-//        }
-//       }
-//       &:deferred {
-//         content: pending(eobMainTitle) pending(eobMetadata) content();
-//      }
-//     }
-//   }
-
-//   :pass(8) {
-//     .os-eob {
-//       > h1[data-type="document-title"] {
-//         node-set: eobSubTitle;
-//       }
-//       .eob-inner-container {
-//         content: nodes(eobSubTitle) content();
-//       }
-//     }
-//   }
-
-//   :pass(9) {
-//     .eob-inner-container {
-//       > [data-type="document-title"] {
-//         container: h2;
-//       }
-//     }
-//   }
-// }

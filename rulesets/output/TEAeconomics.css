@@ -892,7 +892,7 @@
   content: target-string(attr(href), target-label); }
 :pass(6) body > [data-type="metadata"] {
   node-set: bookMetadata; }
-:pass(6) [data-type="composite-page"] {
+:pass(6) [data-type="composite-page"], :pass(6) [data-type="composite-chapter"] {
   content: nodes(bookMetadata) content(); }
 :pass(6) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
@@ -1169,6 +1169,10 @@
   container: h2; }
 :pass(6) [data-type="composite-page"].os-eob > .os-chapter-area > section > [data-type="document-title"] {
   container: h3; }
+:pass(6) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > div [data-type="document-title"] {
+  container: h2; }
+:pass(6) [data-type="composite-chapter"] > section > section [data-type="title"], :pass(6) [data-type="composite-chapter"] > section > div [data-type="title"], :pass(6) [data-type="composite-chapter"] > div > section [data-type="title"], :pass(6) [data-type="composite-chapter"] > div > div [data-type="title"] {
+  container: h3; }
 :pass(6) .appendix > section [data-type="title"], :pass(6) .appendix > section [data-type="document-title"] {
   container: h2; }
 :pass(6) .appendix > section > section [data-type="title"], :pass(6) .appendix > section > section [data-type="document-title"] {
@@ -1176,12 +1180,12 @@
 
 :pass(7) .os-index-link-separator:last-child {
   move-to: trash; }
-:pass(7) [data-type="composite-page"] > [data-type="document-title"] {
+:pass(7) [data-type="composite-page"] > [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
-:pass(7) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
+:pass(7) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
 
-:pass(8) div.os-eoc [data-type="cnx-archive-uri"], :pass(8) div.os-eob [data-type="cnx-archive-uri"] {
+:pass(8) div.os-eoc [data-type="cnx-archive-uri"], :pass(8) div.os-eob [data-type="cnx-archive-uri"], :pass(8) [data-type="composite-chapter"] [data-type="cnx-archive-uri"] {
   move-to: trash; }
 :pass(8) body > div[data-type="page"],
 :pass(8) body > div[data-type="composite-page"] {
@@ -1372,13 +1376,9 @@
   content: pending(AppendixTitleSpans);
   move-to: appendicesTitle; }
 :pass(1) body::after {
-  data-type: metadata;
-  content: nodes(appendicesTitle);
-  move-to: CCmetadata; }
-:pass(1) body::after {
   data-type: composite-chapter;
   data-uuid-key: appendicesChapter;
-  content: pending(CCmetadata) pending(appendicesTitle) pending(chapterAppendices); }
+  content: pending(appendicesTitle) pending(chapterAppendices); }
 
 :pass(3) .appendix::inside {
   container: section;
@@ -1387,15 +1387,15 @@
 :pass(4) .appendix .appendix-container > h1[data-type="document-title"] {
   copy-to: appendixTitle; }
 :pass(4) .appendix .appendix-container [data-type="metadata"] {
-  move-to: appendixMetadata; }
+  move-to: metadata; }
 :pass(4) .appendix:deferred {
-  content: pending(appendixTitle) pending(appendixMetadata) content(); }
+  content: pending(metadata) pending(appendixTitle) content(); }
 
-:pass(6) .appendix [data-type="title"], :pass(6) .appendix [data-type="document-title"] {
-  container: h2; }
-:pass(6) .appendix > section [data-type="title"], :pass(6) .appendix > section [data-type="document-title"] {
-  container: h3;
-  data-type: "title"; }
+:pass(6) .os-eob > [data-type="document-title"] {
+  node-set: eobTitle; }
+:pass(6) .os-eob::outside {
+  data-type: "composite-chapter";
+  content: nodes(eobTitle) pending(referencesTitle) content(); }
 
 :pass(9) .os-index-container {
   move-to: trash; }
