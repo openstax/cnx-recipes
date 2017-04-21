@@ -97,7 +97,7 @@ A `Page` contains the following fields:
 - `name`: The title of the new page (TODO rename?)
 - `hasSolutions`: `true` when this item contains exercises that contain solutions
   - (TODO: why is this necessary?)
-- `groupBy`: `$GROUP_SECTION`, `$GROUP_CHAPTER`, or `$GROUP_NONE` when items on this page should be organized by Section/Chapter
+- `clusterBy`: `$CLUSTER_SECTION`, `$CLUSTER_CHAPTER`, or `$CLUSTER_NONE` when items on this page should be organized by Section/Chapter
   - A header is added which contains the section number and title
 - `specialPageType`: (optional) There are also a couple of "special" pages: `$PAGE_INDEX` and `$PAGE_GLOSSARY`
 which contain additional configuration fields.
