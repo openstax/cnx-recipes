@@ -4,7 +4,7 @@ rulesetName=$1
 bakedOrPreparedSuffix=$2 # Overridden when running ./diff-guide-prepare
 
 sassDir='./rulesets/'
-styleguideDir='./styleguide/'
+styleguideDir="./styleguide/${rulesetName}"
 sassFile="${sassDir}/books/${rulesetName}/book.scss"
 cssFile="${styleguideDir}/guide.css"
 bookCssFile="${sassDir}/output/${rulesetName}.css"
@@ -37,7 +37,7 @@ fi
 >&2 echo "==> Compiling the guide.scss file for ${rulesetName}"
 if [ ! -e ${styleguideDir} ]
 then
-  mkdir ${styleguideDir} || exit 1
+  mkdir -p ${styleguideDir} || exit 1
 fi
 bundle exec sass ${sassFile} ${cssFile} || exit 1
 bundle exec sass ${sassFile} ${bookCssFile} || exit 1
@@ -108,7 +108,7 @@ do
     if [[ ! "${snippetFileName}" =~ "-prepared.xhtml" ]]
     then
 
-      >&2 echo "Generating temporary ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml"
+      >&2 echo "Generating temporary ${snippetFileName}-${bakedOrPreparedSuffix}.html"
       # commented because xmllint does not like html5 element names like <figure>
       # ./scripts/bake-file ${rulesetName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.xhtml
       ./scripts/bake-file ${rulesetName} ${snippetFileName} ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml --use-repeatable-ids  || exit 1
@@ -116,12 +116,12 @@ do
       # Construct an HTML file that contains both the raw and baked HTML
       # so it can be separated in the browser
       # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
-      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
-      cat ${snippetFileName} >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
-      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
-      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
-      cat ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
-      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.xhtml || exit 1
+      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      cat ${snippetFileName} >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      cat ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
 
       rm ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml || exit 1
     fi

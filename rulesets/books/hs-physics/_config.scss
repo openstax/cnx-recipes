@@ -10,7 +10,7 @@
   These should be collated at the end of a chapter
   and separated by which section they came from.
 
-  Markup: ./styleguide/book.composite.summary.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.summary.xhtml-baked.html
 
   Style guide: book.2-composite.summary
 */
@@ -25,7 +25,7 @@
   1. the solution is inside the link text that points back to the problem
   1. new id's are generated rather than using the existing id attributes for the problem and solution
 
-  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
 
   Style guide: book.2-composite.key-equations
 */
@@ -38,7 +38,7 @@
 
   Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task
 
-  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.xhtml
+  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.html
 
   Style guide: book.compoundcomposite.chapterreview
 */
@@ -47,7 +47,7 @@
 
   These should be collated at the end of a chapter
 
-  Markup: ./styleguide/book.composite.concept.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.concept.xhtml-baked.html
 
   Style guide: book.2-composite.concept
 */
@@ -56,7 +56,7 @@
 
   These should be collated at the end of a chapter
 
-  Markup: ./styleguide/book.composite.critical-thinking.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.critical-thinking.xhtml-baked.html
 
   Style guide: book.2-composite.critical-thinking
 */
@@ -65,7 +65,7 @@
 
   These should be collated at the end of a chapter
 
-  Markup: ./styleguide/book.composite.problems.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.problems.xhtml-baked.html
 
   Style guide: book.2-composite.problems
 */
@@ -74,15 +74,15 @@
 
   These should be collated at the end of a chapter
 
-  Markup: ./styleguide/book.composite.performance.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.performance.xhtml-baked.html
 
   Style guide: book.2-composite.performance
 */
 $_chapterReviewChildPages: (
-  (source: "concept",                     sectionSeparated: true, name: "Concept Items"),
-  (source: "critical-thinking",           sectionSeparated: true, name: "Critical Thinking Items"),
-  (source: "ost-chapter-review.problem",  sectionSeparated: true, name: "Problems"), // TODO: Change `source:` to `selector:` because this part is unclear,
-  (source: "performance",                 sectionSeparated: true, name: "Performance Task"),
+  (className: "concept",                     clusterBy: $CLUSTER_SECTION, name: "Concept Items"),
+  (className: "critical-thinking",           clusterBy: $CLUSTER_SECTION, name: "Critical Thinking Items"),
+  (className: "ost-chapter-review.problem",  clusterBy: $CLUSTER_SECTION, name: "Problems"), // TODO: Change `source:` to `selector:` because this part is unclear,
+  (className: "performance",                 clusterBy: $CLUSTER_SECTION, name: "Performance Task"),
 );
 
 
@@ -94,7 +94,7 @@ $_chapterReviewChildPages: (
 
   Compound Composite that contains: Test Prep Multiple Choice, Test Prep Short Answer, Test Prep Extended Response
 
-  Markup: ./styleguide/book.compoundcomposite.testprep.xhtml-baked.xhtml
+  Markup: ./styleguide/book.compoundcomposite.testprep.xhtml-baked.html
 
   Style guide: book.compoundcomposite.testprep
 */
@@ -103,7 +103,7 @@ $_chapterReviewChildPages: (
 
   These should be collated at the end of a chapter
 
-  Markup: ./styleguide/book.composite.multiplechoice.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.multiplechoice.xhtml-baked.html
 
   Style guide: book.2-composite.multiplechoice
 */
@@ -112,7 +112,7 @@ $_chapterReviewChildPages: (
 
   These should be collated at the end of a chapter
 
-  Markup: ./styleguide/book.composite.shortanswer.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.shortanswer.xhtml-baked.html
 
   Style guide: book.2-composite.shortanswer
 */
@@ -121,29 +121,29 @@ $_chapterReviewChildPages: (
 
   These should be collated at the end of a chapter
 
-  Markup: ./styleguide/book.composite.extendedresponse.xhtml-baked.xhtml
+  Markup: ./styleguide/book.composite.extendedresponse.xhtml-baked.html
 
   Style guide: book.2-composite.extendedresponse
 */
 $_testPrepChildPages: (
-  (source: "multiple-choice",   sectionSeparated: true, name: "Multiple Choice"),
-  (source: "short-answer",      sectionSeparated: true, name: "Short Answer"),
-  (source: "extended-response", sectionSeparated: true, name: "Extended Response"),
+  (className: "multiple-choice",   clusterBy: $CLUSTER_SECTION, name: "Multiple Choice"),
+  (className: "short-answer",      clusterBy: $CLUSTER_SECTION, name: "Short Answer"),
+  (className: "extended-response", clusterBy: $CLUSTER_SECTION, name: "Extended Response"),
 );
 
 
 $Config_ChapterCompositePages: (
-  (source: "glossary", isGlossary: true, sortBy: "dl > dt", name: "Key Terms"),
-  (source: "summary",       sectionSeparated: false, name: "Section Summary"),
-  (source: "key-equations", sectionSeparated: false, name: "Key Equations"),
+  (className: "glossary",       clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "dl > dt", name: "Key Terms"),
+  (className: "summary",        clusterBy: $CLUSTER_NONE, sectionSeparated: false, name: "Section Summary"),
+  (className: "key-equations",  clusterBy: $CLUSTER_NONE, sectionSeparated: false, name: "Key Equations"),
 
   // compoundComposite pages:
-  (source: "chapter-review",  contains: $_chapterReviewChildPages,  name: "Chapter Review"), // TODO rename contains to childComposites or something easy to search for
-  (source: "test-prep",       contains: $_testPrepChildPages,       name: "Test Prep"),
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages,  name: "Chapter Review"), // TODO rename contains to childComposites or something easy to search for
+  (className: "test-prep",      clusterBy: $CLUSTER_NONE, childPages: $_testPrepChildPages,       name: "Test Prep"),
 );
 
 $Config_BookCompositePages: (
-  (source: "index", isIndex: true, name: "Index"),
+  (className: "index",          clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
 );
 
 /*==========================================================
@@ -152,13 +152,13 @@ $Config_BookCompositePages: (
 //unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
 //when they need to be able to be in any order because of possible changes in titling order between books
 //Usage Note: key: class of the containing span, value: text that will go inside span
-$_exerciseTitleContent       : ( divider: ". ", number: counter(exercise) ); // TODO: Remove this space?
-$_equationNumber             : ( number: counter(chapter) "." counter(equation) );
+$_exerciseTitleContent: (os-divider: ". ", os-number: counter(exercise)); // TODO: Remove this space?
+$_equationNumber      : (os-number: counter(chapter) "." counter(equation));
 /*==========================================================
   HIGH SCHOOL PHYSICS CONFIG
 ==========================================================*/
-$Config_SetTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true );
-$Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true);
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
 
 
 /*
@@ -166,7 +166,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Teacher Support"
 
-  Markup: ./styleguide/page.note.teacher.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.teacher.xhtml-baked.html
 
   Style guide: page.note.teacher
 */
@@ -175,7 +175,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Section Learning Objectives"
 
-  Markup: ./styleguide/page.note.learningobjectives.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.learningobjectives.xhtml-baked.html
 
   Style guide: page.note.learningobjectives
 */
@@ -184,7 +184,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Boundless Physics" and a body containing a title and the contents of the note.
 
-  Markup: ./styleguide/page.note.boundlessphysics.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.boundlessphysics.xhtml-baked.html
 
   Style guide: page.note.boundlessphysics
 */
@@ -193,7 +193,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Misconception Alert".
 
-  Markup: ./styleguide/page.note.misconception.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.misconception.xhtml-baked.html
 
   Style guide: page.note.misconception
 */
@@ -202,7 +202,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Teacher Demonstration".
 
-  Markup: ./styleguide/page.note.workout.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.workout.xhtml-baked.html
 
   Style guide: page.note.workout
 */
@@ -211,7 +211,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Grasp Check".
 
-  Markup: ./styleguide/page.note.grasp-check.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.grasp-check.xhtml-baked.html
 
   Style guide: page.note.grasp-check
 */
@@ -220,7 +220,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Snap Lab" and wrap the body.
 
-  Markup: ./styleguide/page.note.snap-lab.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.snap-lab.xhtml-baked.html
 
   Style guide: page.note.snap-lab
 */
@@ -229,7 +229,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Worked Example" and wraps the body.
 
-  Markup: ./styleguide/page.note.worked-example.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.worked-example.xhtml-baked.html
 
   Style guide: page.note.worked-example
 */
@@ -238,7 +238,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Tips For Success".
 
-  Markup: ./styleguide/page.note.tips-for-success.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.tips-for-success.xhtml-baked.html
 
   Style guide: page.note.tips-for-success
 */
@@ -247,7 +247,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Work In Physics" and wraps body.
 
-  Markup: ./styleguide/page.note.work-in-physics.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.work-in-physics.xhtml-baked.html
 
   Style guide: page.note.work-in-physics
 */
@@ -256,7 +256,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Fun In Physics".
 
-  Markup: ./styleguide/page.note.fun-in-physics.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.fun-in-physics.xhtml-baked.html
 
   Style guide: page.note.fun-in-physics
 */
@@ -265,7 +265,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Links to Physics" and wraps body.
 
-  Markup: ./styleguide/page.note.links-to-physics.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.links-to-physics.xhtml-baked.html
 
   Style guide: page.note.links-to-physics
 */
@@ -274,7 +274,7 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Watch Physics" and wraps body.
 
-  Markup: ./styleguide/page.note.watch-physics.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.watch-physics.xhtml-baked.html
 
   Style guide: page.note.watch-physics
 */
@@ -283,25 +283,25 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
 
   Contains a title "Virtual Physics" and wraps the body.
 
-  Markup: ./styleguide/page.note.virtual-physics.xhtml-baked.xhtml
+  Markup: ./styleguide/page.note.virtual-physics.xhtml-baked.html
 
   Style guide: page.note.virtual-physics
 */
 $Config_Notes: (
-  (className: 'os-teacher',           label: "Teacher Support"),
-  (className: 'boundless-physics',    label: "Boundless Physics", isBodyWrapped: true),
-  (className: 'learning-objectives',  label: "Section Learning Objectives"),
-  (className: 'ost-teacher-demonstration', label: "Teacher Demonstration"),
-  (className: 'ost-misconception',    label: "Misconception Alert"),
-  (className: 'grasp-check',          label: "Grasp Check"),
-  (className: 'snap-lab',             label: "Snap Lab",          isBodyWrapped: true),
-  (className: 'worked-example',       label: "Worked Example",    isBodyWrapped: true),
-  (className: 'tips-for-success',     label: "Tips For Success"),
-  (className: 'work-in-physics',      label: "Work In Physics",   isBodyWrapped: true),
-  (className: 'fun-in-physics',       label: "Fun In Physics"),
-  (className: 'links-to-physics',     label: "Links To Physics",  isBodyWrapped: true),
-  (className: 'watch-physics',        label: "Watch Physics",     isBodyWrapped: true),
-  (className: 'virtual-physics',      label: "Virtual Physics",   isBodyWrapped: true),
+  (className: 'os-teacher',           labelText: "Teacher Support"),
+  (className: 'boundless-physics',    labelText: "Boundless Physics", isBodyWrapped: true),
+  (className: 'learning-objectives',  labelText: "Section Learning Objectives"),
+  (className: 'ost-teacher-demonstration', labelText: "Teacher Demonstration"),
+  (className: 'ost-misconception',    labelText: "Misconception Alert"),
+  (className: 'grasp-check',          labelText: "Grasp Check"),
+  (className: 'snap-lab',             labelText: "Snap Lab",          isBodyWrapped: true),
+  (className: 'worked-example',       labelText: "Worked Example",    isBodyWrapped: true),
+  (className: 'tips-for-success',     labelText: "Tips For Success"),
+  (className: 'work-in-physics',      labelText: "Work In Physics",   isBodyWrapped: true),
+  (className: 'fun-in-physics',       labelText: "Fun In Physics"),
+  (className: 'links-to-physics',     labelText: "Links To Physics",  isBodyWrapped: true),
+  (className: 'watch-physics',        labelText: "Watch Physics",     isBodyWrapped: true),
+  (className: 'virtual-physics',      labelText: "Virtual Physics",   isBodyWrapped: true),
 );
 
 /*
@@ -310,7 +310,7 @@ $Config_Notes: (
   This is an exercise that is fetched from exercises.openstax.org.
   It should be rendered with the label "Grasp Check" (from the data-label attribute).
 
-  Markup: ./styleguide/page.exercise.grasp-check.xhtml-baked.xhtml
+  Markup: ./styleguide/page.exercise.grasp-check.xhtml-baked.html
 
   Style guide: page.exercise.grasp-check
 */
@@ -329,6 +329,6 @@ $Config_PartType_Solution: (moveTo: $AREA_TRASH, HACKRemoveAllSolutionsNotJustEo
 
 
 // Coverage optimizations
-$Config_Cover_MayHaveSimlinks: true;
-$Config_Cover_MayHaveIframes: true;
-$Config_Cover_MayHaveMissingExercises: true;
+$Config_Coverage_MayHaveSimlinks: true;
+$Config_Coverage_MayHaveIframes: true;
+$Config_Coverage_MayHaveMissingExercises: true;

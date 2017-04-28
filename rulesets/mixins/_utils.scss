@@ -6,11 +6,12 @@
 /// @group utils
 @mixin utils_title($content, $bucket: null, $container: null, $containerType: null) {
   //TODO: Restrict what things titlePart can be. Currently any key will work.
-  @each $titlePart in map-keys($content) {
+  @each $titleClassName in map-keys($content) {
+    $titleValue: map-get($content, $titleClassName);
     &::before {
       container: span;
-      content: map-get($content, $titlePart);
-      class: os-#{$titlePart};
+      content: $titleValue;
+      class: $titleClassName;
       @if ($container != null and $containerType != null) {
         move-to: #{$container}-TITLECONTAINER
       } @else if ($bucket != null) {
