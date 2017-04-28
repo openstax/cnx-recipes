@@ -79,21 +79,21 @@
   Style guide: book.2-composite.references
 */
 $Config_ChapterCompositePages: (
-  (source: "glossary", isGlossary: true, sortBy: "dl > dt", name: "Key Terms"),
-  (source: "summary",               hasSolutions: false, sectionSeparated: true, name: "Key Concepts and Summary"),
-  (source: "self-check-questions",  hasSolutions: true,   name: "Self-Check Questions"),
-  (source: "review-questions",      hasSolutions: false,  name: "Review Questions"),
-  (source: "critical-thinking",     hasSolutions: false,  name: "Critical Thinking Questions"),
-  (source: "problems",              hasSolutions: true,   name: "Problems"),
-  (source: "ap-test-prep",          hasSolutions: true,   name: "Test Prep For AP® Courses"),
+  (className: "glossary",             clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "dl > dt", name: "Key Terms"),
+  (className: "summary",              clusterBy: $CLUSTER_SECTION, hasSolutions: false,  name: "Key Concepts and Summary"),
+  (className: "self-check-questions", clusterBy: $CLUSTER_NONE,    hasSolutions: true,   name: "Self-Check Questions"),
+  (className: "review-questions",     clusterBy: $CLUSTER_NONE,    hasSolutions: false,  name: "Review Questions"),
+  (className: "critical-thinking",    clusterBy: $CLUSTER_NONE,    hasSolutions: false,  name: "Critical Thinking Questions"),
+  (className: "problems",             clusterBy: $CLUSTER_NONE,    hasSolutions: true,   name: "Problems"),
+  (className: "ap-test-prep",         clusterBy: $CLUSTER_NONE,    hasSolutions: true,   name: "Test Prep For AP® Courses"),
 );
 
 $Config_BookCompositePages: (
   //This doesn't get parsed as a list without a comma at the end
   //the composite builder should account for this rather than using hacky syntax
-  (source: "solutions",   isAnswerKey: true,  chapterSeparated: true, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
-  (source: "references",                      chapterSeparated: true, sectionSeparated: false, name: "References"),
-  (source: "index",       isIndex: true, name: "Index"),
+  (className: "solutions",    clusterBy: $CLUSTER_CHAPTER, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (className: "references",   clusterBy: $CLUSTER_CHAPTER, name: "References"),
+  (className: "index",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
 );
 /*==========================================================
   ECONOMICS TITLING CONTENT
@@ -101,8 +101,8 @@ $Config_BookCompositePages: (
 /*==========================================================
   ECONOMICS CONFIG
 ==========================================================*/
-$Config_SetTableCaption            : ( type: table, defaultContainer: caption, hasCaption: true, hasTitle: true );
-$Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaption, hasCaption: true, hasTitle: true );
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true);
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
 /*
   Link It Up note
 
@@ -140,15 +140,15 @@ $Config_SetFigureCaption           : ( type: figure, defaultContainer: figcaptio
   Style guide: page.note.workout
 */
 $Config_Notes: (
-  (className: 'linkup',     moveSolutionTo: $AREA_NONE,  label: "Link It Up",    isBodyWrapped: false),
-  (className: 'bringhome',  moveSolutionTo: $AREA_NONE,  label: "Bring It Home", isBodyWrapped: true ),
-  (className: 'clearup',    moveSolutionTo: $AREA_NONE,  label: "Clear It Up",   isBodyWrapped: true ),
-  (className: 'workout',    moveSolutionTo: $AREA_NONE,  label: "Work It Out",   isBodyWrapped: true ),
+  (className: 'linkup',     moveSolutionTo: $AREA_NONE,  labelText: "Link It Up",    isBodyWrapped: false),
+  (className: 'bringhome',  moveSolutionTo: $AREA_NONE,  labelText: "Bring It Home", isBodyWrapped: true ),
+  (className: 'clearup',    moveSolutionTo: $AREA_NONE,  labelText: "Clear It Up",   isBodyWrapped: true ),
+  (className: 'workout',    moveSolutionTo: $AREA_NONE,  labelText: "Work It Out",   isBodyWrapped: true ),
 );
 
 $Config_UnnumberedExercises: (); // There are no unnumbered exercises
 
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (divider: ".", number: counter(exercise)));
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise)));
 $Config_PartType_Example:  ();
 $Config_PartType_Chapter:  ();
 $Config_PartType_Equation: ();

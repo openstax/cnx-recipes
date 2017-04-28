@@ -6,15 +6,15 @@
 @mixin compose_titleEOCComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
-    $source: map-get($page, source);
+    $className: map-get($page, className);
 
     // Validate
     @include validate_type($name, string);
-    @include validate_type($source, string);
+    @include validate_type($className, string);
 
-    [data-type="composite-page"].os-eoc.os-#{$source}-container {
+    [data-type="composite-page"].os-eoc.os-#{$className}-container {
       $titleContent: (
-        text: $name
+        os-text: $name
         );
       @include utils_title($titleContent, null, h2, "document-title");
     }
@@ -27,15 +27,15 @@
 @mixin compose_titleEOBComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
-    $source: map-get($page, source);
+    $className: map-get($page, className);
 
     // Validate
     @include validate_type($name, string);
-    @include validate_type($source, string);
+    @include validate_type($className, string);
 
-    [data-type="composite-page"].os-eob.os-#{$source}-container {
+    [data-type="composite-page"].os-eob.os-#{$className}-container {
       $titleContent: (
-        text: $name
+        os-text: $name
         );
       @include utils_title($titleContent, null, h1, "document-title");
     }
@@ -58,30 +58,33 @@
 
 /// Collects elements defined by `$page.source` (a selector-ish thing) and
 /// collates them at the end of a chapter.
-/// @arg {Map} $page - contains `name`, `source`, and optionally `sortBy` and `compoundComposite` and `isGlossary`
+/// @arg {Map} $page - contains `name`, `source`, and optionally `sortBy` and `compoundComposite` and `specialPageType`
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
 /// @group compose
 @mixin _createChapterComposite($page, $sectionHeaderNode) {
   $name: map-get($page, name);
-  $source: map-get($page, source);
+  $className: map-get($page, className);
   $sortBy: map-get($page, sortBy);
   $compoundComposite: map-get($page, compoundComposite);
+  $specialPageType: map-get($page, specialPageType);
 
   // Validate
   @include validate_type($name, string);
-  @include validate_type($source, string);
+  @include validate_type($className, string);
   @include validate_typeOptional($sortBy, string);
   @include validate_typeOptional($compoundComposite, bool);
   @include validate_type($sectionHeaderNode, string);
+  @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
   div[data-type="chapter"] {
     @if (not $compoundComposite) {
-      $sectionSeparated: map-get($page, sectionSeparated);
-      $isGlossary: map-get($page, isGlossary);
-      $keyName: if($isGlossary, '<glossary>', '.#{$source}');
-      $sourceSelector: if($isGlossary, 'div[data-type="#{$source}"] dl', 'section.#{$source}');
-      @if ($isGlossary) {
-        div[data-type="#{$source}"] {
+      $clusterBy: map-get($page, clusterBy);
+      @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
+
+      $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
+      $sourceSelector: if($specialPageType == $PAGE_GLOSSARY, 'div[data-type="#{$className}"] dl', 'section.#{$className}');
+      @if ($specialPageType == $PAGE_GLOSSARY) {
+        div[data-type="#{$className}"] {
           /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
           move-to: trash;
         }
@@ -91,16 +94,16 @@
           /* Discard this Page-specific title because a chapter title is added when collated */
           move-to: trash;
         }
-        @if ($sectionSeparated) {
+        @if ($clusterBy == $CLUSTER_SECTION) {
           /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
           content: nodes(sectionHeaderNode) content();
         }
-        move-to: #{$source}-TOCOMPOSITE;
+        move-to: #{$className}-TOCOMPOSITE;
       }
       &::after {
         container: div;
-        content: pending(#{$source}-TOCOMPOSITE);
-        class: "os-eoc os-#{$source}-container";
+        content: pending(#{$className}-TOCOMPOSITE);
+        class: "os-eoc os-#{$className}-container";
         data-type: "composite-page";
         data-uuid-key: "#{$keyName}";
         @if ($sortBy != null) {
@@ -124,9 +127,9 @@
 /// - a `[data-type="term"]` is copied and put into the the "bucket" for the end-of-book index.
 /// - collated sections are moved into their corresponding "bucket"
 ///
-/// @arg {Map} $page - contains `name`, `source`, and optionally `compoundComposite` and `isIndex`
+/// @arg {Map} $page - contains `name`, `source`, and optionally `compoundComposite` and `specialPageType`
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
-/// @arg {string} $sectionHeaderString - Optional, used when `isIndex` is true
+/// @arg {string} $sectionHeaderString - Optional, used when `specialPageType` is `$PAGE_INDEX`
 /// @group compose
 
 
@@ -140,46 +143,49 @@
         node-set: CompoundSectionHeaderNode;
       }
     }
-    @each $composite in $allCompoundCompositePages {
-      $compositeSource: map-get($composite, source);
-      $compositeName: map-get($composite, name);
-      $sectionSeparated: map-get($composite, sectionSeparated);
+    @each $page in $allCompoundCompositePages {
+      $className: map-get($page, className);
+      $pageName: map-get($page, name);
+      $clusterBy: map-get($page, clusterBy);
 
-      .#{$compositeSource} {
+      @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
+
+
+      .#{$className} {
         > [data-type="title"] {
           move-to: trash;
         }
-        @if ($sectionSeparated) {
+        @if ($clusterBy == $CLUSTER_SECTION) {
           content: nodes(CompoundSectionHeaderNode) content();
-          move-to: #{$compositeSource}-separated;
+          move-to: #{$className}-separated;
         } @else {
-          move-to: #{$compositeSource}-DESTINATION;
+          move-to: #{$className}-DESTINATION;
         }
       }
-      @if ($sectionSeparated) {
+      @if ($clusterBy == $CLUSTER_SECTION) {
         [data-type="page"] {
           &::after {
             class: "os-chapter-area";
-            content: pending(#{$compositeSource}-separated);
-            move-to: #{$compositeSource}-sectionSeparatedContainer;
+            content: pending(#{$className}-separated);
+            move-to: #{$className}-sectionSeparatedContainer;
           }
         }
         &::after {
-          class: os-#{$compositeSource};
-          content: pending(#{$compositeSource}-sectionSeparatedContainer);
-          move-to: #{$compositeSource}-DESTINATION;
+          class: os-#{$className};
+          content: pending(#{$className}-sectionSeparatedContainer);
+          move-to: #{$className}-DESTINATION;
         }
       }
       &::after {
         container: h3;
         data-type: "title";
-        content: $compositeName;
-        move-to: #{$compositeSource}-title;
+        content: $pageName;
+        move-to: #{$className}-title;
       }
 
       &::after {
-        class: "os-#{$compositeSource}-container";
-        content: pending(#{$compositeSource}-title) pending(#{$compositeSource}-DESTINATION);
+        class: "os-#{$className}-container";
+        content: pending(#{$className}-title) pending(#{$className}-DESTINATION);
         move-to: composite-DESTINATION;
       }
     }
@@ -188,17 +194,21 @@
 
 @mixin compose_EOCcompoundCompositesPages ($getAllComposites) {
 
-  @each $compositePage in $getAllComposites {
-    $name: map-get($compositePage, name);
-    $source: map-get($compositePage, source);
-    $allComposites: map-get($compositePage, contains);
-    $isGlossary: map-get($compositePage, isGlossary);
-    $keyName: if($isGlossary, '<glossary>', '.#{$source}');
+  @each $page in $getAllComposites {
+    $name: map-get($page, name);
+    $className: map-get($page, className);
+    $childPages: map-get($page, childPages);
+    $specialPageType: map-get($page, specialPageType);
 
-    @include _processComposites($allComposites);
+    @include validate_type($childPages, list);
+    @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
+
+    $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
+
+    @include _processComposites($childPages);
     [data-type="chapter"] {
       &::after {
-        class: "os-eoc os-#{$source}-container";
+        class: "os-eoc os-#{$className}-container";
         data-type: composite-page;
         data-uuid-key: "#{$keyName}";
         content: pending(composite-DESTINATION);
@@ -210,20 +220,20 @@
 
  @mixin _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
   $name: map-get($page, name);
-  $source: map-get($page, source);
+  $className: map-get($page, className);
   $compoundComposite: map-get($page, compoundComposite);
-  $isIndex: map-get($page, isIndex);
+  $specialPageType: map-get($page, specialPageType);
 
   // Validate
   @include validate_type($name, string);
-  @include validate_type($source, string);
-  @include validate_typeOptional($isIndex, bool);
+  @include validate_type($className, string);
   @include validate_typeOptional($compoundComposite, bool);
   @include validate_type($sectionHeaderString, string);
+  @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
   @if (not $compoundComposite) {
-    $sourceSelector: if($isIndex, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$source}');
-    @if ($isIndex) {
+    $sourceSelector: if($specialPageType == $PAGE_INDEX, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$className}');
+    @if ($specialPageType == $PAGE_INDEX) {
       #{$sourceSelector} {
         // Create an index entry for the term by creating a new element and then moving it
         &::after {
@@ -258,36 +268,32 @@
         &::after {
           content: pending(index-term) pending(index-section-link);
           class: os-index-item;
-          move-to: #{$source}-TOCOMPOSITE;
+          move-to: #{$className}-TOCOMPOSITE;
         }
       }
     } @else {
-      $chapterSeparated: map-get($page, chapterSeparated);
-      $sectionSeparated: map-get($page, sectionSeparated);
+      $clusterBy: map-get($page, clusterBy);
       $chapterPages: map-get($page, chapterPages);
-      $isGlossary: map-get($page, isGlossary);
-      $keyName: if($isGlossary, '<glossary>', '.#{$source}');
+      $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
 
       // Validate
-      @include validate_type($chapterSeparated, bool);
-      @include validate_type($sectionSeparated, bool);
       @include validate_typeOptional($chapterPages, bool);
+      @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
 
       [data-type="chapter"] {
         #{$sourceSelector} {
           > h3[data-type="title"] {
             move-to: trash;
           }
-          @if ($sectionSeparated) {
+          @if ($clusterBy == $CLUSTER_SECTION) {
             content: nodes(sectionHeaderNode) content();
-          }
-          @if ($chapterSeparated) {
-              move-to: #{$source}-GETCHAPTER;
+          } @else if ($clusterBy == $CLUSTER_CHAPTER) {
+              move-to: #{$className}-GETCHAPTER;
             } @else {
-              move-to: #{$source}-TOCOMPOSITE;
+              move-to: #{$className}-TOCOMPOSITE;
             }
         }
-        @if ($chapterSeparated) {
+        @if ($clusterBy == $CLUSTER_CHAPTER) {
           >[data-type="document-title"] {
             //based on Econ References, only the chapter text is needed. We might need to extend this mixin to allow for more than just the text value of a chapter title.
             .os-text {
@@ -302,8 +308,8 @@
           }
           &::after {
             class: "os-chapter-area";
-            content: pending(chapterTitleHeaderText) pending(#{$source}-GETCHAPTER);
-            move-to: #{$source}-TOCOMPOSITE;
+            content: pending(chapterTitleHeaderText) pending(#{$className}-GETCHAPTER);
+            move-to: #{$className}-TOCOMPOSITE;
             @if ($chapterPages) {
               data-type: "composite-page";
               data-uuid-key: "#{$keyName}";
@@ -325,32 +331,35 @@
 
 /// Collects elements defined by `$page.source` (a selector-ish thing) and
 /// collates them at the end of the book.
-/// @arg {Map} $page - contains `source`, and optionally `isIndex`
+/// @arg {Map} $page - contains `source`, and optionally `specialPageType`
 /// @group compose
 @mixin _createBookComposite($page) {
   body {
-    $source: map-get($page, source);
-    $isIndex: map-get($page, isIndex);
-    $chapterSeparated: map-get($page, chapterSeparated);
-    $keyName: if($isIndex, '<index>', '.#{$source}');
+    $className: map-get($page, className);
+    $specialPageType: map-get($page, specialPageType);
+    $clusterBy: map-get($page, clusterBy);
     // Validate
-    @include validate_type($source, string);
-    @include validate_typeOptional($isIndex, bool);
+    @include validate_type($className, string);
+    @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
+    @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
 
-       @if ($chapterSeparated) {
-        body::after {
-          class: "os-eob os-#{$source}-container";
-          data-type: "composite-page";
-          content: pending(#{$source}-TOCOMPOSITE);
-        }
+
+    $keyName: if($specialPageType == $PAGE_INDEX, '<index>', '.#{$className}');
+
+     @if ($clusterBy == $CLUSTER_CHAPTER) {
+      body::after {
+        class: "os-eob os-#{$className}-container";
+        data-type: "composite-page";
+        content: pending(#{$className}-TOCOMPOSITE);
       }
+    }
     &::after {
       container: div;
-      content: pending(#{$source}-TOCOMPOSITE);
-      class: "os-eob os-#{$source}-container";
+      content: pending(#{$className}-TOCOMPOSITE);
+      class: "os-eob os-#{$className}-container";
       data-type: "composite-page";
       data-uuid-key: "#{$keyName}";
-      @if ($isIndex) {
+      @if ($specialPageType == $PAGE_INDEX) {
         group-by: span, "span::attr(group-by)", nocase;
       }
     }
@@ -369,15 +378,15 @@
   @include validate_type($chapterHeaderNode, string);
 
   @each $page in $compositePages {
-    $source: map-get($page, source);
+    $className: map-get($page, className);
 
     // Validate
-    @include validate_type($source, string);
+    @include validate_type($className, string);
 
     [data-type="chapter"] {
       .os-chapter-area {
         content: nodes($chapterHeaderNode) content();
-        move-to: #{$source}-TOCOMPOSITE;
+        move-to: #{$className}-TOCOMPOSITE;
       }
     }
   }
@@ -389,37 +398,38 @@
 /// @arg {string} $sectionHeaderNode
 /// @group compose
 @mixin compose_createEOCSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
-  $solutionSource: map-get($solutionPage, source);
-  $sectionSeparated: map-get($solutionPage, sectionSeparated);
+  $solutionClassName: map-get($solutionPage, className);
+  $clusterBy: map-get($solutionPage, clusterBy);
 
   // Validate
-  @include validate_type($solutionSource, string);
-  @include validate_typeOptional($sectionSeparated, bool);
+  @include validate_type($solutionClassName, string);
+  @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
+
 
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
-    $source: map-get($page, source);
+    $className: map-get($page, className);
 
     // Validate
-    @include validate_type($source, string);
+    @include validate_type($className, string);
     @include validate_typeOptional($hasSolutions, bool);
 
     @if ($hasSolutions) {
       [data-type="chapter"] {
-        .os-eoc.os-#{$source}-container {
+        .os-eoc.os-#{$className}-container {
           [data-type="solution"] {
-            @if ($sectionSeparated) {
-              move-to: #{$solutionSource}-GETSECTION;
+            @if ($clusterBy == $CLUSTER_SECTION) {
+              move-to: #{$solutionClassName}-GETSECTION;
             } @else {
-              move-to: #{$solutionSource}-TOCOMPOSITE;
+              move-to: #{$solutionClassName}-TOCOMPOSITE;
             }
           }
-          @if ($sectionSeparated) {
+          @if ($clusterBy == $CLUSTER_SECTION) {
             &::after {
               container: section;
-              class: os-#{$solutionSource};
-              content: nodes($sectionHeaderNode) pending(#{$solutionSource}-GETSECTION);
-              move-to: #{$solutionSource}-TOCOMPOSITE;
+              class: os-#{$solutionClassName};
+              content: nodes($sectionHeaderNode) pending(#{$solutionClassName}-GETSECTION);
+              move-to: #{$solutionClassName}-TOCOMPOSITE;
             }
           }
         }
@@ -430,8 +440,8 @@
   [data-type="chapter"] {
     &::after {
       container: div;
-      content: pending(#{$solutionSource}-TOCOMPOSITE);
-      class: "os-eoc os-#{$solutionSource}-container";
+      content: pending(#{$solutionClassName}-TOCOMPOSITE);
+      class: "os-eoc os-#{$solutionClassName}-container";
       data-type: "composite-page";
       data-uuid-key: "solutions";
     }
@@ -444,49 +454,45 @@
 ///
 /// When they are separated by chapter/section a new element is created with the Chapter/Section title.
 ///
-/// Additionally, if sectionSeparated is selected for the EOB composite page,
-/// the originating EOC section must also contain sectionSeparated.
+/// Additionally, if `clusterBy` is `$CLUSTER_SECTION` for the EOB composite page,
+/// the originating EOC section must also be `$CLUSTER_SECTION`.
 ///
 /// @arg {list} $compositePages - each element contains `source` and `hasSolutions`
-/// @arg {Map} $solutionPage - contains `source`, `sectionSeparated`, and `chapterSeparated`
+/// @arg {Map} $solutionPage - contains `source`, `clusterBy`
 /// @arg {string} $sectionHeaderNode
 /// @group compose
 @mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
-  $solutionSource: map-get($solutionPage, source);
-  $sectionSeparated: map-get($solutionPage, sectionSeparated);
-  $chapterSeparated: map-get($solutionPage,chapterSeparated);
+  $solutionClassName: map-get($solutionPage, className);
+  $clusterBy: map-get($solutionPage, clusterBy);
 
   // Validate
-  @include validate_type($solutionSource, string);
-  @include validate_typeOptional($sectionSeparated, bool);
-  @include validate_type($chapterSeparated, bool);
+  @include validate_type($solutionClassName, string);
+  @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
 
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
-    $source: map-get($page, source);
+    $className: map-get($page, className);
 
     // Validate
     @include validate_typeOptional($hasSolutions, bool);
-    @include validate_type($source, string);
+    @include validate_type($className, string);
 
     @if ($hasSolutions) {
       [data-type="chapter"] {
-        .os-eoc.os-#{$source}-container {
+        .os-eoc.os-#{$className}-container {
           [data-type="solution"] {
-            @if ($sectionSeparated) {
-              move-to: #{$solutionSource}-GETSECTION;
-            }
-            @else if ($chapterSeparated) {
-              move-to: #{$solutionSource}-GETCHAPTER;
-            }
-            @else {
-              move-to: #{$solutionSource}-TOCOMPOSITE;
+            @if ($clusterBy == $CLUSTER_SECTION) {
+              move-to: #{$solutionClassName}-GETSECTION;
+            } @else if ($clusterBy == $CLUSTER_CHAPTER) {
+              move-to: #{$solutionClassName}-GETCHAPTER;
+            } @else {
+              move-to: #{$solutionClassName}-TOCOMPOSITE;
             }
           }
-          @if ($sectionSeparated) {
-            .#{$source} {
+          @if ($clusterBy == $CLUSTER_SECTION) {
+            .#{$className} {
               > h2[data-type="document-title"] {
-                @if ($chapterSeparated) {
+                @if ($clusterBy == $CLUSTER_CHAPTER) {
                   container: h3;
                 }
                 node-set: eobsectionHeader;
@@ -494,13 +500,13 @@
               }
               &::after {
                 container: section;
-                class: os-#{$solutionSource};
-                content: pending(EOBsectionHeader) pending(#{$solutionSource}-GETSECTION);
-                @if ($chapterSeparated) {
-                  move-to: #{$solutionSource}-GETCHAPTER;
+                class: os-#{$solutionClassName};
+                content: pending(EOBsectionHeader) pending(#{$solutionClassName}-GETSECTION);
+                @if ($clusterBy == $CLUSTER_CHAPTER) {
+                  move-to: #{$solutionClassName}-GETCHAPTER;
                 }
                 @else {
-                  move-to: #{$solutionSource}-TOCOMPOSITE;
+                  move-to: #{$solutionClassName}-TOCOMPOSITE;
                 }
               }
             }
@@ -510,7 +516,7 @@
     }
   }
 
-  @if ($chapterSeparated) {
+  @if ($clusterBy == $CLUSTER_CHAPTER) {
     [data-type="chapter"] {
       > h1[data-type="document-title"] .os-number {
         string-set: ChapNum content();
@@ -524,18 +530,18 @@
       }
       &::after {
         class: os-chapter-area;
-        content: pending(chaptTitleEOB) pending(#{$solutionSource}-GETCHAPTER);
-        move-to: #{$solutionSource}-TOCOMPOSITE;
+        content: pending(chaptTitleEOB) pending(#{$solutionClassName}-GETCHAPTER);
+        move-to: #{$solutionClassName}-TOCOMPOSITE;
       }
     }
   }
   body {
     &::after {
       container: div;
-      content: pending(#{$solutionSource}-TOCOMPOSITE);
-      class: "os-eob os-#{$solutionSource}-container";
+      content: pending(#{$solutionClassName}-TOCOMPOSITE);
+      class: "os-eob os-#{$solutionClassName}-container";
       data-type: "composite-page";
-      data-uuid-key: ".#{$solutionSource}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+      data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
     }
   }
 }

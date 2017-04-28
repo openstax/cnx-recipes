@@ -2,26 +2,21 @@ $Config_HACK_modifyAnyContainerTitleSelector: false; // used by ap-physics
 
 // The following are flags to improve code coverage.
 // Leaving them as true does not hurt the baking process.
-$Config_Cover_MayHaveSimlinks: true;
-$Config_Cover_MayHaveIframes: true;
-$Config_Cover_MayHaveMissingExercises: true;
+$Config_Coverage_MayHaveSimlinks: true;
+$Config_Coverage_MayHaveIframes: true;
+$Config_Coverage_MayHaveMissingExercises: true;
 
 
 
 
-$Config_ChapterTitleContent        : ( number: counter(chapter), divider: ' ' );
-$Config_AppendixTitleContent       : ( title-label: "Appendix ", number: counter(appendix, upper-alpha), divider: ' ');
-$Config_SectionTitleContent        : ( number: counter(chapter) "." counter(section), divider: ' ' );
+$Config_PartType_Chapter_TitleContent   : (os-number: counter(chapter), os-divider: ' ' );
+$Config_PartType_Appendix_TitleContent  : (os-title-label: "Appendix ", os-number: counter(appendix, upper-alpha), os-divider: ' ');
+$Config_PartType_Section_TitleContent   : (os-number: counter(chapter) "." counter(section), os-divider: ' ' );
 
-
-$Config_CaptionTableNumber         : ( title-label: "Table ", number: counter(chapter) "." counter(table), divider: " ");
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$Config_CaptionTableNumberAp       : ( title-label: "Table ", number: counter(appendix, upper-alpha) "." counter(table), divider: " ");
-
-$Config_CaptionFigNumber           : ( title-label: "Figure ", number: counter(chapter) "." counter(figure), divider: " ");
-
-//TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
-$Config_CaptionFigNumberAp         : ( title-label: "Figure ", number: counter(appendix, upper-alpha) "." counter(figure), divider: " ");
+$Config_PartType_Table_CaptionContent   : (os-title-label: "Table ", os-number: counter(chapter) "." counter(table), os-divider: " "); //TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
+$Config_PartType_Table_CaptionContentAp : (os-title-label: "Table ", os-number: counter(appendix, upper-alpha) "." counter(table), os-divider: " ");
+$Config_PartType_Figure_CaptionContent  : (os-title-label: "Figure ", os-number: counter(chapter) "." counter(figure), os-divider: " ");
+$Config_PartType_Figure_CaptionContentAp: (os-title-label: "Figure ", os-number: counter(appendix, upper-alpha) "." counter(figure), os-divider: " "); //TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
 
 
 
@@ -33,11 +28,11 @@ $Config_CaptionFigNumberAp         : ( title-label: "Figure ", number: counter(a
 //otherwise, the increment and the counter() call may fire in the wrong order
 //This may be fixed in a later version of easybake
 $Config_TargetLabels: (
-  ( selector: '.os-eoc [data-type="exercise"]',               label: "Exercise " counter(chapter) "." counter(exercise) ),
-  ( selector: 'div[data-type="chapter"] .example',            label: "Example " counter(chapter) "." counter(example) ),
-  ( selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered)',    label: "Table " counter(chapter) "." counter(table) ),
-  ( selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',  label: "Figure " counter(chapter) "." counter(figure) ),
-  ( selector: '[data-type="appendix"] :not(table) > table:not(.unnumbered)',   label: "Table " counter(appendix, upper-alpha) "." counter(table) ),
-  ( selector: '[data-type="appendix"] :not(figure) > figure:not(.unnumbered)', label: "Figure " counter(appendix, upper-alpha) "." counter(figure) ),
+  (selector: '.os-eoc [data-type="exercise"]',               labelText: "Exercise " counter(chapter) "." counter(exercise)),
+  (selector: 'div[data-type="chapter"] .example',            labelText: "Example " counter(chapter) "." counter(example)),
+  (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered)',    labelText: "Table " counter(chapter) "." counter(table)),
+  (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',  labelText: "Figure " counter(chapter) "." counter(figure)),
+  (selector: '[data-type="appendix"] :not(table) > table:not(.unnumbered)',   labelText: "Table " counter(appendix, upper-alpha) "." counter(table)),
+  (selector: '[data-type="appendix"] :not(figure) > figure:not(.unnumbered)', labelText: "Figure " counter(appendix, upper-alpha) "." counter(figure)),
   // BUG up here too
 );
