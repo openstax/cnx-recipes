@@ -686,27 +686,27 @@
   class: "os-eoc os-ap-test-prep-container";
   data-type: "composite-page";
   data-uuid-key: ".ap-test-prep"; }
-
-:pass(3) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
+:pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
   string-set: outlinePageId attr(id); }
-  :pass(3) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"]::after {
+  :pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"]::after {
     container: a;
     class: "os-chapter-objective";
     content: content();
     attr-href: "#" string(outlinePageId);
     move-to: chapOutlineLink; }
-:pass(3) [data-type="page"]:not(.introduction):not(.preface)::after {
+:pass(2) [data-type="page"]:not(.introduction):not(.preface)::after {
   class: "os-lo";
   content: pending(chapOutlineLink);
   move-to: chapOutline; }
-:pass(3) [data-type="chapter"]::before {
+:pass(2) [data-type="chapter"]::before {
   container: h3;
   class: "os-title";
   content: "Chapter Objectives";
   move-to: chapOutlineTitle; }
-:pass(3) [data-type="chapter"]:deferred::before {
+:pass(2) [data-type="chapter"]:deferred::before {
   class: "os-chapter-outline";
   content: pending(chapOutlineTitle) pending(chapOutline); }
+
 :pass(3) div[data-type="page"] > [data-type="document-title"],
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
@@ -754,6 +754,10 @@
   content: pending(index-term) pending(index-section-link);
   class: os-index-item;
   move-to: index-TOCOMPOSITE; }
+:pass(3) .os-chapter-outline {
+  move-to: ChapterOutline; }
+:pass(3) .introduction {
+  content: pending(ChapterOutline) content(); }
 :pass(3) [data-type="chapter"], :pass(3) .appendix {
   counter-reset: exercise; }
 :pass(3) .os-eoc [data-type="exercise"] {
@@ -775,10 +779,6 @@
   content: counter(exercise);
   class: os-number; }
 
-:pass(4) .os-chapter-outline {
-  move-to: ChapterOutline; }
-:pass(4) .introduction {
-  content: pending(ChapterOutline) content(); }
 :pass(4) body {
   counter-reset: exerciseAll; }
 :pass(4) .os-eoc [data-type="exercise"] {
@@ -894,7 +894,8 @@
   content: target-string(attr(href), target-label); }
 :pass(6) body > [data-type="metadata"] {
   node-set: bookMetadata; }
-:pass(6) [data-type="composite-page"], :pass(6) [data-type="composite-chapter"] {
+:pass(6) [data-type="composite-page"],
+:pass(6) [data-type="composite-chapter"] {
   content: nodes(bookMetadata) content(); }
 :pass(6) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
@@ -1171,12 +1172,18 @@
   container: h2; }
 :pass(6) [data-type="composite-page"].os-eob > .os-chapter-area > section > [data-type="document-title"] {
   container: h3; }
-:pass(6) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > section [data-type="title"], :pass(6) [data-type="composite-chapter"] > [data-type="page"] [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > [data-type="page"] [data-type="title"] {
+:pass(6) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > section [data-type="title"],
+:pass(6) [data-type="composite-chapter"] > [data-type="page"] [data-type="document-title"],
+:pass(6) [data-type="composite-chapter"] > [data-type="page"] [data-type="title"] {
   container: h2; }
-:pass(6) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > section > section [data-type="title"], :pass(6) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="title"] {
+:pass(6) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > section > section [data-type="title"],
+:pass(6) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="document-title"],
+:pass(6) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="title"] {
   container: h3;
   data-type: title; }
-:pass(6) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > section > section > section [data-type="title"], :pass(6) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"] {
+:pass(6) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(6) [data-type="composite-chapter"] > section > section > section [data-type="title"],
+:pass(6) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="document-title"],
+:pass(6) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"] {
   container: h4; }
 :pass(6) .appendix > section [data-type="title"], :pass(6) .appendix > section [data-type="document-title"] {
   container: h2; }
@@ -1185,9 +1192,11 @@
 
 :pass(7) .os-index-link-separator:last-child {
   move-to: trash; }
-:pass(7) [data-type="composite-page"] > [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > [data-type="document-title"] {
+:pass(7) [data-type="composite-page"] > [data-type="document-title"],
+:pass(7) [data-type="composite-chapter"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
-:pass(7) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
+:pass(7) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"],
+:pass(7) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
 
 :pass(8) div.os-eoc [data-type="cnx-archive-uri"], :pass(8) div.os-eob [data-type="cnx-archive-uri"] {
@@ -1218,55 +1227,65 @@
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
-:pass(8) body > div[data-type='chapter'] > [data-type='document-title'], :pass(8) body > div[data-type='composite-chapter'] > [data-type='document-title'] {
+:pass(8) body > div[data-type='chapter'] > [data-type='document-title'],
+:pass(8) body > div[data-type='composite-chapter'] > [data-type='document-title'] {
   node-set: chapterTitle;
   string-set: chapTitle-id attr(id); }
 :pass(8) body > div[data-type='chapter'] > [data-type='metadata']
-> [data-type='cnx-archive-shortid'], :pass(8) body > div[data-type='composite-chapter'] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+:pass(8) body > div[data-type='composite-chapter'] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
   string-set: chap-shortid attr(data-value); }
-:pass(8) body > div[data-type='chapter']::after, :pass(8) body > div[data-type='composite-chapter']::after {
+:pass(8) body > div[data-type='chapter']::after,
+:pass(8) body > div[data-type='composite-chapter']::after {
   content: nodes(chapterTitle);
   attr-href: "#" string(chapTitle-id);
   container: a;
   move-to: eoc-toc; }
 :pass(8) body > div[data-type='chapter'] > div[data-type="page"],
-:pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"], :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"],
+:pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"],
+:pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"],
 :pass(8) body > div[data-type='composite-chapter'] > div[data-type="composite-page"] {
   string-set: page-id-chap attr(id); }
   :pass(8) body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
-  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'], :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"] > [data-type='document-title'],
+  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'],
+  :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"] > [data-type='document-title'],
   :pass(8) body > div[data-type='composite-chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
     node-set: PageTitle; }
   :pass(8) body > div[data-type='chapter'] > div[data-type="page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'],
   :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='metadata']
-  > [data-type='cnx-archive-shortid'], :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"] > [data-type='metadata']
+  > [data-type='cnx-archive-shortid'],
+  :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'],
   :pass(8) body > div[data-type='composite-chapter'] > div[data-type="composite-page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'] {
     string-set: page-shortid attr(data-value); }
   :pass(8) body > div[data-type='chapter'] > div[data-type="page"]::after,
-  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"]::after, :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"]::after,
+  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"]::after,
+  :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"]::after,
   :pass(8) body > div[data-type='composite-chapter'] > div[data-type="composite-page"]::after {
     content: nodes(PageTitle);
     attr-href: "#" string(page-id-chap);
     container: a;
     move-to: page-link; }
   :pass(8) body > div[data-type='chapter'] > div[data-type="page"]::after,
-  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"]::after, :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"]::after,
+  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"]::after,
+  :pass(8) body > div[data-type='composite-chapter'] > div[data-type="page"]::after,
   :pass(8) body > div[data-type='composite-chapter'] > div[data-type="composite-page"]::after {
     content: pending(page-link);
     move-to: eoc-toc-pages;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
-:pass(8) body > div[data-type='chapter']::after, :pass(8) body > div[data-type='composite-chapter']::after {
+:pass(8) body > div[data-type='chapter']::after,
+:pass(8) body > div[data-type='composite-chapter']::after {
   content: pending(eoc-toc-pages);
   container: ol;
   class: os-chapter;
   move-to: eoc-toc; }
-:pass(8) body > div[data-type='chapter']::after, :pass(8) body > div[data-type='composite-chapter']::after {
+:pass(8) body > div[data-type='chapter']::after,
+:pass(8) body > div[data-type='composite-chapter']::after {
   content: pending(eoc-toc);
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(chap-shortid);
@@ -1283,55 +1302,65 @@
   attr-href: "#" string(uTitle-id);
   container: a;
   move-to: eou-toc; }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > [data-type='document-title'], :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > [data-type='document-title'] {
+:pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > [data-type='document-title'],
+:pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > [data-type='document-title'] {
   node-set: chapterTitle;
   string-set: chapTitle-id attr(id); }
 :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > [data-type='metadata']
-> [data-type='cnx-archive-shortid'], :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+:pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
   string-set: chap-shortid attr(data-value); }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after, :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter']::after {
+:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after,
+:pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter']::after {
   content: nodes(chapterTitle);
   attr-href: "#" string(chapTitle-id);
   container: a;
   move-to: eoc-toc; }
 :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"],
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"], :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"],
+:pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"],
+:pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"],
 :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="composite-page"] {
   string-set: page-id-chap attr(id); }
   :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'], :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"] > [data-type='document-title'],
+  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'],
+  :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"] > [data-type='document-title'],
   :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
     node-set: PageTitle; }
   :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'],
   :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='metadata']
-  > [data-type='cnx-archive-shortid'], :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"] > [data-type='metadata']
+  > [data-type='cnx-archive-shortid'],
+  :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'],
   :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="composite-page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'] {
     string-set: page-shortid attr(data-value); }
   :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after, :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"]::after,
+  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after,
+  :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"]::after,
   :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="composite-page"]::after {
     content: nodes(PageTitle);
     attr-href: "#" string(page-id-chap);
     container: a;
     move-to: page-link; }
   :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after, :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"]::after,
+  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after,
+  :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="page"]::after,
   :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter'] > div[data-type="composite-page"]::after {
     content: pending(page-link);
     move-to: eoc-toc-pages;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after, :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter']::after {
+:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after,
+:pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter']::after {
   content: pending(eoc-toc-pages);
   container: ol;
   class: os-chapter;
   move-to: eoc-toc; }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after, :pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter']::after {
+:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after,
+:pass(8) body > div[data-type="unit"] > div[data-type='composite-chapter']::after {
   content: pending(eoc-toc);
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(chap-shortid);
@@ -1431,12 +1460,18 @@
   container: h2; }
 :pass(7) [data-type="composite-page"].os-eob > .os-chapter-area > section > [data-type="document-title"] {
   container: h3; }
-:pass(7) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > section [data-type="title"], :pass(7) [data-type="composite-chapter"] > [data-type="page"] [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > [data-type="page"] [data-type="title"] {
+:pass(7) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > section [data-type="title"],
+:pass(7) [data-type="composite-chapter"] > [data-type="page"] [data-type="document-title"],
+:pass(7) [data-type="composite-chapter"] > [data-type="page"] [data-type="title"] {
   container: h2; }
-:pass(7) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > section > section [data-type="title"], :pass(7) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="title"] {
+:pass(7) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > section > section [data-type="title"],
+:pass(7) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="document-title"],
+:pass(7) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="title"] {
   container: h3;
   data-type: title; }
-:pass(7) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > section > section > section [data-type="title"], :pass(7) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"] {
+:pass(7) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(7) [data-type="composite-chapter"] > section > section > section [data-type="title"],
+:pass(7) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="document-title"],
+:pass(7) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"] {
   container: h4; }
 :pass(7) .appendix > section [data-type="title"], :pass(7) .appendix > section [data-type="document-title"] {
   container: h2; }
