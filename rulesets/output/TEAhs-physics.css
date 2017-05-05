@@ -1741,6 +1741,34 @@
   data-type: "title";
   content: "Learning Objectives"; }
 
+:pass(1) body .appendix {
+  move-to: chapterAppendices; }
+:pass(1) body::after {
+  container: span;
+  class: "os-text";
+  content: "Appendices";
+  move-to: AppendixTitleSpans; }
+:pass(1) body::after {
+  container: h1;
+  data-type: "document-title";
+  content: pending(AppendixTitleSpans);
+  move-to: appendicesTitle; }
+:pass(1) body::after {
+  data-type: composite-chapter;
+  data-uuid-key: appendicesChapter;
+  content: pending(appendicesTitle) pending(chapterAppendices); }
+
+:pass(3) .appendix::inside {
+  container: section;
+  class: "appendix-container"; }
+
+:pass(4) .appendix .appendix-container > h1[data-type="document-title"] {
+  copy-to: appendixTitle; }
+:pass(4) .appendix .appendix-container [data-type="metadata"] {
+  move-to: metadata; }
+:pass(4) .appendix:deferred {
+  content: pending(metadata) pending(appendixTitle) content(); }
+
 :pass(6) .os-index-container {
   move-to: trash; }
 :pass(6) .os-solutions-container {
