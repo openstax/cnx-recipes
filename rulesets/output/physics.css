@@ -542,27 +542,27 @@
   class: "os-eoc os-problems-exercises-container";
   data-type: "composite-page";
   data-uuid-key: ".problems-exercises"; }
-
-:pass(3) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
+:pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
   string-set: outlinePageId attr(id); }
-  :pass(3) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"]::after {
+  :pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"]::after {
     container: a;
     class: "os-chapter-objective";
     content: content();
     attr-href: "#" string(outlinePageId);
     move-to: chapOutlineLink; }
-:pass(3) [data-type="page"]:not(.introduction):not(.preface)::after {
+:pass(2) [data-type="page"]:not(.introduction):not(.preface)::after {
   class: "os-lo";
   content: pending(chapOutlineLink);
   move-to: chapOutline; }
-:pass(3) [data-type="chapter"]::before {
+:pass(2) [data-type="chapter"]::before {
   container: h3;
   class: "os-title";
   content: "Chapter Outline";
   move-to: chapOutlineTitle; }
-:pass(3) [data-type="chapter"]:deferred::before {
+:pass(2) [data-type="chapter"]:deferred::before {
   class: "os-chapter-outline";
   content: pending(chapOutlineTitle) pending(chapOutline); }
+
 :pass(3) div[data-type="page"] > [data-type="document-title"],
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
@@ -595,6 +595,10 @@
   content: pending(index-term) pending(index-section-link);
   class: os-index-item;
   move-to: index-TOCOMPOSITE; }
+:pass(3) .os-chapter-outline {
+  move-to: ChapterOutline; }
+:pass(3) .introduction {
+  content: pending(ChapterOutline) content(); }
 :pass(3) [data-type="composite-page"], :pass(3) .appendix {
   counter-reset: exercise; }
 :pass(3) .os-eoc [data-type="exercise"] {
@@ -608,10 +612,6 @@
   content: counter(exercise);
   class: os-number; }
 
-:pass(4) .os-chapter-outline {
-  move-to: ChapterOutline; }
-:pass(4) .introduction {
-  content: pending(ChapterOutline) content(); }
 :pass(4) body {
   counter-reset: exerciseAll; }
 :pass(4) .os-eoc [data-type="exercise"] {
