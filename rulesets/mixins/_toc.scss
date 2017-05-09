@@ -25,7 +25,12 @@
   }
 }
 
-@mixin toc_prepTOCElements() {
+@mixin toc_prepTOCElements($hasCompositeAppendix) {
+  $chapterAndCompositeAppendixSel: ('> div[data-type="chapter"]');
+  @if $hasCompositeAppendix {
+    $chapterAndCompositeAppendixSel: append($chapterAndCompositeAppendixSel, '> div[data-type="composite-chapter"]', comma);
+  }
+
   body {
     > div[data-type="page"],
     > div[data-type="composite-page"] {
@@ -52,8 +57,7 @@
         container: li;
       }
     }
-    > div[data-type='chapter'],
-    > div[data-type='composite-chapter'] {
+    #{$chapterAndCompositeAppendixSel} {
       > [data-type='document-title'] {
         node-set: chapterTitle;
         string-set: chapTitle-id attr(id);
@@ -122,8 +126,8 @@
         container: a;
         move-to: eou-toc;
       }
-      > div[data-type='chapter'],
-      > div[data-type='composite-chapter'] {
+
+      #{$chapterAndCompositeAppendixSel} {
         > [data-type='document-title'] {
           node-set: chapterTitle;
           string-set: chapTitle-id attr(id);

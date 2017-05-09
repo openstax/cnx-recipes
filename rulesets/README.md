@@ -70,6 +70,7 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_Coverage_MayHaveIframes`: a boolean
   - `$Config_Coverage_MayHaveMissingExercises`: a boolean
 - `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
+- `$Config_hasCompositeAppendixes`: a boolean (used for some TEA books)
 
 
 ## TitleContent

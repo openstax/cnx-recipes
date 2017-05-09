@@ -34,16 +34,18 @@
 /// Trashes `[data-type="cnx-archive-uri"]` in `.os-eob` and `.os-eoc`
 ///Trashes `[data-type="cnx-archive-uri"]` in composite-chapters
 /// @group modify
-@mixin modify_suppressURI() {
+@mixin modify_suppressURI($hasCompositeAppendix) {
   div.os-eoc,
   div.os-eob {
     [data-type="cnx-archive-uri"] {
       move-to: trash;
     }
   }
-  [data-type="composite-chapter"] {
-    > [data-type="metadata"] > [data-type="cnx-archive-uri"] {
-      move-to: trash;
+  @if $hasCompositeAppendix {
+    [data-type="composite-chapter"] {
+      > [data-type="metadata"] > [data-type="cnx-archive-uri"] {
+        move-to: trash;
+      }
     }
   }
 }
@@ -106,18 +108,28 @@
 /// Adds metadata to the composite pages
 /// @arg {Text} $bookMetadata - The node set that contains the metadata
 /// @group modify
-@mixin modify_compositeMetadata($bookMetadata) {
-  [data-type="composite-page"],
-  [data-type="composite-chapter"]  {
+@mixin modify_compositeMetadata($bookMetadata, $hasCompositeAppendix) {
+  [data-type="composite-page"] {
     content: nodes($bookMetadata) content();
+  }
+
+  @if $hasCompositeAppendix {
+    [data-type="composite-chapter"]  {
+      // Copy-pasta from above
+      content: nodes($bookMetadata) content();
+    }
   }
 }
 
 /// Adds the title for each composite page
 /// @group modify
-@mixin modify_retitleCompositeMetadata() {
-  [data-type="composite-page"],
-  [data-type="composite-chapter"] {
+@mixin modify_retitleCompositeMetadata($hasCompositeAppendix) {
+  $pageAndCompositeAppendixSel: ('[data-type="composite-page"]');
+  @if $hasCompositeAppendix {
+    $pageAndCompositeAppendixSel: append($pageAndCompositeAppendixSel, '[data-type="composite-chapter"]', comma);
+  }
+
+  #{$pageAndCompositeAppendixSel} {
     > [data-type="document-title"] {
       string-set: doc-title-TOMETADATA content();
     }
@@ -225,7 +237,7 @@
 
 /// NEEDS DOCUMENTATION
 /// @group needs-docs
-@mixin modify_retitleHeaders () {
+@mixin modify_retitleHeaders ($hasCompositeAppendix) {
   [data-type="chapter"] {
     [data-type="page"] {
       [data-type="note"],
@@ -278,20 +290,22 @@
       }
     }
   }
-  [data-type="composite-chapter"] {
-    > section,
-    > [data-type="page"] {
-      [data-type="document-title"], [data-type="title"] {
-        container: h2;
-      }
-      > section {
+  @if $hasCompositeAppendix {
+    [data-type="composite-chapter"] {
+      > section,
+      > [data-type="page"] {
         [data-type="document-title"], [data-type="title"] {
-          container: h3;
-          data-type: title;
+          container: h2;
         }
         > section {
-            [data-type="document-title"], [data-type="title"] {
-              container: h4;
+          [data-type="document-title"], [data-type="title"] {
+            container: h3;
+            data-type: title;
+          }
+          > section {
+              [data-type="document-title"], [data-type="title"] {
+                container: h4;
+            }
           }
         }
       }
