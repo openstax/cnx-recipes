@@ -17,13 +17,22 @@ if [ -f "Brewfile" ] && [ "$(uname -s)" = "Darwin" ]; then
   }
 fi
 
+
+>&2 echo "==> Installing Node package dependencies"
+>&2 echo "Using node: $(node --version)"
+>&2 echo "Using npm: $(npm --version)"
+npm install || exit 1
+
 # Note: Skip rbenv for Travis because it already has ruby
 if [ ! "${CI}" = "true" ] && [ -f ".ruby-version" ]; then
   if [[ -n $(which rbenv) ]]; then
 
     if [ -z "$(rbenv version-name 2>/dev/null)" ]; then
       >&2 echo "==> Installing Ruby…"
-      rbenv install --skip-existing
+      rbenv install --skip-existing || {
+        echo "WARNING: 'rbenv install' errored. I am assuming you know what you are doing (and have sass installed locally) so continuing"
+        exit 0
+      }
     fi
   else
     >&2 echo "WARNING: Skipping rbenv. Using local ruby"
@@ -54,9 +63,3 @@ if [ -f "Gemfile" ]; then
     bundle install --path vendor/gems --quiet --without production
   }
 fi
-
-
->&2 echo "==> Installing Node package dependencies"
->&2 echo "Using node: $(node --version)"
->&2 echo "Using npm: $(npm --version)"
-npm install || exit 1
