@@ -14,6 +14,19 @@ then
   RULESET_NAMES=(${arg1})
 fi
 
+# Try running sass locally (using rbenv). If that does not work then try it globally
+if [[ $(bundle exec sass --version 2>/dev/null) ]]
+then
+  sassBin="bundle exec sass"
+elif [[ $(sass --version 2>/dev/null) ]]
+then
+  >&2 echo "INFO: Using system-installed $(sass --version)"
+  sassBin="sass"
+else
+  >&2 echo "ERROR: Could not find sass executable"
+  exit 1
+fi
+
 
 for rulesetName in "${RULESET_NAMES[@]}"
 do
@@ -23,5 +36,5 @@ do
 
   >&2 echo "==> Generating ${cssFile}"
 
-  bundle exec sass ${sassFile} ${cssFile} || exit 1
+  ${sassBin} ${sassFile} ${cssFile} || exit 1
 done
