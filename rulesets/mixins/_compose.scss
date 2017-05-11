@@ -546,18 +546,30 @@
   }
 }
 
+//todo: add mixin for abstract from metadata. Can be by itself, can be mixed with chapter titles.
+    // @if $abstractMetadata {
+    //   [data-type="abstract"] {
+    //     move-to: outlineAbstract;
+    //   }
+    // }
+
 /// older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
 @mixin compose_chapterOutline($objectiveTitle) {
   [data-type="page"]:not(.introduction):not(.preface) {
     > [data-type="document-title"] {
-      node-set: outlineSectionTitle;
-    }
-    [data-type="abstract"] {
-      move-to: outlineAbstract;
+     // node-set: outlineSectionTitle;
+      string-set: outlinePageId attr(id);
+      &::after {
+        container: a;
+        class: "os-chapter-objective";
+        content: content();
+        attr-href: "#" string(outlinePageId);
+        move-to: chapOutlineLink;
+      }
     }
     &::after {
       class: "os-chapter-objective";
-      content: nodes(outlineSectionTitle) pending(outlineAbstract);
+      content: pending(chapOutlineLink);
       move-to: chapOutline;
     }
   }
@@ -568,7 +580,7 @@
       content: $objectiveTitle;
       move-to: chapOutlineTitle;
     }
-    &:deferred::after {
+    &:deferred::before {
       class: "os-chapter-outline";
       content: pending(chapOutlineTitle) pending(chapOutline);
     }
@@ -576,12 +588,10 @@
 }
 
 /// move the chapter objectives to the intro module
+
 @mixin compose_moveChapterOutline() {
   .os-chapter-outline {
     move-to: ChapterOutline;
-  }
-  .os-chapter-objective > [data-type="document-title"] {
-    container: h4;
   }
   .introduction {
     content: pending(ChapterOutline) content();
