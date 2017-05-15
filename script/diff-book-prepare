@@ -13,9 +13,9 @@ if [[ -z "${arg1}" ]]
 then
   >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument'
   >&2 echo ' or --all for all books.'
-  >&2 echo ''
-  >&2 echo 'This script bakes the book and then compares to the prepared book'
-  >&2 echo '(done earlier, usually in another branch)'
+  >&2 echo 'This script prepares the book to compare against.'
+  >&2 echo 'Typically this step is done in the master branch'
+  >&2 echo 'and then in another branch diff-book is called to see how the HTML changed.'
   >&2 echo ''
   >&2 echo "Valid books are (from ./books.txt):"
   for bookConfig in "${BOOK_CONFIGS[@]}"
@@ -23,7 +23,6 @@ then
     read -r bookName rulesetName uuid _ <<< "${bookConfig}"
     >&2 echo "${bookName}"
   done
-
   exit 1
 fi
 
@@ -64,26 +63,7 @@ do
   bakedFile="./data/${bookName}-baked.xhtml"
   preparedFile="./data/${bookName}-prepared.xhtml"
 
-  if [[ -s "${preparedFile}" ]]
-  then
+  ./script/bake-book ${bookName} --use-repeatable-ids || exit 1
 
-    ./scripts/bake-book ${bookName} --use-repeatable-ids || exit 1
-
-    diffCount=$(diff ${preparedFile} ${bakedFile} | wc -l)
-
-    if [[ 0 -ne "${diffCount}" ]]
-    then
-      >&2 echo "There were ${diffCount} differences found"
-      >&2 echo "To see all of them run the following:"
-      >&2 echo "diff ${preparedFile} ${bakedFile}"
-      exit 1
-    fi
-
-  else
-
-    >&2 echo "SKIPPING ${bookName} because the prepared file was not found."
-    >&2 echo "Did you run './scripts/diff-book-prepare ${bookName}' earlier?"
-  fi
-
-
+  mv ${bakedFile} ${preparedFile}
 done

@@ -1,21 +1,21 @@
 #!/bin/bash
 
 # Generate the CSS files for books
-./scripts/compile-books || exit 1
+./script/compile-books || exit 1
 
 # Run the linter
 npm test || exit 1
-./scripts/find-unused-vars || exit 1
+./script/find-unused-vars || exit 1
 
 # Make sure the docs and guides still generate
-./scripts/generate-docs || exit 1
+./script/generate-docs || exit 1
 
 # Pull in the BOOK_CONFIGS and BOOK_NAMES
 source ./books.txt || exit 1
 
 for rulesetName in "${RULESET_NAMES[@]}"
 do
-  ./scripts/generate-guide "${rulesetName}" || exit 1
+  ./script/generate-guide "${rulesetName}" || exit 1
 done
 
 # Generate an index.html page for the styleguide
