@@ -201,9 +201,13 @@
   $labelText: map-get($noteContent, labelText);
   $titleContent: map-get($noteContent, titleContent);
   $isBodyWrapped: map-get($noteContent, isBodyWrapped);
+
   @include validate_type($selector, string);
   @include validate_typeOptional($titleContent, map);
   @include validate_typeOptional($labelText, string);
+  // Check that exactly one option is provided
+  @include validate_exists($titleContent or $labelText);
+  @include validate_exists(not($titleContent and $labelText));
 
   [data-type="note"].#{$selector} {
     @if ($labelText) {
