@@ -586,19 +586,23 @@
 :pass(2) [data-type="exercise"][data-element-type="check-understanding"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
 :pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
-  node-set: outlineSectionTitle; }
-:pass(2) [data-type="page"]:not(.introduction):not(.preface) [data-type="abstract"] {
-  move-to: outlineAbstract; }
+  string-set: outlinePageId attr(id); }
+  :pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"]::after {
+    container: a;
+    class: "os-chapter-objective";
+    content: content();
+    attr-href: "#" string(outlinePageId);
+    move-to: chapOutlineLink; }
 :pass(2) [data-type="page"]:not(.introduction):not(.preface)::after {
   class: "os-chapter-objective";
-  content: nodes(outlineSectionTitle) pending(outlineAbstract);
+  content: pending(chapOutlineLink);
   move-to: chapOutline; }
 :pass(2) [data-type="chapter"]::before {
   container: h3;
   class: "os-title";
   content: "Chapter Outline";
   move-to: chapOutlineTitle; }
-:pass(2) [data-type="chapter"]:deferred::after {
+:pass(2) [data-type="chapter"]:deferred::before {
   class: "os-chapter-outline";
   content: pending(chapOutlineTitle) pending(chapOutline); }
 
@@ -636,8 +640,6 @@
   move-to: index-TOCOMPOSITE; }
 :pass(3) .os-chapter-outline {
   move-to: ChapterOutline; }
-:pass(3) .os-chapter-objective > [data-type="document-title"] {
-  container: h4; }
 :pass(3) .introduction {
   content: pending(ChapterOutline) content(); }
 :pass(3) [data-type="composite-page"], :pass(3) .appendix {
@@ -1001,9 +1003,9 @@
   container: h2; }
 :pass(6) [data-type="composite-page"].os-eob > .os-chapter-area > section > [data-type="document-title"] {
   container: h3; }
-:pass(6) .appendix > section [data-type="title"] {
+:pass(6) .appendix > section [data-type="title"], :pass(6) .appendix > section [data-type="document-title"] {
   container: h2; }
-:pass(6) .appendix > section > section {
+:pass(6) .appendix > section > section [data-type="title"], :pass(6) .appendix > section > section [data-type="document-title"] {
   container: h3; }
 
 :pass(7) .os-index-link-separator:last-child {
@@ -1013,7 +1015,8 @@
 :pass(7) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
 
-:pass(8) div.os-eoc [data-type="cnx-archive-uri"], :pass(8) div.os-eob [data-type="cnx-archive-uri"] {
+:pass(8) div.os-eoc [data-type="cnx-archive-uri"],
+:pass(8) div.os-eob [data-type="cnx-archive-uri"] {
   move-to: trash; }
 :pass(8) body > div[data-type="page"],
 :pass(8) body > div[data-type="composite-page"] {
@@ -1039,47 +1042,47 @@
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
-:pass(8) body > div[data-type='chapter'] > [data-type='document-title'] {
+:pass(8) body > div[data-type="chapter"] > [data-type='document-title'] {
   node-set: chapterTitle;
   string-set: chapTitle-id attr(id); }
-:pass(8) body > div[data-type='chapter'] > [data-type='metadata']
+:pass(8) body > div[data-type="chapter"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
   string-set: chap-shortid attr(data-value); }
-:pass(8) body > div[data-type='chapter']::after {
+:pass(8) body > div[data-type="chapter"]::after {
   content: nodes(chapterTitle);
   attr-href: "#" string(chapTitle-id);
   container: a;
   move-to: eoc-toc; }
-:pass(8) body > div[data-type='chapter'] > div[data-type="page"],
-:pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"] {
+:pass(8) body > div[data-type="chapter"] > div[data-type="page"],
+:pass(8) body > div[data-type="chapter"] > div[data-type="composite-page"] {
   string-set: page-id-chap attr(id); }
-  :pass(8) body > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
-  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
+  :pass(8) body > div[data-type="chapter"] > div[data-type="page"] > [data-type='document-title'],
+  :pass(8) body > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='document-title'] {
     node-set: PageTitle; }
-  :pass(8) body > div[data-type='chapter'] > div[data-type="page"] > [data-type='metadata']
+  :pass(8) body > div[data-type="chapter"] > div[data-type="page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'],
-  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='metadata']
+  :pass(8) body > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'] {
     string-set: page-shortid attr(data-value); }
-  :pass(8) body > div[data-type='chapter'] > div[data-type="page"]::after,
-  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
+  :pass(8) body > div[data-type="chapter"] > div[data-type="page"]::after,
+  :pass(8) body > div[data-type="chapter"] > div[data-type="composite-page"]::after {
     content: nodes(PageTitle);
     attr-href: "#" string(page-id-chap);
     container: a;
     move-to: page-link; }
-  :pass(8) body > div[data-type='chapter'] > div[data-type="page"]::after,
-  :pass(8) body > div[data-type='chapter'] > div[data-type="composite-page"]::after {
+  :pass(8) body > div[data-type="chapter"] > div[data-type="page"]::after,
+  :pass(8) body > div[data-type="chapter"] > div[data-type="composite-page"]::after {
     content: pending(page-link);
     move-to: eoc-toc-pages;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
-:pass(8) body > div[data-type='chapter']::after {
+:pass(8) body > div[data-type="chapter"]::after {
   content: pending(eoc-toc-pages);
   container: ol;
   class: os-chapter;
   move-to: eoc-toc; }
-:pass(8) body > div[data-type='chapter']::after {
+:pass(8) body > div[data-type="chapter"]::after {
   content: pending(eoc-toc);
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(chap-shortid);
@@ -1096,47 +1099,47 @@
   attr-href: "#" string(uTitle-id);
   container: a;
   move-to: eou-toc; }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > [data-type='document-title'] {
+:pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type='document-title'] {
   node-set: chapterTitle;
   string-set: chapTitle-id attr(id); }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > [data-type='metadata']
+:pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
   string-set: chap-shortid attr(data-value); }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after {
+:pass(8) body > div[data-type="unit"] > div[data-type="chapter"]::after {
   content: nodes(chapterTitle);
   attr-href: "#" string(chapTitle-id);
   container: a;
   move-to: eoc-toc; }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"],
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] {
+:pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"],
+:pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] {
   string-set: page-id-chap attr(id); }
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='document-title'],
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='document-title'] {
+  :pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"] > [data-type='document-title'],
+  :pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='document-title'] {
     node-set: PageTitle; }
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"] > [data-type='metadata']
+  :pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'],
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"] > [data-type='metadata']
+  :pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='metadata']
   > [data-type='cnx-archive-shortid'] {
     string-set: page-shortid attr(data-value); }
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after {
+  :pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"]::after,
+  :pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"]::after {
     content: nodes(PageTitle);
     attr-href: "#" string(page-id-chap);
     container: a;
     move-to: page-link; }
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="page"]::after,
-  :pass(8) body > div[data-type="unit"] > div[data-type='chapter'] > div[data-type="composite-page"]::after {
+  :pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"]::after,
+  :pass(8) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"]::after {
     content: pending(page-link);
     move-to: eoc-toc-pages;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after {
+:pass(8) body > div[data-type="unit"] > div[data-type="chapter"]::after {
   content: pending(eoc-toc-pages);
   container: ol;
   class: os-chapter;
   move-to: eoc-toc; }
-:pass(8) body > div[data-type="unit"] > div[data-type='chapter']::after {
+:pass(8) body > div[data-type="unit"] > div[data-type="chapter"]::after {
   content: pending(eoc-toc);
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(chap-shortid);
