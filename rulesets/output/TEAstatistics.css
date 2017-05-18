@@ -486,7 +486,6 @@ Formula Review page
 :pass(1) [data-type="note"].lab::before {
   container: span;
   class: "os-title-label";
-  content: "Stats Lab";
   move-to: bNoteLabel; }
 :pass(1) [data-type="note"].lab::before {
   container: h3;
@@ -494,7 +493,12 @@ Formula Review page
   class: "os-title";
   move-to: bNoteHeader; }
 :pass(1) [data-type="note"].lab > div[data-type="title"] {
-  move-to: trash; }
+  class: "os-subtitle";
+  container: h4;
+  move-to: noteSubtitle; }
+:pass(1) [data-type="note"].lab::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
 :pass(1) [data-type="note"].lab:deferred {
   content: pending(bNoteHeader) content(); }
 :pass(1) [data-type="note"].collab::before {
@@ -529,6 +533,19 @@ Formula Review page
   move-to: trash; }
 :pass(1) body:deferred::after {
   content: clear(trash); }
+:pass(1) [data-type="note"].try::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+:pass(1) [data-type="note"].try::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  move-to: bNoteHeader; }
+:pass(1) [data-type="note"].try > div[data-type="title"] {
+  move-to: trash; }
+:pass(1) [data-type="note"].try:deferred {
+  content: pending(bNoteHeader) content(); }
 
 :pass(2) body {
   counter-reset: chapter; }
@@ -640,6 +657,29 @@ Formula Review page
   container: div;
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
+:pass(2) [data-type="chapter"], :pass(2) .appendix {
+  counter-reset: lab; }
+:pass(2) [data-type="note"].lab {
+  counter-increment: lab; }
+:pass(2) [data-type="note"].lab::before {
+  container: span;
+  content: "Stats Lab ";
+  class: os-title-label;
+  move-to: bNoteLabel-lab; }
+:pass(2) [data-type="note"].lab::before {
+  container: span;
+  content: counter(chapter) "." counter(lab);
+  class: os-number;
+  move-to: bNoteLabel-lab; }
+:pass(2) [data-type="note"].lab > [data-type="title"] {
+  move-to: trash; }
+:pass(2) [data-type="note"].lab::after {
+  container: div;
+  content: pending(bNoteLabel-lab);
+  class: "os-title";
+  move-to: bNoteHeader; }
+:pass(2) [data-type="note"].lab:deferred {
+  content: pending(bNoteHeader) content(); }
 :pass(2) [data-type="chapter"], :pass(2) .appendix {
   counter-reset: Try; }
 :pass(2) [data-type="note"].try {
