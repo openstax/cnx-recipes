@@ -46,31 +46,29 @@ $_symbolsSectionTitle: "Symbols";
     @if $moveSolutionTo == $AREA_TRASH {
       @include modify_trash('.#{$className} [data-type="solution"]');
       @include utils_clearTrash();
-    } //@else {
+    }
 
+    // TODO Skip reconstructing a new object for modify_note
+     $labelText: map-get($note, labelText);
+    $titleContent: map-get($note, titleContent);
+    $isBodyWrapped: map-get($note, isBodyWrapped);
 
-      // TODO Skip reconstructing a new object for modify_note
-      $labelText: map-get($note, labelText);
-      $titleContent: map-get($note, titleContent);
-      $isBodyWrapped: map-get($note, isBodyWrapped);
+    @include validate_typeOptional($labelText, string);
+    @include validate_typeOptional($titleContent, map);
 
-      @include validate_typeOptional($labelText, string);
-      @include validate_typeOptional($titleContent, map);
-
-      // Check that there is not both a label AND a titleContent
-      @if $labelText and $titleContent {
-        @error "BUG: Specified both a label and a titleContent";
-      } @else {
-        // Phil does not know how to do `@else @if { ... }`
-        //@if $labelText {
-          @include modify_note((selector: $className, labelText: $labelText, isBodyWrapped: $isBodyWrapped));
-     //   } @else {
-          // @if $titleContent {
-          //   @include number_numberNote($className, $titleContent);
-          // }
-      //  }
+    // Check that there is not both a label AND a titleContent
+    @if $labelText and $titleContent {
+       @error "BUG: Specified both a label and a titleContent";
+    } @else {
+       // Phil does not know how to do `@else @if { ... }`
+       @if $labelText {
+         @include modify_note((selector: $className, labelText: $labelText, isBodyWrapped: $isBodyWrapped));
+    } @else {
+         @if $titleContent {
+         @include modify_note((selector: $className, titleContent: $titleContent, isBodyWrapped: $isBodyWrapped));
       }
-   // }
+     }
+    }
   }
 }
 :pass(2) {

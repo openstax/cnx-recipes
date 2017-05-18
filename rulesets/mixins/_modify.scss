@@ -199,13 +199,20 @@
 @mixin modify_note($noteContent) {
   $selector: map-get($noteContent, selector);
   $labelText: map-get($noteContent, labelText);
+  $titleContent: map-get($noteContent, titleContent);
   $isBodyWrapped: map-get($noteContent, isBodyWrapped);
+  @include validate_type($selector, string);
+  @include validate_typeOptional($titleContent, map);
+  @include validate_typeOptional($labelText, string);
+
   [data-type="note"].#{$selector} {
-    &::before {
-      container: span;
-      class: "os-title-label";
-      content: $labelText;
-      move-to: bNoteLabel;
+    @if ($labelText) {
+      &::before {
+        container: span;
+        class: "os-title-label";
+        content: $labelText;
+        move-to: bNoteLabel;
+      }
     }
     &::before {
       container: h3;
