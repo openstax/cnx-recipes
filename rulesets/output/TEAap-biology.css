@@ -1507,6 +1507,34 @@
   data-type: "title";
   content: "Learning Objectives"; }
 
+:pass(1) body .preface {
+  move-to: chapterPreface; }
+:pass(1) body::before {
+  container: span;
+  class: "os-text";
+  content: "Preface";
+  move-to: prefaceTitleSpans; }
+:pass(1) body::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(prefaceTitleSpans);
+  move-to: prefaceTitle; }
+:pass(1) body:deferred::before {
+  data-type: composite-chapter;
+  data-uuid-key: prefaceChapter;
+  content: pending(prefaceTitle) pending(chapterPreface); }
+
+:pass(3) .preface::inside {
+  container: section;
+  class: "preface-container"; }
+
+:pass(4) .preface .preface-container > h1[data-type="document-title"] {
+  copy-to: prefaceTitle; }
+:pass(4) .preface .preface-container [data-type="metadata"] {
+  move-to: metadata; }
+:pass(4) .preface:deferred {
+  content: pending(metadata) pending(prefaceTitle) content(); }
+
 :pass(6) .os-index-container {
   move-to: trash; }
 :pass(6) .os-solutions-container {

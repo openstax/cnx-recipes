@@ -65,6 +65,57 @@
   }
 }
 
+@if $Config_TEAspecificHasCompositePreface {
+  :pass(1) {
+    body {
+      .preface {
+        move-to: chapterPreface;
+      }
+      &::before {
+        container: span;
+        class: "os-text";
+        content: "Preface";
+        move-to: prefaceTitleSpans;
+      }
+      &::before {
+        container: h1;
+        data-type: "document-title";
+        content: pending(prefaceTitleSpans);
+        move-to: prefaceTitle;
+      }
+      &:deferred::before {
+        data-type: composite-chapter;
+        data-uuid-key: prefaceChapter;
+        // attr-id: uuid() "@1";
+        content: pending(prefaceTitle) pending(chapterPreface);
+      }
+    }
+  }
+  :pass(3) {
+    .preface {
+      &::inside {
+        container: section;
+        class: "preface-container";
+      }
+    }
+  }
+  :pass(4) {
+    .preface {
+      .preface-container {
+      > h1[data-type="document-title"] {
+        copy-to: prefaceTitle;
+       }
+       [data-type="metadata"] {
+        move-to: metadata;
+       }
+     }
+     &:deferred {
+      content:  pending(metadata) pending(prefaceTitle)  content();
+     }
+    }
+  }
+}
+
 // @if $Config_TEAspecificReferencePage {
 //   :pass(6) {
 //     .os-eob {
