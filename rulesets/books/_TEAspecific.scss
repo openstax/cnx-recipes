@@ -1,9 +1,6 @@
 
 //ad hoc TEAspecific specific requirements for the TEG Gateway imports process
 
-//all TEA books have composite chapters
-
-
 @if $Config_TEAspecificLOHeaders {
   :pass(0) {
     .learning-objectives {
@@ -37,7 +34,6 @@
       &::after {
         data-type: composite-chapter;
         data-uuid-key: appendicesChapter;
-        // attr-id: uuid() "@1";
         content: pending(appendicesTitle) pending(chapterAppendices);
       }
     }
@@ -71,24 +67,25 @@
   :pass(1) {
     body {
       .preface {
-        &::after {
-          container: span;
-          class: "os-text";
-          content: "Preface";
-          move-to: prefaceTitleSpans;
-        }
-        &::after {
-          container: h1;
-          data-type: "document-title";
-          content: pending(prefaceTitleSpans);
-          move-to: prefaceTitle;
-        }
-        &::outside {
-          data-type: composite-chapter;
-          data-uuid-key: prefaceChapter;
-          // attr-id: uuid() "@1";
-          content: pending(prefaceTitle) content();
-        }
+        move-to: prefaceWaka;
+      }
+      &::after {
+        container: span;
+        class: "os-text";
+        content: "Preface";
+        move-to: prefaceTitleSpans;
+      }
+
+      &::after {
+        container: h1;
+        data-type: "document-title";
+        content: pending(prefaceTitleSpans);
+        move-to: prefaceTitle;
+       }
+       &::before {
+         data-type: composite-chapter;
+         data-uuid-key: prefaceChapter;
+         content: pending(prefaceTitle) pending(prefaceWaka);
       }
     }
   }
