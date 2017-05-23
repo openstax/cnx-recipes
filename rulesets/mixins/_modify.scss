@@ -34,14 +34,14 @@
 /// Trashes `[data-type="cnx-archive-uri"]` in `.os-eob` and `.os-eoc`
 ///Trashes `[data-type="cnx-archive-uri"]` in composite-chapters
 /// @group modify
-@mixin modify_suppressURI($hasCompositeAppendix) {
+@mixin modify_suppressURI($hasCompositeChapter) {
   div.os-eoc,
   div.os-eob {
     [data-type="cnx-archive-uri"] {
       move-to: trash;
     }
   }
-  @if $hasCompositeAppendix {
+  @if $hasCompositeChapter {
     [data-type="composite-chapter"] {
       > [data-type="metadata"] > [data-type="cnx-archive-uri"] {
         move-to: trash;
@@ -108,12 +108,12 @@
 /// Adds metadata to the composite pages
 /// @arg {Text} $bookMetadata - The node set that contains the metadata
 /// @group modify
-@mixin modify_compositeMetadata($bookMetadata, $hasCompositeAppendix) {
+@mixin modify_compositeMetadata($bookMetadata, $hasCompositeChapter) {
   [data-type="composite-page"] {
     content: nodes($bookMetadata) content();
   }
 
-  @if $hasCompositeAppendix {
+  @if $hasCompositeChapter {
     [data-type="composite-chapter"]  {
       // Copy-pasta from above
       content: nodes($bookMetadata) content();
@@ -123,15 +123,15 @@
 
 /// Adds the title for each composite page
 /// @group modify
-@mixin modify_retitleCompositeMetadata($hasCompositeAppendix) {
-  $pageAndCompositeAppendixSel: ('[data-type="composite-page"]');
-  @if $hasCompositeAppendix {
-    $pageAndCompositeAppendixSel: append($pageAndCompositeAppendixSel, '[data-type="composite-chapter"]', comma);
+@mixin modify_retitleCompositeMetadata($hasCompositeChapter) {
+  $pageAndCompositeChapterSel: ('[data-type="composite-page"]');
+  @if $hasCompositeChapter {
+    $pageAndCompositeChapterSel: append($pageAndCompositeChapterSel, '[data-type="composite-chapter"]', comma);
   }
 
-  #{$pageAndCompositeAppendixSel} {
+  #{$pageAndCompositeChapterSel} {
     > [data-type="document-title"] {
-      string-set: doc-title-TOMETADATA content();
+      string-set: doc-title-TOMETADATA "waka";
     }
     > [data-type="metadata"] {
       > [data-type="document-title"] {
@@ -149,7 +149,7 @@
 @mixin modify_anyContainerTitle ($dataType, $selector) {
   div#{$dataType}#{$selector}  {
       >div[data-type="title"] {
-        string-set: containerTitle content();
+        string-set: containerTitle "waka";
        &::before {
          container: span;
          class: "os-title-label";
@@ -248,7 +248,7 @@
 
 /// NEEDS DOCUMENTATION
 /// @group needs-docs
-@mixin modify_retitleHeaders ($hasCompositeAppendix) {
+@mixin modify_retitleHeaders ($hasCompositeChapter) {
   [data-type="chapter"] {
     [data-type="page"] {
       [data-type="note"],
@@ -301,7 +301,7 @@
       }
     }
   }
-  @if $hasCompositeAppendix {
+  @if $hasCompositeChapter {
     [data-type="composite-chapter"] {
       > section,
       > [data-type="page"] {

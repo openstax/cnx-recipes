@@ -1,6 +1,8 @@
 
 //ad hoc TEAspecific specific requirements for the TEG Gateway imports process
 
+//all TEA books have composite chapters
+
 
 @if $Config_TEAspecificLOHeaders {
   :pass(0) {
@@ -69,25 +71,24 @@
   :pass(1) {
     body {
       .preface {
-        move-to: chapterPreface;
-      }
-      &::before {
-        container: span;
-        class: "os-text";
-        content: "Preface";
-        move-to: prefaceTitleSpans;
-      }
-      &::before {
-        container: h1;
-        data-type: "document-title";
-        content: pending(prefaceTitleSpans);
-        move-to: prefaceTitle;
-      }
-      &:deferred::before {
-        data-type: composite-chapter;
-        data-uuid-key: prefaceChapter;
-        // attr-id: uuid() "@1";
-        content: pending(prefaceTitle) pending(chapterPreface);
+        &::after {
+          container: span;
+          class: "os-text";
+          content: "Preface";
+          move-to: prefaceTitleSpans;
+        }
+        &::after {
+          container: h1;
+          data-type: "document-title";
+          content: pending(prefaceTitleSpans);
+          move-to: prefaceTitle;
+        }
+        &::outside {
+          data-type: composite-chapter;
+          data-uuid-key: prefaceChapter;
+          // attr-id: uuid() "@1";
+          content: pending(prefaceTitle) content();
+        }
       }
     }
   }
@@ -114,21 +115,15 @@
      }
     }
   }
+  :pass(5) {
+    .preface-container {
+      > h1[data-type="document-title"] {
+        container: h2;
+      }
+    }
+  }
 }
 
-// @if $Config_TEAspecificReferencePage {
-//   :pass(6) {
-//     .os-eob {
-//       > [data-type="document-title"] {
-//         node-set: eobTitle;
-//       }
-//       &::outside{
-//         data-type: "composite-chapter";
-//         content: nodes(eobTitle) pending(referencesTitle) content();
-//       }
-//     }
-//   }
-// }
 
 //remove the index
 :pass(6) {
@@ -137,5 +132,5 @@
     @include utils_clearTrash();
 }
 :pass(7) {
-  @include modify_retitleHeaders($Config_hasCompositeAppendixes);
+  @include modify_retitleHeaders($Config_hasCompositeChapter);
 }

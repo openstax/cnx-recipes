@@ -2,6 +2,11 @@
 
 $_symbolsSectionTitle: "Symbols";
 
+//Currently, none of the books have composite chapters
+//TODO: add a switch when our books have composite chapters, define logic/behavior for that switch. This simply could be in the _config files for all books or set based on the presence of at least one type of composite chapter (appendix, multiple page answer key etc.).
+$Config_hasCompositeChapter: true;
+
+
 :pass(0) {
   //Some modifications to be done to the book before any collation
   @include modify_titlePreface();
@@ -283,7 +288,7 @@ $_symbolsSectionTitle: "Symbols";
     }
   }
   @include reference_refBookMetadataNodeAs(bookMetadata);
-  @include modify_compositeMetadata(bookMetadata, $Config_hasCompositeAppendixes);
+  @include modify_compositeMetadata(bookMetadata, $Config_hasCompositeChapter);
   //After: createChapterComposites, createEOCSolutions, createBookComposites
   @include compose_titleEOCComposites($Config_ChapterCompositePages);
   @include compose_titleEOBComposites($Config_BookCompositePages);
@@ -297,7 +302,7 @@ $_symbolsSectionTitle: "Symbols";
   @include count_countFigures(figure);
   @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp);
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
-  @include modify_retitleHeaders($Config_hasCompositeAppendixes); // Update the h2 h3 ... levels to make sense
+  @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
 }
 :pass(7) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
@@ -309,12 +314,12 @@ $_symbolsSectionTitle: "Symbols";
     }
   }
   @include modify_trash('.os-index-link-separator:last-child');
-  @include modify_retitleCompositeMetadata($Config_hasCompositeAppendixes);
+  @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
 }
 :pass(8) {
   //After: All metadata tasks are completed
-  @include modify_suppressURI($Config_hasCompositeAppendixes);
-  @include toc_prepTOCElements($Config_hasCompositeAppendixes);
+  @include modify_suppressURI($Config_hasCompositeChapter);
+  @include toc_prepTOCElements($Config_hasCompositeChapter);
 }
 :pass(9) {
   @include toc_putTOCElements();
