@@ -66,26 +66,24 @@
 @if $Config_TEAspecificHasCompositePreface {
   :pass(1) {
     body {
-      .preface {
-        move-to: prefaceContent;
-      }
+    .preface {
       &::after {
         container: span;
         class: "os-text";
         content: "Preface";
         move-to: prefaceTitleSpans;
       }
-
       &::after {
         container: h1;
         data-type: "document-title";
         content: pending(prefaceTitleSpans);
         move-to: prefaceTitle;
        }
-       &::before {
+        &::outside {
          data-type: composite-chapter;
          data-uuid-key: prefaceChapter;
-         content: pending(prefaceTitle) pending(prefaceContent);
+         content: pending(prefaceTitle) content();
+        }
       }
     }
   }
@@ -119,6 +117,20 @@
       }
     }
   }
+  :pass(7) {
+    [data-type="composite-chapter"] {
+      .preface {
+        > [data-type="document-title"] {
+          container: h2;
+        }
+        .preface-container {
+          > [data-type="document-title"] {
+            container: h3;
+          }
+        }
+      }
+    }
+  }
 }
 
 
@@ -128,6 +140,6 @@
     @include modify_trash(".os-solutions-container");
     @include utils_clearTrash();
 }
-:pass(7) {
+:pass(8) {
   @include modify_retitleHeaders($Config_hasCompositeChapter);
 }
