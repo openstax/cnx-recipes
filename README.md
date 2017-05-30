@@ -125,5 +125,5 @@ To update the Documentation in the gh-pages branch:
 **Note:** This will push changes if successful
 
 
-[codecov-image]: https://img.shields.io/codecov/c/github/connexions/cnx-recipes.svg
-[codecov-url]: https://codecov.io/gh/Connexions/cnx-recipes
+[codecov-image]: https://img.shields.io/codecov/c/github/connexions/cnx-rulesets.svg
+[codecov-url]: https://codecov.io/gh/Connexions/cnx-rulesets
