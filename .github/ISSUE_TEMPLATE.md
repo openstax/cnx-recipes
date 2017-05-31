@@ -1,17 +1,19 @@
 # Scenario
 
-
+(_Describe the issue_)
 
 # Reproducibility Details
 
 - **Impact area**: 
-- **User**: n/a
+- **User**: 
 - **URL / Location**: 
-- **How many times were you able to reproduce the issue?** n/a
+- **How many times were you able to reproduce the issue?** 
 
 ## Steps to reproduce:
 
-n/a
+- Step 1
+- Step 2
+- Step 3
 
 ## Screenshots
 
@@ -22,9 +24,9 @@ n/a
 
 - **Instance**:
 - **OS**:
-- **Browser**: Chrome
+- **Browser**: 
 
 # Impact
 
-- **Severity**: Medium
-- **Frequency of occurrence**: Rare
+- **Severity**: 
+- **Frequency of occurrence**: 
