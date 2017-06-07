@@ -43,6 +43,9 @@ $_symbolsSectionTitle: "Symbols";
   @if $Config_hasAbstract == false {
     @include modify_trash('[data-type="abstract"]');
   }
+  @if $Config_abstractTitle {
+    @include modify_addAbstractTitle($Config_abstractTitle);
+  }
 }
 :pass(1) {
 
@@ -152,8 +155,7 @@ $_symbolsSectionTitle: "Symbols";
     @include validate_typeOptional($childSelector, string);
     @include modify_addUnnumbered($contextSelector, $childSelector);
   }
-
-  //create a chapter outline
+    //create a chapter outline
   $outlineTitle: map-get($Config_PartType_Chapter, outlineTitle);
   @include validate_typeOptional($outlineTitle, string);
   @if $outlineTitle {
@@ -161,8 +163,10 @@ $_symbolsSectionTitle: "Symbols";
   }
 
 
+
 }
 :pass(3) {
+
   //After: ???
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include reference_refSectionHeaderStringAs(sectionHeaderString);
@@ -225,7 +229,7 @@ $_symbolsSectionTitle: "Symbols";
   @each $page in $Config_ChapterCompositePages {
     $name: map-get($page, name);
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    @include validate_type($name, string);
+    //@include validate_type($name, string);
     @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
     @if $moveSolutionsTo == $AREA_EOC {
       @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
@@ -258,6 +262,7 @@ $_symbolsSectionTitle: "Symbols";
   @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
 }
 :pass(6) {
+  //@include reference_refChapterNumberStringAs(chapterNumberString);
   //After: prepIndexTerms, createBookComposites
   @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
   //After: composite page creation

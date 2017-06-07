@@ -1,0 +1,170 @@
+@import '../_common-stuff';
+
+/*==========================================================
+  UNIVERSITY PHYSICS PAGES
+==========================================================*/
+/*
+  Chapter Review
+
+  These should be collated at the end of a chapter.
+
+  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task
+
+  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.html
+
+  Style guide: book.compoundcomposite.chapterreview
+*/
+/*
+  Key Terms
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.2-composite.key-terms
+*/
+/*
+  Key Equations
+
+  These should be collated at the end of a chapter and separated by which section they came from.
+
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
+
+  Style guide: book.2-composite.key-equations
+*/
+/*
+  Summary
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.summary.xhtml-baked.html
+
+  Style guide: book.2-composite.summary
+*/
+/*
+  Conceptual Questions
+
+  These should be collated at the end of a chapter and have answers collated at the end of the chapter.
+
+  **Notes:** Even without the styling you can see a few problems with the ruleset code:
+  1. the rulesets use the class attribute when they should use the `data-type`
+  1. the solution is being duplicated
+  1. the solution is inside the link text that points back to the problem
+  1. new id's are generated rather than using the existing id attributes for the problem and solution
+
+  Markup: ./styleguide/book.composite.conceptual-questions.xhtml-baked.html
+
+  Style guide: book.2-composite.conceptual-questions
+*/
+/*
+  Problems
+
+  These should be collated at the end of a chapter and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.problems.xhtml-baked.html
+
+  Style guide: book.2-composite.problems
+*/
+/*
+  Additional Problems
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.additional-problems.xhtml-baked.html
+
+  Style guide: book.2-composite.additional-problems
+*/
+/*
+  Challenge Problems
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.challenge-problems.xhtml-baked.html
+
+  Style guide: book.2-composite.challenge-problems
+*/
+
+$_chapterReviewChildPages: (
+  (className: "glossary",             clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "dl > dt", name: "Key Terms"),
+    (className: "key-equations", clusterBy: $CLUSTER_NONE,    hasSolutions: false,   name: "Key Equations"),
+  (className: "key-concepts",              clusterBy: $CLUSTER_SECTION, hasSolutions: false,  name: "Summary"),
+  (className: "review-conceptual-questions", clusterBy: $CLUSTER_SECTION,    hasSolutions: true,   name: "Conceptual Questions"),
+  (className: "review-problems",     clusterBy: $CLUSTER_SECTION,    hasSolutions: true,  name: "Problems"),
+  (className: "review-additional-problems",    clusterBy: $CLUSTER_NONE,    hasSolutions: true,  name: "Additional Problems"),
+  (className: "review-challenge",             clusterBy: $CLUSTER_NONE,    hasSolutions: true,   name: "Challenge Problems"),
+);
+
+//$_reviewChapterTitle:  "Chapter " string(chapterNumberString) " Review" ;
+$Config_ChapterCompositePages: (
+(className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages,  name: "Chapter Review"),
+);
+
+$Config_BookCompositePages: (
+  //This doesn't get parsed as a list without a comma at the end
+  //the composite builder should account for this rather than using hacky syntax
+  (className: "solutions",    clusterBy: $CLUSTER_CHAPTER, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (className: "index",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+);
+/*==========================================================
+  ECONOMICS TITLING CONTENT
+==========================================================*/
+/*==========================================================
+  ECONOMICS CONFIG
+==========================================================*/
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true);
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
+/*
+  Link It Up note
+
+  Contains a title "Link It Up"
+
+  Markup: ./styleguide/page.note.linkup.xhtml-baked.html
+
+  Style guide: page.note.linkup
+*/
+/*
+  Bring It Home note
+
+  Contains a title "Bring It Home" and a body containing a title and the contents of the note.
+
+  Markup: ./styleguide/page.note.bringhome.xhtml-baked.html
+
+  Style guide: page.note.bringhome
+*/
+/*
+  Clear It Up note
+
+  Contains a title "Clear It Up" and a body containing a title and the contents of the note.
+
+  Markup: ./styleguide/page.note.clearup.xhtml-baked.html
+
+  Style guide: page.note.clearup
+*/
+/*
+  Work It Out note
+
+  Contains a title "Work It Out" and a body containing a title and the contents of the note.
+
+  Markup: ./styleguide/page.note.workout.xhtml-baked.html
+
+  Style guide: page.note.workout
+*/
+$Config_Notes: (
+  (className: 'linkup',     moveSolutionTo: $AREA_NONE,  labelText: "Link It Up"),
+  (className: 'bringhome',  moveSolutionTo: $AREA_NONE,  labelText: "Bring It Home"),
+  (className: 'clearup',    moveSolutionTo: $AREA_NONE,  labelText: "Clear It Up"),
+  (className: 'workout',    moveSolutionTo: $AREA_NONE,  labelText: "Work It Out"),
+);
+
+$Config_UnnumberedExercises: (); // There are no unnumbered exercises
+
+$Config_abstractTitle: "Learning Objectives";
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise)));
+$Config_PartType_Example:  ();
+$Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
+$Config_PartType_Equation: ();
+$Config_PartType_Solution: ();
+
+$Config_hasCompositeChapter: false;
