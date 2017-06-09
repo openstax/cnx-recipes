@@ -458,3 +458,34 @@
     }
   }
 }
+
+@mixin modify_tagRemovedSolutions() {
+  [data-type="chapter"] {
+    counter-reset: solution_trash_half;
+  }
+  .os-eoc [data-type="exercise"] {
+    counter-increment: solution_trash_half;
+    string-set: trashStatus "";
+    [data-type="solution"] {
+      string-set: trashStatus counter(solution_trash_half);
+    }
+    &::deferred {
+      attr-trash-status: string(trashStatus);
+    }
+  }
+}
+
+@mixin modify_trashTaggedSolutions() {
+  .os-eoc [data-type="exercise"] {
+    &[trash-status$="0"],
+    &[trash-status$="2"],
+    &[trash-status$="4"],
+    &[trash-status$="6"],
+    &[trash-status$="8"] {
+      class: attr(class) "-trashed";
+      [data-type="solution"] {
+        move-to: trash;
+      }
+    }
+  }
+}

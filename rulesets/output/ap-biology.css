@@ -507,9 +507,9 @@
 :pass(0) :not([data-type="example"]) > [data-type="exercise"] {
   string-set: isSolution ""; }
   :pass(0) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
-    string-set: isSolution " os-hasSolution "; }
+    string-set: isSolution " os-hasSolution"; }
   :pass(0) :not([data-type="example"]) > [data-type="exercise"]::deferred {
-    class: attr(class) string(isSolution, " "); }
+    class: attr(class) string(isSolution); }
 :pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
   string-set: noteTitle content();
   move-to: trash; }
@@ -984,19 +984,32 @@
   container: span;
   content: counter(exercise);
   class: os-number; }
+:pass(3) [data-type="chapter"] {
+  counter-reset: solution_trash_half; }
+:pass(3) .os-eoc [data-type="exercise"] {
+  counter-increment: solution_trash_half;
+  string-set: trashStatus ""; }
+  :pass(3) .os-eoc [data-type="exercise"] [data-type="solution"] {
+    string-set: trashStatus counter(solution_trash_half); }
+  :pass(3) .os-eoc [data-type="exercise"]::deferred {
+    attr-trash-status: string(trashStatus); }
 
 :pass(4) body {
   counter-reset: exerciseAll; }
 :pass(4) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
-:pass(4) [data-type="exercise"].os-hasSolution {
+:pass(4) .os-eoc [data-type="exercise"][trash-status$="0"], :pass(4) .os-eoc [data-type="exercise"][trash-status$="2"], :pass(4) .os-eoc [data-type="exercise"][trash-status$="4"], :pass(4) .os-eoc [data-type="exercise"][trash-status$="6"], :pass(4) .os-eoc [data-type="exercise"][trash-status$="8"] {
+  class: attr(class) "-trashed"; }
+  :pass(4) .os-eoc [data-type="exercise"][trash-status$="0"] [data-type="solution"], :pass(4) .os-eoc [data-type="exercise"][trash-status$="2"] [data-type="solution"], :pass(4) .os-eoc [data-type="exercise"][trash-status$="4"] [data-type="solution"], :pass(4) .os-eoc [data-type="exercise"][trash-status$="6"] [data-type="solution"], :pass(4) .os-eoc [data-type="exercise"][trash-status$="8"] [data-type="solution"] {
+    move-to: trash; }
+:pass(4) [data-type="exercise"].os-hasSolution[trash-status$="1"], :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="3"], :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="5"], :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="7"], :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="9"] {
   string-set: exerciseId attr(id); }
-  :pass(4) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
+  :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="problem"] .os-number, :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="problem"] .os-number, :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="problem"] .os-number, :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="problem"] .os-number, :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="problem"] .os-number {
     container: a;
     attr-href: "#" string(exerciseId) "-solution"; }
-  :pass(4) [data-type="exercise"].os-hasSolution [data-type="solution"] {
+  :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"], :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"], :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"], :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"], :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] {
     attr-id: string(exerciseId) "-solution"; }
-    :pass(4) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
+    :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"] .os-number, :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"] .os-number, :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"] .os-number, :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"] .os-number, :pass(4) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
 :pass(4) div[data-type="chapter"] {

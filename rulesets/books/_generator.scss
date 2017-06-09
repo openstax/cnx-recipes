@@ -24,8 +24,10 @@ $_symbolsSectionTitle: "Symbols";
 
   // Only mark up solutions if they will not be discarded (optimization)
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
+  } @else if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
+    @include utils_hasSolution($trashHalf: true);
   } @else {
-    @include utils_hasSolution();
+    @include utils_hasSolution($trashHalf: false);
   }
 
   @if $Config_HACK_modifyAnyContainerTitleSelector {
@@ -188,6 +190,9 @@ $_symbolsSectionTitle: "Symbols";
     @if $numberAt == $NUMBER_BEFORE_MOVE {
       @include count_countEOCExercises(exercise, $resetSel);
       @include number_numberEOCExercises($titleContent, $titleContent);
+      @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
+        @include modify_tagRemovedSolutions();
+      }
     } @else if $numberAt == $NUMBER_AFTER_MOVE {
     } @else { @error 'BUG: Invalid enum'; }
   }
@@ -196,9 +201,16 @@ $_symbolsSectionTitle: "Symbols";
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
   // Only link up problems and solutions if they will not be discarded (optimization)
+  @if map-get($Config_PartType_Exercise, numberAt) == $NUMBER_BEFORE_MOVE {
+    @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
+      @include modify_trashTaggedSolutions();
+    }
+  }
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
+  } @else if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
+    @include link_linkToProblemsFromSolutionsEOC($trashHalf: true)
   } @else {
-    @include link_linkToProblemsFromSolutionsEOC();
+    @include link_linkToProblemsFromSolutionsEOC($trashHalf: false);
   }
   //After: prepBookComposites
   @include reference_refChapterHeaderNodeAs(chapterHeaderNode);
