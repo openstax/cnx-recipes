@@ -147,11 +147,18 @@
       $className: map-get($page, className);
       $pageName: map-get($page, name);
       $clusterBy: map-get($page, clusterBy);
-
+      $specialPageType: map-get($page, specialPageType);
       @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
+      $sourceSelector: if($specialPageType == $PAGE_GLOSSARY, 'div[data-type="#{$className}"] dl', 'section.#{$className}');
+      @if ($specialPageType == $PAGE_GLOSSARY) {
+        div[data-type="#{$className}"] {
+          /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+          move-to: trash;
+        }
+      }
+      #{$sourceSelector} {
 
-
-      .#{$className} {
+    //  .#{$className} {
         > [data-type="title"] {
           move-to: trash;
         }
