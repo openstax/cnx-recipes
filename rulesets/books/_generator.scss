@@ -64,7 +64,7 @@ $_symbolsSectionTitle: "Symbols";
       $labelText: map-get($note, labelText);
       $titleContent: map-get($note, titleContent);
       $replaceHeader: map-get($note, replaceHeader);
-
+      $useHeader: map-get($note, useHeader);
       @include validate_typeOptional($labelText, string);
       @include validate_typeOptional($titleContent, map);
 
@@ -73,8 +73,11 @@ $_symbolsSectionTitle: "Symbols";
         @error "BUG: Specified both a label and a titleContent";
       } @else {
         // Phil does not know how to do `@else @if { ... }`
-        @if $labelText {
-          @include modify_note((className: $className, labelText: $labelText, replaceHeader: $replaceHeader));
+        @if $useHeader {
+            @include modify_note((selector: $className, useHeader: $useHeader));
+        }
+        @else if $labelText {
+          @include modify_note((selector: $className, labelText: $labelText, replaceHeader: $replaceHeader));
         } @else {
           @if $titleContent {
             @include modify_note((className: $className, titleContent: $titleContent, replaceHeader: $replaceHeader));

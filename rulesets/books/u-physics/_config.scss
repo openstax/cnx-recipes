@@ -108,61 +108,66 @@ $Config_BookCompositePages: (
   (className: "index",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
 );
 /*==========================================================
-  ECONOMICS TITLING CONTENT
+  UNIVERSITY PHYSICS TITLING CONTENT
 ==========================================================*/
+$_exampleTitleContent        : (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_understandingTitleContent   : (os-title-label: "Check Your Understanding ", os-number: counter(chapter)"."counter(understanding), os-divider: " ");
+$_calloutTitleContent   :(os-title-label: "Equation ", os-number: counter(chapter)"."counter(callout), os-divider: " ");
 /*==========================================================
-  ECONOMICS CONFIG
+  UNIVERSITY PHYSICS CONFIG
 ==========================================================*/
 $Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true);
 $Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
 /*
-  Link It Up note
+  Check Your Understanding note
 
-  Contains a title "Link It Up"
+  Contains a title "Check Your Understanding #.#". The title is numbered per chapter.
 
-  Markup: ./styleguide/page.note.linkup.xhtml-baked.html
+  Markup: ./styleguide/page.note.understanding.xhtml-baked.html
 
-  Style guide: page.note.linkup
+  Style guide: page.note.understanding
 */
 /*
-  Bring It Home note
+  Equation Callout note
 
-  Contains a title "Bring It Home" and a body containing a title and the contents of the note.
+  Contains a title "Equation #.#" . The title is numbered per chapter.
 
-  Markup: ./styleguide/page.note.bringhome.xhtml-baked.html
+  Markup: ./styleguide/page.note.equation.xhtml-baked.html
 
-  Style guide: page.note.bringhome
+  Style guide: page.note.equation
 */
 /*
-  Clear It Up note
+  Interactive note
 
-  Contains a title "Clear It Up" and a body containing a title and the contents of the note.
+  Contains a title "Interactive".
 
-  Markup: ./styleguide/page.note.clearup.xhtml-baked.html
+  Markup: ./styleguide/page.note.interactive.xhtml-baked.html
 
-  Style guide: page.note.clearup
+  Style guide: page.note.interactive
 */
 /*
-  Work It Out note
+  Problem Solving note
 
-  Contains a title "Work It Out" and a body containing a title and the contents of the note.
+  Contains a title "Problem Solving" and a body containing a title and the contents of the note.
 
   Markup: ./styleguide/page.note.workout.xhtml-baked.html
 
   Style guide: page.note.workout
 */
 $Config_Notes: (
-  (className: 'linkup',     moveSolutionTo: $AREA_NONE,  labelText: "Link It Up"),
-  (className: 'bringhome',  moveSolutionTo: $AREA_NONE,  labelText: "Bring It Home"),
-  (className: 'clearup',    moveSolutionTo: $AREA_NONE,  labelText: "Clear It Up"),
-  (className: 'workout',    moveSolutionTo: $AREA_NONE,  labelText: "Work It Out"),
+  (className: 'check-understanding',     moveSolutionTo: $AREA_NONE, counterName: understanding, titleContent: $_understandingTitleContent),
+  (className: 'equation-callout',  moveSolutionTo: $AREA_NONE, counterName: callout, titleContent: $_calloutTitleContent),
+  (className: 'media-2',    moveSolutionTo: $AREA_NONE,  labelText: "Interactive"),
+  (className: 'problem-solving',    moveSolutionTo: $AREA_NONE, useHeader: true),
 );
 
 $Config_UnnumberedExercises: (); // There are no unnumbered exercises
 
 $Config_abstractTitle: "Learning Objectives";
 $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise)));
-$Config_PartType_Example:  ();
+$Config_PartType_Example:  (moveTo: $AREA_NONE,                          titleContent: $_exampleTitleContent,
+                                                                  solutionTitleContent: $_exampleSolutionTitleContent);
 $Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
 $Config_PartType_Equation: ();
 $Config_PartType_Solution: ();

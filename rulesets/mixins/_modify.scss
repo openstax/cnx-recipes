@@ -30,7 +30,6 @@
     }
   }
 }
-
 //add a title to the Learning objectives when they don't have one
 @mixin modify_addAbstractTitle($abstracTitle) {
   [data-type="abstract"] {
@@ -211,13 +210,16 @@
   $labelText: map-get($noteContent, labelText);
   $titleContent: map-get($noteContent, titleContent);
   $replaceHeader: map-get($noteContent, replaceHeader);
+  $useHeader: map-get($noteContent, useHeader);
 
   @include validate_type($className, string);
   @include validate_typeOptional($titleContent, map);
   @include validate_typeOptional($labelText, string);
   // Check that exactly one option is provided
-  @include validate_exists($titleContent or $labelText);
-  @include validate_exists(not($titleContent and $labelText));
+   @include validate_exists($titleContent or $labelText or $useHeader);
+   @include validate_exists(not($titleContent and $labelText));
+   @include validate_exists(not($titleContent and $useHeader));
+   @include validate_exists(not($useHeader and $labelText));
 
   // $maxDepth is the maximum amount of note nesting to allow support for
   @include _noteNesting(1, $className, $labelText, $replaceHeader);
@@ -284,6 +286,27 @@
   &::inside {
     class: "os-note-body";
     content: pending(noteSubtitle#{$minorLevel}) content();
+    }
+      @if $useHeader {
+      >div[data-type="title"] {
+      string-set: myNoteTitle content();
+      &::before {
+       container: span;
+       class: "os-title-label";
+       content: string(myNoteTitle);
+       move-to: myNoteLabel;
+     }
+     move-to: trash;
+    }
+    &::after {
+      container: div;
+      content: pending(myNoteLabel);
+      class: "os-title";
+      move-to: myNote;
+     }
+     &:deferred {
+      content: pending(myNote) content();
+     }
   }
   // //Make new title for note
   &:deferred::before {
