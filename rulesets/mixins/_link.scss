@@ -1,22 +1,37 @@
 //EOC composite pages must be created before this runs
 /// Creates a link to the solution and a link back to the problem for an exercise
 /// Note: This replaces the solution id with a new id whose value is `${EXERCISEID}-solution`
-@mixin link_linkToProblemsFromSolutionsEOC() {
-
-  [data-type="exercise"].os-hasSolution {
-    string-set: exerciseId attr(id);
-
-    [data-type="problem"] .os-number {
-      container: a;
-      attr-href: "#" string(exerciseId) '-solution';
-    }
-
-    [data-type="solution"] {
-      attr-id: string(exerciseId) '-solution';
-      .os-number {
-        container: a;
-        attr-href: "#" string(exerciseId);
+@mixin link_linkToProblemsFromSolutionsEOC($trashHalf) {
+  @if $trashHalf {
+    [data-type="exercise"].os-hasSolution {
+      &[trash-status$="1"],
+      &[trash-status$="3"],
+      &[trash-status$="5"],
+      &[trash-status$="7"],
+      &[trash-status$="9"] {
+        @include _linkProblemsandSolutionsEOC();
       }
+    }
+  } @else {
+    [data-type="exercise"].os-hasSolution {
+      @include _linkProblemsandSolutionsEOC();
+    }
+  }
+}
+
+@mixin _linkProblemsandSolutionsEOC() {
+  string-set: exerciseId attr(id);
+
+  [data-type="problem"] .os-number {
+    container: a;
+    attr-href: "#" string(exerciseId) '-solution';
+  }
+
+  [data-type="solution"] {
+    attr-id: string(exerciseId) '-solution';
+    .os-number {
+      container: a;
+      attr-href: "#" string(exerciseId);
     }
   }
 }
