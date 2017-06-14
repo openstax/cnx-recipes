@@ -209,87 +209,47 @@
   @include validate_exists($titleContent or $labelText);
   @include validate_exists(not($titleContent and $labelText));
 
-  //I really wish I didn't have to do this. Please change this if there is a better way
-  //Padding is for three parents, just in case
-  :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].#{$className} {
-    @if $replaceHeader {
-      //Delete original title for note
-      > div[data-type="title"] {
-        move-to: trash;
-      }
-      //Handle subtitle
-      > p:first-of-type {
-        > span[data-type="title"] {
-          &::deferred {
-            container: h4;
-            class: "os-subtitle";
-            move-to: noteSubtitle;
-          }
-          &::inside {
-            container: span;
-            class: "os-subtitle-label";
-          }
-        }
-      }
-    } @else {
-      > div[data-type="title"] {
-        &::deferred {
-          container: h4;
-          class: "os-subtitle";
-          move-to: noteSubtitle;
-        }
-        &::inside {
-          container: span;
-          class: "os-subtitle-label";
-        }
+  // $maxDepth is the maximum amount of note nesting to allow support for
+  @include _noteNesting(1, $className, $labelText, $replaceHeader);
+}
+
+@mixin _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $depth: 0) {
+
+  @if ($depth <= $maxDepth) {
+    $headingLevel: $depth + 3;
+    $noteDepthSelector: (':not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > ');
+    @if $depth > 0 {
+      $noteDepthSelector: ('');
+      @for $i from 1 through $depth {
+        $noteDepthSelector: append($noteDepthSelector, '[data-type="note"]', 'space');
       }
     }
-    // //Wrap note body
-    &::inside {
-      class: "os-note-body";
-      content: pending(noteSubtitle) content();
+    #{$noteDepthSelector} [data-type="note"].#{$className} {
+      @include _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel)
     }
-    // //Make new title for note
-    &:deferred::before {
-      container: span;
-      class: "os-title-label";
-      content: $labelText;
-      move-to: bNoteLabel;
-    }
-    &:deferred::before {
-      container: h3;
-      content: pending(bNoteLabel);
-      class: "os-title";
-      attr-data-type: "title";
+    @include _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $depth + 1);
+  }
+}
+
+@mixin _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel) {
+  $minorLevel: '';
+  @if $depth > 0 {
+    @for $i from 1 through $depth {
+      $minorLevel: $minorLevel + 'Minor';
     }
   }
-  //For notes within notes
-  [data-type="note"] [data-type="note"].#{$className} {
-    @if $replaceHeader {
-      //Delete original title for note
-      > div[data-type="title"] {
-        move-to: trash;
-      }
-      //Handle subtitle
-      > p:first-of-type {
-        > span[data-type="title"] {
-          &::deferred {
-            container: h5;
-            class: "os-subtitle";
-            move-to: noteSubtitleMinor;
-          }
-          &::inside {
-            container: span;
-            class: "os-subtitle-label";
-          }
-        }
-      }
-    } @else {
-      > div[data-type="title"] {
+  @if $replaceHeader {
+    //Delete original title for note
+    > div[data-type="title"] {
+      move-to: trash;
+    }
+    //Handle subtitle
+    > p:first-of-type {
+      > span[data-type="title"] {
         &::deferred {
-          container: h5;
+          container: h#{$headingLevel + 1};
           class: "os-subtitle";
-          move-to: noteSubtitleMinor;
+          move-to: noteSubtitle#{$minorLevel};
         }
         &::inside {
           container: span;
@@ -297,24 +257,36 @@
         }
       }
     }
-    // //Wrap note body
-    &::inside {
-      class: "os-note-body";
-      content: pending(noteSubtitleMinor) content();
+  } @else {
+    > div[data-type="title"] {
+      &::deferred {
+        container: h#{$headingLevel + 1};
+        class: "os-subtitle";
+        move-to: noteSubtitle#{$minorLevel};
+      }
+      &::inside {
+        container: span;
+        class: "os-subtitle-label";
+      }
     }
-    // //Make new title for note
-    &:deferred::before {
-      container: span;
-      class: "os-title-label";
-      content: $labelText;
-      move-to: bNoteLabel;
-    }
-    &:deferred::before {
-      container: h4;
-      content: pending(bNoteLabel);
-      class: "os-title";
-      attr-data-type: "title";
-    }
+  }
+  // //Wrap note body
+  &::inside {
+    class: "os-note-body";
+    content: pending(noteSubtitle#{$minorLevel}) content();
+  }
+  // //Make new title for note
+  &:deferred::before {
+    container: span;
+    class: "os-title-label";
+    content: $labelText;
+    move-to: bNoteLabel;
+  }
+  &:deferred::before {
+    container: h#{$headingLevel};
+    content: pending(bNoteLabel);
+    class: "os-title";
+    attr-data-type: "title";
   }
 }
 
