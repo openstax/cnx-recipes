@@ -222,10 +222,10 @@
    @include validate_exists(not($useHeader and $labelText));
 
   // $maxDepth is the maximum amount of note nesting to allow support for
-  @include _noteNesting(1, $className, $labelText, $replaceHeader);
+  @include _noteNesting(1, $className, $labelText, $replaceHeader, $useHeader);
 }
 
-@mixin _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $depth: 0) {
+@mixin _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $useHeader, $depth: 0) {
 
   @if ($depth <= $maxDepth) {
     $headingLevel: $depth + 3;
@@ -237,13 +237,13 @@
       }
     }
     #{$noteDepthSelector} [data-type="note"].#{$className} {
-      @include _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel)
+      @include _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel, $useHeader)
     }
-    @include _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $depth + 1);
+    @include _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $useHeader, $depth + 1);
   }
 }
 
-@mixin _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel) {
+@mixin _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel, $useHeader) {
   $minorLevel: '';
   @if $depth > 0 {
     @for $i from 1 through $depth {
@@ -287,7 +287,7 @@
     class: "os-note-body";
     content: pending(noteSubtitle#{$minorLevel}) content();
     }
-      @if $useHeader {
+    @if $useHeader {
       >div[data-type="title"] {
       string-set: myNoteTitle content();
       &::before {
