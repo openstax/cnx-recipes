@@ -197,12 +197,12 @@
 }
 
 @mixin modify_note($noteContent) {
-  $selector: map-get($noteContent, selector);
+  $className: map-get($noteContent, className);
   $labelText: map-get($noteContent, labelText);
   $titleContent: map-get($noteContent, titleContent);
   $replaceHeader: map-get($noteContent, replaceHeader);
 
-  @include validate_type($selector, string);
+  @include validate_type($className, string);
   @include validate_typeOptional($titleContent, map);
   @include validate_typeOptional($labelText, string);
   // Check that exactly one option is provided
@@ -211,7 +211,7 @@
 
   //I really wish I didn't have to do this. Please change this if there is a better way
   //Padding is for three parents, just in case
-  :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].#{$selector} {
+  :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].#{$className} {
     @if $replaceHeader {
       //Delete original title for note
       > div[data-type="title"] {
@@ -264,7 +264,7 @@
     }
   }
   //For notes within notes
-  [data-type="note"] [data-type="note"].#{$selector} {
+  [data-type="note"] [data-type="note"].#{$className} {
     @if $replaceHeader {
       //Delete original title for note
       > div[data-type="title"] {
