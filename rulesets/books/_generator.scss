@@ -54,28 +54,28 @@ $_symbolsSectionTitle: "Symbols";
     @if $moveSolutionTo == $AREA_TRASH {
       @include modify_trash('.#{$className} [data-type="solution"]');
       @include utils_clearTrash();
-    }
-
-    // TODO Skip reconstructing a new object for modify_note
-    $labelText: map-get($note, labelText);
-    $titleContent: map-get($note, titleContent);
-    $isBodyWrapped: map-get($note, isBodyWrapped);
-
-    @include validate_typeOptional($labelText, string);
-    @include validate_typeOptional($titleContent, map);
-
-    // Check that there is not both a label AND a titleContent
-    @if $labelText and $titleContent {
-       @error "BUG: Specified both a label and a titleContent";
     } @else {
-       // Phil does not know how to do `@else @if { ... }`
-       @if $labelText {
-         @include modify_note((selector: $className, labelText: $labelText, isBodyWrapped: $isBodyWrapped));
+      // TODO Skip reconstructing a new object for modify_note
+      $labelText: map-get($note, labelText);
+      $titleContent: map-get($note, titleContent);
+      $replaceHeader: map-get($note, replaceHeader);
+
+      @include validate_typeOptional($labelText, string);
+      @include validate_typeOptional($titleContent, map);
+
+      // Check that there is not both a label AND a titleContent
+      @if $labelText and $titleContent {
+        @error "BUG: Specified both a label and a titleContent";
       } @else {
-         @if $titleContent {
-         @include modify_note((selector: $className, titleContent: $titleContent, isBodyWrapped: $isBodyWrapped));
+        // Phil does not know how to do `@else @if { ... }`
+        @if $labelText {
+          @include modify_note((className: $className, labelText: $labelText, replaceHeader: $replaceHeader));
+        } @else {
+          @if $titleContent {
+            @include modify_note((className: $className, titleContent: $titleContent, replaceHeader: $replaceHeader));
+          }
+        }
       }
-     }
     }
   }
 }
@@ -88,6 +88,9 @@ $_symbolsSectionTitle: "Symbols";
   @include number_numberAppendices($Config_PartType_Appendix_TitleContent);
   @include count_countSections(section);
   @include number_numberSections($Config_PartType_Section_TitleContent);
+  @include count_footnotes(footnotes);
+  @include count_footnoteLinks(footnoteLinks);
+  @include number_footnotes(footnotes, footnoteLinks);
 
   // Count examples when moveTo: $AREA_NONE (no moving)
   @include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);

@@ -197,52 +197,96 @@
 }
 
 @mixin modify_note($noteContent) {
-  $selector: map-get($noteContent, selector);
+  $className: map-get($noteContent, className);
   $labelText: map-get($noteContent, labelText);
   $titleContent: map-get($noteContent, titleContent);
-  $isBodyWrapped: map-get($noteContent, isBodyWrapped);
+  $replaceHeader: map-get($noteContent, replaceHeader);
 
-  @include validate_type($selector, string);
+  @include validate_type($className, string);
   @include validate_typeOptional($titleContent, map);
   @include validate_typeOptional($labelText, string);
   // Check that exactly one option is provided
   @include validate_exists($titleContent or $labelText);
   @include validate_exists(not($titleContent and $labelText));
 
-  [data-type="note"].#{$selector} {
-    @if ($labelText) {
-      &::before {
-        container: span;
-        class: "os-title-label";
-        content: $labelText;
-        move-to: bNoteLabel;
+  // $maxDepth is the maximum amount of note nesting to allow support for
+  @include _noteNesting(1, $className, $labelText, $replaceHeader);
+}
+
+@mixin _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $depth: 0) {
+
+  @if ($depth <= $maxDepth) {
+    $headingLevel: $depth + 3;
+    $noteDepthSelector: (':not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > ');
+    @if $depth > 0 {
+      $noteDepthSelector: ('');
+      @for $i from 1 through $depth {
+        $noteDepthSelector: append($noteDepthSelector, '[data-type="note"]', 'space');
       }
     }
-    &::before {
-      container: h3;
-      content: pending(bNoteLabel);
-      class: "os-title";
-      move-to: bNoteHeader;
+    #{$noteDepthSelector} [data-type="note"].#{$className} {
+      @include _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel)
     }
-    @if ($isBodyWrapped) {
-      >div[data-type="title"] {
+    @include _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $depth + 1);
+  }
+}
+
+@mixin _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel) {
+  $minorLevel: '';
+  @if $depth > 0 {
+    @for $i from 1 through $depth {
+      $minorLevel: $minorLevel + 'Minor';
+    }
+  }
+  @if $replaceHeader {
+    //Delete original title for note
+    > div[data-type="title"] {
+      move-to: trash;
+    }
+    //Handle subtitle
+    > p:first-of-type {
+      > span[data-type="title"] {
+        &::deferred {
+          container: h#{$headingLevel + 1};
+          class: "os-subtitle";
+          move-to: noteSubtitle#{$minorLevel};
+        }
+        &::inside {
+          container: span;
+          class: "os-subtitle-label";
+        }
+      }
+    }
+  } @else {
+    > div[data-type="title"] {
+      &::deferred {
+        container: h#{$headingLevel + 1};
         class: "os-subtitle";
-        container: h4;
-        move-to: noteSubtitle;
-     }
+        move-to: noteSubtitle#{$minorLevel};
+      }
       &::inside {
-          class: "os-note-body";
-          content: pending(noteSubtitle) content();
+        container: span;
+        class: "os-subtitle-label";
       }
     }
-    @else {
-      >div[data-type="title"] {
-       move-to: trash;
-     }
-    }
-    &:deferred {
-      content:pending(bNoteHeader)content();
-    }
+  }
+  // //Wrap note body
+  &::inside {
+    class: "os-note-body";
+    content: pending(noteSubtitle#{$minorLevel}) content();
+  }
+  // //Make new title for note
+  &:deferred::before {
+    container: span;
+    class: "os-title-label";
+    content: $labelText;
+    move-to: bNoteLabel;
+  }
+  &:deferred::before {
+    container: h#{$headingLevel};
+    content: pending(bNoteLabel);
+    class: "os-title";
+    attr-data-type: "title";
   }
 }
 
@@ -260,16 +304,6 @@
         [data-type="solution"] {
           .solution-title {
           container: h4;
-          }
-        }
-        .os-note-body > [data-type="title"] {
-          class: "os-subtitle";
-          container: h4;
-        }
-        [data-type="note"] {
-          > .os-title {
-            class: "os-title";
-            container: h4;
           }
         }
       }
