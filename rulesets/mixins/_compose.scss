@@ -523,23 +523,21 @@
     }
   }
 
-  @if ($clusterBy == $CLUSTER_CHAPTER) {
-    [data-type="chapter"] {
-      > h1[data-type="document-title"] .os-number {
-        string-set: ChapNum content();
-      }
-      &::after {
-        //FIXME wrap the in spans
-        container: h2;
-        class: "os-title";
-        content: "Chapter " string(ChapNum);
-        move-to: chaptTitleEOB;
-      }
-      &::after {
-        class: os-chapter-area;
-        content: pending(chaptTitleEOB) pending(#{$solutionClassName}-GETCHAPTER);
-        move-to: #{$solutionClassName}-TOCOMPOSITE;
-      }
+  [data-type="chapter"] {
+    > h1[data-type="document-title"] .os-number {
+      string-set: ChapNum content();
+    }
+    &::after {
+      //FIXME wrap the in spans
+      container: h2;
+      class: "os-title";
+      content: "Chapter " string(ChapNum);
+      move-to: chaptTitleEOB;
+    }
+    &::after {
+      class: os-chapter-area;
+      content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+      move-to: #{$solutionClassName}-TOCOMPOSITE;
     }
   }
   body {

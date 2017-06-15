@@ -164,9 +164,6 @@ $_symbolsSectionTitle: "Symbols";
   @if $outlineTitle {
     @include compose_chapterOutline($outlineTitle);
   }
-
-
-
 }
 :pass(3) {
 
@@ -225,6 +222,16 @@ $_symbolsSectionTitle: "Symbols";
   //After: prepBookComposites
   @include reference_refChapterHeaderNodeAs(chapterHeaderNode);
   @include compose_prepChapterAreas($Config_BookCompositePages, chapterHeaderNode);
+
+  // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
+  // and finding all that have a `childPages:` field
+  $_chapterCompoundCompositePages: ();
+  @each $page in $Config_ChapterCompositePages {
+    @if map-get($page, childPages) != null {
+      $_chapterCompoundCompositePages: append($_chapterCompoundCompositePages, $page);
+    }
+  }
+  @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
 }
 :pass(5) {
   //Only move solutions after exercises/solutions are numbered
@@ -240,37 +247,7 @@ $_symbolsSectionTitle: "Symbols";
       @include compose_createEOBSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
     }
   }
-  // Copy/pasta from above
-  // TODO: Combine bookCompositePages and chapterCompositePages in the config and then split them out in this file
-  @each $page in $Config_BookCompositePages {
-    $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
-    @if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
-    } @else if $moveSolutionsTo == $AREA_EOC {
-      @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
-    }
-  }
-  //After: prepBookComposites, prepChapterAreas
-  @include compose_createBookComposites($Config_BookCompositePages);
 
-  // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
-  // and finding all that have a `childPages:` field
-  $_chapterCompoundCompositePages: ();
-  @each $page in $Config_ChapterCompositePages {
-    @if map-get($page, childPages) != null {
-      $_chapterCompoundCompositePages: append($_chapterCompoundCompositePages, $page);
-    }
-  }
-  @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
-}
-:pass(6) {
-  //@include reference_refChapterNumberStringAs(chapterNumberString);
-  //After: prepIndexTerms, createBookComposites
-  @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
-  //After: composite page creation
-  @include count_countChapters(chapter);
-  @include count_countAppendices(appendix);
   // @include count_countEOCExercises(exercise, '[data-type="chapter"]');
   // TODO: Find out why this recounting is necessary; it seems to be for the targetLabels
   // This is mostly copy/pasta from above
@@ -287,13 +264,52 @@ $_symbolsSectionTitle: "Symbols";
     @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
-    @include count_countEOCExercises(exercise, $resetSel);
 
     @if $numberAt == $NUMBER_AFTER_MOVE {
+      @include count_countEOCExercises(exercise, $resetSel);
       @include number_numberEOCExercises($titleContent, $titleContent);
     } @else if $numberAt == $NUMBER_BEFORE_MOVE {
     } @else { @error 'BUG: Invalid enum'; }
   }
+
+  // Copy/pasta from above
+  // TODO: Combine bookCompositePages and chapterCompositePages in the config and then split them out in this file
+  @each $page in $Config_BookCompositePages {
+    $moveSolutionsTo: map-get($page, moveSolutionsTo);
+    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+    @if $moveSolutionsTo == $AREA_EOB {
+      @include compose_createEOBSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
+    } @else if $moveSolutionsTo == $AREA_EOC {
+      @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
+    }
+  }
+  //After: prepBookComposites, prepChapterAreas
+  @include compose_createBookComposites($Config_BookCompositePages);
+}
+:pass(6) {
+  //@include reference_refChapterNumberStringAs(chapterNumberString);
+  //After: prepIndexTerms, createBookComposites
+  @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
+  //After: composite page creation
+  @include count_countChapters(chapter);
+  @include count_countAppendices(appendix);
+
+  @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
+    $resetAt:       map-get($Config_PartType_Exercise, resetAt);
+    $numberAt:      map-get($Config_PartType_Exercise, numberAt);
+    $titleContent:  map-get($Config_PartType_Exercise, titleContent);
+
+    @include validate_enum($resetAt, $RESET__PREFIX__);
+    @include validate_enum($numberAt, $NUMBER__PREFIX__);
+    @include validate_type($titleContent, map);
+
+    $resetSel: null;
+    @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+    @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
+    @else { @error 'BUG: Invalid enum'; }
+    @include count_countEOCExercises(exercise, $resetSel);
+  }
+
   @include count_countExamples(example);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
