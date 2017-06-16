@@ -616,56 +616,27 @@
               move-to: #{$solutionClassName}-TOCOMPOSITE;
             }
           }
-          // [data-type="solution"] {
-          //   @if ($clusterBy == $CLUSTER_SECTION) {
-          //     move-to: #{$solutionClassName}-GETSECTION;
-          //   } @else if ($clusterBy == $CLUSTER_CHAPTER) {
-          //     move-to: #{$solutionClassName}-GETCHAPTER;
-          //   } @else {
-          //     move-to: #{$solutionClassName}-TOCOMPOSITE;
-          //   }
-          // }
-          // @if ($clusterBy == $CLUSTER_SECTION) {
-          //   .#{$className} {
-          //     > h2[data-type="document-title"] {
-          //       @if ($clusterBy == $CLUSTER_CHAPTER) {
-          //         container: h3;
-          //       }
-          //       node-set: eobsectionHeader;
-          //       move-to: EOBsectionHeader;
-          //     }
-          //     &::after {
-          //       container: section;
-          //       class: os-#{$solutionClassName};
-          //       content: pending(EOBsectionHeader) pending(#{$solutionClassName}-GETSECTION);
-          //       move-to: #{$solutionClassName}-GETCHAPTER;
-          //     }
-          //   }
-          // }
         }
       }
     }
   }
-
-  //@if ($clusterBy == $CLUSTER_CHAPTER) {
-    [data-type="chapter"] {
-      > h1[data-type="document-title"] .os-number {
-        string-set: ChapNum content();
-      }
-      &::after {
-        //FIXME wrap the in spans
-        container: h2;
-        class: "os-title";
-        content: "Chapter " string(ChapNum);
-        move-to: chaptTitleEOB;
-      }
-      &::after {
-        class: os-chapter-area;
-        content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
-        move-to: #{$solutionClassName}-TOCOMPOSITE;
-      }
+  [data-type="chapter"] {
+    > h1[data-type="document-title"] .os-number {
+      string-set: ChapNum content();
     }
-  //}
+    &::after {
+      //FIXME wrap the in spans
+      container: h2;
+      class: "os-title";
+      content: "Chapter " string(ChapNum);
+      move-to: chaptTitleEOB;
+    }
+    &::after {
+      class: os-chapter-area;
+      content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+      move-to: #{$solutionClassName}-TOCOMPOSITE;
+    }
+  }
   body {
     &::after {
       container: div;
