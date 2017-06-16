@@ -87,8 +87,8 @@
 */
 
 $_chapterReviewChildPages: (
- (className: "glossary",             clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "dl > dt", name: "Key Terms"),
-    (className: "key-equations", clusterBy: $CLUSTER_NONE,    hasSolutions: false,   name: "Key Equations"),
+  (className: "glossary",             clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "dl > dt", name: "Key Terms"),
+  (className: "key-equations", clusterBy: $CLUSTER_NONE,    hasSolutions: false,   name: "Key Equations"),
   (className: "key-concepts",              clusterBy: $CLUSTER_SECTION, hasSolutions: false,  name: "Summary"),
   (className: "review-conceptual-questions", clusterBy: $CLUSTER_SECTION,    hasSolutions: true,   name: "Conceptual Questions"),
   (className: "review-problems",     clusterBy: $CLUSTER_SECTION,    hasSolutions: true,  name: "Problems"),
@@ -98,13 +98,13 @@ $_chapterReviewChildPages: (
 
 //$_reviewChapterTitle:  "Chapter " string(chapterNumberString) " Review" ;
 $Config_ChapterCompositePages: (
-(className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions:true, name: "Chapter Review"),
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions:true, name: "Chapter Review"),
 );
 
 $Config_BookCompositePages: (
   //This doesn't get parsed as a list without a comma at the end
   //the composite builder should account for this rather than using hacky syntax
-    (className: "solutions",    clusterBy: $CLUSTER_CHAPTER, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (className: "solutions",    clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
   (className: "index",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
 );
 /*==========================================================
@@ -113,6 +113,7 @@ $Config_BookCompositePages: (
 $_exampleTitleContent        : (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
 $_exampleSolutionTitleContent: (os-title-label: "Solution ", os-number: counter(chapter) "." counter(example), os-divider: " ");
 $_understandingTitleContent   : (os-title-label: "Check Your Understanding ", os-number: counter(chapter)"."counter(understanding), os-divider: " ");
+$_understandingSolutionContent : (os-number: counter(chapter)"."counter(understanding));
 $_calloutTitleContent   :(os-title-label: "Equation ", os-number: counter(chapter)"."counter(callout), os-divider: " ");
 /*==========================================================
   UNIVERSITY PHYSICS CONFIG
@@ -156,7 +157,7 @@ $Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figca
   Style guide: page.note.workout
 */
 $Config_Notes: (
-  (className: 'check-understanding',     moveSolutionTo: $AREA_NONE, counterName: understanding, titleContent: $_understandingTitleContent),
+  (className: 'check-understanding',     moveSolutionTo: $AREA_NONE, counterName: understanding, titleContent: $_understandingTitleContent, hasSolutions: true, solutionTitleContent: $_understandingSolutionContent),
   (className: 'equation-callout',  moveSolutionTo: $AREA_NONE, counterName: callout, titleContent: $_calloutTitleContent),
   (className: 'media-2',    moveSolutionTo: $AREA_NONE,  labelText: "Interactive"),
   (className: 'problem-solving',    moveSolutionTo: $AREA_NONE, useHeader: true),
@@ -167,7 +168,7 @@ $Config_UnnumberedExercises: (
   );
 
 $Config_abstractTitle: "Learning Objectives";
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_AFTER_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise)));
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise)));
 $Config_PartType_Example:  (moveTo: $AREA_NONE,                          titleContent: $_exampleTitleContent,
                                                                   solutionTitleContent: $_exampleSolutionTitleContent);
 $Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');

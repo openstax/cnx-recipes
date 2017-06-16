@@ -57,7 +57,6 @@
   }
 }
 
-
 //EOC composite pages must be created before this runs
 @mixin number_numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
   .os-eoc [data-type="exercise"] {
@@ -96,12 +95,17 @@
   }
 }
 
-@mixin number_numberNote($type, $noteContent) {
+@mixin number_numberNote($type, $noteContent, $hasSolutions, $solutionTitleContent) {
   [data-type="note"].#{$type} {
     @include utils_title($noteContent, bNoteLabel-#{$type});
     > [data-type="title"] {
       //TODO: May want to have the option to preserve titles similarly to examples in the future.
       move-to: trash;
+    }
+    @if $hasSolutions {
+      [data-type="solution"] {
+        @include utils_title($solutionTitleContent)
+      }
     }
     &::after {
       container: div;

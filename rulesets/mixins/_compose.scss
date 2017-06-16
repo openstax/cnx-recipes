@@ -172,7 +172,7 @@
       @if ($clusterBy == $CLUSTER_SECTION) {
         [data-type="page"] {
           &::after {
-            class: "os-chapter-area";
+            class: "os-section-area";
             content: pending(#{$className}-separated);
             move-to: #{$className}-sectionSeparatedContainer;
           }
@@ -376,6 +376,17 @@
 //ChapterHeaderNode may be causing some weird issues? and may be copying the entire chapter?
 //See if this node needs to become a string, or if chapterHeaderNode is copying more than expected
 
+  // Example Output of the function below:
+  // :pass(4) [data-type="chapter"] .os-chapter-area {
+  //   content: nodes(chapterHeaderNode) content();
+  //   move-to: solutions-TOCOMPOSITE; }
+  // :pass(4) [data-type="chapter"] .os-chapter-area {
+  //   content: nodes(chapterHeaderNode) content();
+  //   move-to: index-TOCOMPOSITE; }
+
+  // This seems like it creates dead code???
+
+
 /// Adds the chapter name to the new Collated Page
 /// @arg {list} $compositePages - list of pages which contain a `source`
 /// @arg {string} $chapterHeaderNode - The title of what should be in here
@@ -468,7 +479,7 @@
 /// @arg {Map} $solutionPage - contains `source`, `clusterBy`
 /// @arg {string} $sectionHeaderNode
 /// @group compose
-@mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
+@mixin compose_createEOBSolutions($compositePages, $notes, $solutionPage, $sectionHeaderNode) {
   $solutionClassName: map-get($solutionPage, className);
   $clusterBy: map-get($solutionPage, clusterBy);
 
@@ -476,70 +487,185 @@
   @include validate_type($solutionClassName, string);
   @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
 
-  @each $page in $compositePages {
-    $hasSolutions: map-get($page, hasSolutions);
-    $className: map-get($page, className);
+  @each $note in $notes {
+    $hasSolutions: map-get($note, hasSolutions);
 
-    // Validate
     @include validate_typeOptional($hasSolutions, bool);
-    @include validate_type($className, string);
 
-    @if ($hasSolutions) {
+    @if $hasSolutions {
+      $noteTitle: 'Null Title';
+      $noteLabelText: map-get($note, labelText);
+      $noteTitleContent: map-get($note, titleContent);
+      @if $noteLabelText {
+        $noteTitle: $noteLabelText;
+      }
+      @else if $noteTitleContent{
+        $noteTitle: map-get($noteTitleContent, os-title-label);
+      }
+      $className: map-get($note, className);
+
+      // Validate
+      @include validate_type($noteTitle, string);
+      @include validate_type($className, string);
+
+    
       [data-type="chapter"] {
-        .os-eoc.os-#{$className}-container {
-          [data-type="solution"] {
-            @if ($clusterBy == $CLUSTER_SECTION) {
-              move-to: #{$solutionClassName}-GETSECTION;
-            } @else if ($clusterBy == $CLUSTER_CHAPTER) {
-              move-to: #{$solutionClassName}-GETCHAPTER;
-            } @else {
-              move-to: #{$solutionClassName}-TOCOMPOSITE;
-            }
-          }
-          @if ($clusterBy == $CLUSTER_SECTION) {
-            .#{$className} {
-              > h2[data-type="document-title"] {
-                @if ($clusterBy == $CLUSTER_CHAPTER) {
-                  container: h3;
-                }
-                node-set: eobsectionHeader;
-                move-to: EOBsectionHeader;
-              }
-              &::after {
-                container: section;
-                class: os-#{$solutionClassName};
-                content: pending(EOBsectionHeader) pending(#{$solutionClassName}-GETSECTION);
-                @if ($clusterBy == $CLUSTER_CHAPTER) {
-                  move-to: #{$solutionClassName}-GETCHAPTER;
-                }
-                @else {
-                  move-to: #{$solutionClassName}-TOCOMPOSITE;
-                }
-              }
-            }
-          }
+        [data-type="note"].#{$className} [data-type="solution"] {
+          move-to: note-#{$className}-#{$solutionClassName}-GETSECTION;
+        }
+        &::before {
+          container: span;
+          class: "os-title-label";
+          content: $noteTitle;
+          move-to: note-#{$className}-title;
+        }
+        &::before {
+          container: h3;
+          content: pending(note-#{$className}-title);
+          move-to: note-#{$className}-header;
+        }
+        &::after {
+          container: div;
+          class: "os-solution-area";
+          content: pending(note-#{$className}-header) pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
+          move-to: note-#{$solutionClassName}-GETCHAPTER;
         }
       }
     }
   }
 
-  [data-type="chapter"] {
-    > h1[data-type="document-title"] .os-number {
-      string-set: ChapNum content();
-    }
-    &::after {
-      //FIXME wrap the in spans
-      container: h2;
-      class: "os-title";
-      content: "Chapter " string(ChapNum);
-      move-to: chaptTitleEOB;
-    }
-    &::after {
-      class: os-chapter-area;
-      content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
-      move-to: #{$solutionClassName}-TOCOMPOSITE;
+  @each $page in $compositePages {
+    $hasSolutions: map-get($page, hasSolutions);
+    $className: map-get($page, className);
+    $pageName: map-get($page, name);
+    
+    $childPages: map-get($page, childPages);
+
+    // Validate
+    @include validate_typeOptional($hasSolutions, bool);
+    @include validate_type($className, string);
+    @include validate_type($pageName, string);
+
+    @if $hasSolutions {
+      [data-type="chapter"] {
+        .os-eoc.os-#{$className}-container {
+          @if ($clusterBy == $CLUSTER_SECTION) {
+            @if childPages {
+              @each $child in $childPages {
+                $cHasSolutions: map-get($child, hasSolutions);
+                $cClassName: map-get($child, className);
+                $cPageName: map-get($child, name);
+
+                // Validate
+                @include validate_typeOptional($cHasSolutions, bool);
+                @include validate_type($cClassName, string);
+                @include validate_type($cPageName, string);
+                @if $cHasSolutions {
+                  .os-#{$cClassName}-container {
+                    [data-type="solution"] {
+                      move-to: #{$cClassName}-#{$solutionClassName}-GETSECTION;
+                    }
+                    &::after {
+                      container: span;
+                      content: $cPageName;
+                      class: "os-title-label";
+                      move-to: #{$cClassName}-title
+                    }
+                    &::after {
+                      container: h3;
+                      content: pending(#{$cClassName}-title);
+                      move-to: #{$cClassName}-header;
+                    }
+                    &::after {
+                      container: div;
+                      class: "os-solution-area";
+                      content: pending(#{$cClassName}-header) pending(#{$cClassName}-#{$solutionClassName}-GETSECTION);
+                      move-to: #{$solutionClassName}-GETCHAPTER;
+                    }
+                  }
+                }
+              }
+            } @else {
+              [data-type="solution"] {
+                move-to: #{$className}-#{$solutionClassName}-GETSECTION;
+              }
+              &::after {
+                container: span;
+                content: $pageName;
+                class: "os-title-label";
+                move-to: #{$className}-title
+              }
+              &::after {
+                container: h3;
+                content: pending(#{$className}-title);
+                move-to: #{$className}-header;
+              }
+              &::after {
+                container: div;
+                class: "os-solution-area";
+                content: pending(#{$className}-header) pending(#{$className}-#{$solutionClassName}-GETSECTION);
+                move-to: #{$solutionClassName}-GETCHAPTER;
+              }
+            }
+          } @else if ($clusterBy == $CLUSTER_CHAPTER) {
+            [data-type="solution"] {
+              move-to: #{$solutionClassName}-GETCHAPTER;
+            }
+          } @else {
+            [data-type="solution"] {
+              move-to: #{$solutionClassName}-TOCOMPOSITE;
+            }
+          }
+          // [data-type="solution"] {
+          //   @if ($clusterBy == $CLUSTER_SECTION) {
+          //     move-to: #{$solutionClassName}-GETSECTION;
+          //   } @else if ($clusterBy == $CLUSTER_CHAPTER) {
+          //     move-to: #{$solutionClassName}-GETCHAPTER;
+          //   } @else {
+          //     move-to: #{$solutionClassName}-TOCOMPOSITE;
+          //   }
+          // }
+          // @if ($clusterBy == $CLUSTER_SECTION) {
+          //   .#{$className} {
+          //     > h2[data-type="document-title"] {
+          //       @if ($clusterBy == $CLUSTER_CHAPTER) {
+          //         container: h3;
+          //       }
+          //       node-set: eobsectionHeader;
+          //       move-to: EOBsectionHeader;
+          //     }
+          //     &::after {
+          //       container: section;
+          //       class: os-#{$solutionClassName};
+          //       content: pending(EOBsectionHeader) pending(#{$solutionClassName}-GETSECTION);
+          //       move-to: #{$solutionClassName}-GETCHAPTER;
+          //     }
+          //   }
+          // }
+        }
+      }
     }
   }
+
+  //@if ($clusterBy == $CLUSTER_CHAPTER) {
+    [data-type="chapter"] {
+      > h1[data-type="document-title"] .os-number {
+        string-set: ChapNum content();
+      }
+      &::after {
+        //FIXME wrap the in spans
+        container: h2;
+        class: "os-title";
+        content: "Chapter " string(ChapNum);
+        move-to: chaptTitleEOB;
+      }
+      &::after {
+        class: os-chapter-area;
+        content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+        move-to: #{$solutionClassName}-TOCOMPOSITE;
+      }
+    }
+  //}
   body {
     &::after {
       container: div;

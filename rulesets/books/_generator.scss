@@ -132,6 +132,8 @@ $_symbolsSectionTitle: "Symbols";
     $className: map-get($note, className);
     $titleContent: map-get($note, titleContent);
     $counterName: map-get($note, counterName);
+    $hasSolutions: map-get($note, hasSolutions);
+    $solutionTitleContent: map-get($note, solutionTitleContent);
     @include validate_type($className, string);
     @include validate_typeOptional($titleContent, map);
     @include validate_typeOptional($counterName, string);
@@ -140,7 +142,7 @@ $_symbolsSectionTitle: "Symbols";
       @if $counterName {
         @include count_countNote($counterName, $className);
       }
-      @include number_numberNote($className, $titleContent);
+      @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
     }
   }
 
@@ -178,6 +180,21 @@ $_symbolsSectionTitle: "Symbols";
     @include compose_chapterOutline($outlineTitle);
   }
 }
+<<<<<<< HEAD
+=======
+:pass(3) {
+  //After: createChapterComposites
+  // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
+  // and finding all that have a `childPages:` field
+  $_chapterCompoundCompositePages: ();
+  @each $page in $Config_ChapterCompositePages {
+    @if map-get($page, childPages) != null {
+      $_chapterCompoundCompositePages: append($_chapterCompoundCompositePages, $page);
+    }
+  }
+  @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
+}
+>>>>>>> Restructure EOB answer key mixin, allow notes solutions to collate to answer key, build u-physics answer-key, add better support for CompoundComposite pages
 :pass(4) {
 
   //After: ???
@@ -189,8 +206,6 @@ $_symbolsSectionTitle: "Symbols";
   @if map-get($Config_PartType_Chapter, outlineTitle) {
     @include compose_moveChapterOutline();
   }
-
-  //After: createChapterComposites
 
   // Count exercises that were marked as moveTo: $AREA_EOC
   @include validate_enum(map-get($Config_PartType_Exercise, moveTo), $AREA__PREFIX__);
@@ -217,7 +232,7 @@ $_symbolsSectionTitle: "Symbols";
     } @else { @error 'BUG: Invalid enum'; }
   }
 }
-:pass(4) {
+:pass(5) {
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
   // Only link up problems and solutions if they will not be discarded (optimization)
@@ -235,18 +250,8 @@ $_symbolsSectionTitle: "Symbols";
   //After: prepBookComposites
   @include reference_refChapterHeaderNodeAs(chapterHeaderNode);
   @include compose_prepChapterAreas($Config_BookCompositePages, chapterHeaderNode);
-
-  // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
-  // and finding all that have a `childPages:` field
-  $_chapterCompoundCompositePages: ();
-  @each $page in $Config_ChapterCompositePages {
-    @if map-get($page, childPages) != null {
-      $_chapterCompoundCompositePages: append($_chapterCompoundCompositePages, $page);
-    }
-  }
-  @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
 }
-:pass(5) {
+:pass(6) {
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @each $page in $Config_ChapterCompositePages {
@@ -257,7 +262,7 @@ $_symbolsSectionTitle: "Symbols";
     @if $moveSolutionsTo == $AREA_EOC {
       @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
     } @else if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
+      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
     }
   }
 
@@ -291,7 +296,7 @@ $_symbolsSectionTitle: "Symbols";
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
     @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
     @if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
+      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
     } @else if $moveSolutionsTo == $AREA_EOC {
       @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
     }
@@ -299,7 +304,12 @@ $_symbolsSectionTitle: "Symbols";
   //After: prepBookComposites, prepChapterAreas
   @include compose_createBookComposites($Config_BookCompositePages);
 }
+<<<<<<< HEAD
 :pass(6) {
+=======
+:pass(7) {
+  //@include reference_refChapterNumberStringAs(chapterNumberString);
+>>>>>>> Restructure EOB answer key mixin, allow notes solutions to collate to answer key, build u-physics answer-key, add better support for CompoundComposite pages
   //After: prepIndexTerms, createBookComposites
   @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
   //After: composite page creation
@@ -347,7 +357,7 @@ $_symbolsSectionTitle: "Symbols";
   @include modify_chapterAutoID();
   @include count_countExercisesInContentButNotInExample(exerciseMaybeInContent);
   // This has to run before number_numberEOCExercises because its selector is more general than the EOC selector
-  @include number_numberContentExercises((os-number : counter(exerciseMaybeInContent), os-title-label : "Exercise "), null); // It seems that this is null for all books
+  @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent); 
 
   @include count_countTables(table);
   @include count_countFigures(figure);
@@ -355,7 +365,7 @@ $_symbolsSectionTitle: "Symbols";
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
 }
-:pass(7) {
+:pass(8) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
     @if map-get($Config_PartType_Solution, HACKRemoveAllSolutionsNotJustEoC) == true {
@@ -367,15 +377,15 @@ $_symbolsSectionTitle: "Symbols";
   @include modify_trash('.os-index-link-separator:last-child');
   @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
 }
-:pass(8) {
+:pass(9) {
   //After: All metadata tasks are completed
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
 }
-:pass(9) {
+:pass(10) {
   @include toc_putTOCElements();
 }
-:pass(10) {
+:pass(11) {
   @include toc_navTOCUnwrap();
 }
 :pass(100) {
