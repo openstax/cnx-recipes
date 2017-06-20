@@ -13,11 +13,11 @@
 # Bake a New Book
 
 1. run `./script/fetch-html statistics`
-  - **Note:** To see the list of books available see `./books.txt`
-  - **Note:** This will require you to log in via ssh.
-  - **Note:** You can set the ssh username by running `USER=myusername ./script/fetch-html ...`
-  - **Note:** You can set the remote server to pull from by running `HOST=dev.cnx.org ./script/fetch-html ...`
-  - **Note:** You can run `./script/fetch-html --all` to fetch all the books
+   - **Note:** To see the list of books available see `./books.txt`
+   - **Note:** This will require you to log in via ssh.
+   - **Note:** You can set the ssh username by running `USER=myusername ./script/fetch-html ...`
+   - **Note:** You can set the remote server to pull from by running `HOST=dev.cnx.org ./script/fetch-html ...`
+   - **Note:** You can run `./script/fetch-html --all` to fetch all the books
 1. run `./script/bake-book statistics`
 
 You will first need to get the single-file HTML from the server (`fetch-html`) and then convert the single-file HTML locally into the "baked" book via `bake-book`. Once you have done the first part, you can run `./script/bake-book statistics` to your :heart:'s content!
@@ -28,8 +28,8 @@ You will first need to get the single-file HTML from the server (`fetch-html`) a
 The steps to add a new book (like `dark-matter-for-dummies`) are:
 
 1. Find the UUID of the book you want
-  - point your browser to the server containing the book (ie `cnx.org`) and find a book you want.
-  - click "More Information" and copy the **ID**
+   - point your browser to the server containing the book (ie `cnx.org`) and find a book you want.
+   - click "More Information" and copy the **ID**
 1. add an entry to `./books.txt`
 
 
@@ -69,8 +69,8 @@ To do that, you will need to upload a CSS ruleset file, trigger a rebake, and th
 1. run `./script/compile-books` to generate the rulesets CSS file
 1. run `./script/bake-book-remote ${BOOK_NAME} ${VERSION}` to upload, trigger, and clear the cache
 
-  - `${BOOK_NAME]` is the book’s name in the book list of `/books.txt`
-  - `${VERSION]` is the `@#.##` in the target collection URL
+   - `${BOOK_NAME]` is the book’s name in the book list of `/books.txt`
+   - `${VERSION]` is the `@#.##` in the target collection URL
 
 ### Example
 
