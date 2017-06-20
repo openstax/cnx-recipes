@@ -21,19 +21,16 @@
     You probably won't need a second paragraph. But it's here when you need it.
 ```
 
-## Reference issues when committing
-Please use the issue number within commit messages, for example `Fix #220`. This will create a link within the PR to the issue itself and help track changes. Typically, only referencing the issue is enough but if there are multiple fixes for one issue, you may add a descriptive comment when needed, for example `Fix #220 - add table numbers back to appendix`.
-
 ## Review your own code before pushing
 Before you push, check your code and squash any superfluous commits, such as fast forward merge commits. 
 
-## Comment on the issue when addressed in the PR
-When the fix for an issue has been pushed to github and is ready for review, go to the issue and reference the PR in the comments. For example you may have something like `Addressed in PR #237`. This is also a good time to mention anything that the tester should be aware of or anything we may need to keep track of later on.
+## Update the PR description with the Issue number when addressing
+When the fix for an issue has been pushed to github update the PR description to link to the Issue number. For example, you may have something like `Fixes #123`. This is also a good place to mention anything that the tester should be aware of or anything we may need to keep track of later on. If the issue is in a different repository, you can write `Fixes openstax/tutor-js#123`.
 
 At this stage, the workflow is:
 
-  - find issue `#220` on github
-  - add a comment saying `Addressed in PR #237`
+  - find your Pull Request `#234` on GitHub
+  - edit the Pull Request description to say `Fixes #123`
 
 ## Ask for peer code review 
 After all commits have been pushed for your topic branch, assign `@helenemccarron` and `@philschatz` to the Reviewers section of the PR. They will also review any CI test failures. 
