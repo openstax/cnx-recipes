@@ -158,14 +158,27 @@ $_symbolsSectionTitle: "Symbols";
     @include validate_typeOptional($childSelector, string);
     @include modify_addUnnumbered($contextSelector, $childSelector);
   }
-    //create a chapter outline
+}
+:pass(3) {
+  //After: createChapterComposites
+  // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
+  // and finding all that have a `childPages:` field
+  $_chapterCompoundCompositePages: ();
+  @each $page in $Config_ChapterCompositePages {
+    @if map-get($page, childPages) != null {
+      $_chapterCompoundCompositePages: append($_chapterCompoundCompositePages, $page);
+    }
+  }
+  @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
+
+  //create a chapter outline
   $outlineTitle: map-get($Config_PartType_Chapter, outlineTitle);
   @include validate_typeOptional($outlineTitle, string);
   @if $outlineTitle {
     @include compose_chapterOutline($outlineTitle);
   }
 }
-:pass(3) {
+:pass(4) {
 
   //After: ???
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
