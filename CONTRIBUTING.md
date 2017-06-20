@@ -16,7 +16,7 @@ See [openstax/CONTRIBUTING.md](https://github.com/openstax/napkin-notes/blob/mas
 ## Review your own code before pushing
 Before you push, run `./script/test`, and check your code (squash any superfluous commits, such as fast forward merge commits). 
 
-##Give your PR a descriptive title
+## Give your PR a descriptive title
 A title like "Resolves #234" is not very helpful because it is neither descriptive of your change set, nor does github link the issue from the PR title.
 
 ## Update the PR description with the Issue number when addressing
@@ -27,14 +27,16 @@ At this stage, the workflow is:
   - find your Pull Request `#234` on GitHub
   - edit the Pull Request description to say `Fixes #123`
 
+Openstax staff should also paste a link to the PR into the respective Trello card where applicable.
+
 ## Ask for peer code review 
 After all commits have been pushed for your topic branch, assign `@helenemccarron` and `@philschatz` to the Reviewers section of the PR. They will also review any CI test failures. 
 
 ## Assign the PR to QA
-After all reviewers have approved changes, assign the PR to the QA person who initially reported the issue(s) (Kerwin `@kerwinso` or Alan `@stackblocks`). *Note*: please use the Assignees section, not the Reviewers section.
+After all reviewers have approved changes, the final reviewer will assign the PR to the QA person who initially reported the issue(s) (Kerwin `@kerwinso` or Alan `@stackblocks`). *Note*: please use the Assignees section, not the Reviewers section. If the final reviewer is lagging, the dev who originally opened the PR may either nag them or assign the PR to QA themselves (or both).
 
 ## Dev testing
-Fixes for individual issues are verified by the assigned tester in the appropriate environment. If any problems are found, the issue is updated with comments and screen captures as necessary, and reassigned to the dev that created the fix. When the issue has been verified, it is closed. Only members of the QA team should be closing issues.
+Fixes for individual issues are verified by the assigned tester in the appropriate environment. If any problems are found, the issue is updated with comments and screen captures as necessary, and reassigned to the dev that created the fix. When the issue has been verified, it is closed. Typically only members of the QA team should be closing issues.
 
 ## Merge
 QA will merge your branch to master after they have verified the fixes addressed in that branch. Typically they will also delete the topic branch after successful merge.
