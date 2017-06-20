@@ -1,28 +1,20 @@
-# `cnx-recipes` Contributing Guidelines
+# :+1::tada: Thanks for Contributing! :tada::+1:
 
+See [openstax/CONTRIBUTING.md](https://github.com/openstax/napkin-notes/CONTRIBUTING.md) for more information!
+
+# Creating a Pull Request or Issue
+
+- include a screenshot of the new stuff in the **Issue/PR description**
+- link to the Ticket/Issue in the Issue/PR **description**
 
 ## Use a topic branch
 *(lifted from [this](https://github.com/puppetlabs/puppet/blob/master/CONTRIBUTING.md))*
 
-* Create a topic branch from where you want to base your work.
-  * This is usually the master branch.
-  * Only target release branches if you are certain your fix must be on that
-    branch.
-  * Please avoid working directly on the `master` branch.
-* Make commits of logical units.
-* Check for unnecessary whitespace with `git diff --check` before committing.
-* Make sure your commit messages are in the proper format.
-
-```
-    Add additional snippet for unnumbered appendix tables
-
-    If needed, the first paragraph of a longer commit message goes here. It's a really cool paragraph.
-
-    You probably won't need a second paragraph. But it's here when you need it.
-```
+- Create a topic branch from where you want to base your work (usually the `master` branch).
+- Make commits of logical units.
 
 ## Review your own code before pushing
-Before you push, check your code and squash any superfluous commits, such as fast forward merge commits. 
+Before you push, run `./script/test`, and check your code (squash any superfluous commits, such as fast forward merge commits). 
 
 ## Update the PR description with the Issue number when addressing
 When the fix for an issue has been pushed to github update the PR description to link to the Issue number. For example, you may have something like `Fixes #123`. This is also a good place to mention anything that the tester should be aware of or anything we may need to keep track of later on. If the issue is in a different repository, you can write `Fixes openstax/tutor-js#123`.
