@@ -2,6 +2,10 @@
 
 # Install
 
+1. ensure the prerequisites are installed.
+   - Node & NPM
+   - Virtualenv
+   - Rbenv & Rbenv Bundler
 1. run `./script/setup` to install the dependencies.
 
 **Note:** To update the dependencies, run `./script/update`
