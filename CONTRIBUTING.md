@@ -16,6 +16,9 @@ See [openstax/CONTRIBUTING.md](https://github.com/openstax/napkin-notes/blob/mas
 ## Review your own code before pushing
 Before you push, run `./script/test`, and check your code (squash any superfluous commits, such as fast forward merge commits). 
 
+##Give your PR a descriptive title
+A title like "Resolves #234" is not very helpful because it is neither descriptive of your change set, nor does github link the issue from the PR title.
+
 ## Update the PR description with the Issue number when addressing
 When the fix for an issue has been pushed to github update the PR description to link to the Issue number. For example, you may have something like `Fixes #123`. This is also a good place to mention anything that the tester should be aware of or anything we may need to keep track of later on. If the issue is in a different repository, you can write `Fixes openstax/tutor-js#123`.
 
