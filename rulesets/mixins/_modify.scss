@@ -287,40 +287,42 @@
   &::inside {
     class: "os-note-body";
     content: pending(noteSubtitle#{$minorLevel}) content();
-    }
-    @if $useHeader {
-      >div[data-type="title"] {
+  }
+  @if $useHeader {
+    > div[data-type="title"] {
       string-set: myNoteTitle content();
       &::before {
-       container: span;
-       class: "os-title-label";
-       content: string(myNoteTitle);
-       move-to: myNoteLabel;
-     }
-     move-to: trash;
+        container: span;
+        class: "os-title-label";
+        content: string(myNoteTitle);
+        move-to: myNoteLabel;
+      }
+      move-to: trash;
     }
     &::after {
       container: div;
       content: pending(myNoteLabel);
       class: "os-title";
+      attr-data-type: "title";
       move-to: myNote;
-     }
-     &:deferred {
+    }
+    &:deferred {
       content: pending(myNote) content();
-     }
-  }
-  // //Make new title for note
-  &:deferred::before {
-    container: span;
-    class: "os-title-label";
-    content: $labelText;
-    move-to: bNoteLabel;
-  }
-  &:deferred::before {
-    container: h#{$headingLevel};
-    content: pending(bNoteLabel);
-    class: "os-title";
-    attr-data-type: "title";
+    }
+  } @else {
+    // Make new title for note
+    &:deferred::before {
+      container: span;
+      class: "os-title-label";
+      content: $labelText;
+      move-to: bNoteLabel;
+    }
+    &:deferred::before {
+      container: h#{$headingLevel};
+      content: pending(bNoteLabel);
+      class: "os-title";
+      attr-data-type: "title";
+    }
   }
 }
 
