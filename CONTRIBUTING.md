@@ -2,10 +2,10 @@
 
 See [openstax/CONTRIBUTING.md](https://github.com/openstax/napkin-notes/blob/master/CONTRIBUTING.md) for more information!
 
-# Creating a Pull Request or Issue
+# Creating a Pull Request
 
-- include a screenshot of the new stuff in the **Issue/PR description**
-- link to the Ticket/Issue in the Issue/PR **description**
+- include a screenshot of the new stuff in the PR **description**
+- link to the Ticket/Issue in the PR **description**
 
 ## Use a topic branch
 *(lifted from [this](https://github.com/puppetlabs/puppet/blob/master/CONTRIBUTING.md))*
@@ -20,20 +20,25 @@ Before you push, run `./script/test`, and check your code (squash any superfluou
 A title like "Resolves #234" is not very helpful because it is neither descriptive of your change set, nor does github link the issue from the PR title.
 
 ## Update the PR description with the Issue number when addressing
-When the fix for an issue has been pushed to github update the PR description to link to the Issue number. For example, you may have something like `Fixes #123`. This is also a good place to mention anything that the tester should be aware of or anything we may need to keep track of later on. If the issue is in a different repository, you can write `Fixes openstax/tutor-js#123`.
+When the fix for an issue has been pushed to github, update the PR description to link to the Issue number. For example, you may have something like `Fixes #123`. This is also a good place to mention anything that the tester should be aware of or anything we may need to keep track of later on. If the issue is in a different repository, you can write `Fixes openstax/tutor-js#123`.
 
 At this stage, the workflow is:
 
   - find your Pull Request `#234` on GitHub
   - edit the Pull Request description to say `Fixes #123`
 
-Openstax staff should also paste a link to the PR into the respective Trello card where applicable.
+Also, paste a link to the PR into the respective Trello card where applicable.
 
 # Creating an Issue
+- include a screenshot in the Issue **description**
+- if applicable, link to the PR that addresses the Issue in the **comments** (github does not create a link from the Issue to the PR, even if the PR has a link to the Issue)
+- in the **comments**, mention anything that the tester should be aware of, or anything we may need to keep track of later on for this Issue
 
 After creating the Issue:
 
-1. Add a Coding task item with a link to the Issue. The format should be `FE https:github.com/...#123 @trellouser --- ar: ?,?`
+1. In the relevant Trello card, add a Code task item with a link to the Issue. The format should look like this: `CSS https:github.com/...#123 @trellouser --- ar: ?,?`
+1. Assign the relevant developer.
+1. When a fix for the Issue is ready for testing, assign the relevant QA person.
 
 # Review and QA
 
@@ -47,7 +52,7 @@ After all commits have been pushed for your topic branch, assign `@helenemccarro
 - Look through the diff and concerns about how the fix is implemented
 - Accept/Decline the changes (using the Pull Request Review)
 - If you are the last reviewer:
-  - If there is a ticket assigned, then **Assign the PR to QA**
+  - If there is a ticket assigned, then **Assign the PR to QA** (see below)
   - Otherwise, **Merge** the Pull Request
 
 
