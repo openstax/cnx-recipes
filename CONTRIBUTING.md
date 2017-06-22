@@ -29,8 +29,27 @@ At this stage, the workflow is:
 
 Openstax staff should also paste a link to the PR into the respective Trello card where applicable.
 
+# Creating an Issue
+
+After creating the Issue:
+
+1. Add a Coding task item with a link to the Issue. The format should be `FE https:github.com/...#123 @trellouser --- ar: 8:0`
+
+# Review and QA
+
 ## Ask for peer code review 
-After all commits have been pushed for your topic branch, assign `@helenemccarron` and `@philschatz` to the Reviewers section of the PR. They will also review any CI test failures. 
+After all commits have been pushed for your topic branch, assign `@helenemccarron` and `@philschatz` to the Reviewers section of the PR. They will also review any CI test failures.
+
+## Review code
+
+- When reviewing the code, look at the Issue and think "what would I need to test to be confident?"
+- Reads the **tests** to see if their concerns are answered. In this case it is the Styleguide link (in the :white_check_box: next to the commit)
+- Look through the diff and concerns about how the fix is implemented
+- Accept/Decline the changes (using the Pull Request Review)
+- If you are the last reviewer:
+  - If there is a ticket assigned, then **Assign the PR to QA**
+  - Otherwise, **Merge** the Pull Request
+
 
 ## Assign the PR to QA
 After all reviewers have approved changes, the final reviewer will assign the PR to the QA person who initially reported the issue(s) (Kerwin `@kerwinso` or Alan `@stackblocks`). *Note*: please use the Assignees section, not the Reviewers section. If the final reviewer is lagging, the dev who originally opened the PR may either nag them or assign the PR to QA themselves (or both).
