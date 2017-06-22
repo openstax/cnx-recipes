@@ -251,8 +251,6 @@ $_symbolsSectionTitle: "Symbols";
     }
   }
 
-  // @include count_countEOCExercises(exercise, '[data-type="chapter"]');
-  // TODO: Find out why this recounting is necessary; it seems to be for the targetLabels
   // This is mostly copy/pasta from above
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
@@ -290,9 +288,9 @@ $_symbolsSectionTitle: "Symbols";
   @include compose_createBookComposites($Config_BookCompositePages);
 }
 :pass(7) {
-  //@include reference_refChapterNumberStringAs(chapterNumberString);
   //After: prepIndexTerms, createBookComposites
   @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
+  
   //After: composite page creation
   @include count_countChapters(chapter);
   @include count_countAppendices(appendix);
@@ -311,6 +309,11 @@ $_symbolsSectionTitle: "Symbols";
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
     @include count_countEOCExercises(exercise, $resetSel);
+    
+    @if $numberAt == $NUMBER_AFTER_MOVE {
+       @include number_numberEOCExercises($titleContent, $titleContent);
+    } @else if $numberAt == $NUMBER_BEFORE_MOVE {
+    } @else { @error 'BUG: Invalid enum'; }
   }
 
   @include count_countExamples(example);
