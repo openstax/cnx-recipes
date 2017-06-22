@@ -366,32 +366,6 @@
   }
 }
 
-//ChapterHeaderNode may be causing some weird issues? and may be copying the entire chapter?
-//See if this node needs to become a string, or if chapterHeaderNode is copying more than expected
-
-/// Adds the chapter name to the new Collated Page
-/// @arg {list} $compositePages - list of pages which contain a `source`
-/// @arg {string} $chapterHeaderNode - The title of what should be in here
-/// @group compose
-@mixin compose_prepChapterAreas($compositePages, $chapterHeaderNode) {
-  // Validate
-  @include validate_type($chapterHeaderNode, string);
-
-  @each $page in $compositePages {
-    $className: map-get($page, className);
-
-    // Validate
-    @include validate_type($className, string);
-
-    [data-type="chapter"] {
-      .os-chapter-area {
-        content: nodes($chapterHeaderNode) content();
-        move-to: #{$className}-TOCOMPOSITE;
-      }
-    }
-  }
-}
-
 /// Creates a set of exercise solutions at the end of a chapter
 /// @arg {list} $compositePages
 /// @arg {Map} $solutionPage
