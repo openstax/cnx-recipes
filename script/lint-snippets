@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+for file_name in $(find ./rulesets/books/*/styleguide/*.xhtml); do
+  error_messages="$(xmllint ${file_name} )"
+  error=$?
+
+  if [[ ${error} != 0 ]]; then
+    echo "${file_name}"
+    echo "${error_messages}"
+    exit 1
+  fi
+done
