@@ -157,8 +157,6 @@
         }
       }
       #{$sourceSelector} {
-
-    //  .#{$className} {
         > [data-type="title"] {
           move-to: trash;
         }
@@ -226,13 +224,11 @@
 }
 
  @mixin _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
-  $name: map-get($page, name);
   $className: map-get($page, className);
   $compoundComposite: map-get($page, compoundComposite);
   $specialPageType: map-get($page, specialPageType);
 
   // Validate
-  //@include validate_type($name, string);
   @include validate_type($className, string);
   @include validate_typeOptional($compoundComposite, bool);
   @include validate_type($sectionHeaderString, string);
@@ -656,10 +652,9 @@
     // }
 
 /// older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
-@mixin compose_chapterOutline($objectiveTitle) {
+@mixin compose_chapterOutline($outlineTitle) {
   [data-type="chapter"] [data-type="page"]:not(.introduction) {
     > [data-type="document-title"] {
-     // node-set: outlineSectionTitle;
       string-set: outlinePageId attr(id);
       &::after {
         container: a;
@@ -679,7 +674,7 @@
     &::before {
       container: h3;
       class: "os-title";
-      content: $objectiveTitle;
+      content: $outlineTitle;
       move-to: chapOutlineTitle;
     }
     &:deferred::before {
