@@ -33,7 +33,7 @@ Openstax staff should also paste a link to the PR into the respective Trello car
 
 After creating the Issue:
 
-1. Add a Coding task item with a link to the Issue. The format should be `FE https:github.com/...#123 @trellouser --- ar: 8:0`
+1. Add a Coding task item with a link to the Issue. The format should be `FE https:github.com/...#123 @trellouser --- ar: ?,?`
 
 # Review and QA
 
