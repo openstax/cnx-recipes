@@ -43,7 +43,7 @@ After all commits have been pushed for your topic branch, assign `@helenemccarro
 ## Review code
 
 - When reviewing the code, look at the Issue and think "what would I need to test to be confident?"
-- Reads the **tests** to see if their concerns are answered. In this case it is the Styleguide link (in the :white_check_box: next to the commit)
+- Reads the **tests** to see if their concerns are answered. In this case it is the Styleguide link (in the :white_check_mark: next to the commit)
 - Look through the diff and concerns about how the fix is implemented
 - Accept/Decline the changes (using the Pull Request Review)
 - If you are the last reviewer:
