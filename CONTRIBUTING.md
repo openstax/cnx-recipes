@@ -29,6 +29,9 @@ At this stage, the workflow is:
 
 Also, paste a link to the PR into the respective Trello card where applicable.
 
+## Add labels to PR
+If your PR does not address any open issue, or does not need to go through QA, add a **status:no-qa** label to your PR
+
 # Creating an Issue
 - include a screenshot in the Issue **description**
 - if applicable, link to the PR that addresses the Issue in the **comments** (github does not create a link from the Issue to the PR, even if the PR has a link to the Issue)
@@ -52,6 +55,7 @@ After all commits have been pushed for your topic branch, assign `@helenemccarro
 - Look through the diff and concerns about how the fix is implemented
 - Accept/Decline the changes (using the Pull Request Review)
 - If you are the last reviewer:
+  - If the PR has a **status:no-qa** label, **Merge** the Pull Request
   - If there is a ticket assigned, then **Assign the PR to QA** (see below)
   - Otherwise, **Merge** the Pull Request
 
