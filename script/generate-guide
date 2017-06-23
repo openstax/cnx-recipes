@@ -115,32 +115,37 @@ cp -R "${bookDocumentationDir}" "${tempRecipeDir}" || exit 1
 
 
 # Find all the styleguide html files and convert them
-for snippetFileName in $(find "${tempRecipeDir}" -name "*.xhtml")
+for snippetFileName in $(find "${tempRecipeDir}" -name "*.snippet.xml")
 do
 
-  if [[ ! "${snippetFileName}" =~ "-baked.xhtml" ]]
-  then
-    if [[ ! "${snippetFileName}" =~ "-prepared.xhtml" ]]
-    then
+  snippetBase="$(dirname "${snippetFileName}")/$(basename "${snippetFileName}" .snippet.xml)"
+  rawFileName="${snippetBase}.raw.xhtml"
+  # This is the filename in the CSS comment
+  destFileName="${snippetBase}.xhtml-${bakedOrPreparedSuffix}.html"
 
-      >&2 echo "Generating temporary ${snippetFileName}-${bakedOrPreparedSuffix}.html"
-      # commented because xmllint does not like html5 element names like <figure>
-      # ./script/bake-file ${recipeName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.xhtml
-      ./script/bake-file ${recipeName} ${snippetFileName} ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml --use-repeatable-ids  || exit 1
+  >&2 echo "Generating temporary ${snippetFileName}-${bakedOrPreparedSuffix}.html"
 
-      # Construct an HTML file that contains both the raw and baked HTML
-      # so it can be separated in the browser
-      # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
-      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' > ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      cat ${snippetFileName} >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      cat ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
-      echo '</section>' >> ${snippetFileName}-${bakedOrPreparedSuffix}.html || exit 1
+  # Convert the snippet (which is HTML + CNXML) into just HTML
+  xsltproc ./script/_cnxml-to-xhtml.xsl "${snippetFileName}" > "${rawFileName}" || exit 1
 
-      rm ${snippetFileName}-temp1-${bakedOrPreparedSuffix}.xhtml || exit 1
-    fi
-  fi
+  # commented because xmllint does not like html5 element names like <figure>
+  # ./script/bake-file ${recipeName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.xhtml
+  ./script/bake-file ${recipeName} ${rawFileName} ${rawFileName}-temp1-${bakedOrPreparedSuffix}.xhtml --use-repeatable-ids  || exit 1
+
+  # Construct an HTML file that contains both the raw and baked HTML
+  # so it can be separated in the browser
+  # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="cnxml">' > "${destFileName}" || exit 1
+  cat ${snippetFileName} >> "${destFileName}" || exit 1
+  echo '</section>' >> "${destFileName}" || exit 1
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' >> "${destFileName}" || exit 1
+  cat ${rawFileName} >> "${destFileName}" || exit 1
+  echo '</section>' >> "${destFileName}" || exit 1
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> "${destFileName}" || exit 1
+  cat ${rawFileName}-temp1-${bakedOrPreparedSuffix}.xhtml >> "${destFileName}" || exit 1
+  echo '</section>' >> "${destFileName}" || exit 1
+
+  rm ${rawFileName}-temp1-${bakedOrPreparedSuffix}.xhtml || exit 1
 done
 
 
