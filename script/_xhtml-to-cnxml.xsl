@@ -39,15 +39,16 @@
       <xsl:if test="@id">[@id="<xsl:value-of select="@id"/>"]</xsl:if>
     </xsl:variable>
     <xsl:message>WARNING: Did not convert <xsl:value-of select="local-name()"/><xsl:value-of select="$attribs"/></xsl:message>
-    <xsl:copy>
+    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
       <xsl:call-template name="children"/>
-    </xsl:copy>
+    </xsl:element>
   </xsl:template>
 
   <!-- Discard these attributes -->
   <xsl:template match="
       @data-type
     | *[@class = @data-type]/@class
+    | @data-depth
     ">
     <xsl:call-template name="discard"/>
   </xsl:template>
@@ -61,19 +62,28 @@
   </xsl:template>
 
   <!-- Retain these elements (structural) -->
-  <!-- TODO: The @data-type="os-..." is here because the Chapter Outline snippet isn't actually in the Raw HTML but it is in a snippet for some reason, not sure why -->
   <xsl:template match="
       /div
     | /body
     | mml:*
-    | mml:*/@*
     | *[@data-type='chapter']
-    | *[@data-type='chapter']/@data-type
     | *[@data-type='page']
-    | *[@data-type='page']/@data-type
     | *[@data-type='document-title']
-    | *[@data-type='document-title']/@data-type
     | *[@data-type='composite-page']
+
+    " priority="9">
+    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:call-template name="children"/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- Retain these attributes (structural) -->
+  <!-- TODO: The @data-type="os-..." is here because the Chapter Outline snippet isn't actually in the Raw HTML but it is in a snippet for some reason, not sure why -->
+  <xsl:template match="
+      mml:*/@*
+    | *[@data-type='chapter']/@data-type
+    | *[@data-type='page']/@data-type
+    | *[@data-type='document-title']/@data-type
     | *[@data-type='composite-page']/@data-type
 
     | *[@data-type='footnote-number']/@data-type
@@ -118,7 +128,9 @@
   <!-- Generate a BUG when data-type begins with "os-" -->
   <xsl:template match="*[starts-with(@data-type, 'os-')]">
     <xsl:message>WARNING: Found an element with data-type="<xsl:value-of select="@data-type"/>"</xsl:message>
-    <xsl:call-template name="ident"/>
+    <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:element>
   </xsl:template>
 
   <!-- Convert these elements that have the same element name in CNXML and HTML -->
