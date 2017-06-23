@@ -3,25 +3,45 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   >
 
+  <xsl:output omit-xml-declaration="yes"/>
+
   <xsl:template name="discard"/>
 
+  <!-- @data-label is a little annoying because we need to create a <label> element
+      So we pass **EVERYTHING** through here so we can convert the attributes (except data-label)
+      then data-label, then child nodes.
+  -->
+  <xsl:template name="children">
+    <xsl:apply-templates select="@*"/>
+    <xsl:apply-templates mode="labelize" select="@data-label"/>
+    <xsl:apply-templates select="node()"/>
+  </xsl:template>
+
+  <xsl:template match="@data-label"/>
+  <xsl:template mode="labelize" match="@data-label">
+    <xsl:element name="label">
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
   <!-- Copy all the HTML elements in the original file -->
-  <xsl:template match="@*|node()">
+  <xsl:template name="ident" match="@*|node()">
     <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="*">
-    <xsl:message>ERROR: Did not convert <xsl:value-of select="local-name()"/>[@data-type="<xsl:value-of select="@data-type"/>"]</xsl:message>
+    <xsl:message>WARNING: Did not convert <xsl:value-of select="local-name()"/>[@data-type="<xsl:value-of select="@data-type"/>"]</xsl:message>
     <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </xsl:copy>
   </xsl:template>
 
   <!-- Discard these attributes -->
   <xsl:template match="
-    section/h3[@data-type='title']/@data-type
+      @data-type
+    | *[@class = @data-type]/@class
     ">
     <xsl:call-template name="discard"/>
   </xsl:template>
@@ -38,11 +58,14 @@
   <xsl:template match="
       /div
     | *[@data-type='chapter']
+    | *[@data-type='chapter']/@data-type
     | *[@data-type='page']
+    | *[@data-type='page']/@data-type
     | *[@data-type='document-title']
-    ">
+    | *[@data-type='document-title']/@data-type
+    " priority="9">
     <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </xsl:copy>
   </xsl:template>
 
@@ -50,8 +73,14 @@
   <!-- Convert these elements that have a data-type attribute to an element -->
   <xsl:template match="*[@data-type]">
     <xsl:element name="{@data-type}">
-      <xsl:apply-templates select="@*[local-name() != 'data-type']|node()"/>
+      <xsl:call-template name="children"/>
     </xsl:element>
+  </xsl:template>
+
+  <!-- Generate a BUG when data-type begins with "os-" -->
+  <xsl:template match="*[starts-with(@data-type, 'os-')]">
+    <xsl:message>WARNING: Found an element with data-type="<xsl:value-of select="@data-type"/>"</xsl:message>
+    <xsl:call-template name="ident"/>
   </xsl:template>
 
   <!-- Convert these elements that have the same element name in CNXML and HTML -->
@@ -60,7 +89,7 @@
     | sup
     ">
     <xsl:element name="{local-name()}">
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </xsl:element>
   </xsl:template>
 
@@ -69,31 +98,31 @@
 
   <xsl:template match="p">
     <para>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </para>
   </xsl:template>
 
   <xsl:template match="ol">
     <list list-type="enumerated">
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </list>
   </xsl:template>
 
   <xsl:template match="ul">
     <list>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </list>
   </xsl:template>
 
   <xsl:template match="li">
     <item>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </item>
   </xsl:template>
 
   <xsl:template match="em">
     <emphasis effect="italics">
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </emphasis>
   </xsl:template>
 
@@ -111,15 +140,26 @@
 
   <xsl:template match="tr">
     <row>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </row>
   </xsl:template>
 
   <xsl:template match="td">
     <entry>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:call-template name="children"/>
     </entry>
   </xsl:template>
 
+  <xsl:template match="a">
+    <link>
+      <xsl:call-template name="children"/>
+    </link>
+  </xsl:template>
+
+  <xsl:template match="a/@href">
+    <xsl:attribute name="url">
+      <xsl:value-of select="."/>
+    </xsl:attribute>
+  </xsl:template>
 
 </xsl:stylesheet>
