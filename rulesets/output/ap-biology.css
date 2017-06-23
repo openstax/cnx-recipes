@@ -1347,6 +1347,26 @@
   class: "os-eoc os-science-practice-container";
   data-type: "composite-page";
   data-uuid-key: ".science-practice"; }
+:pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"] {
+  string-set: outlinePageId attr(id); }
+  :pass(2) [data-type="page"]:not(.introduction):not(.preface) > [data-type="document-title"]::after {
+    container: a;
+    class: "os-chapter-objective";
+    content: content();
+    attr-href: "#" string(outlinePageId);
+    move-to: chapOutlineLink; }
+:pass(2) [data-type="page"]:not(.introduction):not(.preface)::after {
+  class: "os-chapter-objective";
+  content: pending(chapOutlineLink);
+  move-to: chapOutline; }
+:pass(2) [data-type="chapter"]::before {
+  container: h3;
+  class: "os-title";
+  content: "Chapter Outline";
+  move-to: chapOutlineTitle; }
+:pass(2) [data-type="chapter"]:deferred::before {
+  class: "os-chapter-outline";
+  content: pending(chapOutlineTitle) pending(chapOutline); }
 
 :pass(3) div[data-type="page"] > [data-type="document-title"],
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -1380,6 +1400,10 @@
   content: pending(index-term) pending(index-section-link);
   class: os-index-item;
   move-to: index-TOCOMPOSITE; }
+:pass(3) .os-chapter-outline {
+  move-to: ChapterOutline; }
+:pass(3) .introduction {
+  content: pending(ChapterOutline) content(); }
 :pass(3) [data-type="chapter"], :pass(3) .appendix {
   counter-reset: exercise; }
 :pass(3) .os-eoc [data-type="exercise"] {
