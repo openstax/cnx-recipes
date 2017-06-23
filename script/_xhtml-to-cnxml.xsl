@@ -44,6 +44,13 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template name="did-not-convert-attribute">
+    <xsl:message>WARNING: Did not convert @<xsl:value-of select="local-name()"/>="<xsl:value-of select="."/>"</xsl:message>
+    <xsl:copy>
+      <xsl:call-template name="children"/>
+    </xsl:copy>
+  </xsl:template>
+
   <!-- Discard these attributes -->
   <xsl:template match="
       @data-type
@@ -118,6 +125,16 @@
     <xsl:call-template name="did-not-convert"/>
   </xsl:template>
 
+  <!-- Retain these attributes but add a warning -->
+  <xsl:template match="
+      *[starts-with(@data-type, 'os-')]/@data-type
+    | *[@data-type='glossary']/@data-type
+    | *[@data-type='glossary-title']/@data-type
+
+    " priority="9">
+    <xsl:call-template name="did-not-convert-attribute"/>
+  </xsl:template>
+
   <!-- Convert these elements that have a data-type attribute to an element -->
   <xsl:template match="*[@data-type]">
     <xsl:element name="{@data-type}">
@@ -181,12 +198,19 @@
   <xsl:template match="table">
     <table>
       <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates select="caption"/>
       <tgroup>
         <tbody>
-          <xsl:apply-templates select="tr"/>
+          <xsl:apply-templates select="tr|tbody/tr"/>
         </tbody>
       </tgroup>
     </table>
+  </xsl:template>
+
+  <xsl:template match="caption">
+    <caption>
+      <xsl:call-template name="children"/>
+    </caption>
   </xsl:template>
 
   <xsl:template match="tr">
