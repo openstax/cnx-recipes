@@ -11,7 +11,7 @@
   <!-- Copy all the HTML elements in the original file -->
   <xsl:template match="
       *[not(self::c:*) and not(self::mml:*)]/@*
-    | node()[not(self::c:*) and not(self::mml:*)]
+    | node()[not(self::c:*) and not(self::mml:*) and not(parent::c:*) and not(parent::mml:*)]
     ">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
