@@ -182,3 +182,4 @@ Each entry has a few common fields that can be set:
 - `numberAt`: (optional) Only used by `Exercise`
 - `solutionTitleContent`: (optional) Only used by `Example`
 - `excludeNumberingInClassName`: (optional) Only used by `Equation`
+- `hasLearningObjectives`: (optional) Only used by `Chapter Outline`

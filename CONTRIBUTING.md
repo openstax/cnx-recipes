@@ -14,7 +14,7 @@ See [openstax/CONTRIBUTING.md](https://github.com/openstax/napkin-notes/blob/mas
 - Make commits of logical units.
 
 ## Review your own code before pushing
-Before you push, run `./script/test`, and check your code (squash any superfluous commits, such as fast forward merge commits). 
+Before you push, run `./script/test`, and check your code (squash any superfluous commits, such as fast forward merge commits).
 
 ## Give your PR a descriptive title
 A title like "Resolves #234" is not very helpful because it is neither descriptive of your change set, nor does github link the issue from the PR title.
@@ -45,7 +45,7 @@ After creating the Issue:
 
 # Review and QA
 
-## Ask for peer code review 
+## Ask for peer code review
 After all commits have been pushed for your topic branch, assign `@helenemccarron` and `@philschatz` to the Reviewers section of the PR. They will also review any CI test failures.
 
 ## Review code
