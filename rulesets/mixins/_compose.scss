@@ -30,7 +30,7 @@
     $className: map-get($page, className);
 
     // Validate
-    @include validate_type($name, string);
+   // @include validate_type($name, string);
     @include validate_type($className, string);
 
     [data-type="composite-page"].os-eob.os-#{$className}-container {
@@ -62,14 +62,12 @@
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
 /// @group compose
 @mixin _createChapterComposite($page, $sectionHeaderNode) {
-  $name: map-get($page, name);
   $className: map-get($page, className);
   $sortBy: map-get($page, sortBy);
   $compoundComposite: map-get($page, compoundComposite);
   $specialPageType: map-get($page, specialPageType);
 
   // Validate
-  @include validate_type($name, string);
   @include validate_type($className, string);
   @include validate_typeOptional($sortBy, string);
   @include validate_typeOptional($compoundComposite, bool);
@@ -147,11 +145,16 @@
       $className: map-get($page, className);
       $pageName: map-get($page, name);
       $clusterBy: map-get($page, clusterBy);
-
+      $specialPageType: map-get($page, specialPageType);
       @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
-
-
-      .#{$className} {
+      $sourceSelector: if($specialPageType == $PAGE_GLOSSARY, 'div[data-type="#{$className}"] dl', 'section.#{$className}');
+      @if ($specialPageType == $PAGE_GLOSSARY) {
+        div[data-type="#{$className}"] {
+          /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+          move-to: trash;
+        }
+      }
+      #{$sourceSelector} {
         > [data-type="title"] {
           move-to: trash;
         }
@@ -165,7 +168,7 @@
       @if ($clusterBy == $CLUSTER_SECTION) {
         [data-type="page"] {
           &::after {
-            class: "os-chapter-area";
+            class: "os-section-area";
             content: pending(#{$className}-separated);
             move-to: #{$className}-sectionSeparatedContainer;
           }
@@ -219,13 +222,11 @@
 }
 
  @mixin _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
-  $name: map-get($page, name);
   $className: map-get($page, className);
   $compoundComposite: map-get($page, compoundComposite);
   $specialPageType: map-get($page, specialPageType);
 
   // Validate
-  @include validate_type($name, string);
   @include validate_type($className, string);
   @include validate_typeOptional($compoundComposite, bool);
   @include validate_type($sectionHeaderString, string);
@@ -435,7 +436,7 @@
 /// @arg {Map} $solutionPage - contains `source`, `clusterBy`
 /// @arg {string} $sectionHeaderNode
 /// @group compose
-@mixin compose_createEOBSolutions($compositePages, $solutionPage, $sectionHeaderNode) {
+@mixin compose_createEOBSolutions($compositePages, $notes, $solutionPage, $sectionHeaderNode) {
   $solutionClassName: map-get($solutionPage, className);
   $clusterBy: map-get($solutionPage, clusterBy);
 
@@ -443,70 +444,154 @@
   @include validate_type($solutionClassName, string);
   @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
 
+  @each $note in $notes {
+    $hasSolutions: map-get($note, hasSolutions);
+
+    @include validate_typeOptional($hasSolutions, bool);
+
+    @if $hasSolutions {
+      $noteTitle: 'Null Title';
+      $noteLabelText: map-get($note, labelText);
+      $noteTitleContent: map-get($note, titleContent);
+      @if $noteLabelText {
+        $noteTitle: $noteLabelText;
+      }
+      @else if $noteTitleContent{
+        $noteTitle: map-get($noteTitleContent, os-title-label);
+      }
+      $className: map-get($note, className);
+
+      // Validate
+      @include validate_type($noteTitle, string);
+      @include validate_type($className, string);
+
+    
+      [data-type="chapter"] {
+        [data-type="note"].#{$className} [data-type="solution"] {
+          move-to: note-#{$className}-#{$solutionClassName}-GETSECTION;
+        }
+        &::before {
+          container: span;
+          class: "os-title-label";
+          content: $noteTitle;
+          move-to: note-#{$className}-title;
+        }
+        &::before {
+          container: h3;
+          content: pending(note-#{$className}-title);
+          move-to: note-#{$className}-header;
+        }
+        &::after {
+          container: div;
+          class: "os-solution-area";
+          content: pending(note-#{$className}-header) pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
+          move-to: note-#{$solutionClassName}-GETCHAPTER;
+        }
+      }
+    }
+  }
+
   @each $page in $compositePages {
     $hasSolutions: map-get($page, hasSolutions);
     $className: map-get($page, className);
+    $pageName: map-get($page, name);
+    
+    $childPages: map-get($page, childPages);
 
     // Validate
     @include validate_typeOptional($hasSolutions, bool);
     @include validate_type($className, string);
+    @include validate_type($pageName, string);
 
-    @if ($hasSolutions) {
+    @if $hasSolutions {
       [data-type="chapter"] {
         .os-eoc.os-#{$className}-container {
-          [data-type="solution"] {
-            @if ($clusterBy == $CLUSTER_SECTION) {
-              move-to: #{$solutionClassName}-GETSECTION;
-            } @else if ($clusterBy == $CLUSTER_CHAPTER) {
-              move-to: #{$solutionClassName}-GETCHAPTER;
-            } @else {
-              move-to: #{$solutionClassName}-TOCOMPOSITE;
-            }
-          }
           @if ($clusterBy == $CLUSTER_SECTION) {
-            .#{$className} {
-              > h2[data-type="document-title"] {
-                @if ($clusterBy == $CLUSTER_CHAPTER) {
-                  container: h3;
+            @if childPages {
+              @each $child in $childPages {
+                $cHasSolutions: map-get($child, hasSolutions);
+                $cClassName: map-get($child, className);
+                $cPageName: map-get($child, name);
+
+                // Validate
+                @include validate_typeOptional($cHasSolutions, bool);
+                @include validate_type($cClassName, string);
+                @include validate_type($cPageName, string);
+                @if $cHasSolutions {
+                  .os-#{$cClassName}-container {
+                    [data-type="solution"] {
+                      move-to: #{$cClassName}-#{$solutionClassName}-GETSECTION;
+                    }
+                    &::after {
+                      container: span;
+                      content: $cPageName;
+                      class: "os-title-label";
+                      move-to: #{$cClassName}-title
+                    }
+                    &::after {
+                      container: h3;
+                      content: pending(#{$cClassName}-title);
+                      move-to: #{$cClassName}-header;
+                    }
+                    &::after {
+                      container: div;
+                      class: "os-solution-area";
+                      content: pending(#{$cClassName}-header) pending(#{$cClassName}-#{$solutionClassName}-GETSECTION);
+                      move-to: #{$solutionClassName}-GETCHAPTER;
+                    }
+                  }
                 }
-                node-set: eobsectionHeader;
-                move-to: EOBsectionHeader;
+              }
+            } @else {
+              [data-type="solution"] {
+                move-to: #{$className}-#{$solutionClassName}-GETSECTION;
               }
               &::after {
-                container: section;
-                class: os-#{$solutionClassName};
-                content: pending(EOBsectionHeader) pending(#{$solutionClassName}-GETSECTION);
-                @if ($clusterBy == $CLUSTER_CHAPTER) {
-                  move-to: #{$solutionClassName}-GETCHAPTER;
-                }
-                @else {
-                  move-to: #{$solutionClassName}-TOCOMPOSITE;
-                }
+                container: span;
+                content: $pageName;
+                class: "os-title-label";
+                move-to: #{$className}-title
               }
+              &::after {
+                container: h3;
+                content: pending(#{$className}-title);
+                move-to: #{$className}-header;
+              }
+              &::after {
+                container: div;
+                class: "os-solution-area";
+                content: pending(#{$className}-header) pending(#{$className}-#{$solutionClassName}-GETSECTION);
+                move-to: #{$solutionClassName}-GETCHAPTER;
+              }
+            }
+          } @else if ($clusterBy == $CLUSTER_CHAPTER) {
+            [data-type="solution"] {
+              move-to: #{$solutionClassName}-GETCHAPTER;
+            }
+          } @else {
+            [data-type="solution"] {
+              move-to: #{$solutionClassName}-TOCOMPOSITE;
             }
           }
         }
       }
     }
   }
-
-  @if ($clusterBy == $CLUSTER_CHAPTER) {
-    [data-type="chapter"] {
-      > h1[data-type="document-title"] .os-number {
-        string-set: ChapNum content();
-      }
-      &::after {
-        //FIXME wrap the in spans
-        container: h2;
-        class: "os-title";
-        content: "Chapter " string(ChapNum);
-        move-to: chaptTitleEOB;
-      }
-      &::after {
-        class: os-chapter-area;
-        content: pending(chaptTitleEOB) pending(#{$solutionClassName}-GETCHAPTER);
-        move-to: #{$solutionClassName}-TOCOMPOSITE;
-      }
+  [data-type="chapter"] {
+    > h1[data-type="document-title"] .os-number {
+      string-set: ChapNum content();
+    }
+    &::after {
+      //FIXME wrap the in spans
+      container: h2;
+      class: "os-title";
+      content: "Chapter " string(ChapNum);
+      move-to: chaptTitleEOB;
+    }
+    &::after {
+      class: os-chapter-area;
+      content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+      move-to: #{$solutionClassName}-TOCOMPOSITE;
     }
   }
   body {
@@ -528,10 +613,9 @@
     // }
 
 /// older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
-@mixin compose_chapterOutline($objectiveTitle) {
-  [data-type="page"]:not(.introduction):not(.preface) {
+@mixin compose_chapterOutline($outlineTitle) {
+  [data-type="chapter"] [data-type="page"]:not(.introduction) {
     > [data-type="document-title"] {
-     // node-set: outlineSectionTitle;
       string-set: outlinePageId attr(id);
       &::after {
         container: a;
@@ -551,7 +635,7 @@
     &::before {
       container: h3;
       class: "os-title";
-      content: $objectiveTitle;
+      content: $outlineTitle;
       move-to: chapOutlineTitle;
     }
     &:deferred::before {

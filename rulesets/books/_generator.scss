@@ -43,6 +43,9 @@ $_symbolsSectionTitle: "Symbols";
   @if $Config_hasAbstract == false {
     @include modify_trash('[data-type="abstract"]');
   }
+  @if $Config_abstractTitle {
+    @include modify_addAbstractTitle($Config_abstractTitle);
+  }
 }
 :pass(1) {
 
@@ -61,16 +64,20 @@ $_symbolsSectionTitle: "Symbols";
       $labelText: map-get($note, labelText);
       $titleContent: map-get($note, titleContent);
       $replaceHeader: map-get($note, replaceHeader);
-
+      $useHeader: map-get($note, useHeader);
+      @include validate_typeOptional($useHeader, bool);
       @include validate_typeOptional($labelText, string);
       @include validate_typeOptional($titleContent, map);
 
       // Check that there is not both a label AND a titleContent
       @if $labelText and $titleContent {
         @error "BUG: Specified both a label and a titleContent";
-      } @else {
-        // Phil does not know how to do `@else @if { ... }`
-        @if $labelText {
+      }
+
+       @else if $useHeader {
+            @include modify_note((className: $className, useHeader: $useHeader));
+        }
+        @else if $labelText {
           @include modify_note((className: $className, labelText: $labelText, replaceHeader: $replaceHeader));
         } @else {
           @if $titleContent {
@@ -78,7 +85,6 @@ $_symbolsSectionTitle: "Symbols";
           }
         }
       }
-    }
   }
 }
 :pass(2) {
@@ -126,6 +132,8 @@ $_symbolsSectionTitle: "Symbols";
     $className: map-get($note, className);
     $titleContent: map-get($note, titleContent);
     $counterName: map-get($note, counterName);
+    $hasSolutions: map-get($note, hasSolutions);
+    $solutionTitleContent: map-get($note, solutionTitleContent);
     @include validate_type($className, string);
     @include validate_typeOptional($titleContent, map);
     @include validate_typeOptional($counterName, string);
@@ -134,7 +142,7 @@ $_symbolsSectionTitle: "Symbols";
       @if $counterName {
         @include count_countNote($counterName, $className);
       }
-      @include number_numberNote($className, $titleContent);
+      @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
     }
   }
 
@@ -152,6 +160,18 @@ $_symbolsSectionTitle: "Symbols";
     @include validate_typeOptional($childSelector, string);
     @include modify_addUnnumbered($contextSelector, $childSelector);
   }
+}
+:pass(3) {
+  //After: createChapterComposites
+  // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
+  // and finding all that have a `childPages:` field
+  $_chapterCompoundCompositePages: ();
+  @each $page in $Config_ChapterCompositePages {
+    @if map-get($page, childPages) != null {
+      $_chapterCompoundCompositePages: append($_chapterCompoundCompositePages, $page);
+    }
+  }
+  @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
 
   //create a chapter outline
   $outlineTitle: map-get($Config_PartType_Chapter, outlineTitle);
@@ -159,10 +179,9 @@ $_symbolsSectionTitle: "Symbols";
   @if $outlineTitle {
     @include compose_chapterOutline($outlineTitle);
   }
-
-
 }
-:pass(3) {
+:pass(4) {
+
   //After: ???
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @include reference_refSectionHeaderStringAs(sectionHeaderString);
@@ -172,8 +191,6 @@ $_symbolsSectionTitle: "Symbols";
   @if map-get($Config_PartType_Chapter, outlineTitle) {
     @include compose_moveChapterOutline();
   }
-
-  //After: createChapterComposites
 
   // Count exercises that were marked as moveTo: $AREA_EOC
   @include validate_enum(map-get($Config_PartType_Exercise, moveTo), $AREA__PREFIX__);
@@ -200,7 +217,7 @@ $_symbolsSectionTitle: "Symbols";
     } @else { @error 'BUG: Invalid enum'; }
   }
 }
-:pass(4) {
+:pass(5) {
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
   // Only link up problems and solutions if they will not be discarded (optimization)
@@ -216,7 +233,7 @@ $_symbolsSectionTitle: "Symbols";
     @include link_linkToProblemsFromSolutionsEOC($trashHalf: false);
   }
 }
-:pass(5) {
+:pass(6) {
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @each $page in $Config_ChapterCompositePages {
@@ -227,41 +244,10 @@ $_symbolsSectionTitle: "Symbols";
     @if $moveSolutionsTo == $AREA_EOC {
       @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
     } @else if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
+      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
     }
   }
-  // Copy/pasta from above
-  // TODO: Combine bookCompositePages and chapterCompositePages in the config and then split them out in this file
-  @each $page in $Config_BookCompositePages {
-    $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
-    @if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
-    } @else if $moveSolutionsTo == $AREA_EOC {
-      @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
-    }
-  }
-  //After: prepBookComposites
-  @include compose_createBookComposites($Config_BookCompositePages);
 
-  // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
-  // and finding all that have a `childPages:` field
-  $_chapterCompoundCompositePages: ();
-  @each $page in $Config_ChapterCompositePages {
-    @if map-get($page, childPages) != null {
-      $_chapterCompoundCompositePages: append($_chapterCompoundCompositePages, $page);
-    }
-  }
-  @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
-}
-:pass(6) {
-  //After: prepIndexTerms, createBookComposites
-  @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
-  //After: composite page creation
-  @include count_countChapters(chapter);
-  @include count_countAppendices(appendix);
-  // @include count_countEOCExercises(exercise, '[data-type="chapter"]');
-  // TODO: Find out why this recounting is necessary; it seems to be for the targetLabels
   // This is mostly copy/pasta from above
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
@@ -276,13 +262,57 @@ $_symbolsSectionTitle: "Symbols";
     @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
-    @include count_countEOCExercises(exercise, $resetSel);
 
     @if $numberAt == $NUMBER_AFTER_MOVE {
+      @include count_countEOCExercises(exercise, $resetSel);
       @include number_numberEOCExercises($titleContent, $titleContent);
     } @else if $numberAt == $NUMBER_BEFORE_MOVE {
     } @else { @error 'BUG: Invalid enum'; }
   }
+
+  // Copy/pasta from above
+  // TODO: Combine bookCompositePages and chapterCompositePages in the config and then split them out in this file
+  @each $page in $Config_BookCompositePages {
+    $moveSolutionsTo: map-get($page, moveSolutionsTo);
+    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+    @if $moveSolutionsTo == $AREA_EOB {
+      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
+    } @else if $moveSolutionsTo == $AREA_EOC {
+      @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
+    }
+  }
+  //After: prepBookComposites
+  @include compose_createBookComposites($Config_BookCompositePages);
+}
+:pass(7) {
+  //After: prepIndexTerms, createBookComposites
+  @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
+  
+  //After: composite page creation
+  @include count_countChapters(chapter);
+  @include count_countAppendices(appendix);
+
+  @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
+    $resetAt:       map-get($Config_PartType_Exercise, resetAt);
+    $numberAt:      map-get($Config_PartType_Exercise, numberAt);
+    $titleContent:  map-get($Config_PartType_Exercise, titleContent);
+
+    @include validate_enum($resetAt, $RESET__PREFIX__);
+    @include validate_enum($numberAt, $NUMBER__PREFIX__);
+    @include validate_type($titleContent, map);
+
+    $resetSel: null;
+    @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+    @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
+    @else { @error 'BUG: Invalid enum'; }
+    @include count_countEOCExercises(exercise, $resetSel);
+    
+    @if $numberAt == $NUMBER_AFTER_MOVE {
+       @include number_numberEOCExercises($titleContent, $titleContent);
+    } @else if $numberAt == $NUMBER_BEFORE_MOVE {
+    } @else { @error 'BUG: Invalid enum'; }
+  }
+
   @include count_countExamples(example);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
@@ -308,7 +338,7 @@ $_symbolsSectionTitle: "Symbols";
   @include modify_chapterAutoID();
   @include count_countExercisesInContentButNotInExample(exerciseMaybeInContent);
   // This has to run before number_numberEOCExercises because its selector is more general than the EOC selector
-  @include number_numberContentExercises((os-number : counter(exerciseMaybeInContent), os-title-label : "Exercise "), null); // It seems that this is null for all books
+  @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent); 
 
   @include count_countTables(table);
   @include count_countFigures(figure);
@@ -316,7 +346,7 @@ $_symbolsSectionTitle: "Symbols";
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
 }
-:pass(7) {
+:pass(8) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
     @if map-get($Config_PartType_Solution, HACKRemoveAllSolutionsNotJustEoC) == true {
@@ -328,15 +358,15 @@ $_symbolsSectionTitle: "Symbols";
   @include modify_trash('.os-index-link-separator:last-child');
   @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
 }
-:pass(8) {
+:pass(9) {
   //After: All metadata tasks are completed
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
 }
-:pass(9) {
+:pass(10) {
   @include toc_putTOCElements();
 }
-:pass(10) {
+:pass(11) {
   @include toc_navTOCUnwrap();
 }
 :pass(100) {

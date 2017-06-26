@@ -1,0 +1,188 @@
+@import '../_common-stuff';
+
+/*==========================================================
+  UNIVERSITY PHYSICS PAGES
+==========================================================*/
+/*
+  Chapter Review
+
+  These should be collated at the end of a chapter.
+
+  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task
+
+  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.html
+
+  Style guide: book.compoundcomposite.chapterreview
+*/
+/*
+  Key Terms
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.2-composite.key-terms
+*/
+/*
+  Key Equations
+
+  These should be collated at the end of a chapter and separated by which section they came from.
+
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
+
+  Style guide: book.2-composite.key-equations
+*/
+/*
+  Summary
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.summary.xhtml-baked.html
+
+  Style guide: book.2-composite.summary
+*/
+/*
+  Conceptual Questions
+
+  These should be collated at the end of a chapter and have answers collated at the end of the chapter.
+
+  **Notes:** Even without the styling you can see a few problems with the ruleset code:
+  1. the rulesets use the class attribute when they should use the `data-type`
+  1. the solution is being duplicated
+  1. the solution is inside the link text that points back to the problem
+  1. new id's are generated rather than using the existing id attributes for the problem and solution
+
+  Markup: ./styleguide/book.composite.conceptual-questions.xhtml-baked.html
+
+  Style guide: book.2-composite.conceptual-questions
+*/
+/*
+  Problems
+
+  These should be collated at the end of a chapter and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.problems.xhtml-baked.html
+
+  Style guide: book.2-composite.problems
+*/
+/*
+  Additional Problems
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.additional-problems.xhtml-baked.html
+
+  Style guide: book.2-composite.additional-problems
+*/
+/*
+  Challenge Problems
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the chapter.
+
+  Markup: ./styleguide/book.composite.challenge-problems.xhtml-baked.html
+
+  Style guide: book.2-composite.challenge-problems
+*/
+
+$_chapterReviewChildPages: (
+  (className: "glossary",             clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "dl > dt", name: "Key Terms"),
+  (className: "key-equations", clusterBy: $CLUSTER_NONE,    hasSolutions: false,   name: "Key Equations"),
+  (className: "key-concepts",              clusterBy: $CLUSTER_SECTION, hasSolutions: false,  name: "Summary"),
+  (className: "review-conceptual-questions", clusterBy: $CLUSTER_SECTION,    hasSolutions: true,   name: "Conceptual Questions"),
+  (className: "review-problems",     clusterBy: $CLUSTER_SECTION,    hasSolutions: true,  name: "Problems"),
+  (className: "review-additional-problems",    clusterBy: $CLUSTER_NONE,    hasSolutions: true,  name: "Additional Problems"),
+  (className: "review-challenge",             clusterBy: $CLUSTER_NONE,    hasSolutions: true,   name: "Challenge Problems"),
+);
+
+//$_reviewChapterTitle:  "Chapter " string(chapterNumberString) " Review" ;
+$Config_ChapterCompositePages: (
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions:true, name: "Chapter Review"),
+);
+
+$Config_BookCompositePages: (
+  //This doesn't get parsed as a list without a comma at the end
+  //the composite builder should account for this rather than using hacky syntax
+  (className: "solutions",    clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (className: "index",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+);
+/*==========================================================
+  UNIVERSITY PHYSICS TITLING CONTENT
+==========================================================*/
+$_exampleTitleContent        : (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_understandingTitleContent   : (os-title-label: "Check Your Understanding ", os-number: counter(chapter)"."counter(understanding), os-divider: " ");
+$_understandingSolutionContent : (os-number: counter(chapter)"."counter(understanding));
+$_calloutTitleContent   :(os-title-label: "Equation ", os-number: counter(chapter)"."counter(callout), os-divider: " ");
+/*==========================================================
+  UNIVERSITY PHYSICS CONFIG
+==========================================================*/
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true);
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
+/*
+  Check Your Understanding note
+
+  Contains a title "Check Your Understanding #.#". The title is numbered per chapter.
+
+  Markup: ./styleguide/page.note.understanding.xhtml-baked.html
+
+  Style guide: page.note.understanding
+*/
+/*
+  Equation Callout note
+
+  Contains a title "Equation #.#" . The title is numbered per chapter.
+
+  Markup: ./styleguide/page.note.equation.xhtml-baked.html
+
+  Style guide: page.note.equation
+*/
+/*
+  Interactive note
+
+  Contains a title "Interactive".
+
+  Markup: ./styleguide/page.note.interactive.xhtml-baked.html
+
+  Style guide: page.note.interactive
+*/
+/*
+  Problem Solving note
+
+  Contains a title "Problem Solving" and a body containing a title and the contents of the note.
+
+  Markup: ./styleguide/page.note.workout.xhtml-baked.html
+
+  Style guide: page.note.workout
+*/
+$Config_Notes: (
+  (className: 'check-understanding',     moveSolutionTo: $AREA_NONE, counterName: understanding, titleContent: $_understandingTitleContent, hasSolutions: true, solutionTitleContent: $_understandingSolutionContent),
+  (className: 'equation-callout',  moveSolutionTo: $AREA_NONE, counterName: callout, titleContent: $_calloutTitleContent),
+  (className: 'media-2',    moveSolutionTo: $AREA_NONE,  labelText: "Interactive"),
+  (className: 'problem-solving',    moveSolutionTo: $AREA_NONE, useHeader: true),
+);
+
+$Config_UnnumberedExercises: (
+  (contextSelector: '.check-understanding',                   childSelector: '[data-type="exercise"]'),
+  );
+
+$Config_abstractTitle: "Learning Objectives";
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise)));
+$Config_PartType_Example:  (moveTo: $AREA_NONE,                          titleContent: $_exampleTitleContent,
+                                                                  solutionTitleContent: $_exampleSolutionTitleContent);
+$Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
+$Config_PartType_Equation: ();
+$Config_PartType_Solution: (moveTo: $AREA_NONE, );
+
+$Config_hasCompositeChapter: false;
+
+/*
+  Temporary fix while we wait for content to be fixed.
+  We are waiting for these <strong> Check Your Understanding titles to either be removed or
+  given a proper 'title' class/data-type.
+  Currently, these aren't removed by other note modification operations, creating duplicate titles for these notes
+*/
+:pass(0) {
+  @include modify_trash('[data-type="note"].check-understanding p:first-child strong:first-child')
+}
