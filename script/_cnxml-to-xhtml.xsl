@@ -24,6 +24,10 @@
     ">
     <xsl:element name="{local-name()}">
       <xsl:apply-templates select="@*|node()"/>
+      <!-- Ensure footnotes and glossary are created -->
+      <xsl:if test="@data-type='page'">
+        <xsl:call-template name="doc-level-template"/>
+      </xsl:if>
     </xsl:element>
   </xsl:template>
 
@@ -34,6 +38,7 @@
       <div data-type="page">
         <div data-type="document-title">Page Title</div>
         <xsl:apply-imports/>
+        <xsl:call-template name="doc-level-template"/>
       </div>
     </div>
   </xsl:template>
