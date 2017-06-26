@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "==> Checking that HTML snippets are well-formed XML"
+
+for file_name in $(find ./rulesets/books/*/styleguide/*.xhtml ./rulesets/mixins/styleguide/*.xhtml); do
+  error_messages="$(xmllint ${file_name} )"
+  error=$?
+
+  if [[ ${error} != 0 ]]; then
+    echo "${file_name}"
+    exit 1
+  fi
+done
