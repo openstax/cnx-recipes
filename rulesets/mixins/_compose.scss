@@ -126,7 +126,7 @@
 /// - collated sections are moved into their corresponding "bucket"
 ///
 /// @arg {Map} $page - contains `name`, `source`, and optionally `compoundComposite` and `specialPageType`
-/// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
+/// @arg {string} $sectionHeaderNode - Currently Unused (because of typo)
 /// @arg {string} $sectionHeaderString - Optional, used when `specialPageType` is `$PAGE_INDEX`
 /// @group compose
 
@@ -606,14 +606,9 @@
 }
 
 //todo: add mixin for abstract from metadata. Can be by itself, can be mixed with chapter titles.
-    // @if $abstractMetadata {
-    //   [data-type="abstract"] {
-    //     move-to: outlineAbstract;
-    //   }
-    // }
 
 /// older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
-@mixin compose_chapterOutline($outlineTitle) {
+@mixin compose_chapterOutline($outlineTitle, $hasLearningObjectives: false) {
   [data-type="chapter"] [data-type="page"]:not(.introduction) {
     > [data-type="document-title"] {
       string-set: outlinePageId attr(id);
@@ -625,9 +620,19 @@
         move-to: chapOutlineLink;
       }
     }
+    @if $hasLearningObjectives {
+      [data-type="abstract"] {
+        move-to: outlineAbstract;
+      }
+      &::after {
+        class:"learning-objective";
+        content: pending(outlineAbstract);
+        move-to: outlineLO;
+      }
+    }
     &::after {
       class: "os-chapter-objective";
-      content: pending(chapOutlineLink);
+      content: pending(chapOutlineLink) pending(outlineLO);
       move-to: chapOutline;
     }
   }
