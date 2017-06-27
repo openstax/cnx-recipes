@@ -1,5 +1,8 @@
 // This is the ROOT of the output CSS file that is generated.
 
+// Set the namespace to be XHTML
+@namespace "http://www.w3.org/1999/xhtml";
+
 $_symbolsSectionTitle: "Symbols";
 
 //Currently, none of the books have composite chapters
@@ -296,7 +299,7 @@ $_symbolsSectionTitle: "Symbols";
 :pass(7) {
   //After: prepIndexTerms, createBookComposites
   @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
-  
+
   //After: composite page creation
   @include count_countChapters(chapter);
   @include count_countAppendices(appendix);
@@ -315,7 +318,7 @@ $_symbolsSectionTitle: "Symbols";
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
     @include count_countEOCExercises(exercise, $resetSel);
-    
+
     @if $numberAt == $NUMBER_AFTER_MOVE {
        @include number_numberEOCExercises($titleContent, $titleContent);
     } @else if $numberAt == $NUMBER_BEFORE_MOVE {
@@ -347,7 +350,7 @@ $_symbolsSectionTitle: "Symbols";
   @include modify_chapterAutoID();
   @include count_countExercisesInContentButNotInExample(exerciseMaybeInContent);
   // This has to run before number_numberEOCExercises because its selector is more general than the EOC selector
-  @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent); 
+  @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent);
 
   @include count_countTables(table);
   @include count_countFigures(figure);
