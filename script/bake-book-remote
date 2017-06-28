@@ -110,7 +110,7 @@ do
   ssh ${USER}@${hostName} ${buildBookCmd} || exit 1
 
   >&2 echo "==> Re-baking the book (may take up to 12 minutes)"
-  python -c "import requests; resp = requests.post('http://${hostName}:6543/contents/${uuid}@${bookVersion}/collate-content', headers={'x-api-key': 'b07'}); print(resp)" || exit 1
+  python -c "import requests; resp = requests.post('http://${hostName}:6600/contents/${uuid}@${bookVersion}/baked', headers={'x-api-key': 'b07'}); print(resp)" || exit 1
 
   >&2 echo "==> restarting varnish because the HTML files may be cached"
   restartVarnishCmd="varnishadm ban req.url '~' ."
