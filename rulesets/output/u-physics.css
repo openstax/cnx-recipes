@@ -513,44 +513,6 @@
   content: pending(bNoteLabel);
   class: "os-title";
   attr-data-type: "title"; }
-:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].equation-callout > div[data-type="title"]::deferred {
-  container: h4;
-  class: "os-subtitle";
-  move-to: noteSubtitle; }
-:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].equation-callout > div[data-type="title"]::inside {
-  container: span;
-  class: "os-subtitle-label"; }
-:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].equation-callout::inside {
-  class: "os-note-body";
-  content: pending(noteSubtitle) content(); }
-:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].equation-callout:deferred::before {
-  container: span;
-  class: "os-title-label";
-  move-to: bNoteLabel; }
-:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].equation-callout:deferred::before {
-  container: h3;
-  content: pending(bNoteLabel);
-  class: "os-title";
-  attr-data-type: "title"; }
-:pass(1) [data-type="note"] [data-type="note"].equation-callout > div[data-type="title"]::deferred {
-  container: h5;
-  class: "os-subtitle";
-  move-to: noteSubtitleMinor; }
-:pass(1) [data-type="note"] [data-type="note"].equation-callout > div[data-type="title"]::inside {
-  container: span;
-  class: "os-subtitle-label"; }
-:pass(1) [data-type="note"] [data-type="note"].equation-callout::inside {
-  class: "os-note-body";
-  content: pending(noteSubtitleMinor) content(); }
-:pass(1) [data-type="note"] [data-type="note"].equation-callout:deferred::before {
-  container: span;
-  class: "os-title-label";
-  move-to: bNoteLabel; }
-:pass(1) [data-type="note"] [data-type="note"].equation-callout:deferred::before {
-  container: h4;
-  content: pending(bNoteLabel);
-  class: "os-title";
-  attr-data-type: "title"; }
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media-2 > div[data-type="title"]::deferred {
   container: h4;
   class: "os-subtitle";
@@ -766,6 +728,19 @@
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
 :pass(2) [data-type="chapter"], :pass(2) .appendix {
+  counter-reset: equation; }
+:pass(2) [data-type="equation"]:not(.unnumbered) {
+  counter-increment: equation; }
+:pass(2) section [data-type="equation"]:not(.unnumbered)::before {
+  container: span;
+  content: "(" counter(chapter) "." counter(equation) ")";
+  class: os-number;
+  move-to: equationNum; }
+:pass(2) section [data-type="equation"]:not(.unnumbered)::after {
+  class: os-equation-number;
+  container: div;
+  content: pending(equationNum); }
+:pass(2) [data-type="chapter"], :pass(2) .appendix {
   counter-reset: understanding; }
 :pass(2) [data-type="note"].check-understanding {
   counter-increment: understanding; }
@@ -796,34 +771,6 @@
   class: "os-title";
   move-to: bNoteHeader; }
 :pass(2) [data-type="note"].check-understanding:deferred {
-  content: pending(bNoteHeader) content(); }
-:pass(2) [data-type="chapter"], :pass(2) .appendix {
-  counter-reset: callout; }
-:pass(2) [data-type="note"].equation-callout {
-  counter-increment: callout; }
-:pass(2) [data-type="note"].equation-callout::before {
-  container: span;
-  content: "Equation ";
-  class: os-title-label;
-  move-to: bNoteLabel-equation-callout; }
-:pass(2) [data-type="note"].equation-callout::before {
-  container: span;
-  content: counter(chapter) "." counter(callout);
-  class: os-number;
-  move-to: bNoteLabel-equation-callout; }
-:pass(2) [data-type="note"].equation-callout::before {
-  container: span;
-  content: " ";
-  class: os-divider;
-  move-to: bNoteLabel-equation-callout; }
-:pass(2) [data-type="note"].equation-callout > [data-type="title"] {
-  move-to: trash; }
-:pass(2) [data-type="note"].equation-callout::after {
-  container: div;
-  content: pending(bNoteLabel-equation-callout);
-  class: "os-title";
-  move-to: bNoteHeader; }
-:pass(2) [data-type="note"].equation-callout:deferred {
   content: pending(bNoteHeader) content(); }
 :pass(2) body {
   counter-reset: term; }
