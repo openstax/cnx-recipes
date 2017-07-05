@@ -115,12 +115,14 @@ $_symbolsSectionTitle: "Symbols";
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
   $excludeNumberingInClassName: map-get($Config_PartType_Equation, excludeNumberingInClassName);
   $numberAt                   : map-get($Config_PartType_Equation, numberAt);
+  $numberAfterEq              : map-get($Config_PartType_Equation, numberAfterEq);
   @if $titleContent {
-    @include validate_type($excludeNumberingInClassName, string);
+    @include validate_typeOptional($excludeNumberingInClassName, string);
+    @include validate_typeOptional($numberAfterEq, bool);
     @include validate_enum($numberAt, $NUMBER__PREFIX__);
     @include count_countEquations(equation);
     @if $numberAt == $NUMBER_BEFORE_MOVE {
-      @include number_equations($titleContent, $excludeNumberingInClassName);
+      @include number_equations($titleContent, $excludeNumberingInClassName, $numberAfterEq);
     }
   }
 
@@ -322,12 +324,14 @@ $_symbolsSectionTitle: "Symbols";
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
   $excludeNumberingInClassName: map-get($Config_PartType_Equation, excludeNumberingInClassName);
   $numberAt                   : map-get($Config_PartType_Equation, numberAt);
+  $numberAfterEq              : map-get($Config_PartType_Equation, numberAfterEq);
   @if $titleContent {
-    @include validate_type($excludeNumberingInClassName, string);
+    @include validate_typeOptional($excludeNumberingInClassName, string);
+    @include validate_typeOptional($numberAfterEq, bool);
     @include validate_enum($numberAt, $NUMBER__PREFIX__);
     @if $numberAt == $NUMBER_AFTER_MOVE {
       @include count_countEquations(equation);
-      @include number_equations($titleContent, $excludeNumberingInClassName);
+      @include number_equations($titleContent, $excludeNumberingInClassName, $numberAfterEq);
     }
   }
   @include reference_refBookMetadataNodeAs(bookMetadata);
