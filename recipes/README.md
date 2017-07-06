@@ -1,4 +1,4 @@
-# About the Rulesets
+# About the Recipes
 
 The generated CSS is stored in the [./output](./output) directory.
 
@@ -16,18 +16,18 @@ The source for the documentation is in CSS comments and is split into `common` a
 
 ## Directory Organizational Map
 
-- `./rulesets/mixins/styleguide/*.xhtml` : The Raw HTML snippets for "common" elements in a Page
-- `./rulesets/mixins/styleguide/_all.scss`: The documentation for "common" elements in a Page
-- `./rulesets/books/${bookName}/styleguide/*.xhtml` : The Raw HTML snippets for book-specific collated pages and any other customizations
-- `./rulesets/books/${bookName}/book.scss`: Added CSS docs that are slurped in when generating the styleguide
+- `./recipes/mixins/styleguide/*.xhtml` : The Raw HTML snippets for "common" elements in a Page
+- `./recipes/mixins/styleguide/_all.scss`: The documentation for "common" elements in a Page
+- `./recipes/books/${bookName}/styleguide/*.xhtml` : The Raw HTML snippets for book-specific collated pages and any other customizations
+- `./recipes/books/${bookName}/book.scss`: Added CSS docs that are slurped in when generating the styleguide
 
 ## Book-Agnostic Documentation
 
-The common documentation is in `./rulesets/mixins/styleguide/_all.scss` only because phil didn't know of a better place to put them but wanted them "near" the common code. That directory also contains the Raw HTML snippets.
+The common documentation is in `./recipes/mixins/styleguide/_all.scss` only because phil didn't know of a better place to put them but wanted them "near" the common code. That directory also contains the Raw HTML snippets.
 
 ## Book-Specific Documentation
 
-The book-specific documentation is done as comments in the `./rulesets/books/${bookName}/book.scss` and `./rulesets/books/${bookName}/_config.scss` files and the Raw HTML snippets are in `./books/${bookName}/styleguide/`.
+The book-specific documentation is done as comments in the `./recipes/books/${bookName}/book.scss` and `./recipes/books/${bookName}/_config.scss` files and the Raw HTML snippets are in `./books/${bookName}/styleguide/`.
 
 
 # Variable Naming Conventions

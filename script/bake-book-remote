@@ -6,9 +6,9 @@ set -e
 # Snippet that inspired this script:
 #
 # To "re-bake” a book is something like:
-# - Inject a ruleset into the archive in association with the book to be collated.
-# `wget https://raw.githubusercontent.com/Connexions/cte/rulesets/books/rulesets/output/physics.css`
-# `/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename "ruleset.css" --media-type "text/css" /etc/cnx/archive/app.ini 031da8d3-b525-429c-80cf-6c8ed997733a@9.30 physics.css`
+# - Inject a recipe into the archive in association with the book to be collated.
+# `wget https://raw.githubusercontent.com/Connexions/cte/recipes/books/recipes/output/physics.css`
+# `/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename "recipe.css" --media-type "text/css" /etc/cnx/archive/app.ini 031da8d3-b525-429c-80cf-6c8ed997733a@9.30 physics.css`
 # - Invoke the collation via a the python interpreter `import requests; resp = requests.post('http://dev00.cnx.org.cnx.org:6543/contents/031da8d3-b525-429c-80cf-6c8ed997733a/collate-content', headers={'x-api-key': 'b07'}); print(resp)`
 # Originally from: https://gist.github.com/pumazi/93f5ed32cb9e094e5a97415ced480a16
 
@@ -27,7 +27,7 @@ then
   >&2 echo "Valid books are (from ./books.txt):"
   for bookConfig in "${BOOK_CONFIGS[@]}"
   do
-    read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+    read -r bookName recipeName uuid _ <<< "${bookConfig}"
     >&2 echo "${bookName}"
   done
   exit 1
@@ -41,11 +41,11 @@ else
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for bookConfig in "${BOOK_CONFIGS[@]}"
   do
-    read -r bookConfigName rulesetName uuid hostName _ <<< "${bookConfig}"
+    read -r bookConfigName recipeName uuid hostName _ <<< "${bookConfig}"
 
     if [[ "${arg1}" = "${bookConfigName}" ]]
     then
-      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid} ${hostName}")
+      BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid} ${hostName}")
       foundConfig=1
       break
     fi
@@ -57,7 +57,7 @@ else
     >&2 echo "Valid books are (from ./books.txt):"
     for bookConfig in "${BOOK_CONFIGS[@]}"
     do
-      read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+      read -r bookName recipeName uuid _ <<< "${bookConfig}"
       >&2 echo "${bookName}"
     done
     exit 1
@@ -68,7 +68,7 @@ if [ -z "${bookVersion}" ]
 then
 
   # The first entry is always the book info because "--all" is not a valid commandline arg
-  read -r bookName rulesetName uuid hostName _ <<< "${BOOK_CONFIGS[0]}"
+  read -r bookName recipeName uuid hostName _ <<< "${BOOK_CONFIGS[0]}"
 
   >&2 echo 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
   >&2 echo 'The version is the @#.## in the target collection URL'
@@ -87,9 +87,9 @@ fi
 
 for bookConfig in "${BOOK_CONFIGS[@]}"
 do
-  read -r bookName rulesetName uuid hostName _ <<< "${bookConfig}"
+  read -r bookName recipeName uuid hostName _ <<< "${bookConfig}"
 
-  cssFile="./rulesets/output/${rulesetName}.css"
+  cssFile="./recipes/output/${recipeName}.css"
 
   if [ -z "${uuid}" ]
   then
@@ -104,9 +104,9 @@ do
   >&2 echo "==> Copying CSS file from local machine to server"
   scp ${cssFile} ${USER}@${hostName}:${tempCssFile} || exit 1
 
-  >&2 echo "==> Injecting the css file into the book as ruleset.css"
+  >&2 echo "==> Injecting the css file into the book as recipe.css"
 
-  buildBookCmd="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"ruleset.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${uuid}@${bookVersion}\" ${tempCssFile}"
+  buildBookCmd="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"recipe.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${uuid}@${bookVersion}\" ${tempCssFile}"
   ssh ${USER}@${hostName} ${buildBookCmd} || exit 1
 
   >&2 echo "==> Re-baking the book (may take up to 12 minutes)"

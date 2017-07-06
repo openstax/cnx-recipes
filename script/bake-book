@@ -26,11 +26,11 @@ then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for bookConfig in "${BOOK_CONFIGS[@]}"
   do
-    read -r bookConfigName rulesetName uuid _ <<< "${bookConfig}"
+    read -r bookConfigName recipeName uuid _ <<< "${bookConfig}"
 
     if [[ "${arg1}" = "${bookConfigName}" ]]
     then
-      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid}")
+      BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid}")
       foundConfig=1
       break
     fi
@@ -42,7 +42,7 @@ then
     >&2 echo "Valid books are (from ./books.txt):"
     for bookConfig in "${BOOK_CONFIGS[@]}"
     do
-      read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+      read -r bookName recipeName uuid _ <<< "${bookConfig}"
       >&2 echo "${bookName}"
     done
     exit 1
@@ -52,14 +52,14 @@ fi
 
 for bookConfig in "${BOOK_CONFIGS[@]}"
 do
-  read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+  read -r bookName recipeName uuid _ <<< "${bookConfig}"
 
-  ./script/compile-books ${rulesetName} || exit 1
+  ./script/compile-books ${recipeName} || exit 1
 
   rawFile="./data/${bookName}-raw.xhtml"
   bakedFile="./data/${bookName}-baked.xhtml"
-  sassFile="./rulesets/books/${rulesetName}/book.scss"
-  cssFile="./rulesets/output/${rulesetName}.css"
+  sassFile="./recipes/books/${recipeName}/book.scss"
+  cssFile="./recipes/output/${recipeName}.css"
 
   if [ ! -f "${rawFile}" ]
   then
@@ -74,7 +74,7 @@ do
   fi
 
 
-  >&2 echo "==> Baking ${rawFile} using ${rulesetName} (may take a few minutes)"
+  >&2 echo "==> Baking ${rawFile} using ${recipeName} (may take a few minutes)"
 
   # Remove the baked file if it exists
   [ -e "${bakedFile}" ] && rm ${bakedFile}

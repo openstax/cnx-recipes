@@ -15,12 +15,12 @@ source ./books.txt || exit 1
 if [[ ! "${arg1}" == "--all" ]]
 then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for rulesetName in "${RULESET_NAMES[@]}"
+  for recipeName in "${RECIPE_NAMES[@]}"
   do
 
-    if [[ "${arg1}" = "${rulesetName}" ]]
+    if [[ "${arg1}" = "${recipeName}" ]]
     then
-      RULESET_NAMES=("${rulesetName}")
+      RECIPE_NAMES=("${recipeName}")
       foundConfig=1
       break
     fi
@@ -28,23 +28,23 @@ then
 
   if [[ ! 1 -eq "${foundConfig}" ]]
   then
-    >&2 echo "ERROR: Could not find Book info for ruleset named ${arg1}"
+    >&2 echo "ERROR: Could not find Book info for recipe named ${arg1}"
     >&2 echo "Valid books are (from ./books.txt):"
-    for rulesetName in "${RULESET_NAMES[@]}"
+    for recipeName in "${RECIPE_NAMES[@]}"
     do
-      >&2 echo "${rulesetName}"
+      >&2 echo "${recipeName}"
     done
     exit 1
   fi
 fi
 
 diffFound=0
-for rulesetName in "${RULESET_NAMES[@]}"
+for recipeName in "${RECIPE_NAMES[@]}"
 do
 
-  >&2 echo "==> Checking for differences in '${rulesetName}'"
+  >&2 echo "==> Checking for differences in '${recipeName}'"
 
-  for bakedFile in $(find ./tmp/${rulesetName} -name "*-baked.xhtml")
+  for bakedFile in $(find ./tmp/${recipeName} -name "*-baked.xhtml")
   do
 
     preparedFile="${bakedFile/-baked/-prepared}"
@@ -61,8 +61,8 @@ do
       fi
 
     else
-      >&2 echo "FAILING ${rulesetName} because the prepared file '${preparedFile}' was not found."
-      >&2 echo "Did you run './script/diff-guide-prepare ${rulesetName}' earlier?"
+      >&2 echo "FAILING ${recipeName} because the prepared file '${preparedFile}' was not found."
+      >&2 echo "Did you run './script/diff-guide-prepare ${recipeName}' earlier?"
       exit 1
     fi
 

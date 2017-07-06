@@ -3,7 +3,7 @@
 
 # These columns are:
 # - bookName
-# - rulesetName
+# - recipeName
 # - uuid : The uuid to use for ./script/fetch-book
 # - hostName : The hostName to use when running ./script/fetch-book and ./script/bake-book-remote
 # - additionalStyleguideDirs : These specify which additional directories should be included when generating the styleguide
@@ -31,7 +31,7 @@ BOOK_CONFIGS=(
 )
 
 BOOK_NAMES=()
-RULESET_NAMES=()
+RECIPE_NAMES=()
 
 # From http://stackoverflow.com/a/8574392
 containsElement () {
@@ -44,9 +44,9 @@ containsElement () {
 # since this is loaded using 'source ./books.txt'
 for __bookConfig in "${BOOK_CONFIGS[@]}"
 do
-  read -r __bookName __rulesetName uuid _ <<< "${__bookConfig}"
-  # Add to the list of BOOK_NAMES and RULESET_NAMES
+  read -r __bookName __recipeName uuid _ <<< "${__bookConfig}"
+  # Add to the list of BOOK_NAMES and RECIPE_NAMES
   containsElement "${__bookName}" "${BOOK_NAMES[@]}" || BOOK_NAMES+=("${__bookName}")
-  containsElement "${__rulesetName}" "${RULESET_NAMES[@]}" || RULESET_NAMES+=("${__rulesetName}")
+  containsElement "${__recipeName}" "${RECIPE_NAMES[@]}" || RECIPE_NAMES+=("${__recipeName}")
 
 done
