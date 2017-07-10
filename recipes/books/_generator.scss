@@ -35,6 +35,14 @@ $_symbolsSectionTitle: "Symbols";
   }
   @include modify_GenericNote();
 
+  @each $unnumberedEquation in $Config_UnnumberedEquations {
+    $contextSelector: map-get($unnumberedEquation, contextSelector);
+    $childSelector: map-get($unnumberedEquation, childSelector);
+    @include validate_type($contextSelector, string);
+    @include validate_typeOptional($childSelector, string);
+    @include modify_addUnnumbered($contextSelector, $childSelector);
+  }
+
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
   @if $Config_Coverage_MayHaveMissingExercises == true {
@@ -113,16 +121,14 @@ $_symbolsSectionTitle: "Symbols";
   // Number equations if they have a titleContent
   // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
-  $excludeNumberingInClassName: map-get($Config_PartType_Equation, excludeNumberingInClassName);
   $numberAt                   : map-get($Config_PartType_Equation, numberAt);
   $numberAfterEq              : map-get($Config_PartType_Equation, numberAfterEq);
   @if $titleContent {
-    @include validate_typeOptional($excludeNumberingInClassName, string);
     @include validate_typeOptional($numberAfterEq, bool);
     @include validate_enum($numberAt, $NUMBER__PREFIX__);
     @include count_countEquations(equation);
     @if $numberAt == $NUMBER_BEFORE_MOVE {
-      @include number_equations($titleContent, $excludeNumberingInClassName, $numberAfterEq);
+      @include number_equations($titleContent, $numberAfterEq);
     }
   }
 
@@ -322,16 +328,14 @@ $_symbolsSectionTitle: "Symbols";
   // Number equations if they have a titleContent
   // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
-  $excludeNumberingInClassName: map-get($Config_PartType_Equation, excludeNumberingInClassName);
   $numberAt                   : map-get($Config_PartType_Equation, numberAt);
   $numberAfterEq              : map-get($Config_PartType_Equation, numberAfterEq);
   @if $titleContent {
-    @include validate_typeOptional($excludeNumberingInClassName, string);
     @include validate_typeOptional($numberAfterEq, bool);
     @include validate_enum($numberAt, $NUMBER__PREFIX__);
     @if $numberAt == $NUMBER_AFTER_MOVE {
       @include count_countEquations(equation);
-      @include number_equations($titleContent, $excludeNumberingInClassName, $numberAfterEq);
+      @include number_equations($titleContent, $numberAfterEq);
     }
   }
   @include reference_refBookMetadataNodeAs(bookMetadata);
