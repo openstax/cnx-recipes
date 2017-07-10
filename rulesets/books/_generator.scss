@@ -35,8 +35,6 @@ $_symbolsSectionTitle: "Symbols";
   }
   @include modify_GenericNote();
 
-  //the metadata has been moved to the content, remove it from the metadata
-  @include modify_trash('[data-type="metadata"] > [data-type="description"]');
   @if $Config_Coverage_MayHaveMissingExercises == true {
     @include modify_trash('div.missing-exercise');
   }
@@ -46,6 +44,7 @@ $_symbolsSectionTitle: "Symbols";
   @if $Config_abstractTitle {
     @include modify_addAbstractTitle($Config_abstractTitle);
   }
+  @include utils_clearTrash();
 }
 :pass(1) {
 
@@ -367,6 +366,9 @@ $_symbolsSectionTitle: "Symbols";
   //After: All metadata tasks are completed
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
+
+  @include modify_trash('[data-type="composite-page"] [data-type="metadata"] > [data-type="description"]');
+  @include modify_trash('[data-type="composite-chapter"] [data-type="metadata"] > [data-type="description"]');
 }
 :pass(10) {
   @include toc_putTOCElements();
