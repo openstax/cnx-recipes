@@ -1,0 +1,5748 @@
+@charset "UTF-8";
+/*******************************************************
+* Copyright (c) 2013 Rice University
+*  
+*  
+*******************************************************/
+div.table table {
+  border: 1px solid; }
+
+table > tbody > tr > td > table {
+  border: 0;
+  margin: 0; }
+
+td.entrytbl {
+  height: 100%;
+  padding: 0;
+  border-left: 0;
+  border-top: 0; }
+
+td.entrytbl > table {
+  height: 100%;
+  border: 0;
+  margin: 0; }
+
+.widetable {
+  width: 100%; }
+
+.tablecell {
+  border-left: 0;
+  border-top: 0; }
+
+.text-align-center {
+  text-align: center; }
+
+.text-align-left {
+  text-align: left; }
+
+.text-align-right {
+  text-align: right; }
+
+.colsep-off {
+  border-right: 0; }
+
+.colsep-on {
+  border-right: 1px solid; }
+
+.rowsep-off {
+  border-bottom: 0; }
+
+.rowsep-on {
+  border-bottom: 1px solid; }
+
+.frame-none {
+  border-width: 0; }
+
+.frame-sides {
+  border-top-width: 0;
+  border-bottom-width: 0; }
+
+.frame-top {
+  border-left-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 0; }
+
+.frame-bottom {
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0; }
+
+.frame-topbot {
+  border-left-width: 0;
+  border-right-width: 0; }
+
+/********************************************************************
+ * Math Refactor of .x-feature() function to utilize only one paramter
+ ********************************************************************/
+#part #chapter-end #review-questions #title .style {
+  color: #77294A;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  text-transform: capitalize;
+  font-size: 15.6px;
+  padding-left: 0px; }
+
+/* The QR code variable is needed for psychology skeleton but we are not using it since it's going away */
+html {
+  prince-image-resolution: 150dpi;
+  prince-background-image-resolution: 150dpi; }
+
+div.book {
+  /* --------------------------------------
+   *  Define how counters are incremented
+   * --------------------------------------
+   */
+  counter-reset: chapter appendix;
+  /* -------------------------------------
+   *  All the rules for elements need to be prefixed
+   *  according to slightly different rules
+   *  - Chapters are numbered
+   *  - Appendixes are lettered
+   *
+   * ie: "Figure 4.3" in chapters but "Figure A3" in an appendix
+   * -------------------------------------
+   */
+  /* Still count the element but don't show it */
+ /* -------------------------------------
+*  The bulk of numbering!
+*
+*
+*  To handle slight variations in prefixing:
+*  @part-label is used in page headers ie "Chapter 3"
+*  @part-counter is the prefix to things like "Table A4"
+*  @part-target is CSS3 for making links to elements
+*  @part-separator is the little dot in "Table 4.3"
+* -------------------------------------
+*/
+  /* look up the exercise number */
+ /******************************
+* Handle footnotes
+******************************/
+ /******************************
+* Number the book-level TOC
+******************************/
+  /* Chapters/Appendixes */
+  /* Don't render nested sections in the toc */
+  /* Don't render the TOC for preface or appendix at all */ }
+
+div.book div.chapter {
+  counter-increment: chapter; }
+
+div.book > div.appendix {
+  counter-increment: appendix; }
+
+div.book > div.preface {
+  counter-reset: section figure subfigure table equation example exercise footnote toc-section;
+  /* Cases where sections are referenced */
+  /* --------------------------------------
+   *  Exceptions for incrementing/displaying
+   *  Note: "div.glossary *" is by far the most time-consuming rule
+   * --------------------------------------
+   */
+  /* --------------------------------------
+   *  Define where counters are displayed
+   * --------------------------------------
+   */
+  /** Each thing appears 3 times because 1 implements the new numbering and the next 2 lines hide the docbook-generated text **/
+  /* Number links to different elements */ }
+
+div.book > div.preface > div.titlepage > div > div h1.title span.cnx-gentext-t {
+  string-set: cnx-header "" "Preface" " " "" " | " content() "";
+  padding-left: .25em;
+  prince-text-replace: "*" ""; }
+
+div.book > div.preface > div.cnx-eoc {
+  counter-reset: eoc-section -1; }
+
+div.book > div.preface > div.section {
+  counter-increment: section; }
+
+div.book > div.preface > div.section:not(.labeled) {
+  counter-increment: section; }
+
+div.book > div.preface > div.section.labeled {
+  counter-increment: none; }
+
+div.book > div.preface div.figure {
+  counter-increment: figure;
+  counter-reset: subfigure; }
+
+div.book > div.preface div.figure:not(.labeled) {
+  counter-increment: figure;
+  counter-reset: subfigure; }
+
+div.book > div.preface div.figure.labeled {
+  counter-increment: none; }
+
+div.book > div.preface .figure .informalfigure {
+  counter-increment: subfigure;
+  counter-reset: none-webkit-bug; }
+
+div.book > div.preface .figure .informalfigure:not(.labeled) {
+  counter-increment: subfigure;
+  counter-reset: none-webkit-bug; }
+
+div.book > div.preface .figure .informalfigure.labeled {
+  counter-increment: none; }
+
+div.book > div.preface .table {
+  counter-increment: table; }
+
+div.book > div.preface .table:not(.labeled) {
+  counter-increment: table; }
+
+div.book > div.preface .table.labeled {
+  counter-increment: none; }
+
+div.book > div.preface > div.section div.example {
+  counter-increment: example; }
+
+div.book > div.preface > div.section div.example:not(.labeled) {
+  counter-increment: example; }
+
+div.book > div.preface > div.section div.example.labeled {
+  counter-increment: none; }
+
+div.book > div.preface > div.cnx-eoc div.exercise,
+div.book > div.preface > div.section div.exercise {
+  counter-increment: exercise; }
+
+div.book > div.preface > div.cnx-eoc div.exercise:not(.labeled),
+div.book > div.preface > div.section div.exercise:not(.labeled) {
+  counter-increment: exercise; }
+
+div.book > div.preface > div.cnx-eoc div.exercise.labeled,
+div.book > div.preface > div.section div.exercise.labeled {
+  counter-increment: none; }
+
+div.book > div.preface > div.section div.equation {
+  counter-increment: equation; }
+
+div.book > div.preface > div.section div.equation:not(.labeled) {
+  counter-increment: equation; }
+
+div.book > div.preface > div.section div.equation.labeled {
+  counter-increment: none; }
+
+div.book > div.preface > div.toc li.toc-section {
+  counter-increment: toc-section; }
+
+div.book > div.preface > div.cnx-eoc > div.section {
+  counter-increment: eoc-section; }
+
+div.book > div.preface > div.glossary *,
+div.book > div.preface > div.section div.example div.exercise *,
+div.book > div.preface > div.cnx-eoc div.solution table,
+div.book > div.preface > div.cnx-eoc div.solution div.exercise,
+div.book > div.preface > div.cnx-eoc div.solution div.example,
+div.book > div.preface > div.cnx-eoc div.solution div.equation {
+  counter-increment: none !important;
+  /* Don't display the labels in glossaries, solutions, etc */ }
+
+div.book > div.preface > div.glossary *::before,
+div.book > div.preface > div.section div.example div.exercise *::before,
+div.book > div.preface > div.cnx-eoc div.solution table::before,
+div.book > div.preface > div.cnx-eoc div.solution div.exercise::before,
+div.book > div.preface > div.cnx-eoc div.solution div.example::before,
+div.book > div.preface > div.cnx-eoc div.solution div.equation::before {
+  display: none; }
+
+div.book > div.preface > div.glossary *::after,
+div.book > div.preface > div.section div.example div.exercise *::after,
+div.book > div.preface > div.cnx-eoc div.solution table::after,
+div.book > div.preface > div.cnx-eoc div.solution div.exercise::after,
+div.book > div.preface > div.cnx-eoc div.solution div.example::after,
+div.book > div.preface > div.cnx-eoc div.solution div.equation::after {
+  display: none; }
+
+div.book > div.preface > div.titlepage > .cnx-gentext-t::before {
+  content: "" "" ""; }
+
+div.book > div.preface > div.titlepage > .cnx-gentext-autogenerated,
+div.book > div.preface > div.titlepage > .cnx-gentext-n {
+  display: none; }
+
+div.book > div.preface > div.section > div.titlepage h2:not(.labeled)::before {
+  content: "" "" "" "" counter(section) " " ""; }
+
+div.book > div.preface > div.section > div.titlepage h2 > .cnx-gentext-autogenerated,
+div.book > div.preface > div.section > div.titlepage h2 > .cnx-gentext-n {
+  display: none; }
+
+div.book > div.preface div.figure > div.title > span.cnx-gentext-t:not(.labeled)::before {
+  content: "" "Figure " "" "" counter(figure) " " ""; }
+
+div.book > div.preface div.figure > div.title > span.cnx-gentext-autogenerated,
+div.book > div.preface div.figure > div.title > span.cnx-gentext-n {
+  display: none; }
+
+div.book > div.preface div.figure > div.body > div.figure > div.title > span.cnx-gentext-t:not(.labeled)::before {
+  content: "" "(" counter(subfigure,lower-alpha) ") " ""; }
+
+div.book > div.preface div.table:not(.labeled) > table > caption:not(.labeled)::before {
+  content: "" "Table " "" "" counter(table) " " ""; }
+
+div.book > div.preface div.table > table > caption > span.cnx-gentext-t,
+div.book > div.preface div.table > table > caption > span.cnx-gentext-n {
+  display: none; }
+
+div.book > div.preface > div.section div.example:not(.labeled) > .title > span:not(.labeled)::before {
+  content: "" "Example " "" "" counter(example) " " ""; }
+
+div.book > div.preface > div.section div.example > .title > span > span.cnx-gentext-autogenerated,
+div.book > div.preface > div.section div.example > .title > span > span.cnx-gentext-n {
+  display: none; }
+
+div.book > div.preface > div.section div.exercise:not(.labeled) > .title > span:first-child:not(.labeled)::before {
+  content: "" "Exercise " "" "" counter(exercise) " " ""; }
+
+div.book > div.preface > div.section div.exercise > .title > span:first-child .cnx-gentext-autogenerated,
+div.book > div.preface > div.section div.exercise > .title > span:first-child .cnx-gentext-n {
+  display: none; }
+
+div.book > div.preface > div.cnx-eoc > div.section > div.body > div.exercise:not(.labeled) > div.body > div.problem::before {
+  content: "" counter(exercise) "." "";
+  font-weight: bold; }
+
+div.book > div.preface > div.cnx-eoc > div.section > div.body > div.exercise:not(.labeled) > div.title {
+  display: none; }
+
+div.book > div.preface > div.section div.equation > *:last-child::after {
+  content: "" "(" "" "" counter(equation) ")" "";
+  float: right; }
+
+div.book > div.preface div.equation > .label {
+  display: none; }
+
+div.book > div.preface > div.toc > ul > li > a:not(.labeled)::before {
+  content: "" "" "" "" counter(toc-section) " " ""; }
+
+div.book > div.preface > div.toc > ul > li > a .cnx-gentext-autogenerated,
+div.book > div.preface > div.toc > ul > li > a .cnx-gentext-n {
+  display: none; }
+
+div.book > div.preface > div.cnx-eoc > div.section > .title .cnx-gentext-t:not(.labeled)::before {
+  content: "" "" "" "" counter(eoc-section) " " ""; }
+
+div.book > div.preface > div.cnx-eoc > div.section > .title .cnx-gentext-autogenerated,
+div.book > div.preface > div.cnx-eoc > div.section > .title .cnx-gentext-n {
+  display: none; }
+
+div.book > div.preface a.target-figure:not(.labeled) {
+  content: "" "Figure " "" "" target-counter(attr(href), figure) "" ""; }
+
+div.book > div.preface a.target-subfigure:not(.labeled) {
+  content: "" "Figure " "" "" target-counter(attr(href), figure) target-counter(attr(href), subfigure, lower-latin) ""; }
+
+div.book > div.preface a.target-table:not(.labeled) {
+  content: "" "Table " "" "" target-counter(attr(href), table) "" ""; }
+
+div.book > div.preface a.target-example:not(.labeled) {
+  content: "" "Example " "" "" target-counter(attr(href), example) "" ""; }
+
+div.book > div.preface a.target-exercise:not(.labeled) {
+  content: "" "Exercise " "" "" target-counter(attr(href), exercise) "" ""; }
+
+div.book > div.preface a.target-equation:not(.labeled),
+div.book > div.preface a.target-inlineequation:not(.labeled),
+div.book > div.preface a.target-informalequation:not(.labeled) {
+  content: "" "Equation " "" "" target-counter(attr(href), equation) "" ""; }
+
+div.book > div.preface > div.section > div.titlepage h2::before {
+  display: none !important; }
+
+div.book div.chapter {
+  counter-reset: section figure subfigure table equation example exercise footnote toc-section;
+  /* Cases where sections are referenced */
+  /* --------------------------------------
+   *  Exceptions for incrementing/displaying
+   *  Note: "div.glossary *" is by far the most time-consuming rule
+   * --------------------------------------
+   */
+  /* --------------------------------------
+   *  Define where counters are displayed
+   * --------------------------------------
+   */
+  /** Each thing appears 3 times because 1 implements the new numbering and the next 2 lines hide the docbook-generated text **/
+  /* Number links to different elements */ }
+
+div.book div.chapter > div.titlepage > div > div h1.title span.cnx-gentext-t {
+  string-set: cnx-header "" "Chapter" " " counter(chapter,decimal) " | " content() "";
+  padding-left: .25em;
+  prince-text-replace: "*" ""; }
+
+div.book div.chapter > div.cnx-eoc {
+  counter-reset: eoc-section -1; }
+
+div.book div.chapter > div.section {
+  counter-increment: section; }
+
+div.book div.chapter > div.section:not(.labeled) {
+  counter-increment: section; }
+
+div.book div.chapter > div.section.labeled {
+  counter-increment: none; }
+
+div.book div.chapter div.figure {
+  counter-increment: figure;
+  counter-reset: subfigure; }
+
+div.book div.chapter div.figure:not(.labeled) {
+  counter-increment: figure;
+  counter-reset: subfigure; }
+
+div.book div.chapter div.figure.labeled {
+  counter-increment: none; }
+
+div.book div.chapter .figure .informalfigure {
+  counter-increment: subfigure;
+  counter-reset: none-webkit-bug; }
+
+div.book div.chapter .figure .informalfigure:not(.labeled) {
+  counter-increment: subfigure;
+  counter-reset: none-webkit-bug; }
+
+div.book div.chapter .figure .informalfigure.labeled {
+  counter-increment: none; }
+
+div.book div.chapter .table {
+  counter-increment: table; }
+
+div.book div.chapter .table:not(.labeled) {
+  counter-increment: table; }
+
+div.book div.chapter .table.labeled {
+  counter-increment: none; }
+
+div.book div.chapter > div.section div.example {
+  counter-increment: example; }
+
+div.book div.chapter > div.section div.example:not(.labeled) {
+  counter-increment: example; }
+
+div.book div.chapter > div.section div.example.labeled {
+  counter-increment: none; }
+
+div.book div.chapter > div.cnx-eoc div.exercise,
+div.book div.chapter > div.section div.exercise {
+  counter-increment: exercise; }
+
+div.book div.chapter > div.cnx-eoc div.exercise:not(.labeled),
+div.book div.chapter > div.section div.exercise:not(.labeled) {
+  counter-increment: exercise; }
+
+div.book div.chapter > div.cnx-eoc div.exercise.labeled,
+div.book div.chapter > div.section div.exercise.labeled {
+  counter-increment: none; }
+
+div.book div.chapter > div.section div.equation {
+  counter-increment: equation; }
+
+div.book div.chapter > div.section div.equation:not(.labeled) {
+  counter-increment: equation; }
+
+div.book div.chapter > div.section div.equation.labeled {
+  counter-increment: none; }
+
+div.book div.chapter > div.toc li.toc-section {
+  counter-increment: toc-section; }
+
+div.book div.chapter > div.cnx-eoc > div.section {
+  counter-increment: eoc-section; }
+
+div.book div.chapter > div.glossary *,
+div.book div.chapter > div.section div.example div.exercise *,
+div.book div.chapter > div.cnx-eoc div.solution table,
+div.book div.chapter > div.cnx-eoc div.solution div.exercise,
+div.book div.chapter > div.cnx-eoc div.solution div.example,
+div.book div.chapter > div.cnx-eoc div.solution div.equation {
+  counter-increment: none !important;
+  /* Don't display the labels in glossaries, solutions, etc */ }
+
+div.book div.chapter > div.glossary *::before,
+div.book div.chapter > div.section div.example div.exercise *::before,
+div.book div.chapter > div.cnx-eoc div.solution table::before,
+div.book div.chapter > div.cnx-eoc div.solution div.exercise::before,
+div.book div.chapter > div.cnx-eoc div.solution div.example::before,
+div.book div.chapter > div.cnx-eoc div.solution div.equation::before {
+  display: none; }
+
+div.book div.chapter > div.glossary *::after,
+div.book div.chapter > div.section div.example div.exercise *::after,
+div.book div.chapter > div.cnx-eoc div.solution table::after,
+div.book div.chapter > div.cnx-eoc div.solution div.exercise::after,
+div.book div.chapter > div.cnx-eoc div.solution div.example::after,
+div.book div.chapter > div.cnx-eoc div.solution div.equation::after {
+  display: none; }
+
+div.book div.chapter > div.titlepage > .cnx-gentext-t::before {
+  content: "" counter(chapter,decimal) ""; }
+
+div.book div.chapter > div.titlepage > .cnx-gentext-autogenerated,
+div.book div.chapter > div.titlepage > .cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter > div.section > div.titlepage h2:not(.labeled)::before {
+  content: "" "" counter(chapter,decimal) "." counter(section) " " ""; }
+
+div.book div.chapter > div.section > div.titlepage h2 > .cnx-gentext-autogenerated,
+div.book div.chapter > div.section > div.titlepage h2 > .cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter div.figure > div.title > span.cnx-gentext-t:not(.labeled)::before {
+  content: "" "Figure " counter(chapter,decimal) "." counter(figure) " " ""; }
+
+div.book div.chapter div.figure > div.title > span.cnx-gentext-autogenerated,
+div.book div.chapter div.figure > div.title > span.cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter div.figure > div.body > div.figure > div.title > span.cnx-gentext-t:not(.labeled)::before {
+  content: "" "(" counter(subfigure,lower-alpha) ") " ""; }
+
+div.book div.chapter div.table:not(.labeled) > table > caption:not(.labeled)::before {
+  content: "" "Table " counter(chapter,decimal) "." counter(table) " " ""; }
+
+div.book div.chapter div.table > table > caption > span.cnx-gentext-t,
+div.book div.chapter div.table > table > caption > span.cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter > div.section div.example:not(.labeled) > .title > span:not(.labeled)::before {
+  content: "" "Example " counter(chapter,decimal) "." counter(example) " " ""; }
+
+div.book div.chapter > div.section div.example > .title > span > span.cnx-gentext-autogenerated,
+div.book div.chapter > div.section div.example > .title > span > span.cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter > div.section div.exercise:not(.labeled) > .title > span:first-child:not(.labeled)::before {
+  content: "" "Exercise " counter(chapter,decimal) "." counter(exercise) " " ""; }
+
+div.book div.chapter > div.section div.exercise > .title > span:first-child .cnx-gentext-autogenerated,
+div.book div.chapter > div.section div.exercise > .title > span:first-child .cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter > div.cnx-eoc > div.section > div.body > div.exercise:not(.labeled) > div.body > div.problem::before {
+  content: "" counter(exercise) "." "";
+  font-weight: bold; }
+
+div.book div.chapter > div.cnx-eoc > div.section > div.body > div.exercise:not(.labeled) > div.title {
+  display: none; }
+
+div.book div.chapter > div.section div.equation > *:last-child::after {
+  content: "" "(" counter(chapter,decimal) "." counter(equation) ")" "";
+  float: right; }
+
+div.book div.chapter div.equation > .label {
+  display: none; }
+
+div.book div.chapter > div.toc > ul > li > a:not(.labeled)::before {
+  content: "" "" counter(chapter,decimal) "." counter(toc-section) " " ""; }
+
+div.book div.chapter > div.toc > ul > li > a .cnx-gentext-autogenerated,
+div.book div.chapter > div.toc > ul > li > a .cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter > div.cnx-eoc > div.section > .title .cnx-gentext-t:not(.labeled)::before {
+  content: "" "" counter(chapter,decimal) "." counter(eoc-section) " " ""; }
+
+div.book div.chapter > div.cnx-eoc > div.section > .title .cnx-gentext-autogenerated,
+div.book div.chapter > div.cnx-eoc > div.section > .title .cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter a.target-figure:not(.labeled) {
+  content: "" "Figure " target-counter(attr(href), chapter) "." target-counter(attr(href), figure) "" ""; }
+
+div.book div.chapter a.target-subfigure:not(.labeled) {
+  content: "" "Figure " target-counter(attr(href), chapter) "." target-counter(attr(href), figure) target-counter(attr(href), subfigure, lower-latin) ""; }
+
+div.book div.chapter a.target-table:not(.labeled) {
+  content: "" "Table " target-counter(attr(href), chapter) "." target-counter(attr(href), table) "" ""; }
+
+div.book div.chapter a.target-example:not(.labeled) {
+  content: "" "Example " target-counter(attr(href), chapter) "." target-counter(attr(href), example) "" ""; }
+
+div.book div.chapter a.target-exercise:not(.labeled) {
+  content: "" "Exercise " target-counter(attr(href), chapter) "." target-counter(attr(href), exercise) "" ""; }
+
+div.book div.chapter a.target-equation:not(.labeled),
+div.book div.chapter a.target-inlineequation:not(.labeled),
+div.book div.chapter a.target-informalequation:not(.labeled) {
+  content: "" "Equation " target-counter(attr(href), chapter) "." target-counter(attr(href), equation) "" ""; }
+
+div.book > div.appendix {
+  counter-reset: section figure subfigure table equation example exercise footnote toc-section;
+  /* Cases where sections are referenced */
+  /* --------------------------------------
+   *  Exceptions for incrementing/displaying
+   *  Note: "div.glossary *" is by far the most time-consuming rule
+   * --------------------------------------
+   */
+  /* --------------------------------------
+   *  Define where counters are displayed
+   * --------------------------------------
+   */
+  /** Each thing appears 3 times because 1 implements the new numbering and the next 2 lines hide the docbook-generated text **/
+  /* Number links to different elements */ }
+
+div.book > div.appendix > div.titlepage > div > div h1.title span.cnx-gentext-t {
+  string-set: cnx-header "" "Appendix" " " counter(appendix,upper-latin) " | " content() "";
+  padding-left: .25em;
+  prince-text-replace: "*" ""; }
+
+div.book > div.appendix > div.cnx-eoc {
+  counter-reset: eoc-section -1; }
+
+div.book > div.appendix > div.section {
+  counter-increment: section; }
+
+div.book > div.appendix > div.section:not(.labeled) {
+  counter-increment: section; }
+
+div.book > div.appendix > div.section.labeled {
+  counter-increment: none; }
+
+div.book > div.appendix div.figure {
+  counter-increment: figure;
+  counter-reset: subfigure; }
+
+div.book > div.appendix div.figure:not(.labeled) {
+  counter-increment: figure;
+  counter-reset: subfigure; }
+
+div.book > div.appendix div.figure.labeled {
+  counter-increment: none; }
+
+div.book > div.appendix .figure .informalfigure {
+  counter-increment: subfigure;
+  counter-reset: none-webkit-bug; }
+
+div.book > div.appendix .figure .informalfigure:not(.labeled) {
+  counter-increment: subfigure;
+  counter-reset: none-webkit-bug; }
+
+div.book > div.appendix .figure .informalfigure.labeled {
+  counter-increment: none; }
+
+div.book > div.appendix .table {
+  counter-increment: table; }
+
+div.book > div.appendix .table:not(.labeled) {
+  counter-increment: table; }
+
+div.book > div.appendix .table.labeled {
+  counter-increment: none; }
+
+div.book > div.appendix > div.section div.example {
+  counter-increment: example; }
+
+div.book > div.appendix > div.section div.example:not(.labeled) {
+  counter-increment: example; }
+
+div.book > div.appendix > div.section div.example.labeled {
+  counter-increment: none; }
+
+div.book > div.appendix > div.cnx-eoc div.exercise,
+div.book > div.appendix > div.section div.exercise {
+  counter-increment: exercise; }
+
+div.book > div.appendix > div.cnx-eoc div.exercise:not(.labeled),
+div.book > div.appendix > div.section div.exercise:not(.labeled) {
+  counter-increment: exercise; }
+
+div.book > div.appendix > div.cnx-eoc div.exercise.labeled,
+div.book > div.appendix > div.section div.exercise.labeled {
+  counter-increment: none; }
+
+div.book > div.appendix > div.section div.equation {
+  counter-increment: equation; }
+
+div.book > div.appendix > div.section div.equation:not(.labeled) {
+  counter-increment: equation; }
+
+div.book > div.appendix > div.section div.equation.labeled {
+  counter-increment: none; }
+
+div.book > div.appendix > div.toc li.toc-section {
+  counter-increment: toc-section; }
+
+div.book > div.appendix > div.cnx-eoc > div.section {
+  counter-increment: eoc-section; }
+
+div.book > div.appendix > div.glossary *,
+div.book > div.appendix > div.section div.example div.exercise *,
+div.book > div.appendix > div.cnx-eoc div.solution table,
+div.book > div.appendix > div.cnx-eoc div.solution div.exercise,
+div.book > div.appendix > div.cnx-eoc div.solution div.example,
+div.book > div.appendix > div.cnx-eoc div.solution div.equation {
+  counter-increment: none !important;
+  /* Don't display the labels in glossaries, solutions, etc */ }
+
+div.book > div.appendix > div.glossary *::before,
+div.book > div.appendix > div.section div.example div.exercise *::before,
+div.book > div.appendix > div.cnx-eoc div.solution table::before,
+div.book > div.appendix > div.cnx-eoc div.solution div.exercise::before,
+div.book > div.appendix > div.cnx-eoc div.solution div.example::before,
+div.book > div.appendix > div.cnx-eoc div.solution div.equation::before {
+  display: none; }
+
+div.book > div.appendix > div.glossary *::after,
+div.book > div.appendix > div.section div.example div.exercise *::after,
+div.book > div.appendix > div.cnx-eoc div.solution table::after,
+div.book > div.appendix > div.cnx-eoc div.solution div.exercise::after,
+div.book > div.appendix > div.cnx-eoc div.solution div.example::after,
+div.book > div.appendix > div.cnx-eoc div.solution div.equation::after {
+  display: none; }
+
+div.book > div.appendix > div.titlepage > .cnx-gentext-t::before {
+  content: "" counter(appendix,upper-latin) ""; }
+
+div.book > div.appendix > div.titlepage > .cnx-gentext-autogenerated,
+div.book > div.appendix > div.titlepage > .cnx-gentext-n {
+  display: none; }
+
+div.book > div.appendix > div.section > div.titlepage h2:not(.labeled)::before {
+  content: "" "" counter(appendix,upper-latin) "" counter(section) " " ""; }
+
+div.book > div.appendix > div.section > div.titlepage h2 > .cnx-gentext-autogenerated,
+div.book > div.appendix > div.section > div.titlepage h2 > .cnx-gentext-n {
+  display: none; }
+
+div.book > div.appendix div.figure > div.title > span.cnx-gentext-t:not(.labeled)::before {
+  content: "" "Figure " counter(appendix,upper-latin) "" counter(figure) " " ""; }
+
+div.book > div.appendix div.figure > div.title > span.cnx-gentext-autogenerated,
+div.book > div.appendix div.figure > div.title > span.cnx-gentext-n {
+  display: none; }
+
+div.book > div.appendix div.figure > div.body > div.figure > div.title > span.cnx-gentext-t:not(.labeled)::before {
+  content: "" "(" counter(subfigure,lower-alpha) ") " ""; }
+
+div.book > div.appendix div.table:not(.labeled) > table > caption:not(.labeled)::before {
+  content: "" "Table " counter(appendix,upper-latin) "" counter(table) " " ""; }
+
+div.book > div.appendix div.table > table > caption > span.cnx-gentext-t,
+div.book > div.appendix div.table > table > caption > span.cnx-gentext-n {
+  display: none; }
+
+div.book > div.appendix > div.section div.example:not(.labeled) > .title > span:not(.labeled)::before {
+  content: "" "Example " counter(appendix,upper-latin) "" counter(example) " " ""; }
+
+div.book > div.appendix > div.section div.example > .title > span > span.cnx-gentext-autogenerated,
+div.book > div.appendix > div.section div.example > .title > span > span.cnx-gentext-n {
+  display: none; }
+
+div.book > div.appendix > div.section div.exercise:not(.labeled) > .title > span:first-child:not(.labeled)::before {
+  content: "" "Exercise " counter(appendix,upper-latin) "" counter(exercise) " " ""; }
+
+div.book > div.appendix > div.section div.exercise > .title > span:first-child .cnx-gentext-autogenerated,
+div.book > div.appendix > div.section div.exercise > .title > span:first-child .cnx-gentext-n {
+  display: none; }
+
+div.book > div.appendix > div.cnx-eoc > div.section > div.body > div.exercise:not(.labeled) > div.body > div.problem::before {
+  content: "" counter(exercise) "." "";
+  font-weight: bold; }
+
+div.book > div.appendix > div.cnx-eoc > div.section > div.body > div.exercise:not(.labeled) > div.title {
+  display: none; }
+
+div.book > div.appendix > div.section div.equation > *:last-child::after {
+  content: "" "(" counter(appendix,upper-latin) "" counter(equation) ")" "";
+  float: right; }
+
+div.book > div.appendix div.equation > .label {
+  display: none; }
+
+div.book > div.appendix > div.toc > ul > li > a:not(.labeled)::before {
+  content: "" "" counter(appendix,upper-latin) "" counter(toc-section) " " ""; }
+
+div.book > div.appendix > div.toc > ul > li > a .cnx-gentext-autogenerated,
+div.book > div.appendix > div.toc > ul > li > a .cnx-gentext-n {
+  display: none; }
+
+div.book > div.appendix > div.cnx-eoc > div.section > .title .cnx-gentext-t:not(.labeled)::before {
+  content: "" "" counter(appendix,upper-latin) "" counter(eoc-section) " " ""; }
+
+div.book > div.appendix > div.cnx-eoc > div.section > .title .cnx-gentext-autogenerated,
+div.book > div.appendix > div.cnx-eoc > div.section > .title .cnx-gentext-n {
+  display: none; }
+
+div.book > div.appendix a.target-figure:not(.labeled) {
+  content: "" "Figure " target-counter(attr(href), appendix, upper-latin) "" target-counter(attr(href), figure) "" ""; }
+
+div.book > div.appendix a.target-subfigure:not(.labeled) {
+  content: "" "Figure " target-counter(attr(href), appendix, upper-latin) "" target-counter(attr(href), figure) target-counter(attr(href), subfigure, lower-latin) ""; }
+
+div.book > div.appendix a.target-table:not(.labeled) {
+  content: "" "Table " target-counter(attr(href), appendix, upper-latin) "" target-counter(attr(href), table) "" ""; }
+
+div.book > div.appendix a.target-example:not(.labeled) {
+  content: "" "Example " target-counter(attr(href), appendix, upper-latin) "" target-counter(attr(href), example) "" ""; }
+
+div.book > div.appendix a.target-exercise:not(.labeled) {
+  content: "" "Exercise " target-counter(attr(href), appendix, upper-latin) "" target-counter(attr(href), exercise) "" ""; }
+
+div.book > div.appendix a.target-equation:not(.labeled),
+div.book > div.appendix a.target-inlineequation:not(.labeled),
+div.book > div.appendix a.target-informalequation:not(.labeled) {
+  content: "" "Equation " target-counter(attr(href), appendix, upper-latin) "" target-counter(attr(href), equation) "" ""; }
+
+div.book .empty {
+  visibility: hidden;
+  max-height: 0em; }
+
+div.book div.solution > a.number::before {
+  content: "" target-counter(attr(href, url), exercise) ""; }
+
+div.book div.solution > a.number {
+  content: ""; }
+
+div.book .footnote {
+  counter-increment: footnote;
+  color: black;
+  background: none;
+  font-weight: normal;
+  footnote-style-position: inside;
+  text-align: left;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  font-size: 9.23076923px;
+  color: #6D6F71;
+  line-height: 1.5em;
+  float: footnote; }
+
+div.book .footnote * {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+div.book .footnote span {
+  line-height: 1.5em;
+  font-size: 9.23076923px;
+  color: #6D6F71; }
+
+div.book .footnote sup {
+  color: #6D6F71;
+  font-size: 8px; }
+
+div.book .footnote::footnote-marker,
+div.book .footnote > * {
+  line-height: 1.5em;
+  font-size: 9.23076923px;
+  color: #6D6F71;
+  color: black;
+  font-weight: normal; }
+
+div.book .footnote::footnote-call {
+  content: "[" counter(footnote) "]";
+  font-size: 83%;
+  vertical-align: super;
+  line-height: none;
+  margin-before: 0.5em; }
+
+div.book .footnote::footnote-marker {
+  content: counter(footnote);
+  color: #6D6F71 !important;
+  margin-right: 1.33em !important;
+  color: black;
+  font-weight: normal;
+  margin-right: 0.5em; }
+
+div.book > div.toc {
+  /* Units */
+  /* A Chapter could be part of a Part, hence the extra "> li > ul" */
+  /* Sections */ }
+
+div.book > div.toc > ul > li > a.target-part::after {
+  content: ""; }
+
+div.book > div.toc > ul > li.toc-chapter > a.target-chapter::before,
+div.book > div.toc > ul > li > ul > li.toc-chapter > a.target-chapter::before {
+  content: "Chapter" ": ";
+  content: "" target-counter(attr(href), chapter, decimal) " " ""; }
+
+div.book > div.toc > ul > li > a.target-appendix::before {
+  content: "Appendix" ": ";
+  content: "" "Appendix" " " target-counter(attr(href), appendix, upper-latin) ": " ""; }
+
+div.book > div.toc > ul > li > a > .cnx-gentext-autogenerated,
+div.book > div.toc > ul > li > a > .cnx-gentext-n {
+  display: none; }
+
+div.book > div.toc > ul > li a > .cnx-gentext-autogenerated,
+div.book > div.toc > ul > li a > .cnx-gentext-n {
+  display: none; }
+
+div.book > div.chapter > .toc > ul > ul {
+  display: none; }
+
+div.book > div.preface .toc,
+div.book > div.appendix .toc {
+  display: none; }
+
+div.book > div.toc > ul > li.toc-appendix > ul {
+  display: none; }
+
+/**************************************
+ * The solutions in the back of the book need
+ * to be numbered the same as the problems.
+ ****************************************/
+div.colophon.end-of-book-solutions div.preface-area,
+div.colophon.end-of-book-solutions div.chapter-area,
+div.colophon.end-of-book-solutions div.appendix-area {
+  /*
+      > h3.title,
+      > div.section-area > h3.title {
+        .cnx-gentext-autogenerated, cnx-gentext-n { display: none; }
+      }
+    */ }
+
+div.colophon.end-of-book-solutions div.preface-area > div.section-area > h3.title,
+div.colophon.end-of-book-solutions div.chapter-area > div.section-area > h3.title,
+div.colophon.end-of-book-solutions div.appendix-area > div.section-area > h3.title {
+  display: none; }
+
+div.colophon.end-of-book-solutions div.preface-area div.solution > div.title .epub-only,
+div.colophon.end-of-book-solutions div.chapter-area div.solution > div.title .epub-only,
+div.colophon.end-of-book-solutions div.appendix-area div.solution > div.title .epub-only {
+  display: none; }
+
+div.colophon.end-of-book-solutions div.preface-area div.solution > div.title a.solution,
+div.colophon.end-of-book-solutions div.chapter-area div.solution > div.title a.solution,
+div.colophon.end-of-book-solutions div.appendix-area div.solution > div.title a.solution {
+  content: ''; }
+
+div.colophon.end-of-book-solutions div.preface-area div.solution > div.title a.solution::before,
+div.colophon.end-of-book-solutions div.chapter-area div.solution > div.title a.solution::before,
+div.colophon.end-of-book-solutions div.appendix-area div.solution > div.title a.solution::before {
+  font-weight: bold;
+  content: 'TARGET_EXERCISE';
+  content: target-counter(attr(href), exercise); }
+
+/**********************
+ * End of chapter Solutions
+ **********************/
+div.cnx-eoc.cnx-solutions div.solution > div.title .epub-only {
+  display: none; }
+
+div.cnx-eoc.cnx-solutions div.solution > div.title a.solution {
+  content: ''; }
+
+div.cnx-eoc.cnx-solutions div.solution > div.title a.solution::before {
+  font-weight: bold;
+  content: 'TARGET_EXERCISE';
+  content: target-counter(attr(href), exercise); }
+
+/*******************
+ * Hide the (Return to Exercise) when solution is inside the exercise
+ *******************/
+div.exercise > div.body > div.solution span.epub-only,
+div.exercise > div.body > div.solution a.solution {
+  display: none; }
+
+/**********************
+ * Hide module summaries by default
+ **********************/
+div.book > div.preface > div.titlepage > div > div:not(:first-child),
+div.book div.chapter > div.titlepage > div > div:not(:first-child),
+div.book > div.appendix > div.titlepage > div > div:not(:first-child) {
+  display: none; }
+
+/* ============================================
+ * CUSTOMIZED: originally ccap-numbering.less
+ * ============================================
+ */
+div.book div.chapter {
+  counter-increment: chapter; }
+
+div.book > div.preface {
+  /* --------------------------------------
+     *  CUSTOMIZED: added reset for try-it;
+     * --------------------------------------
+     */
+  counter-reset: section figure subfigure table equation example exercise footnote toc-section try theorem checkpoint be-prepared-exercise check-understanding;
+  /* -----------------------------------------------------
+     *   CUSTOMIZED: Increment the counter for try-it feature
+     * ------------------------------------------------------
+     */
+  /* ---------------------------------------------------
+     *  CUSTOMIZED: Display the counter for try-it feature
+     * ---------------------------------------------------
+     */ }
+
+div.book > div.preface .note.try {
+  counter-increment: try; }
+
+div.book > div.preface .note.try:not(.labeled) {
+  counter-increment: try; }
+
+div.book > div.preface .note.try.labeled {
+  counter-increment: none; }
+
+div.book > div.preface .note.try > .title:not(.labeled)::before {
+  content: "" "" "" "" counter(try) " " ""; }
+
+div.book div.chapter {
+  /* --------------------------------------
+     *  CUSTOMIZED: added reset for try-it;
+     * --------------------------------------
+     */
+  counter-reset: section figure subfigure table equation example exercise footnote toc-section try theorem checkpoint be-prepared-exercise check-understanding;
+  /* -----------------------------------------------------
+     *   CUSTOMIZED: Increment the counter for try-it feature
+     * ------------------------------------------------------
+     */
+  /* ---------------------------------------------------
+     *  CUSTOMIZED: Display the counter for try-it feature
+     * ---------------------------------------------------
+     */ }
+
+div.book div.chapter .note.try {
+  counter-increment: try; }
+
+div.book div.chapter .note.try:not(.labeled) {
+  counter-increment: try; }
+
+div.book div.chapter .note.try.labeled {
+  counter-increment: none; }
+
+div.book div.chapter .note.try > .title:not(.labeled)::before {
+  content: "" "" counter(chapter,decimal) "." counter(try) " " ""; }
+
+div.book > div.appendix {
+  /* --------------------------------------
+     *  CUSTOMIZED: added reset for try-it;
+     * --------------------------------------
+     */
+  counter-reset: section figure subfigure table equation example exercise footnote toc-section try theorem checkpoint be-prepared-exercise check-understanding;
+  /* -----------------------------------------------------
+     *   CUSTOMIZED: Increment the counter for try-it feature
+     * ------------------------------------------------------
+     */
+  /* ---------------------------------------------------
+     *  CUSTOMIZED: Display the counter for try-it feature
+     * ---------------------------------------------------
+     */ }
+
+div.book > div.appendix .note.try {
+  counter-increment: try; }
+
+div.book > div.appendix .note.try:not(.labeled) {
+  counter-increment: try; }
+
+div.book > div.appendix .note.try.labeled {
+  counter-increment: none; }
+
+div.book > div.appendix .note.try > .title:not(.labeled)::before {
+  content: "" "" counter(appendix,upper-latin) "" counter(try) " " ""; }
+
+@page {
+  margin: 0.8in 1in;
+  font-size: xx-small;
+  font-family: Liberation Sans, sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  @footnotes {
+    border-top: solid black thin;
+    padding-top: 1em;
+    border-top: none;
+    padding-top: 1.333em;
+    background-image: linear-gradient(180deg, #F0A041, #F0A041);
+    background-position: left top;
+    background-size: 65px 1px;
+    background-repeat: no-repeat; } }
+@page :left {
+  @top-left {
+    content: counter(page);
+    color: #1E7E91;
+    font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+    color: #3C2747;
+    font-size: 10px; }
+  @top-right {
+    content: string(cnx-header);
+    color: #1E7E91;
+    font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+    color: #3C2747;
+    font-size: 10px; }
+  @bottom-left {
+    color: grey;
+    font-weight: thin;
+    content: "This OpenStax book is available for free at " string(cnx-collection-url);
+    prince-text-replace: ":9680" "\2019";
+    color: #1E7E91;
+    font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+    color: #3C2747;
+    font-size: 10px; } }
+@page :right {
+  @top-left {
+    content: string(cnx-header);
+    color: #1E7E91;
+    font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+    color: #3C2747;
+    font-size: 10px; }
+  @top-right {
+    content: counter(page);
+    color: #1E7E91;
+    font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+    color: #3C2747;
+    font-size: 10px; } }
+@page table-of-contents {
+  @top-left-corner {
+    content: none; }
+  @top-left {
+    content: none; }
+  @top-right-corner {
+    content: none; }
+  @top-right {
+    content: none; } }
+@page preface:blank {
+  @top-left {
+    content: none; } }
+@page chapter:nth(1) {
+  @top-left-corner {
+    background-color: #093D4C;
+    color: #34BDD8;
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    content: " "; }
+  @top-right-corner {
+    background-color: #093D4C;
+    color: #34BDD8;
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    content: " "; }
+  @top-left {
+    color: #1E7E91;
+    font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+    color: #3C2747;
+    font-size: 10px;
+    background-color: #093D4C;
+    color: #34BDD8;
+    background-color: transparent;
+    color: white;
+    font-weight: bold; }
+  @top-center {
+    background-color: #093D4C;
+    color: #34BDD8;
+    background-color: transparent;
+    color: white;
+    font-weight: bold; }
+  @top-right {
+    color: #1E7E91;
+    font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+    color: #3C2747;
+    font-size: 10px;
+    background-color: #093D4C;
+    color: #34BDD8;
+    background-color: transparent;
+    color: white;
+    font-weight: bold; } }
+div.book > div.preface {
+  counter-reset: page 1; }
+
+@page preface:right {
+  @top-right {
+    content: counter(page); } }
+@namespace mml "http://www.w3.org/1998/Math/MathML";
+mml|math {
+  display: none; }
+
+/* hides the table caption in caption to place at bottom of table */
+div.table-caption.caption {
+  display: none;
+  string-set: caption-bottom content(); }
+
+ol,
+ul {
+  margin-bottom: 0; }
+
+/***************************************************
+ * Book Table of Contents
+ ***************************************************/
+.book > .toc {
+  page-break-before: right;
+  page-break-after: always;
+  counter-reset: toc-chapter-counter 0; }
+
+.book > .toc > .title {
+  page-break-after: avoid;
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0em;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  font-size: 18px;
+  text-align: left;
+  border-bottom: none;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  color: #3C2747;
+  display: inline-block;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  background: url("ccap-astronomy/TOC.svg") no-repeat left;
+  background-size: contain;
+  margin-bottom: 10px;
+  padding: .3em 2.66em; }
+
+.book > .toc > .title::before {
+  display: none; }
+
+.book > .toc ul,
+.book > .toc li {
+  list-style-type: none;
+  padding-left: 0em;
+  margin-left: 1em; }
+
+.book > .toc a {
+  font-weight: medium;
+  text-decoration: none;
+  color: black; }
+
+.book > .toc a::after {
+  content: leader(" . ") target-counter(attr(href), page); }
+
+.book > .toc > p {
+  font-size: x-large;
+  text-align: center; }
+
+.book > .toc > li > ul a {
+  font-size: 12pt; }
+
+.book > .toc .toc-preface .toc-section {
+  display: none; }
+
+.book > .toc .toc-appendix .toc-section {
+  display: none; }
+
+.book > .toc .toc-chapter > .target-chapter::before {
+  display: none; }
+
+.book > .toc .toc-chapter .cnx-gentext-chapter {
+  display: inline; }
+
+.book > .toc .toc-chapter .cnx-gentext-chapter.cnx-gentext-t {
+  margin-left: .25em; }
+
+.book > .toc .toc-chapter span:nth-of-type(3) {
+  prince-text-replace: "." ":"; }
+
+.book > .toc .toc-section > a {
+  font-weight: normal;
+  color: black;
+  line-height: 1.5em; }
+
+.book > .toc .toc-section .cnx-gentext-section {
+  display: inline;
+  margin-left: .5em; }
+
+.book > .toc .toc-section .cnx-gentext-autogenerated {
+  display: none; }
+
+.toc .toc-section .toc-section {
+  display: none; }
+
+/***************************************************
+ * PREFACE
+ ***************************************************/
+.preface > .titlepage h1.title {
+  padding-left: .25em;
+  padding-left: 0;
+  color: #3C2747;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding-bottom: 0; }
+
+.preface > .section h2 {
+  font-size: medium; }
+
+.preface > .section h2 > .cnx-gentext-t::before {
+  display: none; }
+
+.preface > .section h3 {
+  font-weight: bold;
+  font-size: small; }
+
+.preface .table caption {
+  display: none; }
+
+.preface .table table {
+  border-bottom: none !important; }
+
+.preface .figure > .title {
+  display: none; }
+
+.preface ul > li {
+  list-style-type: none; }
+
+/***************************************************
+ * CHAPTER INTRODUCTION
+ ***************************************************/
+h1.title {
+  margin-bottom: 0em;
+  padding: 0.25em 0.5em;
+  font-size: 2.5em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: white; }
+
+h1.title .cnx-gentext-autogenerated {
+  display: none; }
+
+h1.title .cnx-gentext-n {
+  color: black;
+  padding-right: 1em; }
+
+.chapter > .introduction table.simplelist {
+  display: none; }
+
+.chapter > .introduction > .title {
+  padding-right: 3em;
+  font-weight: bold;
+  font-size: normal;
+  content: "Introduction";
+  font-size: 18px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+.chapter > .introduction .splash img {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: none; }
+
+.chapter > .introduction > .toc {
+  display: table;
+  margin: auto;
+  margin-bottom: 1em;
+  border-spacing: 0px;
+  page-break-inside: avoid;
+  width: 100%; }
+
+.chapter > .introduction > .toc > .title {
+  color: white;
+  font-size: large;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.25em;
+  margin: 0em;
+  page-break-after: avoid;
+  page-break-before: avoid;
+  content: "Chapter Outline";
+  color: #77294A;
+  font-size: 15.6px;
+  text-align: left;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0em;
+  margin-bottom: 15.6px;
+  font-size: 18px;
+  content: "Learning Objectives"; }
+
+.chapter > .introduction > .toc > * {
+  padding-left: 0em;
+  margin-left: 1em; }
+
+.chapter > .introduction > .toc > * > li {
+  list-style-type: none;
+  margin: 0.50em 0em; }
+
+.chapter > .introduction > .toc > ul {
+  padding-left: 0em;
+  margin-left: 1em; }
+
+.chapter > .introduction > .toc a {
+  color: inherit;
+  padding: 0.25em 0em;
+  margin: 0em 1em 0em 0.5em;
+  font-weight: bold; }
+
+.chapter > .introduction > .toc .toc-section .abstract {
+  display: none; }
+
+.chapter > .introduction > .toc .toc-section .cnx-gentext-autogenerated {
+  display: none; }
+
+.chapter > .introduction > .toc .toc-section .cnx-gentext-t {
+  margin-left: 0.25em; }
+
+.chapter > .introduction > .toc .toc-section .cnx-gentext-n::after {
+  content: ":"; }
+
+.chapter > .introduction > .toc .abstract {
+  margin-left: 2.5em;
+  padding-left: 0em; }
+
+.chapter > .introduction > .toc .abstract ul {
+  margin-left: 0em;
+  padding-left: 1.5em; }
+
+.chapter > .introduction > .toc .abstract ul > li {
+  list-style-type: disc; }
+
+/***************************************************
+ * SECTION LEVEL LEARNING OBJECTIVES (section abstract)
+ ***************************************************/
+div.section > div.titlepage div.abstract {
+  margin: 1em 0em;
+  padding: .50em;
+  page-break-inside: avoid;
+  page-break-before: avoid;
+  counter-reset: learning-objectives;
+  padding: 0em; }
+
+div.section > div.titlepage div.abstract ul.itemizedlist > li {
+  margin: .25em 0em; }
+
+/* Squirrel away the collection URL so it shows up as the footer on every page */
+#title_page_url a[href] {
+  prince-text-replace: ":9680" "";
+  string-set: cnx-collection-url attr(href); }
+
+/* Don't print module asterix (link to attribution) */
+.section .titlepage sup a,
+.introduction > .title sup a,
+.appendix .titlepage sup a {
+  display: none; }
+
+/* Hide the TOC for the Appendix */
+.appendix .toc {
+  display: none; }
+
+/* Footnotes. remove margins */
+.footnote {
+  color: black;
+  background: none;
+  font-weight: normal;
+  footnote-style-position: inside;
+  text-align: left;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  font-size: 9.23076923px;
+  color: #6D6F71;
+  line-height: 1.5em;
+  float: footnote; }
+
+.footnote * {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.footnote span {
+  line-height: 1.5em;
+  font-size: 9.23076923px;
+  color: #6D6F71; }
+
+.footnote sup {
+  color: #6D6F71;
+  font-size: 8px; }
+
+div.footnotes {
+  display: none; }
+
+/********************** Generic Elements ********************/
+body {
+  font-size: 8.2pt;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+/* This NEEDS to be on its own line (can't do "body, th * { ...") */
+th * {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+a[href^="http"] {
+  content: content() " (" attr(href) ") "; }
+
+.chapter,
+.appendix,
+.colophon,
+.preface {
+  page-break-before: right;
+  page-break-after: left; }
+
+.equation {
+  page-break-inside: avoid;
+  text-align: center;
+  display: block; }
+
+.equation .label {
+  float: right; }
+
+.figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+.mathml-mi {
+  font-family: Liberation Serif, serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+/**************************** Index **************************/
+.book > .index {
+  page-break-before: right;
+  page-break-after: left;
+  page-break-inside: auto;
+  string-set: cnx-header "Index";
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  columns: 3;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.index .title * {
+  display: inline;
+  string-set: cnx-header content(); }
+
+.index .letter {
+  font-weight: bold; }
+
+.indexdiv,
+.indexdiv dl {
+  page-break-inside: auto; }
+
+.indexterm[href] {
+  content: target-counter(attr(href), page); }
+
+/********************* Glossary Section **************/
+#book.attribution,
+.colophon {
+  font-size: x-small; }
+
+/**************** Fix the PDF Outline *************/
+h1 {
+  bookmark-level: 1;
+  page-break-after: avoid; }
+
+h2 {
+  bookmark-level: 2;
+  page-break-after: avoid; }
+
+h3,
+h4,
+h5,
+h6 {
+  bookmark-level: none;
+  page-break-after: avoid; }
+
+/***************************************************************
+ * Clean up padding and spacing
+ ***************************************************************/
+li p,
+dd p {
+  margin-top: 0px;
+  margin-bottom: 0px; }
+
+ol,
+ul {
+  margin-top: 0px; }
+
+dl {
+  margin: 0.5em; }
+
+p {
+  margin: 0.5em 0em; }
+
+.table {
+  page-break-inside: avoid;
+  margin: auto;
+  page-break-inside: auto; }
+
+.table td {
+  padding: 0.25em; }
+
+.table caption {
+  align: top;
+  text-align: left; }
+
+div.table-caption {
+  font-weight: normal;
+  color: black;
+  display: inline;
+  margin-left: 0.5em; }
+
+div.table-caption.caption {
+  display: inline; }
+
+.table table {
+  margin: 1.5em auto; }
+
+.table th {
+  color: white;
+  font-weight: bold;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 1em;
+  padding-right: 1em;
+  /* To fully support row/col spans in CALS tables borders are calculated for each cell and inherit the color of the text in the cell */
+  /* By default the color in the PDF is the same color as the text so set it to black. */
+  border-color: black !important; }
+
+div.table-caption.caption {
+  caption-side: top;
+  font-weight: bold; }
+
+.itemizedlist .title {
+  margin: 0px;
+  float: none;
+  max-width: inherit; }
+
+/***************************************************************
+ * Styles originally from physics but used in Sociology
+ ***************************************************************/
+/***************** Title page *****************/
+.book > .cnx-title h1 {
+  text-align: center;
+  font-size: xx-large;
+  margin-top: 10em; }
+
+.cnx-title a,
+#book-attribution a {
+  content: content(); }
+
+a {
+  text-decoration: none; }
+
+.problems-exercises img {
+  max-width: 3in;
+  height: auto; }
+
+/***************************************************************
+ * Clean up padding and spacing
+ ***************************************************************/
+ol,
+ul {
+  margin-left: 20pt; }
+
+h2,
+h3,
+h4 {
+  margin: 1em 0em 0em 0em; }
+
+h2 {
+  font-size: medium; }
+
+h3 {
+  font-size: 1.17em;
+  font-weight: normal; }
+
+h4,
+h5,
+h6 {
+  font-size: 1em; }
+
+/**************** CNXML ELements ***********/
+.note {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.note h3 {
+  margin-top: 0.5em; }
+
+span.underline {
+  text-decoration: underline; }
+
+.note > .title {
+  page-break-after: avoid; }
+
+.exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.example {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.figure > .caption:before,
+.figure > .title {
+  display: inline;
+  margin-bottom: 0.25em;
+  margin-top: 0.25em; }
+
+.figure > .caption {
+  display: inline; }
+
+.figure > .body {
+  text-align: center; }
+
+/************** Generic Elements ************/
+/* center the table */
+table.cnx-figure-horizontal {
+  margin: auto; }
+
+table.cnx-figure-horizontal td img {
+  max-width: 2in; }
+
+table.cnx-figure-horizontal td img[height] {
+  height: auto; }
+
+img[height] {
+  width: auto; }
+
+img {
+  max-width: 7in; }
+
+ul.itemizedlist.no-mark {
+  list-style-type: none; }
+
+/********************* Glossary Section **************/
+.glossary {
+  page-break-before: always;
+  display: inline; }
+
+.glossary .titlepage h2 {
+  /* Change "Glossary" to "Key Terms" */
+  content: "Key Terms";
+  color: #1E7E91;
+  font-size: large;
+  padding: 0em;
+  display: block;
+  text-transform: uppercase;
+  color: #3C2747;
+  display: inline-block !important;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  background: url("ccap-astronomy/Key Terms.svg") no-repeat left;
+  background-size: contain;
+  margin-bottom: 10px;
+  padding: .3em 2.3em !important;
+  font-size: 18px !important; }
+
+.glossary dl {
+  page-break-before: always;
+  display: inline; }
+
+.glossary dl dt {
+  float: left;
+  font-weight: bold;
+  line-height: 1.5em;
+  font-size: 12px; }
+
+.glossary dl dt::after {
+  content: ":";
+  padding-right: 0.5em;
+  display: inline !important;
+  padding-right: 0.25em; }
+
+.glossary dl dd {
+  margin-left: 0px;
+  line-height: 1.5em;
+  font-size: 12px; }
+
+em.glossterm {
+  font-weight: bold;
+  font-style: normal; }
+
+.glossterm.no-emphasis {
+  font-weight: 400; }
+
+/******************************************************
+ * End of chapter customizations
+ ******************************************************/
+.cnx-eoc > .title {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  text-align: left;
+  color: #1E7E91;
+  font-weight: bold;
+  margin-top: 0;
+  page-break-after: avoid;
+  font-size: 18px !important;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+.cnx-eoc .section .title {
+  padding-top: 1em; }
+
+.cnx-eoc .section .title a {
+  font-size: small;
+  font-weight: bold; }
+
+.cnx-eoc .section .problem {
+  page-break-inside: avoid; }
+
+.example > .title > *,
+.cnx-eoc > .title > *,
+.index > .title > *,
+.glossary > .titlepage > div > div > * {
+  padding: .1em 1em;
+  margin-top: 1em;
+  display: inline;
+  font-size: small;
+  font-weight: bold;
+  page-break-after: avoid; }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * End-of-chapter exercises require a LOT of custom formatting
+ * Moving from Docbook will fix this
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Exercises have the number in bold, followed by the 1st paragraph inline, not "Exercise 3 \n sldkfj" */
+.cnx-eoc .exercise {
+  /*** Exercises normally have more margins around them ***/
+  margin-top: 0.5em;
+  margin-bottom: 0.0em;
+  /* Hide the "Exercise " prefix */
+  /*** Make sure the default background colors for things like exercise body don't seep through ***/ }
+
+.cnx-eoc .exercise div,
+.cnx-eoc .exercise p:first-of-type {
+  display: initial; }
+
+.cnx-eoc .exercise div .figure .body {
+  display: block;
+  text-align: center; }
+
+.cnx-eoc .exercise > .title .cnx-gentext-autogenerated {
+  display: none; }
+
+.cnx-eoc .exercise > .title .cnx-gentext-n {
+  font-weight: bold;
+  font-size: 8.2pt;
+  color: black; }
+
+.cnx-eoc .exercise > .title {
+  border-bottom: 0px; }
+
+.cnx-eoc .exercise p,
+.cnx-eoc .exercise .body {
+  background-color: inherit !important;
+  padding: 0px !important; }
+
+.cnx-eoc .exercise .solution {
+  display: none; }
+
+.cnx-eoc .exercise .problem > .title {
+  font-weight: bold;
+  margin-right: 0.5em; }
+
+.exercise .solution::before {
+  content: "Solution";
+  font-weight: bold;
+  display: block; }
+
+.cnx-eoc .exercise,
+.cnx-eoc .exercise > .body,
+.cnx-eoc .exercise > .body .problem,
+.cnx-eoc .exercise > .body .problem .orderedlist,
+.cnx-eoc .exercise > .body .problem .orderedlist .listitem,
+.cnx-eoc .exercise > .body .problem .orderedlist .listitem p,
+.section-exercises .exercise .problem > .orderedlist,
+.section-exercises .exercise .problem > .orderedlist .listitem,
+.section-exercises .exercise .problem > .orderedlist .listitem p {
+  page-break-inside: avoid; }
+
+/***************************************************
+ * Indentation
+ ***************************************************/
+p,
+p:nth-of-type(1),
+p:nth-of-type(2),
+.note p,
+.notes p,
+.references p,
+.cnx-eoc p,
+.body p {
+  text-indent: 0;
+  margin-bottom: .5em; }
+
+.introduction .note {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.introduction .footnote {
+  color: black;
+  background: none;
+  font-weight: normal;
+  footnote-style-position: inside;
+  text-align: left;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.introduction .footnote * {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.introduction .section > .title {
+  page-break-after: avoid; }
+
+.introduction .example {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.introduction .example .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.introduction .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.introduction .equation {
+  page-break-inside: avoid;
+  text-align: center;
+  display: block; }
+
+.introduction .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+.introduction .table {
+  page-break-inside: avoid;
+  margin: auto;
+  page-break-inside: auto; }
+
+.introduction blockquote {
+  color: #34BDD8;
+  font-size: 150%;
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.6em; }
+
+.introduction blockquote::before,
+.introduction blockquote::after {
+  font-weight: bold;
+  color: black; }
+
+.introduction blockquote::before {
+  content: "“"; }
+
+.introduction blockquote::after {
+  content: "”"; }
+
+.introduction blockquote::before,
+.introduction blockquote::after {
+  display: none; }
+
+.chapter .note {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.chapter .footnote {
+  color: black;
+  background: none;
+  font-weight: normal;
+  footnote-style-position: inside;
+  text-align: left;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.chapter .footnote * {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.chapter .section > .title {
+  page-break-after: avoid; }
+
+.chapter .example {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.chapter .example .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.chapter .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.chapter .equation {
+  page-break-inside: avoid;
+  text-align: center;
+  display: block; }
+
+.chapter .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+.chapter .table {
+  page-break-inside: avoid;
+  margin: auto;
+  page-break-inside: auto; }
+
+.chapter blockquote {
+  color: #34BDD8;
+  font-size: 150%;
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.6em; }
+
+.chapter blockquote::before,
+.chapter blockquote::after {
+  font-weight: bold;
+  color: black; }
+
+.chapter blockquote::before {
+  content: "“"; }
+
+.chapter blockquote::after {
+  content: "”"; }
+
+.chapter blockquote::before,
+.chapter blockquote::after {
+  display: none; }
+
+.cnx-eoc .note {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.cnx-eoc .footnote {
+  color: black;
+  background: none;
+  font-weight: normal;
+  footnote-style-position: inside;
+  text-align: left;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.cnx-eoc .footnote * {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.cnx-eoc .section > .title {
+  page-break-after: avoid; }
+
+.cnx-eoc .example {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.cnx-eoc .example .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.cnx-eoc .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.cnx-eoc .equation {
+  page-break-inside: avoid;
+  text-align: center;
+  display: block; }
+
+.cnx-eoc .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+.cnx-eoc .table {
+  page-break-inside: avoid;
+  margin: auto;
+  page-break-inside: auto; }
+
+.cnx-eoc blockquote {
+  color: #34BDD8;
+  font-size: 150%;
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.6em; }
+
+.cnx-eoc blockquote::before,
+.cnx-eoc blockquote::after {
+  font-weight: bold;
+  color: black; }
+
+.cnx-eoc blockquote::before {
+  content: "“"; }
+
+.cnx-eoc blockquote::after {
+  content: "”"; }
+
+.cnx-eoc blockquote::before,
+.cnx-eoc blockquote::after {
+  display: none; }
+
+.colophon .note {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.colophon .footnote {
+  color: black;
+  background: none;
+  font-weight: normal;
+  footnote-style-position: inside;
+  text-align: left;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.colophon .footnote * {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em; }
+
+.colophon .section > .title {
+  page-break-after: avoid; }
+
+.colophon .example {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.colophon .example .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.colophon .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.colophon .equation {
+  page-break-inside: avoid;
+  text-align: center;
+  display: block; }
+
+.colophon .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+.colophon .table {
+  page-break-inside: avoid;
+  margin: auto;
+  page-break-inside: auto; }
+
+.colophon blockquote {
+  color: #34BDD8;
+  font-size: 150%;
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.6em; }
+
+.colophon blockquote::before,
+.colophon blockquote::after {
+  font-weight: bold;
+  color: black; }
+
+.colophon blockquote::before {
+  content: "“"; }
+
+.colophon blockquote::after {
+  content: "”"; }
+
+.colophon blockquote::before,
+.colophon blockquote::after {
+  display: none; }
+
+/******************************************************************************
+ * Tables
+ ******************************************************************************/
+div.table {
+  margin: 0 auto;
+  padding: 0;
+  border: none; }
+
+div.table table {
+  page-break-inside: avoid;
+  margin: auto;
+  margin-bottom: 22px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  prince-caption-page: all;
+  border: none;
+  margin-bottom: 0;
+  padding-bottom: 11px;
+  width: 100%;
+  page-break-inside: auto; }
+
+div.table table caption {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  border: none;
+  padding-top: .5em;
+  padding-left: 0px;
+  padding-bottom: 1em;
+  caption-side: bottom;
+  font-size: 8px;
+  line-height: 17px;
+  font-weight: 700;
+  color: #D7562C;
+  padding-bottom: 11px;
+  color: #58595B;
+  font-size: 9.23076923px; }
+
+div.table table caption::before {
+  font-weight: bold;
+  color: #221E1F; }
+
+div.table table .cnx-figure-horizontal .informalfigure .caption {
+  text-align: center; }
+
+div.table table .cnx-figure-horizontal .informalfigure .caption * {
+  font-weight: normal;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+div.table table thead {
+  border-top: none;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+div.table table tbody {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: none;
+  color: #093D4C; }
+
+div.table table table tbody[valign=top] > tr > td {
+  vertical-align: top; }
+
+div.table table tr {
+  page-break-inside: avoid; }
+
+div.table table th {
+  border-color: rgba(30, 126, 145, 0.2) !important;
+  border-bottom: none;
+  padding: 5px 10px;
+  font-size: 9pt;
+  vertical-align: initial;
+  background-color: #FFF;
+  color: #3C2747;
+  background-color: #F0A041;
+  padding: 0.8em 10px; }
+
+div.table table th:not(:only-child) {
+  border-color: rgba(30, 126, 145, 0.2) !important;
+  border-bottom: none;
+  padding: 5px 10px;
+  font-size: 9pt;
+  vertical-align: initial;
+  background-color: #FFF;
+  color: #3C2747;
+  background-color: #F0A041;
+  padding: 0.8em 10px; }
+
+div.table table td {
+  border-color: transparent;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding: 5px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: none;
+  color: #3C2747;
+  padding: 0.8em 10px; }
+
+div.table table td.header {
+  color: #fff;
+  font-size: 9pt;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: initial;
+  background-color: #2F7E9E; }
+
+div.table table thead > tr:first-child {
+  border-left: 0;
+  border-right: 0; }
+
+div.table ul.itemizedlist,
+div.table ol.orderedlist {
+  margin: 0;
+  padding-left: 10px; }
+
+div.table ul.itemizedlist > .listitem > p,
+div.table ol.orderedlist > .listitem > p {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+div.table.color th {
+  text-align: center;
+  background-color: #EFD8B0; }
+
+div.table.color tr {
+  height: 1em !important; }
+
+div.table.color tr td:first-child {
+  background-color: #EFD8B0;
+  width: 2.5in;
+  font-weight: bold; }
+
+div.table.unstyled table {
+  page-break-inside: avoid;
+  margin: auto;
+  border: none;
+  margin: 0;
+  page-break-inside: auto; }
+
+div.table.unstyled table caption {
+  display: none; }
+
+div.table.unstyled table tr {
+  border-top: 1px solid rgba(0, 0, 0, 0.1); }
+
+div.table.unstyled table tr:first-of-type {
+  border-top: none !important; }
+
+div.table.unstyled table td {
+  text-align: left;
+  border-left: none;
+  border-right: none; }
+
+div.table:not(.unstyled) table thead + tbody > tr:first-child > td {
+  border-top: 0px; }
+
+div.table:not(.unstyled) table tbody > tr:first-child > td {
+  border-top: 1px solid rgba(0, 0, 0, 0.1); }
+
+div.table.multiple-headers table {
+  page-break-inside: avoid;
+  margin: auto;
+  page-break-inside: auto; }
+
+div.table.multiple-headers table tbody {
+  border: none; }
+
+div.table.multiple-headers table tr {
+  border: none; }
+
+div.table.multiple-headers table td {
+  padding: 0; }
+
+div.table.multiple-headers table tr table thead tr:only-child,
+div.table.multiple-headers table tr table thead tr:only-child .tablecell {
+  border-top: 0px !important; }
+
+div.table.multiple-headers table tr table td {
+  padding: 10px; }
+
+div.table.column-header tbody td:first-child {
+  color: #fff;
+  font-size: 9pt;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: initial;
+  background-color: #2F7E9E; }
+
+div.table table thead tr:first-of-type th {
+  background-color: #2F7E9E;
+  font-weight: bold;
+  background-color: transparent;
+  text-align: left;
+  color: black;
+  padding: 0 0 1em 0; }
+
+div.table table thead tr:first-of-type th:first-of-type {
+  border-top-left-radius: 2.88px; }
+
+div.table table thead tr:first-of-type th:last-of-type {
+  border-top-right-radius: 2.88px; }
+
+div.table table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 2.88px; }
+
+div.table table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 2.88px; }
+
+div.table:not(.unstyled) table tbody tr td:first-child {
+  border-left: 1px solid rgba(0, 0, 0, 0.1); }
+
+div.table:not(.unstyled) table tbody tr td:last-child {
+  border-right: 1px solid rgba(0, 0, 0, 0.1); }
+
+div.table.unnumbered table caption {
+  padding-bottom: 0; }
+
+/********************************************************************
+ * Styling for Appendix
+ ********************************************************************/
+div.book > div.appendix .table {
+  page-break-inside: auto; }
+
+sub {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  bottom: -0.25em; }
+
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  top: -0.5em; }
+
+.titlepage sup {
+  vertical-align: super;
+  line-height: inherit;
+  font-size: smaller;
+  position: static;
+  top: auto; }
+
+html,
+body {
+  font-size: 12px; }
+
+h2,
+h3,
+h4 {
+  margin: initial; }
+
+h2 sup a,
+h3 sup a,
+h4 sup a {
+  display: none; }
+
+/* -------------------------
+ * Preface
+ * -------------------------
+ */
+div.book div.preface > .titlepage {
+  padding-bottom: 1em;
+  padding-bottom: 0; }
+
+div.book div.preface > .titlepage h1.title {
+  padding-left: .25em;
+  padding-left: 0;
+  color: #3C2747;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding-bottom: 0; }
+
+div.book div.preface > div.section div.titlepage > div > div > h2 {
+  page-break-after: avoid;
+  font-size: 15.6px;
+  color: #77294A;
+  margin-bottom: 15.6px; }
+
+div.book div.preface > div.section > div.section > div.titlepage > div > div > h3 {
+  page-break-after: avoid;
+  font-size: 15.6px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A;
+  margin-bottom: 12px;
+  font-size: 12px; }
+
+.chapter > .introduction > .figure.splash {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  margin-bottom: 15px;
+  transform: translateX(-1in);
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  transform: translate3d(-1in, 0, 0); }
+
+.chapter > .introduction > .figure.splash div.body {
+  padding-bottom: 15.6px;
+  padding-bottom: 5px; }
+
+.chapter > .introduction > .figure.splash div.caption {
+  width: 6.5in; }
+
+.chapter > .introduction > .figure.splash div.mediaobject {
+  border-left: 1.814in solid #F4F4F4;
+  height: 2.523in; }
+
+.chapter > .introduction > .figure.splash div.mediaobject img {
+  width: 6.685in;
+  height: 2.523in;
+  display: inline; }
+
+.chapter > .introduction > .figure.splash div.mediaobject::before {
+  background: rgba(30, 126, 145, 0.5);
+  width: 6.685in;
+  height: 2.523in;
+  position: absolute;
+  left: 0.815in;
+  content: " "; }
+
+/* -------------------------
+ * Book Table of Contents
+ * -------------------------
+ */
+.book > .toc {
+  page-break-before: right;
+  page-break-after: always;
+  counter-reset: toc-chapter-counter 0; }
+
+.book > .toc > .title {
+  page-break-after: avoid;
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0em;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  font-size: 18px;
+  text-align: left;
+  border-bottom: none;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  color: #3C2747;
+  display: inline-block;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  background: url("ccap-astronomy/TOC.svg") no-repeat left;
+  background-size: contain;
+  margin-bottom: 10px;
+  padding: .3em 2.66em; }
+
+.book > .toc > .title::before {
+  display: none; }
+
+.book > .toc > .title::before {
+  content: url("math-toc-icon.png");
+  padding-right: 15px;
+  margin-left: 10px; }
+
+.book > .toc .toc-preface.preface,
+.book > .toc .toc-appendix.appendix {
+  page-break-before: avoid;
+  page-break-after: avoid; }
+
+.book > .toc a {
+  color: #093D4C;
+  text-align: left; }
+
+.book > .toc a::after {
+  content: target-counter(attr(href), page);
+  padding-left: 15px; }
+
+.book > .toc .toc-chapter {
+  counter-increment: toc-chapter-counter;
+  margin-bottom: 20px; }
+
+.book > .toc .toc-chapter .cnx-gentext-chapter {
+  display: none; }
+
+.book > .toc .toc-chapter .cnx-gentext-chapter.cnx-gentext-t {
+  display: inline; }
+
+.book > .toc .toc-preface {
+  margin-bottom: 20px; }
+
+.book > .toc .toc-preface a.target-preface {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  color: #D7562C;
+  font-size: 15.6px;
+  margin-left: 46px;
+  color: #2F7E9E;
+  margin-bottom: 15.6px;
+  margin-left: 48px;
+  font-size: 16px; }
+
+.book > .toc > ul > li {
+  margin-bottom: 11px; }
+
+.book > .toc .toc-chapter::before {
+  display: none;
+  content: counter(toc-chapter-counter,decimal);
+  float: left;
+  padding: 0em .25em;
+  margin: 0px 15px 0px 13px;
+  height: 1.25em;
+  line-height: 1.25em;
+  display: inline-block;
+  color: #77294A;
+  border: 1px solid #F0A041;
+  font-size: 12px;
+  padding: 0;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px; }
+
+.book > .toc .toc-chapter a.target-chapter {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  color: #D7562C;
+  font-size: 15.6px;
+  margin-bottom: .5em;
+  display: inline-block;
+  color: #2F7E9E;
+  margin-bottom: 15.6px;
+  font-size: 16px;
+  width: 90%; }
+
+.book > .toc .toc-chapter > .target-chapter::before {
+  display: none; }
+
+.book > .toc .toc-appendix > a.target-appendix {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  color: #D7562C;
+  font-size: 15.6px;
+  margin-left: 46px;
+  color: #2F7E9E;
+  margin-bottom: 15.6px;
+  margin-left: .20em;
+  font-size: 16px; }
+
+.book > .toc > ul > li.toc-appendix > a.target-appendix::before {
+  content: target-counter(attr(href), appendix, upper-latin) " "; }
+
+.book > .toc .toc-index > a.target-index {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  color: #D7562C;
+  font-size: 15.6px;
+  margin-left: 46px;
+  color: #2F7E9E;
+  margin-bottom: 15.6px;
+  margin-left: 48px;
+  font-size: 16px; }
+
+.book > .toc .toc-chapter > ul {
+  margin-left: 46px;
+  border-left: 2px solid rgba(196, 206, 187, 0.3);
+  border-left: 4px solid #F4F4F4;
+  margin-left: 48px;
+  padding-left: 9.23076923px; }
+
+.book > .toc .toc-chapter > ul li a span.cnx-gentext-n {
+  font-weight: 700; }
+
+.book > .toc ul,
+.book > .toc li {
+  margin-left: 0; }
+
+.book > .toc > ul > ul > li {
+  margin: 0;
+  padding: 1em 1em 1em 0em; }
+
+.book > .toc > ul > li.toc-chapter:nth-child(2n+1) {
+  background-color: rgba(196, 206, 187, 0.1);
+  padding: 11px 0;
+  background-color: #F9F9F9;
+  padding-top: 1em;
+  padding-bottom: 1em; }
+
+/* -------------------------
+ * Unit Page
+ * -------------------------
+ */
+div.part > div.titlepage {
+  display: none; }
+
+/* -------------------------
+ * Chapter Introduction
+ * -------------------------
+ */
+.chapter > .introduction {
+  /******************************************************************
+   * Styling for Chapter Outline Box
+   ******************************************************************/ }
+
+.chapter > .introduction > .title {
+  content: "Introduction";
+  font-size: 18px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #3C2747;
+  margin-bottom: 1em;
+  content: initial; }
+
+.chapter > .introduction > .title::before {
+  content: "Introduction";
+  font-size: 18px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: inline-block;
+  width: 20px;
+  height: 24px;
+  padding-right: 10px;
+  background: url("ccap-basic-math/math-intro-icon.png") no-repeat left;
+  background-size: 20px 24px;
+  content: " ";
+  bottom: 0px;
+  position: relative;
+  background: url("ccap-astronomy/CH_intro.svg") no-repeat left;
+  background-size: 23px 27px;
+  height: 38px;
+  top: 12px;
+  padding-right: 13px; }
+
+.chapter > .introduction > .toc a {
+  color: inherit;
+  padding: 0.25em 0em;
+  margin: 0em 1em 0em 0.5em;
+  font-weight: bold; }
+
+.chapter > .introduction > .toc .toc-section .cnx-gentext-t {
+  color: #000;
+  font-weight: normal; }
+
+.chapter > .introduction > .toc .toc-section .cnx-gentext-n:after {
+  content: ""; }
+
+.chapter > .introduction > .toc {
+  display: table;
+  margin: auto;
+  margin-bottom: 1em;
+  border-spacing: 0px;
+  page-break-inside: avoid;
+  width: 100%; }
+
+.chapter > .introduction > .toc > ul {
+  border-left: 2px solid rgba(196, 206, 187, 0.3);
+  margin: 0;
+  padding-left: .75em;
+  border-left: 4px solid #F4F4F4; }
+
+.chapter > .introduction > .toc > .title {
+  color: white;
+  font-size: large;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.25em;
+  margin: 0em;
+  page-break-after: avoid;
+  page-break-before: avoid;
+  content: "Chapter Outline";
+  color: #77294A;
+  font-size: 15.6px;
+  text-align: left;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0em;
+  margin-bottom: 15.6px;
+  font-size: 18px; }
+
+/********************************************************************
+ * Styling for Chapter Titles
+ ********************************************************************/
+div.book div.chapter > div.titlepage > div > div h1.title {
+  font-weight: bold;
+  text-align: left;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 15.6px;
+  padding: 0;
+  padding-top: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 8.5in;
+  height: 3.5in;
+  color: #3C2747;
+  font-size: 18px;
+  margin-top: -0.125in; }
+
+div.book div.chapter > div.titlepage > div > div h1.title span.cnx-gentext-n {
+  font-weight: bold;
+  padding-right: 0em;
+  color: #1E7E91;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  top: auto;
+  left: 0;
+  bottom: 52px;
+  background-color: white;
+  border-radius: 50%;
+  min-width: 0;
+  min-height: 0;
+  width: 45px;
+  height: 45px;
+  padding-top: 0;
+  border: none;
+  display: block;
+  line-height: 45px;
+  color: #77294A; }
+
+div.book div.chapter > div.titlepage > div > div h1.title span.cnx-gentext-t {
+  position: absolute;
+  bottom: -10px;
+  left: 80px;
+  width: 60%;
+  height: 70px;
+  white-space: normal; }
+
+div.book div.chapter > div.titlepage > div > div h1.title span.cnx-gentext-t::before {
+  content: "| ";
+  color: black; }
+
+div.book > div.chapter > div.titlepage {
+  height: 2.523in;
+  z-index: 1;
+  position: relative;
+  margin-top: -2.523in; }
+
+div.book > div.chapter > div.titlepage div {
+  height: inherit; }
+
+div.book > div.chapter > div.titlepage div div {
+  height: inherit; }
+
+div.book > div.chapter > div.titlepage div div > h1.title {
+  padding: 0 1in 20px 100px;
+  padding-top: 4.523in;
+  white-space: nowrap; }
+
+div.book > div.chapter > div.titlepage div div > h1.title span.cnx-gentext-autogenerated,
+div.book > div.chapter > div.titlepage div div > h1.title span.cnx-gentext-n {
+  display: none; }
+
+div.book > div.chapter > div.titlepage div div > h1.title span.cnx-gentext-t::before {
+  display: none; }
+
+div.book > div.chapter > div.titlepage div div > h1.title::before {
+  content: counter(chapter);
+  position: absolute;
+  top: 4.483in;
+  left: 0.05in;
+  bottom: 24px;
+  border: 1px solid white;
+  padding-top: 2.880px;
+  min-width: 1.5em;
+  min-height: 1.5em;
+  text-align: center; }
+
+/********************************************************************
+ * Styling for Appendix
+ ********************************************************************/
+div.book > div.appendix > div.titlepage > div > div h1.title {
+  font-size: 34pt;
+  color: #1E7E91;
+  font-size: 18px;
+  font-weight: bold;
+  color: #3C2747;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  margin-bottom: 15px; }
+
+div.book > div.appendix > div.titlepage > div > div h1.title span.cnx-gentext-autogenerated:first-of-type {
+  display: inline;
+  display: none; }
+
+div.book > div.appendix > div.titlepage > div > div h1.title span.cnx-gentext-n {
+  color: #1E7E91;
+  padding-right: 0;
+  border: 2px solid #F0A041;
+  color: #77294A !important;
+  padding: 4px 7px;
+  font-size: 15.6px;
+  margin-right: 10px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px; }
+
+div.book > div.appendix > div.titlepage > div > div h1.title span.cnx-gentext-t::before {
+  content: "| ";
+  color: black;
+  display: none; }
+
+div.book > div.appendix .table {
+  page-break-inside: auto; }
+
+div.book > div.appendix > div.section > div.titlepage h2 {
+  page-break-after: avoid;
+  font-weight: bold;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  text-transform: uppercase;
+  color: #3C2747;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  margin-bottom: 15.6px; }
+
+div.book > div.appendix > div.section > div.titlepage h2::before {
+  border: 2px solid #F0A041;
+  padding: 3px 4px;
+  font-size: 9.23076923px;
+  margin-right: 10px;
+  vertical-align: middle;
+  display: none; }
+
+div.book > div.appendix > div.section > div.titlepage h2 span.cnx-gentext-t {
+  position: relative;
+  top: 9px;
+  top: 3px;
+  font-size: 15.6px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A;
+  text-transform: capitalize; }
+
+div.book > div.appendix > div.section > div.section > div.titlepage h3 {
+  page-break-after: avoid;
+  margin-bottom: 12px;
+  color: black; }
+
+div.book > div.appendix > div.section > div.section > div.titlepage h3 span.cnx-gentext-t {
+  font-size: 12px; }
+
+/********************************************************************
+ * Styling for Module Titles
+ ********************************************************************/
+div.book div.chapter > div.section > div.titlepage h2 {
+  font-weight: bold;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  text-transform: uppercase;
+  color: #3C2747;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 1em; }
+
+div.book div.chapter > div.section > div.titlepage h2::before {
+  border: 2px solid #F0A041;
+  padding: 3px 4px;
+  font-size: 9.23076923px;
+  margin-right: 10px;
+  vertical-align: middle; }
+
+div.book div.chapter > div.section > div.titlepage h2 span.cnx-gentext-n {
+  display: none; }
+
+div.book div.chapter > div.section > div.titlepage h2 span.cnx-gentext-t {
+  position: relative;
+  top: 9px;
+  top: 3px; }
+
+div.book div.chapter > div.section > div.titlepage h2 span.cnx-gentext-t::before {
+  display: none; }
+
+/********************************************************************
+ * Styling for Module Section/Subsection Titles
+ ********************************************************************/
+div.book div > div.section > div.section div.titlepage > div > div > h3 {
+  page-break-after: avoid;
+  font-size: 15.6px;
+  font-weight: bold;
+  margin-top: 1em;
+  color: #77294A; }
+
+div.book div > div.section > div.section > div.section div.titlepage > div > div > h4 {
+  page-break-after: avoid;
+  font-size: 15.6px;
+  font-weight: bold; }
+
+/********************************************************************
+ * Styling for Learning Objectives Box
+ ********************************************************************/
+.section > .titlepage .abstract::before {
+  content: "Learning Objectives";
+  display: inline-block;
+  width: 100%;
+  padding-top: .1em;
+  padding-bottom: .2em;
+  background-color: #1E7E91;
+  font-weight: bold;
+  font-size: 15.6px;
+  display: none; }
+
+.section > .titlepage .abstract .itemizedlist > ul {
+  margin-left: 10px;
+  color: #3C2747;
+  margin-bottom: 18px; }
+
+.section > .titlepage .abstract .listitem {
+  background: url("ccap-basic-math/learning-objectives.png") no-repeat 0;
+  background-size: 3px 4px;
+  padding-left: 10px;
+  background: none;
+  margin-left: 20px;
+  padding-left: 0; }
+
+.section > .titlepage .abstract p {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold; }
+
+.section > .titlepage .abstract .itemizedlist > .listitem > p {
+  display: inline;
+  text-align: left;
+  font-weight: 100; }
+
+.section > .titlepage .abstract .itemizedlist > .listitem {
+  display: block; }
+
+/********************************************************************
+ * End of chapter customizations
+ ********************************************************************/
+.cnx-eoc > .solution > a.number {
+  color: #1E7E91; }
+
+.cnx-eoc {
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+  columns: 2;
+  column-fill: auto;
+  column-gap: 24px;
+  column-width: auto;
+  column-fill: balance;
+  page-break-inside: auto;
+  column-break-inside: auto; }
+
+.cnx-eoc > .title {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  text-align: left;
+  color: #1E7E91;
+  font-weight: bold;
+  margin-top: 0;
+  page-break-after: avoid;
+  font-size: 18px !important;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+.cnx-eoc.summary {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.cnx-eoc.summary > .title {
+  content: "Chapter " counter(chapter,decimal) " Review";
+  line-height: 1.75em;
+  font-size: 18px !important;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #3C2747;
+  content: "Summary";
+  background: url("ccap-astronomy/Summary.svg") no-repeat left;
+  background-size: contain;
+  padding-left: 2.3em !important; }
+
+.cnx-eoc.summary > .title span {
+  padding-left: 0;
+  font-size: 18px; }
+
+.cnx-eoc.summary > .section > .title {
+  display: block;
+  padding-top: 0; }
+
+.cnx-eoc.summary > .section .title > a {
+  color: #1E7E91;
+  page-break-after: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 12px;
+  color: #34BDD8; }
+
+.cnx-eoc.summary p:nth-of-type(1) {
+  margin-top: 1em; }
+
+.cnx-eoc.key-equations {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.cnx-eoc.key-equations > div.title {
+  content: "Key Equations"; }
+
+.cnx-eoc.key-equations > div.section > div.body div.table {
+  counter-increment: none; }
+
+.cnx-eoc.key-equations > div.section > div.body table {
+  page-break-inside: avoid;
+  margin: auto;
+  page-break-inside: auto; }
+
+.cnx-eoc.key-concepts {
+  padding-bottom: 1em;
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.cnx-eoc.key-concepts > div.title {
+  content: "Key Concepts";
+  column-span: all;
+  margin-bottom: 0; }
+
+.cnx-eoc.key-concepts > .section > .title {
+  margin-bottom: 1em; }
+
+.cnx-eoc.key-concepts > .section > .title > a {
+  color: #1E7E91; }
+
+.cnx-eoc.review-exercises {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.cnx-eoc.review-exercises > .title {
+  content: "Review Exercises";
+  column-span: all;
+  margin-top: 0; }
+
+.cnx-eoc.review-exercises > .section > div.body > .section > div.titlepage > div > div > h4 > span > a {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  color: #D7562C; }
+
+.cnx-eoc.review-exercises > .section > div.body > .section > div.titlepage > div > div > h4 > span > a::before {
+  content: target-counter(attr(href), chapter) "." target-counter(attr(href), section);
+  margin-right: 7px; }
+
+.cnx-eoc.review-exercises > .section > div.body > .section > p span.bold {
+  font-style: normal; }
+
+.cnx-eoc.practice-test {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.cnx-eoc.practice-test > .title {
+  content: "Practice Test";
+  column-span: all;
+  page-break-before: always; }
+
+.cnx-eoc.cnx-solutions {
+  display: none; }
+
+.cnx-eoc.cnx-solutions p:nth-of-type(1) {
+  margin-top: 1em; }
+
+.cnx-eoc .problem ol {
+  list-style-position: inside; }
+
+.cnx-eoc .problem::before {
+  padding-right: .5em;
+  line-height: 17px; }
+
+.cnx-eoc .empty {
+  display: hidden;
+  page-break-before: avoid;
+  page-break-after: avoid; }
+
+.cnx-eoc .exercise div.body div.problem .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: block;
+  caption-side: bottom;
+  padding-bottom: 0;
+  display: table;
+  width: 100%; }
+
+.review-exercises > .section > .title,
+.practice-test > .section > .title,
+.key-equations > .section > .title,
+.summary > .section > .title {
+  display: none; }
+
+/* ---------------------------------------------------
+ * End of Book Solutions
+ * ---------------------------------------------------
+ */
+div.colophon.end-of-book-solutions {
+  prince-text-replace: "Answer:" "";
+  margin: 0;
+  padding: 0;
+  display: inline !important;
+  display: none !important; }
+
+div.colophon.end-of-book-solutions > .title {
+  content: "Answer Key";
+  string-set: cnx-header "Answer Key";
+  color: #1E7E91;
+  margin-left: 0;
+  text-transform: uppercase;
+  font-size: x-large;
+  font-weight: bold;
+  background-color: transparent;
+  color: #3C2747;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: inline-block;
+  background: url("ccap-astronomy/Answer Key.svg") no-repeat left;
+  background-size: contain;
+  margin-bottom: 10px;
+  padding: .3em 2.3em;
+  font-size: 18px; }
+
+div.colophon.end-of-book-solutions div.chapter-area:first-of-type h2.title {
+  margin-top: 0;
+  padding-top: 0; }
+
+div.colophon.end-of-book-solutions .chapter-area {
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+div.colophon.end-of-book-solutions .chapter-area > div {
+  margin-bottom: 12px; }
+
+div.colophon.end-of-book-solutions .chapter-area a.solution {
+  color: black; }
+
+div.colophon.end-of-book-solutions .chapter-area > h2.title a.chapter,
+div.colophon.end-of-book-solutions .chapter-area > h2.title a.chapter span {
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: block;
+  margin-bottom: 7.5px;
+  page-break-after: avoid;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  color: #77294A;
+  font-size: 15.6px; }
+
+div.colophon.end-of-book-solutions .chapter-area > h2.title a.chapter {
+  page-break-before: avoid;
+  page-break-after: avoid; }
+
+div.colophon.end-of-book-solutions .chapter-area > h2.title a.chapter span {
+  display: inline; }
+
+div.colophon.end-of-book-solutions .chapter-area > div.review-exercises::before {
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: block;
+  margin-bottom: 7.5px;
+  page-break-after: avoid;
+  content: "Review Exercises"; }
+
+div.colophon.end-of-book-solutions .chapter-area > div.practice-test::before {
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: block;
+  margin-bottom: 7.5px;
+  page-break-after: avoid;
+  content: "Practice Test"; }
+
+div.colophon.end-of-book-solutions .chapter-area > div.try::before {
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: block;
+  margin-bottom: 7.5px;
+  page-break-after: avoid;
+  content: "Try It"; }
+
+div.colophon.end-of-book-solutions .chapter-area > div.try div.solution > div.title a.solution::before {
+  content: target-counter(attr(href), chapter) "." target-counter(attr(href), try); }
+
+div.colophon.end-of-book-solutions .chapter-area > div.section-exercises::before {
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: block;
+  margin-bottom: 7.5px;
+  page-break-after: avoid;
+  content: "Section Exercises"; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution {
+  width: 2.16666667in;
+  box-sizing: border-box;
+  display: inline-block;
+  padding-right: 18px;
+  vertical-align: top;
+  text-align: left;
+  width: auto;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: block;
+  padding-bottom: .5em; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution div.itemizedlist ul,
+div.colophon.end-of-book-solutions .chapter-area div.solution div.orderedlist ul,
+div.colophon.end-of-book-solutions .chapter-area div.solution div.itemizedlist ol,
+div.colophon.end-of-book-solutions .chapter-area div.solution div.orderedlist ol {
+  margin-left: 0;
+  padding-top: 15px;
+  padding-left: 10px;
+  font-weight: bold; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.title {
+  display: inline;
+  word-spacing: normal;
+  text-align: left;
+  vertical-align: middle;
+  display: inline-block;
+  width: 5%;
+  vertical-align: top;
+  line-height: 1.5em; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.title::after {
+  content: ". ";
+  display: inline;
+  height: 0;
+  width: 100%; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.body {
+  margin-right: .65em;
+  word-spacing: normal;
+  vertical-align: middle;
+  display: inline;
+  text-align: left;
+  display: inline-block;
+  width: 92%;
+  line-height: 1.5em; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.body div,
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.body p {
+  display: inline; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.body div.mediaobject {
+  text-align: center;
+  display: block; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.body > a.target-figure {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  color: #D7562C;
+  color: #34BDD8; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.body .cnx-svg {
+  direction: ltr;
+  vertical-align: middle !important;
+  display: inline-block; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution div.table table caption {
+  display: none; }
+
+/* ---------------------------------------------------
+ * End of Book References
+ * ---------------------------------------------------
+ */
+div.end-of-book-references {
+  display: none; }
+
+div.end-of-book-references > .title {
+  string-set: cnx-header "References";
+  font-size: x-large;
+  font-weight: bold;
+  background-color: transparent;
+  color: #1E7E91;
+  margin-left: 0;
+  padding-left: 0;
+  margin-top: 0; }
+
+div.end-of-book-references > .chapter-area > .title {
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: black;
+  font-weight: bold;
+  font-size: medium;
+  margin: .5em 0em; }
+
+div.end-of-book-references > .chapter-area > .body > .section-area > .title {
+  display: none; }
+
+div.end-of-book-references > .chapter-area > .body > p {
+  text-indent: 0em;
+  margin: .5em 0em; }
+
+div.end-of-book-references > .chapter-area > .body > p > a.link {
+  color: #D7562C;
+  font-weight: normal;
+  text-decoration: underline; }
+
+/* ---------------------------------------------------
+ * Index
+ * ---------------------------------------------------
+ */
+.index {
+  text-align: left;
+  column-width: auto;
+  margin-bottom: 10px; }
+
+.index > .title {
+  color: #1E7E91;
+  text-transform: uppercase;
+  font-size: x-large;
+  column-span: all;
+  font-size: 18px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #3C2747;
+  margin-bottom: 22px; }
+
+.index > .title h2 {
+  padding: 0;
+  font-size: inherit; }
+
+.index h3.letter {
+  color: inherit;
+  font-weight: bold;
+  font-size: medium;
+  padding-top: .5em;
+  font-size: 15.6px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A; }
+
+.index h3.letter:first-of-type {
+  margin-top: 0;
+  padding-top: 0; }
+
+.index .index-term {
+  font-size: small;
+  font-size: 12px;
+  line-height: 1.5em; }
+
+.index a {
+  font-weight: bold;
+  font-weight: normal; }
+
+/********************************************************************
+ * Generic Elements
+ ********************************************************************/
+h5 {
+  color: #1E7E91;
+  font-size: 10pt;
+  font-weight: bold;
+  font-style: italic; }
+
+h6 {
+  color: #1E7E91;
+  font-weight: bold; }
+
+a {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  color: #D7562C;
+  color: #34BDD8; }
+
+body {
+  font-size: 12px;
+  text-align: justify; }
+
+.book > .cnx-title h1 {
+  font-size: 20.28px;
+  text-shadow: 0 1px 0 rgba(166, 163, 157, 0.75);
+  text-align: left; }
+
+img {
+  max-height: 9.5in; }
+
+p {
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+img,
+figure,
+subfigure {
+  margin: 1em; }
+
+/* ---------------------------------------------------
+ * End of book Attributions and About Connexions
+ * ---------------------------------------------------
+ */
+.colophon > h1.title {
+  padding: 0;
+  margin-top: 0;
+  font-weight: bold;
+  font-size: x-large;
+  color: #1E7E91;
+  background: none; }
+
+.colophon p:first-of-type {
+  margin-top: 0;
+  padding-top: 0; }
+
+/******************************************************************************
+ * Breakout of figure code into 3 sizes (large, medium, small) for left aligned figure text
+ ******************************************************************************/
+/* ---------------------------------------------------
+ * Figures/Subfigures
+ * ---------------------------------------------------
+ */
+.figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+.figure > .body {
+  padding-bottom: 15.6px;
+  min-width: 2.16666667in; }
+
+.figure > .title {
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left;
+  margin-right: .5em;
+  font-size: 10px;
+  content: "Figure " counter(chapter,decimal) "." counter(figure) " ";
+  display: inline;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: black;
+  font-size: 9.23076923px;
+  content: "Figure " counter(chapter,decimal) "." counter(figure) " " string(cnx-figure-title); }
+
+.figure > .caption {
+  display: inline;
+  text-align: center;
+  font-size: 10px;
+  display: table-caption;
+  text-align: left;
+  page-break-before: avoid;
+  padding-bottom: 1em;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 9.23076923px; }
+
+.figure > .caption::before {
+  display: none;
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left;
+  margin-right: .5em;
+  font-size: 10px;
+  content: "Figure " counter(chapter,decimal) "." counter(figure) " ";
+  display: inline;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: black;
+  font-size: 9.23076923px;
+  content: "Figure " counter(chapter,decimal) "." counter(figure) " " string(cnx-figure-title); }
+
+.figure img {
+  margin: 0;
+  max-width: 6.5in; }
+
+.figure + p {
+  padding-top: 1.5em;
+  margin-top: 0em; }
+
+/******************************************************************************
+ * Addition of .commentary selector styling for Analysis header in examples
+ ******************************************************************************/
+.example .exercise .commentary > .title {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 10pt;
+  color: #093D4C;
+  font-weight: bold;
+  margin-right: .2em;
+  height: .9em; }
+
+.exercise.material-short,
+.solution.material-short {
+  display: inline-block !important; }
+
+/* -------------------------
+ * End of Section Exercise Styling
+ * -------------------------
+ */
+.section .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  margin-bottom: 1em; }
+
+.section.section-exercises {
+  page-break-before: always;
+  page-break-after: always;
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.section.section-exercises::before {
+  page-break-after: avoid;
+  content: counter(chapter,decimal) "." counter(section,decimal) " exercises";
+  text-transform: uppercase;
+  color: #1E7E91;
+  font-weight: bold;
+  display: block;
+  column-span: all;
+  font-size: 18px !important;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  height: 34px;
+  background: url("ccap-basic-math/exercises.png") no-repeat left;
+  background-size: 30px 34px;
+  bottom: 0px;
+  position: relative;
+  line-height: 56px;
+  padding-left: 2.5em;
+  margin-bottom: .5em; }
+
+.section.section-exercises > .titlepage {
+  display: none; }
+
+.section.section-exercises > div.section > p span.bold {
+  font-style: normal; }
+
+.section.section-exercises > div.section > div.titlepage > div > div > h4 {
+  page-break-after: avoid !important;
+  color: #2F7E9E !important;
+  font-size: 15.6px !important;
+  margin-bottom: 15.6px !important; }
+
+.section.section-exercises .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  page-break-inside: avoid;
+  vertical-align: top;
+  box-sizing: border-box;
+  display: inline-block;
+  padding-right: 18px;
+  min-width: 2.16666667in; }
+
+.section.section-exercises .exercise > .title {
+  content: counter(exercise) ". ";
+  display: inline;
+  font-weight: bold; }
+
+.section.section-exercises .exercise > .body {
+  display: inline; }
+
+.section.section-exercises .exercise > .body .problem {
+  display: inline; }
+
+.section.section-exercises .exercise > .body .problem p:first-of-type {
+  display: inline; }
+
+.section.section-exercises .exercise .problem .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  text-indent: 0;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+.section.section-exercises .exercise .solution {
+  display: none; }
+
+.section.section-exercises .exercise:not(.labeled) > .title > span:first-child:not(.labeled):before {
+  display: none; }
+
+/********************************************************************
+ * Glossary
+ ********************************************************************/
+.glossary {
+  page-break-before: always;
+  display: inline; }
+
+.glossary::before {
+  content: "" "Chapter " counter(chapter,decimal) " Review";
+  color: #1E7E91;
+  font-size: x-large;
+  font-weight: bold;
+  padding: 0em;
+  display: block;
+  text-transform: uppercase;
+  margin-bottom: 1.0em;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 18px; }
+
+.glossary .title {
+  /* Change "Glossary" to "Key Terms" */
+  content: "Key Terms";
+  color: #1E7E91;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 15.6px !important;
+  margin-left: 0;
+  font-weight: bold;
+  padding: 0em !important;
+  display: block;
+  text-transform: uppercase;
+  page-break-after: avoid !important; }
+
+.glossary dl dt::after {
+  content: " ";
+  float: right; }
+
+.glossary dl {
+  margin-left: 0;
+  page-break-before: avoid; }
+
+/* -------------------------
+ * Example Elements Styling and Numbering
+ * -------------------------
+ */
+.chapter .example {
+  margin: .75em 0;
+  margin-bottom: 5px;
+  margin-top: 0px;
+  border-top: 2px solid #2F7E9E;
+  border-bottom: 2px solid #2F7E9E;
+  border-top: 0;
+  border-bottom: 0;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  display: table;
+  position: relative;
+  background-color: #ebe9e9;
+  text-align: left;
+  color: #4F5151;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 0;
+  box-sizing: border-box; }
+
+.chapter .example::before {
+  display: table-caption;
+  content: "Example " counter(chapter,decimal) "." counter(example) " ";
+  font-weight: 600;
+  font-style: normal;
+  background-color: #2F7E9E;
+  color: #fff;
+  line-height: 48px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-size: 15.6px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  page-break-after: avoid; }
+
+.chapter .example > div.title {
+  font-size: 15.6px;
+  color: #3C2747;
+  font-weight: 600;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.chapter .example > div.body {
+  padding: 15px;
+  border: 0; }
+
+.chapter .example > div.body::before {
+  display: block;
+  content: '';
+  background: url("ccap-astronomy/none.svg") no-repeat 0;
+  width: 19px;
+  height: 22px;
+  position: absolute;
+  top: 12px;
+  right: 15px; }
+
+.chapter .example > div.body p {
+  padding: 0; }
+
+.chapter .example > div.body p:first-child {
+  margin-top: 0; }
+
+.example > .title {
+  display: block;
+  font-size: 9.23076923px;
+  text-transform: uppercase;
+  font-weight: bold;
+  page-break-after: avoid;
+  display: none; }
+
+.example > .title span::before {
+  background-color: #2F7E9E;
+  color: #C6CE33;
+  display: inline-block;
+  height: 2em;
+  line-height: 2em;
+  padding: 0 1em; }
+
+.section .example > .title > * {
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit; }
+
+.example > .body {
+  padding: 0;
+  margin: 0; }
+
+.example > div.body > div.title {
+  color: #093D4C;
+  padding-left: 0;
+  padding-right: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #2F7E9E; }
+
+div.book div.chapter > div.section div.example div.exercise .solution .table > table > caption::before {
+  display: block; }
+
+div.book div.chapter > div.section div.example div.exercise .solution .table {
+  page-break-inside: avoid;
+  margin: auto;
+  counter-increment: table !important;
+  page-break-inside: auto; }
+
+div.book div.chapter > div.section div.example div.exercise .solution .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  counter-increment: figure !important;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+div.book div.chapter > div.section div.example div.exercise .solution .figure .body {
+  text-align: left; }
+
+div.book div.chapter > div.section div.example div.exercise .solution .figure .title span.cnx-gentext-t::before {
+  display: inline-block;
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left;
+  margin-right: .5em;
+  font-size: 10px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+div.book div.chapter > div.section div.example div.exercise .problem .table > table > caption::before {
+  display: block; }
+
+div.book div.chapter > div.section div.example div.exercise .problem .table {
+  page-break-inside: avoid;
+  margin: auto;
+  counter-increment: table !important;
+  page-break-inside: auto; }
+
+div.book div.chapter > div.section div.example div.exercise .problem .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  counter-increment: figure !important;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+div.book div.chapter > div.section div.example div.exercise .problem .figure .body {
+  text-align: left; }
+
+div.book div.chapter > div.section div.example div.exercise .problem .figure .title span.cnx-gentext-t::before {
+  display: inline-block;
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left;
+  margin-right: .5em;
+  font-size: 10px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+div.book div.chapter > div.section div.example div.exercise .commentary .table > table > caption::before {
+  display: block; }
+
+div.book div.chapter > div.section div.example div.exercise .commentary .table {
+  page-break-inside: avoid;
+  margin: auto;
+  page-break-inside: auto; }
+
+div.book div.chapter > div.section div.example div.exercise .commentary .figure {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  counter-increment: figure !important;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%; }
+
+div.book div.chapter > div.section div.example div.exercise .commentary .figure .body {
+  text-align: left; }
+
+div.book div.chapter > div.section div.example div.exercise .commentary .figure .title span.cnx-gentext-t::before {
+  display: inline-block;
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left;
+  margin-right: .5em;
+  font-size: 10px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+.example .exercise:nth-of-type(1) > .body {
+  margin: 0px; }
+
+.example .exercise:nth-of-type(1) .problem:nth-of-type(1) > .title {
+  display: block;
+  content: "Example " counter(chapter,decimal) "." counter(example) " " content();
+  font-size: 15.6px; }
+
+.example .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  counter-increment: none !important;
+  margin-top: 0; }
+
+.example .exercise .problem > .title {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 11pt;
+  color: #093D4C;
+  display: inline; }
+
+.example .exercise .problem > .body {
+  display: inline; }
+
+.example .exercise .problem > .body p:first-child {
+  display: inline; }
+
+.example .exercise .solution > .title {
+  content: "Solution";
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 10pt;
+  color: #093D4C;
+  font-weight: bold;
+  line-height: 1em;
+  display: inline;
+  display: inline-block;
+  width: 5%;
+  vertical-align: top;
+  line-height: 1.5em; }
+
+.example .exercise .solution > .title::before {
+  content: url("ccap-basic-math/example-solution-icon.png");
+  padding-right: 10px;
+  display: block;
+  width: 13.3333px;
+  height: 13.3333px; }
+
+.example .exercise .solution > .body {
+  margin-top: .5em;
+  display: inline-block;
+  width: 92%;
+  line-height: 1.5em; }
+
+.example .exercise .solution > .body p:first-child {
+  display: inline; }
+
+.example .exercise .solution > .body > a.target-figure {
+  color: #D7562C; }
+
+.example .exercise .solution > .body > p:first-of-type {
+  margin-top: 0; }
+
+.example .exercise .solution > .title > p {
+  float: left; }
+
+.example .exercise .solution ol,
+.example .exercise .solution ul {
+  margin: 0 0 0 40px;
+  padding: 0; }
+
+.cnx-figure-horizontal .informalfigure .caption {
+  text-align: center; }
+
+.cnx-figure-horizontal .informalfigure .caption * {
+  font-weight: normal;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+/* ---------------------------------------------------
+ * Custom Equation (Non) Numbering
+ * ---------------------------------------------------
+ */
+div.book > div.preface,
+div.book > div.part > div.preface,
+div.book > div.chapter,
+div.book > div.part > div.chapter,
+div.book > div.appendix,
+div.book > div.part > div.appendix {
+  /*
+    > div.section div.equation.non-numbered > *:last-child::after {
+      display: none;
+    }
+    */ }
+
+div.book > div.preface > div.section div.equation > *:last-child::after,
+div.book > div.part > div.preface > div.section div.equation > *:last-child::after,
+div.book > div.chapter > div.section div.equation > *:last-child::after,
+div.book > div.part > div.chapter > div.section div.equation > *:last-child::after,
+div.book > div.appendix > div.section div.equation > *:last-child::after,
+div.book > div.part > div.appendix > div.section div.equation > *:last-child::after {
+  color: #D7562C;
+  font-weight: bold; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: left; }
+
+/* -------------------------
+ * Lists
+ * -------------------------
+ */
+div.itemizedlist ul,
+div.orderedlist ul,
+div.itemizedlist ol,
+div.orderedlist ol {
+  margin: 0 0 0 40px;
+  padding: 0; }
+
+div.itemizedlist ul.circled li,
+div.orderedlist ul.circled li,
+div.itemizedlist ol.circled li,
+div.orderedlist ol.circled li {
+  box-sizing: border-box;
+  display: inline-block;
+  padding-right: 18px; }
+
+div.itemizedlist ul.circled p,
+div.orderedlist ul.circled p,
+div.itemizedlist ol.circled p,
+div.orderedlist ol.circled p {
+  padding: 0; }
+
+div.itemizedlist ul.stepwise,
+div.orderedlist ul.stepwise,
+div.itemizedlist ol.stepwise,
+div.orderedlist ol.stepwise {
+  counter-reset: item;
+  list-style-type: none; }
+
+div.itemizedlist ul.stepwise > li:before,
+div.orderedlist ul.stepwise > li:before,
+div.itemizedlist ol.stepwise > li:before,
+div.orderedlist ol.stepwise > li:before {
+  content: "Step " counter(item,decimal) ". ";
+  counter-increment: item;
+  position: absolute;
+  margin-left: -40px; }
+
+cnx.eoc .key-concepts div.itemizedlist ul li,
+cnx.eoc .key-concepts div.orderedlist ul li,
+cnx.eoc .key-concepts div.itemizedlist ol li,
+cnx.eoc .key-concepts div.orderedlist ol li {
+  vertical-align: top;
+  box-sizing: border-box;
+  display: inline-block;
+  padding-right: 18px;
+  width: 3.25in; }
+
+/* -------------------------
+ * Images in chapters
+ * -------------------------
+ */
+.chapter .mediaobject img,
+.appendix .mediaobject img {
+  display: block;
+  margin: auto; }
+
+.chapter .example .mediaobject img,
+.appendix .example .mediaobject img,
+.chapter .example .inlinemediaobject img,
+.appendix .example .inlinemediaobject img {
+  display: block;
+  margin: auto; }
+
+.end-of-book-solutions .mediaobject img {
+  display: block;
+  margin: auto; }
+
+/********************************************************************
+ * SVG Color cascading.
+ ********************************************************************/
+g text {
+  fill: currentColor !important; }
+
+g line {
+  stroke: currentColor !important; }
+
+/******************************************************
+ * Mathematics Features
+ *
+ * Features from Pre-Calculus
+ *   How To
+ * Features from Calculus
+ *   Theorem
+ *   Student Project
+ *   Checkpoint
+ *   Media-2 (Alternative Media style)
+ *   Definition
+ *   Problem Solving
+ * Features from Basic Mathematics
+ *****************************************************/
+.example div[class="note"] {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.example div[class="note"] > .title {
+  margin-top: 0.5em;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 12px;
+  color: #77294A; }
+
+.example div[class="note"] > .body {
+  padding: 0; }
+
+.preface div[class="note"],
+.chapter div[class="note"],
+.appendix div[class="note"] {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.preface div[class="note"] > .title,
+.chapter div[class="note"] > .title,
+.appendix div[class="note"] > .title {
+  margin-top: 0.5em;
+  page-break-after: avoid;
+  text-align: left;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A;
+  font-weight: bold; }
+
+.preface div[class="note"] > .body,
+.chapter div[class="note"] > .body,
+.appendix div[class="note"] > .body {
+  padding: 0;
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
+  border-top: 0; }
+
+.note > .body {
+  padding: 0;
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
+  border-top: 0; }
+
+.note > .body p {
+  padding: 7px 10px; }
+
+.note.links-to-literacy {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.note.links-to-literacy > .title {
+  margin-top: 0.5em; }
+
+.note.links-to-literacy > .title::before {
+  margin-top: 0.5em; }
+
+.note.links-to-literacy > .body {
+  padding: 0; }
+
+.note.manipulative-math {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.note.manipulative-math > .title {
+  margin-top: 0.5em; }
+
+.note.manipulative-math > .title::before {
+  margin-top: 0.5em; }
+
+.note.manipulative-math > .body {
+  padding: 0; }
+
+.note.qa {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid; }
+
+.note.qa > .title {
+  margin-top: 0.5em;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold; }
+
+.note.qa > .body,
+.note.qa .body > p {
+  padding: 0;
+  font-weight: normal;
+  margin-top: 0; }
+
+.note.qa > .body .figure .title {
+  display: inline;
+  text-align: center;
+  font-size: 10px;
+  font-style: normal;
+  padding-bottom: 1em;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: table-caption;
+  text-align: left;
+  page-break-before: avoid; }
+
+.note.media {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid; }
+
+.note.media .itemizedlist > .listitem {
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left; }
+
+.note.media .itemizedlist > .listitem .link.only-show-once {
+  content: content(); }
+
+.note.try {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid; }
+
+.note.try div.itemizedlist ul,
+.note.try div.orderedlist ul,
+.note.try div.itemizedlist ol,
+.note.try div.orderedlist ol {
+  margin: 0 0 0 40px;
+  padding: 0;
+  margin-top: 1em;
+  padding-left: 10px; }
+
+.note.try > .title {
+  margin-top: 0.5em;
+  margin-top: 0;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold; }
+
+.note.try > .body {
+  padding: 0;
+  font-weight: normal;
+  display: inline-block;
+  border-top: none;
+  padding-top: 4px; }
+
+.note.try .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0;
+  counter-increment: none !important;
+  margin-bottom: 0; }
+
+.note.try .exercise > .title {
+  display: none; }
+
+.note.try .exercise .problem {
+  line-height: 16px;
+  margin-left: 20px; }
+
+.note.try .exercise .solution {
+  display: none; }
+
+.note.howto {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid; }
+
+.note.howto.emphasized {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid;
+  padding-top: .4em;
+  padding-left: 3em;
+  background-position: .5em .5em;
+  background-color: #34BDD8; }
+
+.note.theorem {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.note.theorem > .title {
+  margin-top: 0.5em;
+  page-break-after: avoid;
+  text-align: left;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A;
+  font-weight: bold; }
+
+.note.project {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid;
+  page-break-before: always;
+  background-color: #34BDD8; }
+
+.note.project:before {
+  min-height: 45px;
+  padding-top: 0;
+  margin-top: 0;
+  background: url("ccap-calculus/student-project.png") no-repeat;
+  background-position: 0 .2em;
+  display: block;
+  content: "";
+  min-height: 55px;
+  width: auto;
+  height: auto;
+  background-position: 0px 0px;
+  background-color: #000;
+  margin-left: -1em;
+  margin-right: -1em;
+  margin-top: -3px; }
+
+.note.project:before .figure img {
+  max-width: 6.25in; }
+
+.note.project > .title {
+  margin-top: 0.5em;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  padding-bottom: 0em;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+  border-bottom: none; }
+
+.note.checkpoint {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid;
+  min-height: 45px;
+  padding-top: 0;
+  margin-top: 0;
+  background: url("ccap-calculus/checkpoint.svg") no-repeat;
+  background-position: 0 .2em;
+  padding-left: 1.4em; }
+
+.note.checkpoint .figure img {
+  max-width: 6.25in; }
+
+.note.quick-check {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid;
+  min-height: 45px;
+  padding-top: 0;
+  margin-top: 0;
+  background: url("ccap-basic-math/quick-check.svg") no-repeat;
+  background-position: 0 .2em;
+  padding-left: 1.4em; }
+
+.note.quick-check .figure img {
+  max-width: 6.25in; }
+
+.note.quick-check.emphasized {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid;
+  min-height: 45px;
+  padding-top: 0;
+  margin-top: 0;
+  background: url("ccap-basic-math/quick-check.svg") no-repeat;
+  background-position: 0 .2em;
+  padding-left: 1.4em;
+  padding-top: .4em;
+  padding-left: 3em;
+  background-position: .5em .5em;
+  background-color: #F1DDB6; }
+
+.note.quick-check.emphasized .figure img {
+  max-width: 6.25in; }
+
+.note.quick-check div.itemizedlist ul,
+.note.checkpoint div.itemizedlist ul,
+.note.check-understanding div.itemizedlist ul,
+.note.quick-check div.orderedlist ul,
+.note.checkpoint div.orderedlist ul,
+.note.check-understanding div.orderedlist ul,
+.note.quick-check div.itemizedlist ol,
+.note.checkpoint div.itemizedlist ol,
+.note.check-understanding div.itemizedlist ol,
+.note.quick-check div.orderedlist ol,
+.note.checkpoint div.orderedlist ol,
+.note.check-understanding div.orderedlist ol {
+  margin: 0 0 0 40px;
+  padding: 0;
+  margin-top: 1em;
+  padding-left: 10px; }
+
+.note.quick-check > .title,
+.note.checkpoint > .title,
+.note.check-understanding > .title {
+  margin-top: 0.5em;
+  margin-top: 0;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold; }
+
+.note.quick-check .exercise,
+.note.checkpoint .exercise,
+.note.check-understanding .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0;
+  counter-increment: none !important;
+  margin-bottom: 0; }
+
+.note.quick-check .exercise > .title,
+.note.checkpoint .exercise > .title,
+.note.check-understanding .exercise > .title {
+  display: none; }
+
+.note.quick-check .exercise .problem,
+.note.checkpoint .exercise .problem,
+.note.check-understanding .exercise .problem {
+  line-height: 16px;
+  margin-left: 20px; }
+
+.note.quick-check .exercise .solution,
+.note.checkpoint .exercise .solution,
+.note.check-understanding .exercise .solution {
+  display: none; }
+
+.note.quick-check.emphasized > .title,
+.note.checkpoint.emphasized > .title,
+.note.check-understanding.emphasized > .title {
+  padding-left: 2px; }
+
+.note.quick-check.emphasized > .title::before,
+.note.checkpoint.emphasized > .title::before,
+.note.check-understanding.emphasized > .title::before {
+  display: block;
+  padding-top: 6px; }
+
+.note.quick-check.emphasized .exercise .problem,
+.note.checkpoint.emphasized .exercise .problem,
+.note.check-understanding.emphasized .exercise .problem {
+  margin-left: 2px; }
+
+.note.media-2 {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  page-break-inside: avoid; }
+
+.note.media-2 .itemizedlist > .listitem {
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left; }
+
+.note.media-2 .itemizedlist > .listitem .link.only-show-once {
+  content: content(); }
+
+.note.definition {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.note.definition > .title {
+  margin-top: 0.5em;
+  page-break-after: avoid;
+  text-align: left;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A;
+  font-weight: bold; }
+
+.note.definition > .title::before {
+  margin-top: 0.5em;
+  margin-top: 0em;
+  content: "Definition: ";
+  display: block; }
+
+.note.definition > .title span {
+  display: none; }
+
+.note.problem-solving {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  background-color: #F1DDB6;
+  padding-bottom: 1em; }
+
+.note.problem-solving > .title {
+  margin-top: 0.5em;
+  page-break-after: avoid;
+  text-align: left;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A;
+  font-weight: bold; }
+
+.note.be-prepared {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+.note.be-prepared > .title {
+  margin-top: 0.5em;
+  page-break-after: avoid;
+  text-align: left;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A;
+  font-weight: bold;
+  margin-bottom: 1em; }
+
+.note.be-prepared > .title::before {
+  content: "Be Prepared!"; }
+
+.note.be-prepared > .body {
+  padding: 0 1em; }
+
+.note.be-prepared .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0;
+  margin-bottom: .3em; }
+
+.note.be-prepared .exercise > .title {
+  display: inline; }
+
+.note.be-prepared .exercise > .body {
+  display: inline; }
+
+.note.be-prepared .exercise .problem {
+  display: inline; }
+
+.note.be-prepared .exercise .problem > .title {
+  display: none; }
+
+.note.be-prepared .exercise .problem > .body {
+  display: inline; }
+
+.note.be-prepared .exercise .problem > .body p {
+  display: inline; }
+
+.note.be-prepared .exercise .solution {
+  display: none; }
+
+.note.be-prepared .exercise:last-of-type {
+  margin-bottom: 0; }
+
+/******************************************************
+ * Mathematics Answer Key
+ *
+ * Sections from Pre-Calculus
+ * Sections from Calculus
+ *   Checkpoint
+ * Sections from Basic Mathematics
+ *****************************************************/
+div.colophon.end-of-book-solutions .chapter-area > div.checkpoint::before {
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: block;
+  margin-bottom: 7.5px;
+  page-break-after: avoid;
+  content: "Checkpoint"; }
+
+div.colophon.end-of-book-solutions .chapter-area > div.checkpoint div.solution > div.title a.solution::before {
+  content: target-counter(attr(href), chapter) "." target-counter(attr(href), checkpoint); }
+
+div.colophon.end-of-book-solutions .chapter-area > div.quick-check::before {
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: block;
+  margin-bottom: 7.5px;
+  page-break-after: avoid;
+  content: "Quick Check"; }
+
+div.colophon.end-of-book-solutions .chapter-area > div.quick-check div.solution > div.title a.solution::before {
+  content: target-counter(attr(href), chapter) "." target-counter(attr(href), quick-check); }
+
+/******************************************************
+ * Numbering
+ ******************************************************/
+div.book div.chapter div.section div.theorem:not(.labeled) {
+  counter-increment: theorem; }
+
+div.book div.chapter div.section div.theorem:not(.labeled) > .title > span:before {
+  content: "Theorem " counter(chapter) "." counter(theorem) ": "; }
+
+div.book div.chapter .checkpoint:not(.labeled) {
+  counter-increment: checkpoint; }
+
+div.book div.chapter .checkpoint > .title:not(.labeled)::before {
+  content: "" counter(chapter,decimal) "." counter(checkpoint) " "; }
+
+div.book div.chapter .quick-check:not(.labeled) {
+  counter-increment: quick-check; }
+
+div.book div.chapter .quick-check > .title:not(.labeled)::before {
+  content: "" counter(chapter,decimal) "." counter(quick-check) " "; }
+
+div.book div.chapter > div.cnx-eoc div.note.be-prepared div.exercise,
+div.book div.chapter > div.cnx-eoc div.note.be-prepared div.exercise:not(.labeled),
+div.book div.chapter > div.section div.note.be-prepared div.exercise,
+div.book div.chapter > div.section div.note.be-prepared div.exercise:not(.labeled) {
+  counter-increment: be-prepared-exercise; }
+
+div.book div.chapter > div.section div.note.be-prepared div.exercise:not(.labeled) > .title > span:first-child:not(.labeled)::before {
+  content: counter(be-prepared-exercise) ". "; }
+
+/******************************************************
+ * Misc. Ad-hoc fixes.
+ ******************************************************/
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.body div.figure {
+  display: table; }
+
+div.colophon.end-of-book-solutions .chapter-area div.solution > div.body div.figure > .title {
+  display: none; }
+
+.glossary dl dt,
+.glossary dl dd {
+  margin-top: -5px; }
+
+.glossary dl dt:first-of-type,
+.glossary dl dd:first-of-type {
+  margin-top: 0; }
+
+.section.section-exercises .section .exercise .problem img,
+.section.section-exercises .section .exercise .solution img {
+  margin: 1em 0; }
+
+.section.section-exercises .exercise {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0; }
+
+.section.section-exercises .exercise.material-set-2 {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-top: 0;
+  width: 48%;
+  min-width: initial; }
+
+/******************************************************
+ * Element numbering bugfix.
+ *
+ * Due to a bug with princexml "clipping" numbering
+ * rendered in ::after pseudo-elements we have swapped
+ * these numbers to render on ::before elements.
+ * What follows are a boatload of adhoc selectors which
+ * make this switch.
+ ******************************************************/
+.figure > .title {
+  display: none; }
+
+.cnx-eoc .exercise div.title {
+  display: none; }
+
+.note.qa > .body .figure .title {
+  display: none; }
+
+div.book div.chapter > div.section div.example div.exercise div.figure .caption::before {
+  display: inline; }
+
+div.book div.chapter > div.section div.example div.exercise div.equation:not(.labeled),
+div.book div.chapter > div.section div.example div.exercise div.equation {
+  counter-increment: equation !important; }
+
+div.book div.chapter > div.section div.example div.exercise div.equation:not(.labeled) span.inlinemediaobject::before,
+div.book div.chapter > div.section div.example div.exercise div.equation span.inlinemediaobject::before,
+div.book div.chapter > div.section div.example div.exercise div.equation:not(.labeled) div.mediaobject::before,
+div.book div.chapter > div.section div.example div.exercise div.equation div.mediaobject::before {
+  display: block; }
+
+div.book div.chapter > div.section div.equation > *:last-child::before {
+  content: "(" counter(chapter,decimal) "." counter(equation) ")";
+  float: right;
+  color: #D7562C;
+  font-weight: bold; }
+
+div.book div.chapter > div.section div.equation > *:last-child::after {
+  display: none; }
+
+div.book > div.part > div.chapter > div.cnx-eoc > div.section > div.body > div.section > div.exercise:not(.labeled) > div.body > div.problem::before,
+div.book > div.chapter > div.cnx-eoc > div.section > div.body > div.section > div.exercise:not(.labeled) > div.body > div.problem::before {
+  content: counter(exercise) ".";
+  font-weight: bold; }
+
+div.book > div.part > div.chapter > div.cnx-eoc > div.section > div.body > div.section > div.exercise:not(.labeled) > div.title,
+div.book > div.chapter > div.cnx-eoc > div.section > div.body > div.section > div.exercise:not(.labeled) > div.title {
+  display: none; }
+
+div.appendix div.figure > div.caption::before {
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left;
+  margin-right: .5em;
+  font-size: 10px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  content: "Figure " counter(appendix,upper-alpha) counter(figure); }
+
+div.book > div.preface > div.cnx-eoc,
+div.book > div.part > div.preface > div.cnx-eoc {
+  counter-reset: eoc-section -1; }
+
+div.book > div.chapter > div.cnx-eoc,
+div.book > div.part > div.chapter > div.cnx-eoc {
+  counter-reset: eoc-section -1; }
+
+div.book > div.appendix > div.cnx-eoc,
+div.book > div.part > div.appendix > div.cnx-eoc {
+  counter-reset: eoc-section -1; }
+
+div.chapter {
+  page: chapter;
+  prince-page-group: start; }
+
+div.section p {
+  line-height: 1.6em; }
+
+div.book div.preface > div.section {
+  margin-bottom: 18px; }
+
+div.book div.preface > div.section p + .section {
+  margin-top: 18px; }
+
+div.book div.preface > div.section > div.section {
+  margin-bottom: 18px; }
+
+div.book div.preface > p + .section {
+  margin-top: 18px; }
+
+div.book div.preface .figure > .caption::before {
+  color: #D7562C;
+  font-weight: bold;
+  text-align: left;
+  margin-right: .5em;
+  font-size: 10px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: black;
+  font-size: 9.23076923px;
+  content: "Figure " counter(chapter,decimal) "." counter(figure) " " string(cnx-figure-title);
+  content: "Figure " counter(figure) " " string(cnx-figure-title); }
+
+.chapter > .introduction {
+  margin-top: -0.8in;
+  margin-top: -0.925in; }
+
+div.book > div.chapter > div.titlepage {
+  height: 100%;
+  margin-top: 0; }
+
+div.book > div.chapter > div.titlepage div div > h1.title {
+  font-weight: bold;
+  text-align: left;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 15.6px;
+  padding: 0;
+  padding-top: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 8.5in;
+  height: 3.5in;
+  color: #3C2747;
+  font-size: 18px;
+  margin-top: -0.125in; }
+
+div.book > div.chapter > div.titlepage div div > h1.title::before {
+  font-weight: bold;
+  padding-right: 0em;
+  color: #1E7E91;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  top: auto;
+  left: 0;
+  bottom: 52px;
+  background-color: white;
+  border-radius: 50%;
+  min-width: 0;
+  min-height: 0;
+  width: 45px;
+  height: 45px;
+  padding-top: 0;
+  border: none;
+  display: block;
+  line-height: 45px;
+  color: #77294A; }
+
+div.book > div.chapter > div.titlepage div div > h1.title::after {
+  content: '';
+  display: block;
+  background: url(ccap-astronomy/ch-intro-telescope.svg) 0 0 no-repeat;
+  width: 210px;
+  height: 50px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform: translate3d(-1in, 0, 0);
+  left: -0.125in; }
+
+.chapter > .introduction > .figure.splash {
+  position: relative; }
+
+.chapter > .introduction > .figure.splash::before {
+  background: transparent url("ccap-astronomy/folio-bg.png") 0 0 repeat-x;
+  background-size: 100% 122px;
+  height: 122px;
+  width: 8.5in;
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -1in;
+  right: -1in; }
+
+.chapter > .introduction > .figure.splash div.mediaobject {
+  border-left: none;
+  height: 4.3in;
+  position: relative; }
+
+.chapter > .introduction > .figure.splash div.mediaobject::before {
+  display: none; }
+
+.chapter > .introduction > .figure.splash div.mediaobject::after {
+  width: 100%;
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background-color: #DB5C46;
+  border-top: 4px solid rgba(60, 39, 71, 0.5); }
+
+.chapter > .introduction > .figure.splash div.mediaobject img {
+  width: 8.5in;
+  height: 3.58in; }
+
+.chapter > .introduction > .toc .cnx-gentext-n {
+  color: #34BDD8; }
+
+.chapter > .introduction > .toc .toc-section .cnx-gentext-t {
+  color: #3C2747; }
+
+.chapter .note.link-to-learning {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  display: table;
+  position: relative;
+  background-color: #e6eaef;
+  text-align: left;
+  color: #4F5151;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 0;
+  box-sizing: border-box; }
+
+.chapter .note.link-to-learning::before {
+  display: table-caption;
+  content: "Link to Learning";
+  font-weight: 600;
+  font-style: normal;
+  background-color: #77294A;
+  color: #fff;
+  line-height: 48px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-size: 15.6px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  page-break-after: avoid; }
+
+.chapter .note.link-to-learning > div.title {
+  font-size: 15.6px;
+  color: #3C2747;
+  font-weight: 600;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.chapter .note.link-to-learning > div.body {
+  padding: 15px;
+  border: 0; }
+
+.chapter .note.link-to-learning > div.body::before {
+  display: block;
+  content: '';
+  background: url("ccap-astronomy/link-to-learning.svg") no-repeat 0;
+  width: 19px;
+  height: 22px;
+  position: absolute;
+  top: 12px;
+  right: 15px; }
+
+.chapter .note.link-to-learning > div.body p {
+  padding: 0; }
+
+.chapter .note.link-to-learning > div.body p:first-child {
+  margin-top: 0; }
+
+.chapter .note.link-to-learning div.mediaobject {
+  display: none; }
+
+.chapter .note.making-connections {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  display: table;
+  position: relative;
+  background-color: #f4f4f4;
+  text-align: left;
+  color: #4F5151;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 0;
+  box-sizing: border-box; }
+
+.chapter .note.making-connections::before {
+  display: table-caption;
+  content: "Making Connections";
+  font-weight: 600;
+  font-style: normal;
+  background-color: #DB5C46;
+  color: #fff;
+  line-height: 48px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-size: 15.6px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  page-break-after: avoid; }
+
+.chapter .note.making-connections > div.title {
+  font-size: 15.6px;
+  color: #3C2747;
+  font-weight: 600;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.chapter .note.making-connections > div.body {
+  padding: 15px;
+  border: 0; }
+
+.chapter .note.making-connections > div.body::before {
+  display: block;
+  content: '';
+  background: url("ccap-astronomy/making-connections.svg") no-repeat 0;
+  width: 19px;
+  height: 22px;
+  position: absolute;
+  top: 12px;
+  right: 15px; }
+
+.chapter .note.making-connections > div.body p {
+  padding: 0; }
+
+.chapter .note.making-connections > div.body p:first-child {
+  margin-top: 0; }
+
+.chapter .note.making-connections div.title {
+  margin-top: 15px; }
+
+.chapter .note.voyagers-in-astronomy {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  display: table;
+  position: relative;
+  background-color: #ebe8eb;
+  text-align: left;
+  color: #3C2747;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 0;
+  box-sizing: border-box; }
+
+.chapter .note.voyagers-in-astronomy::before {
+  display: table-caption;
+  content: "Voyagers in Astronomy";
+  font-weight: 600;
+  font-style: normal;
+  background-color: #3C2747;
+  color: #fff;
+  line-height: 48px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-size: 15.6px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  page-break-after: avoid; }
+
+.chapter .note.voyagers-in-astronomy > div.title {
+  font-size: 15.6px;
+  color: #3C2747;
+  font-weight: 600;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.chapter .note.voyagers-in-astronomy > div.body {
+  padding: 15px;
+  border: 0; }
+
+.chapter .note.voyagers-in-astronomy > div.body::before {
+  display: block;
+  content: '';
+  background: url("ccap-astronomy/voyagers-in-astronomy.svg") no-repeat 0;
+  width: 95px;
+  height: 97px;
+  position: absolute;
+  top: -12px;
+  right: -10px; }
+
+.chapter .note.voyagers-in-astronomy > div.body p {
+  padding: 0; }
+
+.chapter .note.voyagers-in-astronomy > div.body p:first-child {
+  margin-top: 0; }
+
+.chapter .note.voyagers-in-astronomy div.title {
+  margin-top: 15px;
+  color: #2F7E9E; }
+
+.chapter .note.astronomy-basics {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  display: table;
+  position: relative;
+  background-color: #ebe8eb;
+  text-align: left;
+  color: #3C2747;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 0;
+  box-sizing: border-box; }
+
+.chapter .note.astronomy-basics::before {
+  display: table-caption;
+  content: "Astronomy Basics ";
+  font-weight: 600;
+  font-style: normal;
+  background-color: #3C2747;
+  color: #fff;
+  line-height: 48px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-size: 15.6px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  page-break-after: avoid; }
+
+.chapter .note.astronomy-basics > div.title {
+  font-size: 15.6px;
+  color: #3C2747;
+  font-weight: 600;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.chapter .note.astronomy-basics > div.body {
+  padding: 15px;
+  border: 0; }
+
+.chapter .note.astronomy-basics > div.body::before {
+  display: block;
+  content: '';
+  background: url("ccap-astronomy/astronomy-basics.svg") no-repeat 0;
+  width: 120px;
+  height: 56px;
+  position: absolute;
+  top: -3px;
+  right: 15px; }
+
+.chapter .note.astronomy-basics > div.body p {
+  padding: 0; }
+
+.chapter .note.astronomy-basics > div.body p:first-child {
+  margin-top: 0; }
+
+.chapter .note.astronomy-basics div.title {
+  margin-top: 15px;
+  color: #2F7E9E; }
+
+.chapter .note.seeing-for-yourself {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  display: table;
+  position: relative;
+  background-color: #f4f4f4;
+  text-align: left;
+  color: #4F5151;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 0;
+  box-sizing: border-box; }
+
+.chapter .note.seeing-for-yourself::before {
+  display: table-caption;
+  content: "Seeing for Yourself";
+  font-weight: 600;
+  font-style: normal;
+  background-color: #DB5C46;
+  color: #fff;
+  line-height: 48px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-size: 15.6px;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  page-break-after: avoid; }
+
+.chapter .note.seeing-for-yourself > div.title {
+  font-size: 15.6px;
+  color: #3C2747;
+  font-weight: 600;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.chapter .note.seeing-for-yourself > div.body {
+  padding: 15px;
+  border: 0; }
+
+.chapter .note.seeing-for-yourself > div.body::before {
+  display: block;
+  content: '';
+  background: url("ccap-astronomy/seeing-for-yourself.svg") no-repeat 0;
+  width: 19px;
+  height: 22px;
+  position: absolute;
+  top: 12px;
+  right: 15px; }
+
+.chapter .note.seeing-for-yourself > div.body p {
+  padding: 0; }
+
+.chapter .note.seeing-for-yourself > div.body p:first-child {
+  margin-top: 0; }
+
+.chapter .note.seeing-for-yourself div.title {
+  margin-top: 15px;
+  color: #3C2747; }
+
+.example > div.body > div.note {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0; }
+
+.example > div.body > div.note div.title {
+  margin-top: 0.5em;
+  padding: 0;
+  margin-bottom: 18px;
+  font-style: italic; }
+
+.example > div.body > div.note div.body {
+  padding: 0; }
+
+.cnx-eoc.group-activities {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.cnx-eoc.group-activities::after {
+  content: "Exercises";
+  color: #3C2747;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-weight: bold;
+  display: inline-block;
+  text-transform: uppercase;
+  background: url("ccap-astronomy/Exercises.svg") no-repeat left;
+  background-size: contain;
+  position: relative;
+  margin-bottom: 10px;
+  padding: .3em 2.3em;
+  margin-top: 1.5em;
+  font-size: 18px; }
+
+.cnx-eoc.group-activities > div.title > span {
+  color: #3C2747;
+  display: inline-block;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  background: url("ccap-astronomy/Collaborative Group Work.svg") no-repeat left;
+  background-size: contain;
+  margin-bottom: 10px;
+  padding: .3em 2.3em;
+  font-size: 18px; }
+
+.cnx-eoc.group-activities > div.section > div.title {
+  display: none; }
+
+.cnx-eoc.group-activities > div.section > div.body {
+  color: #231F20;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  line-height: 1.5em;
+  font-size: 12px; }
+
+.cnx-eoc.group-activities > div.section > div.body div.orderedlist > ol.orderedlist,
+.cnx-eoc.group-activities > div.section > div.body div.itemizedlist > ul.itemizedlist {
+  margin-left: 23px;
+  line-height: 1.6em;
+  font-weight: bold; }
+
+.cnx-eoc.group-activities > div.section > div.body div.orderedlist > ol.orderedlist > li.listitem > p,
+.cnx-eoc.group-activities > div.section > div.body div.itemizedlist > ul.itemizedlist > li.listitem > p {
+  margin-left: 0px;
+  font-weight: normal;
+  margin-bottom: 1em; }
+
+.cnx-eoc.review-questions,
+.cnx-eoc.thought-questions,
+.cnx-eoc.figuring-for-yourself {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.cnx-eoc.review-questions > div.title > span,
+.cnx-eoc.thought-questions > div.title > span,
+.cnx-eoc.figuring-for-yourself > div.title > span {
+  color: #77294A;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  text-transform: capitalize;
+  font-size: 15.6px;
+  padding-left: 0px; }
+
+.cnx-eoc.review-questions > .section > div.title,
+.cnx-eoc.thought-questions > .section > div.title,
+.cnx-eoc.figuring-for-yourself > .section > div.title {
+  display: none; }
+
+.cnx-eoc.review-questions > .section > div.body div.problem::before,
+.cnx-eoc.thought-questions > .section > div.body div.problem::before,
+.cnx-eoc.figuring-for-yourself > .section > div.body div.problem::before {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: inline-block;
+  width: 3%;
+  vertical-align: top;
+  padding-right: 0px; }
+
+.cnx-eoc.review-questions > .section > div.body div.problem > p,
+.cnx-eoc.thought-questions > .section > div.body div.problem > p,
+.cnx-eoc.figuring-for-yourself > .section > div.body div.problem > p {
+  display: inline-block;
+  width: 95%;
+  margin-top: 0px;
+  line-height: 17px;
+  margin-bottom: 0; }
+
+.cnx-eoc.review-questions > .section > div.body div.orderedlist > ol.orderedlist,
+.cnx-eoc.thought-questions > .section > div.body div.orderedlist > ol.orderedlist,
+.cnx-eoc.figuring-for-yourself > .section > div.body div.orderedlist > ol.orderedlist {
+  font-weight: bold;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1; }
+
+.cnx-eoc.review-questions > .section > div.body div.orderedlist > ol.orderedlist > li.listitem,
+.cnx-eoc.thought-questions > .section > div.body div.orderedlist > ol.orderedlist > li.listitem,
+.cnx-eoc.figuring-for-yourself > .section > div.body div.orderedlist > ol.orderedlist > li.listitem {
+  margin-bottom: 1em; }
+
+.cnx-eoc.review-questions > .section > div.body div.orderedlist > ol.orderedlist > li.listitem > p,
+.cnx-eoc.thought-questions > .section > div.body div.orderedlist > ol.orderedlist > li.listitem > p,
+.cnx-eoc.figuring-for-yourself > .section > div.body div.orderedlist > ol.orderedlist > li.listitem > p {
+  font-weight: normal; }
+
+.cnx-eoc.further-exploration {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  columns: 1;
+  column-fill: auto;
+  column-gap: 24px; }
+
+.cnx-eoc.further-exploration > div.title > span {
+  color: #3C2747;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  display: inline-block;
+  background: url("ccap-astronomy/For Further Exploration.svg") no-repeat left;
+  background-size: contain;
+  margin-bottom: 10px;
+  padding: .3em 2.3em;
+  font-size: 18px; }
+
+.cnx-eoc.further-exploration > .section > div.title {
+  display: none; }
+
+.cnx-eoc.further-exploration > .section > div.body > div.section {
+  margin-bottom: 2em; }
+
+.cnx-eoc.further-exploration > .section > div.body > div.section > div.section:not(:last-child) {
+  margin-bottom: 10px; }
+
+.cnx-eoc.further-exploration > .section > div.body > div.section > div.titlepage + div.section {
+  margin-top: 10px; }
+
+.cnx-eoc.further-exploration > .section > div.body div.titlepage h4 {
+  color: #77294A;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  text-transform: capitalize;
+  font-size: 15.6px;
+  padding-left: 0px; }
+
+.cnx-eoc.further-exploration > .section div.titlepage h5 {
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 12px;
+  color: black;
+  font-weight: bold;
+  margin: 0px;
+  font-style: normal; }
+
+div.abstract {
+  display: none; }
+
+div.book div > div.section > div.section.learning-objectives > div.titlepage > div > div > h3 {
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 18px;
+  color: #77294A;
+  margin-bottom: 1em; }
+
+div.book div > div.section > div.section.learning-objectives .itemizedlist > ul {
+  margin-left: 10px;
+  color: #3C2747;
+  margin-bottom: 18px; }
+
+div.book div > div.section > div.section.learning-objectives .listitem {
+  background: url("ccap-basic-math/learning-objectives.png") no-repeat 0;
+  background-size: 3px 4px;
+  padding-left: 10px;
+  background: none;
+  margin-left: 20px;
+  padding-left: 0; }
+
+div.book div > div.section > div.section.learning-objectives .listitem::marker {
+  width: 4.5px;
+  content: url("ccap-astronomy/learning-objectives.svg"); }
+
+div.book div > div.section > div.section.learning-objectives .listitem p {
+  margin-bottom: 0; }
+
+.figure > .title span.cnx-gentext-t {
+  string-set: cnx-figure-title content(); }
+
+div.book > div.appendix > div.section > div.titlepage {
+  page-break-after: avoid;
+  font-weight: bold;
+  font-family: 'Dosis', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  text-transform: uppercase;
+  color: #3C2747;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  margin-bottom: 15.6px; }
+
+div.book > div.appendix > div.section > div.titlepage::before {
+  border: 2px solid #F0A041;
+  padding: 3px 4px;
+  font-size: 9.23076923px;
+  margin-right: 10px;
+  vertical-align: middle;
+  display: none; }
+
+div.book > div.appendix > div.section > div.titlepage span.cnx-gentext-t {
+  position: relative;
+  top: 9px;
+  top: 3px;
+  font-size: 15.6px;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  color: #77294A;
+  text-transform: capitalize; }
+
+div.appendix div.itemizedlist ul,
+div.appendix div.orderedlist ul,
+div.appendix div.itemizedlist ol,
+div.appendix div.orderedlist ol {
+  margin: 0 0 0 30px;
+  line-height: 1.6em; }
+
+div.appendix div.itemizedlist ul .listitem::marker {
+  content: url("ccap-astronomy/learning-objectives-default.svg");
+  width: 4.5px;
+  padding-left: 0px; }
+
+div.colophon.end-of-book-solutions div.chapter-area div.solution div.body img {
+  display: block;
+  margin: 0 auto; }
+
+div.colophon.end-of-book-solutions div.orderedlist > ol.orderedlist {
+  text-align: left;
+  position: relative;
+  list-style-position: inside; }
+
+div.colophon.end-of-book-solutions div.orderedlist > ol.orderedlist > li.listitem {
+  text-align: left; }
+
+div.colophon.end-of-book-solutions div.orderedlist > ol.orderedlist > li.listitem p {
+  font-weight: normal;
+  padding-left: 8px; }
+
+.preface > p,
+.chapter .introduction > p,
+.appendix > p {
+  line-height: 1.6em; }
+
+div.table table thead tr:last-of-type th:first-child {
+  border-top-left-radius: 2.88px; }
+
+div.table table thead tr:last-of-type th:last-child {
+  border-top-right-radius: 2.88px; }
+
+.book > .toc .toc-chapter .cnx-gentext-chapter.cnx-gentext-t {
+  float: left;
+  max-width: 90%; }
+
+.book > .toc > ul > li.toc-appendix > a.target-appendix::before {
+  display: none;
+  content: counter(toc-chapter-counter,decimal);
+  float: left;
+  padding: 0em .25em;
+  margin: 0px 15px 0px 13px;
+  height: 1.25em;
+  line-height: 1.25em;
+  display: inline-block;
+  color: #77294A;
+  border: 1px solid #F0A041;
+  font-size: 12px;
+  padding: 0;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  content: target-counter(attr(href), appendix, upper-latin) " "; }
+
+div.book > div.appendix > div.section div.equation:not(.labeled).unnumbered {
+  counter-increment: none !important; }
+
+div.book div.appendix > div.section div.equation.unnumbered > *:last-child::after,
+div.book div.appendix > div.section div.equation.unnumbered > *:last-child::before {
+  display: none !important; }
+
+.chapter .figure.small,
+.appendix .figure.small,
+.cnx-eoc .exercise div.body div.problem .figure.small {
+  font-size: xx-small;
+  padding-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  page-break-inside: avoid;
+  font-family: 'Noto Sans', sans-serif, STIXGeneral, STIXSizeOneSym, STIXSize1;
+  font-size: 9pt;
+  padding-bottom: 1em;
+  text-align: left;
+  display: table;
+  caption-side: bottom;
+  padding-bottom: 0;
+  width: 100%;
+  width: initial; }
+
+.glossary dl dt,
+.glossary dl dd {
+  margin-top: 0px; }
+
+/* -------------------------
+ * Equations
+ * -------------------------
+ */
+div.book div.chapter > div.section div.equation.unnumbered,
+div.book div.chapter > div.section div.equation:not(.labeled).unnumbered,
+div.book div.chapter > div.section div.example div.exercise div.equation.unnumbered,
+div.book div.chapter > div.section div.example div.exercise div.equation:not(.labeled).unnumbered {
+  counter-increment: none !important; }
+
+div.book div.chapter > div.section div.equation.unnumbered > *:last-child::after,
+div.book div.chapter > div.section div.equation.unnumbered > *:last-child::before {
+  display: none !important; }
+
+/* -------------------------
+ * Tables
+ * -------------------------
+ */
+div.book div.chapter .table.unnumbered,
+div.book div.chapter .table:not(labeled).unnumbered {
+  counter-increment: none !important; }
+
+div.book div.chapter div.table:not(.labeled).unnumbered > table > caption:not(.labeled)::before,
+div.book div.appendix div.table:not(.labeled).unnumbered > table > caption:not(.labeled)::before {
+  display: none !important; }
+
+/* -------------------------
+ * Figures
+ * -------------------------
+ */
+div.book div.chapter .figure.unnumbered,
+div.book div.chapter .figure:not(.labeled).unnumbered {
+  counter-increment: none !important; }
+
+div.book div.chapter div.figure:not(.labeled).unnumbered > .caption:not(.labeled)::before,
+div.book div.appendix div.figure:not(.labeled).unnumbered > .caption:not(.labeled)::before {
+  display: none !important; }
+
+/* -------------------------
+ * Table of Contents
+ * -------------------------
+ */
+div.book > div.toc {
+  page: table-of-contents; }
+
+/* -------------------------
+ * Preface
+ * -------------------------
+ */
+div.book div.preface {
+  page: preface; }
+
+div.book div.preface > .titlepage h1.title {
+  string-set: cnx-header "Preface"; }
+
+/* -------------------------
+ * Chapter
+ * -------------------------
+ */
+div.book div.chapter > div.titlepage > div > div h1.title span.cnx-gentext-t {
+  string-set: cnx-header "Chapter " counter(chapter,decimal) " | " content(); }
+
+/* -------------------------
+ * Appendix
+ * -------------------------
+ */
+div.book > div.appendix > div.titlepage > div > div h1.title span.cnx-gentext-t {
+  string-set: cnx-header "Appendix " counter(appendix,upper-latin); }
+
+/* -------------------------
+ * Index
+ * -------------------------
+ */
+div.book div.index div.title h2 {
+  string-set: cnx-header "Index"; }
+
+div.book div.chapter > div.titlepage > div > div h1.title span.cnx-gentext-t {
+  string-set: cnx-header "Chapter " counter(chapter,decimal) "   " content(); }
+
+.chapter > .introduction > .figure.splash {
+  width: 8.75in;
+  margin-left: -0.125in; }
+
+.chapter > .introduction > .figure.splash::before {
+  width: 8.75in; }
+
+.chapter > .introduction > .figure.splash div.mediaobject {
+  width: 8.75in; }
+
+.chapter > .introduction > .figure.splash div.mediaobject img {
+  width: 8.75in; }
+
+body {
+  background: #000; }
+
+/*# sourceMappingURL=common.css.map */
