@@ -11,16 +11,16 @@ source ./books.txt || exit 1
 
 if [[ -z "${arg1}" ]]
 then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the ruleset as the 1st argument'
-  >&2 echo ' or --all for all rulesets.'
+  >&2 echo 'ERROR: Argument Missing. You must specify the name of the recipe as the 1st argument'
+  >&2 echo ' or --all for all recipes.'
   >&2 echo 'This script prepares the guide to compare against.'
   >&2 echo 'Typically this step is done in the master branch'
   >&2 echo 'and then in another branch diff-guide is called to see how the HTML changed.'
   >&2 echo ''
-  >&2 echo "Valid rulesets are (from ./books.txt):"
-  for rulesetName in "${RULESET_NAMES[@]}"
+  >&2 echo "Valid recipes are (from ./books.txt):"
+  for recipeName in "${RECIPE_NAMES[@]}"
   do
-    >&2 echo "${rulesetName}"
+    >&2 echo "${recipeName}"
   done
   exit 1
 fi
@@ -34,12 +34,12 @@ fi
 if [[ ! "${arg1}" == "--all" ]]
 then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for rulesetName in "${RULESET_NAMES[@]}"
+  for recipeName in "${RECIPE_NAMES[@]}"
   do
 
-    if [[ "${arg1}" = "${rulesetName}" ]]
+    if [[ "${arg1}" = "${recipeName}" ]]
     then
-      RULESET_NAMES=("${rulesetName}")
+      RECIPE_NAMES=("${recipeName}")
       foundConfig=1
       break
     fi
@@ -47,17 +47,17 @@ then
 
   if [[ ! 1 -eq "${foundConfig}" ]]
   then
-    >&2 echo "ERROR: Could not find Book info for ruleset named ${arg1}"
+    >&2 echo "ERROR: Could not find Book info for recipe named ${arg1}"
     >&2 echo "Valid books are (from ./books.txt):"
-    for rulesetName in "${RULESET_NAMES[@]}"
+    for recipeName in "${RECIPE_NAMES[@]}"
     do
-      >&2 echo "${rulesetName}"
+      >&2 echo "${recipeName}"
     done
     exit 1
   fi
 fi
 
-for rulesetName in "${RULESET_NAMES[@]}"
+for recipeName in "${RECIPE_NAMES[@]}"
 do
-  ./script/generate-guide "${rulesetName}" "${bakedOrPreparedSuffix}" || exit 1
+  ./script/generate-guide "${recipeName}" "${bakedOrPreparedSuffix}" || exit 1
 done

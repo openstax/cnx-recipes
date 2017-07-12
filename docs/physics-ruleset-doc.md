@@ -1,4 +1,4 @@
-Details for Physics Ruleset
+Details for Physics Recipe
 ===========================
 
  * Abstracts are collected at the beginning of the chapter in the first Intro page

@@ -18,7 +18,7 @@ then
   >&2 echo "Valid books are (from ./books.txt):"
   for bookConfig in "${BOOK_CONFIGS[@]}"
   do
-    read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+    read -r bookName recipeName uuid _ <<< "${bookConfig}"
     >&2 echo "${bookName}"
   done
   exit 1
@@ -29,11 +29,11 @@ then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for bookConfig in "${BOOK_CONFIGS[@]}"
   do
-    read -r bookConfigName rulesetName uuid hostName _ <<< "${bookConfig}"
+    read -r bookConfigName recipeName uuid hostName _ <<< "${bookConfig}"
 
     if [[ "${arg1}" = "${bookConfigName}" ]]
     then
-      BOOK_CONFIGS=("${bookConfigName} ${rulesetName} ${uuid} ${hostName} ${_}")
+      BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid} ${hostName} ${_}")
       hostName=${HOST:-${hostName}}
 
       foundConfig=1
@@ -47,7 +47,7 @@ then
     >&2 echo "Valid books are (from ./books.txt):"
     for bookConfig in "${BOOK_CONFIGS[@]}"
     do
-      read -r bookName rulesetName uuid _ <<< "${bookConfig}"
+      read -r bookName recipeName uuid _ <<< "${bookConfig}"
       >&2 echo "${bookName}"
     done
     exit 1
@@ -56,7 +56,7 @@ fi
 
 for bookConfig in "${BOOK_CONFIGS[@]}"
 do
-  read -r bookName rulesetName uuid hostName _ <<< "${bookConfig}"
+  read -r bookName recipeName uuid hostName _ <<< "${bookConfig}"
   # Allow user to override the hostname
   hostName=${HOST:-${hostName}}
 

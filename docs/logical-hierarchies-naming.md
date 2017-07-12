@@ -2,7 +2,7 @@ Textbooks as defined in OpenStax are hierachical, nested trees, with the leaves
 being indivdual HTML pages. (The logical levels of nesting continue inside the
 indivual pages, but that is beyond the scope of this document)
 
-The CSS rulesets - used for processing (collation and numbering) as well as
+The CSS recipes - used for processing (collation and numbering) as well as
 styling - need to be able to reference logical levels of that hierachy
 unambigously. As often happens in technical systems, the natural names for some
 of these levels (c.f. "book", "page") collide with their more specific,
