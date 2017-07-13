@@ -255,11 +255,19 @@
 
 @mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle) {
 
+  // create divider span for title
+  &::before {
+    container: span;
+    class: 'os-divider';
+    content: ' ';
+    move-to: bCaptionDivider;
+  }
+
   @if ($hasCaption) {
     #{$defaultContainer} {
       container: span;
       class: "os-caption";
-      move-to: bCaption;
+      move-to: bCaptionContent;
     }
   }
   @if ($hasTitle) {
@@ -267,13 +275,13 @@
       #{$defaultContainer} [data-type="title"] {
         container: span;
         class: "os-title";
-        move-to: bCaption;
+        move-to: bCaptionTitle;
       }
     } @else if ($captionType == $CAPTION_FIGURE) {
       [data-type="title"] {
         container: span;
         class: "os-title";
-        move-to: bCaption;
+        move-to: bCaptionTitle;
       }
     } @else {
       @error "BUG: Invalid captionType '#{$captionType}'";
@@ -282,7 +290,7 @@
   &::after {
     container: div;
     class: "os-caption-container";
-    content: pending(bCaption);
+    content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
     move-to: bCaptionContainer;
   }
   &::outside {
