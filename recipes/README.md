@@ -69,6 +69,7 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_Coverage_MayHaveSimlinks`: a boolean
   - `$Config_Coverage_MayHaveIframes`: a boolean
   - `$Config_Coverage_MayHaveMissingExercises`: a boolean
+- `$Config_UnnumberedEquations`: a list of [UnnumberedExercises](#unnumberedexercise)
 - `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
 - `$Config_hasCompositeAppendixes`: a boolean (used for some TEA books)
 
@@ -156,9 +157,12 @@ A `Note` contains the following fields:
 
 ## UnnumberedExercise
 
-Sometimes exercises in notes should not be numbered. This shows which ones.
+Sometimes exercises (or equations) in notes should not be numbered. This shows which ones.
+
+The name of this type is currently a little confusing but it is this because the need for unnumbered Exercises came before the need for unnumbered Equations.
+
 TODO: It would be nice to move these into the note config but it seems like
-the context is not always a note, and the child is not always an exercise.
+the context is not always a note, and the child is not always an exercise/equation.
 so the proper place to put this requires a bit more thought
 
 It contains the following fields:

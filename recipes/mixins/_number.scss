@@ -298,18 +298,19 @@
   }
 }
 
-@mixin number_equations ($numberedEquation, $excludedClass, $numberAfterEq) {
-  $sectionSelector: if($excludedClass, 'section:not(.#{$excludedClass})', 'section');
-  #{$sectionSelector} [data-type="equation"]:not(.unnumbered) {
-    @if $numberAfterEq {
-      @include utils_title($numberedEquation, equationNum);
-      &::after {
-        class: os-equation-number;
-        container: div;
-        content: pending(equationNum)
+@mixin number_equations ($numberedEquation, $numberAfterEq) {
+  [data-type="chapter"], .appendix {
+    [data-type="equation"]:not(.unnumbered) {
+      @if $numberAfterEq {
+        @include utils_title($numberedEquation, equationNum);
+        &::after {
+          class: os-equation-number;
+          container: div;
+          content: pending(equationNum)
+        }
+      } @else {
+        @include utils_title($numberedEquation);
       }
-    } @else {
-      @include utils_title($numberedEquation);
     }
   }
 }
