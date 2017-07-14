@@ -255,14 +255,6 @@
 
 @mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle) {
 
-  // create divider span for title
-  &::before {
-    container: span;
-    class: 'os-divider';
-    content: ' ';
-    move-to: bCaptionDivider;
-  }
-
   @if ($hasCaption) {
     #{$defaultContainer} {
       container: span;
@@ -271,6 +263,15 @@
     }
   }
   @if ($hasTitle) {
+
+    // create divider span for title
+    &::after {
+      container: span;
+      class: 'os-divider';
+      content: ' ';
+      move-to: bCaptionDivider;
+    }
+
     @if ($captionType == $CAPTION_TABLE) {
       #{$defaultContainer} [data-type="title"] {
         container: span;
