@@ -4,9 +4,37 @@
   xmlns:h="http://www.w3.org/1999/xhtml"
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
   xmlns:c="http://cnx.rice.edu/cnxml"
+  exclude-result-prefixes="h mml c"
   >
 
   <xsl:import href="../vendor/rhaptos.cnxmlutils/rhaptos/cnxmlutils/xsl/cnxml-to-html5.xsl"/>
+
+  <!-- Wrap the root element inside a <body> tag -->
+  <xsl:template match="/">
+    <xsl:choose>
+      <xsl:when test="h:html">
+        <!-- if it already has a root element then just copy it. This is needed for snippets that have multiple chapters -->
+        <xsl:apply-templates select="node()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <html>
+          <body>
+            <!-- In order to be technically well-formed these elements would need to be added as well
+            <div data-type="metadata">
+              <h1 data-type="document-title" itemprop="name">Book Title</h1>
+              <a data-type="license" href="http://creativecommons.org/licenses/by/4.0/"> </a>
+            </div>
+            <nav id="toc">
+              <ol>
+              </ol>
+            </nav>
+            -->
+            <xsl:apply-templates select="node()"/>
+          </body>
+        </html>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <!-- Copy all the HTML elements in the original file -->
   <xsl:template match="
