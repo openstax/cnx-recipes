@@ -36,10 +36,46 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- Convert specially-marked comments into elements -->
+  <xsl:template match="comment()">
+    <xsl:variable name="commentText" select="normalize-space(.)"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+    <xsl:choose>
+      <xsl:when test="$commentText = 'START:Page'">
+        <!-- <div data-type="page"> -->
+        <xsl:value-of select="'&lt;div data-type=&quot;page&quot;>'" disable-output-escaping="yes" />
+      </xsl:when>
+      <xsl:when test="$commentText = 'END:Page'">
+        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+      </xsl:when>
+      <xsl:when test="$commentText = 'START:Chapter'">
+        <!-- <div data-type="chapter"> -->
+        <xsl:value-of select="'&lt;div data-type=&quot;chapter&quot;>'" disable-output-escaping="yes" />
+      </xsl:when>
+      <xsl:when test="$commentText = 'END:Chapter'">
+        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+      </xsl:when>
+      <xsl:when test="$commentText = 'START:Appendix'">
+        <!-- <div data-type="chapter" class="appendix"> -->
+        <xsl:value-of select="'&lt;div data-type=&quot;chapter&quot; class=&quot;appendix&quot;>'" disable-output-escaping="yes" />
+      </xsl:when>
+      <xsl:when test="$commentText = 'END:Appendix'">
+        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Unwrap the specially-marked root element -->
+  <xsl:template match="c:hack-root" priority="1">
+    <xsl:apply-templates select="node()"/>
+  </xsl:template>
+
   <!-- Copy all the HTML elements in the original file -->
   <xsl:template match="
       *[not(self::c:*) and not(self::mml:*)]/@*
-    | node()[not(self::c:*) and not(self::mml:*) and not(parent::c:*) and not(parent::mml:*)]
+    | node()[not(self::c:*) and not(self::mml:*) and not(parent::c:*) and not(parent::mml:*) and not(self::comment()) and not(self::c:hack-root)]
     ">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
@@ -48,7 +84,7 @@
 
   <!-- Ensure that the elements are in the XHTML namespace -->
   <xsl:template match="
-      *[not(self::c:*) and not(self::mml:*)]
+      *[not(self::c:*) and not(self::mml:*) and not(self::c:hack-root)]
     ">
     <xsl:element name="{local-name()}">
       <xsl:apply-templates select="@*|node()"/>
