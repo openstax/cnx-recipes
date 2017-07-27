@@ -15,6 +15,7 @@
 
 @if $Config_hasCompositeAppendixes {
   :pass(1) {
+    @include reference_refBookMetadataNodeAs(bookMetadata);
     body {
       .appendix {
         move-to: chapterAppendices;
@@ -34,7 +35,7 @@
       &::after {
         data-type: composite-chapter;
         data-uuid-key: appendicesChapter;
-        content: pending(appendicesTitle) pending(chapterAppendices);
+        content: pending(appendicesTitle) nodes(bookMetadata) pending(chapterAppendices);
       }
     }
   }
@@ -57,7 +58,7 @@
        }
      }
      &:deferred {
-      content:  pending(metadata) pending(appendixTitle)  content();
+      content: pending(appendixTitle) pending(metadata) content();
      }
     }
   }
@@ -65,6 +66,7 @@
 
 @if $Config_TEAspecificHasCompositePreface {
   :pass(1) {
+    @include reference_refBookMetadataNodeAs(bookMetadata);
     body {
     .preface {
       &::after {
@@ -83,7 +85,7 @@
         &::outside {
          data-type: composite-chapter;
          data-uuid-key: prefaceChapter;
-         content: pending(prefaceTitle)  content();
+         content: pending(prefaceTitle) nodes(bookMetadata) content();
         }
       }
     }
@@ -107,7 +109,7 @@
        }
      }
      &:deferred {
-      content:  pending(metadata) pending(prefaceTitle)  content();
+      content: pending(prefaceTitle) pending(metadata) content();
      }
     }
   }
@@ -140,13 +142,13 @@
   }
 }
 
-//remove the index
-:pass(6) {
-    @include modify_trash(".os-index-container");
-    @include modify_trash(".os-solutions-container");
-    @include modify_trash(".os-teacher");
-    @include utils_clearTrash();
-}
+
 :pass(8) {
+  //remove eob materials and teacher support notes
+  @include modify_trash(".os-index-container");
+  @include modify_trash(".os-solutions-container");
+  @include modify_trash(".os-teacher");
+  @include utils_clearTrash();
+
   @include modify_retitleHeaders($Config_hasCompositeChapter);
 }
