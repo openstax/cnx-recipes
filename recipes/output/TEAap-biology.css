@@ -1480,8 +1480,6 @@
   node-set: bookMetadata; }
 :pass(7) [data-type="composite-page"] {
   content: nodes(bookMetadata) content(); }
-:pass(7) [data-type="composite-chapter"] {
-  content: nodes(bookMetadata) content(); }
 :pass(7) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
   content: "Key Terms";
@@ -2000,6 +1998,8 @@
   data-type: "title";
   content: "Learning Objectives"; }
 
+:pass(1) body > [data-type="metadata"] {
+  node-set: bookMetadata; }
 :pass(1) body .preface::after {
   container: span;
   class: "os-text";
@@ -2013,7 +2013,7 @@
 :pass(1) body .preface::outside {
   data-type: composite-chapter;
   data-uuid-key: prefaceChapter;
-  content: pending(prefaceTitle) content(); }
+  content: pending(prefaceTitle) nodes(bookMetadata) content(); }
 
 :pass(3) .preface::inside {
   container: section;
@@ -2024,7 +2024,7 @@
 :pass(4) .preface .preface-container [data-type="metadata"] {
   move-to: metadata; }
 :pass(4) .preface:deferred {
-  content: pending(metadata) pending(prefaceTitle) content(); }
+  content: pending(prefaceTitle) pending(metadata) content(); }
 
 :pass(5) .preface-container > h1[data-type="document-title"] {
   container: h2; }
@@ -2036,15 +2036,14 @@
 :pass(7) [data-type="composite-chapter"] .preface .preface-container > [data-type="document-title"] {
   container: h3; }
 
-:pass(6) .os-index-container {
+:pass(8) .os-index-container {
   move-to: trash; }
-:pass(6) .os-solutions-container {
+:pass(8) .os-solutions-container {
   move-to: trash; }
-:pass(6) .os-teacher {
+:pass(8) .os-teacher {
   move-to: trash; }
-:pass(6) body:deferred::after {
+:pass(8) body:deferred::after {
   content: clear(trash); }
-
 :pass(8) [data-type="chapter"] [data-type="page"] [data-type="note"] > .os-title,
 :pass(8) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(8) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
