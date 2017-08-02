@@ -146,6 +146,7 @@
       $pageName: map-get($page, name);
       $clusterBy: map-get($page, clusterBy);
       $specialPageType: map-get($page, specialPageType);
+      $sortBy: map-get($page, sortBy);
       @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
       $sourceSelector: if($specialPageType == $PAGE_GLOSSARY, 'div[data-type="#{$className}"] dl', 'section.#{$className}');
       @if ($specialPageType == $PAGE_GLOSSARY) {
@@ -189,6 +190,9 @@
       &::after {
         class: "os-#{$className}-container";
         content: pending(#{$className}-title) pending(#{$className}-DESTINATION);
+        @if ($sortBy != null) {
+          sort-by: #{$sortBy}, nocase;
+        }
         move-to: composite-DESTINATION;
       }
     }
