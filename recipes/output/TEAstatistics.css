@@ -1543,6 +1543,44 @@ Formula Review page
 :pass(4) .appendix:deferred {
   content: pending(appendixTitle) pending(metadata) content(); }
 
+:pass(1) body > [data-type="metadata"] {
+  node-set: bookMetadata; }
+:pass(1) body .preface::after {
+  container: span;
+  class: "os-text";
+  content: "Preface";
+  move-to: prefaceTitleSpans; }
+:pass(1) body .preface::after {
+  container: h1;
+  data-type: "document-title";
+  content: pending(prefaceTitleSpans);
+  move-to: prefaceTitle; }
+:pass(1) body .preface::outside {
+  data-type: composite-chapter;
+  data-uuid-key: prefaceChapter;
+  content: pending(prefaceTitle) nodes(bookMetadata) content(); }
+
+:pass(3) .preface::inside {
+  container: section;
+  class: "preface-container"; }
+
+:pass(4) .preface .preface-container > h1[data-type="document-title"] {
+  copy-to: prefaceTitle; }
+:pass(4) .preface .preface-container [data-type="metadata"] {
+  move-to: metadata; }
+:pass(4) .preface:deferred {
+  content: pending(prefaceTitle) pending(metadata) content(); }
+
+:pass(5) .preface-container > h1[data-type="document-title"] {
+  container: h2; }
+
+:pass(7) [data-type="composite-chapter"] > [data-type="metadata"] [data-type="document-title"] {
+  content: "Preface"; }
+:pass(7) [data-type="composite-chapter"] .preface > [data-type="document-title"] {
+  container: h2; }
+:pass(7) [data-type="composite-chapter"] .preface .preface-container > [data-type="document-title"] {
+  container: h3; }
+
 :pass(8) .os-index-container {
   move-to: trash; }
 :pass(8) .os-solutions-container {
