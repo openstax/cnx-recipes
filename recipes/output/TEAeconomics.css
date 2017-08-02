@@ -1475,6 +1475,51 @@
 :pass(100) body:deferred::after {
   content: clear(trash); }
 
+:pass(8) body body > [data-type="metadata"] {
+  node-set: bookMetadata; }
+:pass(8) body [data-type="composite-page"].os-references-container > .os-chapter-area > [data-type="document-title"] {
+  container: h4; }
+:pass(8) body [data-type="composite-page"].os-references-container > .os-chapter-area > section > [data-type="document-title"] {
+  container: h5; }
+:pass(8) body [data-type="composite-page"].os-references-container > h1[data-type="document-title"] {
+  string-set: references-page-title content();
+  container: h2;
+  move-to: references-page-orig-title; }
+:pass(8) body [data-type="composite-page"].os-references-container > [data-type="metadata"] {
+  move-to: references-page-orig-meta; }
+:pass(8) body [data-type="composite-page"].os-references-container::after {
+  container: span;
+  class: "os-text";
+  content: string(references-page-title);
+  move-to: references-page-header-text; }
+:pass(8) body [data-type="composite-page"].os-references-container::after {
+  container: h3;
+  data-type: "title";
+  content: pending(references-page-header-text);
+  move-to: references-page-header; }
+:pass(8) body [data-type="composite-page"].os-references-container::inside {
+  container: section;
+  class: "composite-page-container";
+  content: pending(references-page-header) content(); }
+:pass(8) body [data-type="composite-page"].os-references-container:deferred {
+  content: pending(references-page-orig-title) pending(references-page-orig-meta) content();
+  move-to: references-compositePage; }
+:pass(8) body::after {
+  container: span;
+  class: "os-text";
+  content: string(references-page-title);
+  move-to: references-chapter-title-text; }
+:pass(8) body::after {
+  container: h1;
+  data-type: "document-title";
+  content: pending(references-chapter-title-text);
+  move-to: references-compositeTitle; }
+:pass(8) body::after {
+  container: div;
+  data-type: "composite-chapter";
+  data-uuid-key: referencesChapter;
+  content: pending(references-compositeTitle) nodes(bookMetadata) pending(references-compositePage); }
+
 :pass(0) .learning-objective::before,
 :pass(0) [data-type="page"]:not(.introduction) [data-type="abstract"]::before {
   container: h3;

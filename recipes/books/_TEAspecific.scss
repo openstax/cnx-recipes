@@ -5,11 +5,26 @@
   body {
     @include reference_refBookMetadataNodeAs(bookMetadata);
     [data-type="composite-page"].os-#{$className}-container {
-      [data-type="document-title"] {
+
+      // This overrides the modify_retitleHeaders in this container(see generator)
+      > .os-chapter-area {
+        > [data-type="document-title"] {
+          container: h4;
+        }
+        > section {
+          > [data-type="document-title"] {
+            container: h5;
+          }
+        }
+      }
+
+      // Page -> Chapter conversion
+      > h1[data-type="document-title"] {
         string-set: #{$className}-page-title content();
+        container: h2;
         move-to: #{$className}-page-orig-title;
       }
-      [data-type="metadata"] {
+      > [data-type="metadata"] {
         move-to: #{$className}-page-orig-meta;
       }
       &::after {
@@ -24,21 +39,27 @@
         content: pending(#{$className}-page-header-text);
         move-to: #{$className}-page-header;
       }
-      &::after {
+      &::inside {
         container: section;
         class: "composite-page-container";
         content: pending(#{$className}-page-header) content();
-        move-to: #{$className}-page-container;
       }
-      &::deferred {
-        content: pending(#{$className}-page-orig-title) pending(#{$className}-page-orig-meta) pending(#{$className}-page-container);
+      &:deferred {
+        content: pending(#{$className}-page-orig-title) pending(#{$className}-page-orig-meta) content();
         move-to: #{$className}-compositePage;
       }
+    }
+    // Place converted page at the end of the book
+    &::after {
+      container: span;
+      class: "os-text";
+      content: string(#{$className}-page-title);
+      move-to: #{$className}-chapter-title-text;
     }
     &::after {
       container: h1;
       data-type: "document-title";
-      content: string(#{$className}-page-title);
+      content: pending(#{$className}-chapter-title-text);
       move-to: #{$className}-compositeTitle;
     }
     &::after {
@@ -50,13 +71,13 @@
   }
 }
 
-@if $Config_convertEOBCompositePageToChapter {
-  @each $pageClass in $Config_convertEOBCompositePageToChapter {
-    :pass(8) {
-      @include TEAspecific_EOBCompositePageToChapter($pageClass);
-    }
+$Config_convertEOBCompositePageToChapter: () !default;
+@each $pageClass in $Config_convertEOBCompositePageToChapter {
+  :pass(8) {
+    @include TEAspecific_EOBCompositePageToChapter($pageClass);
   }
 }
+
 
 @if $Config_TEAspecificLOHeaders {
   :pass(0) {
