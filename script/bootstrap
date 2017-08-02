@@ -18,6 +18,23 @@ if [ -f "Brewfile" ] && [ "$(uname -s)" = "Darwin" ]; then
 fi
 
 
+if [[ ! "${CI}" = "true" && ! $(which virtualenv) ]]; then
+  >&2 echo "ERROR: virtualenv (Python Virtualenv) is not installed. Please install it"
+  exit 1
+fi
+
+if [[ ! "${CI}" = "true" && ! $(which rbenv) ]]; then
+  >&2 echo "ERROR: rbenv (Ruby Virtualenv) is not installed. Please install it"
+  exit 1
+fi
+
+if [[ ! "${CI}" = "true" && ! $(which node) ]]; then
+  >&2 echo "ERROR: node (NodeJS) is not installed. Please install it by going to https://github.com/creationix/nvm"
+  exit 1
+fi
+
+
+
 >&2 echo "==> Installing Node package dependencies"
 >&2 echo "Using node: $(node --version)"
 >&2 echo "Using npm: $(npm --version)"
@@ -27,12 +44,15 @@ npm install || exit 1
 if [ ! "${CI}" = "true" ] && [ -f ".ruby-version" ]; then
   if [[ -n $(which rbenv) ]]; then
 
-    if [ -z "$(rbenv version-name 2>/dev/null)" ]; then
+    rbenv_version="$(rbenv version-name 2>/dev/null)"
+    if [ -z "${rbenv_version}" ]; then
       >&2 echo "==> Installing Ruby…"
       rbenv install --skip-existing || {
         echo "WARNING: 'rbenv install' errored. I am assuming you know what you are doing (and have sass installed locally) so continuing"
         exit 0
       }
+    else
+      echo "Using rbenv ruby: ${rbenv_version}"
     fi
   else
     >&2 echo "WARNING: Skipping rbenv. Using local ruby"
