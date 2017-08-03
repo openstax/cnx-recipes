@@ -221,8 +221,32 @@ $Config_convertEOBCompositePageToChapter: () !default;
   }
 }
 
+$Config_startPageWithLO: false !default;
+@if $Config_startPageWithLO {
+  :pass(1) {
+    [data-type="page"]:not(.preface):not(.appendix):not(.introduction) {
+      > div[data-type="metadata"] {
+        node-set: page-meta;
+        move-to: trash;
+      }
+      > [data-type="document-title"] {
+        node-set: page-doc-title;
+        move-to: trash;
+      }
+      > section.learning-objectives {
+        node-set: page-LO;
+        move-to: trash;
+      }
+      &:deferred {
+        content: nodes(page-doc-title) nodes(page-meta) nodes(page-LO) content();
+      }
+    }
+    @include utils_clearTrash();
+  }
+}
+
 :pass(8) {
-  //remove eob materials and teacher support notes
+  // Remove eob materials and teacher support notes
   @include modify_trash(".os-index-container");
   @include modify_trash(".os-solutions-container");
   @include modify_trash(".os-teacher");
