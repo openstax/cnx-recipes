@@ -341,7 +341,7 @@
         }
         [data-type="solution"] {
           .solution-title {
-          container: h4;
+            container: h4;
           }
         }
       }
@@ -467,6 +467,24 @@
         content: pending(bTitleLabel) content();
       }
 
+    }
+  }
+}
+
+/// Will add a title/header with string param to solutions in a selected location
+/// @group modify
+@mixin modify_addSolutionHeader($selector, $titleString) {
+  #{$selector} [data-type="solution"] {
+    > [data-type="title"] {
+      move-to: trash;
+    }
+    $solutionTitleContent: (os-text: $titleString);
+    @include utils_title($solutionTitleContent, bSolutionHeader);
+    &::before {
+      content: pending(bSolutionHeader);
+      data-type: "title";
+      class: "solution-title";
+      container: h4;
     }
   }
 }
