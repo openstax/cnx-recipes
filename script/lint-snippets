@@ -2,12 +2,18 @@
 
 echo "==> Checking that HTML snippets are well-formed XML"
 
-for file_name in $(find ./recipes/books/*/styleguide/*.xhtml ./recipes/mixins/styleguide/*.xhtml); do
-  error_messages="$(xmllint ${file_name} )"
-  error=$?
+temp_file="temp-linting.xml"
+for file_name in $(find ./recipes/books/*/styleguide/*.snippet.xml ./recipes/mixins/styleguide/*.snippet.xml); do
+  xmllint --pretty 1 "${file_name}" > "${temp_file}"
+  error_status=$?
 
-  if [[ ${error} != 0 ]]; then
-    echo "${file_name}"
+  if [[ ${error_status} = 0 ]]; then
+    # Remove the "<?xml version="1.0"?>" at the top of the file
+    cat "${temp_file}" | tail -n +2 > "${file_name}"
+    rm "${temp_file}"
+  else
+    echo "ERROR linting ${file_name}"
     exit 1
   fi
+
 done

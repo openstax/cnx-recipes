@@ -34,3 +34,19 @@ else
   echo "ERROR. Not in a virtualenv"
   exit 1
 fi
+
+
+# Clone the rhaptos.cnxmlutils repo in here
+if [[ ! -d ./vendor/rhaptos.cnxmlutils/.git/ ]]; then
+  >&2 echo "==> Installing ./vendor/rhaptos.cnxmlutils/"
+  git clone https://github.com/Connexions/rhaptos.cnxmlutils.git ./vendor/rhaptos.cnxmlutils/
+else
+  >&2 echo "==> Using existing ./vendor/rhaptos.cnxmlutils/"
+fi
+
+>&2 echo "==> Checking out branch in ./vendor/rhaptos.cnxmlutils/ (see https://github.com/Connexions/rhaptos.cnxmlutils/pull/157)"
+
+cd "./vendor/rhaptos.cnxmlutils/"
+git checkout rng-fixes
+git pull
+cd ..

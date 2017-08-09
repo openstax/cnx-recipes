@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Make sure the snippets are well-formed XML
+./script/lint-snippets || exit 1
+
 # Generate the CSS files for books
 ./script/compile-books || exit 1
 
@@ -17,9 +20,6 @@ for recipeName in "${RECIPE_NAMES[@]}"
 do
   ./script/generate-guide "${recipeName}" || exit 1
 done
-
-# Make sure the snippets are well-formed XML
-./script/lint-snippets || exit 1
 
 # Generate an index.html page for the styleguide
 styleguideDir="./styleguide/"

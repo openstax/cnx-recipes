@@ -1,0 +1,40 @@
+#!/bin/bash
+
+temp_file1="temp1.xhtml"
+temp_file2="temp2.xhtml"
+
+for file_name in $(find ./recipes/books/*/styleguide/*.xhtml); do
+  echo "${file_name}"
+
+  without_ext="$(dirname "${file_name}")/$(basename "${file_name}" .xhtml)"
+  snippet_file="${without_ext}.snippet.xml"
+  raw_file="${without_ext}.raw.xml"
+
+  xsltproc ./script/_xhtml-to-cnxml.xsl "${file_name}" > "${snippet_file}"
+  if [[ 0 = $? ]]; then
+    xsltproc ./script/_cnxml-to-xhtml.xsl "${snippet_file}" > "${raw_file}"
+  else
+    exit 1
+  fi
+
+  # rm ${snippet_file}
+  rm ${raw_file}
+done
+
+for file_name in $(find ./recipes/mixins/styleguide/*.xhtml); do
+  echo "${file_name}"
+
+  without_ext="$(dirname "${file_name}")/$(basename "${file_name}" .xhtml)"
+  snippet_file="${without_ext}.snippet.xml"
+  raw_file="${without_ext}.raw.xml"
+
+  xsltproc ./script/_xhtml-to-cnxml.xsl "${file_name}" > "${snippet_file}"
+  if [[ 0 = $? ]]; then
+    xsltproc ./script/_cnxml-to-xhtml.xsl "${snippet_file}" > "${raw_file}"
+  else
+    exit 1
+  fi
+
+  # rm ${snippet_file}
+  rm ${raw_file}
+done
