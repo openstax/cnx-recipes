@@ -465,13 +465,21 @@
   content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
-:pass(0) div.missing-exercise {
-  move-to: trash; }
+:pass(0) [data-type="exercise"] {
+  string-set: missing ""; }
+  :pass(0) [data-type="exercise"] div.missing-exercise {
+    string-set: missing " missing-exercise"; }
+  :pass(0) [data-type="exercise"]::deferred {
+    class: attr(class) string(missing); }
+:pass(0) ol[data-number-style="lower-alpha"] {
+  attr-type: "a"; }
 :pass(0) [data-type="abstract"]::before {
   container: h3;
   data-type: "title";
   content: "Learning Objectives"; }
 
+:pass(1) [data-type="exercise"].missing-exercise {
+  move-to: trash; }
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].check-understanding > div[data-type="title"]::deferred {
   container: h4;
   class: "os-subtitle";

@@ -48,8 +48,9 @@ $_symbolsSectionTitle: "Symbols";
 
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
-  @if $Config_Coverage_MayHaveMissingExercises == true {
-    @include modify_trash('div.missing-exercise');
+  @if $Config_Coverage_MayHaveMissingExercises {
+    @include modify_tagMissingExercises();
+    @include modify_dataNumberStyle();
   }
   @if $Config_hasAbstract == false {
     @include modify_trash('[data-type="abstract"]');
@@ -59,6 +60,9 @@ $_symbolsSectionTitle: "Symbols";
   }
 }
 :pass(1) {
+  @if $Config_Coverage_MayHaveMissingExercises {
+    @include modify_trash('[data-type="exercise"].missing-exercise');
+  }
 
   // Any notes that need to trash the solution
   @each $note in $Config_Notes {

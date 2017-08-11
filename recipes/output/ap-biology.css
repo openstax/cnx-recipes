@@ -524,9 +524,17 @@
   content: pending(genericNote) content(); }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
-:pass(0) div.missing-exercise {
-  move-to: trash; }
+:pass(0) [data-type="exercise"] {
+  string-set: missing ""; }
+  :pass(0) [data-type="exercise"] div.missing-exercise {
+    string-set: missing " missing-exercise"; }
+  :pass(0) [data-type="exercise"]::deferred {
+    class: attr(class) string(missing); }
+:pass(0) ol[data-number-style="lower-alpha"] {
+  attr-type: "a"; }
 
+:pass(1) [data-type="exercise"].missing-exercise {
+  move-to: trash; }
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].art-connection > div[data-type="title"] {
   move-to: trash; }
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].art-connection > p:first-of-type > span[data-type="title"]::deferred {
