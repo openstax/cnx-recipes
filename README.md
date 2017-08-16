@@ -81,6 +81,13 @@ For example, you want to rebake the "cooking" book:
 1. run `./script/bake-book-remote cooking 7.16` (using that version you found)
 
 
+## Fixing the inter-module links in an epub file
+
+1. unzip the epub file to a directory
+1. run `./script/fix-epub-inter-module-links /path/to/unzipped/epub`
+1. zip the file back up
+1. rename the zip file to have a `.epub` extension
+
 ## Regression Testing
 
 To check that there were no regressions in a book what the following process does is:
