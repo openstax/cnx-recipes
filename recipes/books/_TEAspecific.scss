@@ -93,6 +93,17 @@ $Config_convertEOBCompositePageToChapter: () !default;
   }
 }
 
+$Config_TEAspecificLOContainer: false !default;
+@if $Config_TEAspecificLOContainer {
+  :pass(0) {
+    .learning-objective,
+    .learning-objectives,
+    [data-type="page"]:not(.introduction) [data-type="abstract"] {
+      container: section;
+    }
+  }
+}
+
 @if $Config_hasCompositeAppendixes {
   :pass(1) {
     @include reference_refBookMetadataNodeAs(bookMetadata);
@@ -234,7 +245,10 @@ $Config_startPageWithLO: false !default;
         node-set: page-doc-title;
         move-to: trash;
       }
-      > section.learning-objectives {
+      > section.learning-objectives,
+      > section.learning-objective,
+      > section.section-opener section.learning-objective,
+      > section.section-opener section.learning-objectives {
         node-set: page-LO;
         move-to: trash;
       }
