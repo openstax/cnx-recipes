@@ -245,6 +245,30 @@ $Config_startPageWithLO: false !default;
   }
 }
 
+$Config_startIntroWithCO: false !default;
+@if $Config_startIntroWithCO {
+  :pass(1) {
+    [data-type="page"].introduction {
+      > div[data-type="metadata"] {
+        node-set: page-meta;
+        move-to: trash;
+      }
+      > [data-type="document-title"] {
+        node-set: page-doc-title;
+        move-to: trash;
+      }
+      > div.chapter-objectives {
+        node-set: page-CO;
+        move-to: trash;
+      }
+      &:deferred {
+        content: nodes(page-doc-title) nodes(page-meta) nodes(page-CO) content();
+      }
+    }
+    @include utils_clearTrash();
+  }
+}
+
 :pass(8) {
   // Remove eob materials and teacher support notes
   @include modify_trash(".os-index-container");
