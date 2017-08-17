@@ -9,9 +9,62 @@ $_symbolsSectionTitle: "Symbols";
 //TODO: add a switch when our books have composite chapters, define logic/behavior for that switch. This simply could be in the _config files for all books or set based on the presence of at least one type of composite chapter (appendix, multiple page answer key etc.).
 
 
+@mixin misc_webview_styling() {
+  // Adapted from https://github.com/Connexions/webview/blob/master/src/scripts/modules/media/body/content-common.less#L341
+  //   // Block-ish lists
+  //   ul:not([data-display='inline'])          { @include list_style(block, bulleted); }
+  //   ol:not([data-display='inline'])          { @include list_style(block, enumerated); }
+  //   ul[data-labeled-item]                    { @include list_style(block, labeled-item); }
+  //
+  //   // Inline lists (with `data-display='inline'`)
+  //   ul[data-display='inline']                { @include list_style(inline, bulleted); }
+  //   ol[data-display='inline']                { @include list_style(inline, enumerated); }
+  //   ul[data-display='inline'][data-labeled-item] { @include list_style(inline, labeled-item); }
+  //
+  //   // Lists inside a paragraph
+  //   [data-type='list']:not([data-list-type]):not([data-labeled-item])
+  //                                                     { @include list_style-emulated(inline, bulleted); }
+  //   [data-type='list'][data-list-type='bulleted']     { @include list_style-emulated(inline, bulleted); }
+  //   [data-type='list'][data-list-type='enumerated']   { @include list_style-emulated(inline, enumerated); }
+  //   [data-type='list'][data-list-type='labeled-item'] { @include list_style-emulated(inline, labeled-item); }
+  //   div[data-type='list'][data-list-type]             { padding-left: 2.5rem; margin-bottom: 1rem; }
+
+  [data-type='list']:not([data-list-type]),
+  [data-type='list'][data-list-type='bulleted'],
+  [data-type='list'][data-list-type='enumerated'] {
+    // Throw an erros just to make sure these cases do not occur
+    sort-by: 'invalid-namespace-just-to-throw-an-error|element-HACK';
+  }
+
+  [data-type='list'][data-list-type='labeled-item'],
+  [data-type='list'][data-list-type='bulleted'] {
+
+    &:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after {
+      // content: @default-inline-list-item-sep;
+      container: span;
+      attr-class: "os-inline-list-separator";
+      content: "; ";
+    }
+    &[data-item-sep] {
+      // Squirrel away the separator character (if there is one)
+      string-set: listItemSep attr(data-item-sep);
+
+      > [data-type="item"]:not(:last-child)::after {
+        // content: @default-inline-list-item-sep;
+        // .x-not-implemented('data-item-sep=CUSTOM');
+        container: span;
+        attr-class: "os-inline-list-separator";
+        content: string(listItemSep);
+      }
+    }
+  }
+}
+
 
 :pass(0) {
   //Some modifications to be done to the book before any collation
+  @include misc_webview_styling();
+
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
   @if $Config_Coverage_MayHaveSimlinks == true {

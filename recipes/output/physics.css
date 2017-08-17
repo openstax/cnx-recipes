@@ -304,6 +304,23 @@
   Style guide: page.note.chapter-objectives
 */
 @namespace xhtml "http://www.w3.org/1999/xhtml";
+:pass(0) [data-type='list']:not([data-list-type]),
+:pass(0) [data-type='list'][data-list-type='bulleted'],
+:pass(0) [data-type='list'][data-list-type='enumerated'] {
+  sort-by: 'invalid-namespace-just-to-throw-an-error|element-HACK'; }
+:pass(0) [data-type='list'][data-list-type='labeled-item']:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after,
+:pass(0) [data-type='list'][data-list-type='bulleted']:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after {
+  container: span;
+  attr-class: "os-inline-list-separator";
+  content: "; "; }
+:pass(0) [data-type='list'][data-list-type='labeled-item'][data-item-sep],
+:pass(0) [data-type='list'][data-list-type='bulleted'][data-item-sep] {
+  string-set: listItemSep attr(data-item-sep); }
+  :pass(0) [data-type='list'][data-list-type='labeled-item'][data-item-sep] > [data-type="item"]:not(:last-child)::after,
+  :pass(0) [data-type='list'][data-list-type='bulleted'][data-item-sep] > [data-type="item"]:not(:last-child)::after {
+    container: span;
+    attr-class: "os-inline-list-separator";
+    content: string(listItemSep); }
 :pass(0) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
