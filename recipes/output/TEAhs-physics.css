@@ -2100,6 +2100,24 @@
 :pass(100) body:deferred::after {
   content: clear(trash); }
 
+:pass(0) .learning-objective,
+:pass(0) .learning-objectives,
+:pass(0) [data-type="page"]:not(.introduction) [data-type="abstract"] {
+  container: section;
+  data-type: ""; }
+  :pass(0) .learning-objective > div[data-type="title"],
+  :pass(0) .learning-objectives > div[data-type="title"],
+  :pass(0) [data-type="page"]:not(.introduction) [data-type="abstract"] > div[data-type="title"] {
+    move-to: trash; }
+  :pass(0) .learning-objective::before,
+  :pass(0) .learning-objectives::before,
+  :pass(0) [data-type="page"]:not(.introduction) [data-type="abstract"]::before {
+    container: h3;
+    data-type: "title";
+    content: "Learning Objectives"; }
+:pass(0) body:deferred::after {
+  content: clear(trash); }
+
 :pass(1) body > [data-type="metadata"] {
   node-set: bookMetadata; }
 :pass(1) body .appendix {
@@ -2167,6 +2185,23 @@
   container: h2; }
 :pass(7) [data-type="composite-chapter"] .preface .preface-container > [data-type="document-title"] {
   container: h3; }
+
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > div[data-type="metadata"] {
+  node-set: page-meta;
+  move-to: trash; }
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > [data-type="document-title"] {
+  node-set: page-doc-title;
+  move-to: trash; }
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.learning-objectives,
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.learning-objective,
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener section.learning-objective,
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener section.learning-objectives {
+  node-set: page-LO;
+  move-to: trash; }
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction):deferred {
+  content: nodes(page-doc-title) nodes(page-meta) nodes(page-LO) content(); }
+:pass(1) body:deferred::after {
+  content: clear(trash); }
 
 :pass(8) .os-index-container {
   move-to: trash; }

@@ -82,12 +82,31 @@ $Config_convertEOBCompositePageToChapter: () !default;
 @if $Config_TEAspecificLOHeaders {
   :pass(0) {
     .learning-objective,
+    .learning-objectives,
     [data-type="page"]:not(.introduction) [data-type="abstract"] {
+      container: section;
+      data-type: "";
+      > div[data-type="title"] {
+        move-to: trash;
+      }
       &::before {
         container: h3;
         data-type: "title";
         content: "Learning Objectives";
       }
+    }
+    @include utils_clearTrash();
+  }
+}
+
+$Config_TEAspecificLOContainer: false !default;
+@if $Config_TEAspecificLOContainer {
+  :pass(0) {
+    .learning-objective,
+    .learning-objectives,
+    [data-type="page"]:not(.introduction) [data-type="abstract"] {
+      container: section;
+      data-type: "";
     }
   }
 }
@@ -233,7 +252,10 @@ $Config_startPageWithLO: false !default;
         node-set: page-doc-title;
         move-to: trash;
       }
-      > section.learning-objectives {
+      > section.learning-objectives,
+      > section.learning-objective,
+      > section.section-opener section.learning-objective,
+      > section.section-opener section.learning-objectives {
         node-set: page-LO;
         move-to: trash;
       }
