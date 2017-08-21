@@ -187,28 +187,53 @@
 /// Modify GenericNote: Many notes have  different title, the only way to keep those was to pass noteTitle to the title. However, the titles are inconsistent. It might be better to define the title via variables like any other notes and fix the content.
 
 @mixin modify_GenericNote() {
- div[data-type="note"]:not([class]) {
-    >div[data-type="title"] {
-      string-set: noteTitle content();
-      &::before {
-       container: span;
-       class: "os-title-label";
-       content: string(noteTitle);
-       move-to: genericNoteLabel;
-     }
-     move-to: trash;
-    }
-    &::after {
-      container: div;
-      content: pending(genericNoteLabel);
-      class: "os-title";
-      move-to: genericNote;
-     }
-     &:deferred {
-      content: pending(genericNote) content();
-     }
-   }
+  @include _genericNoteNesting(1);
 }
+
+@mixin _genericNoteNesting($maxDepth, $depth: 0) {
+  @if ($depth <= $maxDepth) {
+    $headingLevel: $depth + 3;
+    $noteDepthSelector: (':not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > ');
+    @if $depth > 0 {
+      $noteDepthSelector: ('');
+      @for $i from 1 through $depth {
+        $noteDepthSelector: append($noteDepthSelector, '[data-type="note"]', 'space');
+      }
+    }
+    #{$noteDepthSelector} [data-type="note"]:not([class]) {
+      @include _genericNoteAtLevel($depth, $headingLevel)
+    }
+    @include _genericNoteNesting($maxDepth, $depth + 1);
+  }
+}
+
+@mixin _genericNoteAtLevel($depth, $headingLevel) {
+  $minorLevel: '';
+  @if $depth > 0 {
+    @for $i from 1 through $depth {
+      $minorLevel: $minorLevel + 'Minor';
+    }
+  }
+  &::inside {
+    class: "os-note-body";
+  }
+  > div[data-type="title"] {
+    string-set: noteTitle content();
+    &::before {
+      container: span;
+      class: "os-title-label";
+      content: string(noteTitle);
+      move-to: genericNoteLabel#{$minorLevel};
+    }
+    move-to: trash;
+  }
+  &:deferred::before {
+    container: h#{$headingLevel};
+    content: pending(genericNoteLabel#{$minorLevel});
+    class: "os-title";
+  }
+}
+
 
 @mixin modify_note($noteContent) {
   $className: map-get($noteContent, className);
@@ -232,7 +257,6 @@
 }
 
 @mixin _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $useHeader, $depth: 0) {
-
   @if ($depth <= $maxDepth) {
     $headingLevel: $depth + 3;
     $noteDepthSelector: (':not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > ');
@@ -305,7 +329,7 @@
       move-to: trash;
     }
     &::after {
-      container: div;
+      container: h#{$headingLevel};
       content: pending(myNoteLabel);
       class: "os-title";
       attr-data-type: "title";
@@ -336,7 +360,7 @@
 @mixin modify_retitleHeaders ($hasCompositeChapter) {
   [data-type="chapter"] {
     [data-type="page"] {
-      [data-type="note"],
+      :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"],
       [data-type="example"],
       [data-type="exercise"] {
         > .os-title {
