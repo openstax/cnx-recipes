@@ -1334,11 +1334,23 @@
   node-set: page-doc-title;
   move-to: trash; }
 :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.learning-objectives,
-:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.learning-objective,
-:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener section.learning-objective,
-:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener section.learning-objectives {
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.learning-objective {
   node-set: page-LO;
   move-to: trash; }
+:pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener {
+  class: "learning-objectives"; }
+  :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener > div[data-type="title"] {
+    move-to: trash; }
+  :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener > .learning-objectives,
+  :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener > .learning-objective {
+    move-to: trash; }
+    :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener > .learning-objectives > *,
+    :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener > .learning-objective > * {
+      move-to: newLOContainer; }
+  :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener > *:not(.learning-objectives):not(.learning-objective) {
+    move-to: newLOContainer; }
+  :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction) > section.section-opener:deferred {
+    content: content() pending(newLOContainer); }
 :pass(1) [data-type="page"]:not(.preface):not(.appendix):not(.introduction):deferred {
   content: nodes(page-doc-title) nodes(page-meta) nodes(page-LO) content(); }
 :pass(1) body:deferred::after {
