@@ -1,5 +1,36 @@
 /* This file contains the CSS needed by TEG in order to style the books properly */
 
+
+/* https://github.com/Connexions/cnx-recipes/issues/311 and https://github.com/Connexions/cnx-recipes/issues/286#issuecomment-324109223 */
+/* Note: use `:not(li> >` to allow nested lists to have the normal list styling) */
+:not(li) > ol[type="a"] {
+    list-style-type: none;
+    counter-reset: fooCounter;
+    /* Emulate the list padding/margins */
+    padding: 0;
+    padding-left: 1em;
+
+    margin-left: 2em; /* use 2em instead of 1em so it is a little clearer that this is an answer choice. This matches the `left: -2em;` below */
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+:not(li) > ol[type="a"] > li {
+    counter-increment: fooCounter;
+}
+:not(li) > ol[type="a"] > li::before {
+    font-weight: bold;
+    content: counter(fooCounter, upper-alpha);
+
+    /* Move the character to the left of the list item but ensure it does not leave whitespace (because of `position: relative;`) */
+    left: -2em; /* Use -2em instead of -1em so it is a little clearer that this is an answer choice */
+    position: relative;
+    width: 0;
+    display: inline-block;
+}
+
+
+
 /* https://github.com/Connexions/cnx-recipes/issues/312 */
 p > span > [data-type="title"] {
   display: block;
