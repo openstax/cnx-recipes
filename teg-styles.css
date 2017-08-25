@@ -1,3 +1,6 @@
+
+
+
 /* This file contains the CSS needed by TEG in order to style the books properly */
 
 
@@ -7,14 +10,22 @@
    https://github.com/Connexions/cnx-recipes/issues/311
    https://github.com/Connexions/cnx-recipes/issues/286#issuecomment-324109223
 */
+
+/* the gateway classes have been kept to allow for testing, they need to be modified before sending to TEG */
+
+
+/* generic sub modification .5em is clearer than .25 */
+
+sub {
+    bottom: -0.50em;
+}
+
 /* Note: use `:not(li> >` to allow nested lists to have the normal list styling) */
 :not(li) > ol[type="a"] {
     list-style-type: none;
     counter-reset: fooCounter;
     /* Emulate the list padding/margins */
-    padding: 0;
-    padding-left: 1em;
-
+    padding: 0 0 0 1em;
     margin-left: 2em; /* use 2em instead of 1em so it is a little clearer that this is an answer choice. This matches the `left: -2em;` below */
     margin-top: 0;
     margin-bottom: 0;
@@ -33,16 +44,6 @@
     width: 0;
     display: inline-block;
 }
-
-
-
-/* https://github.com/Connexions/cnx-recipes/issues/312 */
-p > span > [data-type="title"] {
-  display: block;
-}
-
-
-
 
 
 /* From https://d321jvp1es5c6w.cloudfront.net/sites/default/files/advagg_css/css__eLbtrNEakHAskKz10Al4EufHPSCmdq498NdOgfiK4VY__yXbqdVARHRJIz4pZvlq7uymE8qzqs8sSqXkCJxQGWsc__On0w1NR6BEoIxcDCxVkkOlVx51e6UAVS1Er8SarNva0.css */
@@ -67,11 +68,7 @@ p > span > [data-type="title"] {
     font-size: 11px;
     font-weight: 700;
 }
-.os-caption-container {
-    font-size: 12px;
-    padding: 20px;
-    text-align: center;
-}
+
 .os-caption-container .os-title-label,
 .os-caption-container .os-number {
     font-weight: 700;
@@ -110,16 +107,44 @@ p > span > [data-type="title"] {
 span[data-type="term"] {
     font-weight: 700;
 }
-table thead tr th,
-table tfoot tr th,
-table tbody tr td,
-table tr td,
-table tfoot tr td {
+.os-table {
+    display: table;
+
+}
+.os-table table {
+    margin: .5em auto;
+}
+.os-table table thead tr th,
+.os-table table tfoot tr th,
+.os-table table tbody tr td,
+.os-table table tr td,
+.os-table  table tfoot tr td {
     border-right: solid 1px #ddd;
 }
-
-
-
+.os-table caption {
+    color: #777;
+    caption-side: bottom;
+    text-align: left;
+}
+/** found in .section-resource **/
+.os-table .os-caption-container {
+    font-size: 12px;
+    padding: 0 !important;
+    text-align: left;
+    display: table-caption;
+    caption-side: bottom;
+}
+.os-table .os-caption-container span {
+    display: inline;
+}
+/** found in .section-resource .resource-item .view-content ***/
+.os-table .os-caption-container [data-type="title"].os-title {
+    font-size: 12px;
+    color: black;
+    text-transform: none;
+    display: inline;
+    border-bottom: 0;
+}
 
 
 /* The following were originally found inside these selectors:
@@ -128,44 +153,37 @@ table tfoot tr td {
   .page-dashboard-resources.page-dashboard-resources-step-two .center-wrapper .panel-col-last .inside #subcontent-container li.views-row .views-field.views-field-field-subcontent-html-body {
 */
 
-.os-eoc [data-type="problem"] table {
+ [data-type="problem"] table {
     margin: 0 auto;
 }
-.os-eoc [data-type="problem"] .os-number,
-.os-eoc [data-type="problem"] .os-divider {
+ [data-type="problem"] .os-number,
+ [data-type="problem"] .os-divider {
     float: left;
     margin-right: 4px;
 }
-.os-eoc [data-type="problem"] .os-caption-container .os-number {
+ [data-type="problem"] .os-caption-container .os-number {
     float: none;
 }
-.os-eoc [data-type="problem"] .os-number {
+ [data-type="problem"] .os-number {
     font-weight: 700;
 }
-.os-eoc [data-type="problem"] ol[data-number-style="lower-alpha"] {
+/** found in .field-name-field-subcontent-html-body **/
+.field-name-field-subcontent-html-body .os-eoc [data-type="problem"] ol[type="a"] {
     list-style-type: none;
     counter-reset: listAlphaCounter;
+    padding: 0 0 0 2em;
+    margin-top: 0;
+    margin-bottom: 0;
 }
-.os-eoc [data-type="problem"] ol[data-number-style="lower-alpha"] > li {
+
+.field-name-field-subcontent-html-body .os-eoc [data-type="problem"] ol[type="a"] > li {
     counter-increment: listAlphaCounter;
+    /**remove me **/
+    display: block;
 }
-.os-eoc [data-type="problem"] ol[data-number-style="lower-alpha"] > li:before {
-    content: counter(listAlphaCounter, upper-alpha) " ";
-    font-weight: bold;
-    display: inline-block;
-    margin-right: 1em;
-}
-.os-eoc [data-type="problem"] ol[type="a"] {
-    list-style-type: none;
-    counter-reset: listAlphaCounter;
-}
-.os-eoc [data-type="problem"] ol[type="a"] > li {
-    counter-increment: listAlphaCounter;
-    display: flex;
-}
-.os-eoc [data-type="problem"] ol[type="a"] > li:before {
+.field-name-field-subcontent-html-body .os-eoc [data-type="problem"] ol[type="a"] > li::before {
     content: counter(listAlphaCounter, upper-alpha);
     font-weight: bold;
     display: inline-block;
-    margin-right: 1em;
+    margin-right: 0em;
 }
