@@ -20,29 +20,25 @@ sub {
     bottom: -0.50em;
 }
 
-/* Note: use `:not(li> >` to allow nested lists to have the normal list styling) */
-:not(li) > ol[type="a"] {
+.os-eoc [data-type="problem"] ol[type="a"] {
     list-style-type: none;
-    counter-reset: fooCounter;
-    /* Emulate the list padding/margins */
-    padding: 0 0 0 1em;
-    margin-left: 2em; /* use 2em instead of 1em so it is a little clearer that this is an answer choice. This matches the `left: -2em;` below */
-    margin-top: 0;
-    margin-bottom: 0;
+    counter-reset: listAlphaCounter;
+    /* add this line */ margin-left: 2em;
 }
 
-:not(li) > ol[type="a"] > li {
-    counter-increment: fooCounter;
+.os-eoc [data-type="problem"] ol[type="a"] > li {
+    counter-increment: listAlphaCounter;
+    /* delete this line* display: flex;*/
 }
-:not(li) > ol[type="a"] > li::before {
+
+.os-eoc [data-type="problem"] ol[type="a"] > li:before {
+    content: counter(listAlphaCounter, upper-alpha);
     font-weight: bold;
-    content: counter(fooCounter, upper-alpha);
-
-    /* Move the character to the left of the list item but ensure it does not leave whitespace (because of `position: relative;`) */
-    left: -2em; /* Use -2em instead of -1em so it is a little clearer that this is an answer choice */
-    position: relative;
-    width: 0;
     display: inline-block;
+   /*delete this line  margin-right: 1em;*/
+   /*add lines below */
+    position: absolute;
+    left: 4.5em;
 }
 
 
