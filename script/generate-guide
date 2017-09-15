@@ -7,13 +7,14 @@ sassDir='./recipes/'
 styleguideDir="./styleguide/${recipeName}"
 sassFile="${sassDir}/books/${recipeName}/book.scss"
 cssFile="${styleguideDir}/guide.css"
-bookCssFile="${sassDir}/output/${recipeName}.css"
 guideHomepageFile="./guide-homepage.md" # Relative to ${sassDir}/recipes/
 
 tempDir="./tmp/"
 tempRecipeDir="${tempDir}/${recipeName}/"
 bookDocumentationDir="./recipes/books/${recipeName}"
 kssOutputFile="${tempDir}/kss-output.txt"
+
+sassBin="$(npm bin)/node-sass"
 
 # Check command line args
 
@@ -30,9 +31,6 @@ else
   >&2 echo "INFO: Generating -${bakedOrPreparedSuffix}.xhtml files instead of -baked.xhtml files"
 fi
 
-# Initialize rbenv (if installed)
-[[ -n $(which rbenv) ]] && eval "$(rbenv init -)"
-
 
 >&2 echo "==> Compiling the guide.scss file for ${recipeName}"
 if [ ! -e ${styleguideDir} ]
@@ -41,21 +39,7 @@ then
 fi
 
 
-# Try running sass locally (using rbenv). If that does not work then try it globally
-if [[ $(bundle exec sass --version 2>/dev/null) ]]
-then
-  sassBin="bundle exec sass"
-elif [[ $(sass --version 2>/dev/null) ]]
-then
-  >&2 echo "INFO: Using system-installed $(sass --version)"
-  sassBin="sass"
-else
-  >&2 echo "ERROR: Could not find sass executable"
-  exit 1
-fi
-
-${sassBin} ${sassFile} ${cssFile} || exit 1
-${sassBin} ${sassFile} ${bookCssFile} || exit 1
+${sassBin} --source-map true ${sassFile} ${cssFile} || exit 1
 
 
 >&2 echo "==> Generating the baked example HTML files"

@@ -5,7 +5,6 @@
 1. ensure the prerequisites are installed.
    - NodeJS (via [nvm](https://github.com/creationix/nvm))
    - [Virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
-   - [Rbenv](https://github.com/rbenv/rbenv#installation)
 1. run `./script/setup` to install the dependencies.
 
 **Note:** To update the dependencies, run `./script/update`
