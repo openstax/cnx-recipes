@@ -41,6 +41,8 @@ This will run the linter, generate sassdocs, and generate the guides to verify t
 
 # Documentation
 
+Recipe documentation can be found at [./recipes/](./recipes/) and an [example config file](./recipes/books/_example/).
+
 1. run `./script/generate-docs` to generate the SASS Docs
 1. run `./script/generate-guide statistics` to generate the HTML Guide for a book
 1. open the generated file in your browser
@@ -61,9 +63,18 @@ You can pass 3 arguments to `report-book-coverage` to change how it reports cove
 For more details on the commandline options see the [css-coverage](https://www.npmjs.com/package/css-coverage#commandline-options) documentation.
 
 
-## Deploy
+### Why CSS Coverage?
 
-To update a development instance you need to rebake a book.
+Code coverage is a great way to see if your tests exercises all the features of the codebase. 
+
+In the case of this repositoriy, the "codebase" contains all the CSS recipe files and the "tests" are the HTML snippets used to create a style guide.
+
+By checking the code coverage, whenever a new feature in a book is added, a corresponding example in the HTML guide should be added as well (code coverage will complain otherwise).
+
+
+## Bake Remotely
+
+To rebake a book on a development instance.
 To do that, you will need to upload a CSS recipe file, trigger a rebake, and then clear the cache.
 
 1. run `./script/compile-books` to generate the recipes CSS file
@@ -83,7 +94,7 @@ For example, you want to rebake the "cooking" book:
 
 ## Regression Testing
 
-To check that there were no regressions in a book what the following process does is:
+To check that there were no regressions in a book you will need to do the following:
 
 1. bake the book with the old code
 1. bake the book with the new code
@@ -96,15 +107,15 @@ Here are the steps to run it:
 ./script/setup
 ./script/fetch-html statistics # Or any book in ./books.txt
 
-# Check out the old version (ie `master` branch)
+# Check out the old version from git (ie `master` branch)
 # Then run:
 ./script/diff-book-prepare statistics
 
-# Check out the new code (ie `shiny-unincorns` branch)
+# Check out the new code from git (ie `shiny-unincorns` branch)
 # Then run:
 ./script/diff-book statistics
 
-# Any differences would pop up here
+# Any differences would pop up at this point
 
 # Optional: Create a diff and give it to a GUI
 diff ./data/statistics-prepared.xhtml ./data/statistics-baked.xhtml > foo.diff
@@ -116,7 +127,7 @@ diff ./data/statistics-prepared.xhtml ./data/statistics-baked.xhtml > foo.diff
 
 Instead of diffing the whole book, you can find differences in the styleguide for a recipe (faster and easier to find errors because the HTML files are much smaller than an entire book).
 
-To do this, just replace every occurrence of `./script/diff-book ${BOOK_NAME}` (and `./script/diff-book-prepare`) with `diff-guide ${RECIPE_NAME}`.
+To do this, just replace every occurrence of `./script/diff-book ${BOOK_NAME}` (and `./script/diff-book-prepare`) with `diff-guide ${RECIPE_NAME}` in the instructions above.
 
 
 ## Experimental
