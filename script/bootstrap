@@ -42,7 +42,10 @@ fi
 # Install yarn (package manager)
 >&2 echo "==> Installing yarn package manager"
 if [[ ! $(which yarn) ]]; then
-  curl -o- -L https://yarnpkg.com/install.sh | bash
+  # Account for this error: "Profile not found. Tried  (as defined in $PROFILE), ~/.bashrc, ~/.bash_profile, ~/.zshrc, and ~/.profile."
+  touch ~/.bashrc
+  # Install yarn
+  curl -o- -L https://yarnpkg.com/install.sh | bash || exit 1
 fi
 
 yarn || exit 1
