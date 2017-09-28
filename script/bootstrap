@@ -40,10 +40,14 @@ fi
 >&2 echo "Using npm: $(npm --version)"
 
 # Install yarn (package manager)
->&2 echo "==> Installing yarn package manager"
 if [[ ! $(which yarn) ]]; then
+  >&2 echo "==> Installing yarn package manager"
   # Account for this error: "Profile not found. Tried  (as defined in $PROFILE), ~/.bashrc, ~/.bash_profile, ~/.zshrc, and ~/.profile."
   touch ~/.bashrc
+  if [[ -d ~/.yarn/ ]]; then
+    rm -rf ~/.yarn/
+  fi
+
   # Install yarn
   curl -o- -L https://yarnpkg.com/install.sh | bash || exit 1
 fi
