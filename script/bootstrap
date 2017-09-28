@@ -38,7 +38,14 @@ fi
 >&2 echo "==> Installing Node package dependencies"
 >&2 echo "Using node: $(node --version)"
 >&2 echo "Using npm: $(npm --version)"
-npm install || exit 1
+
+# Install yarn (package manager)
+>&2 echo "==> Installing yarn package manager"
+if [[ ! $(which yarn) ]]; then
+  curl -o- -L https://yarnpkg.com/install.sh | bash
+fi
+
+yarn || exit 1
 
 # Note: Skip rbenv for Travis because it already has ruby
 if [ ! "${CI}" = "true" ] && [ -f ".ruby-version" ]; then
