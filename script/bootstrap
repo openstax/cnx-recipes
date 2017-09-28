@@ -40,6 +40,11 @@ fi
 >&2 echo "Using npm: $(npm --version)"
 
 # Install yarn (package manager)
+if [[ ! $(which yarn) && -d ~/.yarn ]]; then
+  # This is added to your profile but to get access to the yarn binary now you might need it here
+  export PATH="$HOME/.yarn/bin:$PATH"
+fi
+
 if [[ ! $(which yarn) ]]; then
   >&2 echo "==> Installing yarn package manager"
   # Account for this error: "Profile not found. Tried  (as defined in $PROFILE), ~/.bashrc, ~/.bash_profile, ~/.zshrc, and ~/.profile."
@@ -53,10 +58,10 @@ if [[ ! $(which yarn) ]]; then
 
   # This is added to your profile but to get access to the yarn binary now you might need it here
   export PATH="$HOME/.yarn/bin:$PATH"
-
 fi
 
-yarn || exit 1
+# Install JS packages
+yarn install || exit 1
 
 # Note: Skip rbenv for Travis because it already has ruby
 if [ ! "${CI}" = "true" ] && [ -f ".ruby-version" ]; then
