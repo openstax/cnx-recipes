@@ -1,13 +1,16 @@
 #!/bin/bash
 
-echo "==> Checking that HTML snippets are well-formed XML"
+echo "==> Checking that HTML snippets and 'magic' XML comments are well-formed XML"
 
 temp_file="temp-linting.xml"
 for file_name in $(find ./recipes/books/*/styleguide/*.snippet.xml ./recipes/mixins/styleguide/*.snippet.xml); do
-  xmllint --pretty 1 "${file_name}" > "${temp_file}"
+  # Check that the "Magic" comments are well-formed at this point (early)
+  # Send Warning messages to null (stderr)
+  xsltproc ./script/_cnxml-to-xhtml.xsl "${file_name}" 2> /dev/null | xmllint --pretty 1 /dev/stdin > /dev/null
   error_status=$?
 
   if [[ ${error_status} = 0 ]]; then
+    xmllint --pretty 1 "${file_name}" > "${temp_file}"
     # Remove the "<?xml version="1.0"?>" at the top of the file
     cat "${temp_file}" | tail -n +2 > "${file_name}"
     rm "${temp_file}"
