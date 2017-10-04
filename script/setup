@@ -4,7 +4,11 @@ set -e
 ./script/bootstrap || exit 1
 
 # Install JS packages
-yarn install || exit 1
+if [[ $(which yarn) ]]; then
+  yarn install || exit 1
+else
+  npm install || exit 1
+fi
 
 
 # Only activate the virtualenv if not already in one
