@@ -44,8 +44,17 @@
     </xsl:copy>
     <xsl:choose>
       <xsl:when test="$commentText = 'START:Page'">
-        <!-- <div data-type="page"> -->
+        <!--
+          <div data-type="page">
+            <div data-type="metadata">
+              <div data-type="description">
+        -->
         <xsl:value-of select="'&lt;div data-type=&quot;page&quot;>'" disable-output-escaping="yes" />
+        <xsl:value-of select="'&lt;div data-type=&quot;metadata&quot;>'" disable-output-escaping="yes" />
+        <xsl:value-of select="'&lt;div data-type=&quot;description&quot;>'" disable-output-escaping="yes" />
+        <xsl:value-of select="'[METADATA_DESCRIPTION]'" disable-output-escaping="yes" />
+        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
       </xsl:when>
       <xsl:when test="$commentText = 'END:Page'">
         <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
