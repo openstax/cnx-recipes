@@ -40,6 +40,7 @@
     <div data-type="document-title">$title</div>
     <div data-type="metadata">
       <div data-type="description">[METADATA_DESCRIPTION]</div>
+      <div data-type="cnx-archive-shortid">[SHORTID_123]</div>
     </div>
   -->
   <xsl:template name="page-metadata">
@@ -51,6 +52,7 @@
     <xsl:value-of select="'&lt;div data-type=&quot;description&quot;>'" disable-output-escaping="yes" />
     <xsl:value-of select="'[METADATA_DESCRIPTION]'" disable-output-escaping="yes" />
     <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+    <xsl:value-of select="'&lt;span data-type=&quot;cnx-archive-shortid&quot; data-value=&quot;SHORTID_123@9.9&quot;/>'" disable-output-escaping="yes" />
     <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
   </xsl:template>
 
@@ -101,6 +103,13 @@
         <xsl:value-of select="'&lt;div data-type=&quot;chapter&quot; class=&quot;appendix&quot;>'" disable-output-escaping="yes" />
       </xsl:when>
       <xsl:when test="$commentText = 'END:Appendix'">
+        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+      </xsl:when>
+      <xsl:when test="$commentText = 'START:Unit'">
+        <!-- <div data-type="chapter" class="appendix"> -->
+        <xsl:value-of select="'&lt;div data-type=&quot;unit&quot;>'" disable-output-escaping="yes" />
+      </xsl:when>
+      <xsl:when test="$commentText = 'END:Unit'">
         <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
       </xsl:when>
     </xsl:choose>
