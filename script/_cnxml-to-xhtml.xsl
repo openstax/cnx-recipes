@@ -36,6 +36,24 @@
     </xsl:choose>
   </xsl:template>
 
+  <!--
+    <div data-type="document-title">$title</div>
+    <div data-type="metadata">
+      <div data-type="description">[METADATA_DESCRIPTION]</div>
+    </div>
+  -->
+  <xsl:template name="page-metadata">
+    <xsl:param name="title"/>
+    <xsl:value-of select="'&lt;div data-type=&quot;document-title&quot;>'" disable-output-escaping="yes" />
+    <xsl:value-of select="$title"/>
+    <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+    <xsl:value-of select="'&lt;div data-type=&quot;metadata&quot;>'" disable-output-escaping="yes" />
+    <xsl:value-of select="'&lt;div data-type=&quot;description&quot;>'" disable-output-escaping="yes" />
+    <xsl:value-of select="'[METADATA_DESCRIPTION]'" disable-output-escaping="yes" />
+    <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+    <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+  </xsl:template>
+
   <!-- Convert specially-marked comments into elements -->
   <xsl:template match="comment()">
     <xsl:variable name="commentText" select="normalize-space(.)"/>
@@ -50,13 +68,25 @@
               <div data-type="description">
         -->
         <xsl:value-of select="'&lt;div data-type=&quot;page&quot;>'" disable-output-escaping="yes" />
-        <xsl:value-of select="'&lt;div data-type=&quot;metadata&quot;>'" disable-output-escaping="yes" />
-        <xsl:value-of select="'&lt;div data-type=&quot;description&quot;>'" disable-output-escaping="yes" />
-        <xsl:value-of select="'[METADATA_DESCRIPTION]'" disable-output-escaping="yes" />
-        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
-        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+        <xsl:call-template name="page-metadata">
+          <xsl:with-param name="title">[PAGE_TITLE]</xsl:with-param>
+        </xsl:call-template>
       </xsl:when>
       <xsl:when test="$commentText = 'END:Page'">
+        <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
+      </xsl:when>
+      <xsl:when test="$commentText = 'START:Preface'">
+        <!--
+          <div data-type="page" class="preface">
+            <div data-type="metadata">
+              <div data-type="description">
+        -->
+        <xsl:value-of select="'&lt;div data-type=&quot;page&quot; class=&quot;preface&quot;>'" disable-output-escaping="yes" />
+        <xsl:call-template name="page-metadata">
+          <xsl:with-param name="title">[PREFACE_TITLE]</xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="$commentText = 'END:Preface'">
         <xsl:value-of select="'&lt;/div>'" disable-output-escaping="yes" />
       </xsl:when>
       <xsl:when test="$commentText = 'START:Chapter'">
