@@ -9,9 +9,62 @@ $_symbolsSectionTitle: "Symbols";
 //TODO: add a switch when our books have composite chapters, define logic/behavior for that switch. This simply could be in the _config files for all books or set based on the presence of at least one type of composite chapter (appendix, multiple page answer key etc.).
 
 
+@mixin misc_webview_styling() {
+  // Adapted from https://github.com/Connexions/webview/blob/master/src/scripts/modules/media/body/content-common.less#L341
+  //   // Block-ish lists
+  //   ul:not([data-display='inline'])          { @include list_style(block, bulleted); }
+  //   ol:not([data-display='inline'])          { @include list_style(block, enumerated); }
+  //   ul[data-labeled-item]                    { @include list_style(block, labeled-item); }
+  //
+  //   // Inline lists (with `data-display='inline'`)
+  //   ul[data-display='inline']                { @include list_style(inline, bulleted); }
+  //   ol[data-display='inline']                { @include list_style(inline, enumerated); }
+  //   ul[data-display='inline'][data-labeled-item] { @include list_style(inline, labeled-item); }
+  //
+  //   // Lists inside a paragraph
+  //   [data-type='list']:not([data-list-type]):not([data-labeled-item])
+  //                                                     { @include list_style-emulated(inline, bulleted); }
+  //   [data-type='list'][data-list-type='bulleted']     { @include list_style-emulated(inline, bulleted); }
+  //   [data-type='list'][data-list-type='enumerated']   { @include list_style-emulated(inline, enumerated); }
+  //   [data-type='list'][data-list-type='labeled-item'] { @include list_style-emulated(inline, labeled-item); }
+  //   div[data-type='list'][data-list-type]             { padding-left: 2.5rem; margin-bottom: 1rem; }
+
+  [data-type='list']:not([data-list-type]),
+  [data-type='list'][data-list-type='bulleted'],
+  [data-type='list'][data-list-type='enumerated'] {
+    // Throw an erros just to make sure these cases do not occur
+    sort-by: 'invalid-namespace-just-to-throw-an-error|element-HACK';
+  }
+
+  [data-type='list'][data-list-type='labeled-item'],
+  [data-type='list'][data-list-type='bulleted'] {
+
+    &:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after {
+      // content: @default-inline-list-item-sep;
+      container: span;
+      attr-class: "-os-inline-list-separator";
+      content: "; ";
+    }
+    &[data-item-sep] {
+      // Squirrel away the separator character (if there is one)
+      string-set: listItemSep attr(data-item-sep);
+
+      > [data-type="item"]:not(:last-child)::after {
+        // content: @default-inline-list-item-sep;
+        // .x-not-implemented('data-item-sep=CUSTOM');
+        container: span;
+        attr-class: "-os-inline-list-separator";
+        content: string(listItemSep);
+      }
+    }
+  }
+}
+
 
 :pass(0) {
   //Some modifications to be done to the book before any collation
+  @include misc_webview_styling();
+
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
   @if $Config_Coverage_MayHaveSimlinks == true {
@@ -48,8 +101,9 @@ $_symbolsSectionTitle: "Symbols";
 
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
-  @if $Config_Coverage_MayHaveMissingExercises == true {
-    @include modify_trash('div.missing-exercise');
+  @if $Config_Coverage_MayHaveMissingExercises {
+    @include modify_tagMissingExercises();
+    @include modify_dataNumberStyle();
   }
   @if $Config_hasAbstract == false {
     @include modify_trash('[data-type="abstract"]');
@@ -59,6 +113,9 @@ $_symbolsSectionTitle: "Symbols";
   }
 }
 :pass(1) {
+  @if $Config_Coverage_MayHaveMissingExercises {
+    @include modify_trash('[data-type="exercise"].missing-exercise');
+  }
 
   // Any notes that need to trash the solution
   @each $note in $Config_Notes {
@@ -282,6 +339,15 @@ $_symbolsSectionTitle: "Symbols";
     } @else { @error 'BUG: Invalid enum'; }
   }
 
+  // After: Solution trashing
+  @if $Config_addSolutionHeader {
+    @each $header in $Config_addSolutionHeader {
+      $solutionSelector                : map-get($header, selector);
+      $solutionTitle                   : map-get($header, title);
+      @include modify_addSolutionHeader($solutionSelector, $solutionTitle);
+    }
+  }
+
   // Copy/pasta from above
   // TODO: Combine bookCompositePages and chapterCompositePages in the config and then split them out in this file
   @each $page in $Config_BookCompositePages {
@@ -326,6 +392,7 @@ $_symbolsSectionTitle: "Symbols";
   }
 
   @include count_countExamples(example);
+  @include count_countEquations(equation);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
   // Number equations if they have a titleContent
@@ -337,7 +404,6 @@ $_symbolsSectionTitle: "Symbols";
     @include validate_typeOptional($numberAfterEq, bool);
     @include validate_enum($numberAt, $NUMBER__PREFIX__);
     @if $numberAt == $NUMBER_AFTER_MOVE {
-      @include count_countEquations(equation);
       @include number_equations($titleContent, $numberAfterEq);
     }
   }
@@ -350,7 +416,8 @@ $_symbolsSectionTitle: "Symbols";
   @include modify_chapterAutoID();
   @include count_countExercisesInContentButNotInExample(exerciseMaybeInContent);
   // This has to run before number_numberEOCExercises because its selector is more general than the EOC selector
-  @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent);
+  @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent,
+                                         $Config_ContentExercise_TitleContentAp, $Config_ContentSolution_TitleContentAp);
 
   @include count_countTables(table);
   @include count_countFigures(figure);

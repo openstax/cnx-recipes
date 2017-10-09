@@ -202,6 +202,19 @@
   Style guide: book.2-composite
 */
 /*
+  Book Preface
+
+  A Preface is a Page at the beginning of a book that is not inside a Chapter. It contains:
+
+  - `.preface` A class to identify it as a Preface
+  - `[data-type='metadata']` The attribution information for this Page
+  - `[data-type='document-title']` The title of the Page
+
+  Markup: ./book.preface.xhtml-baked.html
+
+  Style guide: book.1-preface
+*/
+/*
   Chapter
 
   A Chapter contains a title and multiple Pages, one of which may be a `.introduction` Page.
@@ -211,6 +224,17 @@
   Markup: ./book.chapter.xhtml-baked.html
 
   Style guide: book.0-chapter
+*/
+/*
+  Unit
+
+  A Unit contains a title and multiple Chapters.
+
+  It does not currently contain an "Introduction" Page.
+
+  Markup: ./book.unit.xhtml-baked.html
+
+  Style guide: book.0-unit
 */
 /*
   Unnumbered Content
@@ -395,6 +419,23 @@
   move-to: trash; }
 
 @namespace xhtml "http://www.w3.org/1999/xhtml";
+:pass(0) [data-type='list']:not([data-list-type]),
+:pass(0) [data-type='list'][data-list-type='bulleted'],
+:pass(0) [data-type='list'][data-list-type='enumerated'] {
+  sort-by: 'invalid-namespace-just-to-throw-an-error|element-HACK'; }
+:pass(0) [data-type='list'][data-list-type='labeled-item']:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after,
+:pass(0) [data-type='list'][data-list-type='bulleted']:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after {
+  container: span;
+  attr-class: "-os-inline-list-separator";
+  content: "; "; }
+:pass(0) [data-type='list'][data-list-type='labeled-item'][data-item-sep],
+:pass(0) [data-type='list'][data-list-type='bulleted'][data-item-sep] {
+  string-set: listItemSep attr(data-item-sep); }
+  :pass(0) [data-type='list'][data-list-type='labeled-item'][data-item-sep] > [data-type="item"]:not(:last-child)::after,
+  :pass(0) [data-type='list'][data-list-type='bulleted'][data-item-sep] > [data-type="item"]:not(:last-child)::after {
+    container: span;
+    attr-class: "-os-inline-list-separator";
+    content: string(listItemSep); }
 :pass(0) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
@@ -448,30 +489,47 @@
     string-set: isSolution " os-hasSolution "; }
   :pass(0) :not([data-type="example"]) > [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
-:pass(0) div[data-type="note"][class="note"] > div[data-type="title"] {
-  string-set: noteTitle content();
-  move-to: trash; }
-  :pass(0) div[data-type="note"][class="note"] > div[data-type="title"]::before {
-    container: span;
-    class: "os-title-label";
-    content: string(noteTitle);
-    move-to: genericNoteLabel; }
-:pass(0) div[data-type="note"][class="note"]::after {
-  container: div;
+:pass(0) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
+  class: "os-note-body"; }
+:pass(0) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class]) > div[data-type="title"] {
+  container: span;
+  class: "os-title-label";
+  data-type: "";
+  move-to: genericNoteLabel; }
+:pass(0) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class]):deferred::before {
+  container: h3;
   content: pending(genericNoteLabel);
   class: "os-title";
-  move-to: genericNote; }
-:pass(0) div[data-type="note"][class="note"]:deferred {
-  content: pending(genericNote) content(); }
+  attr-data-type: "title"; }
+:pass(0) [data-type="note"] [data-type="note"]:not([class])::inside {
+  class: "os-note-body"; }
+:pass(0) [data-type="note"] [data-type="note"]:not([class]) > div[data-type="title"] {
+  container: span;
+  class: "os-title-label";
+  data-type: "";
+  move-to: genericNoteLabeldepth1; }
+:pass(0) [data-type="note"] [data-type="note"]:not([class]):deferred::before {
+  container: h4;
+  content: pending(genericNoteLabeldepth1);
+  class: "os-title";
+  attr-data-type: "title"; }
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
-:pass(0) div.missing-exercise {
-  move-to: trash; }
+:pass(0) [data-type="exercise"] {
+  string-set: missing ""; }
+  :pass(0) [data-type="exercise"] div.missing-exercise {
+    string-set: missing " missing-exercise"; }
+  :pass(0) [data-type="exercise"]::deferred {
+    class: attr(class) string(missing); }
+:pass(0) ol[data-number-style="lower-alpha"] {
+  attr-type: "a"; }
 :pass(0) [data-type="abstract"]::before {
   container: h3;
   data-type: "title";
   content: "Learning Objectives"; }
 
+:pass(1) [data-type="exercise"].missing-exercise {
+  move-to: trash; }
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].check-understanding > div[data-type="title"]::deferred {
   container: h4;
   class: "os-subtitle";
@@ -494,13 +552,13 @@
 :pass(1) [data-type="note"] [data-type="note"].check-understanding > div[data-type="title"]::deferred {
   container: h5;
   class: "os-subtitle";
-  move-to: noteSubtitleMinor; }
+  move-to: noteSubtitledepth1; }
 :pass(1) [data-type="note"] [data-type="note"].check-understanding > div[data-type="title"]::inside {
   container: span;
   class: "os-subtitle-label"; }
 :pass(1) [data-type="note"] [data-type="note"].check-understanding::inside {
   class: "os-note-body";
-  content: pending(noteSubtitleMinor) content(); }
+  content: pending(noteSubtitledepth1) content(); }
 :pass(1) [data-type="note"] [data-type="note"].check-understanding:deferred::before {
   container: span;
   class: "os-title-label";
@@ -533,13 +591,13 @@
 :pass(1) [data-type="note"] [data-type="note"].media-2 > div[data-type="title"]::deferred {
   container: h5;
   class: "os-subtitle";
-  move-to: noteSubtitleMinor; }
+  move-to: noteSubtitledepth1; }
 :pass(1) [data-type="note"] [data-type="note"].media-2 > div[data-type="title"]::inside {
   container: span;
   class: "os-subtitle-label"; }
 :pass(1) [data-type="note"] [data-type="note"].media-2::inside {
   class: "os-note-body";
-  content: pending(noteSubtitleMinor) content(); }
+  content: pending(noteSubtitledepth1) content(); }
 :pass(1) [data-type="note"] [data-type="note"].media-2:deferred::before {
   container: span;
   class: "os-title-label";
@@ -561,47 +619,35 @@
   class: "os-note-body";
   content: pending(noteSubtitle) content(); }
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].problem-solving > div[data-type="title"] {
-  string-set: myNoteTitle content();
-  move-to: trash; }
-  :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].problem-solving > div[data-type="title"]::before {
-    container: span;
-    class: "os-title-label";
-    content: string(myNoteTitle);
-    move-to: myNoteLabel; }
-:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].problem-solving::after {
-  container: div;
+  container: span;
+  class: "os-title-label";
+  attr-data-type: "";
+  move-to: myNoteLabel; }
+:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].problem-solving:deferred::before {
+  container: h3;
   content: pending(myNoteLabel);
   class: "os-title";
-  attr-data-type: "title";
-  move-to: myNote; }
-:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].problem-solving:deferred {
-  content: pending(myNote) content(); }
+  attr-data-type: "title"; }
 :pass(1) [data-type="note"] [data-type="note"].problem-solving > div[data-type="title"]::deferred {
   container: h5;
   class: "os-subtitle";
-  move-to: noteSubtitleMinor; }
+  move-to: noteSubtitledepth1; }
 :pass(1) [data-type="note"] [data-type="note"].problem-solving > div[data-type="title"]::inside {
   container: span;
   class: "os-subtitle-label"; }
 :pass(1) [data-type="note"] [data-type="note"].problem-solving::inside {
   class: "os-note-body";
-  content: pending(noteSubtitleMinor) content(); }
+  content: pending(noteSubtitledepth1) content(); }
 :pass(1) [data-type="note"] [data-type="note"].problem-solving > div[data-type="title"] {
-  string-set: myNoteTitle content();
-  move-to: trash; }
-  :pass(1) [data-type="note"] [data-type="note"].problem-solving > div[data-type="title"]::before {
-    container: span;
-    class: "os-title-label";
-    content: string(myNoteTitle);
-    move-to: myNoteLabel; }
-:pass(1) [data-type="note"] [data-type="note"].problem-solving::after {
-  container: div;
+  container: span;
+  class: "os-title-label";
+  attr-data-type: "";
+  move-to: myNoteLabel; }
+:pass(1) [data-type="note"] [data-type="note"].problem-solving:deferred::before {
+  container: h4;
   content: pending(myNoteLabel);
   class: "os-title";
-  attr-data-type: "title";
-  move-to: myNote; }
-:pass(1) [data-type="note"] [data-type="note"].problem-solving:deferred {
-  content: pending(myNote) content(); }
+  attr-data-type: "title"; }
 
 :pass(2) body {
   counter-reset: chapter; }
@@ -1157,10 +1203,16 @@
   counter-reset: example; }
 :pass(7) div[data-type="chapter"] [data-type="example"] {
   counter-increment: example; }
+:pass(7) [data-type="chapter"], :pass(7) .appendix {
+  counter-reset: equation; }
+:pass(7) [data-type="equation"]:not(.unnumbered) {
+  counter-increment: equation; }
 :pass(7) .os-eoc [data-type="exercise"] {
   string-set: target-label "Exercise " counter(chapter) "." counter(exercise); }
 :pass(7) div[data-type="chapter"] [data-type="example"] {
   string-set: target-label "Example " counter(chapter) "." counter(example); }
+:pass(7) div[data-type="chapter"] [data-type="equation"]:not(.unnumbered) {
+  string-set: target-label "Equation " counter(chapter) "." counter(equation); }
 :pass(7) [data-type="chapter"] :not(table) > table:not(.unnumbered) {
   string-set: target-label "Table " counter(chapter) "." counter(table); }
 :pass(7) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
@@ -1209,15 +1261,23 @@
 :pass(7) div[data-type='chapter'] > h1[data-type='document-title'] {
   counter-increment: chapTitleNum;
   attr-id: "chapTitle" counter(chapTitleNum); }
-:pass(7) [data-type="chapter"] {
+:pass(7) [data-type="chapter"], :pass(7) .appendix {
   counter-reset: exerciseMaybeInContent; }
 :pass(7) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
   counter-increment: exerciseMaybeInContent; }
-:pass(7) [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
+:pass(7) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
   container: span;
   content: counter(exerciseMaybeInContent);
   class: os-number; }
-:pass(7) [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
+:pass(7) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
+  container: span;
+  content: "Exercise ";
+  class: os-title-label; }
+:pass(7) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+:pass(7) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
   container: span;
   content: "Exercise ";
   class: os-title-label; }
@@ -1401,11 +1461,11 @@
   content: content() pending(bCaptionContainer); }
 :pass(7) .appendix > figure.unnumbered figcaption {
   move-to: trash; }
-:pass(7) [data-type="chapter"] [data-type="page"] [data-type="note"] > .os-title,
+:pass(7) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(7) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(7) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
   container: h3; }
-:pass(7) [data-type="chapter"] [data-type="page"] [data-type="note"] [data-type="solution"] .solution-title,
+:pass(7) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] [data-type="solution"] .solution-title,
 :pass(7) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] .solution-title,
 :pass(7) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }

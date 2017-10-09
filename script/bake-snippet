@@ -1,0 +1,45 @@
+#!/bin/bash
+set -e
+
+bookName=$1
+snippetFileName=$2
+bakedFile=$3
+debugFlag=$4
+
+sassFile="./recipes/books/${bookName}/book.scss"
+cssFile="./recipes/output/${bookName}.css"
+
+rawFileName="_temp-bake-snippet.xhtml"
+
+# Check command line args
+
+if [ -z "${bookName}" ]
+then
+  echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
+  echo 'The required arguments are: bookName, rawFile, bakedFile'
+  exit 1
+fi
+
+if [ ! -f "${snippetFileName}" ]
+then
+  echo "ERROR: Could not find the raw HTML file at ${rawFile}"
+  exit 1
+fi
+
+if [ -z "${bakedFile}" ]
+then
+  echo 'ERROR: You must specify a baked path'
+  exit 1
+fi
+
+if [ ! -f "${sassFile}" ]
+then
+  echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
+  exit 1
+fi
+
+
+# Convert the snippet (which is HTML + CNXML) into just HTML
+xsltproc ./script/_cnxml-to-xhtml.xsl "${snippetFileName}" > "${rawFileName}" || exit 1
+
+./script/bake-file "${bookName}" "${rawFileName}" "${bakedFile}" "${debugFlag}"

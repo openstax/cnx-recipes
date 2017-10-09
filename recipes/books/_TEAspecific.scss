@@ -1,20 +1,119 @@
 
 //ad hoc TEAspecific specific requirements for the TEG Gateway imports process
 
+@mixin TEAspecific_EOBCompositePageToChapter($className) {
+  body {
+    @include reference_refBookMetadataNodeAs(bookMetadata);
+    [data-type="composite-page"].os-#{$className}-container {
+
+      // This overrides the modify_retitleHeaders in this container(see generator)
+      > .os-chapter-area {
+        > [data-type="document-title"] {
+          container: h4;
+        }
+        > section {
+          > [data-type="document-title"] {
+            container: h5;
+          }
+        }
+      }
+
+      // Page -> Chapter conversion
+      > h1[data-type="document-title"] {
+        string-set: #{$className}-page-title content();
+        container: h2;
+        move-to: #{$className}-page-orig-title;
+      }
+      > [data-type="metadata"] {
+        move-to: #{$className}-page-orig-meta;
+      }
+      &::after {
+        container: span;
+        class: "os-text";
+        content: string(#{$className}-page-title);
+        move-to: #{$className}-page-header-text;
+      }
+      &::after {
+        container: h3;
+        data-type: "title";
+        content: pending(#{$className}-page-header-text);
+        move-to: #{$className}-page-header;
+      }
+      &::inside {
+        container: section;
+        class: "composite-page-container";
+        content: pending(#{$className}-page-header) content();
+      }
+      &:deferred {
+        content: pending(#{$className}-page-orig-title) pending(#{$className}-page-orig-meta) content();
+        move-to: #{$className}-compositePage;
+      }
+    }
+    // Place converted page at the end of the book
+    &::after {
+      container: span;
+      class: "os-text";
+      content: string(#{$className}-page-title);
+      move-to: #{$className}-chapter-title-text;
+    }
+    &::after {
+      container: h1;
+      data-type: "document-title";
+      content: pending(#{$className}-chapter-title-text);
+      move-to: #{$className}-compositeTitle;
+    }
+    &::after {
+      container: div;
+      data-type: "composite-chapter";
+      data-uuid-key: #{$className}Chapter;
+      content: pending(#{$className}-compositeTitle) nodes(bookMetadata) pending(#{$className}-compositePage);
+    }
+  }
+}
+
+$Config_convertEOBCompositePageToChapter: () !default;
+@each $pageClass in $Config_convertEOBCompositePageToChapter {
+  :pass(8) {
+    @include TEAspecific_EOBCompositePageToChapter($pageClass);
+  }
+}
+
+
 @if $Config_TEAspecificLOHeaders {
   :pass(0) {
-    .learning-objectives {
+    .learning-objective,
+    .learning-objectives,
+    [data-type="page"]:not(.introduction) [data-type="abstract"] {
+      container: section;
+      data-type: "";
+      > div[data-type="title"] {
+        move-to: trash;
+      }
       &::before {
         container: h3;
         data-type: "title";
         content: "Learning Objectives";
       }
     }
+    @include utils_clearTrash();
+  }
+}
+
+$Config_TEAspecificLOContainer: false !default;
+@if $Config_TEAspecificLOContainer {
+  :pass(0) {
+    .learning-objective,
+    .learning-objectives,
+    [data-type="page"]:not(.introduction) [data-type="abstract"] {
+      container: section;
+      data-type: "";
+    }
   }
 }
 
 @if $Config_hasCompositeAppendixes {
   :pass(1) {
+    @include reference_refBookMetadataNodeAs(bookMetadata);
     body {
       .appendix {
         move-to: chapterAppendices;
@@ -34,7 +133,7 @@
       &::after {
         data-type: composite-chapter;
         data-uuid-key: appendicesChapter;
-        content: pending(appendicesTitle) pending(chapterAppendices);
+        content: pending(appendicesTitle) nodes(bookMetadata) pending(chapterAppendices);
       }
     }
   }
@@ -57,7 +156,7 @@
        }
      }
      &:deferred {
-      content:  pending(metadata) pending(appendixTitle)  content();
+      content: pending(appendixTitle) pending(metadata) content();
      }
     }
   }
@@ -65,6 +164,7 @@
 
 @if $Config_TEAspecificHasCompositePreface {
   :pass(1) {
+    @include reference_refBookMetadataNodeAs(bookMetadata);
     body {
     .preface {
       &::after {
@@ -83,7 +183,7 @@
         &::outside {
          data-type: composite-chapter;
          data-uuid-key: prefaceChapter;
-         content: pending(prefaceTitle)  content();
+         content: pending(prefaceTitle) nodes(bookMetadata) content();
         }
       }
     }
@@ -107,7 +207,7 @@
        }
      }
      &:deferred {
-      content:  pending(metadata) pending(prefaceTitle)  content();
+      content: pending(prefaceTitle) pending(metadata) content();
      }
     }
   }
@@ -140,13 +240,80 @@
   }
 }
 
-//remove the index
-:pass(6) {
-    @include modify_trash(".os-index-container");
-    @include modify_trash(".os-solutions-container");
-    @include modify_trash(".os-teacher");
+$Config_startPageWithLO: false !default;
+@if $Config_startPageWithLO {
+  :pass(1) {
+    [data-type="page"]:not(.preface):not(.appendix):not(.introduction) {
+      > div[data-type="metadata"] {
+        node-set: page-meta;
+        move-to: trash;
+      }
+      > [data-type="document-title"] {
+        node-set: page-doc-title;
+        move-to: trash;
+      }
+      > section.learning-objectives,
+      > section.learning-objective {
+        node-set: page-LO;
+        move-to: trash;
+      }
+      > section.section-opener {
+        class: "learning-objectives";
+        > div[data-type="title"] {
+          move-to: trash;
+        }
+        > .learning-objectives,
+        > .learning-objective {
+          move-to: trash;
+          > * {
+            move-to: newLOContainer;
+          }
+        }
+        > *:not(.learning-objectives):not(.learning-objective) {
+          move-to: newLOContainer;
+        }
+        &:deferred {
+          content: content() pending(newLOContainer);
+        }
+      }
+      &:deferred {
+        content: nodes(page-doc-title) nodes(page-meta) nodes(page-LO) content();
+      }
+    }
     @include utils_clearTrash();
+  }
 }
+
+$Config_startIntroWithCO: false !default;
+@if $Config_startIntroWithCO {
+  :pass(1) {
+    [data-type="page"].introduction {
+      > div[data-type="metadata"] {
+        node-set: page-meta;
+        move-to: trash;
+      }
+      > [data-type="document-title"] {
+        node-set: page-doc-title;
+        move-to: trash;
+      }
+      > div.chapter-objectives {
+        node-set: page-CO;
+        move-to: trash;
+      }
+      &:deferred {
+        content: nodes(page-doc-title) nodes(page-meta) nodes(page-CO) content();
+      }
+    }
+    @include utils_clearTrash();
+  }
+}
+
 :pass(8) {
+  // Remove eob materials and teacher support notes
+  @include modify_trash(".os-index-container");
+  @include modify_trash(".os-solutions-container");
+  @include modify_trash(".os-teacher");
+  @include utils_clearTrash();
+
   @include modify_retitleHeaders($Config_hasCompositeChapter);
 }

@@ -124,13 +124,6 @@
   [data-type="composite-page"] {
     content: nodes($bookMetadata) content();
   }
-
-  @if $hasCompositeChapter {
-    [data-type="composite-chapter"]  {
-      // Copy-pasta from above
-      content: nodes($bookMetadata) content();
-    }
-  }
 }
 
 /// Adds the title for each composite page
@@ -181,31 +174,55 @@
   }
 }
 
-/// Modify GenericNote: Many notes have  different title, the only way to keep those was to pass noteTitle to the title. However, the titles are inconsistent. It might be better to define the title via variables like any other notes and fix the content.
-
 @mixin modify_GenericNote() {
- div[data-type="note"][class="note"] {
-    >div[data-type="title"] {
-      string-set: noteTitle content();
-      &::before {
-       container: span;
-       class: "os-title-label";
-       content: string(noteTitle);
-       move-to: genericNoteLabel;
-     }
-     move-to: trash;
-    }
-    &::after {
-      container: div;
-      content: pending(genericNoteLabel);
-      class: "os-title";
-      move-to: genericNote;
-     }
-     &:deferred {
-      content: pending(genericNote) content();
-     }
-   }
+  @include _genericNoteNesting(1);
 }
+
+@mixin _genericNoteNesting($maxDepth, $depth: 0) {
+  @if ($depth <= $maxDepth) {
+    // We start counting the depth at 0, but the header objects will begin at h3
+    $headingLevel: $depth + 3;
+    // This is to ensure that nested notes, that have one to three non-note wrappers
+    // between them and their parent note, will not be detected as unnested notes
+    // The reason this looks bad is because CSS is bad and should feel bad for not
+    // supporting anything that allows us to ensure all parents match a certain selector (e.i are not notes)
+    $noteDepthSelector: (':not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > ');
+    @if $depth > 0 {
+      $noteDepthSelector: ('');
+      @for $i from 1 through $depth {
+        $noteDepthSelector: append($noteDepthSelector, '[data-type="note"]', 'space');
+      }
+    }
+    // Using :not([class]) ensures that the selected note does not have a class of any kind (thus making it a "generic" note)
+    #{$noteDepthSelector} [data-type="note"]:not([class]) {
+      @include _genericNoteAtLevel($depth, $headingLevel)
+    }
+    @include _genericNoteNesting($maxDepth, $depth + 1);
+  }
+}
+
+@mixin _genericNoteAtLevel($depth, $headingLevel) {
+  $minorLevel: '';
+  @if $depth > 0 {
+    $minorLevel: 'depth#{$depth}';
+  }
+  &::inside {
+    class: "os-note-body";
+  }
+  > div[data-type="title"] {
+    container: span;
+    class: "os-title-label";
+    data-type: "";
+    move-to: genericNoteLabel#{$minorLevel};
+  }
+  &:deferred::before {
+    container: h#{$headingLevel};
+    content: pending(genericNoteLabel#{$minorLevel});
+    class: "os-title";
+    attr-data-type: "title";
+  }
+}
+
 
 @mixin modify_note($noteContent) {
   $className: map-get($noteContent, className);
@@ -219,17 +236,16 @@
   @include validate_typeOptional($useHeader, bool);
   @include validate_typeOptional($labelText, string);
   // Check that exactly one option is provided
-   @include validate_exists($titleContent or $labelText or $useHeader);
-   @include validate_exists(not($titleContent and $labelText));
-   @include validate_exists(not($titleContent and $useHeader));
-   @include validate_exists(not($useHeader and $labelText));
+  @include validate_exists($titleContent or $labelText or $useHeader);
+  @include validate_exists(not($titleContent and $labelText));
+  @include validate_exists(not($titleContent and $useHeader));
+  @include validate_exists(not($useHeader and $labelText));
 
   // $maxDepth is the maximum amount of note nesting to allow support for
   @include _noteNesting(1, $className, $labelText, $replaceHeader, $useHeader);
 }
 
 @mixin _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $useHeader, $depth: 0) {
-
   @if ($depth <= $maxDepth) {
     $headingLevel: $depth + 3;
     $noteDepthSelector: (':not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > ');
@@ -249,9 +265,7 @@
 @mixin _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel, $useHeader) {
   $minorLevel: '';
   @if $depth > 0 {
-    @for $i from 1 through $depth {
-      $minorLevel: $minorLevel + 'Minor';
-    }
+    $minorLevel: 'depth#{$depth}';
   }
   @if $replaceHeader {
     //Delete original title for note
@@ -292,24 +306,16 @@
   }
   @if $useHeader {
     > div[data-type="title"] {
-      string-set: myNoteTitle content();
-      &::before {
-        container: span;
-        class: "os-title-label";
-        content: string(myNoteTitle);
-        move-to: myNoteLabel;
-      }
-      move-to: trash;
+      container: span;
+      class: "os-title-label";
+      attr-data-type: "";
+      move-to: myNoteLabel;
     }
-    &::after {
-      container: div;
+    &:deferred::before {
+      container: h#{$headingLevel};
       content: pending(myNoteLabel);
       class: "os-title";
       attr-data-type: "title";
-      move-to: myNote;
-    }
-    &:deferred {
-      content: pending(myNote) content();
     }
   } @else {
     // Make new title for note
@@ -333,7 +339,7 @@
 @mixin modify_retitleHeaders ($hasCompositeChapter) {
   [data-type="chapter"] {
     [data-type="page"] {
-      [data-type="note"],
+      :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"],
       [data-type="example"],
       [data-type="exercise"] {
         > .os-title {
@@ -341,7 +347,7 @@
         }
         [data-type="solution"] {
           .solution-title {
-          container: h4;
+            container: h4;
           }
         }
       }
@@ -471,6 +477,27 @@
   }
 }
 
+/// Will add a title/header with string param to solutions in a selected location
+/// @group modify
+@mixin modify_addSolutionHeader($selector, $titleString) {
+  @include validate_type($selector, string);
+  @include validate_type($titleString, string);
+
+  #{$selector} [data-type="solution"] {
+    > [data-type="title"] {
+      move-to: trash;
+    }
+    $solutionTitleContent: (os-text: $titleString);
+    @include utils_title($solutionTitleContent, bSolutionHeader);
+    &::before {
+      content: pending(bSolutionHeader);
+      data-type: "title";
+      class: "solution-title";
+      container: h4;
+    }
+  }
+}
+
 /// This wraps every iframe with an element that has classes on it
 /// saying which alternatives are present,
 /// and adds a link that opens in a new window.
@@ -559,5 +586,23 @@
         move-to: trash;
       }
     }
+  }
+}
+
+@mixin modify_tagMissingExercises() {
+  [data-type="exercise"] {
+    string-set: missing "";
+    div.missing-exercise {
+      string-set: missing " missing-exercise";
+    }
+    &::deferred {
+      class: attr(class) string(missing);
+    }
+  }
+}
+
+@mixin modify_dataNumberStyle() {
+  ol[data-number-style="lower-alpha"]{
+    attr-type: "a";
   }
 }
