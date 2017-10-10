@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Pull in the RECIPE_DESC
+source ./books.txt || exit 1
+
+echo '[' > ./recipes/output/manifest.json
+for recipe_desc in "${RECIPE_DESC[@]}"
+do
+    if [[ "$recipe_desc" != "${RECIPE_DESC[0]}" ]]
+    then
+      echo ',' >> ./recipes/output/manifest.json
+    fi
+    read rname rdesc <<<${recipe_desc}
+    echo "{
+    \"id\": \"${rname}\",
+    \"file\": \"${rname}.css\",
+    \"title\": \"$rdesc\"}"
+done >> ./recipes/output/manifest.json
+echo ']'>> ./recipes/output/manifest.json
