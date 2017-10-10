@@ -1,5 +1,4 @@
 import json
-import os
 from pkg_resources import resource_stream, resource_string
 
 from ._version import get_versions
@@ -11,7 +10,3 @@ recipes = json.load(resource_stream(__name__, 'recipes/manifest.json'))
 for recipe in recipes:
     recipe['file'] = resource_string(__name__,
                                      'recipes/{}'.format(recipe['file'],))
-
-here = os.path.abspath(os.path.dirname(__file__))
-migrations = os.path.join(here, 'migrations')
-del here
