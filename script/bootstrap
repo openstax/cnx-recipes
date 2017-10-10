@@ -39,26 +39,28 @@ fi
 >&2 echo "Using node: $(node --version)"
 >&2 echo "Using npm: $(npm --version)"
 
-# # Install https://yarnpkg.com (package manager)
-# if [[ ! $(which yarn) ]]; then
-#   # Prompt when on debian
-#   if [[ $(which apt-key) ]]; then
-#     read -p "Would you like to install yarn (y/N)?" choice
-#     echo # Move to a new line
-#     if [[ "${choice}" =~ ^[Yy]$ ]]; then
-#       >&2 echo "==> Installing yarn. You may be prompted for a password"
-#       curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - || exit 1
-#       echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list || exit 1
-#       sudo apt-get update && sudo apt-get install yarn || exit 1
-#     else
-#       echo "Yarn is not installed. Exiting"
-#       exit 1
-#     fi
-#   else
-#     echo "Not sure how to install yarn automatically. If you are using macOS do you have https://brew.sh installed?"
-#     exit 1
-#   fi
-# fi
+# Install https://yarnpkg.com (package manager)
+if [[ ! $(which yarn) ]]; then
+  # Prompt when on debian
+  if [[ $(which apt-key) ]]; then
+    read -p "Would you like to install yarn (y/N)? This will use sudo to install a 3rd party apt repository, and install the yarn package." choice
+    echo # Move to a new line
+    if [[ "${choice}" =~ ^[Yy]$ ]]; then
+      >&2 echo "==> Installing yarn. You may be prompted for a password"
+      curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - || exit 1
+      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list || exit 1
+      sudo apt-get update && sudo apt-get install yarn || exit 1
+    else
+      echo "Yarn is not installed. Exiting"
+      echo "To install yarn manually, follow the instructions at https://yarnpkg.com/en/docs/install#linux-tab"
+      exit 1
+    fi
+  else
+    echo "Not sure how to install yarn automatically. If you are using macOS do you have https://brew.sh installed?"
+    echo "To install yarn manually, follow the instructions at https://yarnpkg.com"
+    exit 1
+  fi
+fi
 
 # Note: Skip rbenv for Travis because it already has ruby
 if [ ! "${CI}" = "true" ] && [ -f ".ruby-version" ]; then
