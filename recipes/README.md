@@ -5,7 +5,8 @@ The generated CSS is stored in the [./output](./output) directory.
 ## Relevant Scripts
 
 ```sh
-./script/bake-book ${bookName}  # Uses the results of `./script/fetch-html` stored in `/data`
+./script/fetch-html ${bookName}     # Stores result in `./data/`
+./script/bake-book ${bookName}      # Uses the results of `./script/fetch-html`
 ./script/generate-guide ${bookName}
 ```
 
@@ -14,11 +15,13 @@ The generated CSS is stored in the [./output](./output) directory.
 
 The source for the documentation is in CSS comments and is split into `common` and book-specific.
 
+[An example config file with documentation](./books/_example/)
+
 ## Directory Organizational Map
 
-- `./recipes/mixins/styleguide/*.xhtml` : The Raw HTML snippets for "common" elements in a Page
+- `./recipes/mixins/styleguide/*.snippet.xml` : The Raw HTML snippets for "common" elements in a Page
 - `./recipes/mixins/styleguide/_all.scss`: The documentation for "common" elements in a Page
-- `./recipes/books/${bookName}/styleguide/*.xhtml` : The Raw HTML snippets for book-specific collated pages and any other customizations
+- `./recipes/books/${bookName}/styleguide/*.snippet.xml` : The Raw HTML snippets for book-specific collated pages and any other customizations
 - `./recipes/books/${bookName}/book.scss`: Added CSS docs that are slurped in when generating the styleguide
 
 ## Book-Agnostic Documentation
