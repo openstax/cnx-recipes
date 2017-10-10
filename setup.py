@@ -14,8 +14,4 @@ setup(name='cnx-recipes',
       packages=['cnxrecipes'],
       include_package_data=True,
       zip_safe=True,
-      entry_points="""\
-      [dbmigrator]
-      migrations_directory = cnxrecipes:migrations
-      """
       )
