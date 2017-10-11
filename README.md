@@ -2,6 +2,8 @@
 
 # Install
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Connexions/cnx-recipes.svg)](https://greenkeeper.io/)
+
 1. ensure the prerequisites are installed.
    - NodeJS (via [nvm](https://github.com/creationix/nvm))
    - [Virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
