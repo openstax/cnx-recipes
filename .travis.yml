@@ -12,22 +12,35 @@ addons:
     packages:
       # Used for the CNXML->HTML conversion
       - xsltproc libxml2-utils
+      # For building kcov
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - libdw-dev
+      - cmake
 
 # Cache the 3rd-party packages. From https://blog.travis-ci.com/2016-11-21-travis-ci-now-supports-yarn
 cache:
   yarn: true
   directories:
     - node_modules
-    
+
 env:
 - NODE_VERSION="6.9.1"
 
 before_install:
   - nvm install $NODE_VERSION
   - rvm default
-install:
-  - ./script/setup
-script: ./script/ci
-after_success:
-  # Report coverage to codecov
-  - bash <(curl -s https://codecov.io/bash)
+  # Build https://github.com/SimonKagstrom/kcov (shell code coverage)
+  - wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
+    tar xzf master.tar.gz &&
+    rm master.tar.gz &&
+    cd kcov-master &&
+    mkdir build &&
+    cd build &&
+    cmake .. &&
+    make &&
+    sudo make install &&
+    cd ../.. &&
+    rm -rf kcov-master
+script: kcov ./coverage/ ./script/ci
+after_success: bash <(curl -s https://codecov.io/bash)
