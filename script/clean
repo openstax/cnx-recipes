@@ -1,0 +1,20 @@
+#!/bin/bash -x
+
+cd "$(dirname "$0")/.."
+
+dirs_to_remove=(
+  node_modules
+  venv
+  tmp
+  vendor
+  sassdoc
+  coverage
+  styleguide
+)
+
+for dir_name in "${dirs_to_remove[@]}"
+do
+  if [[ -d "./${dir_name}/" ]]; then
+    rm -rf "./${dir_name}/" || exit 111
+  fi
+done

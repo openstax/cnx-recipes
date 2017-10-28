@@ -1,6 +1,12 @@
 #!/bin/bash
 
-echo "==> Checking that HTML snippets and 'magic' XML comments are well-formed XML"
+cd "$(dirname "$0")/.."
+
+source ./script/bootstrap || exit 1
+
+progress "Checking that HTML snippets and 'magic' XML comments are well-formed XML"
+
+[[ -f "./vendor/rhaptos.cnxmlutils/rhaptos/cnxmlutils/xsl/cnxml-to-html5.xsl" ]] || die "./vendor/rhaptos.cnxmlutils/ does not exist. Try running ./script/setup again"
 
 temp_file="temp-linting.xml"
 for file_name in $(find ./recipes/books/*/styleguide/*.snippet.xml ./recipes/mixins/styleguide/*.snippet.xml); do

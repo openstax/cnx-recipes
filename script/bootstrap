@@ -5,145 +5,159 @@
 
 cd "$(dirname "$0")/.."
 
+if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
-# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
-if [[ $(tput colors) -ge 8 ]]; then
-  c_none=$(tput sgr0)
-  c_red=$(tput setaf 1)
-  c_green=$(tput setaf 2)
-  c_blue=$(tput setaf 4)
-  c_purple=$(tput setaf 5)
-  c_dark=$(tput setaf 8)
-  c_yellow=$(tput setaf 11)
-  c_cyan=$(tput setaf 14)
-fi
-
-_say() { echo -e "$1"; }
-progress() { _say "${c_yellow}==>${c_none} $1"; }
-# https://stackoverflow.com/a/25515370
-yell() { >&2 _say "$0: ${c_red}$*${c_none}"; }
-die() {
-  yell "$1"
-  if [[ $2 ]]; then
-    err_code=$2
-  else
-    err_code=112
+  # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+  if [[ $(tput colors) -ge 8 ]]; then
+    c_none=$(tput sgr0)
+    c_red=$(tput setaf 1)
+    c_green=$(tput setaf 2)
+    c_blue=$(tput setaf 4)
+    c_purple=$(tput setaf 5)
+    c_dark=$(tput setaf 8)
+    c_yellow=$(tput setaf 11)
+    c_cyan=$(tput setaf 14)
   fi
-  exit ${err_code}
-}
-try() { "$@" || die "${c_red}ERROR: could not run [$*]${c_none}" 112; }
 
-do_progress() { progress "$1"; try "${@:2}"; }
-
-# Alternative that outputs only when an error occurs
-_quiet_progress() { echo -e -n "${c_yellow}==>${c_none} $1 ${c_dark}...${c_none} "; }
-_quiet_try() {
-  _myout=$(mktemp -t 'stdout')
-  _myerr=$(mktemp -t 'stderr')
-  "$@" > ${_myout} 2> ${_myerr} || {
-    echo "" # start on a new line
-    cat ${_myout}
-    >&2 cat ${_myerr}
-    rm ${_myout} ${_myerr}
-    die "${c_red}ERROR: could not run [$*]${c_none}"
+  _say() { echo -e "$1"; }
+  progress() { _say "${c_yellow}==>${c_none} $1"; }
+  # https://stackoverflow.com/a/25515370
+  yell() { >&2 _say "$0: ${c_red}$*${c_none}"; }
+  die() {
+    yell "$1"
+    if [[ $2 ]]; then
+      err_code=$2
+    else
+      err_code=112
+    fi
+    exit ${err_code}
   }
-  rm ${_myout} ${_myerr}
-}
-_quiet_ok() { _say "${c_green}OK${c_none}"; }
-do_progress_quiet() {
-  # Keep it loud when running in Travis or Jenkins
-  if [[ "${CI}" == "true" || "${JENKINS_URL}" != "" || "${DEBUG}" || "${VERBOSE}" ]]; then
-    do_progress "$@"
-  else
-    _quiet_progress "$1"
-    _quiet_try "${@:2}" # Skip the 1st arg but use the rest
-    _quiet_ok
-  fi
-}
+  try() { __NESTED_PROGRESS__="true" "$@" || die "${c_red}ERROR: could not run [$*]${c_none}" 112; }
 
+  do_progress() { progress "$1"; try "${@:2}"; }
 
-# Install homebrew packages if running on macOS
-if [[ -f "Brewfile" ]] && [[ "$(uname -s)" = "Darwin" ]]; then
-  [[ $(which brew) ]] || die "Homebrew is not installed. See https://brew.sh"
-  [[ $(xcode-select --print-path) == "/Library/Developer/CommandLineTools" ]] || _say "${c_red}WARNING:${c_none} You may need to uninstall XCode and just install the command line tools"
-
-  brew bundle check >/dev/null 2>&1  || {
-    do_progress "Installing Homebrew dependencies…" \
-      brew bundle
-  }
-fi
-
-# Python: Install & Activate python virtualenv
-if [[ ! "${CI}" = "true" && -f "./setup.py" ]]; then
-  # Only install & activate the virtualenv if not already in one
-  if [[ -z "${VIRTUAL_ENV}" ]]; then
-
-    if [[ ! $(which virtualenv) ]]; then
-      # macOS needs a little extra love
-      if [[ -f "Brewfile" ]] && [[ "$(uname -s)" = "Darwin" ]]; then
-        do_progress_quiet "Unlinking homebrew python (just-in-case)" \
-          brew unlink python
-        do_progress_quiet "Relinking homebrew python" \
-          brew link python
-      fi
-
-      do_progress_quiet "Installing Python virtualenv" \
-        pip install virtualenv
-    fi
-    if [[ ! -d "./venv/" ]]; then
-      do_progress_quiet "Setting up a python virtualenv" \
-        virtualenv ./venv/
-    fi
-    do_progress_quiet "Activating virtualenv" \
-      source ./venv/bin/activate
-  else
-    >&2 echo "Skipping virtualenv because already in one"
-  fi
-fi
-
-# Javascript environment
-if [[ -f "./package.json" ]]; then
-  [[ $(which yarn) ]] || die "ERROR: Install yarn by going to https://yarnpkg.com"
-fi
-if [[ -f "./.nvmrc" ]]; then
-  # Set up the correct version of node (Travis automatically does this)
-  if [[ ! "${CI}" = "true" ]]; then
-    if [[ ! -f ~/.nvm/nvm.sh ]]; then
-      die "ERROR: Install nvm by going to https://github.com/creationix/nvm"
-    fi
-    source ~/.nvm/nvm.sh --no-use
-    do_progress_quiet "Setting correct node version (see ./.nvmrc)" \
-      nvm install $(< ./.nvmrc)
-  fi
-fi
-
-# Note: Skip rbenv for Travis because it already has ruby
-if [[ ! "${CI}" = "true" ]] && [[ -f ".ruby-version" ]]; then
-  if [[ -n $(which rbenv) ]]; then
-    progress "Setting correct ruby version (see ./.ruby-version)"
-    rbenv_version="$(rbenv version-name 2>/dev/null)"
-    if [[ -z "${rbenv_version}" ]]; then
-      do_progress_quiet "Installing Ruby" \
-        rbenv install --skip-existing
-    fi
-  else
-    >&2 echo "WARNING: Skipping rbenv. Using local ruby"
-  fi
-
-  # Initialize rbenv (if installed)
-  [[ -n $(which rbenv) ]] && eval "$(rbenv init -)"
-
-  gem list -i bundler >/dev/null 2>&1  || {
-    progress "Installing Ruby Bundler gem…"
-    gem install bundler || {
-      >&2 echo ''
-      >&2 echo ''
-      >&2 echo '--------------- Error -------------'
-      >&2 echo 'Problem installing ruby bundler.'
-      exit 1
+  # Alternative that outputs only when an error occurs
+  _quiet_progress() { echo -e -n "${c_yellow}==>${c_none} $1 ${c_dark}...${c_none} "; }
+  _quiet_try() {
+    SECONDS=0
+    _myout=$(mktemp -t 'stdout')
+    _myerr=$(mktemp -t 'stderr')
+    __NESTED_PROGRESS__="true" "$@" > ${_myout} 2> ${_myerr} || {
+      echo "" # start on a new line
+      cat ${_myout}
+      >&2 cat ${_myerr}
+      rm ${_myout} ${_myerr}
+      die "${c_red}ERROR: could not run [$*]${c_none}"
     }
-
-    [[ -n $(which rbenv) ]] && rbenv rehash
-
+    rm ${_myout} ${_myerr}
   }
+  _quiet_ok() {
+    time_spent=""
+    if [[ ${SECONDS} -gt 5 ]]; then
+      time_spent=" ${c_dark}(${SECONDS} sec)${c_none}"
+    fi
+    _say "${c_green}OK${c_none}${time_spent}";
+  }
+  do_progress_quiet() {
+    # Keep it loud when running in Travis or Jenkins
+    if [[ "${CI}" == "true" || "${JENKINS_URL}" != "" || "${DEBUG}" || "${VERBOSE}" || "${__NESTED_PROGRESS__}" == "true" ]]; then
+      do_progress "$@"
+    else
+      _quiet_progress "$1"
+      _quiet_try "${@:2}" # Skip the 1st arg but use the rest
+      _quiet_ok
+    fi
+  }
+
+
+  # Install homebrew packages if running on macOS
+  if [[ -f "Brewfile" ]] && [[ "$(uname -s)" = "Darwin" ]]; then
+    [[ $(which brew) ]] || die "Homebrew is not installed. See https://brew.sh"
+    [[ $(xcode-select --print-path) == "/Library/Developer/CommandLineTools" ]] || _say "${c_red}WARNING:${c_none} You may need to uninstall XCode and just install the command line tools"
+
+    brew bundle check >/dev/null 2>&1  || {
+      do_progress "Installing Homebrew dependencies…" \
+        brew bundle
+    }
+  fi
+
+  # Python: Install & Activate python virtualenv
+  if [[ ! "${CI}" = "true" && -f "./setup.py" ]]; then
+    # Only install & activate the virtualenv if not already in one
+    if [[ -z "${VIRTUAL_ENV}" ]]; then
+
+      if [[ ! $(which virtualenv) ]]; then
+        # macOS needs a little extra love
+        if [[ -f "Brewfile" ]] && [[ "$(uname -s)" = "Darwin" ]]; then
+          do_progress_quiet "Unlinking homebrew python (just-in-case)" \
+            brew unlink python
+          do_progress_quiet "Relinking homebrew python" \
+            brew link python
+        fi
+
+        do_progress_quiet "Installing Python virtualenv" \
+          pip install virtualenv
+      fi
+      if [[ ! -d "./venv/" ]]; then
+        do_progress_quiet "Setting up a python virtualenv" \
+          virtualenv ./venv/
+      fi
+      do_progress_quiet "Activating virtualenv" \
+        source ./venv/bin/activate
+    else
+      [[ ${DEBUG} ]] && _say "Skipping virtualenv because already in one"
+    fi
+  fi
+
+  # Javascript environment
+  if [[ -f "./package.json" ]]; then
+    [[ $(which yarn) ]] || die "ERROR: Install yarn by going to https://yarnpkg.com"
+  fi
+  if [[ -f "./.nvmrc" ]]; then
+    # Set up the correct version of node (Travis automatically does this)
+    if [[ ! "${CI}" = "true" ]]; then
+      if [[ ! -f ~/.nvm/nvm.sh ]]; then
+        die "ERROR: Install nvm by going to https://github.com/creationix/nvm"
+      fi
+      source ~/.nvm/nvm.sh --no-use
+      do_progress_quiet "Setting correct node version (see ./.nvmrc)" \
+        nvm install $(< ./.nvmrc)
+    fi
+  fi
+
+  # Note: Skip rbenv for Travis because it already has ruby
+  if [[ ! "${CI}" = "true" ]] && [[ -f ".ruby-version" ]]; then
+    if [[ -n $(which rbenv) ]]; then
+      progress "Setting correct ruby version (see ./.ruby-version)"
+      rbenv_version="$(rbenv version-name 2>/dev/null)"
+      if [[ -z "${rbenv_version}" ]]; then
+        do_progress_quiet "Installing Ruby" \
+          rbenv install --skip-existing
+      fi
+    else
+      >&2 echo "WARNING: Skipping rbenv. Using local ruby"
+    fi
+
+    # Initialize rbenv (if installed)
+    [[ -n $(which rbenv) ]] && eval "$(rbenv init -)"
+
+    gem list -i bundler >/dev/null 2>&1  || {
+      progress "Installing Ruby Bundler gem…"
+      gem install bundler || {
+        >&2 echo ''
+        >&2 echo ''
+        >&2 echo '--------------- Error -------------'
+        >&2 echo 'Problem installing ruby bundler.'
+        exit 1
+      }
+
+      [[ -n $(which rbenv) ]] && rbenv rehash
+
+    }
+  fi
+
+
+  BOOTSTRAP_ALREADY_RAN="true"
+# else
+#   die "Bootstrap already ran"
 fi

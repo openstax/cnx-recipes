@@ -1,5 +1,8 @@
 #!/bin/bash
 
+cd "$(dirname "$0")/.."
+
+source ./script/bootstrap || exit 1
 
 arg1=$1
 debugFlag=$2
@@ -9,61 +12,51 @@ source ./books.txt || exit 1
 
 # Check command line args
 
-if [[ -z "${arg1}" ]]
-then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument'
-  >&2 echo ' or --all for all books.'
-  >&2 echo 'This script prepares the book to compare against.'
-  >&2 echo 'Typically this step is done in the master branch'
-  >&2 echo 'and then in another branch diff-book is called to see how the HTML changed.'
-  >&2 echo ''
-  >&2 echo "Valid books are (from ./books.txt):"
-  for bookConfig in "${BOOK_CONFIGS[@]}"
-  do
+if [[ -z "${arg1}" ]]; then
+  _say 'This script prepares the book to compare against.'
+  _say 'Typically this step is done in the master branch'
+  _say 'and then in another branch diff-book is called to see how the HTML changed.'
+  _say ''
+  _say "Valid books are (from ./books.txt):"
+  for bookConfig in "${BOOK_CONFIGS[@]}"; do
     read -r bookName recipeName uuid _ <<< "${bookConfig}"
-    >&2 echo "${bookName}"
+    _say "${bookName}"
   done
-  exit 1
+  die 'Argument Missing. You must specify the name of the book as the 1st argument or --all for all books.'
 fi
 
 
-if [[ ! "${arg1}" == "--all" ]]
-then
+if [[ ! "${arg1}" == "--all" ]]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for bookConfig in "${BOOK_CONFIGS[@]}"
-  do
+  for bookConfig in "${BOOK_CONFIGS[@]}"; do
     read -r bookConfigName recipeName uuid _ <<< "${bookConfig}"
 
-    if [[ "${arg1}" = "${bookConfigName}" ]]
-    then
+    if [[ "${arg1}" = "${bookConfigName}" ]]; then
       BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid}")
       foundConfig=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]
-  then
-    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
-    >&2 echo "Valid books are (from ./books.txt):"
-    for bookConfig in "${BOOK_CONFIGS[@]}"
-    do
+  if [[ ! 1 -eq "${foundConfig}" ]]; then
+    _say "Valid books are (from ./books.txt):"
+    for bookConfig in "${BOOK_CONFIGS[@]}"; do
       read -r bookName recipeName uuid _ <<< "${bookConfig}"
-      >&2 echo "${bookName}"
+      _say "${bookName}"
     done
-    exit 1
+    die "Could not find Book info for book named ${arg1}"
   fi
 fi
 
-for bookConfig in "${BOOK_CONFIGS[@]}"
-do
+for bookConfig in "${BOOK_CONFIGS[@]}"; do
   read -r bookName recipeName uuid _ <<< "${bookConfig}"
   rawFile="./data/${bookName}-raw.xhtml"
 
   bakedFile="./data/${bookName}-baked.xhtml"
   preparedFile="./data/${bookName}-prepared.xhtml"
 
-  ./script/bake-book ${bookName} --use-repeatable-ids || exit 1
+  do_progress_quiet "Baking book" \
+    ./script/bake-book ${bookName} --use-repeatable-ids
 
   mv ${bakedFile} ${preparedFile}
 done

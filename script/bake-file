@@ -1,5 +1,9 @@
 #!/bin/bash
-set -e
+
+cd "$(dirname "$0")/.."
+
+source ./script/bootstrap || exit 1
+
 
 bookName=$1
 rawFile=$2
@@ -11,45 +15,24 @@ cssFile="./recipes/output/${bookName}.css"
 
 # Check command line args
 
-if [ -z "${bookName}" ]
-then
-  echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  echo 'The required arguments are: bookName, rawFile, bakedFile'
-  exit 1
-fi
+[[ "${bookName}" ]] || die 'Argument Missing. You must specify the name of the book as the 1st argument. For example: physics. The required arguments are: bookName, rawFile, bakedFile'
 
-if [ ! -f "${rawFile}" ]
-then
-  echo "ERROR: Could not find the raw HTML file at ${rawFile}"
-  exit 1
-fi
+[[ -f "${rawFile}" ]] || die "Could not find the raw HTML file at ${rawFile}"
 
-if [ -z "${bakedFile}" ]
-then
-  echo 'ERROR: You must specify a baked path'
-  exit 1
-fi
+[[ "${bakedFile}" ]] || die 'You must specify a baked path'
 
-if [ ! -f "${sassFile}" ]
-then
-  echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
-  exit 1
-fi
+[[ -f "${sassFile}" ]] || die "Could not find the raw SCSS file at ${sassFile}"
 
 
 # Remove the baked file if it exists
 # [ -e "${bakedFile}" ] && rm ${bakedFile}
 # commented out because it could be /dev/stdout
 
-# Activate the venv if not already in a virtualenv
-if [[ -z "${VIRTUAL_ENV}" ]]
-then
-  source ./venv/bin/activate
-fi
-
 lcovFile="${rawFile}.lcov"
 
-cnx-easybake --coverage-file "${lcovFile}" ${debugFlag} "${cssFile}" "${rawFile}" "${bakedFile}"
+do_progress_quiet "Baking file" \
+  cnx-easybake --coverage-file "${lcovFile}" ${debugFlag} "${cssFile}" "${rawFile}" "${bakedFile}"
+
 # Validate the cooked file.
 # Commented because snippets do not pass the data-type="metadata" validation
 # and adding in all those metadata blocks would be cumbersome and distract

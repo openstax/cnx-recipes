@@ -1,42 +1,51 @@
 #!/bin/bash
+
+cd "$(dirname "$0")/.."
+
+source ./script/bootstrap || exit 1
+
 # Verify exportable recipes
 pytest tests
 
 # Make sure the snippets are well-formed XML
-./script/lint-snippets || exit 1
+do_progress_quiet "Linting and checking XML snippets" \
+  ./script/lint-snippets
 
 # Generate the CSS files for books
-./script/compile-books || exit 1
+do_progress_quiet "Compiling CSS files" \
+  ./script/compile-books
 
 # Run the linter
-npm test || exit 1
-./script/find-unused-vars || exit 1
+do_progress_quiet "Running SASS linter" \
+  npm test
+
+do_progress_quiet "Looking for unused variables" \
+  ./script/find-unused-vars
 
 # Make sure the docs and guides still generate
-./script/generate-docs || exit 1
+do_progress_quiet "Generating sass docs" \
+  ./script/generate-docs
 
 # Pull in the BOOK_CONFIGS and BOOK_NAMES
 source ./books.txt || exit 1
 
-for recipeName in "${RECIPE_NAMES[@]}"
-do
-  ./script/generate-guide "${recipeName}" || exit 1
+for recipeName in "${RECIPE_NAMES[@]}"; do
+  do_progress_quiet "Generating styleguide for ${recipeName}" \
+    ./script/generate-guide "${recipeName}"
 done
 
 # Generate an index.html page for the styleguide
 styleguideDir="./styleguide/"
 
 echo "<html><body><ul>" > "${styleguideDir}/index.html"
-for recipeName in "${RECIPE_NAMES[@]}"
-do
+for recipeName in "${RECIPE_NAMES[@]}"; do
   echo "<li><a href='./${recipeName}/'>${recipeName}</a></li>" >> "${styleguideDir}/index.html"
 done
 echo "</ul></body></html>" >> "${styleguideDir}/index.html"
 
 
 # Generate an HTML report (if genhtml is installed)
-if [[ -n "$(which genhtml)" ]]
-then
-  >&2 echo "==> Generating HTML Coverage report at ./coverage/"
-  genhtml --quiet --output ./coverage/ $(find ./tmp/ -name "*.lcov") || exit 1
+if [[ -n "$(which genhtml)" ]]; then
+  do_progress_quiet "Generating HTML Coverage report at ./coverage/" \
+    genhtml --quiet --output ./coverage/ $(find ./tmp/ -name "*.lcov")
 fi

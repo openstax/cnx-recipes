@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cd "$(dirname "$0")/.."
+
+source ./script/bootstrap || exit 1
+
 arg1=$1
 
 # Pull in the BOOK_CONFIGS and RECIPE_NAMES
@@ -14,15 +18,6 @@ fi
 sassBin="$(npm bin)/node-sass"
 outputDir="./recipes/output/"
 
-# Try running sass locally (using rbenv). If that does not work then try it globally
-if [[ ! $(${sassBin} --version 2>/dev/null) ]]
-then
-  >&2 echo "ERROR: Could not find sass executable"
-  >&2 echo "INFO: Maybe rerun ./script/setup"
-  exit 1
-fi
-
-
 for recipeName in "${RECIPE_NAMES[@]}"
 do
 
@@ -30,9 +25,9 @@ do
   inputSassFile="./recipes/books/${recipeName}/${recipeName}.scss"
   cssFile="${outputDir}/${recipeName}.css"
 
-  >&2 echo "==> Generating ${cssFile}"
-
-  ${sassBin} --source-map true --output-style nested ${sassFile} ${cssFile} || exit 1
+  do_progress_quiet "Generating ${cssFile}" \
+    ${sassBin} --source-map true --output-style nested ${sassFile} ${cssFile} || exit 1
 done
 
-./script/build-manifest
+do_progress_quiet "Generating CSS manifest" \
+  ./script/build-manifest

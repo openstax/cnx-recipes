@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cd "$(dirname "$0")/.."
+
+source ./script/bootstrap || exit 1
+
 
 arg1=$1
 debugFlag=$2
@@ -9,68 +13,54 @@ source ./books.txt || exit 1
 
 # Check command line args
 
-./script/diff-guide-prepare "${arg1}" "baked"
+do_progress_quiet "Preparing styleguide for diffing" \
+  ./script/diff-guide-prepare "${arg1}" "baked"
 
 
-if [[ ! "${arg1}" == "--all" ]]
-then
+if [[ ! "${arg1}" == "--all" ]]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for recipeName in "${RECIPE_NAMES[@]}"
-  do
+  for recipeName in "${RECIPE_NAMES[@]}"; do
 
-    if [[ "${arg1}" = "${recipeName}" ]]
-    then
+    if [[ "${arg1}" = "${recipeName}" ]]; then
       RECIPE_NAMES=("${recipeName}")
       foundConfig=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]
-  then
-    >&2 echo "ERROR: Could not find Book info for recipe named ${arg1}"
-    >&2 echo "Valid books are (from ./books.txt):"
-    for recipeName in "${RECIPE_NAMES[@]}"
-    do
-      >&2 echo "${recipeName}"
+  if [[ ! 1 -eq "${foundConfig}" ]]; then
+    _say "Valid books are (from ./books.txt):"
+    for recipeName in "${RECIPE_NAMES[@]}"; do
+      _say "${recipeName}"
     done
-    exit 1
+    die "Could not find Book info for recipe named ${arg1}"
   fi
 fi
 
 diffFound=0
-for recipeName in "${RECIPE_NAMES[@]}"
-do
+for recipeName in "${RECIPE_NAMES[@]}"; do
 
-  >&2 echo "==> Checking for differences in '${recipeName}'"
+  progress "Checking for differences in '${recipeName}'"
 
-  for bakedFile in $(find ./tmp/${recipeName} -name "*-baked.xhtml")
-  do
+  for bakedFile in $(find ./tmp/${recipeName} -name "*-baked.xhtml"); do
 
     preparedFile="${bakedFile/-baked/-prepared}"
-    if [[ -s "${preparedFile}" ]]
-    then
+    if [[ -s "${preparedFile}" ]]; then
 
       diffCount=$(diff ${preparedFile} ${bakedFile} | wc -l)
 
-      if [[ 0 -ne "${diffCount}" ]]
-      then
-        >&2 echo "ERROR: There were ${diffCount} differences found. To see all of them run the following:"
-        >&2 echo "diff ${preparedFile} ${bakedFile}"
+      if [[ 0 -ne "${diffCount}" ]]; then
+        _say "WARNING: There were ${diffCount} differences found. To see all of them run diff ${preparedFile} ${bakedFile}:"
         diffFound=1
       fi
 
     else
-      >&2 echo "FAILING ${recipeName} because the prepared file '${preparedFile}' was not found."
-      >&2 echo "Did you run './script/diff-guide-prepare ${recipeName}' earlier?"
-      exit 1
+      die "FAILING ${recipeName} because the prepared file '${preparedFile}' was not found. Did you run './script/diff-guide-prepare ${recipeName}' earlier?"
     fi
 
   done
 done
 
-if [[ ! "${diffFound}" -eq "0" ]]
-then
-  >&2 echo "ERROR: There were differences found so failing"
-  exit 1
+if [[ ! "${diffFound}" -eq "0" ]]; then
+  die "There were differences found so failing"
 fi
