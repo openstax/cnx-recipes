@@ -1,13 +1,12 @@
 #!/bin/bash
-set -e
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
 # This fetches the raw HTML for a book (or all books if using the --all argument) from ${hostName}
 
+set -e
+
 arg1=$1
-
-cd "$(dirname "$0")/.."
-
-source ./script/bootstrap || exit 1
 
 
 # Pull in the BOOK_CONFIGS
@@ -41,8 +40,7 @@ if [[ ! "${arg1}" == "--all" ]]; then
 
   if [[ ! 1 -eq "${foundConfig}" ]]; then
     _say "Valid books are (from ./books.txt):"
-    for bookConfig in "${BOOK_CONFIGS[@]}"
-    do
+    for bookConfig in "${BOOK_CONFIGS[@]}"; do
       read -r bookName recipeName uuid _ <<< "${bookConfig}"
       _say "${bookName}"
     done
