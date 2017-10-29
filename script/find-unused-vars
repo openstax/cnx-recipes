@@ -42,10 +42,10 @@ progress "Finding variables that do not begin with 'Config_' and are not used in
 for filePath in $(find "${rootDir}" -type f -name "*.scss"); do
   vars=$(grep "${reVariableDeclaration1}" "${filePath}" | sed "${reVariableDeclaration2}")
   for varName in $vars; do
-    varCount=$(grep "\$${varName}" "${filePath}" | wc -l)
+    varCount=$(grep -c "\$${varName}" "${filePath}")
     # NOTE: Skip vars that begin with $Config_ or are all $UPPER_CASE (constants)
     if [[ "${varCount}" -eq 1 && "${varName}" != $(echo "${varName}" | tr '[:lower:]' '[:upper:]') ]]; then
-      if ! begins_with "Config_" ${varName}; then
+      if ! begins_with "Config_" "${varName}"; then
         _say "  ${filePath}: Unused local variable '\$${varName}'"
         ((unusedVarCount+=1))
       fi

@@ -3,7 +3,6 @@ cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
 arg1=$1
-debugFlag=$2
 
 # Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
@@ -48,13 +47,12 @@ fi
 
 for bookConfig in "${BOOK_CONFIGS[@]}"; do
   read -r bookName recipeName uuid _ <<< "${bookConfig}"
-  rawFile="./data/${bookName}-raw.xhtml"
 
   bakedFile="./data/${bookName}-baked.xhtml"
   preparedFile="./data/${bookName}-prepared.xhtml"
 
   do_progress_quiet "Baking book" \
-    ./script/bake-book ${bookName} --use-repeatable-ids
+    ./script/bake-book "${bookName}" --use-repeatable-ids
 
-  mv ${bakedFile} ${preparedFile}
+  mv "${bakedFile}" "${preparedFile}"
 done

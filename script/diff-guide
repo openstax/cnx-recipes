@@ -4,7 +4,6 @@ source ./script/bootstrap || exit 111
 
 
 arg1=$1
-debugFlag=$2
 
 # Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
@@ -40,12 +39,12 @@ for recipeName in "${RECIPE_NAMES[@]}"; do
 
   progress "Checking for differences in '${recipeName}'"
 
-  for bakedFile in $(find ./tmp/${recipeName} -name "*-baked.xhtml"); do
+  for bakedFile in $(find "./tmp/${recipeName}" -name "*-baked.xhtml"); do
 
     preparedFile="${bakedFile/-baked/-prepared}"
     if [[ -s "${preparedFile}" ]]; then
 
-      diffCount=$(diff ${preparedFile} ${bakedFile} | wc -l)
+      diffCount=$(diff "${preparedFile}" "${bakedFile}" | wc -l)
 
       if [[ 0 -ne "${diffCount}" ]]; then
         _say "WARNING: There were ${diffCount} differences found. To see all of them run diff ${preparedFile} ${bakedFile}:"

@@ -55,8 +55,11 @@ for bookConfig in "${BOOK_CONFIGS[@]}"; do
 
   rawFile="./data/${bookName}-raw.xhtml"
 
-  tempEpubFile="~/temp.internal.epub"
-  tempHtmlFile="~/temp.xhtml"
+  # These are expanded on the remote machine, hence single-quotes
+  # shellcheck disable=SC2016
+  tempEpubFile='${HOME}/temp.internal.epub'
+  # shellcheck disable=SC2016
+  tempHtmlFile='${HOME}/temp.xhtml'
 
   rmTempEpubCmd="[ -e ${tempEpubFile} ] && rm ${tempEpubFile}"
   rmTempHtmlCmd="[ -e ${tempHtmlFile} ] && rm ${tempHtmlFile}"
@@ -66,10 +69,10 @@ for bookConfig in "${BOOK_CONFIGS[@]}"; do
   commands="${rmTempEpubCmd}; ${rmTempHtmlCmd}; ${generateEpubCmd} && ${generateHtmlCmd}"
 
   do_progress_quiet "Fetching ${bookName} from ${hostName} (~20 minutes if it has exercises)" \
-    ssh ${USER}@${hostName} ${commands}
+    ssh "${USER}@${hostName}" "${commands}"
 
   do_progress_quiet "Copying HTML file from server to local machine" \
-    scp ${USER}@${hostName}:${tempHtmlFile} ${rawFile}
+    scp "${USER}@${hostName}:${tempHtmlFile}" "${rawFile}"
 
   _say "${c_green}Fetch is Done.${c_none} File is available at ${rawFile}"
 

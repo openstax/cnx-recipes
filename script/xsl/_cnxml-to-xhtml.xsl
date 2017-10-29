@@ -7,7 +7,7 @@
   exclude-result-prefixes="h mml c"
   >
 
-  <xsl:import href="../vendor/rhaptos.cnxmlutils/rhaptos/cnxmlutils/xsl/cnxml-to-html5.xsl"/>
+  <xsl:import href="../../vendor/rhaptos.cnxmlutils/rhaptos/cnxmlutils/xsl/cnxml-to-html5.xsl"/>
 
   <!-- Wrap the root element inside a <body> tag -->
   <xsl:template match="/">

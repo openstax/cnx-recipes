@@ -44,6 +44,15 @@ echo "</ul></body></html>" >> "${styleguideDir}/index.html"
 
 # Generate an HTML report (if genhtml is installed)
 if [[ -n "$(which genhtml)" ]]; then
+  coverage_files=$(find ./tmp/ -name "*.lcov")
+  # shellcheck disable=SC2086
   do_progress_quiet "Generating HTML Coverage report at ./coverage/" \
-    genhtml --quiet --output ./coverage/ $(find ./tmp/ -name "*.lcov")
+    genhtml --quiet --output ./coverage/ ${coverage_files}
+fi
+
+# Validate the shell scripts
+if [[ $(which shellcheck) ]]; then
+  # shellcheck disable=SC2086
+  do_progress_quiet "Linting shell scripts" \
+    shellcheck $(find ./script -not -path '*/\.*' -mindepth 1 -maxdepth 1 -type f) ./books.txt
 fi

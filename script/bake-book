@@ -47,7 +47,7 @@ for bookConfig in "${BOOK_CONFIGS[@]}"; do
   read -r bookName recipeName uuid _ <<< "${bookConfig}"
 
   do_progress_quiet "Compiling CSS file" \
-    ./script/compile-books ${recipeName}
+    ./script/compile-books "${recipeName}"
 
   rawFile="./data/${bookName}-raw.xhtml"
   bakedFile="./data/${bookName}-baked.xhtml"
@@ -60,10 +60,10 @@ for bookConfig in "${BOOK_CONFIGS[@]}"; do
   [[ -f "${sassFile}" ]] || die "Could not find the raw SCSS file at ${sassFile}"
 
   # Remove the baked file if it exists
-  [[ ! -f "${bakedFile}" ]] || rm ${bakedFile}
+  [[ ! -f "${bakedFile}" ]] || rm "${bakedFile}"
 
   do_progress_quiet "Baking ${rawFile} using ${recipeName} (~1min)" \
-    cnx-easybake --coverage-file "${lcovFile}" ${debugFlag1} ${debugFlag2} ${debugFlag3} ${debugFlag4} "${cssFile}" "${rawFile}" "${bakedFile}"
+    cnx-easybake --coverage-file "${lcovFile}" "${debugFlag1}" "${debugFlag2}" "${debugFlag3}" "${debugFlag4}" "${cssFile}" "${rawFile}" "${bakedFile}"
 
   # Generate an HTML report (if genhtml is installed)
   if [[ -n "$(which genhtml)" ]]; then
@@ -73,5 +73,5 @@ for bookConfig in "${BOOK_CONFIGS[@]}"; do
 
   # Validate the cooked file
   do_progress_quiet "Validating ${bakedFile}" \
-    cnx-epub-validate-collated ${bakedFile}
+    cnx-epub-validate-collated "${bakedFile}"
 done

@@ -5,7 +5,8 @@
 
 cd "$(dirname "$0")/.." || exit 111
 
-
+# Turn on tracing if in debug mode
+[[ ${TRACE} == "true" ]] && set -x
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 if [[ $(tput colors) -ge 8 ]]; then
@@ -42,14 +43,14 @@ _quiet_try() {
   SECONDS=0
   _myout=$(mktemp -t 'stdout')
   _myerr=$(mktemp -t 'stderr')
-  __NESTED_PROGRESS__="true" "$@" > ${_myout} 2> ${_myerr} || {
+  __NESTED_PROGRESS__="true" "$@" > "${_myout}" 2> "${_myerr}" || {
     echo "" # start on a new line
-    cat ${_myout}
-    >&2 cat ${_myerr}
-    rm ${_myout} ${_myerr}
+    cat "${_myout}"
+    >&2 cat "${_myerr}"
+    rm "${_myout}" "${_myerr}"
     die "${c_red}ERROR: could not run [$*]${c_none}"
   }
-  rm ${_myout} ${_myerr}
+  rm "${_myout}" "${_myerr}"
 }
 _quiet_ok() {
   time_spent=""
@@ -60,7 +61,7 @@ _quiet_ok() {
 }
 do_progress_quiet() {
   # Keep it loud when running in Travis or Jenkins
-  if [[ "${CI}" == "true" || "${JENKINS_URL}" != "" || "${DEBUG}" || "${VERBOSE}" || "${__NESTED_PROGRESS__}" == "true" ]]; then
+  if [[ "${CI}" == "true" || "${JENKINS_URL}" != "" || "${TRACE}" || "${DEBUG}" || "${VERBOSE}" || "${__NESTED_PROGRESS__}" == "true" ]]; then
     do_progress "$@"
   else
     _quiet_progress "$1"
@@ -118,12 +119,13 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
   if [[ -f "./.nvmrc" ]]; then
     # Set up the correct version of node (Travis automatically does this)
     if [[ ! "${CI}" = "true" ]]; then
-      if [[ ! -f ~/.nvm/nvm.sh ]]; then
+      if [[ ! -f "${HOME}/.nvm/nvm.sh" ]]; then
         die "ERROR: Install nvm by going to https://github.com/creationix/nvm"
       fi
-      source ~/.nvm/nvm.sh --no-use
+      # shellcheck disable=SC1090
+      source "${HOME}/.nvm/nvm.sh" --no-use
       do_progress_quiet "Setting correct node version (see ./.nvmrc)" \
-        nvm install $(< ./.nvmrc)
+        nvm install "$(< ./.nvmrc)"
     fi
   fi
 

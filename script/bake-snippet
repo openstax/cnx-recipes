@@ -8,7 +8,6 @@ bakedFile=$3
 debugFlag=$4
 
 sassFile="./recipes/books/${bookName}/book.scss"
-cssFile="./recipes/output/${bookName}.css"
 
 rawFileName="_temp-bake-snippet.xhtml"
 
@@ -21,7 +20,7 @@ if [ -z "${bookName}" ]; then
 fi
 
 if [ ! -f "${snippetFileName}" ]; then
-  echo "ERROR: Could not find the raw HTML file at ${rawFile}"
+  echo "ERROR: Could not find the raw HTML file at ${snippetFileName}"
   exit 1
 fi
 
@@ -37,6 +36,6 @@ fi
 
 
 # Convert the snippet (which is HTML + CNXML) into just HTML
-xsltproc ./script/_cnxml-to-xhtml.xsl "${snippetFileName}" > "${rawFileName}" || exit 1
+xsltproc ./script/xsl/_cnxml-to-xhtml.xsl "${snippetFileName}" > "${rawFileName}" || exit 1
 
 ./script/bake-file "${bookName}" "${rawFileName}" "${bakedFile}" "${debugFlag}"

@@ -2,19 +2,9 @@
 cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
-# Activate the venv if not already in a virtualenv
-if [[ -z "${VIRTUAL_ENV}" ]]; then
-  source ./venv/bin/activate
-fi
+do_progress_quiet 'Reinstalling python packages' \
+  pip install -r requirements.txt
 
-if [[ -n "${VIRTUAL_ENV}" ]]; then
-  do_progress_quiet 'Reinstalling python packages' \
-    pip install -r requirements.txt
-else
-  echo "Error. Not in a virtualenv"
-  exit 1
-fi
-
-# HACK Not sure if this still runs
-do_progress_quiet "Updating sassdoc to the version listed in package.json" \
-  yarn install --prefer-offline
+ # Use --force so that the packages are reinstalled
+do_progress_quiet "Reinstalling NodeJS package.json" \
+  yarn install --prefer-offline --force
