@@ -39,7 +39,7 @@ for recipeName in "${RECIPE_NAMES[@]}"; do
 
   progress "Checking for differences in '${recipeName}'"
 
-  for bakedFile in $(find "./tmp/${recipeName}" -name "*-baked.xhtml"); do
+  while IFS= read -r -d '' bakedFile; do # generic for loop
 
     preparedFile="${bakedFile/-baked/-prepared}"
     if [[ -s "${preparedFile}" ]]; then
@@ -55,7 +55,7 @@ for recipeName in "${RECIPE_NAMES[@]}"; do
       die "FAILING ${recipeName} because the prepared file '${preparedFile}' was not found. Did you run './script/diff-guide-prepare ${recipeName}' earlier?"
     fi
 
-  done
+  done <   <(find "./tmp/${recipeName}" -name "*-baked.xhtml")
 done
 
 if [[ ! "${diffFound}" -eq "0" ]]; then

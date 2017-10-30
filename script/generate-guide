@@ -74,7 +74,7 @@ cp -R "${bookDocumentationDir}" "${tempRecipeDir}" || exit 111
 
 
 # Find all the styleguide html files and convert them
-for snippetFileName in $(find "${tempRecipeDir}" -name "*.snippet.xml"); do
+while IFS= read -r -d '' snippetFileName; do # generic for loop
 
   snippetBase="$(dirname "${snippetFileName}")/$(basename "${snippetFileName}" .snippet.xml)"
   rawFileName="${snippetBase}.raw.xhtml"
@@ -104,7 +104,7 @@ for snippetFileName in $(find "${tempRecipeDir}" -name "*.snippet.xml"); do
   echo '</section>' >> "${destFileName}" || exit 111
 
   rm "${rawFileName}-temp1-${bakedOrPreparedSuffix}.xhtml" || exit 111
-done
+done <   <(find "${tempRecipeDir}" -name "*.snippet.xml")
 
 
 if [[ "${bakedOrPreparedSuffix}" == "baked" ]]; then

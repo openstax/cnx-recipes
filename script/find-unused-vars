@@ -39,7 +39,7 @@ done
 begins_with() { case $2 in "$1"*) true;; *) false;; esac; }
 
 progress "Finding variables that do not begin with 'Config_' and are not used in the local file"
-for filePath in $(find "${rootDir}" -type f -name "*.scss"); do
+while IFS= read -r -d '' filePath; do # generic for loop
   vars=$(grep "${reVariableDeclaration1}" "${filePath}" | sed "${reVariableDeclaration2}")
   for varName in $vars; do
     varCount=$(grep -c "\$${varName}" "${filePath}")
@@ -51,6 +51,6 @@ for filePath in $(find "${rootDir}" -type f -name "*.scss"); do
       fi
     fi
   done
-done
+done <   <(find "${rootDir}" -type f -name "*.scss")
 
 exit ${unusedVarCount}

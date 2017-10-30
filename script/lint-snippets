@@ -7,7 +7,8 @@ progress "Checking that HTML snippets and 'magic' XML comments are well-formed X
 [[ -f "./vendor/rhaptos.cnxmlutils/rhaptos/cnxmlutils/xsl/cnxml-to-html5.xsl" ]] || die "./vendor/rhaptos.cnxmlutils/ does not exist. Try running ./script/setup again"
 
 temp_file="temp-linting.xml"
-for file_name in $(find ./recipes/books/*/styleguide/*.snippet.xml ./recipes/mixins/styleguide/*.snippet.xml); do
+
+while IFS= read -r -d '' file_name; do # generic for loop
   # Check that the "Magic" comments are well-formed at this point (early)
   # Send Warning messages to null (stderr)
   xsltproc ./script/xsl/_cnxml-to-xhtml.xsl "${file_name}" 2> /dev/null | xmllint --pretty 1 /dev/stdin > /dev/null
@@ -23,4 +24,4 @@ for file_name in $(find ./recipes/books/*/styleguide/*.snippet.xml ./recipes/mix
     exit 1
   fi
 
-done
+done <   <(find ./recipes/books/*/styleguide/*.snippet.xml ./recipes/mixins/styleguide/*.snippet.xml -print0)
