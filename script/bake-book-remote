@@ -1,4 +1,7 @@
 #!/bin/bash
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
 set -e
 
 # This re-bakes a book on ${HOST} (or all books if using the --all argument)
@@ -21,19 +24,16 @@ source ./books.txt || exit 1
 # Check command line args
 
 if [[ -z "${arg1}" ]]; then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument or --all for all books (see books.txt). For example: physics'
-  >&2 echo ''
-  >&2 echo "Valid books are (from ./books.txt):"
+  _say "Valid books are (from ./books.txt):"
   for bookConfig in "${BOOK_CONFIGS[@]}"; do
     read -r bookName recipeName uuid _ <<< "${bookConfig}"
-    >&2 echo "${bookName}"
+    _say "${bookName}"
   done
-  exit 1
+  die 'Argument Missing. You must specify the name of the book as the 1st argument or --all for all books (see books.txt). For example: physics'
 fi
 
 if [[ "${arg1}" == "--all" ]]; then
-  >&2 echo "--all is not supported because you have to specify the version of the book to bake"
-  exit 1
+  die "--all is not supported because you have to specify the version of the book to bake"
 else
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for bookConfig in "${BOOK_CONFIGS[@]}"; do
@@ -47,13 +47,12 @@ else
   done
 
   if [[ ! 1 -eq "${foundConfig}" ]]; then
-    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
-    >&2 echo "Valid books are (from ./books.txt):"
+    _say "Valid books are (from ./books.txt):"
     for bookConfig in "${BOOK_CONFIGS[@]}"; do
       read -r bookName recipeName uuid _ <<< "${bookConfig}"
-      >&2 echo "${bookName}"
+      _say "${bookName}"
     done
-    exit 1
+    die "Could not find Book info for book named ${arg1}"
   fi
 fi
 
@@ -62,19 +61,14 @@ if [[ -z "${bookVersion}" ]]; then
   # The first entry is always the book info because "--all" is not a valid commandline arg
   read -r bookName recipeName uuid hostName _ <<< "${BOOK_CONFIGS[0]}"
 
-  >&2 echo 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
-  >&2 echo 'The version is the @#.## in the target collection URL'
-  >&2 echo "You can visit http://${hostName}/contents/${uuid} to get the version number"
+  _say 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
+  _say 'The version is the @#.## in the target collection URL'
+  die "You can visit http://${hostName}/contents/${uuid} to get the version number"
   exit 1
 fi
 
-
-# Activate the venv if not already in a virtualenv
-if [[ -z "${VIRTUAL_ENV}" ]]; then
-  source ./venv/bin/activate
-fi
-
-./script/compile-books || exit 1
+do_progress_quiet "Compoling CSS files" \
+  ./script/compile-books
 
 for bookConfig in "${BOOK_CONFIGS[@]}"; do
   read -r bookName recipeName uuid hostName _ <<< "${bookConfig}"
@@ -82,32 +76,30 @@ for bookConfig in "${BOOK_CONFIGS[@]}"; do
   cssFile="./recipes/output/${recipeName}.css"
 
   if [[ -z "${uuid}" ]]; then
-    >&2 echo "ERROR: Could not find Book UUID for book named ${bookName}"
-    exit 1
+    die "Could not find Book UUID for book named ${bookName}"
   fi
 
-  >&2 echo "==> Baking book ${bookName} ${uuid} on ${hostName} ..."
+  progress "Baking book ${bookName} ${uuid} on ${hostName} ..."
 
   # shellcheck disable=SC2016
   tempCssFile='${HOME}/temp.css'
 
-  >&2 echo "==> Copying CSS file from local machine to server"
-  scp "${cssFile}" "${USER}@${hostName}:${tempCssFile}" || exit 1
-
-  >&2 echo "==> Injecting the css file into the book as recipe.css"
+  do_progress_quiet "Copying CSS file from local machine to server" \
+    scp "${cssFile}" "${USER}@${hostName}:${tempCssFile}"
 
   buildBookCmd="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"recipe.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${uuid}@${bookVersion}\" ${tempCssFile}"
   # shellcheck disable=SC2029
-  ssh "${USER}@${hostName}" "${buildBookCmd}" || exit 1
+  do_progress_quiet "Injecting the css file into the book as recipe.css" \
+    ssh "${USER}@${hostName}" "${buildBookCmd}"
 
-  >&2 echo "==> Re-baking the book (may take up to 12 minutes)"
-  python -c "import requests; resp = requests.post('http://${hostName}:6600/contents/${uuid}@${bookVersion}/baked', headers={'x-api-key': 'b07'}); print(resp)" || exit 1
+  do_progress_quiet "Re-baking the book (may take up to 12 minutes)" \
+    python -c "import requests; resp = requests.post('http://${hostName}:6600/contents/${uuid}@${bookVersion}/baked', headers={'x-api-key': 'b07'}); print(resp)"
 
-  >&2 echo "==> restarting varnish because the HTML files may be cached"
   restartVarnishCmd="varnishadm ban req.url '~' ."
   # shellcheck disable=SC2029
-  ssh "${USER}@${hostName}" "${restartVarnishCmd}" || exit 1
+  do_progress_quiet "restarting varnish because the HTML files may be cached" \
+    ssh "${USER}@${hostName}" "${restartVarnishCmd}"
 
-  >&2 echo "Build complete. See the changes by going to http://${hostName}/contents/${uuid}@${bookVersion}"
+  _say "Build complete. See the changes by going to http://${hostName}/contents/${uuid}@${bookVersion}"
 
 done
