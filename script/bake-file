@@ -3,35 +3,35 @@ cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
 
-bookName=$1
-rawFile=$2
-bakedFile=$3
-debugFlag=$4
+book_name=$1
+raw_file=$2
+baked_file=$3
+debug_flag=$4
 
-sassFile="./recipes/books/${bookName}/book.scss"
-cssFile="./recipes/output/${bookName}.css"
+sass_file="./recipes/books/${book_name}/book.scss"
+css_file="./recipes/output/${book_name}.css"
 
 # Check command line args
 
-[[ "${bookName}" ]] || die 'Argument Missing. You must specify the name of the book as the 1st argument. For example: physics. The required arguments are: bookName, rawFile, bakedFile'
+[[ "${book_name}" ]] || die 'Argument Missing. You must specify the name of the book as the 1st argument. For example: physics. The required arguments are: book_name, raw_file, baked_file'
 
-[[ -f "${rawFile}" ]] || die "Could not find the raw HTML file at ${rawFile}"
+[[ -f "${raw_file}" ]] || die "Could not find the raw HTML file at ${raw_file}"
 
-[[ "${bakedFile}" ]] || die 'You must specify a baked path'
+[[ "${baked_file}" ]] || die 'You must specify a baked path'
 
-[[ -f "${sassFile}" ]] || die "Could not find the raw SCSS file at ${sassFile}"
+[[ -f "${sass_file}" ]] || die "Could not find the raw SCSS file at ${sass_file}"
 
 
 # Remove the baked file if it exists
-# [ -e "${bakedFile}" ] && rm ${bakedFile}
+# [ -e "${baked_file}" ] && rm ${baked_file}
 # commented out because it could be /dev/stdout
 
-lcovFile="${rawFile}.lcov"
+lcov_file="${raw_file}.lcov"
 
-try cnx-easybake --coverage-file "${lcovFile}" "${debugFlag}" "${cssFile}" "${rawFile}" "${bakedFile}"
+try cnx-easybake --coverage-file "${lcov_file}" "${debug_flag}" "${css_file}" "${raw_file}" "${baked_file}"
 
 # Validate the cooked file.
 # Commented because snippets do not pass the data-type="metadata" validation
 # and adding in all those metadata blocks would be cumbersome and distract
 # from the actual use-case which is to show snippets.
-# cnx-epub-validate-collated ${bakedFile}
+# cnx-epub-validate-collated ${baked_file}

@@ -15,9 +15,9 @@ if [[ -z "${arg1}" ]]; then
   _say 'and then in another branch diff-book is called to see how the HTML changed.'
   _say ''
   _say "Valid books are (from ./books.txt):"
-  for bookConfig in "${BOOK_CONFIGS[@]}"; do
-    read -r bookName recipeName uuid _ <<< "${bookConfig}"
-    _say "${bookName}"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_name recipe_name uuid _ <<< "${book_config}"
+    _say "${book_name}"
   done
   die 'Argument Missing. You must specify the name of the book as the 1st argument or --all for all books.'
 fi
@@ -25,34 +25,34 @@ fi
 
 if [[ ! "${arg1}" == "--all" ]]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for bookConfig in "${BOOK_CONFIGS[@]}"; do
-    read -r bookConfigName recipeName uuid _ <<< "${bookConfig}"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name recipe_name uuid _ <<< "${book_config}"
 
-    if [[ "${arg1}" = "${bookConfigName}" ]]; then
-      BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid}")
-      foundConfig=1
+    if [[ "${arg1}" = "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid}")
+      found_config=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]; then
+  if [[ ! 1 -eq "${found_config}" ]]; then
     _say "Valid books are (from ./books.txt):"
-    for bookConfig in "${BOOK_CONFIGS[@]}"; do
-      read -r bookName recipeName uuid _ <<< "${bookConfig}"
-      _say "${bookName}"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name recipe_name uuid _ <<< "${book_config}"
+      _say "${book_name}"
     done
     die "Could not find Book info for book named ${arg1}"
   fi
 fi
 
-for bookConfig in "${BOOK_CONFIGS[@]}"; do
-  read -r bookName recipeName uuid _ <<< "${bookConfig}"
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name recipe_name uuid _ <<< "${book_config}"
 
-  bakedFile="./data/${bookName}-baked.xhtml"
-  preparedFile="./data/${bookName}-prepared.xhtml"
+  baked_file="./data/${book_name}-baked.xhtml"
+  prepared_file="./data/${book_name}-prepared.xhtml"
 
   do_progress_quiet "Baking book" \
-    ./script/bake-book "${bookName}" --use-repeatable-ids
+    ./script/bake-book "${book_name}" --use-repeatable-ids
 
-  mv "${bakedFile}" "${preparedFile}"
+  mv "${baked_file}" "${prepared_file}"
 done

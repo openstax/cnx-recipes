@@ -16,7 +16,7 @@ set -e
 # Originally from: https://gist.github.com/pumazi/93f5ed32cb9e094e5a97415ced480a16
 
 arg1=$1
-bookVersion=$2
+book_version=$2
 
 # Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
@@ -25,9 +25,9 @@ source ./books.txt || exit 1
 
 if [[ -z "${arg1}" ]]; then
   _say "Valid books are (from ./books.txt):"
-  for bookConfig in "${BOOK_CONFIGS[@]}"; do
-    read -r bookName recipeName uuid _ <<< "${bookConfig}"
-    _say "${bookName}"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_name recipe_name uuid _ <<< "${book_config}"
+    _say "${book_name}"
   done
   die 'Argument Missing. You must specify the name of the book as the 1st argument or --all for all books (see books.txt). For example: physics'
 fi
@@ -36,70 +36,70 @@ if [[ "${arg1}" == "--all" ]]; then
   die "--all is not supported because you have to specify the version of the book to bake"
 else
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for bookConfig in "${BOOK_CONFIGS[@]}"; do
-    read -r bookConfigName recipeName uuid hostName _ <<< "${bookConfig}"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name recipe_name uuid host_name _ <<< "${book_config}"
 
-    if [[ "${arg1}" = "${bookConfigName}" ]]; then
-      BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid} ${hostName}")
-      foundConfig=1
+    if [[ "${arg1}" = "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid} ${host_name}")
+      found_config=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]; then
+  if [[ ! 1 -eq "${found_config}" ]]; then
     _say "Valid books are (from ./books.txt):"
-    for bookConfig in "${BOOK_CONFIGS[@]}"; do
-      read -r bookName recipeName uuid _ <<< "${bookConfig}"
-      _say "${bookName}"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name recipe_name uuid _ <<< "${book_config}"
+      _say "${book_name}"
     done
     die "Could not find Book info for book named ${arg1}"
   fi
 fi
 
-if [[ -z "${bookVersion}" ]]; then
+if [[ -z "${book_version}" ]]; then
 
   # The first entry is always the book info because "--all" is not a valid commandline arg
-  read -r bookName recipeName uuid hostName _ <<< "${BOOK_CONFIGS[0]}"
+  read -r book_name recipe_name uuid host_name _ <<< "${BOOK_CONFIGS[0]}"
 
   _say 'ERROR: Argument Missing. You must specify the book version as the 2nd argument for what you want to cook (I know, it is annoying)'
   _say 'The version is the @#.## in the target collection URL'
-  die "You can visit http://${hostName}/contents/${uuid} to get the version number"
+  die "You can visit http://${host_name}/contents/${uuid} to get the version number"
   exit 1
 fi
 
 do_progress_quiet "Compoling CSS files" \
   ./script/compile-books
 
-for bookConfig in "${BOOK_CONFIGS[@]}"; do
-  read -r bookName recipeName uuid hostName _ <<< "${bookConfig}"
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name recipe_name uuid host_name _ <<< "${book_config}"
 
-  cssFile="./recipes/output/${recipeName}.css"
+  css_file="./recipes/output/${recipe_name}.css"
 
   if [[ -z "${uuid}" ]]; then
-    die "Could not find Book UUID for book named ${bookName}"
+    die "Could not find Book UUID for book named ${book_name}"
   fi
 
-  progress "Baking book ${bookName} ${uuid} on ${hostName} ..."
+  progress "Baking book ${book_name} ${uuid} on ${host_name} ..."
 
   # shellcheck disable=SC2016
-  tempCssFile='${HOME}/temp.css'
+  tempcss_file='${HOME}/temp.css'
 
   do_progress_quiet "Copying CSS file from local machine to server" \
-    scp "${cssFile}" "${USER}@${hostName}:${tempCssFile}"
+    scp "${css_file}" "${USER}@${host_name}:${tempcss_file}"
 
-  buildBookCmd="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"recipe.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${uuid}@${bookVersion}\" ${tempCssFile}"
+  buildBookCmd="/var/cnx/venvs/archive/bin/cnx-archive-inject_resource --resource-filename \"recipe.css\" --media-type \"text/css\" /etc/cnx/archive/app.ini \"${uuid}@${book_version}\" ${tempcss_file}"
   # shellcheck disable=SC2029
   do_progress_quiet "Injecting the css file into the book as recipe.css" \
-    ssh "${USER}@${hostName}" "${buildBookCmd}"
+    ssh "${USER}@${host_name}" "${buildBookCmd}"
 
   do_progress_quiet "Re-baking the book (may take up to 12 minutes)" \
-    python -c "import requests; resp = requests.post('http://${hostName}:6600/contents/${uuid}@${bookVersion}/baked', headers={'x-api-key': 'b07'}); print(resp)"
+    python -c "import requests; resp = requests.post('http://${host_name}:6600/contents/${uuid}@${book_version}/baked', headers={'x-api-key': 'b07'}); print(resp)"
 
   restartVarnishCmd="varnishadm ban req.url '~' ."
   # shellcheck disable=SC2029
   do_progress_quiet "restarting varnish because the HTML files may be cached" \
-    ssh "${USER}@${hostName}" "${restartVarnishCmd}"
+    ssh "${USER}@${host_name}" "${restartVarnishCmd}"
 
-  _say "Build complete. See the changes by going to http://${hostName}/contents/${uuid}@${bookVersion}"
+  _say "Build complete. See the changes by going to http://${host_name}/contents/${uuid}@${book_version}"
 
 done

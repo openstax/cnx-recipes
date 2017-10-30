@@ -2,40 +2,40 @@
 cd "$(dirname "$0")/.." || exit 111
 # source ./script/bootstrap || exit 1
 
-bookName=$1
-snippetFileName=$2
-bakedFile=$3
-debugFlag=$4
+book_name=$1
+snippet_file_name=$2
+baked_file=$3
+debug_flag=$4
 
-sassFile="./recipes/books/${bookName}/book.scss"
+sass_file="./recipes/books/${book_name}/book.scss"
 
-rawFileName="_temp-bake-snippet.xhtml"
+raw_file_name="_temp-bake-snippet.xhtml"
 
 # Check command line args
 
-if [ -z "${bookName}" ]; then
+if [ -z "${book_name}" ]; then
   echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  echo 'The required arguments are: bookName, rawFile, bakedFile'
+  echo 'The required arguments are: book_name, raw_file, baked_file'
   exit 1
 fi
 
-if [ ! -f "${snippetFileName}" ]; then
-  echo "ERROR: Could not find the raw HTML file at ${snippetFileName}"
+if [ ! -f "${snippet_file_name}" ]; then
+  echo "ERROR: Could not find the raw HTML file at ${snippet_file_name}"
   exit 1
 fi
 
-if [ -z "${bakedFile}" ]; then
+if [ -z "${baked_file}" ]; then
   echo 'ERROR: You must specify a baked path'
   exit 1
 fi
 
-if [ ! -f "${sassFile}" ]; then
-  echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
+if [ ! -f "${sass_file}" ]; then
+  echo "ERROR: Could not find the raw SCSS file at ${sass_file}"
   exit 1
 fi
 
 
 # Convert the snippet (which is HTML + CNXML) into just HTML
-xsltproc ./script/xsl/_cnxml-to-xhtml.xsl "${snippetFileName}" > "${rawFileName}" || exit 1
+xsltproc ./script/xsl/_cnxml-to-xhtml.xsl "${snippet_file_name}" > "${raw_file_name}" || exit 1
 
-./script/bake-file "${bookName}" "${rawFileName}" "${bakedFile}" "${debugFlag}"
+./script/bake-file "${book_name}" "${raw_file_name}" "${baked_file}" "${debug_flag}"

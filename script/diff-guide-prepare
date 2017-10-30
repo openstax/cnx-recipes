@@ -3,7 +3,7 @@ cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
 arg1=$1
-bakedOrPreparedSuffix=$2
+baked_or_prepared_suffix=$2
 
 # Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
@@ -16,38 +16,38 @@ if [[ -z "${arg1}" ]]; then
   _say 'and then in another branch diff-guide is called to see how the HTML changed.'
   _say ''
   _say "Valid recipes are (from ./books.txt):"
-  for recipeName in "${RECIPE_NAMES[@]}"; do
-    _say "${recipeName}"
+  for recipe_name in "${RECIPE_NAMES[@]}"; do
+    _say "${recipe_name}"
   done
   die 'Argument Missing. You must specify the name of the recipe as the 1st argument or --all for all recipes.'
 fi
 
-if [[ -z "${bakedOrPreparedSuffix}" ]]; then
-  bakedOrPreparedSuffix="prepared"
+if [[ -z "${baked_or_prepared_suffix}" ]]; then
+  baked_or_prepared_suffix="prepared"
 fi
 
 
 if [[ ! "${arg1}" == "--all" ]]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for recipeName in "${RECIPE_NAMES[@]}"; do
+  for recipe_name in "${RECIPE_NAMES[@]}"; do
 
-    if [[ "${arg1}" = "${recipeName}" ]]; then
-      RECIPE_NAMES=("${recipeName}")
-      foundConfig=1
+    if [[ "${arg1}" = "${recipe_name}" ]]; then
+      RECIPE_NAMES=("${recipe_name}")
+      found_config=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]; then
+  if [[ ! 1 -eq "${found_config}" ]]; then
     _say "Valid books are (from ./books.txt):"
-    for recipeName in "${RECIPE_NAMES[@]}"; do
-      _say "${recipeName}"
+    for recipe_name in "${RECIPE_NAMES[@]}"; do
+      _say "${recipe_name}"
     done
     die "Could not find Book info for recipe named ${arg1}"
   fi
 fi
 
-for recipeName in "${RECIPE_NAMES[@]}"; do
-  do_progress_quiet "Generating guide for ${recipeName}" \
-    ./script/generate-guide "${recipeName}" "${bakedOrPreparedSuffix}"
+for recipe_name in "${RECIPE_NAMES[@]}"; do
+  do_progress_quiet "Generating guide for ${recipe_name}" \
+    ./script/generate-guide "${recipe_name}" "${baked_or_prepared_suffix}"
 done

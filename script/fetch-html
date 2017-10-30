@@ -2,7 +2,7 @@
 cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
-# This fetches the raw HTML for a book (or all books if using the --all argument) from ${hostName}
+# This fetches the raw HTML for a book (or all books if using the --all argument) from ${host_name}
 
 set -e
 
@@ -17,43 +17,43 @@ source ./books.txt || exit 1
 
 if [[ ! "${arg1}" ]]; then
   _say "Valid books are (from ./books.txt):"
-  for bookConfig in "${BOOK_CONFIGS[@]}"; do
-    read -r bookName recipeName uuid _ <<< "${bookConfig}"
-    _say "${bookName}"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_name recipe_name uuid _ <<< "${book_config}"
+    _say "${book_name}"
   done
   die 'Argument Missing. You must specify the name of the book as the 1st argument or --all for all books. For example: physics'
 fi
 
 if [[ ! "${arg1}" == "--all" ]]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for bookConfig in "${BOOK_CONFIGS[@]}"; do
-    read -r bookConfigName recipeName uuid hostName _ <<< "${bookConfig}"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name recipe_name uuid host_name _ <<< "${book_config}"
 
-    if [[ "${arg1}" = "${bookConfigName}" ]]; then
-      BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid} ${hostName} ${_}")
-      hostName=${HOST:-${hostName}}
+    if [[ "${arg1}" = "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid} ${host_name} ${_}")
+      host_name=${HOST:-${host_name}}
 
-      foundConfig=1
+      found_config=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]; then
+  if [[ ! 1 -eq "${found_config}" ]]; then
     _say "Valid books are (from ./books.txt):"
-    for bookConfig in "${BOOK_CONFIGS[@]}"; do
-      read -r bookName recipeName uuid _ <<< "${bookConfig}"
-      _say "${bookName}"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name recipe_name uuid _ <<< "${book_config}"
+      _say "${book_name}"
     done
     die "Could not find Book info for book named ${arg1}"
   fi
 fi
 
-for bookConfig in "${BOOK_CONFIGS[@]}"; do
-  read -r bookName recipeName uuid hostName _ <<< "${bookConfig}"
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name recipe_name uuid host_name _ <<< "${book_config}"
   # Allow user to override the hostname
-  hostName=${HOST:-${hostName}}
+  host_name=${HOST:-${host_name}}
 
-  rawFile="./data/${bookName}-raw.xhtml"
+  raw_file="./data/${book_name}-raw.xhtml"
 
   # These are expanded on the remote machine, hence single-quotes
   # shellcheck disable=SC2016
@@ -68,12 +68,12 @@ for bookConfig in "${BOOK_CONFIGS[@]}"; do
 
   commands="${rmTempEpubCmd}; ${rmTempHtmlCmd}; ${generateEpubCmd} && ${generateHtmlCmd}"
 
-  do_progress_quiet "Fetching ${bookName} from ${hostName} (~20 minutes if it has exercises)" \
-    ssh "${USER}@${hostName}" "${commands}"
+  do_progress_quiet "Fetching ${book_name} from ${host_name} (~20 minutes if it has exercises)" \
+    ssh "${USER}@${host_name}" "${commands}"
 
   do_progress_quiet "Copying HTML file from server to local machine" \
-    scp "${USER}@${hostName}:${tempHtmlFile}" "${rawFile}"
+    scp "${USER}@${host_name}:${tempHtmlFile}" "${raw_file}"
 
-  _say "${c_green}Fetch is Done.${c_none} File is available at ${rawFile}"
+  _say "${c_green}Fetch is Done.${c_none} File is available at ${raw_file}"
 
 done

@@ -5,9 +5,9 @@ The generated CSS is stored in the [./output](./output) directory.
 ## Relevant Scripts
 
 ```sh
-./script/fetch-html ${bookName}     # Stores result in `./data/`
-./script/bake-book ${bookName}      # Uses the results of `./script/fetch-html`
-./script/generate-guide ${bookName}
+./script/fetch-html ${book_name}     # Stores result in `./data/`
+./script/bake-book ${book_name}      # Uses the results of `./script/fetch-html`
+./script/generate-guide ${book_name}
 ```
 
 
@@ -21,8 +21,8 @@ The source for the documentation is in CSS comments and is split into `common` a
 
 - `./recipes/mixins/styleguide/*.snippet.xml` : The Raw HTML snippets for "common" elements in a Page
 - `./recipes/mixins/styleguide/_all.scss`: The documentation for "common" elements in a Page
-- `./recipes/books/${bookName}/styleguide/*.snippet.xml` : The Raw HTML snippets for book-specific collated pages and any other customizations
-- `./recipes/books/${bookName}/book.scss`: Added CSS docs that are slurped in when generating the styleguide
+- `./recipes/books/${book_name}/styleguide/*.snippet.xml` : The Raw HTML snippets for book-specific collated pages and any other customizations
+- `./recipes/books/${book_name}/book.scss`: Added CSS docs that are slurped in when generating the styleguide
 
 ## Book-Agnostic Documentation
 
@@ -30,7 +30,7 @@ The common documentation is in `./recipes/mixins/styleguide/_all.scss` only beca
 
 ## Book-Specific Documentation
 
-The book-specific documentation is done as comments in the `./recipes/books/${bookName}/book.scss` and `./recipes/books/${bookName}/_config.scss` files and the Raw HTML snippets are in `./books/${bookName}/styleguide/`.
+The book-specific documentation is done as comments in the `./recipes/books/${book_name}/book.scss` and `./recipes/books/${book_name}/_config.scss` files and the Raw HTML snippets are in `./books/${book_name}/styleguide/`.
 
 
 # Variable Naming Conventions

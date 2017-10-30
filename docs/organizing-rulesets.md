@@ -17,5 +17,5 @@ collation
     * utilities.less (or some other name, this would contain the glossary, summary, index etc)
   * books folder
     * physics.less
-    * bookName.less
+    * book_name.less
     * etc

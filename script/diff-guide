@@ -16,48 +16,48 @@ do_progress_quiet "Preparing styleguide for diffing" \
 
 if [[ ! "${arg1}" == "--all" ]]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for recipeName in "${RECIPE_NAMES[@]}"; do
+  for recipe_name in "${RECIPE_NAMES[@]}"; do
 
-    if [[ "${arg1}" = "${recipeName}" ]]; then
-      RECIPE_NAMES=("${recipeName}")
-      foundConfig=1
+    if [[ "${arg1}" = "${recipe_name}" ]]; then
+      RECIPE_NAMES=("${recipe_name}")
+      found_config=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]; then
+  if [[ ! 1 -eq "${found_config}" ]]; then
     _say "Valid books are (from ./books.txt):"
-    for recipeName in "${RECIPE_NAMES[@]}"; do
-      _say "${recipeName}"
+    for recipe_name in "${RECIPE_NAMES[@]}"; do
+      _say "${recipe_name}"
     done
     die "Could not find Book info for recipe named ${arg1}"
   fi
 fi
 
-diffFound=0
-for recipeName in "${RECIPE_NAMES[@]}"; do
+diff_found=0
+for recipe_name in "${RECIPE_NAMES[@]}"; do
 
-  progress "Checking for differences in '${recipeName}'"
+  progress "Checking for differences in '${recipe_name}'"
 
-  while IFS= read -r -d '' bakedFile; do # generic for loop
+  while IFS= read -r -d '' baked_file; do # generic for loop
 
-    preparedFile="${bakedFile/-baked/-prepared}"
-    if [[ -s "${preparedFile}" ]]; then
+    prepared_file="${baked_file/-baked/-prepared}"
+    if [[ -s "${prepared_file}" ]]; then
 
-      diffCount=$(diff "${preparedFile}" "${bakedFile}" | wc -l)
+      diff_count=$(diff "${prepared_file}" "${baked_file}" | wc -l)
 
-      if [[ 0 -ne "${diffCount}" ]]; then
-        _say "WARNING: There were ${diffCount} differences found. To see all of them run diff ${preparedFile} ${bakedFile}:"
-        diffFound=1
+      if [[ 0 -ne "${diff_count}" ]]; then
+        _say "WARNING: There were ${diff_count} differences found. To see all of them run diff ${prepared_file} ${baked_file}:"
+        diff_found=1
       fi
 
     else
-      die "FAILING ${recipeName} because the prepared file '${preparedFile}' was not found. Did you run './script/diff-guide-prepare ${recipeName}' earlier?"
+      die "FAILING ${recipe_name} because the prepared file '${prepared_file}' was not found. Did you run './script/diff-guide-prepare ${recipe_name}' earlier?"
     fi
 
-  done < <(find "./tmp/${recipeName}" -name "*-baked.xhtml" -print0)
+  done < <(find "./tmp/${recipe_name}" -name "*-baked.xhtml" -print0)
 done
 
-if [[ ! "${diffFound}" -eq "0" ]]; then
+if [[ ! "${diff_found}" -eq "0" ]]; then
   die "There were differences found so failing"
 fi

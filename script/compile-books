@@ -7,22 +7,21 @@ arg1=$1
 # Pull in the BOOK_CONFIGS and RECIPE_NAMES
 source ./books.txt || exit 1
 
-if [ ! "${arg1}" == "" ]
-then
+if [ ! "${arg1}" == "" ]; then
   RECIPE_NAMES=(${arg1})
 fi
 
 
-sassBin="$(npm bin)/node-sass"
-outputDir="./recipes/output/"
+sass_bin="$(npm bin)/node-sass"
+output_dir="./recipes/output/"
 
-for recipeName in "${RECIPE_NAMES[@]}"; do
+for recipe_name in "${RECIPE_NAMES[@]}"; do
 
-  sassFile="./recipes/books/${recipeName}/book.scss"
-  cssFile="${outputDir}/${recipeName}.css"
+  sass_file="./recipes/books/${recipe_name}/book.scss"
+  css_file="${output_dir}/${recipe_name}.css"
 
-  do_progress_quiet "Generating ${cssFile}" \
-    "${sassBin}" --source-map true --output-style nested "${sassFile}" "${cssFile}"
+  do_progress_quiet "Generating ${css_file}" \
+    "${sass_bin}" --source-map true --output-style nested "${sass_file}" "${css_file}"
 done
 
 do_progress_quiet "Generating CSS manifest" \
