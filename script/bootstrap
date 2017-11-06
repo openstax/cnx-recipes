@@ -29,7 +29,7 @@ progress() { _say "${c_yellow}==>${c_none} $1"; }
 yell() { >&2 _say "$0: ${c_red}$*${c_none}"; }
 die() {
   yell "$1"
-  exit ${2:112} # Use the 2nd arg or 112 as the default
+  exit "${2:112}" # Use the 2nd arg or 112 as the default
 }
 try() { __NESTED_PROGRESS__="true" "$@" || die "${c_red}ERROR: could not run [$*]${c_none}" 112; }
 
@@ -154,5 +154,6 @@ fi
 
 # Load anything that is repo-specific
 if [[ -f "./script/_bootstrap.sh" ]]; then
+  # shellcheck disable=SC1091
  source ./script/_bootstrap.sh || exit 111
 fi
