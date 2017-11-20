@@ -1,4 +1,5 @@
 brew "yarn"
+brew "python"
 brew "rbenv"
 brew "lcov"
 brew "shellcheck"
