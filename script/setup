@@ -3,8 +3,10 @@ cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
 # JavaScript stuff
-do_progress_quiet "Installing JavaScript Packages" \
-  yarn --prefer-offline
+if [[ -f "./package.json" ]]; then
+  do_progress_quiet "Installing JavaScript Packages" \
+    yarn --prefer-offline
+fi
 
 # Python stuff
 if [[ -f "./requirements.txt" || -f "./setup.py" ]]; then
