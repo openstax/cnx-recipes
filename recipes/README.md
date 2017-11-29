@@ -138,6 +138,7 @@ A `TargetLabel` contains the following fields:
 
 - `selector`: This a selector that matches the target of a link
 - `labelText`: This is the text that will be inside the link
+  - It can be a list or a map. If it is a map (used in i18n), the key corresponds to the `@cmlnle:case="..."` attribute. see #353
 
 
 ## Note
