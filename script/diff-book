@@ -50,11 +50,17 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
 
   baked_file="./data/${book_name}-baked.xhtml"
   prepared_file="./data/${book_name}-prepared.xhtml"
+  formatted_file="./data/${book_name}-formatted.xhtml"
 
   if [[ -s "${prepared_file}" ]]; then
 
-    do_progress_quiet "Baking book" \
+    do_progress_quiet "Baking ${book_name} book" \
       ./script/bake-book "${book_name}" --use-repeatable-ids
+
+    # format the HTML so it is easily diff-able
+    try mv "${baked_file}" "${formatted_file}"
+    try xmllint --pretty 2 "${formatted_file}" > "${baked_file}"
+    try rm "${formatted_file}"
 
     diff_count=$(diff "${prepared_file}" "${baked_file}" | wc -l)
 
