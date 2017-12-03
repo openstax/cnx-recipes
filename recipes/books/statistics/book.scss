@@ -1,3 +1,314 @@
 @import '../../mixins/_all';
 @import './_config';
-@import '../_generator';
+// @import '../_generator';
+
+// This is the ROOT of the output CSS file that is generated.
+
+@import '../../mixins/_all';
+
+// Import the book-specific config file
+@import './_config';
+
+
+// HACK
+// SASS has a bug where it allows you to write `:not(.foo)` but not the following:
+// `:not(:has(foo))` , `:not(a, b)`
+//
+// So to get around that, there is code below that looks like this: `&:not(:not(SASS_HACK):has(`
+
+
+
+@mixin sectionNumber() {
+  content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '.' ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) ' ';
+}
+
+@mixin sectionTitleAndLink() {
+  // x-assert: x-is('[data-type="page"]');
+
+  &:has(> [data-type="metadata"] > [data-type="document-title"]) {
+    &:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+      /* Number the non-Introduction Pages */
+      &::before {
+        tag-name-set: "h3";
+        class-add: "section-title";
+        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+
+        &::before {
+          /* Section Numbering */
+          tag-name-set: "a";
+          attrs-add: "href" "#" attr(id);
+          @include sectionNumber();
+        }
+      }
+    }
+    &:has(cnx-pi[data-type="cnx.flag.introduction"]) {
+      /* Add a title but do not number the Introduction modules */
+      &::before {
+        tag-name-set: "h3";
+        class-add: "section-title";
+        content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+      }
+    }
+
+  }
+  // &:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])) {
+  //   &::before {
+  //     class-add: "section-title";
+  //     x-log: "ERROR: mangled HTML";
+  //   }
+  // }
+}
+
+// /* Just for testing memory/processing limits */
+// * { tag-name-set: none; }
+
+$selectorsToAddForCountingAccumulator: ();
+$exerciseSolutionSelectorAccumulator: ();
+
+@for $index from 1 through length($Config_ChapterCompositePages) {
+  $item: nth($Config_ChapterCompositePages, $index);
+
+  $name: map-get($item, name);
+  $className: map-get($item, className);
+  $isGlossary: map-get($item, isGlossary);
+  // $sortBy: map-get($item, sortBy);
+  $sectionSeparated: map-get($item, sectionSeparated);
+  // $hasSolutions: map-get($item, hasSolutions);
+  // $compoundComposite: map-get($item, compoundComposite);
+  // $moveSolutionsTo: map-get($item, moveSolutionsTo);
+
+  $selector: "section.#{$className}";
+  $selectorChildren: '#{$selector} > *:not([data-type="title"])'; // For moving, we want to move all the children in the collated section
+  $exerciseSelector: '#{$selector} [data-type="exercise"]';
+  $selectorsToAddForCounting: $selectorsToAddForCountingAccumulator;
+  $selectorsToAddForCountingAccumulator: append($selectorsToAddForCountingAccumulator, $exerciseSelector, comma);
+
+  // Remember all exercise types that have solutions that need to be moved to the end of the book
+  $exerciseSolutionSelector: '#{$exerciseSelector} [data-type="solution"]';
+  $exerciseSolutionSelectorAccumulator: append($exerciseSolutionSelectorAccumulator, $exerciseSolutionSelector, comma);
+
+
+  /* End-of-chapter page for #{$selector} */
+  body > [data-type="chapter"] {
+
+    /* Number the exercises for each section */
+    #{$selector} {
+      /* discard the section since the contents (not this section) is collated to the end-of-chapter */
+      x-display: none;
+
+      // Number the Solutions and exercises the same way
+      // TODO: sass does not show sourcemap info when selectors have a comma GRRRRR, hence copy-pasta
+      [data-type="exercise"]::before,
+      [data-type="exercise"] [data-type="solution"]::before {
+        @if length($selectorsToAddForCounting) >= 1 {
+          content: ancestor-context('[data-type="chapter"]', add(count-all-of-type("#{$selectorsToAddForCounting}"), count-of-type($exerciseSelector)));
+        } @else {
+          content: ancestor-context('[data-type="chapter"]', count-of-type($exerciseSelector));
+        }
+      }
+
+      /* Make links from exercise to solution and from solution to exercise */
+      [data-type="exercise"]:not(:not(SASS_HACK):has([data-type="solution"]))::before {
+        /* Make the number for an exercise without solution bold */
+        tag-name-set: "strong";
+      }
+      [data-type="exercise"]:has([data-type="solution"])::before {
+        tag-name-set: "a";
+        attrs-add: "href" "#" descendant-context('[data-type="solution"]', attr(id));
+      }
+      [data-type="exercise"] [data-type="solution"]::before {
+        tag-name-set: "a";
+        attrs-add: "href" "#" parent-context(attr(id));
+      }
+
+    }
+
+    @if $isGlossary {
+      &:has([data-type="glossary"] > dl > dt) {
+        /* Only generate a glossary if there are terms in this chapter */
+        /* Discard the old section-level glossary element */
+        [data-type="glossary"] {
+          x-display: none;
+        }
+        &::after(#{$index}) {
+          &::before {
+            tag-name-set: "h2";
+            content: $name;
+          }
+
+          // TODO: Make this a <dl> and make it sorted
+          &::after {
+            tag-name-set: "ul";
+
+            &::for-each-descendant(1, '[data-type="glossary"] > dl > dt') {
+              tag-name-set: "li";
+
+              // Add the term
+              &::after(1) {
+                tag-name-set: "strong";
+                class-add: "term";
+                // TODO: use contents() instead of text-contents()
+                content: text-contents();
+              }
+              &::after(2) {
+                tag-name-set: "span";
+                class-add: "separator";
+                content: ": ";
+              }
+              &::after(3) {
+                tag-name-set: "div";
+                class-add: "definition";
+                // TODO: use contents() instead of text-contents()
+                content: next-sibling-context('dd:first', text-contents());
+              }
+            }
+          }
+        }
+
+
+      }
+
+    } @else {
+      // Some end-of-chapter items do not have any elements to move.
+      // In that case, do not bother adding the title.
+      &:has(#{$selector}) { // Added `section` to speed up the :has lookup
+
+        &::after(#{$index}) {
+          /* Title */
+          &::before {
+            tag-name-set: "h2";
+            content: $name;
+          }
+
+          // add a section separator
+          @if $sectionSeparated {
+            /* Is sectionSeparated */
+            &::for-each-descendant(1, '> [data-type="page"]') {
+              &:has(#{$selector}) {
+                @include sectionTitleAndLink();
+                class-add: "eoc-section";
+
+                content: move-here($selectorChildren);
+              }
+            }
+
+          } @else {
+            /* Not sectionSeparated */
+            content: ancestor-context('[data-type="chapter"]', move-here($selectorChildren));
+          }
+          // x-log: "INFO: Generating end-of-chapter page for .#{$className} for chapter " ancestor-context('body', count-of-type('[data-type="chapter"]'));
+        }
+      }
+      // // Example of Logging when a end-of-chapter page was not generated
+      // &:not(:not(SASS_HACK):has(.#{$className})) {
+      //   x-log: "WARNING: Skipping end-of-chapter page for .#{$className} for chapter " ancestor-context('body', count-of-type('[data-type="chapter"]')) " because no items were found";
+      // }
+    }
+  }
+}
+
+
+body > [data-type="chapter"] {
+
+  /* Numbers on chapters and sections */
+  > [data-type="document-title"]::before {
+    tag-name-set: "span";
+    content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
+  }
+
+  /* Discard Page metadata but keep the title (and add its number) */
+  [data-type="page"] {
+    > [data-type="metadata"] {
+      /* TODO: Move this to an attribution section at the end of the book */
+      x-display: none;
+    }
+    &:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+      &:has(> [data-type="metadata"] > [data-type="document-title"]) {
+        &::before {
+          tag-name-set: "h2";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+
+          &::before {
+            tag-name-set: "span";
+            @include sectionNumber();
+          }
+        }
+      }
+    }
+    &:has(cnx-pi[data-type="cnx.flag.introduction"]) {
+      &:has(> [data-type="metadata"] > [data-type="document-title"]) {
+        &::before {
+          /* Label the Introduction but do not add a number */
+          tag-name-set: "h2";
+          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+        }
+      }
+    }
+
+    /* The following are hacks for the styleguide since they are missing metadata */
+    &:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])) {
+      // x-log: "Probably generating a styleguide so there is no metadata element";
+      &:has(> [data-type="document-title"]) {
+        &::before {
+          tag-name-set: "h2";
+          content: descendant-context('> [data-type="document-title"]', text-contents());
+          &::before {
+            tag-name-set: "span";
+            @include sectionNumber();
+          }
+        }
+      }
+      &:not(:not(SASS_HACK):has(> [data-type="document-title"])) {
+        &::before {
+          tag-name-set: "h2";
+          content: "STYLEGUIDE_TITLE_PLACEHOLDER";
+          &::before {
+            tag-name-set: "span";
+            @include sectionNumber();
+          }
+        }
+      }
+    }
+  }
+}
+
+body {
+
+  // Delete the metadata
+  > [data-type="metadata"] > [data-type="description"] {
+    x-display: none;
+  }
+
+  &:has(> [data-type="chapter"]:has(#{$exerciseSolutionSelectorAccumulator})) {
+    &::after(1) {
+      &::before {
+        tag-name-set: "h1";
+        content: "Answer Key";
+      }
+      &::for-each-descendant(1, '[data-type="chapter"]'):has(#{$exerciseSolutionSelectorAccumulator}) {
+        /* Chapter title */
+        &:has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])) { /* This guard is just for the styleguide */
+          &::before {
+            &::before {
+              content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
+              // tag-name-set: "span";
+              // Link to the introduction module (TODO: when subcollections have id's then this will not be necessary)
+              // tag-name-set: "a";
+              // attrs-add: "href" "#" descendant-context('[data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])', attr(id));
+            }
+            tag-name-set: "h2";
+            content: descendant-context('> [data-type="document-title"]', text-contents());
+          }
+          /* Chapter Answers */
+          content: move-here('#{$exerciseSolutionSelectorAccumulator}');
+        }
+      }
+    }
+  }
+}
+/* Discard all processing instructions */
+/* body > [data-type="chapter"] > */ [data-type="page"] {
+  cnx-pi {
+    x-display: none;
+  }
+}
