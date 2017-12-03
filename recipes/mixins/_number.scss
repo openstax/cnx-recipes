@@ -172,16 +172,14 @@
 
   [data-type="chapter"] {
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
-      @include utils_title($labeling, bCaption);
-      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle);
+      @include setCaptionsHelper($labeling, $captionType, $defaultContainer, $hasCaption, $hasTitle);
     }
     @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
   .appendix {
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered),
     > #{$elementName}:not(.unnumbered) {
-      @include utils_title($labelingAp, bCaption);
-      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle);
+      @include setCaptionsHelper($labelingAp, $captionType, $defaultContainer, $hasCaption, $hasTitle);
     }
     @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
@@ -254,57 +252,76 @@
   }
 }
 
+/// TODO: Determine why this is the case
 /// Unnumbered captions are currently trashed (even if they contain content) because
 /// of some contract that the XML teams had which stated something along the lines
 /// of "If a table/figure is unnumbered then openstax will discard the caption"
 @mixin trashUnnumberedCaption ($elementName, $defaultContainer) {
   > #{$elementName}.unnumbered {
     #{$defaultContainer} {
-      move-to: trash;
+      x-display: none;
     }
   }
 }
 
-@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle) {
+@mixin setCaptionsHelper($labeling, $captionType, $defaultContainer, $hasCaption, $hasTitle) {
 
   @if ($hasCaption) {
     #{$defaultContainer} {
-      container: span;
-      class: "os-caption";
-      move-to: bCaptionContent;
+      tag-name-set: "span";
+      class-add: "os-caption";
+      // move-to: bCaptionContent;
     }
   }
-  @if ($hasTitle) {
 
-    // create divider span for title
-    &::after {
-      container: span;
-      class: 'os-divider';
-      content: ' ';
-      move-to: bCaptionDivider;
+  // pending(bCaptionTitle)
+  $_captionTitleToMove: 'HACK_FOR_VARIABLE_SCOPING';
+  @if ($captionType == $CAPTION_TABLE) {
+    $_captionTitleToMove: parent-context(move-here('#{$defaultContainer} [data-type="title"]'));
+    #{$defaultContainer} [data-type="title"] {
+      tag-name-set: "span";
+      class-add: "os-title";
     }
-
-    @if ($captionType == $CAPTION_TABLE) {
-      #{$defaultContainer} [data-type="title"] {
-        container: span;
-        class: "os-title";
-        move-to: bCaptionTitle;
-      }
-    } @else if ($captionType == $CAPTION_FIGURE) {
-      [data-type="title"] {
-        container: span;
-        class: "os-title";
-        move-to: bCaptionTitle;
-      }
-    } @else {
-      @error "BUG: Invalid captionType '#{$captionType}'";
+  } @else if ($captionType == $CAPTION_FIGURE) {
+    $_captionTitleToMove: parent-context(move-here('[data-type="title"]'));
+    [data-type="title"] {
+      tag-name-set: "span";
+      class-add: "os-title";
     }
+  } @else {
+    @error "BUG: Invalid captionType '#{$captionType}'";
   }
-  &::after {
-    container: div;
-    class: "os-caption-container";
-    content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
-    move-to: bCaptionContainer;
+
+  #{$defaultContainer}::outside {
+    tag-name-set: "div";
+    class-add: "os-caption-container";
+
+    // pending(bCaption)
+    // adds the os-title-label, os-number, and os-divider
+    @include utils_title($labeling, bCaption, $CONTEXT_PARENT);
+
+    // TODO: Maybe just use `:has([data-type="title"])`
+    @if ($hasTitle) {
+      // create divider span for title
+      &::before(2) {
+        tag-name-set: "span";
+        class-add: 'os-divider';
+        content: ' ';
+        move-to: bCaptionDivider;
+      }
+      &::before(1) {
+        content: $_captionTitleToMove;
+      }
+    }
+
+    // TODO: ERROR when setting content: inside an ::outside element. This means that when move-to runs it might move the inner node but not this one.
+    // content: $_captionTitleToMove;
+
+    // content:
+    // pending(bCaption)
+    // pending(bCaptionTitle)
+    // pending(bCaptionDivider)
+    // pending(bCaptionContent);
   }
   &::outside {
     @if $captionType == $CAPTION_TABLE {

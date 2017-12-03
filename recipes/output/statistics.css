@@ -1082,9 +1082,16 @@ body > [data-type="chapter"] {
 body > [data-type="chapter"] {
   /* Numbers on chapters and sections */
   /* Discard Page metadata but keep the title (and add its number) */ }
-  body > [data-type="chapter"] > [data-type="document-title"]::before {
+  body > [data-type="chapter"] > [data-type="document-title"]::before(2) {
     tag-name-set: "span";
+    class-add: "os-number";
     content: ancestor-context("body", count-of-type('[data-type="chapter"]')) ". "; }
+  body > [data-type="chapter"] > [data-type="document-title"]::before(1) {
+    tag-name-set: "span";
+    class-add: "os-divider"; }
+  body > [data-type="chapter"] > [data-type="document-title"]::inside {
+    tag-name-set: "span";
+    class-add: "os-text"; }
   body > [data-type="chapter"] [data-type="page"] {
     /* The following are hacks for the styleguide since they are missing metadata */ }
     body > [data-type="chapter"] [data-type="page"] > [data-type="metadata"] {
@@ -1116,6 +1123,9 @@ body > [data-type="chapter"] {
 body > [data-type="metadata"] > [data-type="description"] {
   x-display: none; }
 
+body > [data-type="page"].preface > [data-type="metadata"] {
+  x-display: none; }
+
 body:has( > [data-type="chapter"]:has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]))::after(1)::before {
   tag-name-set: "h1";
   content: "Answer Key"; }
@@ -1130,7 +1140,91 @@ body:has( > [data-type="chapter"]:has(section.glossary [data-type="exercise"] [d
       tag-name-set: "h2";
       content: descendant-context('> [data-type="document-title"]', text-contents()); }
       body:has( > [data-type="chapter"]:has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]))::after(1)::for-each-descendant(1, '[data-type="chapter"]'):has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]):has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"]))::before::before {
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) ". "; }
+        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) " "; }
+
+body [data-type="chapter"] > [data-type="page"] > h2 {
+  x-display: none; }
+
+body [data-type="chapter"] > [data-type="page"] > [data-type="document-title"] {
+  tag-name-set: "h2"; }
+  body [data-type="chapter"] > [data-type="page"] > [data-type="document-title"]::inside {
+    tag-name-set: "span";
+    class-add: "os-text"; }
+
+body [data-type="chapter"] > [data-type="page"] figure:has(figcaption)::outside {
+  tag-name-set: "div";
+  class-add: "os-figure"; }
+  body [data-type="chapter"] > [data-type="page"] figure:has(figcaption)::outside::after {
+    content: move-here("> figcaption"); }
+
+body [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption {
+  tag-name-set: "span";
+  class-add: "os-caption"; }
+
+body [data-type="chapter"] :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  tag-name-set: "span";
+  class-add: "os-title"; }
+
+body [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside {
+  tag-name-set: "div";
+  class-add: "os-caption-container"; }
+  body [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside::before(502) {
+    tag-name-set: "span";
+    class-add: os-title-label;
+    content: "Figure "; }
+  body [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside::before(501) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type("figure:not(.splash)")); }
+  body [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside::before(500) {
+    tag-name-set: "span";
+    class-add: os-divider;
+    content: " "; }
+
+body [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::outside {
+  tag-name-set: "div";
+  class-add: os-figure; }
+
+body [data-type="chapter"] > figure.unnumbered figcaption {
+  x-display: none; }
+
+body .appendix :not(figure) > figure:not(.unnumbered) figcaption,
+body .appendix > figure:not(.unnumbered) figcaption {
+  tag-name-set: "span";
+  class-add: "os-caption"; }
+
+body .appendix :not(figure) > figure:not(.unnumbered) [data-type="title"],
+body .appendix > figure:not(.unnumbered) [data-type="title"] {
+  tag-name-set: "span";
+  class-add: "os-title"; }
+
+body .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside,
+body .appendix > figure:not(.unnumbered) figcaption::outside {
+  tag-name-set: "div";
+  class-add: "os-caption-container"; }
+  body .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside::before(502),
+  body .appendix > figure:not(.unnumbered) figcaption::outside::before(502) {
+    tag-name-set: "span";
+    class-add: os-title-label;
+    content: "Figure "; }
+  body .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside::before(501),
+  body .appendix > figure:not(.unnumbered) figcaption::outside::before(501) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: number-to-letter(ancestor-context("body", count-of-type('[data-type="chapter"].appendix')), upper-latin) ancestor-context('[data-type="chapter"]', count-of-type("figure:not(.splash)")); }
+  body .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside::before(500),
+  body .appendix > figure:not(.unnumbered) figcaption::outside::before(500) {
+    tag-name-set: "span";
+    class-add: os-divider;
+    content: " "; }
+
+body .appendix :not(figure) > figure:not(.unnumbered)::outside,
+body .appendix > figure:not(.unnumbered)::outside {
+  tag-name-set: "div";
+  class-add: os-figure; }
+
+body .appendix > figure.unnumbered figcaption {
+  x-display: none; }
 
 /* Discard all processing instructions */
 /* body > [data-type="chapter"] > */

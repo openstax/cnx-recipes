@@ -211,9 +211,20 @@ $exerciseSolutionSelectorAccumulator: ();
 body > [data-type="chapter"] {
 
   /* Numbers on chapters and sections */
-  > [data-type="document-title"]::before {
-    tag-name-set: "span";
-    content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
+  > [data-type="document-title"] {
+    &::before(2) {
+      tag-name-set: "span";
+      class-add: "os-number";
+      content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
+    }
+    &::before(1) {
+      tag-name-set: "span";
+      class-add: "os-divider";
+    }
+    &::inside {
+      tag-name-set: "span";
+      class-add: "os-text";
+    }
   }
 
   /* Discard Page metadata but keep the title (and add its number) */
@@ -272,12 +283,20 @@ body > [data-type="chapter"] {
   }
 }
 
+
 body {
 
   // Delete the metadata
-  > [data-type="metadata"] > [data-type="description"] {
+  // TODO: Why are these inconsistent
+  > [data-type="metadata"] {
+     > [data-type="description"] {
+      x-display: none;
+    }
+  }
+  > [data-type="page"].preface > [data-type="metadata"] {
     x-display: none;
   }
+
 
   &:has(> [data-type="chapter"]:has(#{$exerciseSolutionSelectorAccumulator})) {
     &::after(1) {
@@ -290,7 +309,7 @@ body {
         &:has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"])) { /* This guard is just for the styleguide */
           &::before {
             &::before {
-              content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
+              content: $CHAPTER_COUNT " ";
               // tag-name-set: "span";
               // Link to the introduction module (TODO: when subcollections have id's then this will not be necessary)
               // tag-name-set: "a";
@@ -305,6 +324,38 @@ body {
       }
     }
   }
+
+  // Start of any Page
+  // TODO: don't make it specific to a chapter
+  [data-type="chapter"] > [data-type="page"] {
+
+    // Format the Page Title
+    > h2 { x-display: none; }
+    > [data-type="document-title"] {
+      tag-name-set: "h2";
+      &::inside {
+        tag-name-set: "span";
+        class-add: "os-text";
+      }
+    }
+
+    // Random things inside the page
+    figure:has(figcaption) {
+      &::outside {
+        tag-name-set: "div";
+        class-add: "os-figure";
+        // move the figcaption into here. The caption is transformed in number_setCaptions
+        // TODO: make this extra element disappear
+        &::after {
+          content: move-here('> figcaption');
+        }
+      }
+    }
+  }
+
+  @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
+
+
 }
 /* Discard all processing instructions */
 /* body > [data-type="chapter"] > */ [data-type="page"] {

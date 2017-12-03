@@ -4,29 +4,33 @@
 /// @arg {Text} $container [null] - The unquoted type of container element to send the titling spans to (e.g. h1, h2, div). If null, resulting spans will not be wrapped
 /// @arg {String} $containerType [null] - The data-type to give to the created container element. If null, resulting spans will not be wrapped
 /// @group utils
-@mixin utils_title($content, $bucket: null, $container: null, $containerType: null) {
+@mixin utils_title($content, $bucket: null, $container: null, $containerType: null, $contextType: null) {
+  @include validate_enumOptional($contextType, $CONTEXT__PREFIX__);
   //TODO: Restrict what things titlePart can be. Currently any key will work.
+  $length: length(map-keys($content));
+  $index: $length + 500; // use 5 to give other mixins some room to add their own ::before's
+
   @each $titleClassName in map-keys($content) {
     $titleValue: map-get($content, $titleClassName);
-    &::before {
-      container: span;
-      content: $titleValue;
-      class: $titleClassName;
-      @if ($container != null and $containerType != null) {
-        move-to: #{$container}-TITLECONTAINER
-      } @else if ($bucket != null) {
-        move-to: $bucket;
+
+    $index: $index - 1;
+    &::before(#{$index}) {
+      tag-name-set: "span";
+      class-add: $titleClassName;
+      // TODO Thisi s a workaround for a bug in css-plus where the count-of-type returns all
+      @if $contextType == $CONTEXT_PARENT {
+        content: parent-context($titleValue);
+      } @else if $contextType == $CONTEXT_PARENT {
+        @error "BUG: Invalid contextType '#{$contextType}'";
+      } @else {
+        content: $titleValue;
       }
     }
   }
   @if ($container != null and $containerType != null) {
-    &::before {
-      container: $container;
-      data-type: $containerType;
-      content: pending(#{$container}-TITLECONTAINER);
-      @if ($bucket != null) {
-        move-to: $bucket;
-      }
+    &::outside {
+      tag-name-set: $container;
+      attrs-add: "data-type" $containerType;
     }
   }
 }
