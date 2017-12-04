@@ -3,7 +3,7 @@
 /// @group modify
 @mixin modify_trash($selector) {
   #{$selector} {
-    move-to: trash;
+    x-display: none;
   }
 }
 
@@ -14,7 +14,7 @@
   //will this be needed once the headers in raw are changed?
   div.preface {
     > [data-type="document-title"] {
-      container: h1;
+      tag-name-set: h1;
       content: content();
     }
   }
@@ -34,8 +34,8 @@
 @mixin modify_addAbstractTitle($abstracTitle) {
   [data-type="abstract"] {
     &::before {
-      container: h3;
-      data-type: "title";
+      tag-name-set: h3;
+      attrs-add: "data-type" "title";
       content: $abstracTitle;
     }
   }
@@ -48,13 +48,13 @@
   div.os-eoc,
   div.os-eob {
     [data-type="cnx-archive-uri"] {
-      move-to: trash;
+      x-display: none;
     }
   }
   @if $hasCompositeChapter {
     [data-type="composite-chapter"] {
       > [data-type="metadata"] > [data-type="cnx-archive-uri"] {
-        move-to: trash;
+        x-display: none;
       }
     }
   }
@@ -68,8 +68,8 @@
     content: '';
     &::after {
       content: content();
-      container: span;
-      class: "os-text";
+      tag-name-set: span;
+      class-add: "os-text";
     }
   }
 }
@@ -155,17 +155,17 @@
   div#{$dataType}#{$selector}  {
     > div[data-type="title"] {
       &::before {
-        container: span;
-        class: "os-title-label";
+        tag-name-set: span;
+        class-add: "os-title-label";
         content: content();
         move-to: anyContainerLabel;
       }
-      move-to: trash;
+      x-display: none;
     }
     &::after {
-      container: div;
+      tag-name-set: div;
       content: pending(anyContainerLabel);
-      class: "os-title";
+      class-add: "os-title";
       move-to: anyContainer;
     }
     &:deferred {
@@ -207,19 +207,19 @@
     $minorLevel: 'depth#{$depth}';
   }
   &::inside {
-    class: "os-note-body";
+    class-add: "os-note-body";
   }
   > div[data-type="title"] {
-    container: span;
-    class: "os-title-label";
-    data-type: "";
+    tag-name-set: span;
+    class-add: "os-title-label";
+    attrs-add: "data-type" "";
     move-to: genericNoteLabel#{$minorLevel};
   }
   &:deferred::before {
-    container: h#{$headingLevel};
+    tag-name-set: h#{$headingLevel};
     content: pending(genericNoteLabel#{$minorLevel});
-    class: "os-title";
-    attr-data-type: "title";
+    class-add: "os-title";
+    attrs-add: "data-type" "title";
   }
 }
 
@@ -267,69 +267,67 @@
   @if $depth > 0 {
     $minorLevel: 'depth#{$depth}';
   }
+  $_noteTitle: 'HACK_FOR_VARIABLE_SCOPING';
   @if $replaceHeader {
     //Delete original title for note
     > div[data-type="title"] {
-      move-to: trash;
+      x-display: none;
     }
     //Handle subtitle
+    $_noteTitle: move-here('> p:first-of-type > span[data-type="title"]');
     > p:first-of-type {
       > span[data-type="title"] {
-        &::deferred {
-          container: h#{$headingLevel + 1};
-          class: "os-subtitle";
-          move-to: noteSubtitle#{$minorLevel};
-        }
+        tag-name-set: h#{$headingLevel + 1};
+        class-add: "os-subtitle";
         &::inside {
-          container: span;
-          class: "os-subtitle-label";
+          tag-name-set: span;
+          class-add: "os-subtitle-label";
         }
       }
     }
   } @else {
+    $_noteTitle: move-here('> div[data-type="title"]');
     > div[data-type="title"] {
-      &::deferred {
-        container: h#{$headingLevel + 1};
-        class: "os-subtitle";
-        move-to: noteSubtitle#{$minorLevel};
-      }
+      tag-name-set: h#{$headingLevel + 1};
+      class-add: "os-subtitle";
       &::inside {
-        container: span;
-        class: "os-subtitle-label";
+        tag-name-set: span;
+        class-add: "os-subtitle-label";
       }
     }
   }
   // //Wrap note body
   &::inside {
-    class: "os-note-body";
-    content: pending(noteSubtitle#{$minorLevel}) content();
+    tag-name-set: "div";
+    class-add: "os-note-body";
+    // &::before {
+    //   tag-name-set: unwrap;
+    //   content: $_noteTitle;
+    // }
   }
   @if $useHeader {
     > div[data-type="title"] {
-      container: span;
-      class: "os-title-label";
-      attr-data-type: "";
-      move-to: myNoteLabel;
+      tag-name-set: span;
+      class-add: "os-title-label";
+      attrs-add: "data-type" "";
     }
-    &:deferred::before {
-      container: h#{$headingLevel};
-      content: pending(myNoteLabel);
-      class: "os-title";
-      attr-data-type: "title";
+    &::before {
+      tag-name-set: h#{$headingLevel};
+      content: move-here('> div[data-type="title"]');
+      class-add: "os-title";
+      attrs-add: "data-type" "title";
     }
   } @else {
     // Make new title for note
-    &:deferred::before {
-      container: span;
-      class: "os-title-label";
-      content: $labelText;
-      move-to: bNoteLabel;
-    }
-    &:deferred::before {
-      container: h#{$headingLevel};
-      content: pending(bNoteLabel);
-      class: "os-title";
-      attr-data-type: "title";
+    &::before {
+      tag-name-set: h#{$headingLevel};
+      class-add: "os-title";
+      attrs-add: "data-type" "title";
+      &::before {
+        tag-name-set: span;
+        class-add: "os-title-label";
+        content: $labelText;
+      }
     }
   }
 }
@@ -343,11 +341,11 @@
       [data-type="example"],
       [data-type="exercise"] {
         > .os-title {
-          container: h3;
+          tag-name-set: h3;
         }
         [data-type="solution"] {
           .solution-title {
-            container: h4;
+            tag-name-set: h4;
           }
         }
       }
@@ -357,23 +355,23 @@
   &.os-eoc {
     > section {
         >[data-type="document-title"] {
-        container: h3;
+        tag-name-set: h3;
       }
     }
     > div > div > div > section {
       >[data-type="document-title"] {
-        container: h4;
+        tag-name-set: h4;
       }
     }
   }
   &.os-eob {
       >.os-chapter-area {
         >[data-type="document-title"] {
-          container: h2;
+          tag-name-set: h2;
         }
         >section {
           >[data-type="document-title"] {
-            container: h3;
+            tag-name-set: h3;
           }
         }
       }
@@ -384,16 +382,16 @@
       > section,
       > [data-type="page"] {
         [data-type="document-title"], [data-type="title"] {
-          container: h2;
+          tag-name-set: h2;
         }
         > section {
           [data-type="document-title"], [data-type="title"] {
-            container: h3;
-            data-type: title;
+            tag-name-set: h3;
+            attrs-add: "data-type" title;
           }
           > section {
               [data-type="document-title"], [data-type="title"] {
-                container: h4;
+                tag-name-set: h4;
             }
           }
         }
@@ -403,11 +401,11 @@
   .appendix {
     > section {
        [data-type="title"], [data-type="document-title"]  {
-          container: h2;
+          tag-name-set: h2;
        }
        > section {
         [data-type="title"], [data-type="document-title"] {
-          container: h3;
+          tag-name-set: h3;
         }
       }
     }
@@ -431,14 +429,14 @@
       // }
       // The previous does not work. Instead, we have to do the following (& use a bucket)
       &::after {
-        container: div;
-        class: "os-label";
+        tag-name-set: div;
+        class-add: "os-label";
         content: attr(data-label);
         move-to: bListLabel;
       }
       &::outside {
-        data-type: "list-container";
-        container: div;
+        attrs-add: "data-type" "list-container";
+        tag-name-set: div;
         content: pending(bListLabel) content();
       }
 
@@ -462,14 +460,14 @@
       // }
       // The previous does not work. Instead, we have to do the following (& use a bucket)
       &::after {
-        container: div;
-        class: "os-label";
+        tag-name-set: div;
+        class-add: "os-label";
         content: attr(data-label);
         move-to: bTitleLabel;
       }
       &::outside {
-        data-type: "exercise-container";
-        container: div;
+        attrs-add: "data-type" "exercise-container";
+        tag-name-set: div;
         content: pending(bTitleLabel) content();
       }
 
@@ -485,15 +483,15 @@
 
   #{$selector} [data-type="solution"] {
     > [data-type="title"] {
-      move-to: trash;
+      x-display: none;
     }
     $solutionTitleContent: (os-text: $titleString);
     @include utils_title($solutionTitleContent, bSolutionHeader);
     &::before {
       content: pending(bSolutionHeader);
-      data-type: "title";
-      class: "solution-title";
-      container: h4;
+      attrs-add: "data-type" "title";
+      class-add: "solution-title";
+      tag-name-set: h4;
     }
   }
 }
@@ -523,19 +521,19 @@
     //
     // The previous does not work. Instead, we have to do the following (& use a bucket)
     > iframe {
-      class: attr(class) "os-is-iframe";
+      class-add: attr(class) "os-is-iframe";
       &::after {
-        container: a;
-        class: "os-is-link";
+        tag-name-set: a;
+        class-add: "os-is-link";
         attr-target: "_window";
         attr-href: attr(src);
         content: "Click to view content";
         move-to: bIframeLink;
       }
       &::outside {
-        container: div;
-        data-type: "alternatives";
-        class: "os-has-iframe os-has-link";
+        tag-name-set: div;
+        attrs-add: "data-type" "alternatives";
+        class-add: "os-has-iframe os-has-link";
         content: pending(bIframeLink) content();
       }
 
@@ -548,12 +546,12 @@
   @if $element {
     #{$sourceSelector} {
       #{$element}:not(.unnumbered) {
-        class: attr(class) " unnumbered";
+        class-add: attr(class) " unnumbered";
       }
     }
   } @else {
     #{$sourceSelector}:not(.unnumbered) {
-      class: attr(class) " unnumbered";
+      class-add: attr(class) " unnumbered";
     }
   }
 }
@@ -581,9 +579,9 @@
     &[trash-status$="4"],
     &[trash-status$="6"],
     &[trash-status$="8"] {
-      class: attr(class) "-trashed";
+      class-add: attr(class) "-trashed";
       [data-type="solution"] {
-        move-to: trash;
+        x-display: none;
       }
     }
   }
@@ -596,7 +594,7 @@
       string-set: missing " missing-exercise";
     }
     &::deferred {
-      class: attr(class) string(missing);
+      class-add: attr(class) string(missing);
     }
   }
 }
