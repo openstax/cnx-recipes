@@ -85,23 +85,16 @@
 
 @mixin number_numberExamples($exampleTitleContent, $solutionTitleContent) {
   [data-type="example"] {
-    @include utils_title($exampleTitleContent, bExampleLabel);
+    // @include utils_title($exampleTitleContent, bExampleLabel);
     > [data-type="title"] {
-      //BAD: there should not be titling content creation outside the book level. This should get moved
-      $exampleTitle: (
-        os-text: content()
-      );
-      @include utils_title($exampleTitle, bExampleLabel);
-      move-to: trash;
-    }
-    &::after {
       tag-name-set: "div";
-      content: pending(bExampleLabel);
       class-add: "os-title";
-      move-to: bExampleHeader;
-    }
-    &:deferred {
-      content: pending(bExampleHeader) content();
+      //BAD: there should not be titling content creation outside the book level. This should get moved
+      &::inside {
+        tag-name-set: "span";
+        class-add: "os-text";
+      }
+      // move-to: trash;
     }
     [data-type="solution"] {
       @include utils_title($solutionTitleContent, null, div, "solution-title");
@@ -284,11 +277,10 @@
   [data-type="chapter"], .appendix {
     [data-type="equation"]:not(.unnumbered) {
       @if $numberAfterEq {
-        @include utils_title($numberedEquation, equationNum);
         &::after {
-          class-add: os-equation-number;
           tag-name-set: "div";
-          content: pending(equationNum)
+          class-add: "os-equation-number";
+          @include utils_title($numberedEquation, equationNum);
         }
       } @else {
         @include utils_title($numberedEquation);

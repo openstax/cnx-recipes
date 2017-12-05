@@ -525,6 +525,19 @@ body {
 // @include count_countSections(section);
 @include number_numberSections($Config_PartType_Section_TitleContent);
 
+// @include count_footnotes(footnotes);
+// @include count_footnoteLinks(footnoteLinks);
+@include number_footnotes(footnotes, footnoteLinks);
+
+// Count examples when moveTo: $AREA_NONE (no moving)
+@include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);
+@if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
+  $titleContent:  map-get($Config_PartType_Example, titleContent);
+  $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
+
+  // @include count_countExamples(example);
+  @include number_numberExamples($titleContent, $solutionTitleContent);
+}
 
 
 

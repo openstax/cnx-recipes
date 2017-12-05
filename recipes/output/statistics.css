@@ -1509,6 +1509,44 @@ div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type
 div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="document-title"] {
   tag-name-set: "h2"; }
 
+li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
+  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-ref"]')); }
+
+sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
+  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-number"]')); }
+
+li > a[data-type="footnote-ref"] {
+  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-ref"]')); }
+
+a[data-type="footnote-number"] > sup {
+  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-number"]')); }
+
+[data-type="example"] > [data-type="title"] {
+  tag-name-set: "div";
+  class-add: "os-title"; }
+  [data-type="example"] > [data-type="title"]::inside {
+    tag-name-set: "span";
+    class-add: "os-text"; }
+
+[data-type="example"] [data-type="solution"]::before(502) {
+  tag-name-set: "span";
+  class-add: os-title-label;
+  content: "Solution "; }
+
+[data-type="example"] [data-type="solution"]::before(501) {
+  tag-name-set: "span";
+  class-add: os-number;
+  content: counter(chapter) "." counter(example); }
+
+[data-type="example"] [data-type="solution"]::before(500) {
+  tag-name-set: "span";
+  class-add: os-divider;
+  content: " "; }
+
+[data-type="example"] [data-type="solution"]::outside {
+  tag-name-set: div;
+  attrs-add: "data-type" "solution-title"; }
+
 /* Discard all processing instructions */
 /* body > [data-type="chapter"] > */
 [data-type="page"] cnx-pi {
