@@ -1117,29 +1117,6 @@ body:has( > [data-type="chapter"]:has(section.glossary [data-type="exercise"] [d
       body:has( > [data-type="chapter"]:has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]))::after(1)::for-each-descendant(1, '[data-type="chapter"]'):has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]):has([data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"]))::before::before {
         content: ancestor-context("body", count-of-type('[data-type="chapter"]')) " "; }
 
-body [data-type="chapter"] > [data-type="page"] > h2 {
-  x-display: none; }
-
-body [data-type="chapter"] > [data-type="page"].introduction > [data-type="document-title"] {
-  tag-name-set: "h2"; }
-  body [data-type="chapter"] > [data-type="page"].introduction > [data-type="document-title"]::inside {
-    tag-name-set: "span";
-    class-add: "os-text"; }
-
-body [data-type="chapter"] > [data-type="page"]:not(.introduction) > [data-type="document-title"] {
-  tag-name-set: "h2"; }
-  body [data-type="chapter"] > [data-type="page"]:not(.introduction) > [data-type="document-title"]::before(2) {
-    tag-name-set: "span";
-    class-add: "os-number";
-    content: parent-context(collect-all(ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(.introduction)')))); }
-  body [data-type="chapter"] > [data-type="page"]:not(.introduction) > [data-type="document-title"]::before(1) {
-    tag-name-set: "span";
-    class-add: "os-divider";
-    content: " "; }
-  body [data-type="chapter"] > [data-type="page"]:not(.introduction) > [data-type="document-title"]::inside {
-    tag-name-set: "span";
-    class-add: "os-text"; }
-
 body [data-type="chapter"] > [data-type="page"] figure:has(figcaption)::outside {
   tag-name-set: "div";
   class-add: "os-figure"; }
@@ -1536,7 +1513,7 @@ a[data-type="footnote-number"] > sup {
 [data-type="example"] [data-type="solution"]::before(501) {
   tag-name-set: "span";
   class-add: os-number;
-  content: counter(chapter) "." counter(example); }
+  content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="example"]')); }
 
 [data-type="example"] [data-type="solution"]::before(500) {
   tag-name-set: "span";
@@ -1546,6 +1523,47 @@ a[data-type="footnote-number"] > sup {
 [data-type="example"] [data-type="solution"]::outside {
   tag-name-set: div;
   attrs-add: "data-type" "solution-title"; }
+
+[data-type="note"].lab > [data-type="title"] {
+  tag-name-set: 'span';
+  class-add: 'os-text'; }
+
+[data-type="note"].lab::before {
+  tag-name-set: "div";
+  class-add: "os-title";
+  content: move-here('> [data-type="title"]'); }
+  [data-type="note"].lab::before::before(501) {
+    tag-name-set: "span";
+    class-add: os-title-label;
+    content: "Stats Lab "; }
+  [data-type="note"].lab::before::before(500) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="note"].lab')); }
+
+[data-type="note"].try > [data-type="title"] {
+  tag-name-set: 'span';
+  class-add: 'os-text'; }
+
+[data-type="note"].try::before {
+  tag-name-set: "div";
+  class-add: "os-title";
+  content: move-here('> [data-type="title"]'); }
+  [data-type="note"].try::before::before(501) {
+    tag-name-set: "span";
+    class-add: os-title-label;
+    content: "Try It "; }
+  [data-type="note"].try::before::before(500) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="example"]')); }
+
+div[data-type="page"] span[data-type="term"] {
+  attrs-add: "id" "auto_" ancestor-context('[data-type="page"]', attr(id)) "_term" ancestor-context("body", count-of-type('[data-type="term"]')); }
+  div[data-type="page"] span[data-type="term"]:match("^[a-zA-Z]") {
+    attr-group-by: first-letter(content()); }
+  div[data-type="page"] span[data-type="term"]:match("^[^a-zA-Z]") {
+    attr-group-by: " Symbols"; }
 
 /* Discard all processing instructions */
 /* body > [data-type="chapter"] > */

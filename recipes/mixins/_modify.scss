@@ -89,10 +89,9 @@
 /// @arg {Text} $pageIDString - The page ID where the term is found
 /// @group modify
 @mixin modify_prepIndexTerms($termCounter, $pageIDString) {
-  div[data-type="page"],
-  div[data-type="composite-page"] {
+  div[data-type="page"] {
     span[data-type="term"] {
-      attr-id: "auto_" string($pageIDString) "_term" counter($termCounter);
+      attrs-add: "id" "auto_" ancestor-context('[data-type="page"]', attr(id)) "_term" ancestor-context('[data-type="page"]', count-of-type('[data-type="term"]'));
       &:match("^[a-zA-Z]") {
         attr-group-by: first-letter(content());
       }

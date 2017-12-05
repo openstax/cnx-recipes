@@ -739,7 +739,7 @@ Formula Review page
 :pass(2) [data-type="example"] [data-type="solution"]::before(501) {
   tag-name-set: "span";
   class-add: os-number;
-  content: counter(chapter) "." counter(example); }
+  content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="example"]')); }
 
 :pass(2) [data-type="example"] [data-type="solution"]::before(500) {
   tag-name-set: "span";
@@ -750,49 +750,39 @@ Formula Review page
   tag-name-set: div;
   attrs-add: "data-type" "solution-title"; }
 
-:pass(2) [data-type="note"].lab::before(501) {
-  tag-name-set: "span";
-  class-add: os-title-label;
-  content: "Stats Lab "; }
-
-:pass(2) [data-type="note"].lab::before(500) {
-  tag-name-set: "span";
-  class-add: os-number;
-  content: counter(chapter) "." counter(lab); }
-
 :pass(2) [data-type="note"].lab > [data-type="title"] {
-  move-to: trash; }
+  tag-name-set: 'span';
+  class-add: 'os-text'; }
 
-:pass(2) [data-type="note"].lab::after {
+:pass(2) [data-type="note"].lab::before {
   tag-name-set: "div";
-  content: pending(bNoteLabel-lab);
   class-add: "os-title";
-  move-to: bNoteHeader; }
-
-:pass(2) [data-type="note"].lab:deferred {
-  content: pending(bNoteHeader) content(); }
-
-:pass(2) [data-type="note"].try::before(501) {
-  tag-name-set: "span";
-  class-add: os-title-label;
-  content: "Try It "; }
-
-:pass(2) [data-type="note"].try::before(500) {
-  tag-name-set: "span";
-  class-add: os-number;
-  content: counter(chapter) "." counter(example); }
+  content: move-here('> [data-type="title"]'); }
+  :pass(2) [data-type="note"].lab::before::before(501) {
+    tag-name-set: "span";
+    class-add: os-title-label;
+    content: "Stats Lab "; }
+  :pass(2) [data-type="note"].lab::before::before(500) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="note"].lab')); }
 
 :pass(2) [data-type="note"].try > [data-type="title"] {
-  move-to: trash; }
+  tag-name-set: 'span';
+  class-add: 'os-text'; }
 
-:pass(2) [data-type="note"].try::after {
+:pass(2) [data-type="note"].try::before {
   tag-name-set: "div";
-  content: pending(bNoteLabel-try);
   class-add: "os-title";
-  move-to: bNoteHeader; }
-
-:pass(2) [data-type="note"].try:deferred {
-  content: pending(bNoteHeader) content(); }
+  content: move-here('> [data-type="title"]'); }
+  :pass(2) [data-type="note"].try::before::before(501) {
+    tag-name-set: "span";
+    class-add: os-title-label;
+    content: "Try It "; }
+  :pass(2) [data-type="note"].try::before::before(500) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="example"]')); }
 
 :pass(2) div[data-type="page"],
 :pass(2) div[data-type="composite-page"] {

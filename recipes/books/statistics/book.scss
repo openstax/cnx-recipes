@@ -316,37 +316,6 @@ body {
   // TODO: don't make it specific to a chapter
   [data-type="chapter"] > [data-type="page"] {
 
-    // Format the Page Title. Introductions do not have a number
-    > h2 { x-display: none; }
-    &.introduction {
-      > [data-type="document-title"] {
-        tag-name-set: "h2";
-        &::inside {
-          tag-name-set: "span";
-          class-add: "os-text";
-        }
-      }
-    }
-    &:not(.introduction) {
-      > [data-type="document-title"] {
-        tag-name-set: "h2";
-        &::before(2) {
-          tag-name-set: "span";
-          class-add: "os-number";
-          content: parent-context(collect-all($SECTION_COUNT));
-        }
-        &::before(1) {
-          tag-name-set: "span";
-          class-add: "os-divider";
-          content: " ";
-        }
-        &::inside {
-          tag-name-set: "span";
-          class-add: "os-text";
-        }
-      }
-    }
-
     // Random things inside the page
     figure:has(figcaption) {
       &::outside {
@@ -540,9 +509,48 @@ body {
 }
 
 
+// Number equations if they have a titleContent
+// @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
+$titleContent               : map-get($Config_PartType_Equation, titleContent);
+$numberAt                   : map-get($Config_PartType_Equation, numberAt);
+$numberAfterEq              : map-get($Config_PartType_Equation, numberAfterEq);
+@if $titleContent {
+  @include validate_typeOptional($numberAfterEq, bool);
+  @include validate_enum($numberAt, $NUMBER__PREFIX__);
+  // @include count_countEquations(equation);
+  @if $numberAt == $NUMBER_BEFORE_MOVE {
+    @include number_equations($titleContent, $numberAfterEq);
+  }
+}
 
+// @include count_countExamples(example);
+// @include number_numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
 
+// Count and number any Notes that need it
+@each $note in $Config_Notes {
+  $className: map-get($note, className);
+  $titleContent: map-get($note, titleContent);
+  $counterName: map-get($note, counterName);
+  $hasSolutions: map-get($note, hasSolutions);
+  $solutionTitleContent: map-get($note, solutionTitleContent);
+  @include validate_type($className, string);
+  @include validate_typeOptional($titleContent, map);
+  @include validate_typeOptional($counterName, string);
 
+  @if $titleContent {
+    @if $counterName {
+      // @include count_countNote($counterName, $className);
+    }
+    @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
+  }
+}
+
+// @include count_countTerms(term);
+// @include reference_refPageIDStringAs(pageID);
+@include modify_prepIndexTerms(term, pageID);
+
+@include reference_refSectionHeaderNodeAs(sectionHeaderNode);
+@include compose_createChapterComposites($Config_ChapterCompositePages, sectionHeaderNode);
 
 
 

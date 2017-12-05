@@ -104,24 +104,20 @@
 
 @mixin number_numberNote($type, $noteContent, $hasSolutions, $solutionTitleContent) {
   [data-type="note"].#{$type} {
-    @include utils_title($noteContent, bNoteLabel-#{$type});
     > [data-type="title"] {
-      //TODO: May want to have the option to preserve titles similarly to examples in the future.
-      move-to: trash;
+      tag-name-set: 'span';
+      class-add: 'os-text';
     }
     @if $hasSolutions {
       [data-type="solution"] {
         @include utils_title($solutionTitleContent)
       }
     }
-    &::after {
+    &::before {
       tag-name-set: "div";
-      content: pending(bNoteLabel-#{$type});
       class-add: "os-title";
-      move-to: bNoteHeader;
-    }
-    &:deferred {
-      content: pending(bNoteHeader) content();
+      @include utils_title($noteContent, bNoteLabel-#{$type});
+      content: move-here('> [data-type="title"]');
     }
     //TODO: Maybe want to have the option to handle solutions similarly to examples in the future
   }
