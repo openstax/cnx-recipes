@@ -210,23 +210,6 @@ $exerciseSolutionSelectorAccumulator: ();
 
 body > [data-type="chapter"] {
 
-  /* Numbers on chapters and sections */
-  > [data-type="document-title"] {
-    &::before(2) {
-      tag-name-set: "span";
-      class-add: "os-number";
-      content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '. ';
-    }
-    &::before(1) {
-      tag-name-set: "span";
-      class-add: "os-divider";
-    }
-    &::inside {
-      tag-name-set: "span";
-      class-add: "os-text";
-    }
-  }
-
   /* Discard Page metadata but keep the title (and add its number) */
   [data-type="page"] {
     > [data-type="metadata"] {
@@ -290,16 +273,16 @@ body > [data-type="chapter"] {
 
 body {
 
-  // Delete the metadata
-  // TODO: Why are these inconsistent
-  > [data-type="metadata"] {
-     > [data-type="description"] {
-      x-display: none;
-    }
-  }
-  > [data-type="page"].preface > [data-type="metadata"] {
-    x-display: none;
-  }
+  // // Delete the metadata
+  // // TODO: Why are these inconsistent
+  // > [data-type="metadata"] {
+  //    > [data-type="description"] {
+  //     x-display: none;
+  //   }
+  // }
+  // > [data-type="page"].preface > [data-type="metadata"] {
+  //   x-display: none;
+  // }
 
 
   &:has(> [data-type="chapter"]:has(#{$exerciseSolutionSelectorAccumulator})) {
@@ -393,6 +376,12 @@ body {
 
 
 
+
+
+
+
+
+// :pass(0)
 @mixin misc_webview_styling() {
   // Adapted from https://github.com/Connexions/webview/blob/master/src/scripts/modules/media/body/content-common.less#L341
   //   // Block-ish lists
@@ -482,10 +471,14 @@ body {
   @include modify_tagMissingExercises();
   @include modify_dataNumberStyle();
 }
+@if $Config_hasAbstract == false {
+  @include modify_trash('[data-type="abstract"]');
+}
+@if $Config_abstractTitle {
+  @include modify_addAbstractTitle($Config_abstractTitle);
+}
 
-
-
-
+// :pass(1)
 @if $Config_Coverage_MayHaveMissingExercises {
   @include modify_trash('[data-type="exercise"].missing-exercise');
 }
@@ -522,6 +515,35 @@ body {
     }
   }
 }
+
+// :pass(2)
+//Come up with mixins for common numbering schemes as per Phil's suggestion
+// @include count_countChapters(chapter);
+@include number_numberChapters($Config_PartType_Chapter_TitleContent);
+// @include count_countAppendices(appendix);
+@include number_numberAppendices($Config_PartType_Appendix_TitleContent);
+// @include count_countSections(section);
+@include number_numberSections($Config_PartType_Section_TitleContent);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Discard all processing instructions */

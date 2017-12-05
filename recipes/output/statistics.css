@@ -1080,18 +1080,7 @@ body > [data-type="chapter"] {
       content: "Solutions"; }
 
 body > [data-type="chapter"] {
-  /* Numbers on chapters and sections */
   /* Discard Page metadata but keep the title (and add its number) */ }
-  body > [data-type="chapter"] > [data-type="document-title"]::before(2) {
-    tag-name-set: "span";
-    class-add: "os-number";
-    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) ". "; }
-  body > [data-type="chapter"] > [data-type="document-title"]::before(1) {
-    tag-name-set: "span";
-    class-add: "os-divider"; }
-  body > [data-type="chapter"] > [data-type="document-title"]::inside {
-    tag-name-set: "span";
-    class-add: "os-text"; }
   body > [data-type="chapter"] [data-type="page"] {
     /* The following are hacks for the styleguide since they are missing metadata */ }
     body > [data-type="chapter"] [data-type="page"] > [data-type="metadata"] {
@@ -1111,12 +1100,6 @@ body > [data-type="chapter"] {
       body > [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has( > [data-type="metadata"] > [data-type="document-title"])):not(:not(SASS_HACK):has( > [data-type="document-title"]))::before::before {
         tag-name-set: "span";
         content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
-
-body > [data-type="metadata"] > [data-type="description"] {
-  x-display: none; }
-
-body > [data-type="page"].preface > [data-type="metadata"] {
-  x-display: none; }
 
 body:has( > [data-type="chapter"]:has(section.glossary [data-type="exercise"] [data-type="solution"], section.summary [data-type="exercise"] [data-type="solution"], section.formula-review [data-type="exercise"] [data-type="solution"], section.practice [data-type="exercise"] [data-type="solution"], section.bring-together-exercises [data-type="exercise"] [data-type="solution"], section.free-response [data-type="exercise"] [data-type="solution"], section.bring-together-homework [data-type="exercise"] [data-type="solution"], section.references [data-type="exercise"] [data-type="solution"], section.solutions [data-type="exercise"] [data-type="solution"]))::after(1)::before {
   tag-name-set: "h1";
@@ -1252,12 +1235,9 @@ body .appendix > figure.unnumbered figcaption {
 div.preface > [data-type="document-title"] {
   tag-name-set: h1; }
 
-:not([data-type="metadata"]) > [data-type="document-title"] {
-  content: ''; }
-  :not([data-type="metadata"]) > [data-type="document-title"]::after {
-    content: content();
-    tag-name-set: span;
-    class-add: "os-text"; }
+:not([data-type="metadata"]) > [data-type="document-title"]::inside {
+  tag-name-set: span;
+  class-add: "os-text"; }
 
 [data-type="exercise"][data-label]:not([data-label=""])::outside {
   attrs-add: "data-type" "exercise-container";
@@ -1489,6 +1469,45 @@ cnx-pi {
 
 body:deferred::after {
   content: clear(trash); }
+
+div[data-type="chapter"] > [data-type="document-title"] {
+  tag-name-set: "h1"; }
+  div[data-type="chapter"] > [data-type="document-title"]::before(501) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: ancestor-context("body", count-of-type('[data-type="chapter"]')); }
+  div[data-type="chapter"] > [data-type="document-title"]::before(500) {
+    tag-name-set: "span";
+    class-add: os-divider;
+    content: " "; }
+  div[data-type="chapter"] > [data-type="document-title"]::inside {
+    tag-name-set: "span";
+    class-add: "os-text"; }
+
+div.appendix > [data-type="document-title"] {
+  tag-name-set: "h1"; }
+  div.appendix > [data-type="document-title"]::before(501) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: number-to-letter(ancestor-context("body", count-of-type('[data-type="page"].appendix, [data-type="chapter"].appendix')), upper-latin); }
+  div.appendix > [data-type="document-title"]::before(500) {
+    tag-name-set: "span";
+    class-add: os-divider;
+    content: " | "; }
+
+div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"] {
+  tag-name-set: "h2"; }
+  div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"]::before(501) {
+    tag-name-set: "span";
+    class-add: os-number;
+    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(.introduction)')); }
+  div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"]::before(500) {
+    tag-name-set: "span";
+    class-add: os-divider;
+    content: " "; }
+
+div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="document-title"] {
+  tag-name-set: "h2"; }
 
 /* Discard all processing instructions */
 /* body > [data-type="chapter"] > */
