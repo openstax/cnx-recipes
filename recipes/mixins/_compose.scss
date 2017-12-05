@@ -136,14 +136,15 @@
 //TODO: verify that the empty chapter areas are not displayed, currently working better than previous commit but still displays empty sections. The exercises are empty, why?
 //TODO: Optional, try to use isCompoundCompsite instad of loop inside a loop
 
-@mixin _processComposites ($allCompoundCompositePages) {
-  [data-type="chapter"] {
+@mixin _processComposites ($outerIndex, $allCompoundCompositePages) {
     [data-type="page"] {
       > [data-type="document-title"] {
         node-set: CompoundSectionHeaderNode;
       }
     }
+    $index: 0;
     @each $page in $allCompoundCompositePages {
+      $index: $index + 1;
       $className: map-get($page, className);
       $pageName: map-get($page, name);
       $clusterBy: map-get($page, clusterBy);
@@ -154,74 +155,74 @@
       @if ($specialPageType == $PAGE_GLOSSARY) {
         div[data-type="#{$className}"] {
           /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
-          move-to: trash;
+          x-display: none;
         }
-      }
-      #{$sourceSelector} {
-        > [data-type="title"] {
-          move-to: trash;
-        }
-        @if ($clusterBy == $CLUSTER_SECTION) {
-          content: nodes(CompoundSectionHeaderNode) content();
-          move-to: #{$className}-separated;
-        } @else {
-          move-to: #{$className}-DESTINATION;
-        }
-      }
-      @if ($clusterBy == $CLUSTER_SECTION) {
-        [data-type="page"] {
-          &::after {
-            class: "os-section-area";
-            content: pending(#{$className}-separated);
-            move-to: #{$className}-sectionSeparatedContainer;
-          }
-        }
-        &::after {
-          class: os-#{$className};
-          content: pending(#{$className}-sectionSeparatedContainer);
-          move-to: #{$className}-DESTINATION;
-        }
-      }
-      &::after {
-        container: h3;
-        data-type: "title";
-        content: $pageName;
-        move-to: #{$className}-title;
       }
 
-      &::after {
-        class: "os-#{$className}-container";
-        content: pending(#{$className}-title) pending(#{$className}-DESTINATION);
-        @if ($sortBy != null) {
-          sort-by: #{$sortBy}, nocase;
+      #{$sourceSelector} {
+        > [data-type="title"] {
+          x-log: "We should remove this but it was buggily causing the ::for-each-descendant to have a detached parent... maybe?";
+          // x-display: none;
         }
-        move-to: composite-DESTINATION;
+      }
+
+      &::after(#{$index}):has(#{$sourceSelector}) {
+        class-add: "os-#{$className}-container";
+
+        // title
+        &::before(2) {
+          tag-name-set: "h3";
+          attrs-add: "data-type" "title";
+          content: $pageName;
+        }
+        &::before(1) {
+          class-add: "os-#{$className}";
+          @if ($clusterBy == $CLUSTER_SECTION) {
+            &::for-each-descendant(1, '> [data-type="page"]')/*:has(.#{$className})*/ {
+              class-add: "os-section-area";
+              content: move-here("#{$sourceSelector}");
+              // Put the section number and title
+              &::before {
+                tag-name-set: "h4";
+                @include utils_title($Config_PartType_Section_TitleContent, bUnused);
+                content: descendant-context('> [data-type="document-title"]', text-contents());
+              }
+            }
+          } @else {
+            content: move-here("#{$sourceSelector}");
+          }
+        }
+        @if ($sortBy != null) {
+          x-log: "TODO: Implement sorting. #{$sortBy}";
+          // sort-by: #{$sortBy}, nocase;
+        }
       }
     }
-  }
 }
 
 @mixin compose_EOCcompoundCompositesPages ($getAllComposites) {
 
+  $index: 0;
   @each $page in $getAllComposites {
+    $index: $index + 1;
     $name: map-get($page, name);
     $className: map-get($page, className);
     $childPages: map-get($page, childPages);
     $specialPageType: map-get($page, specialPageType);
 
-    @include validate_type($childPages, list);
+    @include validate_typeOptional($childPages, list);
     @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
-    $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
+    // Loop over all composites so that the $index is correct
+    @if ($childPages) {
+      $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
 
-    @include _processComposites($childPages);
-    [data-type="chapter"] {
-      &::after {
-        class: "os-eoc os-#{$className}-container";
-        data-type: composite-page;
-        data-uuid-key: "#{$keyName}";
-        content: pending(composite-DESTINATION);
-
+      [data-type="chapter"] {
+        &::after(#{$index}) {
+          class-add: "os-eoc", "os-#{$className}-container";
+          attrs-add: "data-type" "composite-page", "data-uuid-key" "#{$keyName}";
+          @include _processComposites($index, $childPages);
+        }
       }
     }
   }

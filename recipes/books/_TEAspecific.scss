@@ -73,14 +73,14 @@
 
 $Config_convertEOBCompositePageToChapter: () !default;
 @each $pageClass in $Config_convertEOBCompositePageToChapter {
-  :pass(8) {
+  // :pass(8) {
     @include TEAspecific_EOBCompositePageToChapter($pageClass);
-  }
+  // }
 }
 
 
 @if $Config_TEAspecificLOHeaders {
-  :pass(0) {
+  // :pass(0) {
     .learning-objective,
     .learning-objectives,
     [data-type="page"]:not(.introduction) [data-type="abstract"] {
@@ -96,23 +96,23 @@ $Config_convertEOBCompositePageToChapter: () !default;
       }
     }
     @include utils_clearTrash();
-  }
+  // }
 }
 
 $Config_TEAspecificLOContainer: false !default;
 @if $Config_TEAspecificLOContainer {
-  :pass(0) {
+  // :pass(0) {
     .learning-objective,
     .learning-objectives,
     [data-type="page"]:not(.introduction) [data-type="abstract"] {
       container: section;
       data-type: "";
     }
-  }
+  // }
 }
 
 @if $Config_hasCompositeAppendixes {
-  :pass(1) {
+  // :pass(1) {
     @include reference_refBookMetadataNodeAs(bookMetadata);
     body {
       .appendix {
@@ -136,16 +136,16 @@ $Config_TEAspecificLOContainer: false !default;
         content: pending(appendicesTitle) nodes(bookMetadata) pending(chapterAppendices);
       }
     }
-  }
-  :pass(3) {
+  // }
+  // :pass(3) {
     .appendix {
       &::inside {
         container: section;
         class: "appendix-container";
       }
     }
-  }
-  :pass(4) {
+  // }
+  // :pass(4) {
     .appendix {
       .appendix-container {
       > h1[data-type="document-title"] {
@@ -159,11 +159,11 @@ $Config_TEAspecificLOContainer: false !default;
       content: pending(appendixTitle) pending(metadata) content();
      }
     }
-  }
+  // }
 }
 
 @if $Config_TEAspecificHasCompositePreface {
-  :pass(1) {
+  // :pass(1) {
     @include reference_refBookMetadataNodeAs(bookMetadata);
     body {
     .preface {
@@ -187,16 +187,16 @@ $Config_TEAspecificLOContainer: false !default;
         }
       }
     }
-  }
-  :pass(3) {
+  // }
+  // :pass(3) {
     .preface {
       &::inside {
         container: section;
         class: "preface-container";
       }
     }
-  }
-  :pass(4) {
+  // }
+  // :pass(4) {
     .preface {
       .preface-container {
       > h1[data-type="document-title"] {
@@ -210,15 +210,15 @@ $Config_TEAspecificLOContainer: false !default;
       content: pending(prefaceTitle) pending(metadata) content();
      }
     }
-  }
-  :pass(5) {
+  // }
+  // :pass(5) {
     .preface-container {
       > h1[data-type="document-title"] {
         container: h2;
       }
     }
-  }
-  :pass(7) {
+  // }
+  // :pass(7) {
     [data-type="composite-chapter"] {
       //HACK: force the metadata title
       > [data-type="metadata"] {
@@ -237,7 +237,7 @@ $Config_TEAspecificLOContainer: false !default;
         }
       }
     }
-  }
+  // }
 }
 
 $Config_startPageWithLO: false !default;
@@ -286,7 +286,7 @@ $Config_startPageWithLO: false !default;
 
 $Config_startIntroWithCO: false !default;
 @if $Config_startIntroWithCO {
-  :pass(1) {
+  // :pass(1) {
     [data-type="page"].introduction {
       > div[data-type="metadata"] {
         node-set: page-meta;
@@ -306,9 +306,10 @@ $Config_startIntroWithCO: false !default;
     }
     @include utils_clearTrash();
   }
-}
 
-:pass(8) {
+// }
+// :pass(8) {
+
   // Remove eob materials and teacher support notes
   @include modify_trash(".os-index-container");
   @include modify_trash(".os-solutions-container");
@@ -316,4 +317,4 @@ $Config_startIntroWithCO: false !default;
   @include utils_clearTrash();
 
   @include modify_retitleHeaders($Config_hasCompositeChapter);
-}
+// }
