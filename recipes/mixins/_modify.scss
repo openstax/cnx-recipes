@@ -82,7 +82,7 @@
 /// @group modify
 @mixin modify_simLinkTarget() {
   a.os-interactive-link {
-    attr-target: "_blank";
+    attrs-add: "target" "_blank";
   }
 }
 
@@ -417,26 +417,15 @@
   ol,
   ul {
     &[data-label]:not([data-label=""]) {
-      // &::outside {
-      //   tag-name-set: div;
-      //   attrs-set: data-type list-container;
-      //
-      //   &::before {
-      //     content: attr(data-label);
-      //     class-add: os-label;
-      //   }
-      // }
-      // The previous does not work. Instead, we have to do the following (& use a bucket)
-      &::after {
-        tag-name-set: div;
-        class-add: "os-label";
-        content: attr(data-label);
-        move-to: bListLabel;
-      }
       &::outside {
         attrs-add: "data-type" "list-container";
         tag-name-set: div;
-        content: pending(bListLabel) content();
+
+        &::before {
+          tag-name-set: div;
+          class-add: "os-label";
+          content: attr(data-label);
+        }
       }
 
     }
@@ -448,28 +437,16 @@
 @mixin modify_wrapExercises() {
   [data-type="exercise"] {
     &[data-label]:not([data-label=""]) {
-      // &::outside {
-      //   tag-name-set: div;
-      //   attrs-set: data-type list-container;
-      //
-      //   &::before {
-      //     content: attr(data-label);
-      //     class-add: os-label;
-      //   }
-      // }
-      // The previous does not work. Instead, we have to do the following (& use a bucket)
-      &::after {
-        tag-name-set: div;
-        class-add: "os-label";
-        content: attr(data-label);
-        move-to: bTitleLabel;
-      }
       &::outside {
         attrs-add: "data-type" "exercise-container";
         tag-name-set: div;
-        content: pending(bTitleLabel) content();
-      }
 
+        &::before {
+          tag-name-set: div;
+          class-add: "os-label";
+          content: attr(data-label);
+        }
+      }
     }
   }
 }
@@ -502,38 +479,19 @@
 @mixin modify_wrapIframesWithAlternatives() {
   // just a guard to make sure we did not already convert the iframe
   :not([data-type="alternatives"]) {
-    // > iframe {
-    //   class-add: os-is-iframe;
-    //   &::outside {
-    //     tag-name-set: "div";
-    //     attrs-set: data-type "alternatives";
-    //     class-add: "os-has-iframe" "os-has-link";
-    //
-    //     &::before {
-    //       tag-name-set: "a";
-    //       attrs-set: href attr(src), target "_window";
-    //       class-add: "os-is-link";
-    //       content: "link";
-    //     }
-    //   }
-    // }
-    //
-    // The previous does not work. Instead, we have to do the following (& use a bucket)
     > iframe {
-      class-add: attr(class) "os-is-iframe";
-      &::after {
-        tag-name-set: a;
-        class-add: "os-is-link";
-        attr-target: "_window";
-        attr-href: attr(src);
-        content: "Click to view content";
-        move-to: bIframeLink;
-      }
+      class-add: "os-is-iframe";
       &::outside {
         tag-name-set: div;
         attrs-add: "data-type" "alternatives";
         class-add: "os-has-iframe os-has-link";
-        content: pending(bIframeLink) content();
+
+        &::before {
+          tag-name-set: a;
+          class-add: "os-is-link";
+          attrs-add: "target" "_window", "href" attr(src);
+          content: "Click to view content";
+        }
       }
 
     }

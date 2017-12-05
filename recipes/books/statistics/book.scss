@@ -445,8 +445,23 @@ body {
 
 @include modify_titlePreface();
 @include modify_spanWrapTitles();
+@if $Config_Coverage_MayHaveSimlinks == true {
+  @include modify_simLinkTarget();
+}
+@include modify_wrapExercises(); // no dependencies
+@include modify_wrapLists(); // no dependencies
 
+@if $Config_Coverage_MayHaveIframes == true {
+  @include modify_wrapIframesWithAlternatives(); // no dependencies
+}
 
+@include modify_trash("cnx-pi");
+
+// Only mark up solutions if they will not be discarded (optimization)
+@if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
+} @else {
+  @include utils_hasSolution();
+}
 
 
 
