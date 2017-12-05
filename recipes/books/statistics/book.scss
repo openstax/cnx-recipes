@@ -552,8 +552,15 @@ $numberAfterEq              : map-get($Config_PartType_Equation, numberAfterEq);
 @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
 @include compose_createChapterComposites($Config_ChapterCompositePages, sectionHeaderNode);
 
+@each $unnumberedExercise in $Config_UnnumberedExercises {
+  $contextSelector: map-get($unnumberedExercise, contextSelector);
+  $childSelector: map-get($unnumberedExercise, childSelector);
+  @include validate_type($contextSelector, string);
+  @include validate_typeOptional($childSelector, string);
+  @include modify_addUnnumbered($contextSelector, $childSelector);
+}
 
-
+// :pass(3)
 
 
 

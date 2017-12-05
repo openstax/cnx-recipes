@@ -1559,11 +1559,126 @@ a[data-type="footnote-number"] > sup {
     content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="example"]')); }
 
 div[data-type="page"] span[data-type="term"] {
-  attrs-add: "id" "auto_" ancestor-context('[data-type="page"]', attr(id)) "_term" ancestor-context("body", count-of-type('[data-type="term"]')); }
+  attrs-add: "id" "auto_" ancestor-context('[data-type="page"]', attr(id)) "_term" ancestor-context('[data-type="page"]', count-of-type('[data-type="term"]')); }
   div[data-type="page"] span[data-type="term"]:match("^[a-zA-Z]") {
     attr-group-by: first-letter(content()); }
   div[data-type="page"] span[data-type="term"]:match("^[^a-zA-Z]") {
     attr-group-by: " Symbols"; }
+
+div[data-type="page"] > [data-type="document-title"],
+div[data-type="composite-page"] > [data-type="document-title"] {
+  node-set: sectionHeaderNode; }
+
+div[data-type="chapter"] div[data-type="glossary"] {
+  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+  x-display: none; }
+
+div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+  /* Discard this Page-specific title because a chapter title is added when collated */
+  x-display: none; }
+
+div[data-type="chapter"]::after(1) {
+  tag-name-set: "div";
+  class-add: "os-eoc", "os-glossary-container";
+  attrs-add: "data-type" "composite-page", "uuid-key" "<glossary>";
+  content: move-here('div[data-type="glossary"] dl');
+  x-log: "TODO: implement sort-by somehow. xhtml|dl > xhtml|dt"; }
+
+div[data-type="chapter"] section.summary {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  x-log: "Should be unused";
+  content: nodes(sectionHeaderNode) content(); }
+  div[data-type="chapter"] section.summary > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    x-display: none; }
+
+div[data-type="chapter"]::after(2) {
+  tag-name-set: "div";
+  class-add: "os-eoc", "os-summary-container";
+  attrs-add: "data-type" "composite-page", "uuid-key" ".summary";
+  content: move-here("section.summary"); }
+
+div[data-type="chapter"] section.formula-review {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  x-log: "Should be unused";
+  content: nodes(sectionHeaderNode) content(); }
+  div[data-type="chapter"] section.formula-review > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    x-display: none; }
+
+div[data-type="chapter"]::after(3) {
+  tag-name-set: "div";
+  class-add: "os-eoc", "os-formula-review-container";
+  attrs-add: "data-type" "composite-page", "uuid-key" ".formula-review";
+  content: move-here("section.formula-review"); }
+
+div[data-type="chapter"] section.practice {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  x-log: "Should be unused";
+  content: nodes(sectionHeaderNode) content(); }
+  div[data-type="chapter"] section.practice > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    x-display: none; }
+
+div[data-type="chapter"]::after(4) {
+  tag-name-set: "div";
+  class-add: "os-eoc", "os-practice-container";
+  attrs-add: "data-type" "composite-page", "uuid-key" ".practice";
+  content: move-here("section.practice"); }
+
+div[data-type="chapter"] section.bring-together-exercises > [data-type="title"] {
+  /* Discard this Page-specific title because a chapter title is added when collated */
+  x-display: none; }
+
+div[data-type="chapter"]::after(5) {
+  tag-name-set: "div";
+  class-add: "os-eoc", "os-bring-together-exercises-container";
+  attrs-add: "data-type" "composite-page", "uuid-key" ".bring-together-exercises";
+  content: move-here("section.bring-together-exercises"); }
+
+div[data-type="chapter"] section.free-response {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  x-log: "Should be unused";
+  content: nodes(sectionHeaderNode) content(); }
+  div[data-type="chapter"] section.free-response > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    x-display: none; }
+
+div[data-type="chapter"]::after(6) {
+  tag-name-set: "div";
+  class-add: "os-eoc", "os-free-response-container";
+  attrs-add: "data-type" "composite-page", "uuid-key" ".free-response";
+  content: move-here("section.free-response"); }
+
+div[data-type="chapter"] section.bring-together-homework > [data-type="title"] {
+  /* Discard this Page-specific title because a chapter title is added when collated */
+  x-display: none; }
+
+div[data-type="chapter"]::after(7) {
+  tag-name-set: "div";
+  class-add: "os-eoc", "os-bring-together-homework-container";
+  attrs-add: "data-type" "composite-page", "uuid-key" ".bring-together-homework";
+  content: move-here("section.bring-together-homework"); }
+
+div[data-type="chapter"] section.references {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  x-log: "Should be unused";
+  content: nodes(sectionHeaderNode) content(); }
+  div[data-type="chapter"] section.references > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    x-display: none; }
+
+div[data-type="chapter"]::after(8) {
+  tag-name-set: "div";
+  class-add: "os-eoc", "os-references-container";
+  attrs-add: "data-type" "composite-page", "uuid-key" ".references";
+  content: move-here("section.references"); }
+
+.try [data-type="exercise"]:not(.unnumbered) {
+  class-add: "unnumbered"; }
+
+[data-type="example"] [data-type="exercise"]:not(.unnumbered) {
+  class-add: "unnumbered"; }
 
 /* Discard all processing instructions */
 /* body > [data-type="chapter"] > */

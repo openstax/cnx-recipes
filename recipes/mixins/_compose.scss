@@ -51,8 +51,10 @@
   // Validate
   @include validate_type($compositePages, list);
 
+  $index: 1;
   @each $page in $compositePages {
-    @include _createChapterComposite($page, $sectionHeaderNode);
+    @include _createChapterComposite($index, $page, $sectionHeaderNode);
+    $index: $index + 1;
   }
 }
 
@@ -61,7 +63,7 @@
 /// @arg {Map} $page - contains `name`, `source`, and optionally `sortBy` and `compoundComposite` and `specialPageType`
 /// @arg {string} $sectionHeaderNode - Curently Unused (because of typo)
 /// @group compose
-@mixin _createChapterComposite($page, $sectionHeaderNode) {
+@mixin _createChapterComposite($index, $page, $sectionHeaderNode) {
   $className: map-get($page, className);
   $sortBy: map-get($page, sortBy);
   $compoundComposite: map-get($page, compoundComposite);
@@ -84,28 +86,28 @@
       @if ($specialPageType == $PAGE_GLOSSARY) {
         div[data-type="#{$className}"] {
           /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
-          move-to: trash;
+          x-display: none;
         }
       }
       #{$sourceSelector} {
         > [data-type="title"] {
           /* Discard this Page-specific title because a chapter title is added when collated */
-          move-to: trash;
+          x-display: none;
         }
         @if ($clusterBy == $CLUSTER_SECTION) {
           /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+          x-log: "Should be unused";
           content: nodes(sectionHeaderNode) content();
         }
-        move-to: #{$className}-TOCOMPOSITE;
       }
-      &::after {
-        container: div;
-        content: pending(#{$className}-TOCOMPOSITE);
-        class: "os-eoc os-#{$className}-container";
-        data-type: "composite-page";
-        data-uuid-key: "#{$keyName}";
+      &::after(#{$index}) {
+        tag-name-set: "div";
+        class-add: "os-eoc", "os-#{$className}-container";
+        attrs-add: "data-type" "composite-page", "uuid-key" "#{$keyName}";
+        content: move-here("#{$sourceSelector}");
         @if ($sortBy != null) {
-          sort-by: #{$sortBy}, nocase;
+          x-log: "TODO: implement sort-by somehow. #{$sortBy}";
+          // sort-by: #{$sortBy}, nocase;
         }
       }
     }
@@ -462,7 +464,7 @@
       @include validate_type($noteTitle, string);
       @include validate_type($className, string);
 
-    
+
       [data-type="chapter"] {
         [data-type="note"].#{$className} [data-type="solution"] {
           move-to: note-#{$className}-#{$solutionClassName}-GETSECTION;
@@ -492,7 +494,7 @@
     $hasSolutions: map-get($page, hasSolutions);
     $className: map-get($page, className);
     $pageName: map-get($page, name);
-    
+
     $childPages: map-get($page, childPages);
 
     // Validate
