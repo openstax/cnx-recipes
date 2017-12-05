@@ -152,23 +152,14 @@
 /// Modify the title of any container based on data-type and/or class. This is useful for oddball elements such as exercises used as notes.
 @mixin modify_anyContainerTitle ($dataType, $selector) {
   div#{$dataType}#{$selector}  {
-    > div[data-type="title"] {
+    &::before {
+      tag-name-set: div;
+      class-add: "os-title";
       &::before {
         tag-name-set: span;
         class-add: "os-title-label";
-        content: content();
-        move-to: anyContainerLabel;
+        content: move-here('> div[data-type="title"]');
       }
-      x-display: none;
-    }
-    &::after {
-      tag-name-set: div;
-      content: pending(anyContainerLabel);
-      class-add: "os-title";
-      move-to: anyContainer;
-    }
-    &:deferred {
-      content: pending(anyContainer) content();
     }
   }
 }
