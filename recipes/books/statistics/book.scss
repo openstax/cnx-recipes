@@ -233,28 +233,32 @@ body > [data-type="chapter"] {
       /* TODO: Move this to an attribution section at the end of the book */
       x-display: none;
     }
-    &:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
-      &:has(> [data-type="metadata"] > [data-type="document-title"]) {
-        &::before {
-          tag-name-set: "h2";
-          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
-
-          &::before {
-            tag-name-set: "span";
-            @include sectionNumber();
-          }
-        }
-      }
+    > [data-type="document-title"] {
+      tag-name-set: "h2";
     }
-    &:has(cnx-pi[data-type="cnx.flag.introduction"]) {
-      &:has(> [data-type="metadata"] > [data-type="document-title"]) {
-        &::before {
-          /* Label the Introduction but do not add a number */
-          tag-name-set: "h2";
-          content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
-        }
-      }
-    }
+    // &:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])) {
+    //   &:has(> [data-type="metadata"] > [data-type="document-title"]) {
+    //     &::before {
+    //       tag-name-set: "h2";
+    //       attrs-add: "data-type" "document-title", "id" descendant-contextattr(id);
+    //       content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+    //
+    //       &::before {
+    //         tag-name-set: "span";
+    //         @include sectionNumber();
+    //       }
+    //     }
+    //   }
+    // }
+    // &:has(cnx-pi[data-type="cnx.flag.introduction"]) {
+    //   &:has(> [data-type="metadata"] > [data-type="document-title"]) {
+    //     &::before {
+    //       /* Label the Introduction but do not add a number */
+    //       tag-name-set: "h2";
+    //       content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents());
+    //     }
+    //   }
+    // }
 
     /* The following are hacks for the styleguide since they are missing metadata */
     &:not(:not(SASS_HACK):has(> [data-type="metadata"] > [data-type="document-title"])) {
@@ -329,13 +333,34 @@ body {
   // TODO: don't make it specific to a chapter
   [data-type="chapter"] > [data-type="page"] {
 
-    // Format the Page Title
+    // Format the Page Title. Introductions do not have a number
     > h2 { x-display: none; }
-    > [data-type="document-title"] {
-      tag-name-set: "h2";
-      &::inside {
-        tag-name-set: "span";
-        class-add: "os-text";
+    &.introduction {
+      > [data-type="document-title"] {
+        tag-name-set: "h2";
+        &::inside {
+          tag-name-set: "span";
+          class-add: "os-text";
+        }
+      }
+    }
+    &:not(.introduction) {
+      > [data-type="document-title"] {
+        tag-name-set: "h2";
+        &::before(2) {
+          tag-name-set: "span";
+          class-add: "os-number";
+          content: parent-context(collect-all($SECTION_COUNT));
+        }
+        &::before(1) {
+          tag-name-set: "span";
+          class-add: "os-divider";
+          content: " ";
+        }
+        &::inside {
+          tag-name-set: "span";
+          class-add: "os-text";
+        }
       }
     }
 
@@ -356,43 +381,112 @@ body {
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
 }
 
-  // Any notes that need to trash the solution
-  @each $note in $Config_Notes {
-    $className: map-get($note, className);
-    $moveSolutionTo: map-get($note, moveSolutionTo);
-    @include validate_type($className, string);
-    @include validate_enumOptional($moveSolutionTo, $AREA__PREFIX__);
 
-    @if $moveSolutionTo == $AREA_TRASH {
-      @include modify_trash('.#{$className} [data-type="solution"]');
-      @include utils_clearTrash();
-    } @else {
-      // TODO Skip reconstructing a new object for modify_note
-      $labelText: map-get($note, labelText);
-      $titleContent: map-get($note, titleContent);
-      $replaceHeader: map-get($note, replaceHeader);
-      $useHeader: map-get($note, useHeader);
-      @include validate_typeOptional($useHeader, bool);
-      @include validate_typeOptional($labelText, string);
-      @include validate_typeOptional($titleContent, map);
 
-      // Check that there is not both a label AND a titleContent
-      @if $labelText and $titleContent {
-        @error "BUG: Specified both a label and a titleContent";
-      }
 
-       @else if $useHeader {
-            @include modify_note((className: $className, useHeader: $useHeader));
-        }
-        @else if $labelText {
-          @include modify_note((className: $className, labelText: $labelText, replaceHeader: $replaceHeader));
-        } @else {
-          @if $titleContent {
-            @include modify_note((className: $className, titleContent: $titleContent, replaceHeader: $replaceHeader));
-          }
-        }
-      }
+
+
+
+
+
+// Copy/pasta from _generator.scss
+
+
+
+@mixin misc_webview_styling() {
+  // Adapted from https://github.com/Connexions/webview/blob/master/src/scripts/modules/media/body/content-common.less#L341
+  //   // Block-ish lists
+  //   ul:not([data-display='inline'])          { @include list_style(block, bulleted); }
+  //   ol:not([data-display='inline'])          { @include list_style(block, enumerated); }
+  //   ul[data-labeled-item]                    { @include list_style(block, labeled-item); }
+  //
+  //   // Inline lists (with `data-display='inline'`)
+  //   ul[data-display='inline']                { @include list_style(inline, bulleted); }
+  //   ol[data-display='inline']                { @include list_style(inline, enumerated); }
+  //   ul[data-display='inline'][data-labeled-item] { @include list_style(inline, labeled-item); }
+  //
+  //   // Lists inside a paragraph
+  //   [data-type='list']:not([data-list-type]):not([data-labeled-item])
+  //                                                     { @include list_style-emulated(inline, bulleted); }
+  //   [data-type='list'][data-list-type='bulleted']     { @include list_style-emulated(inline, bulleted); }
+  //   [data-type='list'][data-list-type='enumerated']   { @include list_style-emulated(inline, enumerated); }
+  //   [data-type='list'][data-list-type='labeled-item'] { @include list_style-emulated(inline, labeled-item); }
+  //   div[data-type='list'][data-list-type]             { padding-left: 2.5rem; margin-bottom: 1rem; }
+
+  [data-type='list']:not([data-list-type]),
+  [data-type='list'][data-list-type='bulleted'],
+  [data-type='list'][data-list-type='enumerated'] {
+    // Throw an erros just to make sure these cases do not occur
+    sort-by: 'invalid-namespace-just-to-throw-an-error|element-HACK';
   }
+
+  [data-type='list'][data-list-type='labeled-item'],
+  [data-type='list'][data-list-type='bulleted'] {
+
+    &:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after {
+      // content: @default-inline-list-item-sep;
+      tag-name-set: "span";
+      attr-class: "-os-inline-list-separator";
+      content: "; ";
+    }
+    &[data-item-sep] {
+      > [data-type="item"]:not(:last-child)::after {
+        // content: @default-inline-list-item-sep;
+        // .x-not-implemented('data-item-sep=CUSTOM');
+        tag-name-set: "span";
+        class-add: "-os-inline-list-separator";
+        content: parent-context(attr(data-item-sep));
+      }
+    }
+  }
+}
+@include misc_webview_styling();
+
+
+@include modify_titlePreface();
+@include modify_spanWrapTitles();
+
+
+
+
+
+
+@if $Config_Coverage_MayHaveMissingExercises {
+  @include modify_trash('[data-type="exercise"].missing-exercise');
+}
+
+// Any notes that need to trash the solution
+@each $note in $Config_Notes {
+  $className: map-get($note, className);
+  $moveSolutionTo: map-get($note, moveSolutionTo);
+  @include validate_type($className, string);
+  @include validate_enumOptional($moveSolutionTo, $AREA__PREFIX__);
+
+  @if $moveSolutionTo == $AREA_TRASH {
+    @include modify_trash('.#{$className} [data-type="solution"]');
+    @include utils_clearTrash();
+  } @else {
+    // TODO Skip reconstructing a new object for modify_note
+    $labelText: map-get($note, labelText);
+    $titleContent: map-get($note, titleContent);
+    $replaceHeader: map-get($note, replaceHeader);
+    $useHeader: map-get($note, useHeader);
+    @include validate_typeOptional($useHeader, bool);
+    @include validate_typeOptional($labelText, string);
+    @include validate_typeOptional($titleContent, map);
+
+    // Check that there is not both a label AND a titleContent
+    @if $labelText and $titleContent {
+      @error "BUG: Specified both a label and a titleContent";
+    } @else if $useHeader {
+      @include modify_note((className: $className, useHeader: $useHeader));
+    } @else if $labelText {
+      @include modify_note((className: $className, labelText: $labelText, replaceHeader: $replaceHeader));
+    } @else if $titleContent {
+      @include modify_note((className: $className, titleContent: $titleContent, replaceHeader: $replaceHeader));
+    }
+  }
+}
 
 
 /* Discard all processing instructions */

@@ -1097,16 +1097,8 @@ body > [data-type="chapter"] {
     body > [data-type="chapter"] [data-type="page"] > [data-type="metadata"] {
       /* TODO: Move this to an attribution section at the end of the book */
       x-display: none; }
-    body > [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])):has( > [data-type="metadata"] > [data-type="document-title"])::before {
-      tag-name-set: "h2";
-      content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
-      body > [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has(cnx-pi[data-type="cnx.flag.introduction"])):has( > [data-type="metadata"] > [data-type="document-title"])::before::before {
-        tag-name-set: "span";
-        content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) " "; }
-    body > [data-type="chapter"] [data-type="page"]:has(cnx-pi[data-type="cnx.flag.introduction"]):has( > [data-type="metadata"] > [data-type="document-title"])::before {
-      /* Label the Introduction but do not add a number */
-      tag-name-set: "h2";
-      content: descendant-context('> [data-type="metadata"] > [data-type="document-title"]', text-contents()); }
+    body > [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+      tag-name-set: "h2"; }
     body > [data-type="chapter"] [data-type="page"]:not(:not(SASS_HACK):has( > [data-type="metadata"] > [data-type="document-title"])):has( > [data-type="document-title"])::before {
       tag-name-set: "h2";
       content: descendant-context('> [data-type="document-title"]', text-contents()); }
@@ -1145,9 +1137,23 @@ body:has( > [data-type="chapter"]:has(section.glossary [data-type="exercise"] [d
 body [data-type="chapter"] > [data-type="page"] > h2 {
   x-display: none; }
 
-body [data-type="chapter"] > [data-type="page"] > [data-type="document-title"] {
+body [data-type="chapter"] > [data-type="page"].introduction > [data-type="document-title"] {
   tag-name-set: "h2"; }
-  body [data-type="chapter"] > [data-type="page"] > [data-type="document-title"]::inside {
+  body [data-type="chapter"] > [data-type="page"].introduction > [data-type="document-title"]::inside {
+    tag-name-set: "span";
+    class-add: "os-text"; }
+
+body [data-type="chapter"] > [data-type="page"]:not(.introduction) > [data-type="document-title"] {
+  tag-name-set: "h2"; }
+  body [data-type="chapter"] > [data-type="page"]:not(.introduction) > [data-type="document-title"]::before(2) {
+    tag-name-set: "span";
+    class-add: "os-number";
+    content: parent-context(collect-all(ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(.introduction)')))); }
+  body [data-type="chapter"] > [data-type="page"]:not(.introduction) > [data-type="document-title"]::before(1) {
+    tag-name-set: "span";
+    class-add: "os-divider";
+    content: " "; }
+  body [data-type="chapter"] > [data-type="page"]:not(.introduction) > [data-type="document-title"]::inside {
     tag-name-set: "span";
     class-add: "os-text"; }
 
@@ -1225,6 +1231,26 @@ body .appendix > figure:not(.unnumbered)::outside {
 
 body .appendix > figure.unnumbered figcaption {
   x-display: none; }
+
+[data-type='list']:not([data-list-type]),
+[data-type='list'][data-list-type='bulleted'],
+[data-type='list'][data-list-type='enumerated'] {
+  sort-by: 'invalid-namespace-just-to-throw-an-error|element-HACK'; }
+
+[data-type='list'][data-list-type='labeled-item']:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after,
+[data-type='list'][data-list-type='bulleted']:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after {
+  tag-name-set: "span";
+  attr-class: "-os-inline-list-separator";
+  content: "; "; }
+
+[data-type='list'][data-list-type='labeled-item'][data-item-sep] > [data-type="item"]:not(:last-child)::after,
+[data-type='list'][data-list-type='bulleted'][data-item-sep] > [data-type="item"]:not(:last-child)::after {
+  tag-name-set: "span";
+  class-add: "-os-inline-list-separator";
+  content: parent-context(attr(data-item-sep)); }
+
+div.preface > [data-type="document-title"] {
+  tag-name-set: h1; }
 
 :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].calculator > div[data-type="title"] {
   tag-name-set: h4;
