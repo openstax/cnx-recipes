@@ -158,14 +158,14 @@ $_symbolsSectionTitle: "Symbols";
 :pass(2) {
 
   //Come up with mixins for common numbering schemes as per Phil's suggestion
-  @include count_countChapters(chapter);
+  // @include count_countChapters(chapter);
   @include number_numberChapters($Config_PartType_Chapter_TitleContent);
-  @include count_countAppendices(appendix);
+  // @include count_countAppendices(appendix);
   @include number_numberAppendices($Config_PartType_Appendix_TitleContent);
-  @include count_countSections(section);
+  // @include count_countSections(section);
   @include number_numberSections($Config_PartType_Section_TitleContent);
-  @include count_footnotes(footnotes);
-  @include count_footnoteLinks(footnoteLinks);
+  // @include count_footnotes(footnotes);
+  // @include count_footnoteLinks(footnoteLinks);
   @include number_footnotes(footnotes, footnoteLinks);
 
   // Count examples when moveTo: $AREA_NONE (no moving)
@@ -174,7 +174,7 @@ $_symbolsSectionTitle: "Symbols";
     $titleContent:  map-get($Config_PartType_Example, titleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
 
-    @include count_countExamples(example);
+    // @include count_countExamples(example);
     @include number_numberExamples($titleContent, $solutionTitleContent);
   }
 
@@ -186,7 +186,7 @@ $_symbolsSectionTitle: "Symbols";
   @if $titleContent {
     @include validate_typeOptional($numberAfterEq, bool);
     @include validate_enum($numberAt, $NUMBER__PREFIX__);
-    @include count_countEquations(equation);
+    // @include count_countEquations(equation);
     @if $numberAt == $NUMBER_BEFORE_MOVE {
       @include number_equations($titleContent, $numberAfterEq);
     }
@@ -208,13 +208,13 @@ $_symbolsSectionTitle: "Symbols";
 
     @if $titleContent {
       @if $counterName {
-        @include count_countNote($counterName, $className);
+        // @include count_countNote($counterName, $className);
       }
       @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
     }
   }
 
-  @include count_countTerms(term);
+  // @include count_countTerms(term);
   @include reference_refPageIDStringAs(pageID);
   @include modify_prepIndexTerms(term, pageID);
 
@@ -277,7 +277,7 @@ $_symbolsSectionTitle: "Symbols";
     @else { @error 'BUG: Invalid enum'; }
 
     @if $numberAt == $NUMBER_BEFORE_MOVE {
-      @include count_countEOCExercises(exercise, $resetSel);
+      // @include count_countEOCExercises(exercise, $resetSel);
       @include number_numberEOCExercises($titleContent, $titleContent);
       @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
         @include modify_tagRemovedSolutions();
@@ -288,7 +288,7 @@ $_symbolsSectionTitle: "Symbols";
 }
 :pass(5) {
   //After: createChapterComposites, numberEOCExercises
-  @include count_countExercises(exerciseAll);
+  // @include count_countExercises(exerciseAll);
   // Only link up problems and solutions if they will not be discarded (optimization)
   @if map-get($Config_PartType_Exercise, numberAt) == $NUMBER_BEFORE_MOVE {
     @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
@@ -333,7 +333,7 @@ $_symbolsSectionTitle: "Symbols";
     @else { @error 'BUG: Invalid enum'; }
 
     @if $numberAt == $NUMBER_AFTER_MOVE {
-      @include count_countEOCExercises(exercise, $resetSel);
+      // @include count_countEOCExercises(exercise, $resetSel);
       @include number_numberEOCExercises($titleContent, $titleContent);
     } @else if $numberAt == $NUMBER_BEFORE_MOVE {
     } @else { @error 'BUG: Invalid enum'; }
@@ -367,8 +367,8 @@ $_symbolsSectionTitle: "Symbols";
   @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
 
   //After: composite page creation
-  @include count_countChapters(chapter);
-  @include count_countAppendices(appendix);
+  // @include count_countChapters(chapter);
+  // @include count_countAppendices(appendix);
 
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
@@ -383,7 +383,7 @@ $_symbolsSectionTitle: "Symbols";
     @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
-    @include count_countEOCExercises(exercise, $resetSel);
+    // @include count_countEOCExercises(exercise, $resetSel);
 
     @if $numberAt == $NUMBER_AFTER_MOVE {
        @include number_numberEOCExercises($titleContent, $titleContent);
@@ -391,8 +391,8 @@ $_symbolsSectionTitle: "Symbols";
     } @else { @error 'BUG: Invalid enum'; }
   }
 
-  @include count_countExamples(example);
-  @include count_countEquations(equation);
+  // @include count_countExamples(example);
+  // @include count_countEquations(equation);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
   // Number equations if they have a titleContent
@@ -414,13 +414,13 @@ $_symbolsSectionTitle: "Symbols";
   @include compose_titleEOBComposites($Config_BookCompositePages);
   //After: createChapterComposites, createEOCSolutions, createBookComposites
   @include modify_chapterAutoID();
-  @include count_countExercisesInContentButNotInExample(exerciseMaybeInContent);
+  // @include count_countExercisesInContentButNotInExample(exerciseMaybeInContent);
   // This has to run before number_numberEOCExercises because its selector is more general than the EOC selector
   @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent,
                                          $Config_ContentExercise_TitleContentAp, $Config_ContentSolution_TitleContentAp);
 
-  @include count_countTables(table);
-  @include count_countFigures(figure);
+  // @include count_countTables(table);
+  // @include count_countFigures(figure);
   @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp);
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense

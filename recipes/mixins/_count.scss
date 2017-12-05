@@ -3,20 +3,16 @@
 /// @arg {String} $selector - A string of the selector at which the counter will increment
 /// @arg {String} $resetSelector - A string of the selector at which the counter will reset
 /// @group count
-@mixin _count($name, $selector, $resetSelector) {
+@function _count($selector, $resetSelector) {
   //Improvement: Resetting isn't dry, recreates selector if more than one counter resets on one element
-  #{$resetSelector} {
-    counter-reset: $name;
-  }
-  #{$selector} {
-    counter-increment: $name;
-  }
+
+  @return ancestor-context($resetSelector, count-of-type($selector));
 }
 
 
 //TODO: call arguments explicity? Is this possible? Ex:
-// @mixin count_countChapter($name) {
-//   @include _count(
+// @function count_countChapter($name: null) {
+//   @return _count(
 //     $name: $name,
 //     $selector: 'div[data-type="chapter"]',
 //     $resetSelector: 'body'
@@ -26,9 +22,8 @@
 /// A basic mixin for counting chapters using css counters
 /// @arg {Text} $name - Name of the css counter that will control chapter numbering
 /// @group count
-@mixin count_countChapters($name) {
-  @include _count(
-    $name,
+@function count_countChapters($name: null) {
+  @return _count(
     'div[data-type="chapter"]',
     'body'
   );
@@ -37,9 +32,8 @@
 /// A basic mixin for counting appendices using css counters
 /// @arg {Text} $name - Name of the css counter that will control appendix numbering`
 /// @group count
-@mixin count_countAppendices($name) {
-  @include _count(
-    $name,
+@function count_countAppendices($name: null) {
+  @return _count(
     'div.appendix',
     'body'
   );
@@ -49,9 +43,8 @@
 /// Does not count the introduction module.
 /// @arg {Text} $name - Name of the css counter that will control section numbering
 /// @group count
-@mixin count_countSections($name) {
-  @include _count(
-    $name,
+@function count_countSections($name: null) {
+  @return _count(
     'div[data-type="chapter"] > div[data-type="page"]:not(.introduction)',
     '[data-type="chapter"], .appendix'
   );
@@ -62,9 +55,8 @@
 /// @arg {Text} $name - Name of the css counter that will control exercise numbering
 /// @group count
 
-@mixin count_countEOCExercises($name, $resetSelector) {
-  @include _count(
-    $name,
+@function count_countEOCExercises($name, $resetSelector) {
+  @return _count(
     '.os-eoc [data-type="exercise"]',
     '#{$resetSelector}, .appendix'
   );
@@ -75,9 +67,8 @@
 /// TODO Rename me to `count_countEOCExercisesWithoutReset` or something
 /// @arg {Text} $name - Name of the css counter that will control all exercise numbering
 /// @group count
-@mixin count_countExercises($name) {
-  @include _count(
-    $name,
+@function count_countExercises($name: null) {
+  @return _count(
     '.os-eoc [data-type="exercise"]',
     'body'
   );
@@ -88,9 +79,8 @@
 /// TODO Rename me to `count_countEOCExercisesWithoutReset` or something
 /// @arg {Text} $name - Name of the css counter that will control all exercise numbering
 /// @group count
-@mixin count_countExercisesInContentButNotInExample($name) {
-  @include _count(
-    $name,
+@function count_countExercisesInContentButNotInExample($name: null) {
+  @return _count(
     ':not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered)',
     '[data-type="chapter"], .appendix'
   );
@@ -99,9 +89,8 @@
 /// A basic mixin for counting examples within a chapter using css counters
 /// @arg {Text} $name - Name of the css counter that will control example numbering
 /// @group count
-@mixin count_countExamples($name) {
-  @include _count(
-    $name,
+@function count_countExamples($name: null) {
+  @return _count(
     'div[data-type="chapter"] [data-type="example"]',
     '[data-type="chapter"], .appendix'
   );
@@ -110,9 +99,8 @@
 /// A basic mixin for counting `span[data-type="term"]` using css counters
 /// @arg {Text} $name - Name of the css counter that will control term numbering
 /// @group count
-@mixin count_countTerms($name) {
-  @include _count(
-    $name,
+@function count_countTerms($name: null) {
+  @return _count(
     'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]',
     'body'
   );
@@ -121,9 +109,8 @@
 /// A basic mixin for counting tables using css counters
 /// @arg {Text} $name - Name of the css counter that will control table numbering
 /// @group count
-@mixin count_countTables($name) {
-  @include _count(
-    $name,
+@function count_countTables($name: null) {
+  @return _count(
     ':not(table) > table:not(.unnumbered)',
     '[data-type="chapter"], .appendix'
   );
@@ -132,9 +119,8 @@
 /// A basic mixin for counting figures using css counters
 /// @arg {Text} $name - Name of the css counter that will control figure numbering
 /// @group count
-@mixin count_countFigures($name) {
-  @include _count(
-    $name,
+@function count_countFigures($name: null) {
+  @return _count(
     ':not(figure) > figure:not(.unnumbered)',
     '[data-type="chapter"], .appendix'
   );
@@ -144,9 +130,8 @@
 /// @arg {Text} $name - Name of the css counter that will control note numbering
 /// @arg {String} $type - A string of the selector of the note type you want to count
 /// @group count
-@mixin count_countNote($name, $type) {
-  @include _count(
-    $name,
+@function count_countNote($name, $type) {
+  @return _count(
     '[data-type="note"].#{$type}',
     '[data-type="chapter"], .appendix'
   );
@@ -155,9 +140,8 @@
 /// A basic mixin for counting equations using css counters
 /// @arg {Text} $name - Name of the css counter that will control equation numbering
 /// @group count
-@mixin count_countEquations($name) {
-  @include _count(
-    $name,
+@function count_countEquations($name: null) {
+  @return _count(
     '[data-type="equation"]:not(.unnumbered)',
     '[data-type="chapter"], .appendix'
   );
@@ -166,9 +150,8 @@
 /// A basic mixin for counting footnotes using css counters
 /// @arg {Text} $name - Name of the css counter that will control footnote numbering
 /// @group count
-@mixin count_footnotes($name) {
-  @include _count(
-    $name,
+@function count_footnotes($name: null) {
+  @return _count(
     '[data-type="footnote-ref"]',
     '[data-type="chapter"], .appendix'
   )
@@ -177,9 +160,8 @@
 /// A basic mixin for counting footnote links in text using css counters
 /// @arg {Text} $name - Name of the css counter that will control footnote link numbering
 /// @group count
-@mixin count_footnoteLinks($name) {
-  @include _count(
-    $name,
+@function count_footnoteLinks($name: null) {
+  @return _count(
     '[data-type="footnote-number"]',
     '[data-type="chapter"], .appendix'
   )

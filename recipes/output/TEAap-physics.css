@@ -436,12 +436,6 @@
 :pass(0) [data-type="metadata"] > [data-type="description"] {
   x-display: none; }
 
-:pass(2) body {
-  counter-reset: chapter; }
-
-:pass(2) div[data-type="chapter"] {
-  counter-increment: chapter; }
-
 :pass(2) div[data-type="chapter"] > [data-type="document-title"] {
   tag-name-set: "h1"; }
   :pass(2) div[data-type="chapter"] > [data-type="document-title"]::before(501) {
@@ -456,12 +450,6 @@
     tag-name-set: "span";
     class-add: "os-text"; }
 
-:pass(2) body {
-  counter-reset: appendix; }
-
-:pass(2) div.appendix {
-  counter-increment: appendix; }
-
 :pass(2) div.appendix > [data-type="document-title"] {
   tag-name-set: "h1"; }
   :pass(2) div.appendix > [data-type="document-title"]::before(501) {
@@ -472,12 +460,6 @@
     tag-name-set: "span";
     class-add: os-divider;
     content: " | "; }
-
-:pass(2) [data-type="chapter"], :pass(2) .appendix {
-  counter-reset: section; }
-
-:pass(2) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
-  counter-increment: section; }
 
 :pass(2) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"] {
   tag-name-set: "h2"; }
@@ -493,35 +475,17 @@
 :pass(2) div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="document-title"] {
   tag-name-set: "h2"; }
 
-:pass(2) [data-type="chapter"], :pass(2) .appendix {
-  counter-reset: footnotes; }
-
-:pass(2) [data-type="footnote-ref"] {
-  counter-increment: footnotes; }
-
-:pass(2) [data-type="chapter"], :pass(2) .appendix {
-  counter-reset: footnoteLinks; }
-
-:pass(2) [data-type="footnote-number"] {
-  counter-increment: footnoteLinks; }
-
 :pass(2) li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
-  content: counter(footnotes); }
+  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-ref"]')); }
 
 :pass(2) sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
-  content: counter(footnoteLinks); }
+  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-number"]')); }
 
 :pass(2) li > a[data-type="footnote-ref"] {
-  content: counter(footnotes); }
+  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-ref"]')); }
 
 :pass(2) a[data-type="footnote-number"] > sup {
-  content: counter(footnoteLinks); }
-
-:pass(2) [data-type="chapter"], :pass(2) .appendix {
-  counter-reset: example; }
-
-:pass(2) div[data-type="chapter"] [data-type="example"] {
-  counter-increment: example; }
+  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-number"]')); }
 
 :pass(2) [data-type="example"]::before(502) {
   tag-name-set: "span";
@@ -567,18 +531,6 @@
 :pass(2) [data-type="example"] [data-type="solution"]::outside {
   tag-name-set: div;
   attrs-add: "data-type" "solution-title"; }
-
-:pass(2) [data-type="chapter"], :pass(2) .appendix {
-  counter-reset: equation; }
-
-:pass(2) [data-type="equation"]:not(.unnumbered) {
-  counter-increment: equation; }
-
-:pass(2) body {
-  counter-reset: term; }
-
-:pass(2) div[data-type="page"] span[data-type="term"], :pass(2) div[data-type="composite-page"] span[data-type="term"] {
-  counter-increment: term; }
 
 :pass(2) div[data-type="page"],
 :pass(2) div[data-type="composite-page"] {
@@ -751,12 +703,6 @@
 :pass(4) .introduction {
   content: pending(ChapterOutline) content(); }
 
-:pass(4) [data-type="composite-page"], :pass(4) .appendix {
-  counter-reset: exercise; }
-
-:pass(4) .os-eoc [data-type="exercise"] {
-  counter-increment: exercise; }
-
 :pass(4) .os-eoc [data-type="exercise"] [data-type="problem"]::before(500) {
   tag-name-set: "span";
   class-add: os-number;
@@ -766,12 +712,6 @@
   tag-name-set: "span";
   class-add: os-number;
   content: counter(exercise); }
-
-:pass(5) body {
-  counter-reset: exerciseAll; }
-
-:pass(5) .os-eoc [data-type="exercise"] {
-  counter-increment: exerciseAll; }
 
 :pass(6) div[data-type="page"] > [data-type="document-title"],
 :pass(6) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -839,36 +779,6 @@
 
 :pass(7) .os-index-container > div.group-by:first-of-type > span.group-label:match("^[ ](Symbols|SYMBOLS)") {
   content: "Symbols"; }
-
-:pass(7) body {
-  counter-reset: chapter; }
-
-:pass(7) div[data-type="chapter"] {
-  counter-increment: chapter; }
-
-:pass(7) body {
-  counter-reset: appendix; }
-
-:pass(7) div.appendix {
-  counter-increment: appendix; }
-
-:pass(7) [data-type="composite-page"], :pass(7) .appendix {
-  counter-reset: exercise; }
-
-:pass(7) .os-eoc [data-type="exercise"] {
-  counter-increment: exercise; }
-
-:pass(7) [data-type="chapter"], :pass(7) .appendix {
-  counter-reset: example; }
-
-:pass(7) div[data-type="chapter"] [data-type="example"] {
-  counter-increment: example; }
-
-:pass(7) [data-type="chapter"], :pass(7) .appendix {
-  counter-reset: equation; }
-
-:pass(7) [data-type="equation"]:not(.unnumbered) {
-  counter-increment: equation; }
 
 :pass(7) .os-eoc [data-type="exercise"] {
   string-set: target-label "Exercise " ancestor-context("body", count-of-type('[data-type="chapter"]')) "." counter(exercise); }
@@ -983,12 +893,6 @@
   counter-increment: chapTitleNum;
   attr-id: "chapTitle" counter(chapTitleNum); }
 
-:pass(7) [data-type="chapter"], :pass(7) .appendix {
-  counter-reset: exerciseMaybeInContent; }
-
-:pass(7) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
-  counter-increment: exerciseMaybeInContent; }
-
 :pass(7) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before(501) {
   tag-name-set: "span";
   class-add: os-number;
@@ -1008,18 +912,6 @@
   tag-name-set: "span";
   class-add: os-title-label;
   content: "Exercise "; }
-
-:pass(7) [data-type="chapter"], :pass(7) .appendix {
-  counter-reset: table; }
-
-:pass(7) :not(table) > table:not(.unnumbered) {
-  counter-increment: table; }
-
-:pass(7) [data-type="chapter"], :pass(7) .appendix {
-  counter-reset: figure; }
-
-:pass(7) :not(figure) > figure:not(.unnumbered) {
-  counter-increment: figure; }
 
 :pass(7) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption [data-type="title"] {
   tag-name-set: "span";
