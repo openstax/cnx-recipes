@@ -895,35 +895,32 @@ div[data-type="chapter"]::after(5) {
   attrs-add: "data-type" "composite-page", "uuid-key" ".free-response";
   content: move-here("section.free-response"); }
 
-[data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
-  string-set: outlinePageId attr(id); }
-  [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"]::after {
-    container: a;
-    class: "os-chapter-objective";
-    content: content();
-    attr-href: "#" string(outlinePageId);
-    move-to: chapOutlineLink; }
-
-[data-type="chapter"] [data-type="page"]:not(.introduction)::after {
-  class: "os-chapter-objective";
-  content: pending(chapOutlineLink) pending(outlineLO);
-  move-to: chapOutline; }
-
-[data-type="chapter"]::before {
-  container: h3;
-  class: "os-title";
-  content: "Chapter Outline";
-  move-to: chapOutlineTitle; }
-
-[data-type="chapter"]:deferred::before {
-  class: "os-chapter-outline";
-  content: pending(chapOutlineTitle) pending(chapOutline); }
-
-.os-chapter-outline {
-  move-to: ChapterOutline; }
-
-.introduction {
-  content: pending(ChapterOutline) content(); }
+[data-type="chapter"] [data-type="page"].introduction::before(1) {
+  tag-name-set: "div";
+  class-add: "os-chapter-outline"; }
+  [data-type="chapter"] [data-type="page"].introduction::before(1)::before(2) {
+    tag-name-set: "h3";
+    class-add: "os-title";
+    content: "Chapter Outline"; }
+  [data-type="chapter"] [data-type="page"].introduction::before(1)::for-each(1, following-sibling, '[data-type="page"]:not(.introduction)') {
+    tag-name-set: "div";
+    class-add: "os-chapter-objective"; }
+    [data-type="chapter"] [data-type="page"].introduction::before(1)::for-each(1, following-sibling, '[data-type="page"]:not(.introduction)')::before(1) {
+      tag-name-set: "a";
+      class-add: "os-chapter-objective";
+      attrs-add: "href" "#" attr(id); }
+      [data-type="chapter"] [data-type="page"].introduction::before(1)::for-each(1, following-sibling, '[data-type="page"]:not(.introduction)')::before(1)::before(501) {
+        tag-name-set: "span";
+        class-add: os-number;
+        content: count-of-type("body", '[data-type="chapter"]') "." count-of-type('[data-type="chapter"]', '[data-type="page"]:not(.introduction)'); }
+      [data-type="chapter"] [data-type="page"].introduction::before(1)::for-each(1, following-sibling, '[data-type="page"]:not(.introduction)')::before(1)::before(500) {
+        tag-name-set: "span";
+        class-add: os-divider;
+        content: " "; }
+      [data-type="chapter"] [data-type="page"].introduction::before(1)::for-each(1, following-sibling, '[data-type="page"]:not(.introduction)')::before(1)::before(1) {
+        tag-name-set: "span";
+        class-add: "os-text";
+        content: descendant-context('> [data-type="document-title"]', text-contents()); }
 
 .os-eoc [data-type="exercise"] [data-type="problem"]::before(501) {
   tag-name-set: "span";

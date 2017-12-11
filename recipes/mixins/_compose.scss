@@ -611,54 +611,71 @@
 
 /// older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
 @mixin compose_chapterOutline($outlineTitle, $hasLearningObjectives: false) {
-  [data-type="chapter"] [data-type="page"]:not(.introduction) {
-    > [data-type="document-title"] {
-      string-set: outlinePageId attr(id);
-      &::after {
-        container: a;
-        class: "os-chapter-objective";
-        content: content();
-        attr-href: "#" string(outlinePageId);
-        move-to: chapOutlineLink;
-      }
-    }
-    @if $hasLearningObjectives {
-      [data-type="abstract"] {
-        move-to: outlineAbstract;
-      }
-      &::after {
-        class:"learning-objective";
-        content: pending(outlineAbstract);
-        move-to: outlineLO;
-      }
-    }
-    &::after {
-      class: "os-chapter-objective";
-      content: pending(chapOutlineLink) pending(outlineLO);
-      move-to: chapOutline;
-    }
-  }
-  [data-type="chapter"] {
-    &::before {
-      container: h3;
-      class: "os-title";
+  /// move the chapter objectives to the intro module
+  [data-type="chapter"] [data-type="page"].introduction::before(1) {
+    tag-name-set: "div";
+    class-add: "os-chapter-outline";
+    &::before(2) {
+      tag-name-set: "h3";
+      class-add: "os-title";
       content: $outlineTitle;
-      move-to: chapOutlineTitle;
     }
-    &:deferred::before {
-      class: "os-chapter-outline";
-      content: pending(chapOutlineTitle) pending(chapOutline);
+
+
+    // [data-type="chapter"] [data-type="page"]:not(.introduction) {
+    //   @if $hasLearningObjectives {
+    //     [data-type="abstract"] {
+    //       move-to: outlineAbstract;
+    //     }
+    //     &::after {
+    //       class:"learning-objective";
+    //       content: pending(outlineAbstract);
+    //       move-to: outlineLO;
+    //     }
+    //   }
+    //   &::after {
+    //     class: "os-chapter-objective";
+    //     content: pending(chapOutlineLink) pending(outlineLO);
+    //     move-to: chapOutline;
+    //   }
+    // }
+    @if $hasLearningObjectives {
+      x-log: "TODO: Implement hasLearningObjective";
+    }
+
+
+    // <div
+    //     class="os-chapter-objective"
+    //   ><a
+    //       class="os-chapter-objective"
+    //       href="#auto_6a0568d8-23d7-439b-9a01-16e4e73886b3_49388"
+    //     ><span
+    //         class="os-number"
+    //       >1.1</span
+    //     ><span
+    //         class="os-divider"
+    //       > </span
+    //     ><span
+    //         class="os-text"
+    //       >The Science of Biology</span
+    //     ></a
+    //   ></div
+    // >
+    &::for-each(1, following-sibling, '[data-type="page"]:not(.introduction)') {
+      tag-name-set: "div" /* TODO: This should be an <ol> */;
+      class-add: "os-chapter-objective";
+      &::before(1) {
+        tag-name-set: "a";
+        class-add: "os-chapter-objective";
+        attrs-add: "href" "#" attr(id);
+        @include utils_title($Config_PartType_Section_TitleContent, bUnusedDeleteme);
+        &::before(1) {
+          tag-name-set: "span";
+          class-add: "os-text";
+          content: descendant-context('> [data-type="document-title"]', text-contents());
+        }
+      }
     }
   }
-}
 
-/// move the chapter objectives to the intro module
-
-@mixin compose_moveChapterOutline() {
-  .os-chapter-outline {
-    move-to: ChapterOutline;
-  }
-  .introduction {
-    content: pending(ChapterOutline) content();
-  }
 }
