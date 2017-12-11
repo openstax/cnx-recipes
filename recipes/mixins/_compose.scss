@@ -117,8 +117,10 @@
 /// @see {mixin} _prepBookComposite
 /// @group compose
 @mixin compose_prepBookComposites($compositePages, $sectionHeaderNode, $sectionHeaderString) {
+  $index: 0;
   @each $page in $compositePages {
-    @include _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString);
+    $index: $index + 1;
+    @include _prepBookComposite($index, $page, $sectionHeaderNode, $sectionHeaderString);
   }
 }
 
@@ -178,7 +180,7 @@
         &::before(1) {
           class-add: "os-#{$className}";
           @if ($clusterBy == $CLUSTER_SECTION) {
-            &::for-each-descendant(1, '> [data-type="page"]')/*:has(.#{$className})*/ {
+            &::for-each-descendant(1, '> [data-type="page"]'):has(#{$sourceSelector}) {
               class-add: "os-section-area";
               content: move-here("#{$sourceSelector}");
               // Put the section number and title
@@ -228,7 +230,7 @@
   }
 }
 
- @mixin _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString) {
+ @mixin _prepBookComposite($index, $page, $sectionHeaderNode, $sectionHeaderString) {
   $className: map-get($page, className);
   $compoundComposite: map-get($page, compoundComposite);
   $specialPageType: map-get($page, specialPageType);

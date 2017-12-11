@@ -673,7 +673,7 @@ div[data-type="chapter"] > [data-type="document-title"] {
   div[data-type="chapter"] > [data-type="document-title"]::before(501) {
     tag-name-set: "span";
     class-add: os-number;
-    content: ancestor-context("body", count-of-type('[data-type="chapter"]')); }
+    content: count-of-type("body", '[data-type="chapter"]'); }
   div[data-type="chapter"] > [data-type="document-title"]::before(500) {
     tag-name-set: "span";
     class-add: os-divider;
@@ -687,7 +687,7 @@ div.appendix > [data-type="document-title"] {
   div.appendix > [data-type="document-title"]::before(501) {
     tag-name-set: "span";
     class-add: os-number;
-    content: number-to-letter(ancestor-context("body", count-of-type('[data-type="page"].appendix, [data-type="chapter"].appendix')), upper-latin); }
+    content: number-to-letter(count-of-type("body", '[data-type="page"].appendix, [data-type="chapter"].appendix'), upper-latin); }
   div.appendix > [data-type="document-title"]::before(500) {
     tag-name-set: "span";
     class-add: os-divider;
@@ -698,7 +698,7 @@ div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type
   div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"]::before(501) {
     tag-name-set: "span";
     class-add: os-number;
-    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(.introduction)')); }
+    content: count-of-type("body", '[data-type="chapter"]') "." count-of-type('[data-type="chapter"]', '[data-type="page"]:not(.introduction)'); }
   div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"]::before(500) {
     tag-name-set: "span";
     class-add: os-divider;
@@ -708,23 +708,23 @@ div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="docu
   tag-name-set: "h2"; }
 
 li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
-  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-ref"]')); }
+  content: count-of-type('[data-type="chapter"], .appendix', '[data-type="footnote-ref"]'); }
 
 sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
-  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-number"]')); }
+  content: count-of-type('[data-type="chapter"], .appendix', '[data-type="footnote-number"]'); }
 
 li > a[data-type="footnote-ref"] {
-  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-ref"]')); }
+  content: count-of-type('[data-type="chapter"], .appendix', '[data-type="footnote-ref"]'); }
 
 a[data-type="footnote-number"] > sup {
-  content: ancestor-context('[data-type="chapter"], .appendix', count-of-type('[data-type="footnote-number"]')); }
+  content: count-of-type('[data-type="chapter"], .appendix', '[data-type="footnote-number"]'); }
 
 div[data-type="page"],
 div[data-type="composite-page"] {
   string-set: pageID attr(id); }
 
 div[data-type="page"] span[data-type="term"] {
-  attrs-add: "id" "auto_" ancestor-context('[data-type="page"]', attr(id)) "_term" ancestor-context('[data-type="page"]', count-of-type('[data-type="term"]')); }
+  attrs-add: "id" "auto_" ancestor-context('[data-type="page"]', attr(id)) "_term" count-of-type('[data-type="page"]', '[data-type="term"]'); }
   div[data-type="page"] span[data-type="term"]:match("^[a-zA-Z]") {
     attr-group-by: first-letter(content()); }
   div[data-type="page"] span[data-type="term"]:match("^[^a-zA-Z]") {
@@ -744,7 +744,7 @@ div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
 
 div[data-type="chapter"]::after(1) {
   tag-name-set: "div";
-  class-add: "os-eoc", "os-glossary-container", "PHILBLAMMO";
+  class-add: "os-eoc", "os-glossary-container";
   attrs-add: "data-type" "composite-page", "uuid-key" "<glossary>";
   content: move-here('div[data-type="glossary"] dl');
   x-log: "TODO: implement sort-by somehow. xhtml|dl > xhtml|dt"; }
@@ -759,7 +759,7 @@ div[data-type="chapter"] section.summary {
 
 div[data-type="chapter"]::after(2) {
   tag-name-set: "div";
-  class-add: "os-eoc", "os-summary-container", "PHILBLAMMO";
+  class-add: "os-eoc", "os-summary-container";
   attrs-add: "data-type" "composite-page", "uuid-key" ".summary";
   content: move-here("section.summary"); }
 
@@ -769,7 +769,7 @@ div[data-type="chapter"] section.self-check-questions > [data-type="title"] {
 
 div[data-type="chapter"]::after(3) {
   tag-name-set: "div";
-  class-add: "os-eoc", "os-self-check-questions-container", "PHILBLAMMO";
+  class-add: "os-eoc", "os-self-check-questions-container";
   attrs-add: "data-type" "composite-page", "uuid-key" ".self-check-questions";
   content: move-here("section.self-check-questions"); }
 
@@ -779,7 +779,7 @@ div[data-type="chapter"] section.review-questions > [data-type="title"] {
 
 div[data-type="chapter"]::after(4) {
   tag-name-set: "div";
-  class-add: "os-eoc", "os-review-questions-container", "PHILBLAMMO";
+  class-add: "os-eoc", "os-review-questions-container";
   attrs-add: "data-type" "composite-page", "uuid-key" ".review-questions";
   content: move-here("section.review-questions"); }
 
@@ -789,7 +789,7 @@ div[data-type="chapter"] section.critical-thinking > [data-type="title"] {
 
 div[data-type="chapter"]::after(5) {
   tag-name-set: "div";
-  class-add: "os-eoc", "os-critical-thinking-container", "PHILBLAMMO";
+  class-add: "os-eoc", "os-critical-thinking-container";
   attrs-add: "data-type" "composite-page", "uuid-key" ".critical-thinking";
   content: move-here("section.critical-thinking"); }
 
@@ -799,7 +799,7 @@ div[data-type="chapter"] section.problems > [data-type="title"] {
 
 div[data-type="chapter"]::after(6) {
   tag-name-set: "div";
-  class-add: "os-eoc", "os-problems-container", "PHILBLAMMO";
+  class-add: "os-eoc", "os-problems-container";
   attrs-add: "data-type" "composite-page", "uuid-key" ".problems";
   content: move-here("section.problems"); }
 
@@ -809,67 +809,9 @@ div[data-type="chapter"] section.ap-test-prep > [data-type="title"] {
 
 div[data-type="chapter"]::after(7) {
   tag-name-set: "div";
-  class-add: "os-eoc", "os-ap-test-prep-container", "PHILBLAMMO";
+  class-add: "os-eoc", "os-ap-test-prep-container";
   attrs-add: "data-type" "composite-page", "uuid-key" ".ap-test-prep";
   content: move-here("section.ap-test-prep"); }
-
-div[data-type="page"] > [data-type="document-title"],
-div[data-type="composite-page"] > [data-type="document-title"] {
-  node-set: sectionHeaderNode; }
-
-div[data-type="page"] > [data-type="document-title"],
-div[data-type="composite-page"] > [data-type="document-title"] {
-  string-set: sectionHeaderString content(); }
-
-[data-type="chapter"] section.references {
-  move-to: references-GETCHAPTER; }
-  [data-type="chapter"] section.references > h3[data-type="title"] {
-    move-to: trash; }
-
-[data-type="chapter"] > [data-type="document-title"] .os-text {
-  node-set: chapterTitle; }
-
-[data-type="chapter"] > [data-type="document-title"]::after {
-  container: h3;
-  data-type: document-title;
-  content: nodes(chapterTitle);
-  move-to: chapterTitleHeaderText; }
-
-[data-type="chapter"]::after {
-  class: "os-chapter-area";
-  content: pending(chapterTitleHeaderText) pending(references-GETCHAPTER);
-  move-to: references-TOCOMPOSITE; }
-
-div[data-type="page"] span[data-type="term"]::after, div[data-type="composite-page"] span[data-type="term"]::after {
-  content: content();
-  attr-group-by: attr(group-by);
-  container: span;
-  class: "os-term";
-  move-to: index-term; }
-
-div[data-type="page"] span[data-type="term"]::after, div[data-type="composite-page"] span[data-type="term"]::after {
-  content: string(sectionHeaderString);
-  container: span;
-  class: "os-term-section";
-  move-to: index-section; }
-
-div[data-type="page"] span[data-type="term"]::after, div[data-type="composite-page"] span[data-type="term"]::after {
-  container: a;
-  content: pending(index-section);
-  attr-href: "#" attr(id);
-  class: "os-term-section-link";
-  move-to: index-section-link; }
-
-div[data-type="page"] span[data-type="term"]::after, div[data-type="composite-page"] span[data-type="term"]::after {
-  container: span;
-  content: ', ';
-  class: "os-index-link-separator";
-  move-to: index-section-link; }
-
-div[data-type="page"] span[data-type="term"]::after, div[data-type="composite-page"] span[data-type="term"]::after {
-  content: pending(index-term) pending(index-section-link);
-  class: os-index-item;
-  move-to: index-TOCOMPOSITE; }
 
 .os-eoc [data-type="exercise"] [data-type="problem"]::before(501) {
   tag-name-set: "span";
@@ -963,19 +905,19 @@ body::after {
   content: "Symbols"; }
 
 .os-eoc [data-type="exercise"] {
-  string-set: target-label "Exercise " ancestor-context("body", count-of-type('[data-type="chapter"]')) "." counter(exercise); }
+  string-set: target-label "Exercise " count-of-type("body", '[data-type="chapter"]') "." counter(exercise); }
 
 div[data-type="chapter"] [data-type="example"] {
-  string-set: target-label "Example " ancestor-context("body", count-of-type('[data-type="chapter"]')) "." counter(example); }
+  string-set: target-label "Example " count-of-type("body", '[data-type="chapter"]') "." counter(example); }
 
 div[data-type="chapter"] [data-type="equation"]:not(.unnumbered) {
-  string-set: target-label "Equation " ancestor-context("body", count-of-type('[data-type="chapter"]')) "." counter(equation); }
+  string-set: target-label "Equation " count-of-type("body", '[data-type="chapter"]') "." counter(equation); }
 
 [data-type="chapter"] :not(table) > table:not(.unnumbered) {
-  string-set: target-label "Table " ancestor-context("body", count-of-type('[data-type="chapter"]')) "." counter(table); }
+  string-set: target-label "Table " count-of-type("body", '[data-type="chapter"]') "." counter(table); }
 
 [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
-  string-set: target-label "Figure " ancestor-context("body", count-of-type('[data-type="chapter"]')) "." counter(figure); }
+  string-set: target-label "Figure " count-of-type("body", '[data-type="chapter"]') "." counter(figure); }
 
 .appendix :not(table) > table:not(.unnumbered) {
   string-set: target-label "Table " counter(appendix, upper-alpha) counter(table); }
@@ -1112,170 +1054,170 @@ div[data-type='chapter'] > h1[data-type='document-title'] {
   class-add: os-title-label;
   content: "Exercise "; }
 
-[data-type="chapter"] :not(table) > table:not(.unnumbered) caption {
+[data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash) caption {
   tag-name-set: "span";
   class-add: "os-caption"; }
 
-[data-type="chapter"] :not(table) > table:not(.unnumbered) caption [data-type="title"] {
+[data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash) caption [data-type="title"] {
   tag-name-set: "span";
   class-add: "os-title"; }
 
-[data-type="chapter"] :not(table) > table:not(.unnumbered) caption::outside {
+[data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash) caption::outside {
   tag-name-set: "div";
   class-add: "os-caption-container"; }
-  [data-type="chapter"] :not(table) > table:not(.unnumbered) caption::outside::before(502) {
+  [data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(502) {
     tag-name-set: "span";
     class-add: os-title-label;
     content: "Table "; }
-  [data-type="chapter"] :not(table) > table:not(.unnumbered) caption::outside::before(501) {
+  [data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(501) {
     tag-name-set: "span";
     class-add: os-number;
-    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." counter(table); }
-  [data-type="chapter"] :not(table) > table:not(.unnumbered) caption::outside::before(500) {
+    content: count-of-type("body", '[data-type="chapter"]') "." counter(table); }
+  [data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(500) {
     tag-name-set: "span";
     class-add: os-divider;
     content: " "; }
-  [data-type="chapter"] :not(table) > table:not(.unnumbered) caption::outside::before(2) {
+  [data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(2) {
     tag-name-set: "span";
     class-add: 'os-divider';
     content: ' ';
     move-to: bCaptionDivider; }
-  [data-type="chapter"] :not(table) > table:not(.unnumbered) caption::outside::before(1) {
+  [data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(1) {
     content: parent-context(move-here('caption [data-type="title"]')); }
 
-[data-type="chapter"] :not(table) > table:not(.unnumbered)::outside {
+[data-type="chapter"] :not(table) > table:not(.unnumbered):not(.splash)::outside {
   tag-name-set: "div";
   class-add: os-table; }
 
 [data-type="chapter"] > table.unnumbered caption {
   x-display: none; }
 
-.appendix :not(table) > table:not(.unnumbered) caption,
-.appendix > table:not(.unnumbered) caption {
+.appendix :not(table) > table:not(.unnumbered):not(.splash) caption,
+.appendix > table:not(.unnumbered):not(.splash) caption {
   tag-name-set: "span";
   class-add: "os-caption"; }
 
-.appendix :not(table) > table:not(.unnumbered) caption [data-type="title"],
-.appendix > table:not(.unnumbered) caption [data-type="title"] {
+.appendix :not(table) > table:not(.unnumbered):not(.splash) caption [data-type="title"],
+.appendix > table:not(.unnumbered):not(.splash) caption [data-type="title"] {
   tag-name-set: "span";
   class-add: "os-title"; }
 
-.appendix :not(table) > table:not(.unnumbered) caption::outside,
-.appendix > table:not(.unnumbered) caption::outside {
+.appendix :not(table) > table:not(.unnumbered):not(.splash) caption::outside,
+.appendix > table:not(.unnumbered):not(.splash) caption::outside {
   tag-name-set: "div";
   class-add: "os-caption-container"; }
-  .appendix :not(table) > table:not(.unnumbered) caption::outside::before(502),
-  .appendix > table:not(.unnumbered) caption::outside::before(502) {
+  .appendix :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(502),
+  .appendix > table:not(.unnumbered):not(.splash) caption::outside::before(502) {
     tag-name-set: "span";
     class-add: os-title-label;
     content: "Table "; }
-  .appendix :not(table) > table:not(.unnumbered) caption::outside::before(501),
-  .appendix > table:not(.unnumbered) caption::outside::before(501) {
+  .appendix :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(501),
+  .appendix > table:not(.unnumbered):not(.splash) caption::outside::before(501) {
     tag-name-set: "span";
     class-add: os-number;
     content: counter(appendix, upper-alpha) counter(table); }
-  .appendix :not(table) > table:not(.unnumbered) caption::outside::before(500),
-  .appendix > table:not(.unnumbered) caption::outside::before(500) {
+  .appendix :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(500),
+  .appendix > table:not(.unnumbered):not(.splash) caption::outside::before(500) {
     tag-name-set: "span";
     class-add: os-divider;
     content: " "; }
-  .appendix :not(table) > table:not(.unnumbered) caption::outside::before(2),
-  .appendix > table:not(.unnumbered) caption::outside::before(2) {
+  .appendix :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(2),
+  .appendix > table:not(.unnumbered):not(.splash) caption::outside::before(2) {
     tag-name-set: "span";
     class-add: 'os-divider';
     content: ' ';
     move-to: bCaptionDivider; }
-  .appendix :not(table) > table:not(.unnumbered) caption::outside::before(1),
-  .appendix > table:not(.unnumbered) caption::outside::before(1) {
+  .appendix :not(table) > table:not(.unnumbered):not(.splash) caption::outside::before(1),
+  .appendix > table:not(.unnumbered):not(.splash) caption::outside::before(1) {
     content: parent-context(move-here('caption [data-type="title"]')); }
 
-.appendix :not(table) > table:not(.unnumbered)::outside,
-.appendix > table:not(.unnumbered)::outside {
+.appendix :not(table) > table:not(.unnumbered):not(.splash)::outside,
+.appendix > table:not(.unnumbered):not(.splash)::outside {
   tag-name-set: "div";
   class-add: os-table; }
 
 .appendix > table.unnumbered caption {
   x-display: none; }
 
-[data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption {
+[data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash) figcaption {
   tag-name-set: "span";
   class-add: "os-caption"; }
 
-[data-type="chapter"] :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+[data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash) [data-type="title"] {
   tag-name-set: "span";
   class-add: "os-title"; }
 
-[data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside {
+[data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside {
   tag-name-set: "div";
   class-add: "os-caption-container"; }
-  [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside::before(502) {
+  [data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(502) {
     tag-name-set: "span";
     class-add: os-title-label;
     content: "Figure "; }
-  [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside::before(501) {
+  [data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(501) {
     tag-name-set: "span";
     class-add: os-number;
-    content: ancestor-context("body", count-of-type('[data-type="chapter"]')) "." ancestor-context('[data-type="chapter"]', count-of-type("figure:not(.splash)")); }
-  [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside::before(500) {
+    content: count-of-type("body", '[data-type="chapter"]') "." count-of-type('[data-type="chapter"]', "figure:not(.splash)"); }
+  [data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(500) {
     tag-name-set: "span";
     class-add: os-divider;
     content: " "; }
-  [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside::before(2) {
+  [data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(2) {
     tag-name-set: "span";
     class-add: 'os-divider';
     content: ' ';
     move-to: bCaptionDivider; }
-  [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption::outside::before(1) {
+  [data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(1) {
     content: parent-context(move-here('[data-type="title"]')); }
 
-[data-type="chapter"] :not(figure) > figure:not(.unnumbered)::outside {
+[data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.splash)::outside {
   tag-name-set: "div";
   class-add: os-figure; }
 
 [data-type="chapter"] > figure.unnumbered figcaption {
   x-display: none; }
 
-.appendix :not(figure) > figure:not(.unnumbered) figcaption,
-.appendix > figure:not(.unnumbered) figcaption {
+.appendix :not(figure) > figure:not(.unnumbered):not(.splash) figcaption,
+.appendix > figure:not(.unnumbered):not(.splash) figcaption {
   tag-name-set: "span";
   class-add: "os-caption"; }
 
-.appendix :not(figure) > figure:not(.unnumbered) [data-type="title"],
-.appendix > figure:not(.unnumbered) [data-type="title"] {
+.appendix :not(figure) > figure:not(.unnumbered):not(.splash) [data-type="title"],
+.appendix > figure:not(.unnumbered):not(.splash) [data-type="title"] {
   tag-name-set: "span";
   class-add: "os-title"; }
 
-.appendix :not(figure) > figure:not(.unnumbered) figcaption::outside,
-.appendix > figure:not(.unnumbered) figcaption::outside {
+.appendix :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside,
+.appendix > figure:not(.unnumbered):not(.splash) figcaption::outside {
   tag-name-set: "div";
   class-add: "os-caption-container"; }
-  .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside::before(502),
-  .appendix > figure:not(.unnumbered) figcaption::outside::before(502) {
+  .appendix :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(502),
+  .appendix > figure:not(.unnumbered):not(.splash) figcaption::outside::before(502) {
     tag-name-set: "span";
     class-add: os-title-label;
     content: "Figure "; }
-  .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside::before(501),
-  .appendix > figure:not(.unnumbered) figcaption::outside::before(501) {
+  .appendix :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(501),
+  .appendix > figure:not(.unnumbered):not(.splash) figcaption::outside::before(501) {
     tag-name-set: "span";
     class-add: os-number;
-    content: number-to-letter(ancestor-context("body", count-of-type('[data-type="page"].appendix, [data-type="chapter"].appendix')), upper-latin) ancestor-context('[data-type="page"].appendix, [data-type="chapter"].appendix', count-of-type("figure:not(.splash)")); }
-  .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside::before(500),
-  .appendix > figure:not(.unnumbered) figcaption::outside::before(500) {
+    content: number-to-letter(count-of-type("body", '[data-type="page"].appendix, [data-type="chapter"].appendix'), upper-latin) count-of-type('[data-type="page"].appendix, [data-type="chapter"].appendix', "figure:not(.splash)"); }
+  .appendix :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(500),
+  .appendix > figure:not(.unnumbered):not(.splash) figcaption::outside::before(500) {
     tag-name-set: "span";
     class-add: os-divider;
     content: " "; }
-  .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside::before(2),
-  .appendix > figure:not(.unnumbered) figcaption::outside::before(2) {
+  .appendix :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(2),
+  .appendix > figure:not(.unnumbered):not(.splash) figcaption::outside::before(2) {
     tag-name-set: "span";
     class-add: 'os-divider';
     content: ' ';
     move-to: bCaptionDivider; }
-  .appendix :not(figure) > figure:not(.unnumbered) figcaption::outside::before(1),
-  .appendix > figure:not(.unnumbered) figcaption::outside::before(1) {
+  .appendix :not(figure) > figure:not(.unnumbered):not(.splash) figcaption::outside::before(1),
+  .appendix > figure:not(.unnumbered):not(.splash) figcaption::outside::before(1) {
     content: parent-context(move-here('[data-type="title"]')); }
 
-.appendix :not(figure) > figure:not(.unnumbered)::outside,
-.appendix > figure:not(.unnumbered)::outside {
+.appendix :not(figure) > figure:not(.unnumbered):not(.splash)::outside,
+.appendix > figure:not(.unnumbered):not(.splash)::outside {
   tag-name-set: "div";
   class-add: os-figure; }
 

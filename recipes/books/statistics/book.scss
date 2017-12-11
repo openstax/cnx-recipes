@@ -19,7 +19,7 @@
 
 
 @mixin sectionNumber() {
-  content: ancestor-context('body', count-of-type('[data-type="chapter"]')) '.' ancestor-context('[data-type="chapter"]', count-of-type('[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))')) ' ';
+  content: count-of-type('body', '[data-type="chapter"]') '.' count-of-type('[data-type="chapter"]', '[data-type="page"]:not(:has(cnx-pi[data-type="cnx.flag.introduction"]))') ' ';
 }
 
 @mixin sectionTitleAndLink() {
@@ -101,9 +101,9 @@ $exerciseSolutionSelectorAccumulator: ();
       [data-type="exercise"]::before,
       [data-type="exercise"] [data-type="solution"]::before {
         @if length($selectorsToAddForCounting) >= 1 {
-          content: ancestor-context('[data-type="chapter"]', add(count-all-of-type("#{$selectorsToAddForCounting}"), count-of-type($exerciseSelector)));
+          content: add(count-all-of-type('[data-type="chapter"]', "#{$selectorsToAddForCounting}"), count-of-type('[data-type="chapter"]', $exerciseSelector));
         } @else {
-          content: ancestor-context('[data-type="chapter"]', count-of-type($exerciseSelector));
+          content: count-of-type('[data-type="chapter"]', $exerciseSelector);
         }
       }
 
@@ -574,10 +574,54 @@ $_chapterCompoundCompositePages: ();
 @include compose_EOCcompoundCompositesPages($_chapterCompoundCompositePages);
 
 
+// // TODO: This only applies to physics but Chrome is silently failing when it tries to open physics in css-plus
+// //create a chapter outline
+// $outlineTitle: map-get($Config_PartType_Chapter, outlineTitle);
+// $hasLearningObjectives: map_get($Config_PartType_Chapter, hasLearningObjectives);
+// @include validate_typeOptional($outlineTitle, string);
+// @if $outlineTitle {
+//   @include compose_chapterOutline($outlineTitle, $hasLearningObjectives);
+// }
 
 
+// }
+// :pass(4) {
 
+//After: ???
+// @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
+// @include reference_refSectionHeaderStringAs(sectionHeaderString);
+// TODO: Include code in this mixin as part of createBookComposites
+// @include compose_prepBookComposites($Config_BookCompositePages, sectionHeaderNode, sectionHeaderString);
 
+// //move the chapter outline to the introduction module
+// @if map-get($Config_PartType_Chapter, outlineTitle) {
+//   @include compose_moveChapterOutline();
+// }
+
+// Count exercises that were marked as moveTo: $AREA_EOC
+@include validate_enum(map-get($Config_PartType_Exercise, moveTo), $AREA__PREFIX__);
+@if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
+  $resetAt:       map-get($Config_PartType_Exercise, resetAt);
+  $numberAt:      map-get($Config_PartType_Exercise, numberAt);
+  $titleContent:  map-get($Config_PartType_Exercise, titleContent);
+  @include validate_enum($resetAt, $RESET__PREFIX__);
+  @include validate_enum($numberAt, $NUMBER__PREFIX__);
+  @include validate_exists($titleContent);
+
+  $resetSel: null;
+  @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+  @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
+  @else { @error 'BUG: Invalid enum'; }
+
+  @if $numberAt == $NUMBER_BEFORE_MOVE {
+    // @include count_countEOCExercises(exercise, $resetSel);
+    @include number_numberEOCExercises($titleContent, $titleContent);
+    @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
+      @include modify_tagRemovedSolutions();
+    }
+  } @else if $numberAt == $NUMBER_AFTER_MOVE {
+  } @else { @error 'BUG: Invalid enum'; }
+}
 
 
 

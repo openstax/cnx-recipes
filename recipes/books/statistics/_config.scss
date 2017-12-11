@@ -100,14 +100,15 @@ $Config_BookCompositePages: (
 //when they need to be able to be in any order because of possible changes in titling order between books
 //Usage Note: key: class of the containing span, value: text that will go inside span
 // Drat, the order of os-title-label, os-number, os-divider matters ;(
-$_example_count: $CHAPTER_COUNT "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="example"]'));
-$_statslab_count: $CHAPTER_COUNT "." ancestor-context('[data-type="chapter"]', count-of-type('[data-type="note"].lab'));
+$_example_count: $CHAPTER_COUNT "." count-of-type('[data-type="chapter"]', '[data-type="example"]');
+$_statslab_count: $CHAPTER_COUNT "." count-of-type('[data-type="chapter"]', '[data-type="note"].lab');
+$_try_count: previous-sibling-context('[data-type="example"]:first', count-of-type('[data-type="chapter"]', '[data-type="example"]'));
 
 $_exerciseTitleContent       : (os-divider: ".", os-number: counter(exercise) );
 $_exampleTitleContent        : (os-title-label: "Example ", os-number: $_example_count, os-divider: " ");
 $_exampleSolutionTitleContent: (os-title-label: "Solution ", os-number: $_example_count, os-divider: " ");
 $_labTitleContent           : (os-title-label: "Stats Lab ", os-number: $_statslab_count);
-$_tryTitleContent            : (os-title-label: "Try It ", os-number: $_example_count); // Try it notes are numbered based on the example preceeding them
+$_tryTitleContent            : (os-title-label: "Try It ", os-number: $_try_count); // Try it notes are numbered based on the example preceeding them
 
 
 /*==========================================================
@@ -175,7 +176,8 @@ $Config_Notes: (
   (className: 'lab',        moveSolutionTo: $AREA_NONE,  counterName: lab,  titleContent: $_labTitleContent),
   (className: 'collab',     moveSolutionTo: $AREA_NONE,  labelText: "Collaborative Exercise", replaceHeader: true),
   (className: 'chapter-objectives', moveSolutionTo: $AREA_NONE,  labelText: "Chapter Objectives", replaceHeader: true),
-  (className: 'try',        moveSolutionTo: $AREA_TRASH, counterName: Try, titleContent: $_tryTitleContent), // try it notes are numbered based on the example preceeding them
+  // The following is commented because there is a .try in Ch 7 that does not contain an example before it. #auto_45c3f6e5-1eab-41c3-91a9-e0c42a78c970_fs-idm31488240
+  // (className: 'try',        moveSolutionTo: $AREA_TRASH, counterName: Try, titleContent: $_tryTitleContent), // try it notes are numbered based on the example preceeding them
 );
 
 $Config_UnnumberedExercises: (
