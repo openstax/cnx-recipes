@@ -96,11 +96,40 @@
   div[data-type="composite-page"] {
     span[data-type="term"] {
       attr-id: "auto_" string($pageIDString) "_term" counter($termCounter);
-      &:match("^[a-zA-Z]") {
-        attr-group-by: first-letter(content());
+
+      &[cmlnle|reference]::after {
+        container: span;
+        data-type: term-content;
+        content: attr(#{"cmlnle|reference"});
       }
-      &:match("^[^a-zA-Z]") {
-        attr-group-by: " Symbols";
+      &:not([cmlnle|reference])::after {
+        container: span;
+        data-type: term-content;
+        content: content();
+      }
+    }
+  }
+}
+
+@mixin modify_finishPrepingIndexTerms() {
+  div[data-type="page"],
+  div[data-type="composite-page"] {
+    span[data-type="term"] {
+      > span[data-type="term-content"] {
+        data-visited: true;
+        &:match("(?u)^\\w") {
+          string-set: group-by first-letter(content());
+          data-done: true;
+        }
+        &:match("(?u)^\\W") {
+          string-set: group-by " Symbols";
+          data-done: true;
+        }
+        move-to: trash;
+      }
+
+      &:deferred {
+        attr-group-by: string(group-by);
       }
     }
   }
