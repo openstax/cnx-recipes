@@ -13,6 +13,7 @@ fi
 
 
 sass_bin="$(npm bin)/node-sass"
+importer_module="$(npm root)/node-sass-import-once/index.js"
 output_dir="./recipes/output/"
 
 for recipe_name in "${RECIPE_NAMES[@]}"; do
@@ -21,7 +22,7 @@ for recipe_name in "${RECIPE_NAMES[@]}"; do
   css_file="${output_dir}/${recipe_name}.css"
 
   do_progress_quiet "Generating ${css_file}" \
-    "${sass_bin}" --source-map true --output-style nested "${sass_file}" "${css_file}"
+    "${sass_bin}" --source-map true --output-style nested --importer "$importer_module" "${sass_file}" "${css_file}"
 done
 
 do_progress_quiet "Generating CSS manifest" \
