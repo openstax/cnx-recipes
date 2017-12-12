@@ -10,3 +10,16 @@
 :pass(20) [data-type="footnote-refs-title"] {
   content: "Przypisy dolne";
 }
+
+
+/* TEMPORARY - Remove once rhaptos.cnxmlutils#164 lands */
+:pass(20) div.os-glossary-container {
+  dt > span[data-type="foreign"] {
+    // preserve content from > dt
+    string-set: content content();
+    // delete said > dt
+    > dt { move-to: trash; }
+    // restore content
+    &:deferred { content: string(content); }
+  }
+}
