@@ -1,1 +1,92 @@
+$GRAMMATICAL_CASES: (nominative, genitive, dative, accusative, instrumental, locative, vocative);
+
+@function case_prefixed($cases, $content, $separator: null) {
+  $result: ();
+  @each $case, $prefix in $cases {
+    $result: map-merge($result, ($case: $prefix $separator $content));
+  }
+  @return $result;
+}
+
+$PL_EXERCISE: (nominative: "Ćwiczenie", genitive: "Ćwiczenia",  dative: "Ćwiczeniu",    accusative: "Ćwiczenie",  instrumental: "Ćwiczeniem", locative: "Ćwiczeniu",    vocative: "Ćwiczenie");
+$PL_TABLE:    (nominative: "Tabela",    genitive: "Tabeli",     dative: "Tabeli",       accusative: "Tabelę",     instrumental: "Tabelą",     locative: "Tabeli",       vocative: "Tabelo");
+$PL_EXAMPLE:  (nominative: "Przykład",  genitive: "Przykładu",  dative: "Przykładowi",  accusative: "Przykład",   instrumental: "Przykładem", locative: "Przykładzie",  vocative: "Przykładzie");
+$PL_EQUATION: (nominative: "Równanie",  genitive: "Równania",   dative: "Równaniu",     accusative: "Równanie",   instrumental: "Równaniem",  locative: "Równaniu",     vocative: "Równanie");
+$PL_FIGURE:   (nominative: "Rysunek",   genitive: "Rysunku",    dative: "Rysunkowi",    accusative: "Rysunek",    instrumental: "Rysunkiem",  locative: "Rysunku",      vocative: "Rysunku");
+
+/*
+  Import _common-stuff.scss first so that our changes to it will not be
+  overwritten when u-physics/_config.scss imports it again (it depends on
+  that second import being ignored).
+ */
+
+@import '../_common-stuff.scss';
+
+$Config_PartType_Table_CaptionContent   : (os-title-label: "Tabela ", os-number: counter(chapter) "." counter(table), os-divider: " "); //TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
+$Config_PartType_Table_CaptionContentAp : (os-title-label: "Tabela ", os-number: counter(appendix, upper-alpha)  counter(table), os-divider: " ");
+$Config_PartType_Figure_CaptionContent  : (os-title-label: "Rysunek ", os-number: counter(chapter) "." counter(figure), os-divider: " ");
+$Config_PartType_Figure_CaptionContentAp: (os-title-label: "Rysunek ", os-number: counter(appendix, upper-alpha) counter(figure), os-divider: " "); //TODO: Make a counter for both chapter and appendix, and automate the switch between standard and upper alpha counting?
+
+$Config_ContentExercise_TitleContent : (os-number : counter(exerciseMaybeInContent), os-title-label : "Ćwiczenie ");
+$Config_ContentExercise_TitleContentAp : (os-number : counter(exerciseMaybeInContent), os-title-label : "Ćwiczenie ");
+
+$Config_TargetLabels: (
+  (selector: '.os-eoc [data-type="exercise"]',                                  labelText: case_prefixed($PL_EXERCISE,  counter(chapter) "." counter(exercise), " ")),
+  (selector: 'div[data-type="chapter"] [data-type="example"]',                  labelText: case_prefixed($PL_EXAMPLE,   counter(chapter) "." counter(example), " ")),
+  (selector: 'div[data-type="chapter"] [data-type="equation"]:not(.unnumbered)',labelText: case_prefixed($PL_EQUATION,  counter(chapter) "." counter(equation), " ")),
+  (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered)',      labelText: case_prefixed($PL_TABLE,     counter(chapter) "." counter(table), " ")),
+  (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',    labelText: case_prefixed($PL_FIGURE,    counter(chapter) "." counter(figure), " ")),
+  (selector: '.appendix :not(table) > table:not(.unnumbered)',                  labelText: case_prefixed($PL_TABLE,     counter(appendix, upper-alpha) counter(table), " ")),
+  (selector: '.appendix :not(figure) > figure:not(.unnumbered)',                labelText: case_prefixed($PL_FIGURE,    counter(appendix, upper-alpha) counter(figure), " ")),
+  (selector: '.appendix > table:not(.unnumbered)',                              labelText: case_prefixed($PL_TABLE,     counter(appendix, upper-alpha) counter(table), " ")),
+  (selector: '.appendix > figure:not(.unnumbered)',                             labelText: case_prefixed($PL_FIGURE,    counter(appendix, upper-alpha) counter(figure), " ")),
+);
+
+$Config_IFrameActivationLink: "Kliknij, aby zobaczyć treść";
+$Config_EOBSolutionsChapterSectionTitle: "Rozdział " string(ChapNum);
+$Config_symbolsSectionTitle: "Symbole";
+
+/*
+  Overwrite University Physics settings where needed to change strings from
+  English to Polish.
+ */
+
 @import '../u-physics/_config.scss';
+
+$_chapterReviewChildPages: (
+  (className: "glossary",                     clusterBy: $CLUSTER_NONE,     specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Kluczowe pojęcia"),
+  (className: "key-equations",                clusterBy: $CLUSTER_NONE,     hasSolutions: false,  name: "Najważniejsze wzory"),
+  (className: "key-concepts",                 clusterBy: $CLUSTER_SECTION,  hasSolutions: false,  name: "Podsumowanie"),
+  (className: "review-conceptual-questions",  clusterBy: $CLUSTER_SECTION,  hasSolutions: true,   name: "Pytania"),
+  (className: "review-problems",              clusterBy: $CLUSTER_SECTION,  hasSolutions: true,   name: "Zadania"),
+  (className: "review-additional-problems",   clusterBy: $CLUSTER_NONE,     hasSolutions: true,   name: "Zadania dodatkowe"),
+  (className: "review-challenge",             clusterBy: $CLUSTER_NONE,     hasSolutions: true,   name: "Zadania trudniejsze"),
+);
+
+$Config_ChapterCompositePages: (
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions:true, name: "Podsumowanie rozdziału"),
+);
+
+// Two new properties (indexType and defaultIndex) are used by
+// @mixin _prepBookCompositeMultiple when creating split indexes.
+// See _mixins.scss for details.
+$Config_BookCompositePages: (
+  (className: "solutions",    clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Rozwiązania zadań"),
+  (className: "index-name",   clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX_PARTIAL, indexType: 'name',    name: "Skorowidz nazwisk"),
+  (className: "index-term",   clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX_PARTIAL, indexType: 'term',    name: "Skorowidz rzeczowy", defaultIndex: true),
+  (className: "index-foreign",clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX_PARTIAL, indexType: 'foreign', name: "Skorowidz terminów obcojęzycznych"),
+);
+
+$_exampleTitleContent        : (os-title-label: "Przykład ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Rozwiązanie ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_understandingTitleContent   : (os-title-label: "Sprawdź, czy rozumiesz ", os-number: counter(chapter)"."counter(understanding), os-divider: " ");
+
+$Config_Notes: (
+  (className: 'check-understanding',  moveSolutionTo: $AREA_NONE, counterName: understanding, titleContent: $_understandingTitleContent, hasSolutions: true, solutionTitleContent: $_understandingSolutionContent),
+  (className: 'media-2',              moveSolutionTo: $AREA_NONE, labelText: "Materiały pomocnicze"),
+  (className: 'problem-solving',      moveSolutionTo: $AREA_NONE, useHeader: true),
+);
+
+$Config_abstractTitle: "Cel dydaktyczny";
+$Config_PartType_Example:  (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
+$Config_PartType_Chapter:  (outlineTitle: 'Treść rozdziału');
