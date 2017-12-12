@@ -12,6 +12,7 @@ fi
 
 
 sassBin="$(npm bin)/node-sass"
+importerModule="$(npm root)/node-sass-import-once/index.js"
 outputDir="./recipes/output/"
 
 # Try running sass locally (using rbenv). If that does not work then try it globally
@@ -32,7 +33,7 @@ do
 
   >&2 echo "==> Generating ${cssFile}"
 
-  ${sassBin} --source-map true --output-style nested ${sassFile} ${cssFile} || exit 1
+  ${sassBin} --source-map true --output-style nested --importer "$importerModule" ${sassFile} ${cssFile} || exit 1
 done
 
 ./script/build-manifest
