@@ -1,0 +1,106 @@
+// To enable multiple indices we override compose_prepBookComposites (or rather
+// it's real implementation, _prepBookComposite) to collect terms in proper
+// pending()-buckets.
+
+@mixin compose_prepBookComposites($compositePages, $sectionHeaderNode, $sectionHeaderString) {
+  @each $page in $compositePages {
+    @include _prepBookCompositeMultiple($page, $sectionHeaderNode, $sectionHeaderString);
+  }
+}
+
+@mixin _prepBookCompositeMultiple($page, $sectionHeaderNode, $sectionHeaderString) {
+  $className: map-get($page, className);
+  $specialPageType: map-get($page, specialPageType);
+  $defaultIndex: map-get($page, defaultIndex);
+  $indexType: map-get($page, indexType);
+
+  @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
+  @include validate_typeOptional($defaultIndex, bool);
+
+  @if ($specialPageType == $PAGE_INDEX_PARTIAL) {
+    div[data-type="page"] span[data-type="term"][cxlxt|index="#{$indexType}"],
+    div[data-type="composite-page"] span[data-type="term"][cxlxt|index="#{$indexType}"] {
+      @include _buildIndexTerm($className, $sectionHeaderString);
+    }
+
+    @if ($defaultIndex) {
+      div[data-type="page"] span[data-type="term"]:not([cxlxt|index]),
+      div[data-type="composite-page"] span[data-type="term"]:not([cxlxt|index]) {
+        @include _buildIndexTerm($className, $sectionHeaderString);
+      }
+    }
+  } @else {
+    @include _prepBookComposite($page, $sectionHeaderNode, $sectionHeaderString);
+  }
+}
+
+@mixin _buildIndexTerm($className, $sectionHeaderString) {
+  // Create an index entry for the term by creating a new element and then moving it
+  &::after {
+    // i18n: use the @reference="..." version of a term when adding it to the Index (if the attribute is available). See #353
+    content: attr(#{"cmlnle|reference"}, content());
+    attr-group-by: attr(group-by);
+    container: span;
+    class: "os-term";
+    move-to: index-term;
+  }
+  &::after {
+    content: string($sectionHeaderString);
+    container: span;
+    class: "os-term-section";
+    move-to: index-section;
+  }
+  // Create a link next to the index term which points to the term in the book
+  // Make sure there is a space between each link
+  // HACK: generate a span that only contains a comma and a space, the last-child one must be removed on the next pass. See modify_trash('.os-index-link-separator:last-child') in book.scss
+  &::after {
+    container: a;
+    content: pending(index-section);
+    attr-href: "#" attr(id);
+    class: "os-term-section-link";
+    move-to: index-section-link
+  }
+  &::after {
+    container: span;
+    content: ', ';
+    class: "os-index-link-separator";
+    move-to: index-section-link;
+  }
+  &::after {
+    content: pending(index-term) pending(index-section-link);
+    class: os-index-item;
+    sort-by: "span.group-label";
+    move-to: #{$className}-TOCOMPOSITE;
+  }
+}
+
+// To ensure indexes are styled properly we override _createBookComposite
+
+@mixin compose_createBookComposites($compositePages) {
+  @each $page in $compositePages {
+    @include _createBookCompositeMultiple($page);
+  }
+}
+
+@mixin _createBookCompositeMultiple($page) {
+  $className: map-get($page, className);
+  $specialPageType: map-get($page, specialPageType);
+
+  @include validate_type($className, string);
+  @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
+
+  @if ($specialPageType == $PAGE_INDEX_PARTIAL) {
+    $keyName: '.#{$className}';
+
+    body::after {
+      container: div;
+      content: pending(#{$className}-TOCOMPOSITE);
+      class: "os-eob os-#{$className}-container";
+      data-type: "composite-page";
+      data-uuid-key: "#{$keyName}";
+      group-by: span, "span::attr(group-by)", nocase;
+    }
+  } @else {
+    @include _createBookComposite($page);
+  }
+}
