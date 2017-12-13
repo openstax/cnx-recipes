@@ -7,6 +7,7 @@
   @each $page in $compositePages {
     $name: map-get($page, name);
     $className: map-get($page, className);
+    $childPages: map-get($page, childPages);
 
     // Validate
     @include validate_type($name, string);
@@ -17,6 +18,22 @@
         os-text: $name
         );
       @include utils_title($titleContent, null, h2, "document-title");
+      @if ($childPages != null) {
+        @each $cPage in $childPages {
+          $cClassName: map-get($cPage, className);
+          $cPageName: map-get($cPage, name);
+
+          @include validate_type($cClassName, string);
+          @include validate_type($cPageName, string);
+
+          div.os-#{$cClassName}-container {
+            $cTitleContent: (
+              os-text: $cPageName
+              );
+            @include utils_title($cTitleContent, null, h3, "title");
+          }
+        }
+      }
     }
   }
 }
@@ -247,7 +264,8 @@
       #{$sourceSelector} {
         // Create an index entry for the term by creating a new element and then moving it
         &::after {
-          content: content();
+          // i18n: use the @reference="..." version of a term when adding it to the Index (if the attribute is available). See #353
+          content: attr(#{"cmlnle|reference"}, content());
           attr-group-by: attr(group-by);
           container: span;
           class: "os-term";
