@@ -1,23 +1,10 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
-script/bootstrap
-
-# Activate the venv if not already in a virtualenv
-if [[ -z "${VIRTUAL_ENV}" ]]
-then
-  source ./venv/bin/activate
-fi
-
-if [[ -n "${VIRTUAL_ENV}" ]]
-then
-  >&2 echo '==> Reinstalling python packages'
+do_progress_quiet 'Reinstalling python packages' \
   pip install -r requirements.txt
 
-else
-  echo "Error. Not in a virtualenv"
-  exit 1
-fi
-
->&2 echo "==> Updating sassdoc to the version listed in package.json"
-npm install
+ # Use --force so that the packages are reinstalled
+do_progress_quiet "Reinstalling NodeJS package.json" \
+  yarn install --prefer-offline --force

@@ -1,32 +1,29 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
-branchNameWithNewStuff=$(git rev-parse --abbrev-ref HEAD)
 
-if [ "${branchNameWithNewStuff}" = "gh-pages" ]
-then
-  echo "You are running this script in the gh-pages branch. It should be run in another branch (the one with new code changes)"
-  exit 1
-fi
+branch_name_with_new_stuff=$(git rev-parse --abbrev-ref HEAD)
+
+# Check that this script is not running in the gh-pages branch
+[[ "${branch_name_with_new_stuff}" != "gh-pages" ]] || die "You are running this script in the gh-pages branch. It should be run in another branch (the one with new code changes)"
 
 # Check to make sure there are no uncommitted files
-stagedFilesCount=$(git status -s | wc -l)
-if [ ${stagedFilesCount} -ne 0 ]
-then
-  echo "You have uncommitted files. Please commit them first. Aborting."
+staged_files_count=$(git status -s | wc -l)
+if [[ ${staged_files_count} -ne 0 ]]; then
   git status -s
-  exit 1
+  die "You have uncommitted files. Please commit them first. Aborting."
 fi
 
-git checkout gh-pages
-git pull # In case gh-pages has updated since you last pulled
-git rebase ${branchNameWithNewStuff}
+try git checkout gh-pages
+try git pull # In case gh-pages has updated since you last pulled
+try git rebase "${branch_name_with_new_stuff}"
 
-./script/test
-git add --all styleguide/
-git add --all sassdoc/
-git add --all coverage/
-git commit -m "Updating guide from ${branchNameWithNewStuff} branch"
-git push --force-with-lease origin gh-pages
+try ./script/test
+try git add --all styleguide/
+try git add --all sassdoc/
+try git add --all coverage/
+try git commit -m "Updating guide from ${branch_name_with_new_stuff} branch"
+try git push --force-with-lease origin gh-pages
 
-git checkout ${branchNameWithNewStuff}
+try git checkout "${branch_name_with_new_stuff}"

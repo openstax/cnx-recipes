@@ -1,102 +1,78 @@
 #!/bin/bash
-set -e
-
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
 arg1=$1
-debugFlag1=$2
-debugFlag2=$3
-debugFlag3=$4
-debugFlag4=$5
+debug_flag1=$2
+debug_flag2=$3
+debug_flag3=$4
+debug_flag4=$5
 
 # Check command line args
 
-if [ -z "${arg1}" ]
-then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument (or --all). For example: physics'
-  >&2 echo "You can specify additional commandline arguments like -d to this script if you want more debugging"
-  exit 1
+if [ -z "${arg1}" ]; then
+  _say 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument (or --all). For example: physics'
+  _say "You can specify additional commandline arguments like -d to this script if you want more debugging"
+  die "Stopping because no commandline args were passed in"
 fi
 
 
 # Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
 
-if [ ! "${arg1}" == "--all" ]
-then
+if [ ! "${arg1}" == "--all" ]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for bookConfig in "${BOOK_CONFIGS[@]}"
-  do
-    read -r bookConfigName recipeName uuid _ <<< "${bookConfig}"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name recipe_name uuid _ <<< "${book_config}"
 
-    if [[ "${arg1}" = "${bookConfigName}" ]]
-    then
-      BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid}")
-      foundConfig=1
+    if [[ "${arg1}" = "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid}")
+      found_config=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]
-  then
-    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
-    >&2 echo "Valid books are (from ./books.txt):"
-    for bookConfig in "${BOOK_CONFIGS[@]}"
-    do
-      read -r bookName recipeName uuid _ <<< "${bookConfig}"
-      >&2 echo "${bookName}"
+  if [[ ! 1 -eq "${found_config}" ]]; then
+    _say "Valid books are (from ./books.txt):"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name recipe_name uuid _ <<< "${book_config}"
+      _say "${book_name}"
     done
-    exit 1
+    die "Could not find Book info for book named ${arg1}"
   fi
 fi
 
 
-for bookConfig in "${BOOK_CONFIGS[@]}"
-do
-  read -r bookName recipeName uuid _ <<< "${bookConfig}"
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name recipe_name uuid _ <<< "${book_config}"
 
-  ./script/compile-books ${recipeName} || exit 1
+  do_progress_quiet "Compiling CSS file" \
+    ./script/compile-books "${recipe_name}"
 
-  rawFile="./data/${bookName}-raw.xhtml"
-  bakedFile="./data/${bookName}-baked.xhtml"
-  sassFile="./recipes/books/${recipeName}/book.scss"
-  cssFile="./recipes/output/${recipeName}.css"
+  raw_file="./data/${book_name}-raw.xhtml"
+  baked_file="./data/${book_name}-baked.xhtml"
+  sass_file="./recipes/books/${recipe_name}/book.scss"
+  css_file="./recipes/output/${recipe_name}.css"
+  lcov_file="${baked_file}.lcov"
 
-  if [ ! -f "${rawFile}" ]
-  then
-    >&2 echo 'ERROR: Could not find the raw HTML file. Have you run fetch-html yet?'
-    exit 1
-  fi
+  [[ -f "${raw_file}" ]] || die "Could not find the raw HTML file. Have you run fetch-html yet?"
 
-  if [ ! -f "${sassFile}" ]
-  then
-    >&2 echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
-    exit 1
-  fi
-
-
-  >&2 echo "==> Baking ${rawFile} using ${recipeName} (may take a few minutes)"
+  [[ -f "${sass_file}" ]] || die "Could not find the raw SCSS file at ${sass_file}"
 
   # Remove the baked file if it exists
-  [ -e "${bakedFile}" ] && rm ${bakedFile}
+  [[ ! -f "${baked_file}" ]] || rm "${baked_file}"
 
-  # Activate the venv if not already in a virtualenv
-  if [[ -z "${VIRTUAL_ENV}" ]]
-  then
-    source ./venv/bin/activate
-  fi
-
-  lcovFile="${rawFile}.lcov"
-
-  cnx-easybake --coverage-file "${lcovFile}" ${debugFlag1} ${debugFlag2} ${debugFlag3} ${debugFlag4} "${cssFile}" "${rawFile}" "${bakedFile}"
+  # shellcheck disable=SC2086
+  do_progress_quiet "Baking ${raw_file} using ${recipe_name} (~1min)" \
+    cnx-easybake --coverage-file "${lcov_file}" ${debug_flag1} ${debug_flag2} ${debug_flag3} ${debug_flag4} "${css_file}" "${raw_file}" "${baked_file}"
 
   # Generate an HTML report (if genhtml is installed)
-  if [[ -n "$(which genhtml)" ]]
-  then
-    >&2 echo "==> Generating HTML coverage report at ./coverage/"
-    genhtml --quiet --output ./coverage/ "${lcovFile}"
+  if [[ -n "$(which genhtml)" ]]; then
+    do_progress_quiet "Generating HTML coverage report at ./coverage/" \
+      genhtml --quiet --output ./coverage/ "${lcov_file}"
   fi
 
   # Validate the cooked file
-  >&2 echo "==> Validating ${bakedFile}"
-  cnx-epub-validate-collated ${bakedFile}
+  do_progress_quiet "Validating ${baked_file}" \
+    cnx-epub-validate-collated "${baked_file}"
 done
