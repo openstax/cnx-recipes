@@ -123,8 +123,13 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       fi
       # shellcheck disable=SC1090
       source "${HOME}/.nvm/nvm.sh" --no-use
-      do_progress_quiet "Setting correct node version (see ./.nvmrc)" \
-        nvm install "$(< ./.nvmrc)"
+      if [[ $(nvm ls $(< "./.nvmrc")) ]]; then
+        do_progress_quiet "Setting correct node version (see ./.nvmrc)" \
+          nvm use "$(< ./.nvmrc)"
+      else
+        do_progress_quiet "Installing correct node version (see ./.nvmrc)" \
+          nvm install "$(< ./.nvmrc)"
+      fi
     fi
   fi
 
