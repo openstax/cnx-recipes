@@ -1,173 +1,142 @@
 #!/bin/bash
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
-recipeName=$1
-bakedOrPreparedSuffix=$2 # Overridden when running ./diff-guide-prepare
+recipe_name=$1
+baked_or_prepared_suffix=$2 # Overridden when running ./diff-guide-prepare
 
 sassDir='./recipes/'
-styleguideDir="./styleguide/${recipeName}"
-sassFile="${sassDir}/books/${recipeName}/book.scss"
-cssFile="${styleguideDir}/guide.css"
+styleguideDir="./styleguide/${recipe_name}"
+sass_file="${sassDir}/books/${recipe_name}/book.scss"
+css_file="${styleguideDir}/guide.css"
 guideHomepageFile="./guide-homepage.md" # Relative to ${sassDir}/recipes/
 
 tempDir="./tmp/"
-tempRecipeDir="${tempDir}/${recipeName}/"
-bookDocumentationDir="./recipes/books/${recipeName}"
+tempRecipeDir="${tempDir}/${recipe_name}/"
+bookDocumentationDir="./recipes/books/${recipe_name}"
 kssOutputFile="${tempDir}/kss-output.txt"
 
-sassBin="$(npm bin)/node-sass"
+sass_bin="$(npm bin)/node-sass"
 
 # Check command line args
 
-if [ -z "${recipeName}" ]
-then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  exit 1
-fi
+[[ "${recipe_name}" ]] || die 'Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
 
-if [ -z "${bakedOrPreparedSuffix}" ]
-then
-  bakedOrPreparedSuffix="baked"
+if [[ -z "${baked_or_prepared_suffix}" ]]; then
+  baked_or_prepared_suffix="baked"
 else
-  >&2 echo "INFO: Generating -${bakedOrPreparedSuffix}.xhtml files instead of -baked.xhtml files"
+  _say "INFO: Generating -${baked_or_prepared_suffix}.xhtml files instead of -baked.xhtml files"
 fi
 
 
->&2 echo "==> Compiling the guide.scss file for ${recipeName}"
-if [ ! -e ${styleguideDir} ]
-then
-  mkdir -p ${styleguideDir} || exit 1
-fi
+[[ -e ${styleguideDir} ]] || mkdir -p "${styleguideDir}" || exit 111
+
+do_progress_quiet "Compiling the guide.scss file for ${recipe_name}" \
+  "${sass_bin}" --source-map true "${sass_file}" "${css_file}"
 
 
-${sassBin} --source-map true ${sassFile} ${cssFile} || exit 1
+progress "Generating the baked example HTML files"
 
-
->&2 echo "==> Generating the baked example HTML files"
-
-# Create a temporary directory which contains the recipes/mixins/ and recipes/${recipeName} directories.
+# Create a temporary directory which contains the recipes/mixins/ and recipes/${recipe_name} directories.
 # This is because we want the styleguide to contain docs of all the common/ elements
 # and the book-specific elements, and kss only allows you to point to 1 directory
 # to look at all the SASS files.
-if [[ ! -d "${tempDir}" ]]
-then
-  mkdir "${tempDir}" || exit 1
-# Commented so we keep the directory because the lcov files are useful
-# else
-#   rm -rf "${tempDir}" || exit 1
-fi
+[[ -d "${tempDir}" ]] || mkdir "${tempDir}" || exit 111
 
 # Keep the tempRecipeDir around because it could have been created by diff-guide-prepare
-if [[ ! -d "${tempRecipeDir}" ]]
-then
-  mkdir "${tempRecipeDir}" || exit 1
-# else
-#   # rm -rf "${tempRecipeDir}" || exit 1
-fi
+[[ -d "${tempRecipeDir}" ]] || mkdir "${tempRecipeDir}" || exit 111
 
 
 # Copy over all the dirs containing the styleguide comments that need to be included
 
 # Pull in the BOOK_CONFIGS
-source ./books.txt || exit 1
+source ./books.txt || exit 111
 
 # Filter BOOK_CONFIGS to only contain the book you want to fetch
-for bookConfig in "${BOOK_CONFIGS[@]}"
-do
-  read -r bookConfigName recipeConfigName uuid hostName basedOns <<< "${bookConfig}"
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r _ recipeConfigName _ _ basedOns <<< "${book_config}"
 
-  if [[ "${recipeName}" = "${recipeConfigName}" ]]
-  then
+  if [[ "${recipe_name}" = "${recipeConfigName}" ]]; then
     # Actually copy the directories over (like common/,books/physics/)
     IFS=',' read -ra basedOnDirs <<< "$basedOns"
     for basedOnDirName in "${basedOnDirs[@]}"; do
-      echo "==> Including ${sassDir}/${basedOnDirName}"
-      cp -R "${sassDir}/${basedOnDirName}" "${tempRecipeDir}/$(basename ${basedOnDirName})" || exit 1
+      do_progress_quiet "Including ${sassDir}/${basedOnDirName}" \
+        cp -R "${sassDir}/${basedOnDirName}" "${tempRecipeDir}/$(basename "${basedOnDirName}")"
     done
-    foundConfig=1
+    found_config=1
     break
   fi
 done
 
-if [[ ! 1 -eq "${foundConfig}" ]]
-then
-  >&2 echo "ERROR: Could not find Book info for book named ${recipeName}"
-  >&2 echo "check ./books.txt"
-  exit 1
-fi
+[[ 1 -eq "${found_config}" ]] || die "Could not find Book info for book named ${recipe_name}. check ./books.txt"
 
-cp -R "${bookDocumentationDir}" "${tempRecipeDir}" || exit 1
+cp -R "${bookDocumentationDir}" "${tempRecipeDir}" || exit 111
 
 
 # Find all the styleguide html files and convert them
-for snippetFileName in $(find "${tempRecipeDir}" -name "*.snippet.xml")
-do
+while IFS= read -r -d '' snippet_file_name; do # generic for loop
 
-  snippetBase="$(dirname "${snippetFileName}")/$(basename "${snippetFileName}" .snippet.xml)"
-  rawFileName="${snippetBase}.raw.xhtml"
+  snippetBase="$(dirname "${snippet_file_name}")/$(basename "${snippet_file_name}" .snippet.xml)"
+  raw_file_name="${snippetBase}.raw.xhtml"
   # This is the filename in the CSS comment
-  destFileName="${snippetBase}.xhtml-${bakedOrPreparedSuffix}.html"
-
-  >&2 echo "Generating temporary ${snippetFileName}-${bakedOrPreparedSuffix}.html"
+  destFileName="${snippetBase}.xhtml-${baked_or_prepared_suffix}.html"
 
   # Convert the snippet (which is HTML + CNXML) into just HTML
-  xsltproc ./script/_cnxml-to-xhtml.xsl "${snippetFileName}" > "${rawFileName}" || exit 1
+  xsltproc ./script/xsl/_cnxml-to-xhtml.xsl "${snippet_file_name}" > "${raw_file_name}" || exit 111
 
   # commented because xmllint does not like html5 element names like <figure>
-  # ./script/bake-file ${recipeName} ${snippetFileName} /dev/stdout | xmllint --html --format - > ${snippetFileName}-baked.xhtml
-  ./script/bake-file ${recipeName} ${rawFileName} ${rawFileName}-temp1-${bakedOrPreparedSuffix}.xhtml --use-repeatable-ids  || exit 1
+  # ./script/bake-file ${recipe_name} ${snippet_file_name} /dev/stdout | xmllint --html --format - > ${snippet_file_name}-baked.xhtml
+  # use `source` so we do not have to re-initialize python/node/ruby
+  do_progress_quiet "Baking ${raw_file_name}" \
+    source ./script/bake-file "${recipe_name}" "${raw_file_name}" "${raw_file_name}-temp1-${baked_or_prepared_suffix}.xhtml" --use-repeatable-ids
 
   # Construct an HTML file that contains both the raw and baked HTML
   # so it can be separated in the browser
   # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="cnxml">' > "${destFileName}" || exit 1
-  cat ${snippetFileName} >> "${destFileName}" || exit 1
-  echo '</section>' >> "${destFileName}" || exit 1
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' >> "${destFileName}" || exit 1
-  cat ${rawFileName} >> "${destFileName}" || exit 1
-  echo '</section>' >> "${destFileName}" || exit 1
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> "${destFileName}" || exit 1
-  cat ${rawFileName}-temp1-${bakedOrPreparedSuffix}.xhtml >> "${destFileName}" || exit 1
-  echo '</section>' >> "${destFileName}" || exit 1
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="cnxml">' > "${destFileName}" || exit 111
+  cat "${snippet_file_name}" >> "${destFileName}" || exit 111
+  echo '</section>' >> "${destFileName}" || exit 111
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' >> "${destFileName}" || exit 111
+  cat "${raw_file_name}" >> "${destFileName}" || exit 111
+  echo '</section>' >> "${destFileName}" || exit 111
+  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> "${destFileName}" || exit 111
+  cat "${raw_file_name}-temp1-${baked_or_prepared_suffix}.xhtml" >> "${destFileName}" || exit 111
+  echo '</section>' >> "${destFileName}" || exit 111
 
-  rm ${rawFileName}-temp1-${bakedOrPreparedSuffix}.xhtml || exit 1
-done
+  rm "${raw_file_name}-temp1-${baked_or_prepared_suffix}.xhtml" || exit 111
+done <   <(find "${tempRecipeDir}" -name "*.snippet.xml" -print0)
 
 
-if [[ "${bakedOrPreparedSuffix}" == "baked" ]]
-then
+if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
 
-  >&2 echo "==> Generating the style guide"
   # The CSS path is relative to the styleguide directory, hence `./guide.css`
   # Exclude parsing the output/*.css files by setting the --mask
-  $(npm bin)/kss-node --template ./js/openstax-kss-builder --verbose --homepage ${guideHomepageFile} --destination ${styleguideDir} --css ./guide.css --source ${tempRecipeDir} --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"  || exit 1
-
-  # Delete the temp files created above
-  # >&2 echo "==> Deleting the baked example HTML files"
-  # for snippetFileName in $(find ./recipes/books/ -name "*-${bakedOrPreparedSuffix}.xhtml")
-  # do
-  #   # echo "Removing temporary ${snippetFileName}"
-  #   rm ${snippetFileName} || exit 1
-  # done
+  do_progress_quiet "Generating the style guide" \
+    "$(npm bin)/kss-node" --verbose \
+    --template ./js/openstax-kss-builder \
+    --homepage "${guideHomepageFile}" \
+    --destination "${styleguideDir}" \
+    --css ./guide.css \
+    --source "${tempRecipeDir}" \
+    --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"
 
   # HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
   # So, check the output of kss to see if any errors were reported.
-  missingFiles=$(cat "${kssOutputFile}" | grep 'NOT FOUND!' )
-  if [ -n "${missingFiles}" ]
-  then
-    >&2 echo "ERROR: Some HTML files were missing:"
-    >&2 echo "${missingFiles}"
-    >&2 echo "Check ${kssOutputFile} for more details"
-    exit 1
+  missingFiles="$(grep 'NOT FOUND!' < ${kssOutputFile} )"
+  if [[ -n "${missingFiles}" ]]; then
+    die "Some HTML files were missing: ${missingFiles}. Check ${kssOutputFile} for more details"
   fi
 
   # Generate an HTML report (if genhtml is installed)
-  if [[ -n "$(which genhtml)" ]]
-  then
-    genhtml --quiet --output ./coverage/ $(find "${tempRecipeDir}" -name "*.lcov")
+  if [[ -n "$(which genhtml)" ]]; then
+    coverage_files=$(find "${tempRecipeDir}" -name '*.lcov')
+    # shellcheck disable=SC2086
+    do_progress_quiet "Generating HTML coverage report" \
+      genhtml --quiet --output ./coverage/ ${coverage_files}
   fi
 
-  >&2 echo "Guide is available at ${styleguideDir} . You can open it in a browser"
+  _say "Guide is available at ${styleguideDir}/index.html . You can open it in a browser"
 
 else
-  >&2 echo "INFO: Skipping actual styleguide generation because the additional arg '${bakedOrPreparedSuffix}' was provided (probably for diff-guide-prepare)"
+  _say "INFO: Skipping actual styleguide generation because the additional arg '${baked_or_prepared_suffix}' was provided (probably for diff-guide-prepare)"
 fi

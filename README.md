@@ -48,8 +48,8 @@ Recipe documentation can be found at [./recipes/](./recipes/) and an [example co
 
 ## CSS Coverage
 
-1. run `./script/fetch-html ${bookName}` to fetch the Raw HTML for a book
-1. run `./script/bake-book ${bookName}`
+1. run `./script/fetch-html ${book_name}` to fetch the Raw HTML for a book
+1. run `./script/bake-book ${book_name}`
 1. The HTML Report should now be available at `./coverage/`
 
 You can pass 3 arguments to `report-book-coverage` to change how it reports coverage:
