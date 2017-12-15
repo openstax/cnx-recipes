@@ -514,7 +514,7 @@ div[data-type="composite-page"] {
   string-set: pageID attr(id); }
 
 div[data-type="page"] span[data-type="term"] {
-  attrs-add: "id" "auto_" ancestor-context('[data-type="page"]', x-attr-with-default(id, x-id-gen())) "_term" count-of-type('[data-type="page"]', '[data-type="term"]'); }
+  attrs-add: "id" "auto_" ancestor-context('[data-type="page"]', x-attr-ensure-id()) "_term" count-of-type('[data-type="page"]', '[data-type="term"]'); }
   div[data-type="page"] span[data-type="term"]:match("^[a-zA-Z]") {
     attr-group-by: first-letter(content()); }
   div[data-type="page"] span[data-type="term"]:match("^[^a-zA-Z]") {
@@ -614,7 +614,7 @@ div[data-type="chapter"]::after(5) {
     [data-type="chapter"] [data-type="page"].introduction::before(1)::for-each(1, following-sibling, '[data-type="page"]:not(.introduction)')::before(1) {
       tag-name-set: "a";
       class-add: "os-chapter-objective";
-      attrs-add: "href" "#" attr(id); }
+      attrs-add: "href" "#" x-attr-ensure-id(); }
       [data-type="chapter"] [data-type="page"].introduction::before(1)::for-each(1, following-sibling, '[data-type="page"]:not(.introduction)')::before(1)::before(501) {
         tag-name-set: "span";
         class-add: os-number;
