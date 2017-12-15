@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # from https://tobywf.com/2017/05/installing-pyicu-on-macos/
 if [[ ! ${ICU_VERSION} ]]; then
   if [[ "$(uname -s)" = "Darwin" ]]; then
