@@ -1,0 +1,83 @@
+@import '../_common-stuff';
+
+/*==========================================================
+  Principles of Management PAGES
+==========================================================*/
+
+/*
+  References page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.references.xhtml-baked.html
+
+  Style guide: book.composite.references
+*/
+
+$Config_ChapterCompositePages: (
+  // (className: "glossary",                 clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt",    name: "Key Terms"),
+  // (className: "summary",                  clusterBy: $CLUSTER_SECTION,                               name: "Chapter Review"),
+  // (className: "formula-review",           clusterBy: $CLUSTER_SECTION,                               name: "Formula Review"),
+  // (className: "practice",                 clusterBy: $CLUSTER_SECTION, hasSolutions: true,           name: "Practice"),
+  // (className: "bring-together-exercises", clusterBy: $CLUSTER_NONE,    hasSolutions: true,           name: "Bringing It Together: Practice"),
+  // (className: "free-response",            clusterBy: $CLUSTER_SECTION, hasSolutions: true,           name: "Homework"),
+  // (className: "bring-together-homework",  clusterBy: $CLUSTER_NONE,    hasSolutions: true,           name: "Bringing It Together: Homework"),
+     (className: "references",               clusterBy: $CLUSTER_SECTION,                               name: "References"),
+  // (className: "solutions",                clusterBy: $CLUSTER_NONE, compoundComposite: true, moveSolutionsTo: $AREA_EOC,  name: "Solutions"),
+);
+
+$Config_BookCompositePages: (
+  (className: "index",                    clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX,    name: "Index"),
+  //This does not get parsed as a list without a comma at the end
+  //the composite builder should account for this rather than using hacky syntax
+);
+/*==========================================================
+  Principles of Management TITLING CONTENT
+==========================================================*/
+//unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
+//when they need to be able to be in any order because of possible changes in titling order between books
+//Usage Note: key: class of the containing span, value: text that will go inside span
+// Drat, the order of os-title-label, os-number, os-divider matters ;(
+$_exerciseTitleContent       : (os-divider: ".", os-number: counter(exercise) );
+$_exampleTitleContent        : (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_labTitleContent           : (os-title-label: "Stats Lab ", os-number: counter(chapter) "." counter(lab));
+$_tryTitleContent            : (os-title-label: "Try It ", os-number: counter(chapter) "." counter(example)); // Try it notes are numbered based on the example preceeding them
+
+
+/*==========================================================
+  Principles of Management CONFIG
+==========================================================*/
+$Config_SetTableCaption            : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: false, hasTitle: true);
+$Config_SetFigureCaption           : (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: false);
+//If this method of setting the content of the label explicity becomes a problem,
+//try grabbing the numbering information from the element's header
+
+//NOTE: These selectors MUST match the counting selectors or be more specific
+//otherwise, the increment and the counter() call may fire in the wrong order
+//This may be fixed in a later version of easybake
+$Config_TargetLabels: append($Config_TargetLabels,
+  (selector: 'div[data-type="chapter"] .try', labelText: "Try It")
+);
+
+$Config_Notes: ( //REQUIRED: To generate guide.
+
+);
+
+$Config_UnnumberedExercises: ( //REQUIRED: To generate guide.
+  
+);
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER,  numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Example:  (moveTo: $AREA_NONE,                          titleContent: $_exampleTitleContent,
+                                                                  solutionTitleContent: $_exampleSolutionTitleContent);
+$Config_PartType_Chapter:  ();
+$Config_PartType_Equation: ();
+$Config_PartType_Solution: ();
+$Config_abstractTitle: null;
+// Coverage optimizations
+$Config_Coverage_MayHaveSimlinks: false;
+$Config_Coverage_MayHaveIframes: false;
+$Config_Coverage_MayHaveMissingExercises: false;
+
+$Config_hasCompositeChapter: false;
