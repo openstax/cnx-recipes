@@ -1,38 +1,28 @@
 #!/bin/bash
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
 arg1=$1
 
 # Pull in the BOOK_CONFIGS and RECIPE_NAMES
 source ./books.txt || exit 1
 
-if [ ! "${arg1}" == "" ]
-then
-  RECIPE_NAMES=(${arg1})
+if [ ! "${arg1}" == "" ]; then
+  RECIPE_NAMES=("${arg1}")
 fi
 
 
-sassBin="$(npm bin)/node-sass"
-outputDir="./recipes/output/"
+sass_bin="$(npm bin)/node-sass"
+output_dir="./recipes/output/"
 
-# Try running sass locally (using rbenv). If that does not work then try it globally
-if [[ ! $(${sassBin} --version 2>/dev/null) ]]
-then
-  >&2 echo "ERROR: Could not find sass executable"
-  >&2 echo "INFO: Maybe rerun ./script/setup"
-  exit 1
-fi
+for recipe_name in "${RECIPE_NAMES[@]}"; do
 
+  sass_file="./recipes/books/${recipe_name}/book.scss"
+  css_file="${output_dir}/${recipe_name}.css"
 
-for recipeName in "${RECIPE_NAMES[@]}"
-do
-
-  sassFile="./recipes/books/${recipeName}/book.scss"
-  inputSassFile="./recipes/books/${recipeName}/${recipeName}.scss"
-  cssFile="${outputDir}/${recipeName}.css"
-
-  >&2 echo "==> Generating ${cssFile}"
-
-  ${sassBin} --source-map true --output-style nested ${sassFile} ${cssFile} || exit 1
+  do_progress_quiet "Generating ${css_file}" \
+    "${sass_bin}" --source-map true --output-style nested "${sass_file}" "${css_file}"
 done
 
-./script/build-manifest
+do_progress_quiet "Generating CSS manifest" \
+  ./script/build-manifest

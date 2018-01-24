@@ -1,60 +1,41 @@
 #!/bin/bash
-set -e
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
-./script/bootstrap || exit 1
-
->&2 echo "==> Installing JavaScript Packages"
-if [[ $(which yarn) ]]; then
-  yarn install || exit 1
-else
-  >&2 echo "WARNING: Installing JS packages using npm instead of yarn."
-  npm install || exit 1
+# JavaScript stuff
+if [[ -f "./package.json" ]]; then
+  do_progress_quiet "Installing JavaScript Packages" \
+    yarn --prefer-offline
 fi
 
+# Python stuff
+if [[ -f "./requirements.txt" || -f "./setup.py" ]]; then
 
-# Only activate the virtualenv if not already in one
-if [[ -z "${VIRTUAL_ENV}" ]]
-then
-
-  # This is mostly for travis
-  if [[ -z "$(which virtualenv)" ]]
-  then
-    >&2 echo "==> Installing Python virtualenv (pip install virtualenv)"
-    pip install virtualenv
+  [[ -n "${VIRTUAL_ENV}" ]] || die "Not in a virtualenv"
+  if [[ -f "./requirements.txt" ]]; then
+    do_progress_quiet "Installing python packages" \
+      pip install -r "./requirements.txt"
+  else
+    if [[ -f "./setup.py" ]]; then
+      do_progress_quiet "Installing python packages from setup.py" \
+        python setup.py install
+    fi
   fi
-
-  >&2 echo "==> Setting up a python virtualenv"
-  virtualenv ./venv/
-  source ./venv/bin/activate
-else
-  >&2 echo "==> Skipping virtualenv because already in one"
 fi
 
-pip install -U pip
-
-if [[ -n "${VIRTUAL_ENV}" ]]
-then
-
-  >&2 echo "==> Installing python packages"
-  pip install -r ./requirements.txt
-
-else
-  echo "ERROR. Not in a virtualenv"
-  exit 1
+# Ruby stuff
+if [[ -f "./Gemfile" ]]; then
+  bundle check --path ./vendor/gems >/dev/null 2>&1  || {
+    do_progress_quiet "Installing ruby gems" \
+      bundle install --path ./vendor/gems --quiet --without production
+  }
 fi
 
 
-# Clone the rhaptos.cnxmlutils repo in here
-if [[ ! -d ./vendor/rhaptos.cnxmlutils/.git/ ]]; then
-  >&2 echo "==> Installing ./vendor/rhaptos.cnxmlutils/"
-  git clone https://github.com/Connexions/rhaptos.cnxmlutils.git ./vendor/rhaptos.cnxmlutils/
-else
-  >&2 echo "==> Using existing ./vendor/rhaptos.cnxmlutils/"
+# Load anything that is repo-specific
+if [[ -f "./script/_setup.sh" ]]; then
+  # shellcheck disable=SC1091
+  source ./script/_setup.sh || exit 111
 fi
 
->&2 echo "==> Checking out branch in ./vendor/rhaptos.cnxmlutils/ (see https://github.com/Connexions/rhaptos.cnxmlutils/pull/157)"
-
-cd "./vendor/rhaptos.cnxmlutils/"
-git checkout rng-fixes
-git pull
-cd ..
+_say "${c_green}Successfully set up${c_none}"
