@@ -5,6 +5,7 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   if [[ ! ${ICU_VERSION} ]]; then
     path_to_icu4c="/usr/local/Cellar/icu4c"
     # Assume that the latest version is the one we want to use
+    # shellcheck disable=SC2012
     icu_version=$(ls ${path_to_icu4c} | sort -n | tail -n 1)
     icu_version_major="${icu_version%.*}"
 
