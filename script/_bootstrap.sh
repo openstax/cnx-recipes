@@ -14,7 +14,4 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
     export PYICU_LFLAGS="-L${path_to_icu4c}/${icu_version}/lib"
   fi
 
-  # if [[ ! $(which icu-config) ]]; then
-  #   try brew link icu4c gettext --force
-  # fi
 fi
