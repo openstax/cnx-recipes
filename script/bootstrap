@@ -118,22 +118,35 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
   # Set up the correct version of node (Travis automatically does this)
   if [[ ! "${CI}" = "true" ]]; then
-    # Not everyone uses nvm, some use node-env
-    # If you have the correct version then skip the nvm check
-    version_actual=$(node --version 2> /dev/null)
-    version_required=$(cat .nvmrc)
+    # Not everyone uses nvm, some use nodenv
+    if [[ -f "./.nvmrc" ]]; then
+      _say "${c_red}DEPRECATED:${c_none} using .nvmrc file but renaming it to be .node-version"
+      nvmrc_contents="$(< ./.nvmrc)"
+      echo "${nvmrc_contents#*v}" > ./.node-version
+      try rm ./.nvmrc
+    fi
 
-    if [[ -z "$version_actual" || "$version_actual" != "$version_required" ]]; then
-      if [[ -f "${HOME}/.nvm/nvm.sh" ]]; then
+    # If you have the correct version then skip the nvm check
+    version_actual="$(node --version 2> /dev/null)"
+    version_required="v$(cat ./.node-version)"
+
+    if [[ -z "${version_actual}" || "${version_actual}" != "${version_required}" ]]; then
+      if [[ $(which nodenv) ]]; then
+        # Since the versions do not match then nodenv might not have been initialized
+        eval "$(nodenv init -)"
+        nodenv install "$(< ./.node-version)" --skip-existing
+      elif [[ -f "${HOME}/.nvm/nvm.sh" ]]; then
+        # DEPRECATE the nvm method once deployments do not use it
         # shellcheck disable=SC1090
         source "${HOME}/.nvm/nvm.sh" --no-use
-        do_progress_quiet "Setting correct node version (see ./.nvmrc)" \
-          nvm install "$(< ./.nvmrc)"
-      elif [[ -z "$version_actual" ]]; then
-        die "Install node ${version_required}"
-      else
-        die "You have node ${version_actual} installed, but ${version_required} is required"
+        do_progress_quiet "${c_red}DEPRECATED:${c_none} Setting correct node version using nvm. Try using https://github.com/nodenv/nodenv instead (add it to Brewfile)" \
+          nvm install "v$(< ./.node-version)"
       fi
+    fi
+
+    version_actual="$(node --version 2> /dev/null)"
+    if [[ "${version_actual}" != "${version_required}" ]]; then
+      die "Could not install the correct version of node. Expected '${version_required}' but found '${version_actual}'. Try installing nodenv or nvm. If you installed nodenv then open a new shell"
     fi
   fi
 
