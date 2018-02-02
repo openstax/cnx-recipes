@@ -118,11 +118,14 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
   # Set up the correct version of node (Travis automatically does this)
   if [[ ! "${CI}" = "true" ]]; then
+    # Not everyone uses nvm, some use node-env
+    # If you have the correct version then skip the nvm check
     version_actual=$(node --version 2> /dev/null)
     version_required=$(cat .nvmrc)
 
     if [[ -z "$version_actual" || "$version_actual" != "$version_required" ]]; then
       if [[ -f "${HOME}/.nvm/nvm.sh" ]]; then
+        # shellcheck disable=SC1090
         source "${HOME}/.nvm/nvm.sh" --no-use
         do_progress_quiet "Setting correct node version (see ./.nvmrc)" \
           nvm install "$(< ./.nvmrc)"
