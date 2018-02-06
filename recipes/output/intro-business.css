@@ -286,88 +286,6 @@
   Intro to Business CONFIG
 ==========================================================*/
 /*==========================================================
-  EOC
-==========================================================*/
-/*
-  Key Terms
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Key Terms"
-
-  Unordered list w/ key term and definition
-
-  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
-
-  Style guide: book.composite.key-terms
-*/
-/*
-  Summary of Learning Outcomes
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Learning Outcomes"
-
-  Markup: ./styleguide/book.composite.summ-learning-outcomes.xhtml-baked.html
-
-  Style guide: book.composite.summ-learning-outcomes
-*/
-/*
-  Preparing for Tomorrow's Workplace
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Preparing for Tomorrow's Workplace"
-
-  Markup: ./styleguide/book.composite.prep-tomorrow.xhtml-baked.html
-
-  Style guide: book.composite.prep-tomorrow
-*/
-/*
-  Ethics Activity
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Ethics Activity"
-
-  Markup: ./styleguide/book.composite.ethics-activity.xhtml-baked.html
-
-  Style guide: book.composite.ethics-activity
-*/
-/*
-  Working the Net
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Working the Net"
-
-  Markup: ./styleguide/book.composite.working-net.xhtml-baked.html
-
-  Style guide: book.composite.working-net
-*/
-/*
-  Critical Thinking Case
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Critical Thinking Case"
-
-  Markup: ./styleguide/book.composite.crit-think.xhtml-baked.html
-
-  Style guide: book.composite.crit-think
-*/
-/*
-  Hot Links Address Book
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Hot Links Address Book"
-
-  Markup: ./styleguide/book.composite.hot-links.xhtml-baked.html
-
-  Style guide: book.composite.hot-links
-*/
-/*==========================================================
   Notes
 ==========================================================*/
 /*
@@ -450,6 +368,97 @@
   Markup: ./styleguide/page.note.learning-outcomes.xhtml-baked.html
 
   Style guide: page.note.learning-outcomes
+*/
+/*
+  Example
+
+  Contains a title "Example". Titles are numbered. Exercises inside aren't numbered.
+
+  Markup: ./styleguide/page.example.xhtml-baked.html
+
+  Style guide: page.example
+*/
+/*==========================================================
+  EOC
+==========================================================*/
+/*
+  Key Terms
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Terms"
+
+  Unordered list w/ key term and definition
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
+*/
+/*
+  Summary of Learning Outcomes
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Learning Outcomes"
+
+  Markup: ./styleguide/book.composite.summ-learning-outcomes.xhtml-baked.html
+
+  Style guide: book.composite.summ-learning-outcomes
+*/
+/*
+  Preparing for Tomorrow's Workplace
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Preparing for Tomorrow's Workplace"
+
+  Markup: ./styleguide/book.composite.prep-tomorrow.xhtml-baked.html
+
+  Style guide: book.composite.prep-tomorrow
+*/
+/*
+  Ethics Activity
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Ethics Activity"
+
+  Markup: ./styleguide/book.composite.ethics-activity.xhtml-baked.html
+
+  Style guide: book.composite.ethics-activity
+*/
+/*
+  Working the Net
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Working the Net"
+
+  Markup: ./styleguide/book.composite.working-net.xhtml-baked.html
+
+  Style guide: book.composite.working-net
+*/
+/*
+  Critical Thinking Case
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Critical Thinking Case"
+
+  Markup: ./styleguide/book.composite.crit-think.xhtml-baked.html
+
+  Style guide: book.composite.crit-think
+*/
+/*
+  Hot Links Address Book
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Hot Links Address Book"
+
+  Markup: ./styleguide/book.composite.hot-links.xhtml-baked.html
+
+  Style guide: book.composite.hot-links
 */
 @namespace xhtml "http://www.w3.org/1999/xhtml";
 @namespace cmlnle "http://katalysteducation.org/cmlnle/1.0";
@@ -1181,6 +1190,70 @@
 :pass(2) a[data-type="footnote-number"] > sup {
   content: counter(footnoteLinks); }
 
+:pass(2) [data-type="chapter"], :pass(2) .appendix {
+  counter-reset: example; }
+
+:pass(2) div[data-type="chapter"] [data-type="example"] {
+  counter-increment: example; }
+
+:pass(2) [data-type="example"]::before {
+  container: span;
+  content: "Example ";
+  class: os-title-label;
+  move-to: bExampleLabel; }
+
+:pass(2) [data-type="example"]::before {
+  container: span;
+  content: counter(chapter) "." counter(example);
+  class: os-number;
+  move-to: bExampleLabel; }
+
+:pass(2) [data-type="example"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bExampleLabel; }
+
+:pass(2) [data-type="example"] > [data-type="title"] {
+  move-to: trash; }
+  :pass(2) [data-type="example"] > [data-type="title"]::before {
+    container: span;
+    content: content();
+    class: os-text;
+    move-to: bExampleLabel; }
+
+:pass(2) [data-type="example"]::after {
+  container: div;
+  content: pending(bExampleLabel);
+  class: "os-title";
+  move-to: bExampleHeader; }
+
+:pass(2) [data-type="example"]:deferred {
+  content: pending(bExampleHeader) content(); }
+
+:pass(2) [data-type="example"] [data-type="solution"]::before {
+  container: span;
+  content: "Solution ";
+  class: os-title-label;
+  move-to: div-TITLECONTAINER; }
+
+:pass(2) [data-type="example"] [data-type="solution"]::before {
+  container: span;
+  content: counter(chapter) "." counter(example);
+  class: os-number;
+  move-to: div-TITLECONTAINER; }
+
+:pass(2) [data-type="example"] [data-type="solution"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: div-TITLECONTAINER; }
+
+:pass(2) [data-type="example"] [data-type="solution"]::before {
+  container: div;
+  data-type: "solution-title";
+  content: pending(div-TITLECONTAINER); }
+
 :pass(2) body {
   counter-reset: term; }
 
@@ -1223,18 +1296,18 @@
   data-uuid-key: "<glossary>";
   sort-by: xhtml|dl > xhtml|dt, nocase; }
 
-:pass(2) div[data-type="chapter"] section.learning-outcomes {
-  copy-to: learning-outcomes-TOCOMPOSITE; }
-  :pass(2) div[data-type="chapter"] section.learning-outcomes > [data-type="title"] {
+:pass(2) div[data-type="chapter"] section.section-summary {
+  move-to: section-summary-TOCOMPOSITE; }
+  :pass(2) div[data-type="chapter"] section.section-summary > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 
 :pass(2) div[data-type="chapter"]::after {
   container: div;
-  content: pending(learning-outcomes-TOCOMPOSITE);
-  class: "os-eoc os-learning-outcomes-container";
+  content: pending(section-summary-TOCOMPOSITE);
+  class: "os-eoc os-section-summary-container";
   data-type: "composite-page";
-  data-uuid-key: ".learning-outcomes"; }
+  data-uuid-key: ".section-summary"; }
 
 :pass(2) div[data-type="chapter"] section.prep-workplace {
   move-to: prep-workplace-TOCOMPOSITE; }
@@ -1309,6 +1382,63 @@
 :pass(4) div[data-type="composite-page"] > [data-type="document-title"] {
   string-set: sectionHeaderString content(); }
 
+:pass(4) div[data-type="page"] span[data-type="term"]::after, :pass(4) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: attr(cmlnle|reference, content());
+  attr-group-by: attr(group-by);
+  container: span;
+  class: "os-term";
+  move-to: index-term; }
+
+:pass(4) div[data-type="page"] span[data-type="term"]::after, :pass(4) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: string(sectionHeaderString);
+  container: span;
+  class: "os-term-section";
+  move-to: index-section; }
+
+:pass(4) div[data-type="page"] span[data-type="term"]::after, :pass(4) div[data-type="composite-page"] span[data-type="term"]::after {
+  container: a;
+  content: pending(index-section);
+  attr-href: "#" attr(id);
+  class: "os-term-section-link";
+  move-to: index-section-link; }
+
+:pass(4) div[data-type="page"] span[data-type="term"]::after, :pass(4) div[data-type="composite-page"] span[data-type="term"]::after {
+  container: span;
+  content: ', ';
+  class: "os-index-link-separator";
+  move-to: index-section-link; }
+
+:pass(4) div[data-type="page"] span[data-type="term"]::after, :pass(4) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: pending(index-term) pending(index-section-link);
+  class: os-index-item;
+  move-to: index-TOCOMPOSITE; }
+
+:pass(4) [data-type="chapter"], :pass(4) .appendix {
+  counter-reset: exercise; }
+
+:pass(4) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
+
+:pass(4) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ".";
+  class: os-divider; }
+
+:pass(4) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
+:pass(4) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ".";
+  class: os-divider; }
+
+:pass(4) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
 :pass(5) body {
   counter-reset: exerciseAll; }
 
@@ -1330,6 +1460,43 @@
 :pass(6) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 
+:pass(6) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
+  string-set: ChapNum content(); }
+
+:pass(6) [data-type="chapter"]::after {
+  container: h2;
+  class: "os-title";
+  content: "Chapter " string(ChapNum);
+  move-to: chaptTitleEOB; }
+
+:pass(6) [data-type="chapter"]::after {
+  class: os-chapter-area;
+  content: pending(chaptTitleEOB) pending(note-solutions-GETCHAPTER) pending(solutions-GETCHAPTER);
+  move-to: solutions-TOCOMPOSITE; }
+
+:pass(6) body::after {
+  container: div;
+  content: pending(solutions-TOCOMPOSITE);
+  class: "os-eob os-solutions-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solutions";
+  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
+
+:pass(6) body::after {
+  container: div;
+  content: pending(solutions-TOCOMPOSITE);
+  class: "os-eob os-solutions-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solutions"; }
+
+:pass(6) body::after {
+  container: div;
+  content: pending(index-TOCOMPOSITE);
+  class: "os-eob os-index-container";
+  data-type: "composite-page";
+  data-uuid-key: "<index>";
+  group-by: span, "span::attr(group-by)", nocase; }
+
 :pass(7) .os-index-container > div.group-by:first-of-type > span.group-label:match("^[ ](Symbols|SYMBOLS)") {
   content: "Symbols"; }
 
@@ -1344,6 +1511,12 @@
 
 :pass(7) div.appendix {
   counter-increment: appendix; }
+
+:pass(7) [data-type="chapter"], :pass(7) .appendix {
+  counter-reset: exercise; }
+
+:pass(7) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
 
 :pass(7) [data-type="chapter"], :pass(7) .appendix {
   counter-reset: example; }
@@ -1415,13 +1588,13 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(7) [data-type="composite-page"].os-eoc.os-learning-outcomes-container::before {
+:pass(7) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
   container: span;
   content: "Summary of Learning Outcomes";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(7) [data-type="composite-page"].os-eoc.os-learning-outcomes-container::before {
+:pass(7) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
@@ -1480,6 +1653,28 @@
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
+
+:pass(7) [data-type="composite-page"].os-eob.os-solutions-container::before {
+  container: span;
+  content: "Answer Key";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(7) [data-type="composite-page"].os-eob.os-solutions-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
+
+:pass(7) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: span;
+  content: "Index";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(7) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
 
 :pass(7) div[data-type='chapter'] > h1[data-type='document-title'] {
   counter-increment: chapTitleNum;
