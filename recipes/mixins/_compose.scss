@@ -83,6 +83,7 @@
   $sortBy: map-get($page, sortBy);
   $compoundComposite: map-get($page, compoundComposite);
   $specialPageType: map-get($page, specialPageType);
+  $keepOriginal: map-get($page, keepOriginal);
 
   // Validate
   @include validate_type($className, string);
@@ -113,7 +114,13 @@
           /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
           content: nodes(sectionHeaderNode) content();
         }
-        move-to: #{$className}-TOCOMPOSITE;
+        @if ($keepOriginal) {
+          copy-to: #{$className}-TOCOMPOSITE;
+        }
+        @else {
+          move-to: #{$className}-TOCOMPOSITE;
+        }
+
       }
       &::after {
         container: div;
@@ -180,7 +187,7 @@
           content: nodes(CompoundSectionHeaderNode) content();
           move-to: #{$className}-separated;
         } @else {
-          move-to: #{$className}-DESTINATION;
+          copy-to: #{$className}-DESTINATION;
         }
       }
       @if ($clusterBy == $CLUSTER_SECTION) {
@@ -198,12 +205,12 @@
         }
       }
       &::after {
-        class: "os-#{$className}-container";
+        class: "os-#{$className}-containerWAKA";
         content: pending(#{$className}-DESTINATION);
         @if ($sortBy != null) {
           sort-by: #{$sortBy}, nocase;
         }
-        move-to: composite-DESTINATION;
+        copy-to: composite-DESTINATION;
       }
     }
   }
