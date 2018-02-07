@@ -111,17 +111,19 @@
   }
 }
 
-@mixin modify_finishPrepingIndexTerms() {
+@mixin modify_finishPrepingIndexTerms($regexpForNotASymbol, $regexpForASymbol) {
+  @include validate_type($regexpForASymbol, string);
+  @include validate_type($regexpForNotASymbol, string);
   div[data-type="page"],
   div[data-type="composite-page"] {
     span[data-type="term"] {
       > span[data-type="term-content"] {
         data-visited: true;
-        &:match("(?u)^\\w") {
+        &:match($regexpForNotASymbol) {
           string-set: group-by first-letter(content());
           data-done: true;
         }
-        &:match("(?u)^\\W") {
+        &:match($regexpForSymbol) {
           string-set: group-by " Symbols";
           data-done: true;
         }

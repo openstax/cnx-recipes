@@ -1496,12 +1496,16 @@
 :pass(2) div[data-type="page"] span[data-type="term"],
 :pass(2) div[data-type="composite-page"] span[data-type="term"] {
   attr-id: "auto_" string(pageID) "_term" counter(term); }
-  :pass(2) div[data-type="page"] span[data-type="term"]:match("^[a-zA-Z]"),
-  :pass(2) div[data-type="composite-page"] span[data-type="term"]:match("^[a-zA-Z]") {
-    attr-group-by: first-letter(content()); }
-  :pass(2) div[data-type="page"] span[data-type="term"]:match("^[^a-zA-Z]"),
-  :pass(2) div[data-type="composite-page"] span[data-type="term"]:match("^[^a-zA-Z]") {
-    attr-group-by: " Symbols"; }
+  :pass(2) div[data-type="page"] span[data-type="term"][cmlnle|reference]::after,
+  :pass(2) div[data-type="composite-page"] span[data-type="term"][cmlnle|reference]::after {
+    container: span;
+    data-type: term-content;
+    content: attr(cmlnle|reference); }
+  :pass(2) div[data-type="page"] span[data-type="term"]:not([cmlnle|reference])::after,
+  :pass(2) div[data-type="composite-page"] span[data-type="term"]:not([cmlnle|reference])::after {
+    container: span;
+    data-type: term-content;
+    content: content(); }
 
 :pass(2) div[data-type="page"] > [data-type="document-title"],
 :pass(2) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -1632,6 +1636,26 @@
   class: "os-eoc os-science-practice-container";
   data-type: "composite-page";
   data-uuid-key: ".science-practice"; }
+
+:pass(3) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
+:pass(3) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
+  data-visited: true;
+  move-to: trash; }
+  :pass(3) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match($regexpForNotASymbol),
+  :pass(3) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match($regexpForNotASymbol) {
+    string-set: group-by first-letter(content());
+    data-done: true; }
+  :pass(3) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match($regexpForSymbol),
+  :pass(3) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match($regexpForSymbol) {
+    string-set: group-by " Symbols";
+    data-done: true; }
+
+:pass(3) div[data-type="page"] span[data-type="term"]:deferred,
+:pass(3) div[data-type="composite-page"] span[data-type="term"]:deferred {
+  attr-group-by: string(group-by); }
+
+:pass(3) body:deferred::after {
+  content: clear(trash); }
 
 :pass(3) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
   string-set: outlinePageId attr(id); }
