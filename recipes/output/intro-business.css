@@ -1190,6 +1190,28 @@
 :pass(2) a[data-type="footnote-number"] > sup {
   content: counter(footnoteLinks); }
 
+:pass(2) [data-type="chapter"] {
+  counter-reset: citation; }
+
+:pass(2) div.reference {
+  counter-increment: citation; }
+
+:pass(2) [data-type="chapter"] {
+  counter-reset: citationLink; }
+
+:pass(2) a[data-type="cite"] {
+  counter-increment: citationLink; }
+
+:pass(2) [data-type="cite"]::before {
+  container: span;
+  class: 'os-citation-number';
+  content: counter(citationLink); }
+
+:pass(2) [data-type="cite"] .reference::before {
+  container: span;
+  class: os-reference-number;
+  content: counter(citation); }
+
 :pass(2) [data-type="chapter"], :pass(2) .appendix {
   counter-reset: example; }
 
@@ -1413,6 +1435,25 @@
   class: os-index-item;
   move-to: index-TOCOMPOSITE; }
 
+:pass(4) [data-type="chapter"] [data-type="note"].reference {
+  move-to: reference-GETCHAPTER; }
+  :pass(4) [data-type="chapter"] [data-type="note"].reference > h3[data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"] > [data-type="document-title"] .os-text {
+  node-set: chapterTitle; }
+
+:pass(4) [data-type="chapter"] > [data-type="document-title"]::after {
+  container: h3;
+  data-type: document-title;
+  content: nodes(chapterTitle);
+  move-to: chapterTitleHeaderText; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-chapter-area";
+  content: pending(chapterTitleHeaderText) pending(reference-GETCHAPTER);
+  move-to: reference-TOCOMPOSITE; }
+
 :pass(4) [data-type="chapter"], :pass(4) .appendix {
   counter-reset: exercise; }
 
@@ -1496,6 +1537,13 @@
   data-type: "composite-page";
   data-uuid-key: "<index>";
   group-by: span, "span::attr(group-by)", nocase; }
+
+:pass(6) body::after {
+  container: div;
+  content: pending(reference-TOCOMPOSITE);
+  class: "os-eob os-reference-container";
+  data-type: "composite-page";
+  data-uuid-key: ".reference"; }
 
 :pass(7) .os-index-container > div.group-by:first-of-type > span.group-label:match("^[ ](Symbols|SYMBOLS)") {
   content: "Symbols"; }
@@ -1672,6 +1720,17 @@
   move-to: h1-TITLECONTAINER; }
 
 :pass(7) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
+
+:pass(7) [data-type="composite-page"].os-eob.os-reference-container::before {
+  container: span;
+  content: "References";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(7) [data-type="composite-page"].os-eob.os-reference-container::before {
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
