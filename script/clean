@@ -1,0 +1,27 @@
+#!/bin/bash -x
+cd "$(dirname "$0")/.." || exit 111
+
+dirs_to_remove=(
+  node_modules
+  venv
+  tmp
+  vendor
+  sassdoc
+  coverage
+  styleguide
+)
+
+for dir_name in "${dirs_to_remove[@]}"; do
+  if [[ -d "./${dir_name}/" ]]; then
+    rm -rf "./${dir_name}/" || exit 111
+  fi
+done
+
+# PyICU is built with a specific version of icu4c and when icu4c is updated the cached egg is no longer useful
+if [[ "$(uname -s)" = "Darwin" ]]; then
+  if [[ -d "${HOME}/Library/Caches/pip" ]]; then
+    rm -rf "${HOME}/Library/Caches/pip" || exit 111
+  fi
+fi
+
+echo "Done cleaning"

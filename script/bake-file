@@ -1,57 +1,37 @@
 #!/bin/bash
-set -e
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
-bookName=$1
-rawFile=$2
-bakedFile=$3
-debugFlag=$4
 
-sassFile="./recipes/books/${bookName}/book.scss"
-cssFile="./recipes/output/${bookName}.css"
+book_name=$1
+raw_file=$2
+baked_file=$3
+debug_flag=$4
+
+sass_file="./recipes/books/${book_name}/book.scss"
+css_file="./recipes/output/${book_name}.css"
 
 # Check command line args
 
-if [ -z "${bookName}" ]
-then
-  echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument. For example: physics'
-  echo 'The required arguments are: bookName, rawFile, bakedFile'
-  exit 1
-fi
+[[ "${book_name}" ]] || die 'Argument Missing. You must specify the name of the book as the 1st argument. For example: physics. The required arguments are: book_name, raw_file, baked_file'
 
-if [ ! -f "${rawFile}" ]
-then
-  echo "ERROR: Could not find the raw HTML file at ${rawFile}"
-  exit 1
-fi
+[[ -f "${raw_file}" ]] || die "Could not find the raw HTML file at ${raw_file}"
 
-if [ -z "${bakedFile}" ]
-then
-  echo 'ERROR: You must specify a baked path'
-  exit 1
-fi
+[[ "${baked_file}" ]] || die 'You must specify a baked path'
 
-if [ ! -f "${sassFile}" ]
-then
-  echo "ERROR: Could not find the raw SCSS file at ${sassFile}"
-  exit 1
-fi
+[[ -f "${sass_file}" ]] || die "Could not find the raw SCSS file at ${sass_file}"
 
 
 # Remove the baked file if it exists
-# [ -e "${bakedFile}" ] && rm ${bakedFile}
+# [ -e "${baked_file}" ] && rm ${baked_file}
 # commented out because it could be /dev/stdout
 
-# Activate the venv if not already in a virtualenv
-if [[ -z "${VIRTUAL_ENV}" ]]
-then
-  source ./venv/bin/activate
-fi
+lcov_file="${baked_file}.lcov"
 
-lcovFile="${rawFile}.lcov"
+try cnx-easybake --coverage-file "${lcov_file}" "${debug_flag}" "${css_file}" "${raw_file}" "${baked_file}"
 
-cnx-easybake --coverage-file "${lcovFile}" ${debugFlag} "${cssFile}" "${rawFile}" "${bakedFile}"
 # Validate the cooked file.
 # Commented because snippets do not pass the data-type="metadata" validation
 # and adding in all those metadata blocks would be cumbersome and distract
 # from the actual use-case which is to show snippets.
-# cnx-epub-validate-collated ${bakedFile}
+# cnx-epub-validate-collated ${baked_file}

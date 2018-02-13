@@ -1,90 +1,82 @@
 #!/bin/bash
-
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
 
 arg1=$1
-debugFlag=$2
 
 # Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
 
 # Check command line args
 
-if [[ -z "${arg1}" ]]
-then
-  >&2 echo 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument'
-  >&2 echo ' or --all for all books.'
-  >&2 echo ''
-  >&2 echo 'This script bakes the book and then compares to the prepared book'
-  >&2 echo '(done earlier, usually in another branch)'
-  >&2 echo ''
-  >&2 echo "Valid books are (from ./books.txt):"
-  for bookConfig in "${BOOK_CONFIGS[@]}"
-  do
-    read -r bookName recipeName uuid _ <<< "${bookConfig}"
-    >&2 echo "${bookName}"
+if [[ -z "${arg1}" ]]; then
+  _say 'This script bakes the book and then compares to the prepared book'
+  _say '(done earlier, usually in another branch)'
+  _say ''
+  _say "Valid books are (from ./books.txt):"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_name recipe_name uuid _ <<< "${book_config}"
+    _say "${book_name}"
   done
 
-  exit 1
+  die 'Argument Missing. You must specify the name of the book as the 1st argument or --all for all books.'
 fi
 
 
-if [[ ! "${arg1}" == "--all" ]]
-then
+if [[ ! "${arg1}" == "--all" ]]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
-  for bookConfig in "${BOOK_CONFIGS[@]}"
-  do
-    read -r bookConfigName recipeName uuid _ <<< "${bookConfig}"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name recipe_name uuid _ <<< "${book_config}"
 
-    if [[ "${arg1}" = "${bookConfigName}" ]]
-    then
-      BOOK_CONFIGS=("${bookConfigName} ${recipeName} ${uuid}")
-      foundConfig=1
+    if [[ "${arg1}" = "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid}")
+      found_config=1
       break
     fi
   done
 
-  if [[ ! 1 -eq "${foundConfig}" ]]
-  then
-    >&2 echo "ERROR: Could not find Book info for book named ${arg1}"
-    >&2 echo "Valid books are (from ./books.txt):"
-    for bookConfig in "${BOOK_CONFIGS[@]}"
-    do
-      read -r bookName recipeName uuid _ <<< "${bookConfig}"
-      >&2 echo "${bookName}"
+  if [[ ! 1 -eq "${found_config}" ]]; then
+    _say "Valid books are (from ./books.txt):"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name recipe_name uuid _ <<< "${book_config}"
+      _say "${book_name}"
     done
-    exit 1
+    die "Could not find Book info for book named ${arg1}"
   fi
 fi
 
-for bookConfig in "${BOOK_CONFIGS[@]}"
-do
-  read -r bookName recipeName uuid _ <<< "${bookConfig}"
-  rawFile="./data/${bookName}-raw.xhtml"
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name recipe_name uuid _ <<< "${book_config}"
 
-  bakedFile="./data/${bookName}-baked.xhtml"
-  preparedFile="./data/${bookName}-prepared.xhtml"
+  baked_file="./data/${book_name}-baked.xhtml"
+  prepared_file="./data/${book_name}-prepared.xhtml"
+  formatted_file="./data/${book_name}-formatted.xhtml"
 
-  if [[ -s "${preparedFile}" ]]
-  then
+  if [[ -s "${prepared_file}" ]]; then
 
-    ./script/bake-book ${bookName} --use-repeatable-ids || exit 1
+    do_progress_quiet "Baking ${book_name} book" \
+      ./script/bake-book "${book_name}" --use-repeatable-ids
 
-    diffCount=$(diff ${preparedFile} ${bakedFile} | wc -l)
+    # format the HTML so it is easily diff-able
+    try mv "${baked_file}" "${formatted_file}"
+    try xmllint --pretty 2 "${formatted_file}" > "${baked_file}"
+    try rm "${formatted_file}"
 
-    if [[ 0 -ne "${diffCount}" ]]
-    then
-      >&2 echo "There were ${diffCount} differences found"
-      >&2 echo "To see all of them run the following:"
-      >&2 echo "diff ${preparedFile} ${bakedFile}"
+    diff_count=$(diff "${prepared_file}" "${baked_file}" | wc -l)
+
+    if [[ 0 -ne "${diff_count}" ]]; then
+      _say "There were ${diff_count} differences found"
+      _say "To see all of them run the following:"
+      _say "diff ${prepared_file} ${baked_file}"
       if [[ ! ${DO_ALL} ]]; then
-        exit 1
+        die "Exiting because differences were found"
       fi
     fi
 
   else
 
-    >&2 echo "SKIPPING ${bookName} because the prepared file was not found."
-    >&2 echo "Did you run './script/diff-book-prepare ${bookName}' earlier?"
+    _say "SKIPPING ${book_name} because the prepared file was not found."
+    _say "Did you run './script/diff-book-prepare ${book_name}' earlier?"
   fi
 
 
