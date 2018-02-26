@@ -460,13 +460,6 @@
 :pass(0) cnx-pi {
   move-to: trash; }
 
-:pass(0) :not([data-type="example"]) > [data-type="exercise"] {
-  string-set: isSolution ""; }
-  :pass(0) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
-    string-set: isSolution " os-hasSolution "; }
-  :pass(0) :not([data-type="example"]) > [data-type="exercise"]::deferred {
-    class: attr(class) string(isSolution, " "); }
-
 :pass(0) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
 
@@ -831,6 +824,8 @@
   node-set: sectionHeaderNode; }
 
 :pass(2) div[data-type="chapter"] section.section-summary {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: section-summary-TOCOMPOSITE; }
   :pass(2) div[data-type="chapter"] section.section-summary > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -843,13 +838,9 @@
   data-type: "composite-page";
   data-uuid-key: ".section-summary"; }
 
-:pass(2) div[data-type="chapter"] div[data-type="key-terms"] {
-  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
-  move-to: trash; }
-
-:pass(2) div[data-type="chapter"] div[data-type="key-terms"] dl {
+:pass(2) div[data-type="chapter"] section.key-terms {
   move-to: key-terms-TOCOMPOSITE; }
-  :pass(2) div[data-type="chapter"] div[data-type="key-terms"] dl > [data-type="title"] {
+  :pass(2) div[data-type="chapter"] section.key-terms > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 
@@ -858,10 +849,11 @@
   content: pending(key-terms-TOCOMPOSITE);
   class: "os-eoc os-key-terms-container";
   data-type: "composite-page";
-  data-uuid-key: "<glossary>";
-  sort-by: xhtml|dl > xhtml|dt, nocase; }
+  data-uuid-key: ".key-terms"; }
 
 :pass(2) div[data-type="chapter"] section.assessment-questions {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: assessment-questions-TOCOMPOSITE; }
   :pass(2) div[data-type="chapter"] section.assessment-questions > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -875,6 +867,8 @@
   data-uuid-key: ".assessment-questions"; }
 
 :pass(2) div[data-type="chapter"] section.references {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: references-TOCOMPOSITE; }
   :pass(2) div[data-type="chapter"] section.references > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -886,6 +880,19 @@
   class: "os-eoc os-references-container";
   data-type: "composite-page";
   data-uuid-key: ".references"; }
+
+:pass(2) div[data-type="chapter"] section.figure-credits {
+  move-to: figure-credits-TOCOMPOSITE; }
+  :pass(2) div[data-type="chapter"] section.figure-credits > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(2) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(figure-credits-TOCOMPOSITE);
+  class: "os-eoc os-figure-credits-container";
+  data-type: "composite-page";
+  data-uuid-key: ".figure-credits"; }
 
 :pass(2) div[data-type="chapter"] section.case-study {
   move-to: case-study-TOCOMPOSITE; }
@@ -908,22 +915,37 @@
 :pass(4) div[data-type="composite-page"] > [data-type="document-title"] {
   string-set: sectionHeaderString content(); }
 
+:pass(4) [data-type="chapter"], :pass(4) .appendix {
+  counter-reset: exercise; }
+
+:pass(4) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
+
+:pass(4) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ".";
+  class: os-divider; }
+
+:pass(4) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
+:pass(4) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ".";
+  class: os-divider; }
+
+:pass(4) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
 :pass(5) body {
   counter-reset: exerciseAll; }
 
 :pass(5) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
-
-:pass(5) [data-type="exercise"].os-hasSolution {
-  string-set: exerciseId attr(id); }
-  :pass(5) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
-    container: a;
-    attr-href: "#" string(exerciseId) "-solution"; }
-  :pass(5) [data-type="exercise"].os-hasSolution [data-type="solution"] {
-    attr-id: string(exerciseId) "-solution"; }
-    :pass(5) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
-      container: a;
-      attr-href: "#" string(exerciseId); }
 
 :pass(6) div[data-type="page"] > [data-type="document-title"],
 :pass(6) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -943,6 +965,12 @@
 
 :pass(7) div.appendix {
   counter-increment: appendix; }
+
+:pass(7) [data-type="chapter"], :pass(7) .appendix {
+  counter-reset: exercise; }
+
+:pass(7) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
 
 :pass(7) [data-type="chapter"], :pass(7) .appendix {
   counter-reset: example; }
@@ -1043,6 +1071,17 @@
   move-to: h2-TITLECONTAINER; }
 
 :pass(7) [data-type="composite-page"].os-eoc.os-references-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(7) [data-type="composite-page"].os-eoc.os-figure-credits-container::before {
+  container: span;
+  content: "Figure Credits";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(7) [data-type="composite-page"].os-eoc.os-figure-credits-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
@@ -1335,6 +1374,9 @@
 
 :pass(7) .appendix > section > section [data-type="title"], :pass(7) .appendix > section > section [data-type="document-title"] {
   container: h3; }
+
+:pass(8) .os-eoc [data-type="solution"] {
+  move-to: trash; }
 
 :pass(8) .os-index-link-separator:last-child {
   move-to: trash; }
