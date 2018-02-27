@@ -5,8 +5,6 @@
 
 @namespace cmlnle "http://katalysteducation.org/cmlnle/1.0";
 
-$_symbolsSectionTitle: "Symbols";
-
 //Currently, none of the books have composite chapters
 //TODO: add a switch when our books have composite chapters, define logic/behavior for that switch. This simply could be in the _config files for all books or set based on the presence of at least one type of composite chapter (appendix, multiple page answer key etc.).
 
@@ -67,6 +65,10 @@ $_symbolsSectionTitle: "Symbols";
   //Some modifications to be done to the book before any collation
   @include misc_webview_styling();
 
+  @include modify_syncTitlesFromCollection();
+}
+
+:pass(1) {
   @include modify_titlePreface();
   @include modify_spanWrapTitles();
   @if $Config_Coverage_MayHaveSimlinks == true {
@@ -114,7 +116,7 @@ $_symbolsSectionTitle: "Symbols";
     @include modify_addAbstractTitle($Config_abstractTitle);
   }
 }
-:pass(1) {
+:pass(2) {
   @if $Config_Coverage_MayHaveMissingExercises {
     @include modify_trash('[data-type="exercise"].missing-exercise');
   }
@@ -157,7 +159,7 @@ $_symbolsSectionTitle: "Symbols";
       }
   }
 }
-:pass(2) {
+:pass(3) {
 
   //Come up with mixins for common numbering schemes as per Phil's suggestion
   @include count_countChapters(chapter);
@@ -169,6 +171,13 @@ $_symbolsSectionTitle: "Symbols";
   @include count_footnotes(footnotes);
   @include count_footnoteLinks(footnoteLinks);
   @include number_footnotes(footnotes, footnoteLinks);
+  
+  @if ($Config_hasCitation) {
+    @include count_citations(citation);
+    @include count_citationsLinks(citationLink);
+    @include number_citations(citation, citationLink);
+  }
+
 
   // Count examples when moveTo: $AREA_NONE (no moving)
   @include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);
@@ -231,7 +240,7 @@ $_symbolsSectionTitle: "Symbols";
     @include modify_addUnnumbered($contextSelector, $childSelector);
   }
 }
-:pass(3) {
+:pass(4) {
   //After: createChapterComposites
   // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
   // and finding all that have a `childPages:` field
@@ -251,7 +260,7 @@ $_symbolsSectionTitle: "Symbols";
     @include compose_chapterOutline($outlineTitle, $hasLearningObjectives);
   }
 }
-:pass(4) {
+:pass(5) {
 
   //After: ???
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
@@ -288,7 +297,7 @@ $_symbolsSectionTitle: "Symbols";
     } @else { @error 'BUG: Invalid enum'; }
   }
 }
-:pass(5) {
+:pass(6) {
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
   // Only link up problems and solutions if they will not be discarded (optimization)
@@ -304,7 +313,7 @@ $_symbolsSectionTitle: "Symbols";
     @include link_linkToProblemsFromSolutionsEOC($trashHalf: false);
   }
 }
-:pass(6) {
+:pass(7) {
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @each $page in $Config_ChapterCompositePages {
@@ -364,9 +373,9 @@ $_symbolsSectionTitle: "Symbols";
   //After: prepBookComposites
   @include compose_createBookComposites($Config_BookCompositePages);
 }
-:pass(7) {
+:pass(8) {
   //After: prepIndexTerms, createBookComposites
-  @include modify_addIndexSymbolGroup("index", $_symbolsSectionTitle);
+  @include modify_addIndexSymbolGroup("index", $Config_symbolsSectionTitle);
 
   //After: composite page creation
   @include count_countChapters(chapter);
@@ -427,7 +436,7 @@ $_symbolsSectionTitle: "Symbols";
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
 }
-:pass(8) {
+:pass(9) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
     @if map-get($Config_PartType_Solution, HACKRemoveAllSolutionsNotJustEoC) == true {
@@ -439,15 +448,15 @@ $_symbolsSectionTitle: "Symbols";
   @include modify_trash('.os-index-link-separator:last-child');
   @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
 }
-:pass(9) {
+:pass(10) {
   //After: All metadata tasks are completed
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
 }
-:pass(10) {
+:pass(11) {
   @include toc_putTOCElements();
 }
-:pass(11) {
+:pass(12) {
   @include toc_navTOCUnwrap();
 }
 :pass(100) {

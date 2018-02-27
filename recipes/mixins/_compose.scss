@@ -246,8 +246,8 @@
   @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
   @if (not $compoundComposite) {
-    $sourceSelector: if($specialPageType == $PAGE_INDEX, 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]', 'section.#{$className}');
     @if ($specialPageType == $PAGE_INDEX) {
+      $sourceSelector: 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]';
       #{$sourceSelector} {
         // Create an index entry for the term by creating a new element and then moving it
         &::after {
@@ -287,6 +287,7 @@
         }
       }
     } @else {
+      $sourceSelector: if($specialPageType == $PAGE_CITATIONS, '[data-type="note"].#{$className}', 'section.#{$className}');
       $clusterBy: map-get($page, clusterBy);
       $chapterPages: map-get($page, chapterPages);
       $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
@@ -592,7 +593,7 @@
       //FIXME wrap the in spans
       container: h2;
       class: "os-title";
-      content: "Chapter " string(ChapNum);
+      content: $Config_EOBSolutionsChapterSectionTitle;
       move-to: chaptTitleEOB;
     }
     &::after {
