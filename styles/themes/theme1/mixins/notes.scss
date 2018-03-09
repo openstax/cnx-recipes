@@ -1,0 +1,84 @@
+@mixin notes($title, $title-background-color, $background-color, $icon, $notes-body-text-color: $notes-body-text-color, $icon-width: 110px, $icon-height: 62px, $icon-top: 2px, $icon-right: 15px, $border-bottom-left-radius: 0, $border-bottom-right-radius: 0, $border-top-left-radius: 5px, $border-top-right-radius: 5px) {
+  //$icon-* attribute values are defaults for content based feature icons.
+  display: table;
+  position: relative;
+  background-color: $background-color;
+  text-align: left;
+  color: $notes-body-text-color;
+  border-bottom-left-radius: $border-bottom-left-radius;
+  border-bottom-right-radius: $border-bottom-right-radius;
+  padding: 0;
+  box-sizing: border-box;
+
+  &::before {
+    display: table-caption;
+    content: $title; // font-weight: 600;
+    font-style: normal;
+    background-color: $title-background-color;
+    color: #fff;
+    border-top-left-radius: $border-top-left-radius;
+    border-top-right-radius: $border-top-right-radius;
+    //.font-scale(1);
+    font-family: $font-family-titles;
+    //.scale-padding(1, padding);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  //  #utils>#pb>.after(avoid);
+  }
+
+  > div.body {
+    &::before {
+      background: blue;
+      display: block;
+      content: '';
+      background: url("ccap-business/${icon}.svg") no-repeat 0;
+      width: $icon-width;
+      height: $icon-height;
+      position: absolute;
+      bottom: $icon-top;
+      right: $icon-right;
+    }
+  }
+}
+
+@mixin note-border-top ($note-title, $note-border-color, $border-radius: 3px, $border-top: 5px) {
+  &::before {
+    content: $note-title;
+    display: block;
+    border-top: $border-top solid $note-border-color;
+    border-top-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+    border-bottom: solid 1px $notes-border-color;
+    //.font-scale(1);
+    font-family: $font-family-titles;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  //  #utils>#pb>.after(avoid);
+    //.scale-padding(2, padding);
+    position: relative;
+    top: -5px;
+    left: -1px;
+    width: $note-border-top-width;
+    font-weight: bold;
+  }
+  position: relative;
+  border-left: solid 1px $notes-border-color;
+  border-right: solid 1px $notes-border-color;
+  border-bottom: solid 1px $notes-border-color;
+  //override base generic styles for notes
+  padding: 0;
+  margin: 0;
+  top: 10px;
+  //override generic note corners
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  width: 100%;
+
+  .body {
+    border: 0;
+  }
+
+  a:link {
+    //@mixin link-style($body-link-color);
+  }
+}

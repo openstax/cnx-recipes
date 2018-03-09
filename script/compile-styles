@@ -1,0 +1,28 @@
+#!/bin/bash
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+arg1=$1
+
+# Pull in the BOOK_CONFIGS and RECIPE_NAMES
+source ./books.txt || exit 1
+
+if [ ! "${arg1}" == "" ]; then
+  BOOK_NAMES=("${arg1}")
+fi
+
+
+sass_bin="$(npm bin)/node-sass"
+output_dir="./styles/output/"
+
+for book_name in "${BOOK_NAMES[@]}"; do
+
+  sass_file="./styles/books/${book_name}.scss"
+  css_file="./styles/output/${book_name}.css"
+
+  do_progress_quiet "Watching ${css_file}" \
+    "${sass_bin}" --watch "${sass_file}":"${css_file}"
+done
+
+do_progress_quiet "Generating CSS manifest" \
+  ./script/build-manifest
