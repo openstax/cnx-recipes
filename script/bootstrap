@@ -3,7 +3,7 @@
 
 # Resolve all dependencies that the application requires to run.
 # From https://github.com/github/scripts-to-rule-them-all/blob/master/script/bootstrap
-virtualenv -p /usr/bin/python2.7
+
 if [[ $0 != "-bash" ]]; then
   cd "$(dirname "$0")/.." || exit 111
 fi
@@ -112,20 +112,48 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
   fi
 
   # Javascript environment
-  if [[ -f "./package.json" ]]; then
-    [[ $(which yarn) ]] || die "Install yarn by going to https://yarnpkg.com"
-  fi
-  if [[ -f "./.nvmrc" ]]; then
-    # Set up the correct version of node (Travis automatically does this)
-    if [[ ! "${CI}" = "true" ]]; then
-      if [[ ! -f "${HOME}/.nvm/nvm.sh" ]]; then
-        die "Install nvm by going to https://github.com/creationix/nvm"
-      fi
-      # shellcheck disable=SC1090
-      source "${HOME}/.nvm/nvm.sh" --no-use
-      do_progress_quiet "Setting correct node version (see ./.nvmrc)" \
-        nvm install "$(< ./.nvmrc)"
+  # Set up the correct version of node (Travis automatically does this)
+  if [[ ! "${CI}" = "true" ]]; then
+    # Move from using .nvmrc to .node-version
+    if [[ -f "./.nvmrc" ]]; then
+      _say "${c_red}DEPRECATED:${c_none} using .nvmrc file but renaming it to be .node-version"
+      # move to .node-version and strip the "v" at the beginning of .nvmrc
+      nvmrc_contents="$(< ./.nvmrc)"
+      echo "${nvmrc_contents#*v}" > ./.node-version
+      try rm ./.nvmrc
     fi
+
+    if [[ -f "./.node-version" ]]; then
+
+      # If you have the correct version then skip the nvm check
+      version_actual="$(node --version 2> /dev/null)"
+      version_required="v$(cat ./.node-version)"
+
+      if [[ -z "${version_actual}" || "${version_actual}" != "${version_required}" ]]; then
+        if [[ $(which nodenv) ]]; then
+          # Since the versions do not match then nodenv might not have been initialized
+          eval "$(nodenv init -)"
+          do_progress_quiet "Installing correct version of node" \
+            nodenv install "$(< ./.node-version)" --skip-existing
+        elif [[ -f "${HOME}/.nvm/nvm.sh" ]]; then
+          # DEPRECATE the nvm method once deployments do not use it
+          # shellcheck disable=SC1090
+          source "${HOME}/.nvm/nvm.sh" --no-use
+          do_progress_quiet "${c_red}DEPRECATED:${c_none} Setting correct node version using nvm. Try using https://github.com/nodenv/nodenv instead (add it to Brewfile)" \
+            nvm install "v$(< ./.node-version)"
+        fi
+      fi
+
+      version_actual="$(node --version 2> /dev/null)"
+      if [[ "${version_actual}" != "${version_required}" ]]; then
+        die "Could not install the correct version of node. Expected '${version_required}' but found '${version_actual}'. Try installing nodenv or nvm. If you installed nodenv then open a new shell"
+      fi
+    fi
+  fi
+
+  # ensure yarn is installed (for installing JS packages)
+  if [[ -f "./package.json" ]]; then
+    [[ $(which yarn) ]] || die "Install yarn by going to https://yarnpkg.com or adding it to Brewfile (macos)"
   fi
 
   # Note: Skip rbenv for Travis because it already has ruby
