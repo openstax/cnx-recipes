@@ -171,7 +171,7 @@
   @include count_footnotes(footnotes);
   @include count_footnoteLinks(footnoteLinks);
   @include number_footnotes(footnotes, footnoteLinks);
-  
+
   @if ($Config_hasCitation) {
     @include count_citations(citation);
     @include count_citationsLinks(citationLink);
@@ -241,6 +241,9 @@
   }
 }
 :pass(4) {
+  // After: modify_prepIndexTerms
+  @include modify_finishPrepingIndexTerms($Config_Index_NotSymbolRegexp, $Config_Index_SymbolRegexp);
+
   //After: createChapterComposites
   // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
   // and finding all that have a `childPages:` field
@@ -375,7 +378,7 @@
 }
 :pass(8) {
   //After: prepIndexTerms, createBookComposites
-  @include modify_addIndexSymbolGroup("index", $Config_symbolsSectionTitle);
+  @include modify_addIndexSymbolGroup("index", $Config_Index_SymbolsSectionTitle);
 
   //After: composite page creation
   @include count_countChapters(chapter);
