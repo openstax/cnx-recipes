@@ -77,7 +77,7 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_UnnumberedEquations`: a list of [UnnumberedExercises](#unnumberedexercise)
 - `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
 - `$Config_hasCompositeAppendixes`: a boolean (used for some TEA books)
-
+- `$Config_hasCitation`: a boolean used for References.
 
 ## TitleContent
 

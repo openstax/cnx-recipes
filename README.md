@@ -3,7 +3,6 @@
 # Install
 
 1. ensure the prerequisites are installed.
-   - NodeJS (via [nvm](https://github.com/creationix/nvm))
    - [Virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
 1. run `./script/setup` to install the dependencies.
 
@@ -64,7 +63,7 @@ For more details on the commandline options see the [css-coverage](https://www.n
 
 ### Why CSS Coverage?
 
-Code coverage is a great way to see if your tests exercises all the features of the codebase. 
+Code coverage is a great way to see if your tests exercises all the features of the codebase.
 
 In the case of this repositoriy, the "codebase" contains all the CSS recipe files and the "tests" are the HTML snippets used to create a style guide.
 
