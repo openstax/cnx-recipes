@@ -22,9 +22,12 @@
 // @import '../../page-skeleton.scss';
 //theme specific non-slots & skeleton includes
 //mixins and variables
-@import 'mixins/variables.scss';
-@import 'mixins/color-map.scss';
-@import 'mixins/mixins.scss';
+
+@import 'mixins/variables';
+@import 'mixins/color-map';
+@import 'mixins/mixins';
+
+@import '../../framework/global.scss';
 //book components
 @import 'parts/toc.scss';
 @import 'parts/preface.scss';
@@ -44,24 +47,14 @@
 @import 'parts/citations.scss';
 @import 'parts/index.scss';
 
+
+
 html {
   prince-image-resolution: 150dpi;
   prince-background-image-resolution: 150dpi;
 }
 
-body {
-  color: $default-text;
-  font-size: $base-font-size;
-}
-//global theme stuff
-.bold.centered-text {
-  text-align: center;
-  display: block;
 
-  strong {
-    font-weight: 100;
-  }
-}
 @page landscape {
   prince-rotate-body: landscape;
   prince-shrink-to-fit: auto;
@@ -80,7 +73,7 @@ body {
  * ------------------------
  */
 .appendix:not(.toc-appendix) a:link,
-.chapter .section a:link,
+.chapter.section a:link,
 .preface:not(.toc-preface) a:link {
   @include link-style($body-link-color);
 }
@@ -111,7 +104,7 @@ p {
  */
 //removes pipe from folio
 
-div.book div.chapter > div.titlepage > div > div h1.title {
+div.book .chapter> div.titlepage > div > div h1.title {
   span.cnx-gentext-t {
     string-set: cnx-header "${cnx-string-chapter} " counter(chapter, decimal) " " content();
   }
@@ -126,8 +119,8 @@ span.colored-text {
 }
 
 .appendix.module a:link.target-section,
-.chapter .cnx-eoc a:link.target-section,
-.chapter .section.module a:link.target-section {
+.chapter.cnx-eoc a:link.target-section,
+.chapter.section.module a:link.target-section {
   background-image: url("ccap-astronomy/LO.svg");
   background-repeat: no-repeat;
   background-position: left;
@@ -138,7 +131,7 @@ span.colored-text {
 }
 
 .appendix.module a.xref,
-.chapter .section.module a.xref,
+.chapter.section.module a.xref,
 .cnx-eoc a.xref {
   prince-text-replace: "Section" " ";
 }
@@ -210,7 +203,7 @@ div.section.learning-outcomes {
  * Remove folio on chapter splash
  * ---------------------------------------------------
  */
-.chapter {
+.chapter{
   page: chapter;
   prince-page-group: start;
 }

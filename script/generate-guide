@@ -10,6 +10,8 @@ styleguideDir="./styleguide/${recipe_name}"
 sass_file="${sassDir}/books/${recipe_name}/book.scss"
 css_file="${styleguideDir}/guide.css"
 guideHomepageFile="./guide-homepage.md" # Relative to ${sassDir}/recipes/
+stylesDir='./styles/'
+template_file="../../styles/output/${recipe_name}.css"
 
 tempDir="./tmp/"
 tempRecipeDir="${tempDir}/${recipe_name}/"
@@ -117,7 +119,9 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
     --homepage "${guideHomepageFile}" \
     --destination "${styleguideDir}" \
     --css ./guide.css \
+    --css "${template_file}" \
     --source "${tempRecipeDir}" \
+    --source "${stylesDir}" \
     --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"
 
   # HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
