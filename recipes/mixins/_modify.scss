@@ -61,6 +61,21 @@
 }
 
 
+
+// Replace module titles with the ones set by collection.
+@mixin modify_syncTitlesFromCollection() {
+  div[data-type="page"] {
+    > div[data-type="metadata"] > [data-type="document-title"] {
+      string-set: page-title content();
+    }
+
+    > [data-type="document-title"] {
+      content: string(page-title);
+    }
+  }
+}
+
+
 /// Wraps all `[data-type="document-title"]` (excluding in the metadata) in a span with the class `os-text`. This is done before numbering.
 /// @group modify
 @mixin modify_spanWrapTitles() {
@@ -96,13 +111,48 @@
   div[data-type="composite-page"] {
     span[data-type="term"] {
       attr-id: "auto_" string($pageIDString) "_term" counter($termCounter);
-      &:match("^[a-zA-Z]") {
-        attr-group-by: first-letter(content());
+
+      &[cmlnle|reference]::after {
+        container: span;
+        data-type: term-content;
+        content: attr(#{"cmlnle|reference"});
       }
-      &:match("^[^a-zA-Z]") {
-        attr-group-by: " Symbols";
+      &:not([cmlnle|reference])::after {
+        container: span;
+        data-type: term-content;
+        content: content();
       }
     }
+  }
+}
+
+@mixin modify_finishPrepingIndexTerms($regexpForNotASymbol, $regexpForASymbol) {
+  @include validate_type($regexpForASymbol, string);
+  @include validate_type($regexpForNotASymbol, string);
+  div[data-type="page"],
+  div[data-type="composite-page"] {
+    span[data-type="term"] {
+      > span[data-type="term-content"] {
+        data-visited: true;
+        &:match("#{$regexpForNotASymbol}") {
+          string-set: group-by first-letter(content());
+          data-done: true;
+        }
+        &:match("#{$regexpForASymbol}") {
+          string-set: group-by " Symbols";
+          data-done: true;
+        }
+        move-to: term-trash;
+      }
+
+      &:deferred {
+        attr-group-by: string(group-by);
+      }
+    }
+  }
+
+  body:deferred::after {
+    content: clear(term-trash);
   }
 }
 

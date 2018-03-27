@@ -68,6 +68,8 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Table_CaptionContentAp`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Figure_CaptionContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Figure_CaptionContentAp`: A [TitleContent](#titlecontent)
+  - `$Config_Index_SymbolRegexp`: A regular expression (in a string)
+  - `$Config_Index_NotSymbolRegexp`: A regular expression (in a string)
 - `$Config_Coverage_*`
   - `$Config_Coverage_MayHaveSimlinks`: a boolean
   - `$Config_Coverage_MayHaveIframes`: a boolean
@@ -75,7 +77,7 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_UnnumberedEquations`: a list of [UnnumberedExercises](#unnumberedexercise)
 - `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
 - `$Config_hasCompositeAppendixes`: a boolean (used for some TEA books)
-
+- `$Config_hasCitation`: a boolean used for References.
 
 ## TitleContent
 
