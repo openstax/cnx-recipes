@@ -71,7 +71,7 @@
         -->
         <xsl:value-of select="'&lt;div data-type=&quot;page&quot;>'" disable-output-escaping="yes" />
         <xsl:call-template name="page-metadata">
-          <xsl:with-param name="title">[PAGE_TITLE]</xsl:with-param>
+          <xsl:with-param name="title">Example Page Title</xsl:with-param>
         </xsl:call-template>
       </xsl:when>
       <xsl:when test="$commentText = 'END:Page'">
