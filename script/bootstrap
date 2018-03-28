@@ -103,6 +103,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
       virtualenv_dir="./venv/"
       python_version="$(< .python-version)"
+      virtualenv_command="virtualenv"
 
       # macOS needs a little extra love
       if [[ "$(uname -s)" = "Darwin" ]]; then
@@ -111,10 +112,12 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
           do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
             pyenv install "${python_version}"
         fi
+        # From https://github.com/pyenv/pyenv-virtualenv#installing-with-homebrew-for-os-x-users
         eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
 
-        # Check that `virtualenv` points to the pyenv version
-        [[ $(pyenv which virtualenv) ]] || die "wrong version of virtualenv. Maybe Brewfile is missing an entry for pyenv-virtualenv or you might need to: 'brew uninstall pyenv; brew uninstall pyenv-virtualenv; rm -rf ~/.pyenv/' and then re-run the setup script"
+        # Use the pyenv virtualenv instead of one that was installed on the system
+        virtualenv_command="pyenv virtualenv"
 
       fi
 
@@ -135,9 +138,10 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
           pip install virtualenv
       fi
       # Create a virtualenv
+      # shellcheck disable=SC2086
       if [[ ! -d "${virtualenv_dir}" ]]; then
         do_progress_quiet "Setting up a Python virtualenv" \
-          virtualenv "${virtualenv_dir}"
+          ${virtualenv_command} "${virtualenv_dir}"
       fi
 
       do_progress_quiet "Activating Python virtualenv" \
