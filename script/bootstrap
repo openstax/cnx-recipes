@@ -19,7 +19,10 @@ if [[ ! "${LOG_LEVEL}" ]]; then
 fi
 
 # Turn on tracing if desired
-[[ ${LOG_LEVEL} == "trace" ]] && set -x
+if [[ ${LOG_LEVEL} == "trace" ]]; then
+  export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
+  set -x
+fi
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 if [[ $(tput colors) -ge 8 ]]; then
