@@ -103,6 +103,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
       virtualenv_dir="./venv/"
       python_version="$(< .python-version)"
+      virtualenv_command="virtualenv"
 
       # macOS needs a little extra love
       if [[ "$(uname -s)" = "Darwin" ]]; then
@@ -111,10 +112,10 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
           do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
             pyenv install "${python_version}"
         fi
-        # From https://github.com/pyenv/pyenv-virtualenv#installing-with-homebrew-for-os-x-users
+        # Ensure pyenv is initialized
         eval "$(pyenv init -)"
-        eval "$(pyenv virtualenv-init -)"
 
+        virtualenv_command="pyenv exec virtualenv"
       fi
 
       # Install pip if it is not available
@@ -140,7 +141,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       # Create a virtualenv
       if [[ ! -d "${virtualenv_dir}" ]]; then
         do_progress_quiet "Setting up a Python virtualenv" \
-          virtualenv "${virtualenv_dir}"
+          ${virtualenv_command} "${virtualenv_dir}"
       fi
 
       do_progress_quiet "Activating Python virtualenv" \

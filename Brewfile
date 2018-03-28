@@ -1,7 +1,6 @@
 brew "rbenv"
 brew "nodenv"
 brew "pyenv"
-brew "pyenv-virtualenv"
 brew "yarn"
 brew "lcov"
 brew "shellcheck"
