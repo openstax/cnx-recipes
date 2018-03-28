@@ -112,6 +112,10 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
             pyenv install "${python_version}"
         fi
         eval "$(pyenv init -)"
+
+        # Check that `virtualenv` points to the pyenv version
+        [[ $(pyenv which virtualenv) ]] || die "wrong version of virtualenv. Maybe Brewfile is missing an entry for pyenv-virtualenv or you might need to: 'brew uninstall pyenv; brew uninstall pyenv-virtualenv; rm -rf ~/.pyenv/' and then re-run the setup script"
+
       fi
 
       # Install pip if it is not available
