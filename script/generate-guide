@@ -9,7 +9,7 @@ sassDir='./recipes/'
 styleguideDir="./styleguide/${recipe_name}"
 sass_file="${sassDir}/books/${recipe_name}/book.scss"
 css_file="${styleguideDir}/guide.css"
-guideHomepageFile="./guide-homepage.md" # Relative to ${sassDir}/recipes/
+guideHomepageFile="../recipes/guide-homepage.md" # Relative to ${sassDir}/recipes/
 stylesDir='./styles/'
 template_file="../../styles/output/${recipe_name}.css"
 
@@ -114,9 +114,9 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
   # The CSS path is relative to the styleguide directory, hence `./guide.css`
   # Exclude parsing the output/*.css files by setting the --mask
   do_progress_quiet "Generating the style guide" \
-    "$(npm bin)/kss-node" --verbose \
-    --template ./js/openstax-kss-builder \
+    "$(npm bin)/kss" --verbose \
     --homepage "${guideHomepageFile}" \
+    --builder ./js/kss \
     --destination "${styleguideDir}" \
     --css ./guide.css \
     --css "${template_file}" \
