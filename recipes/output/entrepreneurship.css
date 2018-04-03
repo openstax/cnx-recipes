@@ -945,26 +945,24 @@
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 
-:pass(3) div[data-type="chapter"] section.secion-summary {
-  move-to: secion-summary-TOCOMPOSITE; }
-  :pass(3) div[data-type="chapter"] section.secion-summary > [data-type="title"] {
+:pass(3) div[data-type="chapter"] section.section-summary {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
+  move-to: section-summary-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.section-summary > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 
 :pass(3) div[data-type="chapter"]::after {
   container: div;
-  content: pending(secion-summary-TOCOMPOSITE);
-  class: "os-eoc os-secion-summary-container";
+  content: pending(section-summary-TOCOMPOSITE);
+  class: "os-eoc os-section-summary-container";
   data-type: "composite-page";
-  data-uuid-key: ".secion-summary"; }
+  data-uuid-key: ".section-summary"; }
 
-:pass(3) div[data-type="chapter"] div[data-type="key-terms"] {
-  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
-  move-to: trash; }
-
-:pass(3) div[data-type="chapter"] div[data-type="key-terms"] dl {
+:pass(3) div[data-type="chapter"] section.key-terms {
   move-to: key-terms-TOCOMPOSITE; }
-  :pass(3) div[data-type="chapter"] div[data-type="key-terms"] dl > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.key-terms > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 
@@ -973,8 +971,7 @@
   content: pending(key-terms-TOCOMPOSITE);
   class: "os-eoc os-key-terms-container";
   data-type: "composite-page";
-  data-uuid-key: "<glossary>";
-  sort-by: xhtml|dl > xhtml|dt, nocase; }
+  data-uuid-key: ".key-terms"; }
 
 :pass(3) div[data-type="chapter"] section.review-questions {
   move-to: review-questions-TOCOMPOSITE; }
@@ -1116,6 +1113,22 @@
 :pass(5) .introduction {
   content: pending(ChapterOutline) content(); }
 
+:pass(5) [data-type="chapter"], :pass(5) .appendix {
+  counter-reset: exercise; }
+
+:pass(5) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
 :pass(6) body {
   counter-reset: exerciseAll; }
 
@@ -1191,6 +1204,12 @@
   counter-increment: appendix; }
 
 :pass(8) [data-type="chapter"], :pass(8) .appendix {
+  counter-reset: exercise; }
+
+:pass(8) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
+
+:pass(8) [data-type="chapter"], :pass(8) .appendix {
   counter-reset: example; }
 
 :pass(8) div[data-type="chapter"] [data-type="example"] {
@@ -1249,13 +1268,13 @@
 :pass(8) [data-type="composite-page"] {
   content: nodes(bookMetadata) content(); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-secion-summary-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
   container: span;
   content: "Summary";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-secion-summary-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
