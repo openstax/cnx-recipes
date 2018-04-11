@@ -1,0 +1,20 @@
+@function default-icon-map() {
+  $ICON_COLOR_MAP: (
+    blank: "",
+    eoc-default-icon: resource(theme, assessments, svg),
+    eoc-key-terms-icon: resource(theme, key-terms, svg),
+    eoc-summary-icon: resource(theme, summary, svg),
+    note-default-icon: resource(theme, link-to-learning, svg),
+  );
+  @return $ICON_COLOR_MAP;
+}
+
+@function icon_map($name) {
+  @if map-has-key($icon_map, $name) {
+    @return map-get($icon_map, $name);
+  }
+  @error "Unknown icon designation: #{$name}";
+}
+
+$icon-map: default-icon-map() !default;
+$icon-map: map-merge(default-icon-map(), $icon-map);

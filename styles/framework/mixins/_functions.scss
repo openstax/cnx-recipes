@@ -1,0 +1,34 @@
+
+
+// Select the path to the resources (theme or book level)
+@function selectPath($pathLevel) {
+  @if $pathLevel == book {
+    $pathLevel: $BOOK_IMAGES_PATH;
+  }
+  @else if $pathLevel == theme {
+    $pathLevel: $THEME_IMAGES_PATH;
+  }
+  @else {
+    @error "There are no images located at #{$pathLevel}, choose between theme or book";
+  }
+  @return $pathLevel;
+}
+
+//combine path and resource type to output full resource path
+@function resource($path, $imageName, $type) {
+  $pathImageName: "";
+  $path: selectPath($path);
+  @if $type == svg {
+    $pathImageName:#{$path}/#{$imageName}#{'.'}svg;
+  }
+  @else if $type == png {
+    $pathImageName:#{$path}/#{$imageName}#{'.'}png;
+  }
+  @else if $type == jpg {
+    $pathImageName:#{$path}/#{$imageName}#{'.'}jpg;
+  }
+  @else {
+    @error "#{$type} is not a proper image type (svg, png, jpg)";
+  }
+  @return $pathImageName;
+}

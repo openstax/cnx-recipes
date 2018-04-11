@@ -14,10 +14,22 @@
   color: $title-color;
   font-size: size-scale(5);
   margin-bottom: size-scale(2);
+  line-height: line-height(5);
   bookmark-level: 1;
   page-break-after: avoid;
 }
-
+@mixin titles-h1-style-numbered($font: font-map(serif), $title-color: color-map(h1-title), $number-border: $h1-number-border, $number-color: $h1-number-color) {
+  @include titles-h1-style();
+  span.os-number {
+    border: $number-border;
+    color: $number-color !important;
+    padding: size-scale(-6) size-scale(-3);
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+    display: inline;
+  }
+}
 //h2 styles
 //used for nested sections in preface, appendix or anywhere outside a chapter, used for module titles in chapters
 //
@@ -26,9 +38,31 @@
   font-family: $font;
   color: $title-color;
   font-size: size-scale(4);
+  line-height: line-height(4);
   margin-bottom: size-scale(1);
   bookmark-level: 2;
   page-break-after: avoid;
+}
+@mixin titles-h2-style-numbered($font: font-map(serif), $title-color: color-map(h2-title), $number-border: color-map(module-number-border)) {
+  @include titles-h2-style();
+  .os-number{
+    font-size: size-scale(-1);
+    border: solid 1px $number-border;
+    vertical-align: middle;
+    padding: size-scale(-6) size-scale(-3);
+    margin-right: size-scale(-1);
+  }
+}
+
+
+//style header with icons, uses the font-map, color-map and icon-map.
+@mixin titles-h2-style-icon($font: font-map(serif), $title-color: color-map(h2-title), $icon: icon-map(eoc-default-icon)) {
+  @include titles-h2-style();
+  background: url('#{$icon}') no-repeat left;
+  span.os-text {
+    padding: size-scale(1);
+    margin-left: size-scale(4);
+  }
 }
 
 //h3 styles
@@ -37,6 +71,7 @@
   font-family: $font;
   color: $title-color;
   font-size: size-scale(3);
+  line-height: line-height(3);
   font-weight: bold;
   margin-bottom: size-scale(-1);
   page-break-after: avoid;
@@ -48,6 +83,7 @@
   font-family: $font;
   color: $title-color;
   font-size: size-scale(2);
+  line-height: line-height(2);
   font-weight: bold;
   margin-bottom: size-scale(-2);
 }
@@ -58,6 +94,7 @@
   font-family: $font;
   font-weight: bold;
   font-size: size-scale(1);
+  line-height: line-height(1);
   color: $title-color;
   margin-bottom: size-scale(-2);
 }
