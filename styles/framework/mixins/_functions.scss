@@ -1,34 +1,13 @@
-
-
-// Select the path to the resources (theme or book level)
-@function selectPath($pathLevel) {
-  @if $pathLevel == book {
-    $pathLevel: $BOOK_IMAGES_PATH;
-  }
-  @else if $pathLevel == theme {
-    $pathLevel: $THEME_IMAGES_PATH;
-  }
-  @else {
-    @error "There are no images located at #{$pathLevel}, choose between theme or book";
-  }
-  @return $pathLevel;
+@function image-set() {
+  @return config(image-set);
 }
 
-//combine path and resource type to output full resource path
-@function resource($path, $imageName, $type) {
-  $pathImageName: "";
-  $path: selectPath($path);
-  @if $type == svg {
-    $pathImageName:#{$path}/#{$imageName}#{'.'}svg;
+@function image($image_name) {
+  @if not rb_resource_exists("images/#{$image_set}") {
+    @error "Image-set `#{$image_set}` does not exist.";
   }
-  @else if $type == png {
-    $pathImageName:#{$path}/#{$imageName}#{'.'}png;
+  @if not rb_resource_exists("images/#{$image_set}/#{$image_name}") {
+    @error "Image `#{$image_name}` does not exist.";
   }
-  @else if $type == jpg {
-    $pathImageName:#{$path}/#{$imageName}#{'.'}jpg;
-  }
-  @else {
-    @error "#{$type} is not a proper image type (svg, png, jpg)";
-  }
-  @return $pathImageName;
+  @return "url(../images/#{$image_set}/#{$image_name})";
 }

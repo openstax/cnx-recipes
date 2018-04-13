@@ -8,47 +8,28 @@
   Style guide: book.1-global.typography
 */
 
-
-@function base-font-size() {
-  @return $BASE_FONT_SIZE;
-}
-
-@function content-none() {
-  @return "";
-}
-
-@function content-blank() {
-  @return " ";
-}
-
 @function pow($base, $exp) {
-  $value: 1;
+  $value: 1.0;
   @for $i from 1 to abs($exp) {
     $value: $value * $base;
   }
   @if $exp > 0 {
     @return $value;
   } @else {
-    @return 1 / $value;
+    @return 1.0 / $value;
   }
+}
+
+@function base-font-size() {
+  @return config(base-font-size);
 }
 
 @function size-scale($level) {
   @return round(base-font-size() * pow(1.25, $level));
 }
 
-@function stix-fonts() {
-  @return STIXGeneral, STIXSizeOneSym, STIXSize1;
-}
-
-
-$BASE_LINE_HEIGHT: size-scale(0) * 1.5;
-
-//use $base-line-height: $BASE_LINE_HEIGHT;
-//or function below?
-
 @function base-line-height() {
-  @return $BASE_LINE_HEIGHT;
+  @return size-scale(0) * 1.5;
 }
 
 @function line-height($level) {
