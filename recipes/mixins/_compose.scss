@@ -6,6 +6,7 @@
 @mixin compose_titleEOCComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
+    $iconName: map-get($page, icon);
     $className: map-get($page, className);
     $childPages: map-get($page, childPages);
 
@@ -15,9 +16,10 @@
 
     [data-type="composite-page"].os-eoc.os-#{$className}-container {
       $titleContent: (
-        os-text: $name
+        //os-icon: $$iconName,
+        os-text: $name,
         );
-      @include utils_title($titleContent, null, h2, "document-title");
+      @include utils_title($titleContent, null, h2, "document-title", $iconName);
       @if ($childPages != null) {
         @each $cPage in $childPages {
           $cClassName: map-get($cPage, className);
