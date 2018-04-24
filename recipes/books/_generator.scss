@@ -301,6 +301,7 @@
   }
 }
 :pass(6) {
+  @include modify_ExercisePrefix($Config_ChapterCompositePages); //if solutions are being moved on this pass then they will not be prefixed
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
   // Only link up problems and solutions if they will not be discarded (optimization)
@@ -384,7 +385,7 @@
   @include count_countChapters(chapter);
   @include count_countAppendices(appendix);
 
-  @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
+  @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC { //check to see if this code is redundent,   same block above
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
     $numberAt:      map-get($Config_PartType_Exercise, numberAt);
     $titleContent:  map-get($Config_PartType_Exercise, titleContent);

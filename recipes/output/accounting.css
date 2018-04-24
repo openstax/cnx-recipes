@@ -1119,6 +1119,8 @@
   data-uuid-key: ".multiple-choice"; }
 
 :pass(3) div[data-type="chapter"] section.questions {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: questions-TOCOMPOSITE; }
   :pass(3) div[data-type="chapter"] section.questions > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1132,6 +1134,8 @@
   data-uuid-key: ".questions"; }
 
 :pass(3) div[data-type="chapter"] section.exercise-set-a {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: exercise-set-a-TOCOMPOSITE; }
   :pass(3) div[data-type="chapter"] section.exercise-set-a > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1145,6 +1149,8 @@
   data-uuid-key: ".exercise-set-a"; }
 
 :pass(3) div[data-type="chapter"] section.exercise-set-b {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: exercise-set-b-TOCOMPOSITE; }
   :pass(3) div[data-type="chapter"] section.exercise-set-b > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1158,6 +1164,8 @@
   data-uuid-key: ".exercise-set-b"; }
 
 :pass(3) div[data-type="chapter"] section.problem-set-a {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: problem-set-a-TOCOMPOSITE; }
   :pass(3) div[data-type="chapter"] section.problem-set-a > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1171,6 +1179,8 @@
   data-uuid-key: ".problem-set-a"; }
 
 :pass(3) div[data-type="chapter"] section.problem-set-b {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: problem-set-b-TOCOMPOSITE; }
   :pass(3) div[data-type="chapter"] section.problem-set-b > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1195,6 +1205,9 @@
   class: "os-eoc os-thought-provokers-container";
   data-type: "composite-page";
   data-uuid-key: ".thought-provokers"; }
+
+:pass(3) .your-turn [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
 
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
@@ -1269,6 +1282,96 @@
   container: span;
   content: counter(exercise);
   class: os-number; }
+
+:pass(6) .os-eoc .exercise-set-a [data-type="exercise"].os-hasSolution {
+  string-set: exerciseId attr(id); }
+  :pass(6) .os-eoc .exercise-set-a [data-type="exercise"].os-hasSolution [data-type="problem"]::before {
+    container: a;
+    content: "EA";
+    class: os-text;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(6) .os-eoc .exercise-set-a [data-type="exercise"].os-hasSolution [data-type="solution"]::before {
+    container: a;
+    content: "EA";
+    class: os-text;
+    attr-href: "#" string(exerciseId); }
+
+:pass(6) .os-eoc .exercise-set-a [data-type="exercise"]:not(.os-hasSolution) [data-type="problem"]::before, :pass(6) .os-eoc .exercise-set-a [data-type="exercise"]:not(.os-hasSolution) [data-type="solution"]::before {
+  container: span;
+  content: "EA";
+  class: os-text; }
+
+:pass(6) .os-eoc .exercise-set-b [data-type="exercise"].os-hasSolution {
+  string-set: exerciseId attr(id); }
+  :pass(6) .os-eoc .exercise-set-b [data-type="exercise"].os-hasSolution [data-type="problem"]::before {
+    container: a;
+    content: "EB";
+    class: os-text;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(6) .os-eoc .exercise-set-b [data-type="exercise"].os-hasSolution [data-type="solution"]::before {
+    container: a;
+    content: "EB";
+    class: os-text;
+    attr-href: "#" string(exerciseId); }
+
+:pass(6) .os-eoc .exercise-set-b [data-type="exercise"]:not(.os-hasSolution) [data-type="problem"]::before, :pass(6) .os-eoc .exercise-set-b [data-type="exercise"]:not(.os-hasSolution) [data-type="solution"]::before {
+  container: span;
+  content: "EB";
+  class: os-text; }
+
+:pass(6) .os-eoc .problem-set-a [data-type="exercise"].os-hasSolution {
+  string-set: exerciseId attr(id); }
+  :pass(6) .os-eoc .problem-set-a [data-type="exercise"].os-hasSolution [data-type="problem"]::before {
+    container: a;
+    content: "PA";
+    class: os-text;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(6) .os-eoc .problem-set-a [data-type="exercise"].os-hasSolution [data-type="solution"]::before {
+    container: a;
+    content: "PA";
+    class: os-text;
+    attr-href: "#" string(exerciseId); }
+
+:pass(6) .os-eoc .problem-set-a [data-type="exercise"]:not(.os-hasSolution) [data-type="problem"]::before, :pass(6) .os-eoc .problem-set-a [data-type="exercise"]:not(.os-hasSolution) [data-type="solution"]::before {
+  container: span;
+  content: "PA";
+  class: os-text; }
+
+:pass(6) .os-eoc .problem-set-b [data-type="exercise"].os-hasSolution {
+  string-set: exerciseId attr(id); }
+  :pass(6) .os-eoc .problem-set-b [data-type="exercise"].os-hasSolution [data-type="problem"]::before {
+    container: a;
+    content: "PB";
+    class: os-text;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(6) .os-eoc .problem-set-b [data-type="exercise"].os-hasSolution [data-type="solution"]::before {
+    container: a;
+    content: "PB";
+    class: os-text;
+    attr-href: "#" string(exerciseId); }
+
+:pass(6) .os-eoc .problem-set-b [data-type="exercise"]:not(.os-hasSolution) [data-type="problem"]::before, :pass(6) .os-eoc .problem-set-b [data-type="exercise"]:not(.os-hasSolution) [data-type="solution"]::before {
+  container: span;
+  content: "PB";
+  class: os-text; }
+
+:pass(6) .os-eoc .thought-provokers [data-type="exercise"].os-hasSolution {
+  string-set: exerciseId attr(id); }
+  :pass(6) .os-eoc .thought-provokers [data-type="exercise"].os-hasSolution [data-type="problem"]::before {
+    container: a;
+    content: "TP";
+    class: os-text;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(6) .os-eoc .thought-provokers [data-type="exercise"].os-hasSolution [data-type="solution"]::before {
+    container: a;
+    content: "TP";
+    class: os-text;
+    attr-href: "#" string(exerciseId); }
+
+:pass(6) .os-eoc .thought-provokers [data-type="exercise"]:not(.os-hasSolution) [data-type="problem"]::before, :pass(6) .os-eoc .thought-provokers [data-type="exercise"]:not(.os-hasSolution) [data-type="solution"]::before {
+  container: span;
+  content: "TP";
+  class: os-text; }
 
 :pass(6) body {
   counter-reset: exerciseAll; }
