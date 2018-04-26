@@ -295,6 +295,48 @@
   @include _noteNesting(1, $className, $labelText, $replaceHeader, $useHeader);
 }
 
+@mixin modify_ExercisePrefix($Config_ChapterCompositePages) {
+  @each $page in $Config_ChapterCompositePages {
+    $prefix: map-get($page, prefixExercise);
+    $className: map-get($page, className);
+    @include validate_typeOptional($prefix, string);
+    @include validate_type($className, string);
+    @if $prefix {
+      .os-eoc .#{$className} [data-type="exercise"] {
+        &.os-hasSolution {
+          string-set: exerciseId attr(id);
+          [data-type="problem"]  {
+            &::before {
+              container: a;
+              content: $prefix;
+              class: os-text;
+              attr-href: "#" string(exerciseId) '-solution';
+            }
+          }
+          [data-type="solution"] {
+            &::before {
+              container: a;
+              content: $prefix;
+              class: os-text;
+              attr-href: "#" string(exerciseId);
+            }
+          }
+        }
+        &:not(.os-hasSolution){
+          [data-type="problem"], [data-type="solution"] {
+            &::before {
+              container: span;
+              content: $prefix;
+              class: os-text;
+
+            }
+          }
+        }
+     }
+    }
+  }
+}
+
 @mixin _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $useHeader, $depth: 0) {
   @if ($depth <= $maxDepth) {
     $headingLevel: $depth + 3;
