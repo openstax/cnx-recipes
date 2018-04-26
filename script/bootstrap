@@ -1,15 +1,27 @@
 #!/bin/bash
 # shellcheck disable=SC2155
 
-# Resolve all dependencies that the application requires to run.
-# From https://github.com/github/scripts-to-rule-them-all/blob/master/script/bootstrap
+# See https://github.com/openstax/setup-scripts for details on this file
 
 if [[ $0 != "-bash" ]]; then
   cd "$(dirname "$0")/.." || exit 111
 fi
 
+# Set the LOG_LEVEL to "info" if it is not set
+if [[ ! "${LOG_LEVEL}" ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "(deprecated) use LOG_LEVEL='debug' rather than DEBUG=true to enable debugging"
+    LOG_LEVEL="debug"
+  else
+    LOG_LEVEL="info"
+  fi
+fi
+
 # Turn on tracing if desired
-[[ ${TRACE} == "true" ]] && set -x
+if [[ ${LOG_LEVEL} == "trace" ]]; then
+  export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
+  set -x
+fi
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 if [[ $(tput colors) -ge 8 ]]; then
@@ -60,7 +72,7 @@ _quiet_ok() {
 }
 do_progress_quiet() {
   # Keep it loud when running in Travis or Jenkins
-  if [[ "${TRACE}" || "${DEBUG}" || "${VERBOSE}" || "${__NESTED_PROGRESS__}" == "true" ]]; then
+  if [[ "${LOG_LEVEL}" == "trace" || "${LOG_LEVEL}" == "debug" || "${__NESTED_PROGRESS__}" == "true" ]]; then
     do_progress "$@"
   else
     _quiet_progress "$1"
@@ -88,24 +100,57 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
     # Only install & activate the virtualenv if not already in one
     if [[ -z "${VIRTUAL_ENV}" ]]; then
 
-      if [[ ! $(which virtualenv) ]]; then
-        # macOS needs a little extra love
-        if [[ -f "Brewfile" ]] && [[ "$(uname -s)" = "Darwin" ]]; then
-          do_progress_quiet "Unlinking homebrew python (just-in-case)" \
-            brew unlink python
-          do_progress_quiet "Relinking homebrew python" \
-            brew link python
-        fi
+      # Check that a .python-version file is set
+      [[ -f "./.python-version" ]] || die "Repository is missing a .python-version file. Please add one. The contents should contain the python version (ie 2.7)"
 
+      virtualenv_dir="./venv/"
+      python_version="$(< .python-version)"
+      virtualenv_command="virtualenv"
+
+      # macOS needs a little extra love
+      if [[ "$(uname -s)" = "Darwin" ]]; then
+        # Install the correct python version if it is not installed yet
+        if [[ ! $(pyenv which python) ]]; then
+          do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
+            pyenv install "${python_version}"
+        fi
+        # Ensure pyenv is initialized
+        eval "$(pyenv init -)"
+
+        virtualenv_command="pyenv exec virtualenv"
+      fi
+
+      # Install pip if it is not available
+      if [[ ! $(which pip) ]]; then
+        pwd=$(pwd)
+        do_progress_quiet "Downloading pip" \
+          curl --output "${pwd}/get-pip.py" https://bootstrap.pypa.io/get-pip.py
+        do_progress_quiet "Installing pip" \
+          sudo -H python "${pwd}/get-pip.py"
+        do_progress_quiet "Cleaning up after pip installation" \
+          rm "${pwd}/get-pip.py"
+        # Rehash so that pip is available
+        try pyenv rehash
+      fi
+
+      # Install virtualenv
+      # If macOS then check that the pyenv virtualenv is installed.
+      # If not running macOS then check that some virtualenv is installed.
+      if [[ "$(uname -s)" != "Darwin" && ! $(which virtualenv) ]] || [[ "$(uname -s)" = "Darwin" && ! $(pyenv which virtualenv) ]]; then
         do_progress_quiet "Installing Python virtualenv" \
           pip install virtualenv
+        # Rehash so that virtualenv is available
+        try pyenv rehash
       fi
-      if [[ ! -d "./venv/" ]]; then
-        do_progress_quiet "Setting up a python virtualenv" \
-          virtualenv ./venv/
+      # Create a virtualenv
+      if [[ ! -d "${virtualenv_dir}" ]]; then
+        # shellcheck disable=SC2086
+        do_progress_quiet "Setting up a Python virtualenv" \
+          ${virtualenv_command} "${virtualenv_dir}"
       fi
-      do_progress_quiet "Activating virtualenv" \
-        source ./venv/bin/activate
+
+      do_progress_quiet "Activating Python virtualenv" \
+        source "${virtualenv_dir}/bin/activate"
     else
       _say "${c_yellow}Skipping virtualenv${c_none} because already in one"
     fi

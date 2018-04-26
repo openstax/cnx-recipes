@@ -2,9 +2,8 @@
 
 # Install
 
-1. ensure the prerequisites are installed.
-   - [Virtualenv](https://virtualenv.pypa.io/en/stable/installation/)
 1. run `./script/setup` to install the dependencies.
+    - See `./.*-version` for the versions of python and node that are used
 
 **Note:** To update the dependencies, run `./script/update`
 
