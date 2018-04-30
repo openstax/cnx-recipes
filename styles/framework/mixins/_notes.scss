@@ -1,19 +1,57 @@
 //TODO: notes inside of notes
-@mixin baseNotesStyles() {
+
+@mixin baseNoteStyle() {
   width: 100%;
   box-decoration-break: slice;
   box-sizing: border-box;
-  color: color-map(featureBodyText);
+}
 
+
+
+@mixin simpleNote($titleColor, $titleBGcolor, $fontType, $bodyFontColor, $bgColor) {
+  @include baseNoteStyle();
   h3[data-type="title"] {
-    @include titles-h3-style($font: font-map(sans-serif),$title-color: color-map(featureBodyText));
+    @include titles-h3-style($font: $fontType ,$title-color: $titleColor);
+    background: $titleBGcolor;
   }
-
   .os-note-body {
+    background: $bgColor;
+    color: $bodyFontColor;
     h4[data-type="title"] {
-      @include titles-h4-style($font: font-map(sans-serif), $title-color:color-map(featureBodyText));
+      @include titles-h4-style($font: $fontType, $title-color: $titleColor);
     }
   }
+}
+
+
+
+@mixin note($noteSettings) {
+  @each $note in $noteSettings {
+
+    $noteType: map-get($note, noteType);
+    $noteName: map-get($note, name);
+    $noteBodyColor: nested-map-get($note, color-scheme, noteBodyFonTColor);
+    $noteBGColor: nested-map-get($note, color-scheme, noteBGColor);
+    $titleFontType: nested-map-get($note, config, titleFontType);
+    $noteTitleColor: nested-map-get($note, color-scheme, noteTitleColor);
+    $noteTitleBGColor: nested-map-get($note, color-scheme, noteTitleBGcolor);
+
+    [data-type="note"] {
+      &.#{$noteName} {
+        @if $noteType == simpleNote {
+         @include simpleNote($noteTitleColor, $noteTitleBGColor, $titleFontType, $noteBodyColor, $noteBGColor );
+        }
+        @else if $noteType == baseNoteIcon {
+
+        }
+      }
+    }
+  }
+}
+
+
+
+@mixin baseNotesStyles() {
 
   svg text {
     fill: color-map(featureBodyText) !important; //this is necessary to override the inline svg fill
