@@ -1,12 +1,12 @@
 @function default-icon-map() {
-  $ICON_COLOR_MAP: (
+  $DEFAULT_ICON_MAP: (
     blank: "",
     eoc-default-icon: resource(theme, assessments, svg),
     eoc-key-terms-icon: resource(theme, key-terms, svg),
     eoc-summary-icon: resource(theme, summary, svg),
     note-default-icon: resource(theme, link-to-learning, svg),
   );
-  @return $ICON_COLOR_MAP;
+  @return $DEFAULT_ICON_MAP;
 }
 
 @function icon_map($name) {
@@ -14,6 +14,12 @@
     @return map-get($icon_map, $name);
   }
   @error "Unknown icon designation: #{$name}";
+}
+
+// Merge map into icon map, but don't allow deletion of default keys
+@function icon-map-merge($map) {
+  $icon-map: map-merge(default-icon-map(), map-merge($icon-map, $map)) !global;
+  @return $icon-map;
 }
 
 $icon-map: default-icon-map() !default;

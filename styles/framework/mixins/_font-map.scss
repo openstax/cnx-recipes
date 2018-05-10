@@ -6,11 +6,17 @@
   @return $DEFAULT_FONT_MAP;
 }
 
-@function font_map($name) {
+@function font-map($name) {
   @if map-has-key($font_map, $name) {
     @return map-get($font_map, $name);
   }
-  @error "Unknown color map designation: #{$name}";
+  @error "Unknown font map designation: #{$name}";
+}
+
+// Merge map into font map, but don't allow deletion of default keys
+@function font-map-merge($map) {
+  $font-map: map-merge(default-font-map(), map-merge($font-map, $map)) !global;
+  @return $font-map;
 }
 
 // Ensure all default keys are available from $font-map and font-map()
