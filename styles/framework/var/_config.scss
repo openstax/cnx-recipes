@@ -1,8 +1,8 @@
 @function default-config() {
-  $CONFIG: (
+  $DEFAULT_CONFIG: (
     base-font-size: 12px,
   );
-  @return $CONFIG;
+  @return $DEFAULT_CONFIG;
 }
 
 @function config($name) {
@@ -12,10 +12,14 @@
   @error "Unknown config option: #{$name}";
 }
 
+// Merge map into color scheme, but don't allow deletion of default keys
+@mixin config-merge($map) {
+  $config: map-merge(default-config(), map-merge($config, $map)) !global;
+}
+
 // Ensure all default keys are available from $config and config()
 $config: default-config() !default;
 $config: map-merge(default-config(), $config);
-
 
 //NOTES config
 //todo change this into proper config settings with defaults
