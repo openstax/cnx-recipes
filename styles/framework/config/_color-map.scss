@@ -117,16 +117,10 @@ $color-map-manifest: ();
 @mixin color-map-merge($function) {
   $color-map-manifest: append($color-map-manifest, $function) !global;
   $color-map: default-color-map() !global;
-  @each $function-get-map in $color-map-manifest {
-    $color-map: map-merge($color-map, call($function-get-map)) !global;
+  @each $map-get-function in $color-map-manifest {
+    $color-map: map-merge($color-map, call($map-get-function)) !global;
   }
 }
 
-// Merge map into color map, but don't allow deletion of default keys
-// @mixin color-map-merge($map) {
-//   $color-map: map-merge(default-color-map(), map-merge($color-map, $map)) !global;
-// }
-
 // Ensure all default keys are available from $color_map and color_map()
 $color-map: default-color-map() !default;
-$color-map: map-merge(default-color-map(), $color-map);
