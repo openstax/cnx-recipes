@@ -12,9 +12,13 @@
   @error "Unknown settings option: #{$name}";
 }
 
-// Merge map into settings, but don't allow deletion of default keys
-@mixin settings-merge($map) {
-  $settings: map-merge(default-settings(), map-merge($settings, $map)) !global;
+$settings-manifest: ();
+@mixin settings-merge($function) {
+  $settings-manifest: append($settings-manifest, $function) !global;
+  $settings: default-settings() !global;
+  @each $map-get-function in $settings-manifest {
+    $settings: map-merge($settings, call($map-get-function)) !global;
+  }
 }
 
 // Ensure all default keys are available from $settings and settings()
