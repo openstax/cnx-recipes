@@ -1,0 +1,39 @@
+@function default-settings() {
+  $DEFAULT_SETTINGS: (
+    base-font-size: 12px,
+  );
+  @return $DEFAULT_SETTINGS;
+}
+
+@function settings($name) {
+  @if map-has-key($settings, $name) {
+    @return map-get($settings, $name);
+  }
+  @error "Unknown settings option: #{$name}";
+}
+
+$settings-manifest: ();
+@mixin settings-merge($function) {
+  $settings-manifest: append($settings-manifest, $function) !global;
+  $settings: default-settings() !global;
+  @each $map-get-function in $settings-manifest {
+    $settings: map-merge($settings, call($map-get-function)) !global;
+  }
+}
+
+// Ensure all default keys are available from $settings and settings()
+$settings: default-settings() !default;
+$settings: map-merge(default-settings(), $settings);
+
+//NOTES settings
+//todo change this into proper settings settings with defaults
+$simpleNoteConfig:((
+  corners: "4px",
+  icon: "someIcon",
+  titleFontType: font-map(sans-serif),
+  //subtitleFontStyle:
+));
+$simpleNoteColors:(
+  mainNoteTitleColor: color-map(featureBodyText), //this would have defaults set
+  icon: green
+);

@@ -110,12 +110,17 @@
   @error "Unknown color map designation: #{$name}";
 }
 
-// Merge map into color map, but don't allow deletion of default keys
-@function color-map-merge($map) {
-  $color-map: map-merge(default-color-map(), map-merge($color-map, $map)) !global;
-  @return $color-map;
+// We need to keep track of all the maps that we want to merge into our final color-map
+// This is needed because we need the FUNCTIONS to re-evaluate each time a merge happens
+// Alternatively, we could do some ugly importing reorganization.
+$color-map-manifest: ();
+@mixin color-map-merge($function) {
+  $color-map-manifest: append($color-map-manifest, $function) !global;
+  $color-map: default-color-map() !global;
+  @each $map-get-function in $color-map-manifest {
+    $color-map: map-merge($color-map, call($map-get-function)) !global;
+  }
 }
 
 // Ensure all default keys are available from $color_map and color_map()
 $color-map: default-color-map() !default;
-$color-map: map-merge(default-color-map(), $color-map);
