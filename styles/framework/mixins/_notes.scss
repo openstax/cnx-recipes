@@ -4,50 +4,66 @@
   width: 100%;
   box-decoration-break: slice;
   box-sizing: border-box;
+  margin-bottom: size-scale(1);
+
+  svg text {
+    fill: color-map(featureBodyText) !important; //this is necessary to override the inline svg fill
+  }
+
 }
 
 
 
-@mixin simpleNote($titleColor,$borderColor, $titleBGcolor, $fontType, $bodyFontColor, $bgColor) {
+@mixin simpleNote($titleColor, $subtitleColor, $borderColor, $titleBGcolor, $fontType, $bodyFontColor, $bgColor, $topBorderRadius) {
   @include baseNoteStyle();
-  border: solid 1px $borderColor;
+
   h3[data-type="title"] {
-    @include titles-h3-style($font: $fontType ,$title-color: $titleColor);
+    @include titles-h3-style($font: $fontType,$title-color: $titleColor, $noMargin: true);
+    font-weight: normal;
     background: $titleBGcolor;
+    border-top-right-radius: $topBorderRadius; //todo: radius variables
+    border-top-left-radius: $topBorderRadius;
+    padding: size-scale(1);
+    text-transform: uppercase;
   }
   .os-note-body {
+    padding: size-scale(1);
     background: $bgColor;
     color: $bodyFontColor;
+    border: solid 1px $borderColor;
     h4[data-type="title"] {
-      @include titles-h4-style($font: $fontType, $title-color: $titleColor);
+      @include titles-h4-style($font: $fontType, $title-color: $subtitleColor);
     }
   }
 }
 
-@mixin noteTopBar($titleColor, $borderColor, $topBorderColor, $fontType, $bodyFontColor) {
+@mixin noteTopBar($titleColor, $borderColor, $topBorderColor, $fontType, $bodyFontColor, $topBorderRadius) {
   @include baseNoteStyle();
-
+  border-left: solid 1px $borderColor;
+  border-right: solid 1px $borderColor;
   h3[data-type="title"] {
     @include titles-h3-style($font: $fontType, $title-color: $titleColor);
+    font-weight: normal;
     display: block;
-    border-top: 5px solid $topBorderColor; //todo: thickness varia
-    border-top-right-radius: 5px; //todo: radius variables
-    border-top-left-radius: 5px;
+    border-top: $topBorderRadius solid $topBorderColor; //todo: thickness varia
     border-bottom: solid 1px $borderColor; // border variable?
-
+    border-top-right-radius: $topBorderRadius; //todo: radius variables
+    border-top-left-radius: $topBorderRadius;
     letter-spacing: 4px;
     text-transform: uppercase;
     page-break-after: avoid;
-    position: relative;
-    top: -5px;
-    left: -1px;
+    padding: size-scale(1);
     //width: @note-border-top-width;
-    font-weight: bold;
   }
   .os-note-body {
+    padding: 0 size-scale(1) size-scale(1) size-scale(1);
     color: $bodyFontColor;
+    border-bottom: solid 1px $borderColor;
     h4[data-type="title"] {
       @include titles-h4-style($font: $fontType, $title-color: $titleColor);
+    }
+    p:last-child {
+      padding-bottom: 0;
     }
   }
 }
@@ -55,13 +71,14 @@
 
 @mixin note($noteSettings) {
   @each $note in $noteSettings {
-
     $noteType: map-get($note, noteType);
     $noteName: map-get($note, name);
     $noteBodyColor: nested-map-get($note, color-scheme, noteBodyFontColor);
     $noteBGColor: nested-map-get($note, color-scheme, noteBGColor);
     $titleFontType: nested-map-get($note, config, titleFontType);
+    $noteTopBorderRadius: nested-map-get($note, config, topBorderRadius);
     $noteTitleColor: nested-map-get($note, color-scheme, noteTitleColor);
+    $noteSubtitleColor: nested-map-get($note, color-scheme, noteSubtitleColor);
     $noteTitleBGColor: nested-map-get($note, color-scheme, noteTitleBGcolor);
     $noteTopBorderColor: nested-map-get($note, color-scheme, noteTopBorderColor);
     $noteBorderColor: nested-map-get($note, color-scheme, noteBorderColor);
@@ -69,10 +86,10 @@
     [data-type="note"] {
       &.#{$noteName} {
         @if $noteType == simpleNote {
-         @include simpleNote($noteTitleColor, $noteBorderColor, $noteTitleBGColor, $titleFontType, $noteBodyColor, $noteBGColor );
+         @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $titleFontType, $noteBodyColor, $noteBGColor, $noteTopBorderRadius);
         }
         @else if $noteType == noteTopBar {
-         @include noteTopBar($noteTitleColor,$noteBorderColor, $noteTopBorderColor, $titleFontType, $noteBodyColor);
+         @include noteTopBar($noteTitleColor,$noteBorderColor, $noteTopBorderColor, $titleFontType, $noteBodyColor, $noteTopBorderRadius);
         }
       }
     }
@@ -83,9 +100,7 @@
 
 @mixin baseNotesStyles() {
 
-  svg text {
-    fill: color-map(featureBodyText) !important; //this is necessary to override the inline svg fill
-  }
+
 
   a {
     &:link {
