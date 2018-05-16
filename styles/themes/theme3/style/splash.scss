@@ -1,0 +1,67 @@
+[data-type="chapter"] {
+  position: relative;
+  > .introduction {
+    position: relative;
+    padding-top: config(splash-height) - PAGE_VERTICAL_MARGIN();
+
+    > [data-type="document-title"] {
+      display: none;
+    }
+
+    > [data-type="document-title"] + .os-figure {
+      width: FULL-BLEED-WIDTH();
+
+      figure {
+        margin: 0;
+      }
+
+      // &::before {
+      //   // background: transparent url('../../themes/theme1/images/folio-bg.png') 0 0 repeat-x; // Fixing icons later
+      //   background-size: 100% 122px;
+      //   height: 122px;
+      //   width: FULL_BLEED_WIDTH();
+      //   display: block;
+      //   content: CONTENT_BLANK();
+      //   position: absolute;
+      //   top: -4.7in;
+      //   left: -1in;
+      //   right: -1in;
+      // }
+
+      .os-caption-container {
+        width: PAGE_CONTENT_WIDTH();
+      }
+
+      [data-type="media"] {
+        display: flex; // We shouldn't have to do this, this element is a span with an img inside it...
+        align-items: center;
+        width: FULL_BLEED_WIDTH();
+        height: config(splash-height);
+        position: absolute;
+        top: -1 * PAGE_VERTICAL_MARGIN();
+        transform: translateX(-1 * (PAGE_HORIZONTAL_MARGIN() + (FULL_BLEED_ADD() / 2) ));
+        overflow: hidden;
+
+        &::after {
+          width: 100%;
+          content: CONTENT_BLANK();
+          display: block;
+          position: absolute;
+          bottom: 0;
+          height: config(splash-title-bar-height);
+          background-color: color-map(splash-bottom-bar);
+          border-top: 4px solid color-map(splash-bottom-bar-border);
+        }
+
+        img {
+          width: FULL_BLEED_WIDTH();
+          position: relative;
+          top: -1 * config(splash-title-bar-height) / 2;
+          @if config(enforce-splash-height) {
+            height: config(splash-height) - config(splash-title-bar-height);
+          }
+        }
+      }
+    }
+  }
+}

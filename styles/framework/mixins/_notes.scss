@@ -8,8 +8,9 @@
 
 
 
-@mixin simpleNote($titleColor, $titleBGcolor, $fontType, $bodyFontColor, $bgColor) {
+@mixin simpleNote($titleColor,$borderColor, $titleBGcolor, $fontType, $bodyFontColor, $bgColor) {
   @include baseNoteStyle();
+  border: solid 1px $borderColor;
   h3[data-type="title"] {
     @include titles-h3-style($font: $fontType ,$title-color: $titleColor);
     background: $titleBGcolor;
@@ -23,6 +24,33 @@
   }
 }
 
+@mixin noteTopBar($titleColor, $borderColor, $topBorderColor, $fontType, $bodyFontColor) {
+  @include baseNoteStyle();
+
+  h3[data-type="title"] {
+    @include titles-h3-style($font: $fontType, $title-color: $titleColor);
+    display: block;
+    border-top: 5px solid $topBorderColor; //todo: thickness varia
+    border-top-right-radius: 5px; //todo: radius variables
+    border-top-left-radius: 5px;
+    border-bottom: solid 1px $borderColor; // border variable?
+
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    page-break-after: avoid;
+    position: relative;
+    top: -5px;
+    left: -1px;
+    //width: @note-border-top-width;
+    font-weight: bold;
+  }
+  .os-note-body {
+    color: $bodyFontColor;
+    h4[data-type="title"] {
+      @include titles-h4-style($font: $fontType, $title-color: $titleColor);
+    }
+  }
+}
 
 
 @mixin note($noteSettings) {
@@ -30,19 +58,21 @@
 
     $noteType: map-get($note, noteType);
     $noteName: map-get($note, name);
-    $noteBodyColor: nested-map-get($note, color-scheme, noteBodyFonTColor);
+    $noteBodyColor: nested-map-get($note, color-scheme, noteBodyFontColor);
     $noteBGColor: nested-map-get($note, color-scheme, noteBGColor);
     $titleFontType: nested-map-get($note, config, titleFontType);
     $noteTitleColor: nested-map-get($note, color-scheme, noteTitleColor);
     $noteTitleBGColor: nested-map-get($note, color-scheme, noteTitleBGcolor);
+    $noteTopBorderColor: nested-map-get($note, color-scheme, noteTopBorderColor);
+    $noteBorderColor: nested-map-get($note, color-scheme, noteBorderColor);
 
     [data-type="note"] {
       &.#{$noteName} {
         @if $noteType == simpleNote {
-         @include simpleNote($noteTitleColor, $noteTitleBGColor, $titleFontType, $noteBodyColor, $noteBGColor );
+         @include simpleNote($noteTitleColor, $noteBorderColor, $noteTitleBGColor, $titleFontType, $noteBodyColor, $noteBGColor );
         }
-        @else if $noteType == baseNoteIcon {
-
+        @else if $noteType == noteTopBar {
+         @include noteTopBar($noteTitleColor,$noteBorderColor, $noteTopBorderColor, $titleFontType, $noteBodyColor);
         }
       }
     }
