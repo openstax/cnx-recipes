@@ -20,7 +20,17 @@ cd $1
 for file_or_dir in $(find . -name "*__book-template__*"); do
   mv "$file_or_dir" "${file_or_dir/__book-template__/$1}"
 done
-grep -rl "__book-template__" . | xargs sed -i "s/__book-template__/$1/g"
-grep -rl "__template-theme__" . | xargs sed -i "s/__template-theme__/$2/g"
+if grep -rl "__book-template__" . | xargs sed -i '' "s/__book-template__/$1/g" >/dev/null 2>&1; then
+  echo "OSX sed succeeded."
+else
+  echo "OSX sed failed. Trying GNU sed."
+  grep -rl "__book-template__" . | xargs sed -i "s/__book-template__/$1/g"
+fi
+if grep -rl "__template-theme__" . | xargs sed -i '' "s/__template-theme__/$2/g" >/dev/null 2>&1; then
+  echo "OSX sed succeeded."
+else
+  echo "OSX sed failed. Trying GNU sed."
+  grep -rl "__template-theme__" . | xargs sed -i "s/__template-theme__/$2/g"
+fi
 cd $pwd
 echo "Done."
