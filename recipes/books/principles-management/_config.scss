@@ -1,10 +1,6 @@
 @import '../_common-stuff';
 
 /*==========================================================
-  Principles of Management CONFIG
-==========================================================*/
-
-/*==========================================================
   EOC
 ==========================================================*/
 /*
@@ -27,9 +23,9 @@
   
   Contains a title "Summary of Learning Outcomes"
   
-  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html        <-- Placeholder
+  Markup: ./styleguide/book.composite.summ-learning-outcomes.xhtml-baked.html
 
-  Style guide: TODO figure out style guide for chapter summary
+  Style guide: book.composite.summ-learning-outcomes
 */
 /*
   Chapter Review page
@@ -85,18 +81,30 @@ $Config_ChapterCompositePages: (
   (className: "critical-thinking",    clusterBy: $CLUSTER_NONE,     hasSolutions: true,     moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,   name: "Critical Thinking Case", ),
   );
 
+
 /*==========================================================
   Principles of Management Notes
 ==========================================================*/
 
 /*
+  Learning Outcomes
+
+  This is a Note that appears in the Introduction page of every chapter.
+
+  Contains a title "Learning Outcomes"
+
+  Markup: ./styleguide/page.note.learning-outcomes.xhtml-baked.html
+
+  Style guide: page.note.learning-outcomes
+*/
+/*
   Exploring Business Careers
 
   Contains a title "Exploring Business Careers"
 
-  Markup: ./styleguide/page.note.exploring-careers.xhtml-baked.html     <-- Placeholder
+  Markup: ./styleguide/page.note.exploring-careers.xhtml-baked.html    
 
-  Style guide: TODO figure out style guide
+  Style guide: page.note.exploring--careers
 */
 /*
   Catching The Entrepreneurial Spirit
@@ -121,9 +129,9 @@ $Config_ChapterCompositePages: (
 
   Contiains a title "Expanding Around the Globe"
 
-  Markup: ./styleguide/page.note.expanding-globe.xhtml-baked.html     <-- Placeholder
+  Markup: ./styleguide/page.note.expanding-globe.xhtml-baked.html 
 
-  Style guide: TODO figue out style guide
+  Style guide: page.note.expanding-globe
 
 */
 /*
@@ -163,6 +171,7 @@ $Config_ChapterCompositePages: (
   Style guide: page.note.concept-check
 */
 $Config_Notes: (
+  (className: 'learning-outcomes',            moveSolutionTo: $AREA_NONE,   labelText: "Learning Outcomes",   replaceHeader: true),     // Must make style guide
   (className: 'exploring-business-careers',   moveSolutionTo: $AREA_NONE,   labelText: "Exploring Business Careers"),       // Must make style guide
   (className: 'catching-spirit',              moveSolutionTo: $AREA_NONE,   labelText: "Catching the Entrepreneurial Spirit"),
   (className: 'ethics-in-practice',           moveSolutionTo: $AREA_NONE,   labelText: "Ethics in Practice"),
@@ -173,56 +182,37 @@ $Config_Notes: (
   (className: 'concept-check',                moveSolutionTo: $AREA_NONE,   labelText: "Concept Check"),
 );
 
-
 $Config_BookCompositePages: (
-  (className: "index",       clusterBy: $CLUSTER_NONE,      specialPageType: $PAGE_INDEX,       name: "Index"),
   (className: "reference",   clusterBy: $CLUSTER_CHAPTER,   specialPageType: $PAGE_CITATIONS,   name: "References"),  
-  //This does not get parsed as a list without a comma at the end
-  //the composite builder should account for this rather than using hacky syntax
+  (className: "index",       clusterBy: $CLUSTER_NONE,      specialPageType: $PAGE_INDEX,       name: "Index"),
 );
+
+
 /*==========================================================
   Principles of Management TITLING CONTENT
 ==========================================================*/
 $_exerciseTitleContent       : (os-title-label: "Exercise ",  os-number: counter(chapter) "." counter(example), os-divider: " ");
 $_exampleTitleContent        : (os-title-label: "Example ",   os-number: counter(chapter) "." counter(example), os-divider: " ");
 $_exampleSolutionTitleContent: (os-title-label: "Solution ",  os-number: counter(chapter) "." counter(example), os-divider: " ");
-$_labTitleContent            : (os-title-label: "Stats Lab ", os-number: counter(chapter) "." counter(lab));
-$_tryTitleContent            : (os-title-label: "Try It ",    os-number: counter(chapter) "." counter(example)); // Try it notes are numbered based on the example preceeding them
 
 
 /*==========================================================
   Principles of Management CONFIG
 ==========================================================*/
-$Config_SetTableCaption            : (captionType: $CAPTION_TABLE,  defaultContainer: caption,    hasCaption: false,  hasTitle: true);
-$Config_SetFigureCaption           : (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true,   hasTitle: false);
-//If this method of setting the content of the label explicity becomes a problem,
-//try grabbing the numbering information from the element's header
-
-//NOTE: These selectors MUST match the counting selectors or be more specific
-//otherwise, the increment and the counter() call may fire in the wrong order
-//This may be fixed in a later version of easybake
-$Config_TargetLabels: append($Config_TargetLabels,
-  (selector: 'div[data-type="chapter"] .try', labelText: "Try It")
-);
-
-
-$Config_UnnumberedExercises: ( //REQUIRED: To generate guide.
-
-);
-
 $Config_PartType_Figure_CaptionContent  : (os-title-label: "Exhibit ", os-number: counter(chapter) "." counter(figure), os-divider: " ");
 $Config_PartType_Figure_CaptionContentAp: (os-title-label: "Exhibit ", os-number: counter(appendix, upper-alpha) counter(figure), os-divider: " ");
+
 $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER,  numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
-$Config_PartType_Example:  (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent,solutionTitleContent: $_exampleSolutionTitleContent);
-$Config_PartType_Chapter:  ();
-$Config_PartType_Equation: ();
-$Config_PartType_Solution: ();
+$Config_PartType_Example:  (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
 
 
-$Config_abstractTitle: null;
-// Coverage optimizations
-$Config_Coverage_MayHaveSimlinks: false;
-$Config_Coverage_MayHaveIframes: false;
-$Config_Coverage_MayHaveMissingExercises: false;
+/*
+  Citations
 
-$Config_hasCompositeChapter: false;
+  These are citations found throughout the book
+
+  Markup: ./styleguide/book.references.xhtml-baked.html
+
+  Style guide: book.references
+*/
+$Config_hasCitation: true;
