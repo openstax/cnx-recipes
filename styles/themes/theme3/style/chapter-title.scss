@@ -5,11 +5,7 @@
 [data-type="chapter"] {
   > h1[data-type="document-title"] {
     font-size: size-scale(4);
-    width: FULL_BLEED_WIDTH();
-    height: 4.3in;
     position: absolute;
-    top: -1 * PAGE_VERTICAL_MARGIN();
-    transform: translateX(-1 * (PAGE_HORIZONTAL_MARGIN() + 0.125in)); // Consider the full bleed width as well as the margin -> 0.25in / 2
     color: color-map(chapter-title);
     white-space: nowrap;
     font-weight: bold;
@@ -17,14 +13,25 @@
     text-transform: capitalize;
     z-index: 1;
     margin: 0 ;
-    left: 1.2in;
+    @if settings(full-bleed-splash) {
+      width: FULL_BLEED_WIDTH();
+      height: settings(splash-page-depth);
+      transform: translateX(-1 * (PAGE_HORIZONTAL_MARGIN() + (FULL_BLEED_ADD() / 2)));
+      top: -1 * PAGE_VERTICAL_MARGIN();
+      left: 1.2in;
+    } @else {
+      width: PAGE_CONTENT_WIDTH();
+      height: settings(splash-page-depth) - PAGE_VERTICAL_MARGIN();
+      top: 0;
+      left: 0.5in;
+    }
 
     .os-text {
       position: absolute;
       bottom: -10px;
       left: 80px;
       width: 60%;
-      height: 70px;
+      height: settings(splash-title-bar-height);
       white-space: normal;
     }
 

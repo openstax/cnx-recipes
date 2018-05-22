@@ -2,31 +2,32 @@
   position: relative;
   > .introduction {
     position: relative;
-    padding-top: settings(splash-height) - PAGE_VERTICAL_MARGIN();
+    padding-top: settings(splash-page-depth) - PAGE_VERTICAL_MARGIN();
     
     > [data-type="document-title"] {
       display: none;
     }
 
     > [data-type="document-title"] + .os-figure {
-      width: FULL-BLEED-WIDTH();
+      display: flex;
+      align-items: center;
+      position: absolute;
+      overflow: hidden;
+      @if settings(full-bleed-splash) {
+        width: FULL_BLEED_WIDTH();
+        height: settings(splash-page-depth);
+        transform: translateX(-1 * (PAGE_HORIZONTAL_MARGIN() + (FULL_BLEED_ADD() / 2)));
+        top: -1 * PAGE_VERTICAL_MARGIN();
+      } @else {
+        width: PAGE_CONTENT_WIDTH();
+        height: settings(splash-page-depth) - PAGE_VERTICAL_MARGIN();
+        top: 0;
+      }
+      
 
       figure {
         margin: 0;
       }
-
-      // &::before {
-      //   // background: transparent url('../../themes/theme1/images/folio-bg.png') 0 0 repeat-x; // Fixing icons later
-      //   background-size: 100% 122px;
-      //   height: 122px;
-      //   width: FULL_BLEED_WIDTH();
-      //   display: block;
-      //   content: CONTENT_BLANK();
-      //   position: absolute;
-      //   top: -4.7in;
-      //   left: -1in;
-      //   right: -1in;
-      // }
 
       .os-caption-container {
         width: PAGE_CONTENT_WIDTH();
@@ -34,14 +35,8 @@
 
       [data-type="media"] {
         // Please ensure that this element is a block element
-        display: flex;
-        align-items: center;
-        width: FULL_BLEED_WIDTH();
-        height: settings(splash-height);
-        position: absolute;
-        top: -1 * PAGE_VERTICAL_MARGIN();
-        transform: translateX(-1 * (PAGE_HORIZONTAL_MARGIN() + (FULL_BLEED_ADD() / 2) ));
-        overflow: hidden;
+        display: block;
+        width: 100%;
 
         &::after {
           width: 100%;
@@ -55,7 +50,7 @@
         }
 
         img {
-          width: FULL_BLEED_WIDTH();
+          width: 100%;
           position: relative;
           top: -1 * settings(splash-title-bar-height) / 2;
           @if settings(enforce-splash-height) {
