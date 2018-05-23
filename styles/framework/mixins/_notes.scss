@@ -12,9 +12,7 @@
 
 }
 
-
-
-@mixin simpleNote($titleColor, $subtitleColor, $borderColor, $titleBGcolor, $fontType, $bodyFontColor, $bgColor, $topBorderRadius) {
+@mixin simpleNote($titleColor, $subtitleColor, $borderColor, $titleBGcolor, $fontType, $bodyFontColor, $bgColor, $topBorderRadius, $image: null) {
   @include baseNoteStyle();
 
   h3[data-type="title"] {
@@ -25,6 +23,9 @@
     border-top-left-radius: $topBorderRadius;
     padding: size-scale(1);
     text-transform: uppercase;
+    @if $image {
+      background: url($image) $titleBGcolor no-repeat right;
+    }
   }
   .os-note-body {
     padding: size-scale(1);
@@ -73,6 +74,7 @@
   @each $note in $noteSettings {
     $noteType: map-get($note, noteType);
     $noteName: map-get($note, name);
+    $noteImage: map-get($note, image);
     $noteBodyColor: nested-map-get($note, color-scheme, noteBodyFontColor);
     $noteBGColor: nested-map-get($note, color-scheme, noteBGColor);
     $titleFontType: nested-map-get($note, config, titleFontType);
@@ -86,7 +88,7 @@
     [data-type="note"] {
       &.#{$noteName} {
         @if $noteType == simpleNote {
-         @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $titleFontType, $noteBodyColor, $noteBGColor, $noteTopBorderRadius);
+         @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $titleFontType, $noteBodyColor, $noteBGColor, $noteTopBorderRadius, $noteImage);
         }
         @else if $noteType == noteTopBar {
          @include noteTopBar($noteTitleColor,$noteBorderColor, $noteTopBorderColor, $titleFontType, $noteBodyColor, $noteTopBorderRadius);
