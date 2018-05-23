@@ -30,12 +30,13 @@ source ./books.txt || exit 1
 for recipe_name in "${RECIPE_NAMES[@]}"; do
   do_progress_quiet "Generating styleguide for ${recipe_name}" \
     ./script/generate-guide "${recipe_name}"
+  if [[ ${CI} = 'true' ]]; then
+    do_progress_quiet "Cleaning up temporary dir so Travis does not run out of space" \
+      rm -rf "./tmp/${recipe_name}/"
+  fi
 done
 
-if [[ ${CI} = 'true' ]]; then
-  do_progress_quiet "Cleaning up temporary dir so Travis does not run out of space" \
-    rm -rf "./tmp/${recipe_name}/"
-fi
+
 
 # Generate an index.html page for the styleguide
 styleguide_dir="./styleguide/"
