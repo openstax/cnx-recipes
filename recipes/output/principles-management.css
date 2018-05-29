@@ -417,6 +417,15 @@
 
 */
 /*
+  Customer Satisfaction
+
+  Contains a title "Customer Satisfaction and Quality"
+
+  Markup: ./styleguide/page.note.customer-satisfaction.xhtml-baked.html
+
+  Style guide: page.note.customer-satisfaction
+*/
+/*
   Managing Change
 
   Contains a title "Managing Change"
@@ -452,6 +461,9 @@
 
   Style guide: page.note.concept-check
 */
+/*==========================================================
+  Principles of Management EOB
+==========================================================*/
 /*==========================================================
   Principles of Management TITLING CONTENT
 ==========================================================*/
@@ -860,6 +872,56 @@
   class: "os-title";
   attr-data-type: "title"; }
 
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].customer-satisfaction > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].customer-satisfaction > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].customer-satisfaction::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].customer-satisfaction:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Customer Satisfaction and Quality";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].customer-satisfaction:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].customer-satisfaction > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].customer-satisfaction > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].customer-satisfaction::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].customer-satisfaction:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Customer Satisfaction and Quality";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].customer-satisfaction:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
 :pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].managing-change > div[data-type="title"]::deferred {
   container: h4;
   class: "os-subtitle";
@@ -1195,7 +1257,7 @@
 
 :pass(3) [data-type="example"]::before {
   container: span;
-  content: " ";
+  content: "";
   class: os-divider;
   move-to: bExampleLabel; }
 
@@ -1281,6 +1343,8 @@
   data-uuid-key: "<glossary>"; }
 
 :pass(3) div[data-type="chapter"] section.section-summary {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
   move-to: section-summary-TOCOMPOSITE; }
   :pass(3) div[data-type="chapter"] section.section-summary > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1411,22 +1475,22 @@
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
-  content: " ";
+  content: ".";
   class: os-divider; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
-  content: counter(chapter) "." counter(exercise);
+  content: counter(exercise);
   class: os-number; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
   container: span;
-  content: " ";
+  content: ".";
   class: os-divider; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
   container: span;
-  content: counter(chapter) "." counter(exercise);
+  content: counter(exercise);
   class: os-number; }
 
 :pass(6) body {
@@ -1449,6 +1513,47 @@
 :pass(7) div[data-type="page"] > [data-type="document-title"],
 :pass(7) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-chapter-review-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-manage-skills-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-manage-exercises-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-critical-thinking-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(7) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
+  string-set: ChapNum content(); }
+
+:pass(7) [data-type="chapter"]::after {
+  container: h2;
+  class: "os-title";
+  content: "Chapter " string(ChapNum);
+  move-to: chaptTitleEOB; }
+
+:pass(7) [data-type="chapter"]::after {
+  class: os-chapter-area;
+  content: pending(chaptTitleEOB) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
+  move-to: solution-TOCOMPOSITE; }
+
+:pass(7) body::after {
+  container: div;
+  content: pending(solution-TOCOMPOSITE);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution";
+  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
+
+:pass(7) body::after {
+  container: div;
+  content: pending(solution-TOCOMPOSITE);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution"; }
 
 :pass(7) body::after {
   container: div;
@@ -1610,6 +1715,17 @@
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eob.os-solution-container::before {
+  container: span;
+  content: "Answer Key";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eob.os-solution-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
 
 :pass(8) [data-type="composite-page"].os-eob.os-reference-container::before {
   container: span;
