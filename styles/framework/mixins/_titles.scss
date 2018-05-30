@@ -1,16 +1,15 @@
 //Global titles approach
 
-// we support only h1-h5, anything beyond that would mean the font-size is smaller than the body font-size. This decision was made because the h1 font-size cannot exceed 23px without becoming too big.
-//
-//
+// we support only h1-h5 (defined in framework/_settings), anything beyond that would mean the font-size is smaller than the body font-size. This decision was made because the h1 font-size cannot exceed 23px without becoming too big.
 //
 @mixin title($type, $format: default){
-  $headers: h5 h4 h3 h2 h1;
-  $headerSize: index($headers, $type)  - 1; //make the list index starts at 0
+  $headerSize: indexHeaders($type);
+  $bookmarkLevel: reverseIndexHeaders($type);
   $titleColor: #{$type}-title-color;
   $titleFont: #{$type}-font;
   $titleBorderColor: #{$type}-number-border-color;
   $titleBorderSize: title-number-border-size;
+
   @if $headerSize == null {
     @error " #{$type} isn't a supported hearder size. Please select a header type from h1 to  h5"
   }
@@ -19,15 +18,17 @@
   font-size: size-scale($headerSize);
   color: settings($titleColor);
   line-height: line-height($headerSize);
-  bookmark-level: 1;
+  bookmark-level: $bookmarkLevel;
   page-break-after: avoid;
 
   @if $format == icon {
     span.os-text {
+      //todo: create settings for those
       padding: size-scale(1);
       margin-left: size-scale(4);
     }
   }
+
   @else if $format == numbered {
     span.os-number {
       border: solid settings($titleBorderSize) settings($titleBorderColor);
@@ -39,6 +40,7 @@
       display: inline;
     }
   }
+
   @else if  $format != default {
     @error '#{$format} is not a valid title type. Please choose from icon, numbered or default'
   }
@@ -50,7 +52,7 @@
 
 
 
-/// deprecated, replace with mixin title ()
+/// Everything below is deprecated, replace with mixin titles()
 
 /*
   H1 styles (not chapter title):

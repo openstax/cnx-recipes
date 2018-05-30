@@ -53,5 +53,23 @@
   @each $key in $keys {
     $map: map-get($map, $key);
   }
-  @return $map
+  @return $map;
+}
+
+
+//uses $headers: h5 h4 h3 h2 h1; in framework/_settings
+//returns 0 1 2 3 4
+//this allows to convert the header into an integer that can be used to set size-scale(#) based on the header level
+@function indexHeaders($type) {
+  $headerIndex: index($headers, $type)  - 1; //make the list index
+  @return $headerIndex;
+}
+
+//reverses the order of $headers: h5 h4 h3 h2 h1; in framework/_settings
+//returns 1 2 3 4 5
+
+@function reverseIndexHeaders($type) {
+  $reverseHeaders:  reverse($headers);
+  $reverHeaderIndex: index($reverseHeaders, $type);
+  @return $reverHeaderIndex;
 }
