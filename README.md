@@ -2,14 +2,9 @@
 
 # Install
 
-1. Install Yarn
-    ```
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    sudo apt-get update && sudo apt-get install yarn
-    ```
+1. If not already installed, install Yarn at https://yarnpkg.com/lang/en/docs/install
 
-1. run `./script/setup`
+1. Run `./script/setup`
     - See `./.*-version` for the versions of python and node that are used
 
 **Note:** To update the dependencies, run `./script/update`
