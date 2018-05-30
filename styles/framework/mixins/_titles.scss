@@ -1,5 +1,56 @@
 //Global titles approach
 
+// we support only h1-h5, anything beyond that would mean the font-size is smaller than the body font-size. This decision was made because the h1 font-size cannot exceed 23px without becoming too big.
+//
+//
+//
+@mixin title($type, $format: default){
+  $headers: h5 h4 h3 h2 h1;
+  $headerSize: index($headers, $type)  - 1; //make the list index starts at 0
+  $titleColor: #{$type}-title-color;
+  $titleFont: #{$type}-font;
+  $titleBorderColor: #{$type}-number-border-color;
+  $titleBorderSize: title-number-border-size;
+  @if $headerSize == null {
+    @error " #{$type} isn't a supported hearder size. Please select a header type from h1 to  h5"
+  }
+
+  font: settings($titleFont);
+  font-size: size-scale($headerSize);
+  color: settings($titleColor);
+  line-height: line-height($headerSize);
+  bookmark-level: 1;
+  page-break-after: avoid;
+
+  @if $format == icon {
+    span.os-text {
+      padding: size-scale(1);
+      margin-left: size-scale(4);
+    }
+  }
+  @else if $format == numbered {
+    span.os-number {
+      border: solid settings($titleBorderSize) settings($titleBorderColor);
+      color: settings($titleColor);
+      padding: size-scale(-6) size-scale(-3);
+      vertical-align: middle;
+      position: relative;
+      top: -2px;
+      display: inline;
+    }
+  }
+  @else if  $format != default {
+    @error '#{$format} is not a valid title type. Please choose from icon, numbered or default'
+  }
+}
+
+
+
+
+
+
+
+/// deprecated, replace with mixin title ()
 
 /*
   H1 styles (not chapter title):
@@ -52,7 +103,7 @@
   bookmark-level: 2;
   page-break-after: avoid;
 }
-@mixin titles-h2-style-numbered($font: font-map(serif), $title-color: color-map(h2-title), $number-border: color-map(module-number-border), $noMargin: false) {
+@mixin titles-h2-style-numbered($font: font-map(serif), $title-color: color-map(h2-title), $number-border: color-map(h2-number-border), $noMargin: false) {
   @include titles-h2-style();
   .os-number{
     font-size: size-scale(-1);
