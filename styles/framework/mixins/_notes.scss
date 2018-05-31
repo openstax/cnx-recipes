@@ -1,3 +1,10 @@
+//***
+//*** Notes are defined via two means: settings defined in the function notes-settings
+//*** in theme/_notes-settings and color schemes defined in custom maps in
+//*** theme/_notes-settings.
+//***
+
+
 //TODO: notes inside of notes
 
 @mixin baseNoteStyle() {
@@ -12,18 +19,18 @@
 
   a {
     &:link {
-      @include link-style(color-map(noteLink));
+      @include link-style(settings(note-link));
     }
   }
 }
 
 //todo: nest notes: come up with a dynamic title selector
 @mixin noteTitle ($type, $titleColor) {
-  $headerSize: indexHeaders($type);
+  $headerSize: index-headers($type);
   font-weight: settings(note-title-weight);
   font-size: size-scale($headerSize);
   line-height: line-height($headerSize);
-  color:  $titleColor;
+  color: $titleColor;
   font-weight: normal;
   display: block;
   letter-spacing: settings(note-title-letter-spacing);
@@ -31,7 +38,7 @@
   padding: settings(note-title-padding); //why, oh why isn't this padding working??
 }
 
-@mixin simpleNote($titleColor, $subtitleColor, $borderColor, $titleBGcolor, $fontType, $bodyFontColor, $bgColor, $topBorderRadius, $image: null) {
+@mixin simpleNote($titleColor, $subtitleColor, $borderColor, $titleBGcolor, $bodyFontColor, $bgColor, $image: null) {
 
   @include baseNoteStyle();
 
@@ -50,25 +57,25 @@
     padding: settings(note-body-padding);
     background: $bgColor;
     color: $bodyFontColor;
-    border: solid settings(note-border-size) $borderColor;
+    border: settings(note-border) $borderColor;
     h4[data-type="title"] {
       @include noteTitle(h4, $subtitleColor);
     }
   }
 }
 
-@mixin noteTopBar($titleColor, $subtitleColor, $borderColor, $topBorderColor, $fontType, $bodyFontColor, $topBorderRadius) {
+@mixin noteTopBar($titleColor, $subtitleColor, $borderColor, $topBorderColor, $bodyFontColor) {
 
   @include baseNoteStyle();
 
-  border-left: solid settings(note-border-size) $borderColor;
-  border-right: solid settings(note-border-size) $borderColor;
+  border-left: settings(note-border) $borderColor;
+  border-right: settings(note-border) $borderColor;
   h3[data-type="title"] {
 
     @include noteTitle(h3, $titleColor);
 
-    border-top: settings(note-TopBar-border-radius) solid $topBorderColor;
-    border-bottom: solid settings(note-border-size) $borderColor;
+    border-top: settings(note-TopBar-border-radius) $topBorderColor;
+    border-bottom:  settings(note-border) $borderColor;
     border-top-right-radius: settings(note-TopBar-border-radius);
     border-top-left-radius: settings(note-TopBar-border-radius);
     padding: settings(note-title-padding);
@@ -77,9 +84,11 @@
   .os-note-body {
     padding: settings(note-body-padding);
     color: $bodyFontColor;
-    border-bottom: solid settings(note-border-size) $borderColor;
+    border-bottom: settings(note-border) $borderColor;
     h4[data-type="title"] {
+
       @include noteTitle(h4, $subtitleColor);
+
     }
     p:last-child {
       padding-bottom: 0;
@@ -90,27 +99,25 @@
 
 @mixin note($noteSettings) {
   @each $note in $noteSettings {
+    $getScheme: map-get($note, color-scheme);
     $noteType: map-get($note, noteType);
     $noteName: map-get($note, name);
     $noteImage: map-get($note, image);
-    $noteBodyColor: nested-map-get($note, color-scheme, noteBodyFontColor);
-    $noteBGColor: nested-map-get($note, color-scheme, noteBGColor);
-    $titleFontType: nested-map-get($note, config, titleFontType);
-    $noteTopBorderRadius: nested-map-get($note, config, topBorderRadius);
-    $noteTitleColor: nested-map-get($note, color-scheme, noteTitleColor);
-    $noteSubtitleColor: nested-map-get($note, color-scheme, noteSubtitleColor);
-    $noteTitleBGColor: nested-map-get($note, color-scheme, noteTitleBGcolor);
-    $noteTopBorderColor: nested-map-get($note, color-scheme, noteTopBorderColor);
-    $noteBorderColor: nested-map-get($note, color-scheme, noteBorderColor);
-
+    $noteBodyColor: map-get($getScheme, noteBodyFontColor);
+    $noteBGColor: map-get($getScheme, noteBGColor);
+    $noteTitleColor: map-get($getScheme, noteTitleColor);
+    $noteSubtitleColor: map-get($getScheme, noteSubtitleColor);
+    $noteTitleBGColor: map-get($getScheme, noteTitleBGcolor);
+    $noteTopBorderColor: map-get($getScheme, noteTopBorderColor);
+    $noteBorderColor: map-get($getScheme, noteBorderColor);
 
     [data-type="note"] {
       &.#{$noteName} {
         @if $noteType == simpleNote {
-         @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $titleFontType, $noteBodyColor, $noteBGColor, $noteTopBorderRadius, $noteImage);
+         @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $noteBodyColor, $noteBGColor, $noteImage);
         }
         @else if $noteType == noteTopBar {
-         @include noteTopBar($noteTitleColor,$noteSubtitleColor, $noteBorderColor, $noteTopBorderColor, $titleFontType, $noteBodyColor, $noteTopBorderRadius);
+         @include noteTopBar($noteTitleColor,$noteSubtitleColor, $noteBorderColor, $noteTopBorderColor, $noteBodyColor);
         }
       }
     }

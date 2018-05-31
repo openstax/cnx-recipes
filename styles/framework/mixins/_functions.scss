@@ -57,19 +57,32 @@
 }
 
 
-//uses $headers: h5 h4 h3 h2 h1; in framework/_settings
+@function reverse($list, $recursive: false) {
+  $result: ();
+  @for $i from length($list) *-1 through -1 {
+    @if type-of(nth($list, abs($i))) == list and $recursive {
+      $result: append($result, reverse(nth($list, abs($i)), $recursive));
+    } @else {
+      $result: append($result, nth($list, abs($i)));
+    }
+  }
+  @return $result;
+}
+
+
 //returns 0 1 2 3 4
 //this allows to convert the header into an integer that can be used to set size-scale(#) based on the header level
-@function indexHeaders($type) {
+@function index-headers($type) {
+  $headers: SUPPORTED_HEADERS();
   $headerIndex: index($headers, $type)  - 1; //make the list index
   @return $headerIndex;
 }
 
-//reverses the order of $headers: h5 h4 h3 h2 h1; in framework/_settings
+//reverses the order of $headers: h5 h4 h3 h2 h1 to h1 h2 h3 h4 h5
 //returns 1 2 3 4 5
-
-@function reverseIndexHeaders($type) {
+@function reverse-index-headers($type) {
+  $headers: SUPPORTED_HEADERS();
   $reverseHeaders:  reverse($headers);
-  $reverHeaderIndex: index($reverseHeaders, $type);
-  @return $reverHeaderIndex;
+  $reverseHeaderIndex: index($reverseHeaders, #{$type});
+  @return $reverseHeaderIndex;
 }
