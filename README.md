@@ -2,10 +2,14 @@
 
 # Install
 
-1. run `./script/setup` to install the dependencies.
+1. If not already installed, install Yarn at https://yarnpkg.com/lang/en/docs/install
+
+1. Run `./script/setup`
     - See `./.*-version` for the versions of python and node that are used
 
 **Note:** To update the dependencies, run `./script/update`
+
+**For Windows Users:** If your username contains whitespace, the setup and installation will not work. Create a new user without whitespace in the username in order to succesfully complete installation.
 
 # Bake a New Book
 
