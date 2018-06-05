@@ -389,6 +389,15 @@
   Style guide: page.note.exploring-careers
 */
 /*
+  Link to Learning note
+
+  Contains a title "Link to Learning"
+
+  Markup: ./styleguide/page.note.link-to-learning.xhtml-baked.html
+
+  Style guide: page.note.link-to-learning
+*/
+/*
   Catching The Entrepreneurial Spirit
 
   Contains a title "Catching the Entrepreneurial Spirit"
@@ -717,6 +726,56 @@
   move-to: bNoteLabel; }
 
 :pass(2) [data-type="note"] [data-type="note"].exploring-business-careers:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].link-to-learning > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].link-to-learning > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].link-to-learning::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].link-to-learning:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Link to Learning";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].link-to-learning:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].link-to-learning > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].link-to-learning > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].link-to-learning::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].link-to-learning:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Link to Learning";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].link-to-learning:deferred::before {
   container: h4;
   content: pending(bNoteLabel);
   class: "os-title";
@@ -1314,12 +1373,16 @@
 :pass(3) div[data-type="page"] span[data-type="term"],
 :pass(3) div[data-type="composite-page"] span[data-type="term"] {
   attr-id: "auto_" string(pageID) "_term" counter(term); }
-  :pass(3) div[data-type="page"] span[data-type="term"]:match("^[a-zA-Z]"),
-  :pass(3) div[data-type="composite-page"] span[data-type="term"]:match("^[a-zA-Z]") {
-    attr-group-by: first-letter(content()); }
-  :pass(3) div[data-type="page"] span[data-type="term"]:match("^[^a-zA-Z]"),
-  :pass(3) div[data-type="composite-page"] span[data-type="term"]:match("^[^a-zA-Z]") {
-    attr-group-by: " Symbols"; }
+  :pass(3) div[data-type="page"] span[data-type="term"][cmlnle|reference]::after,
+  :pass(3) div[data-type="composite-page"] span[data-type="term"][cmlnle|reference]::after {
+    container: span;
+    data-type: term-content;
+    content: attr(cmlnle|reference); }
+  :pass(3) div[data-type="page"] span[data-type="term"]:not([cmlnle|reference])::after,
+  :pass(3) div[data-type="composite-page"] span[data-type="term"]:not([cmlnle|reference])::after {
+    container: span;
+    data-type: term-content;
+    content: content(); }
 
 :pass(3) div[data-type="page"] > [data-type="document-title"],
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -1408,6 +1471,26 @@
   class: "os-eoc os-critical-thinking-container";
   data-type: "composite-page";
   data-uuid-key: ".critical-thinking"; }
+
+:pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
+:pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
+  data-visited: true;
+  move-to: term-trash; }
+  :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match("^[a-zA-Z]"),
+  :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match("^[a-zA-Z]") {
+    string-set: group-by first-letter(content());
+    data-done: true; }
+  :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match("^[^a-zA-Z]"),
+  :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match("^[^a-zA-Z]") {
+    string-set: group-by " Symbols";
+    data-done: true; }
+
+:pass(4) div[data-type="page"] span[data-type="term"]:deferred,
+:pass(4) div[data-type="composite-page"] span[data-type="term"]:deferred {
+  attr-group-by: string(group-by); }
+
+:pass(4) body:deferred::after {
+  content: clear(term-trash); }
 
 :pass(5) div[data-type="page"] > [data-type="document-title"],
 :pass(5) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -1513,47 +1596,6 @@
 :pass(7) div[data-type="page"] > [data-type="document-title"],
 :pass(7) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
-
-:pass(7) [data-type="chapter"] .os-eoc.os-chapter-review-container [data-type="solution"] {
-  move-to: solution-GETCHAPTER; }
-
-:pass(7) [data-type="chapter"] .os-eoc.os-manage-skills-container [data-type="solution"] {
-  move-to: solution-GETCHAPTER; }
-
-:pass(7) [data-type="chapter"] .os-eoc.os-manage-exercises-container [data-type="solution"] {
-  move-to: solution-GETCHAPTER; }
-
-:pass(7) [data-type="chapter"] .os-eoc.os-critical-thinking-container [data-type="solution"] {
-  move-to: solution-GETCHAPTER; }
-
-:pass(7) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
-  string-set: ChapNum content(); }
-
-:pass(7) [data-type="chapter"]::after {
-  container: h2;
-  class: "os-title";
-  content: "Chapter " string(ChapNum);
-  move-to: chaptTitleEOB; }
-
-:pass(7) [data-type="chapter"]::after {
-  class: os-chapter-area;
-  content: pending(chaptTitleEOB) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
-  move-to: solution-TOCOMPOSITE; }
-
-:pass(7) body::after {
-  container: div;
-  content: pending(solution-TOCOMPOSITE);
-  class: "os-eob os-solution-container";
-  data-type: "composite-page";
-  data-uuid-key: ".solution";
-  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
-
-:pass(7) body::after {
-  container: div;
-  content: pending(solution-TOCOMPOSITE);
-  class: "os-eob os-solution-container";
-  data-type: "composite-page";
-  data-uuid-key: ".solution"; }
 
 :pass(7) body::after {
   container: div;
@@ -1715,17 +1757,6 @@
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
-
-:pass(8) [data-type="composite-page"].os-eob.os-solution-container::before {
-  container: span;
-  content: "Answer Key";
-  class: os-text;
-  move-to: h1-TITLECONTAINER; }
-
-:pass(8) [data-type="composite-page"].os-eob.os-solution-container::before {
-  container: h1;
-  data-type: "document-title";
-  content: pending(h1-TITLECONTAINER); }
 
 :pass(8) [data-type="composite-page"].os-eob.os-reference-container::before {
   container: span;
