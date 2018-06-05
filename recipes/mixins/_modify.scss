@@ -111,13 +111,48 @@
   div[data-type="composite-page"] {
     span[data-type="term"] {
       attr-id: "auto_" string($pageIDString) "_term" counter($termCounter);
-      &:match("^[a-zA-Z]") {
-        attr-group-by: first-letter(content());
+
+      &[cmlnle|reference]::after {
+        container: span;
+        data-type: term-content;
+        content: attr(#{"cmlnle|reference"});
       }
-      &:match("^[^a-zA-Z]") {
-        attr-group-by: " Symbols";
+      &:not([cmlnle|reference])::after {
+        container: span;
+        data-type: term-content;
+        content: content();
       }
     }
+  }
+}
+
+@mixin modify_finishPrepingIndexTerms($regexpForNotASymbol, $regexpForASymbol) {
+  @include validate_type($regexpForASymbol, string);
+  @include validate_type($regexpForNotASymbol, string);
+  div[data-type="page"],
+  div[data-type="composite-page"] {
+    span[data-type="term"] {
+      > span[data-type="term-content"] {
+        data-visited: true;
+        &:match("#{$regexpForNotASymbol}") {
+          string-set: group-by first-letter(content());
+          data-done: true;
+        }
+        &:match("#{$regexpForASymbol}") {
+          string-set: group-by " Symbols";
+          data-done: true;
+        }
+        move-to: term-trash;
+      }
+
+      &:deferred {
+        attr-group-by: string(group-by);
+      }
+    }
+  }
+
+  body:deferred::after {
+    content: clear(term-trash);
   }
 }
 
@@ -258,6 +293,48 @@
 
   // $maxDepth is the maximum amount of note nesting to allow support for
   @include _noteNesting(1, $className, $labelText, $replaceHeader, $useHeader);
+}
+
+@mixin modify_ExercisePrefix($Config_ChapterCompositePages) {
+  @each $page in $Config_ChapterCompositePages {
+    $prefix: map-get($page, prefixExercise);
+    $className: map-get($page, className);
+    @include validate_typeOptional($prefix, string);
+    @include validate_type($className, string);
+    @if $prefix {
+      .os-eoc .#{$className} [data-type="exercise"] {
+        &.os-hasSolution {
+          string-set: exerciseId attr(id);
+          [data-type="problem"]  {
+            &::before {
+              container: a;
+              content: $prefix;
+              class: os-text;
+              attr-href: "#" string(exerciseId) '-solution';
+            }
+          }
+          [data-type="solution"] {
+            &::before {
+              container: a;
+              content: $prefix;
+              class: os-text;
+              attr-href: "#" string(exerciseId);
+            }
+          }
+        }
+        &:not(.os-hasSolution){
+          [data-type="problem"], [data-type="solution"] {
+            &::before {
+              container: span;
+              content: $prefix;
+              class: os-text;
+
+            }
+          }
+        }
+     }
+    }
+  }
 }
 
 @mixin _noteNesting($maxDepth, $className, $labelText, $replaceHeader, $useHeader, $depth: 0) {
