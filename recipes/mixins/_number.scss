@@ -138,6 +138,7 @@
   $hasCaption:          map-get($setFigTableCaptions, hasCaption);
   $hasTitle:            map-get($setFigTableCaptions, hasTitle);
   $exceptionClassNames: map-get($setFigTableCaptions, exceptionClassNames);
+  $hasTopTitle:         map-get($setFigTableCaptions, hasTopTitle);
 
   // $noTitleContent: (); // For the exceptions, this is the "titleContent" that will be used
 
@@ -173,6 +174,17 @@
   [data-type="chapter"] {
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
       @include utils_title($labeling, bCaption);
+      @if $captionType == $CAPTION_TABLE {
+        @if ($hasTopTitle) {
+          &.top-titled {
+            //this will have to be rewritten after all the content has been updated to contain the title within the title instead of the hacky first header in the table.
+            thead tr:first-child {
+              string-set: TopTitleContent content();
+              move-to: trash;
+            }
+          }
+        }
+      }
       @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle);
     }
     @include trashUnnumberedCaption($elementName, $defaultContainer);
@@ -265,7 +277,7 @@
   }
 }
 
-@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle) {
+@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle: null) {
 
   @if ($hasCaption) {
     #{$defaultContainer} {
@@ -275,7 +287,6 @@
     }
   }
   @if ($hasTitle) {
-
     // create divider span for title
     &::after {
       container: span;
@@ -306,8 +317,21 @@
     content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
     move-to: bCaptionContainer;
   }
-  &::outside {
+  @if $captionType == $CAPTION_TABLE {
+    @if hasTopTitle {
+      &::after {
+        class: "os-table-title";
+        content: string(TopTitleContent);
+        move-to: tableTopTitle;
+      }
+    }
+  }
+    &::outside {
+
     @if $captionType == $CAPTION_TABLE {
+      @if hasTopTitle {
+        content: pending(tableTopTitle);
+      }
       class: os-table;
     } @else if $captionType == $CAPTION_FIGURE {
       class: os-figure;
