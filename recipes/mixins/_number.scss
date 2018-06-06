@@ -185,7 +185,7 @@
           }
         }
       }
-      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle);
+      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
     }
     @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
@@ -193,7 +193,7 @@
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered),
     > #{$elementName}:not(.unnumbered) {
       @include utils_title($labelingAp, bCaption);
-      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle);
+      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
     }
     @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
@@ -277,7 +277,7 @@
   }
 }
 
-@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle: null) {
+@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle) {
 
   @if ($hasCaption) {
     #{$defaultContainer} {
@@ -318,18 +318,20 @@
     move-to: bCaptionContainer;
   }
   @if $captionType == $CAPTION_TABLE {
-    @if hasTopTitle {
-      &::after {
-        class: "os-table-title";
-        content: string(TopTitleContent);
-        move-to: tableTopTitle;
+    @if $hasTopTitle {
+      &.top-titled {
+        &::after {
+          class: "os-table-title";
+          content: string(TopTitleContent);
+          move-to: tableTopTitle;
+        }
       }
     }
   }
     &::outside {
 
     @if $captionType == $CAPTION_TABLE {
-      @if hasTopTitle {
+      @if $hasTopTitle {
         content: pending(tableTopTitle);
       }
       class: os-table;
