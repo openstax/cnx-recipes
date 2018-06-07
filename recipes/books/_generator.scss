@@ -451,13 +451,17 @@
   }
   @include modify_trash('.os-index-link-separator:last-child');
   @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
-  @include modify_tableSummaryToParent();
+  @if $Config_TableSummariesAreCaptions {
+    @include modify_tableSummaryToParent();
+  }
 }
 :pass(10) {
   //After: All metadata tasks are completed
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
-  @include modify_tableSummaryToSibling();
+  @if $Config_TableSummariesAreCaptions {
+    @include modify_tableSummaryToSibling();
+  }
 }
 :pass(11) {
   @include toc_putTOCElements();
