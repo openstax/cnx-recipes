@@ -698,3 +698,29 @@
     attr-type: "a";
   }
 }
+
+@mixin modify_tableSummaryToParent() {
+  div.os-table {
+    &:deferred {
+      &::before {
+        class: 'temp-summary';
+        content: string(tableSummary);
+      }
+    }
+    .os-caption-container {
+      string-set: tableSummary content();
+    }
+  }
+}
+
+@mixin modify_tableSummaryToSibling() {
+  div.os-table {
+    table[summary] {
+      attr-summary: string(tableSummary);
+    }
+  }
+  div.temp-summary {
+    string-set: tableSummary content();
+    move-to: trash;
+  }
+}
