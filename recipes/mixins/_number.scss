@@ -329,11 +329,7 @@
     }
   }
     &::outside {
-
     @if $captionType == $CAPTION_TABLE {
-      @if $hasTopTitle {
-        content: pending(tableTopTitle);
-      }
       class: os-table;
     } @else if $captionType == $CAPTION_FIGURE {
       class: os-figure;
@@ -341,7 +337,11 @@
       @error "BUG: Invalid captionType '#{$captionType}'";
     }
     container: div;
-    content: content() pending(bCaptionContainer);
+    @if $hasTopTitle {
+      content: pending(tableTopTitle) content() pending(bCaptionContainer);
+    } @else {
+      content: content() pending(bCaptionContainer);
+    }
   }
 }
 
