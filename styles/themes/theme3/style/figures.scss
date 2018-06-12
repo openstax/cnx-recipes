@@ -3,51 +3,65 @@
  * ---------------------------------------------------
  */
 img {
-  @include x-center-image();
+  // @include x-center-image();
+  display: block;
+  margin: auto;
+  max-width: 6.5in;
 }
 
-.figure,
-.preface .figure {
-  //#content>#figure>.style();
-  @include x-center-image();
+.os-figure,
+.preface .os-figure {
+  // @include x-center-image();
+  display: block;
+  margin: auto;
+  max-width: 6.5in;
+
   width: 100%;
-  float: column-top; // size the surrounding container to the size of the image container to allow the
-  // left justified alignment of the Figure numbering and associated caption
-  // default width is (hero) full size @ 625px. Specifying no class or width defwidth: 100%;aults
-  // to full size.
-  // 3/4 size art
-  //.scale-padding(3, margin-bottom);
+  float: column-top; 
+  margin-bottom: size-scale(3);
 
-  &.medium {
-    //width: @figure-width-medium;
-  }
-  // 1/2 size art
-
-  &.small {
-    //width: @figure-width-small;
+  &:last-child {        // Remove excess padding on figures at end of sections
+    margin-bottom: auto;
   }
 
-  > .body {
-    //#content>#figure>#body>.style(any; any);
-    //.scale-padding(-4, padding-bottom);
+  > figure {
+    padding-bottom: size-scale(-4);
   }
 
-  > .title {
-    // #content>#figure>#title>.number(); // "Figure x.x..."
-    // color: black;
-    // .font-scale(-1);
-    @include caption-number-style(); // content: "Figure " counter(chapter, decimal) "." counter(figure) " " string(cnx-figure-title);
+  > .os-caption-container {
+    font-family: font-map(serif);
+    font-size: size-scale(-1);
+    caption-side: bottom;
 
-    .cnx-gentext-figure {
+    .os-title-label, .os-number, .os-title {
+      // @include caption-number-style(); // content: "Figure " counter(chapter, decimal) "." counter(figure) " " string(cnx-figure-title);
+      color: color-map(caption-number);
+      border: none;
+      padding-top: size-scale(-6);
+      padding-left: 0px;
+      padding-bottom: size-scale(-1);
+      margin-right: size-scale(-5);
+      font-weight: 700;
+
+      display: inline;
+    }
+    
+    .os-title {
       &::before {
-        //.scale-padding(-3, margin-right);
+        margin-right: size-scale(-3);
       }
     }
-    display: inline;
-  }
 
-  .caption {
-    @include caption-style();
-    display: inline;
+    .os-caption {
+      // @include caption-style();
+      color: color-map(caption);
+      text-align: center;
+      display: table-caption;
+      text-align: left;
+      page-break-before: avoid;
+      line-height: 1.6em;
+  
+      display: inline;
+    }
   }
 }
