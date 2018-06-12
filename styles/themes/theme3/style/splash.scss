@@ -9,34 +9,22 @@
     }
 
     > [data-type="document-title"] + .os-figure {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      overflow: hidden;
-      @if settings(full-bleed-splash) {
-        width: FULL_BLEED_WIDTH();
-        height: settings(splash-page-depth);
-        transform: translateX(-1 * (PAGE_HORIZONTAL_MARGIN() + (FULL_BLEED_ADD() / 2)));
-        top: -1 * PAGE_VERTICAL_MARGIN();
-      } @else {
-        width: PAGE_CONTENT_WIDTH();
-        height: settings(splash-page-depth) - PAGE_VERTICAL_MARGIN();
-        top: 0;
-      }
-      
 
       figure {
         margin: 0;
-      }
-
-      .os-caption-container {
-        width: PAGE_CONTENT_WIDTH();
-      }
-
-      [data-type="media"] {
-        // Please ensure that this element is a block element
-        display: block;
-        width: 100%;
+        overflow: hidden;
+        position: absolute;
+        margin-bottom: -1 * PAGE_VERTICAL_MARGIN();
+        @if settings(full-bleed-splash) {
+          width: FULL_BLEED_WIDTH();
+          height: settings(splash-page-depth);
+          transform: translateX(-1 * (PAGE_HORIZONTAL_MARGIN() + (FULL_BLEED_ADD() / 2)));
+          top: -1 * PAGE_VERTICAL_MARGIN();
+        } @else {
+          width: PAGE_CONTENT_WIDTH();
+          height: settings(splash-page-depth) - PAGE_VERTICAL_MARGIN();
+          top: 0;
+        }
 
         &::after {
           width: 100%;
@@ -49,14 +37,44 @@
           border-top: 4px solid color-map(splash-bottom-bar-border);
         }
 
-        img {
+        span[data-type="media"] {
+          // Please ensure that this element is a block element since its a span
+          display: block;
+          line-height: 0;
           width: 100%;
-          position: relative;
-          top: -1 * settings(splash-title-bar-height) / 2;
-          @if settings(enforce-splash-height) {
-            height: settings(splash-height) - settings(splash-title-bar-height);
+          height: 100%;
+          /* Prince -v latest */
+            // display: flex;
+            // align-items: center;
+          /* end Prince -v latest */
+
+          img {
+            width: 100%;
+            position: relative;
+
+            /* Prince -v <= 11.0 */
+              @if settings(full-bleed-splash) {
+                margin-top: settings(splash-page-depth) / 2;
+              } @else {
+                margin-top: (settings(splash-page-depth) - PAGE_VERTICAL_MARGIN()) / 2;
+              }
+              transform: translateY(-50%);
+              padding-bottom: settings(splash-title-bar-height);
+            /* end Prince -v <= 11.0 */
+
+            /* Prince -v latest */
+              // top: -1 * (settings(splash-title-bar-height) / 2);
+            /* end Prince -v latest */
+
+            @if settings(enforce-splash-height) {
+              height: settings(splash-height) - settings(splash-title-bar-height);
+            }
           }
         }
+      }
+
+      .os-caption-container {
+        width: PAGE_CONTENT_WIDTH();
       }
     }
   }
