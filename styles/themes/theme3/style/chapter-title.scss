@@ -4,39 +4,41 @@
  */
 [data-type="chapter"] {
   > h1[data-type="document-title"] {
-    font-size: size-scale(4);
+    font-size: size-scale(3);
     position: absolute;
     color: color-map(chapter-title);
     white-space: nowrap;
-    font-weight: bold;
-    font-family: font-map(sans-serif);
-    text-transform: capitalize;
+    font-family: font-map(serif);
     z-index: 1;
-    margin: 0 ;
+    margin: 0;
+    width: PAGE_CONTENT_WIDTH();
     @if settings(full-bleed-splash) {
-      width: FULL_BLEED_WIDTH();
       height: settings(splash-page-depth);
-      transform: translateX(-1 * (PAGE_HORIZONTAL_MARGIN() + (FULL_BLEED_ADD() / 2)));
       top: -1 * PAGE_VERTICAL_MARGIN();
-      left: 1.2in;
     } @else {
-      width: PAGE_CONTENT_WIDTH();
       height: settings(splash-page-depth) - PAGE_VERTICAL_MARGIN();
-      top: 0;
-      left: 0.5in;
     }
 
     .os-text {
+      $drop: 10px;
+      $left-padding: 80px;
+
       position: absolute;
-      bottom: -10px;
-      left: 80px;
-      width: 60%;
-      height: settings(splash-title-bar-height);
+      bottom: 0;
+      max-width: PAGE_CONTENT_WIDTH();
+      height: settings(splash-title-bar-height) - $drop;
       white-space: normal;
+      font-weight: normal;
+      @if settings(full-bleed-splash) {
+        left: $left-padding;
+      } @else {
+        left: $left-padding + PAGE_HORIZONTAL_MARGIN() / 2;
+      }
     }
 
     .os-number {
       $diameter: 45px;
+
       font-family: font-map(serif);
       bottom: settings(splash-title-bar-height) - ($diameter / 2);
       background-color: color-map(chapter-number-bg);
@@ -49,19 +51,25 @@
       border-radius: 50%;
       border: 1px solid color-map(chapter-number-border);
       text-align: center;
+      @if not settings(full-bleed-splash) {
+        left: PAGE_HORIZONTAL_MARGIN() / 2;
+      }
     }
 
     &::after {
+      $icon-width: 170px;
+
       content: CONTENT_BLANK();
       display: block;
-      width: 170px;
-      height: 73px;
+      width: $icon-width;
+      height: settings(splash-title-bar-height);
       position: absolute;
-      left: 0;
       bottom: 0;
-      transform: translateX(-1 * PAGE_HORIZONTAL_MARGIN());
       // background: url("ccap-business/business-books-intro-graphic.svg") 0 0 no-repeat;
       z-index: 3;
+      @if settings(full-bleed-splash) {
+        left: -1 * PAGE_HORIZONTAL_MARGIN();
+      }
     }
   }
 }
