@@ -25,6 +25,25 @@
   }
 }
 
+@mixin _pageEntry($enumerated) {
+  content: pending(page-link);
+  move-to: eob-toc;
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(page-shortid);
+  container: li;
+  @if not $enumerated {
+    class: os-toc-unenumerated-page;
+  }
+}
+
+@mixin _enumeratedPage {
+  @include _pageEntry(true);
+}
+
+@mixin _unnumeratedPage {
+  @include _pageEntry(false);
+}
+
 @mixin toc_prepTOCElements($hasCompositeChapter) {
   $chapterAndCompositeChapterSel: ('> div[data-type="chapter"]');
   @if $hasCompositeChapter {
@@ -35,6 +54,7 @@
     > div[data-type="page"],
     > div[data-type="composite-page"] {
       string-set: page-id attr(id);
+
       > [data-type='document-title'] {
         node-set: pageTitle;
       }
@@ -49,12 +69,11 @@
         container: a;
         move-to: page-link;
       }
-      &::after {
-        content: pending(page-link);
-        move-to: eob-toc;
-        attr-cnx-archive-uri: attr(id);
-        attr-cnx-archive-shortid: string(page-shortid);
-        container: li;
+      &:not(.appendix)::after {
+        @include _unnumeratedPage();
+      }
+      &.appendix::after {
+        @include _enumeratedPage();
       }
     }
     #{$chapterAndCompositeChapterSel} {
