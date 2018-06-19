@@ -1,26 +1,75 @@
+@mixin caption-general-style() {
+	font-family: font-map(serif);
+	font-size: size-scale(-2);
+	caption-side: bottom;
+	display: inline;
+}
+
 @mixin caption-number-style() {
-  font-family: font-map(serif);
-  font-size: size-scale(-2);
-  caption-side: bottom;
-  color: color-map(caption-number);
-  border: none;
-  font-weight: 700;
-  display: inline;
+	color: color-map(caption-number);
+	border: none;
+	font-weight: settings(caption-number-font-weight);
 }
 
-@mixin caption-style() {
-  font-family: font-map(serif);
-  font-size: size-scale(-2);
-  caption-side: bottom;
-  color: color-map(caption);
-  text-align: left;
-  page-break-before: avoid;
-  line-height: 1.6em;
-  display: inline;
+@mixin caption-text-style() {
+	color: color-map(caption);
+	text-align: left;
+	page-break-before: avoid;
+	line-height: settings(caption-line-height);
 }
 
-@mixin x-center-image() {
-  display: block;
-  margin: auto;
-  width: 100%;
+@mixin center-image() {
+	display: block;
+	margin: auto;
+	max-width: PAGE_CONTENT_WIDTH();
+	width: 100%;
+}
+
+@mixin caption($format, $table: false) {
+	@if $format == container {
+		> .os-caption-container {
+			@include caption-general-style();
+			padding-bottom: size-scale(-1);
+			@if $table {
+				display: table-caption;
+			}
+
+			.os-title-label, .os-number, .os-title {
+				@include caption-number-style();
+			}
+
+			.os-number {
+				margin-right: size-scale(-4);
+			}
+
+			.os-caption {
+				@include caption-text-style();
+				margin-left: size-scale(-5);
+			}
+		}
+	}
+
+	@else if $format == split {
+		> div[data-type="title"] {
+			@include caption-general-style();
+			@include caption-number-style();
+			padding-bottom: size-scale(-1);
+			margin-right: size-scale(-5);
+			@if $table {
+				display: table-caption;
+			}
+		}
+
+		figcaption {
+			@include caption-general-style();
+			@include caption-text-style();
+			@if $table {
+				display: table-caption;
+			}
+		}
+	}
+
+	@else {
+		@error '#{$format} is not a valid caption format or structure. Please choose from container or split'
+	}
 }
