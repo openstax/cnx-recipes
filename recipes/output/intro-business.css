@@ -1621,6 +1621,10 @@
   string-set: target-label "Figure " counter(appendix, upper-alpha) counter(figure);
   string-set: target-label-nominative "Figure " counter(appendix, upper-alpha) counter(figure); }
 
+:pass(8) .preface :not(table) > table:not(.unnumbered) {
+  string-set: target-label "Table " counter(preface, upper-alpha) counter(table);
+  string-set: target-label-nominative "Table " counter(preface, upper-alpha) counter(table); }
+
 :pass(8) .preface :not(figure) > figure:not(.unnumbered) {
   string-set: target-label "Figure " counter(preface, upper-alpha) counter(figure);
   string-set: target-label-nominative "Figure " counter(preface, upper-alpha) counter(figure); }
@@ -1765,7 +1769,7 @@
   content: "Exercise ";
   class: os-title-label; }
 
-:pass(8) [data-type="chapter"], :pass(8) .appendix {
+:pass(8) [data-type="chapter"], :pass(8) .appendix, :pass(8) .preface {
   counter-reset: table; }
 
 :pass(8) :not(table) > table:not(.unnumbered) {
@@ -1879,6 +1883,54 @@
   content: content() pending(bCaptionContainer); }
 
 :pass(8) .appendix > table.unnumbered caption {
+  move-to: trash; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: "Table ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: counter(preface, upper-alpha) counter(table);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered) caption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered) caption [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(8) .preface > table.unnumbered caption {
   move-to: trash; }
 
 :pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
