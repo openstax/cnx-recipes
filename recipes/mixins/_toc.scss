@@ -25,22 +25,22 @@
   }
 }
 
-@mixin _pageEntry($enumerated) {
+@mixin _pageEntry($counted) {
   content: pending(page-link);
   move-to: eob-toc;
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(page-shortid);
   container: li;
-  @if not $enumerated {
-    class: os-toc-unenumerated-page;
+  @if not $counted {
+    class: os-toc-uncounted-page;
   }
 }
 
-@mixin _enumeratedPage {
+@mixin _countedPage {
   @include _pageEntry(true);
 }
 
-@mixin _unnumeratedPage {
+@mixin _uncountedPage {
   @include _pageEntry(false);
 }
 
@@ -70,10 +70,10 @@
         move-to: page-link;
       }
       &:not(.appendix)::after {
-        @include _unnumeratedPage();
+        @include _uncountedPage();
       }
       &.appendix::after {
-        @include _enumeratedPage();
+        @include _countedPage();
       }
     }
     #{$chapterAndCompositeChapterSel} {
