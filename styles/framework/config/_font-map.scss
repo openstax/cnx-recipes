@@ -16,11 +16,15 @@
 $font-map-manifest: ();
 @mixin font-map-merge($function) {
   $font-map-manifest: append($font-map-manifest, $function) !global;
+@include update-font-config();
+}
+
+// Ensure all default keys are available from $font-map and font-map()
+$font-map: default-font-map() !default;
+
+@mixin update-font-config() {
   $font-map: default-font-map() !global;
   @each $map-get-function in $font-map-manifest {
     $font-map: map-merge($font-map, call($map-get-function)) !global;
   }
 }
-
-// Ensure all default keys are available from $font-map and font-map()
-$font-map: default-font-map() !default;
