@@ -10,23 +10,21 @@ getStdin().then(recipeFeaturesScss => {
     features = rendered.vars['global']['$FEATURES']['value'];
     
     if(order == 0) {
-      header = "| Recipe Name |";
+      header_row = "| Recipe Name |";
+      header_border = "| --- |";
       columns = Object.keys(features).length
       Object.keys(features).forEach(featureName => {
-        header += ` ${featureName} |`;
+        header_row += ` ${featureName} |`;
+        header_border += " --- |";
       });
-      header += "\n";
-      header += "| --- |"
-      for(i = 0; i < columns;  i++) {
-        header += " --- |"
-      }
+      header = header_row + "\n" + header_border;
       console.log(header);
     }
     row = `| ${recipeName} |`;
     Object.keys(features).forEach(featureName => {
       enabled = features[featureName]['value']
-      mark = 
-      row += ` ${(enabled ? ":heavy_check_mark:" : ":x:")} |`;
+      mark = (enabled ? ":heavy_check_mark:" : ":x:")
+      row += ` ${mark} |`;
     });
     console.log(row);
   }).catch(err => { console.log(err) });
