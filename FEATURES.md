@@ -1,21 +1,21 @@
-| Recipe Name |
-| --- |
-| accounting |
-| ap-biology |
-| ap-physics |
-| biology |
-| business-ethics |
-| economics |
-| entrepreneurship |
-| _example |
-| hs-physics |
-| intro-business |
-| physics |
-| principles-management |
-| statistics |
-| TEAap-biology |
-| TEAap-physics |
-| TEAeconomics |
-| TEAhs-physics |
-| TEAstatistics |
-| u-physics |
+| Recipe Name | example_feature |
+| --- | --- |
+| accounting | :heavy_check_mark: |
+| ap-biology | :x: |
+| ap-physics | :x: |
+| biology | :x: |
+| business-ethics | :x: |
+| economics | :x: |
+| entrepreneurship | :heavy_check_mark: |
+| _example | :x: |
+| hs-physics | :x: |
+| intro-business | :x: |
+| physics | :x: |
+| principles-management | :x: |
+| statistics | :x: |
+| TEAap-biology | :x: |
+| TEAap-physics | :x: |
+| TEAeconomics | :x: |
+| TEAhs-physics | :x: |
+| TEAstatistics | :x: |
+| u-physics | :x: |
