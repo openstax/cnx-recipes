@@ -27,5 +27,5 @@ getStdin().then(recipeFeaturesScss => {
       row += ` ${mark} |`;
     });
     console.log(row);
-  }).catch(err => { console.log(err) });
-}).catch(err => { console.log(err) });
+  }).catch(err => { console.error(err) });
+}).catch(err => { console.error(err) });
