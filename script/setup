@@ -6,6 +6,12 @@ source ./script/bootstrap || exit 111
 
 # JavaScript stuff
 if [[ -f "./package.json" ]]; then
+  # Add the nodenv version of node into the path so that `#!/usr/bin/env node` works.
+  # This is needed when packages build native code so they are compiled
+  # against the correct version of node (e.g. node-sass)
+  if [[ $(command -v nodenv) ]]; then
+    PATH="$(dirname $(nodenv which node) ):${PATH}"
+  fi
   do_progress_quiet "Installing JavaScript Packages" \
     yarn --prefer-offline
 fi
