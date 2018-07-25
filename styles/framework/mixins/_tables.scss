@@ -1,0 +1,102 @@
+$hasTopTitledTables: settings(tables-top-titled);
+$hasTitlesInCaptionTables: settings(tables-titles-in-caption);
+$hasTextHeavyTables: settings(tables-text-heavy);
+$hasCaptionsTables: settings(tables-captions);
+$hasSideTitlesTables: settings(tables-side-titles);
+
+@if $hasTopTitledTables and $hasTitlesInCaptionTables {
+  @error "settings(tables-top-titled) and settings(tables-titles-in-caption) are mutually exclusive, please set only one to true in your theme's settings."
+};
+
+@if ($hasTopTitledTables == false) and ($hasTitlesInCaptionTables == false) {
+  @warn "Both settings(tables-top-titled) and  settings(tables-titles-in-caption) are set to false, table titles will not be styled. Set either to true if your theme contains table titles."
+};
+
+
+//Titles mixins
+@mixin topTitles(){
+  div.os-table-title {
+    //color: color-map(table-top-title-color);
+    font-weight: bold;
+    text-align: center;
+  }
+}
+@mixin titlesInCaption {
+  caption {
+    .os-title {
+      //TODO: styles for titles in the caption
+    }
+  }
+}
+@mixin sideTitles {
+  &.column-header tbody td:first-child {
+    //#content>#table>#data>.style('header'; any);
+    //color: $col-header-color;
+  //  .font-scale(0);
+    font-weight: bold;
+    text-align: center;
+    vertical-align: initial;
+  //  background-color: $col-header-bg-color;
+  }
+}
+
+
+@mixin tableTitles(){
+  //titles definitons
+  @if $hasTopTitledTables {
+    @include topTitles();
+  }
+  @if $hasTitlesInCaptionTables {
+    @include titlesInCaption();
+  }
+  @if $hasSideTitlesTables {
+    @include sideTitles();
+  }
+}
+//table types
+//.unstyled
+//.text-heavy
+
+//base styles
+@mixin tableHeads() {
+  thead {
+    border-top: none;
+    //font-family: settings(font);
+    th {
+      border-bottom: none;
+      vertical-align: initial;
+      font-weight: 100;
+      border-left: 0;
+      border-right: 0;
+      > tr {
+        border-left: 0;
+        border-right: 0;
+        .footnote::footnote-call {
+          //TODO
+        }
+      }
+      .footnote::footnote-call {
+        //TODO
+      }
+    }
+  }
+}
+@mixin tablesBaseStyles() {
+  page-break-inside: auto;
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  table {
+    width: 100%;
+    border-collapse: separate;
+    prince-caption-page: all;
+  }
+}
+
+
+@mixin table() {
+  .os-table {
+    @include tableTitles();
+    @include tablesBaseStyles();
+  }
+}
