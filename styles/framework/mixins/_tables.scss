@@ -1,0 +1,180 @@
+$hasTopTitledTables: settings(tables-top-titled);
+$hasTitlesInCaptionTables: settings(tables-titles-in-caption);
+$hasTextHeavyTables: settings(tables-text-heavy);
+$hasCaptionsTables: settings(tables-captions);
+$hasSideTitlesTables: settings(tables-side-titles);
+
+@if $hasTopTitledTables and $hasTitlesInCaptionTables {
+  @error "settings(tables-top-titled) and settings(tables-titles-in-caption) are mutually exclusive, please set only one to true in your theme's settings."
+};
+
+//Titles mixins
+@mixin topTitles(){
+  div.os-table-title {
+    //color: color-map(table-top-title-color);
+    font-weight: bold;
+    text-align: center;
+  }
+}
+@mixin titlesInCaption {
+  caption {
+    .os-title {
+      //TODO: styles for titles in the caption
+    }
+  }
+}
+@mixin sideTitles($tableClass) {
+  &.#{tableClass} tbody td:first-child {
+    //color: $col-header-color;
+  //  .font-scale(0);
+    font-weight: bold;
+    text-align: center;
+    vertical-align: initial;
+    //background-color: color-map(table-title-bg);
+  }
+}
+
+
+@mixin tableTitle($tableClass: null){
+  //titles definitons
+  @if $hasTopTitledTables {
+    @include topTitles();
+  }
+  @if $hasTitlesInCaptionTables {
+    @include titlesInCaption();
+  }
+  @if $hasSideTitlesTables {
+    @include sideTitles($tableClass);
+  }
+}
+//table types
+//.unstyled
+//.text-heavy
+
+//base styles
+@mixin tableBaseStyle() {
+  page-break-inside: auto;
+  margin: 0 auto;
+  padding: 0;
+  display: table;
+  max-width: settings(page-width);
+  table {
+    width: 100%;
+    border-collapse: separate;
+    prince-caption-page: all;
+    border: none;
+    border-spacing: 0;
+    padding-bottom: size-scale(-1);
+  }
+}
+@mixin tableHead() {
+  thead {
+    tr {
+      th {
+        padding: size-scale(1);
+        .footnote::footnote-call {
+          //TODO
+        }
+      }
+      // main header style
+      &:first-of-type th {
+        background-color: color-map(first-th-bg);
+        color: color-map(first-th);
+        font-weight: bold;
+        &:first-child {
+          border-top-left-radius: settings(table-border-radius);
+        }
+        &:last-child {
+          border-top-right-radius: settings(table-border-radius);
+        }
+      }
+      // if there are more than one $headerSize
+      &:not(first-child) {
+        background-color: color-map(second-th-bg);
+        color: color-map(second-th);
+        font-weight: normal;
+      }
+      .footnote::footnote-call {
+        //TODO
+      }
+    }
+  }
+}
+
+
+
+
+@mixin tableBody() {
+  $textAlignments: right, left, justify;
+  tbody {
+    border: settings(table-border) color_map(table-body-border);
+    &[valign=top] > tr > td {
+      vertical-align: top;
+    }
+    tr {
+      page-break-inside: avoid;
+    }
+    tr td {
+        border-right: settings(table-border) color_map(table-body-border);
+        border-bottom: settings(table-border) color_map(table-body-border);
+        padding: size-scale(1);
+        &:first-child {
+          border-left: settings(table-border) color_map(table-body-border);
+        }
+
+        // generate various text-align options
+        @each $textAlignment in $textAlignments {
+          &.text-align-#{$textAlignment} {
+            text-align: $textAlignment;
+          }
+        }
+
+      &.header {
+        background-color: color-map(first-th-bg);
+        color: color-map(first-th);
+        font-weight: bold;
+        text-align: center;
+        vertical-align: initial;
+      }
+    }
+  }
+}
+
+@mixin tableFoot() {
+  tfoot {
+    tr {
+      th {
+        text-align: left;
+        font-weight: normal;
+        color: color-map(bodyText);
+        border-bottom: color_map(table-body-border);
+        border-left: color_map(table-body-border);
+        // Override base-skeleton !important
+        border-color: color_map(table-body-border) !important;
+
+        &:last-child {
+          border-right: color_map(table-body-border);
+        }
+      }
+    }
+  }
+}
+
+@mixin imagesInTables() {
+  img {
+    height: auto;
+    width: 100%;
+    position: inherit;
+  }
+}
+
+@mixin table($tableClass: null) {
+  .os-table:not(.unstyled) {
+    @include tableTitle($tableClass);
+    @include tableBaseStyle();
+    @include tableHead();
+    @include tableBody();
+    @include caption(table);
+    @include imagesInTables();
+  }
+}
