@@ -35,7 +35,7 @@ $hasSideTitlesTables: settings(tables-side-titles);
 }
 
 
-@mixin tableTitles($tableClass: null){
+@mixin tableTitle($tableClass: null){
   //titles definitons
   @if $hasTopTitledTables {
     @include topTitles();
@@ -52,34 +52,31 @@ $hasSideTitlesTables: settings(tables-side-titles);
 //.text-heavy
 
 //base styles
-@mixin tablesBaseStyles() {
+@mixin tableBaseStyle() {
   page-break-inside: auto;
   margin: 0 auto;
   padding: 0;
   display: table;
-  max-width: 6in;
+  max-width: settings(page-width);
   table {
     width: 100%;
     border-collapse: separate;
     prince-caption-page: all;
+    border: none;
+    border-spacing: 0;
+    padding-bottom: size-scale(-1);
   }
 }
-@mixin tableHeads() {
+@mixin tableHead() {
   thead {
-    border-top: none;
     tr {
-      border-left: 0;
-      border-right: 0;
       th {
-        border-bottom: none;
-        vertical-align: initial;
-        //font-weight: 100;
-        border-left: 0;
-        border-right: 0;
+        padding: size-scale(1);
         .footnote::footnote-call {
           //TODO
         }
       }
+      // main header style
       &:first-of-type th {
         background-color: color-map(first-th-bg);
         color: color-map(first-th);
@@ -91,9 +88,11 @@ $hasSideTitlesTables: settings(tables-side-titles);
           border-top-right-radius: settings(table-border-radius);
         }
       }
+      // if there are more than one $headerSize
       &:not(first-child) {
         background-color: color-map(second-th-bg);
         color: color-map(second-th);
+        font-weight: normal;
       }
       .footnote::footnote-call {
         //TODO
@@ -102,7 +101,11 @@ $hasSideTitlesTables: settings(tables-side-titles);
   }
 }
 
+
+
+
 @mixin tableBody() {
+  $textAlignments: right, left, justify;
   tbody {
     border: settings(table-border) color_map(table-body-border);
     &[valign=top] > tr > td {
@@ -112,21 +115,20 @@ $hasSideTitlesTables: settings(tables-side-titles);
       page-break-inside: avoid;
     }
     tr td {
-      border-color: color_map(table-body-border);
-      border-top: settings(table-border);
-      border-right: settings(table-border);
-      border-left: none;
-      &.text-align-right {
-        text-align: right;
-      }
+        border-right: settings(table-border) color_map(table-body-border);
+        border-bottom: settings(table-border) color_map(table-body-border);
+        padding: size-scale(1);
+        &:first-child {
+          border-left: settings(table-border) color_map(table-body-border);
+        }
 
-      &.text-align-center {
-        text-align: center;
-      }
+        // generate various text-align options
+        @each $textAlignment in $textAlignments {
+          &.text-align-#{$textAlignment} {
+            text-align: $textAlignment;
+          }
+        }
 
-      &.text-align-justify {
-        text-align: justify;
-      }
       &.header {
         background-color: color-map(first-th-bg);
         color: color-map(first-th);
@@ -134,9 +136,6 @@ $hasSideTitlesTables: settings(tables-side-titles);
         text-align: center;
         vertical-align: initial;
       }
-    }
-    tr:last-child td {
-      border-bottom: setting(table-body-border) color-map(table-body-border);
     }
   }
 }
@@ -170,12 +169,12 @@ $hasSideTitlesTables: settings(tables-side-titles);
 }
 
 @mixin table($tableClass: null) {
-  .os-table {
-    @include tableTitles($tableClass);
-    @include tablesBaseStyles();
-    @include caption(table);
-    @include tableHeads();
+  .os-table:not(.unstyled) {
+    @include tableTitle($tableClass);
+    @include tableBaseStyle();
+    @include tableHead();
     @include tableBody();
+    @include caption(table);
     @include imagesInTables();
   }
 }
