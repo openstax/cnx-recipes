@@ -8,11 +8,6 @@ $hasSideTitlesTables: settings(tables-side-titles);
   @error "settings(tables-top-titled) and settings(tables-titles-in-caption) are mutually exclusive, please set only one to true in your theme's settings."
 };
 
-@if ($hasTopTitledTables == false) and ($hasTitlesInCaptionTables == false) {
-  @warn "Both settings(tables-top-titled) and  settings(tables-titles-in-caption) are set to false, table titles will not be styled. Set either to true if your theme contains table titles."
-};
-
-
 //Titles mixins
 @mixin topTitles(){
   div.os-table-title {
@@ -28,20 +23,19 @@ $hasSideTitlesTables: settings(tables-side-titles);
     }
   }
 }
-@mixin sideTitles {
-  &.column-header tbody td:first-child {
-    //#content>#table>#data>.style('header'; any);
+@mixin sideTitles($tableClass) {
+  &.#{tableClass} tbody td:first-child {
     //color: $col-header-color;
   //  .font-scale(0);
     font-weight: bold;
     text-align: center;
     vertical-align: initial;
-  //  background-color: $col-header-bg-color;
+    //background-color: color-map(table-title-bg);
   }
 }
 
 
-@mixin tableTitles(){
+@mixin tableTitles($tableClass: null){
   //titles definitons
   @if $hasTopTitledTables {
     @include topTitles();
@@ -50,7 +44,7 @@ $hasSideTitlesTables: settings(tables-side-titles);
     @include titlesInCaption();
   }
   @if $hasSideTitlesTables {
-    @include sideTitles();
+    @include sideTitles($tableClass);
   }
 }
 //table types
@@ -58,22 +52,48 @@ $hasSideTitlesTables: settings(tables-side-titles);
 //.text-heavy
 
 //base styles
+@mixin tablesBaseStyles() {
+  page-break-inside: auto;
+  margin: 0 auto;
+  padding: 0;
+  display: table;
+  max-width: 6in;
+  table {
+    width: 100%;
+    border-collapse: separate;
+    prince-caption-page: all;
+  }
+}
 @mixin tableHeads() {
   thead {
     border-top: none;
-    //font-family: settings(font);
-    th {
-      border-bottom: none;
-      vertical-align: initial;
-      font-weight: 100;
+    tr {
       border-left: 0;
       border-right: 0;
-      > tr {
+      th {
+        border-bottom: none;
+        vertical-align: initial;
+        //font-weight: 100;
         border-left: 0;
         border-right: 0;
         .footnote::footnote-call {
           //TODO
         }
+      }
+      &:first-of-type th {
+        background-color: color-map(first-th-bg);
+        color: color-map(first-th);
+        font-weight: bold;
+        &:first-child {
+          border-top-left-radius: settings(table-border-radius);
+        }
+        &:last-child {
+          border-top-right-radius: settings(table-border-radius);
+        }
+      }
+      &:not(first-child) {
+        background-color: color-map(second-th-bg);
+        color: color-map(second-th);
       }
       .footnote::footnote-call {
         //TODO
@@ -81,22 +101,81 @@ $hasSideTitlesTables: settings(tables-side-titles);
     }
   }
 }
-@mixin tablesBaseStyles() {
-  page-break-inside: auto;
-  margin: 0 auto;
-  padding: 0;
-  border: none;
-  table {
-    width: 100%;
-    border-collapse: separate;
-    prince-caption-page: all;
+
+@mixin tableBody() {
+  tbody {
+    border: settings(table-border) color_map(table-body-border);
+    &[valign=top] > tr > td {
+      vertical-align: top;
+    }
+    tr {
+      page-break-inside: avoid;
+    }
+    tr td {
+      border-color: color_map(table-body-border);
+      border-top: settings(table-border);
+      border-right: settings(table-border);
+      border-left: none;
+      &.text-align-right {
+        text-align: right;
+      }
+
+      &.text-align-center {
+        text-align: center;
+      }
+
+      &.text-align-justify {
+        text-align: justify;
+      }
+      &.header {
+        background-color: color-map(first-th-bg);
+        color: color-map(first-th);
+        font-weight: bold;
+        text-align: center;
+        vertical-align: initial;
+      }
+    }
+    tr:last-child td {
+      border-bottom: setting(table-body-border) color-map(table-body-border);
+    }
   }
 }
 
+@mixin tableFoot() {
+  tfoot {
+    tr {
+      th {
+        text-align: left;
+        font-weight: normal;
+        color: color-map(bodyText);
+        border-bottom: color_map(table-body-border);
+        border-left: color_map(table-body-border);
+        // Override base-skeleton !important
+        border-color: color_map(table-body-border) !important;
 
-@mixin table() {
+        &:last-child {
+          border-right: color_map(table-body-border);
+        }
+      }
+    }
+  }
+}
+
+@mixin imagesInTables() {
+  img {
+    height: auto;
+    width: 100%;
+    position: inherit;
+  }
+}
+
+@mixin table($tableClass: null) {
   .os-table {
-    @include tableTitles();
+    @include tableTitles($tableClass);
     @include tablesBaseStyles();
+    @include caption(table);
+    @include tableHeads();
+    @include tableBody();
+    @include imagesInTables();
   }
 }
