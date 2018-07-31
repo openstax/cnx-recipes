@@ -1,15 +1,15 @@
-| Recipe Name | example_feature |
+| Recipe Name | sup-footnote-call |
 | --- | --- |
-| accounting | :heavy_check_mark: |
+| accounting | :x: |
 | ap-biology | :x: |
 | ap-physics | :x: |
 | biology | :x: |
 | business-ethics | :x: |
 | economics | :x: |
-| entrepreneurship | :heavy_check_mark: |
+| entrepreneurship | :x: |
 | _example | :x: |
 | hs-physics | :x: |
-| intro-business | :x: |
+| intro-business | :heavy_check_mark: |
 | physics | :x: |
 | principles-management | :x: |
 | statistics | :x: |
