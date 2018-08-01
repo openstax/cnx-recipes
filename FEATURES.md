@@ -1,21 +1,21 @@
-| Recipe Name | sup-footnote-call |
-| --- | --- |
-| accounting | :x: |
-| ap-biology | :x: |
-| ap-physics | :x: |
-| biology | :x: |
-| business-ethics | :x: |
-| economics | :x: |
-| entrepreneurship | :x: |
-| _example | :x: |
-| hs-physics | :x: |
-| intro-business | :heavy_check_mark: |
-| physics | :x: |
-| principles-management | :x: |
-| statistics | :x: |
-| TEAap-biology | :x: |
-| TEAap-physics | :x: |
-| TEAeconomics | :x: |
-| TEAhs-physics | :x: |
-| TEAstatistics | :x: |
-| u-physics | :x: |
+| Recipe Name | sup-footnote-call | trash-empty-table-captions | exercise-container |
+| --- | --- | --- | --- |
+| TEAap-biology | :x: | :x: | :x: |
+| TEAap-physics | :x: | :x: | :x: |
+| TEAeconomics | :x: | :x: | :x: |
+| TEAhs-physics | :x: | :x: | :x: |
+| TEAstatistics | :x: | :x: | :x: |
+| _example | :x: | :x: | :x: |
+| accounting | :x: | :x: | :x: |
+| ap-biology | :x: | :x: | :heavy_check_mark: |
+| ap-physics | :x: | :heavy_check_mark: | :x: |
+| biology | :x: | :x: | :x: |
+| business-ethics | :x: | :x: | :x: |
+| economics | :x: | :x: | :x: |
+| entrepreneurship | :x: | :x: | :x: |
+| hs-physics | :x: | :x: | :x: |
+| intro-business | :heavy_check_mark: | :x: | :x: |
+| physics | :x: | :x: | :x: |
+| principles-management | :x: | :x: | :x: |
+| statistics | :x: | :x: | :x: |
+| u-physics | :x: | :x: | :x: |
