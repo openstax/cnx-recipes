@@ -267,11 +267,9 @@
 }
 
 
-@mixin trashEmptyCaption ($type, $defaultContainer) {
-  > #{$type} {
-    #{$defaultContainer}:empty {
-      move-to: trash;
-    }
+@mixin trashEmptyElement ($defaultContainer) {
+  #{$defaultContainer}:empty {
+    move-to: trash;
   }
 }
 
@@ -375,7 +373,11 @@
 @mixin number_citations($citationCounter, $citationLinkCounter ) {
   [data-type="cite"] {
     &::before {
-      container: span;
+      @if feature-enabled(sup-footnote-call) {
+        container: sup;
+      } @else {
+        container: span;
+      }
       class: 'os-citation-number';
       content: counter($citationLinkCounter);
     }
