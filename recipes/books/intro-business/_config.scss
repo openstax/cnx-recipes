@@ -1,4 +1,5 @@
 @import '../_common-stuff';
+$RECIPE_NAME: "intro-business";
 
 /*==========================================================
   Intro to Business CONFIG
@@ -192,7 +193,7 @@ $Config_PartType_Example: (     moveTo: $AREA_NONE,          titleContent: $_exa
 $Config_ChapterCompositePages: (
   (className: "glossary",             clusterBy: $CLUSTER_NONE,   specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt",    name: "Key Terms"),
   (className: "section-summary",      clusterBy: $CLUSTER_NONE,   hasSolutions: false,    name: "Summary of Learning Outcomes"),
-  (className: "prep-workplace",       clusterBy: $CLUSTER_NONE,   hasSolutions: false,    name: "Preparing for Tomorrow's Workplace"),
+  (className: "prep-workplace",       clusterBy: $CLUSTER_NONE,   hasSolutions: false,    name: "Preparing for Tomorrow's Workplace Skills"),
   (className: "ethics-activity",      clusterBy: $CLUSTER_NONE,   hasSolutions: false,    name: "Ethics Activity"),
   (className: "working-net",          clusterBy: $CLUSTER_NONE,   hasSolutions: false,    name: "Working the Net"),
   (className: "critical-thinking",    clusterBy: $CLUSTER_NONE,   hasSolutions: false,    name: "Critical Thinking Case"),
@@ -207,12 +208,28 @@ $Config_BookCompositePages: (
   //the composite builder should account for this rather than using hacky syntax
 );
 
-$Config_PartType_Figure_CaptionContent  : (os-title-label: "Exhibit ", os-number: counter(chapter) "."           counter(figure), os-divider: " ");
-$Config_PartType_Figure_CaptionContentAp: (os-title-label: "Exhibit ", os-number: counter(appendix, upper-alpha) counter(figure), os-divider: " ");
 
+$Config_PartType_Figure_CaptionContent  : (os-title-label: "Exhibit ", os-number: counter(chapter) "." counter(figure),           os-divider: " ");
+$Config_PartType_Figure_CaptionContentAp: (os-title-label: "Exhibit ", os-number: counter(appendix, upper-alpha) counter(figure), os-divider: " ");
+$Config_PartType_Figure_CaptionContentPr: (os-title-label: "Exhibit ", os-number: counter(figure),                                os-divider: " ");
 
 $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise)));
 
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTopTitle: true);
+
+$Config_TargetLabels: (
+  (selector: '.os-eoc [data-type="exercise"]',                                  labelText: "Exercise " counter(chapter) "." counter(exercise)),
+  (selector: 'div[data-type="chapter"] [data-type="example"]',                  labelText: "Example " counter(chapter) "." counter(example)),
+  (selector: 'div[data-type="chapter"] [data-type="equation"]:not(.unnumbered)',labelText: "Equation " counter(chapter) "." counter(equation)),
+  (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered)',      labelText: "Table " counter(chapter) "." counter(table)),
+  (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',    labelText: "Exhibit " counter(chapter) "." counter(figure)),
+  (selector: '.appendix :not(table) > table:not(.unnumbered)',                  labelText: "Table " counter(appendix, upper-alpha) counter(table)),
+  (selector: '.appendix :not(figure) > figure:not(.unnumbered)',                labelText: "Exhibit " counter(appendix, upper-alpha) counter(figure)),
+  (selector: '.appendix > table:not(.unnumbered)',                              labelText: "Table " counter(appendix, upper-alpha) counter(table)),
+  (selector: '.appendix > figure:not(.unnumbered)',                             labelText: "Exhibit " counter(appendix, upper-alpha) counter(figure)),
+  (selector: '.preface :not(table) > table:not(.unnumbered)',                   labelText: "Table " counter(table)),
+  (selector: '.preface :not(figure) > figure:not(.unnumbered)',                 labelText: "Exhibit " counter(figure))
+);
 /*
   References
 
@@ -223,4 +240,3 @@ $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt
   Style guide: book.References
 */
 $Config_hasCitation: true;
-$Config_TableSummariesAreCaptions: true;

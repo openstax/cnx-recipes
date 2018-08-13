@@ -86,7 +86,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
   # Install homebrew packages if running on macOS
   if [[ -f "Brewfile" ]] && [[ "$(uname -s)" = "Darwin" ]]; then
-    [[ $(which brew) ]] || die "Install Homebrew by going to https://brew.sh"
+    [[ $(command -v brew) ]] || die "Install Homebrew by going to https://brew.sh"
     [[ $(xcode-select --print-path) == "/Library/Developer/CommandLineTools" ]] || _say "${c_red}WARNING:${c_none} You may need to uninstall XCode and just install the command line tools"
 
     brew bundle check >/dev/null 2>&1  || {
@@ -121,7 +121,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       fi
 
       # Install pip if it is not available
-      if [[ ! $(which pip) ]]; then
+      if [[ ! $(command -v pip) ]]; then
         pwd=$(pwd)
         do_progress_quiet "Downloading pip" \
           curl --output "${pwd}/get-pip.py" https://bootstrap.pypa.io/get-pip.py
@@ -136,7 +136,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       # Install virtualenv
       # If macOS then check that the pyenv virtualenv is installed.
       # If not running macOS then check that some virtualenv is installed.
-      if [[ "$(uname -s)" != "Darwin" && ! $(which virtualenv) ]] || [[ "$(uname -s)" = "Darwin" && ! $(pyenv which virtualenv) ]]; then
+      if [[ "$(uname -s)" != "Darwin" && ! $(command -v virtualenv) ]] || [[ "$(uname -s)" = "Darwin" && ! $(pyenv which virtualenv) ]]; then
         do_progress_quiet "Installing Python virtualenv" \
           pip install virtualenv
         # Rehash so that virtualenv is available
@@ -175,7 +175,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       version_required="v$(cat ./.node-version)"
 
       if [[ -z "${version_actual}" || "${version_actual}" != "${version_required}" ]]; then
-        if [[ $(which nodenv) ]]; then
+        if [[ $(command -v nodenv) ]]; then
           # Since the versions do not match then nodenv might not have been initialized
           eval "$(nodenv init -)"
           do_progress_quiet "Installing correct version of node" \
@@ -198,12 +198,12 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
   # ensure yarn is installed (for installing JS packages)
   if [[ -f "./package.json" ]]; then
-    [[ $(which yarn) ]] || die "Install yarn by going to https://yarnpkg.com or adding it to Brewfile (macos)"
+    [[ $(command -v yarn) ]] || die "Install yarn by going to https://yarnpkg.com or adding it to Brewfile (macos)"
   fi
 
   # Note: Skip rbenv for Travis because it already has ruby
   if [[ ! "${CI}" = "true" ]] && [[ -f ".ruby-version" ]]; then
-    if [[ -n $(which rbenv) ]]; then
+    if [[ -n $(command -v rbenv) ]]; then
       if [[ -z "$(rbenv version-name 2>/dev/null)" ]]; then
         do_progress_quiet "Installing Ruby (see ./.ruby-version)" \
           rbenv install --skip-existing
@@ -218,7 +218,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       do_progress_quiet "Installing Ruby Bundler gem" \
         gem install bundler
 
-      if [[ -n $(which rbenv) ]]; then
+      if [[ -n $(command -v rbenv) ]]; then
         rbenv rehash || die "rbenv rehash failed. could be because another process was rehashing"
       fi
     fi
