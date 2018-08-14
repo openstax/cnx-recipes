@@ -1,11 +1,5 @@
 | Recipe Name | sup-footnote-call | trash-empty-table-captions | exercise-container | delete-link-in-equation-number | table-summaries-are-captions | preface-has-captions |
 | --- | --- | --- | --- | --- | --- | --- |
-| TEAap-biology | :x: | :x: | :x: | :x: | :x: | :x: |
-| TEAap-physics | :x: | :x: | :x: | :x: | :x: | :x: |
-| TEAeconomics | :x: | :x: | :x: | :x: | :x: | :x: |
-| TEAhs-physics | :x: | :x: | :x: | :x: | :x: | :x: |
-| TEAstatistics | :x: | :x: | :x: | :x: | :x: | :x: |
-| _example | :x: | :x: | :x: | :x: | :x: | :x: |
 | accounting | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
 | ap-biology | :x: | :x: | :heavy_check_mark: | :x: | :x: | :x: |
 | ap-physics | :x: | :heavy_check_mark: | :x: | :heavy_check_mark: | :x: | :x: |
@@ -13,9 +7,15 @@
 | business-ethics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
 | economics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | entrepreneurship | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| _example | :x: | :x: | :x: | :x: | :x: | :x: |
 | hs-physics | :x: | :x: | :x: | :x: | :x: | :x: |
 | intro-business | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
 | physics | :x: | :x: | :x: | :x: | :x: | :x: |
 | principles-management | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
 | statistics | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAap-biology | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAap-physics | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAeconomics | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAhs-physics | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAstatistics | :x: | :x: | :x: | :x: | :x: | :x: |
 | u-physics | :x: | :x: | :x: | :x: | :x: | :x: |
