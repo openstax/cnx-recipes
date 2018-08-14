@@ -554,7 +554,7 @@
 :pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].link-to-learning:deferred::before {
   container: span;
   class: "os-title-label";
-  content: "Link Learning";
+  content: "Link to Learning";
   move-to: bNoteLabel; }
 
 :pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].link-to-learning:deferred::before {
@@ -579,7 +579,7 @@
 :pass(2) [data-type="note"] [data-type="note"].link-to-learning:deferred::before {
   container: span;
   class: "os-title-label";
-  content: "Link Learning";
+  content: "Link to Learning";
   move-to: bNoteLabel; }
 
 :pass(2) [data-type="note"] [data-type="note"].link-to-learning:deferred::before {
@@ -853,6 +853,26 @@
   class: os-reference-number;
   content: counter(citation); }
 
+:pass(3) [data-type="chapter"] {
+  counter-reset: endNotes; }
+
+:pass(3) .references [data-type="note"] {
+  counter-increment: endNotes; }
+
+:pass(3) [data-type="chapter"] {
+  counter-reset: endNotesLinks; }
+
+:pass(3) a[data-type="cite"] {
+  counter-increment: endNotesLinks; }
+
+:pass(3) [data-type="cite"]::inside {
+  container: sup;
+  class: 'os-end-note-number';
+  content: counter(endNotesLinks); }
+
+:pass(3) .references [data-type="note"] a span {
+  content: counter(endNotes); }
+
 :pass(3) body {
   counter-reset: term; }
 
@@ -896,22 +916,25 @@
   data-type: "composite-page";
   data-uuid-key: ".section-summary"; }
 
-:pass(3) div[data-type="chapter"] section.key-terms {
-  move-to: key-terms-TOCOMPOSITE; }
-  :pass(3) div[data-type="chapter"] section.key-terms > [data-type="title"] {
+:pass(3) div[data-type="chapter"] div[data-type="glossary"] {
+  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+  move-to: trash; }
+
+:pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
+  move-to: glossary-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
 
 :pass(3) div[data-type="chapter"]::after {
   container: div;
-  content: pending(key-terms-TOCOMPOSITE);
-  class: "os-eoc os-key-terms-container";
+  content: pending(glossary-TOCOMPOSITE);
+  class: "os-eoc os-glossary-container";
   data-type: "composite-page";
-  data-uuid-key: ".key-terms"; }
+  data-uuid-key: "<glossary>";
+  sort-by: xhtml|dl > xhtml|dt, nocase; }
 
 :pass(3) div[data-type="chapter"] section.assessment-questions {
-  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-  content: nodes(sectionHeaderNode) content();
   move-to: assessment-questions-TOCOMPOSITE; }
   :pass(3) div[data-type="chapter"] section.assessment-questions > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -925,8 +948,6 @@
   data-uuid-key: ".assessment-questions"; }
 
 :pass(3) div[data-type="chapter"] section.references {
-  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-  content: nodes(sectionHeaderNode) content();
   move-to: references-TOCOMPOSITE; }
   :pass(3) div[data-type="chapter"] section.references > [data-type="title"] {
     /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1240,13 +1261,13 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-key-terms-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
   content: "Key Terms";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-key-terms-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
