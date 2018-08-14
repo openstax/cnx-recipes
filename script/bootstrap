@@ -181,11 +181,6 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
           do_progress_quiet "Installing correct version of node" \
             nodenv install "$(< ./.node-version)" --skip-existing
 
-          # Add the nodenv version of node into the path so that `#!/usr/bin/env node` works.
-          # This is needed when packages build native code so they are compiled
-          # against the correct version of node (e.g. node-sass)
-          PATH="$(dirname "$(nodenv which node)" ):${PATH}"
-
         elif [[ -f "${HOME}/.nvm/nvm.sh" ]]; then
           # DEPRECATE the nvm method once deployments do not use it
           # shellcheck disable=SC1090
@@ -199,7 +194,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       # This is needed when packages build native code so they are compiled
       # against the correct version of node (e.g. node-sass)
       if [[ $(command -v nodenv) ]]; then
-        do_progress "Prepending node to beginning of path so native bindings compile against the right version of node"
+        do_progress "Prepending nodenv node to beginning of PATH so native bindings compile against the right version of node"
         PATH="$(dirname "$(nodenv which node)" ):${PATH}"
       elif [[ $(command -v nvm) ]]; then
         nvm use "$(< ./.node-version)"
