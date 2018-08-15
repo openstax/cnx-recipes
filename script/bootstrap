@@ -180,6 +180,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
           eval "$(nodenv init -)"
           do_progress_quiet "Installing correct version of node" \
             nodenv install "$(< ./.node-version)" --skip-existing
+
         elif [[ -f "${HOME}/.nvm/nvm.sh" ]]; then
           # DEPRECATE the nvm method once deployments do not use it
           # shellcheck disable=SC1090
@@ -187,6 +188,16 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
           do_progress_quiet "${c_red}DEPRECATED:${c_none} Setting correct node version using nvm. Try using https://github.com/nodenv/nodenv instead (add it to Brewfile)" \
             nvm install "v$(< ./.node-version)"
         fi
+      fi
+
+      # Add the nodenv version of node into the path so that `#!/usr/bin/env node` works.
+      # This is needed when packages build native code so they are compiled
+      # against the correct version of node (e.g. node-sass)
+      if [[ $(command -v nodenv) ]]; then
+        do_progress "Prepending nodenv node to beginning of PATH so native bindings compile against the right version of node"
+        PATH="$(dirname "$(nodenv which node)" ):${PATH}"
+      elif [[ $(command -v nvm) ]]; then
+        nvm use "$(< ./.node-version)"
       fi
 
       version_actual="$(node --version 2> /dev/null)"
