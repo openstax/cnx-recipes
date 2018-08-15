@@ -844,18 +844,22 @@
   counter-increment: endNotes; }
 
 :pass(3) [data-type="chapter"] {
-  counter-reset: endNotesLinks; }
+  counter-reset: endNotesLinks 1; }
 
 :pass(3) a[data-type="cite"] {
   counter-increment: endNotesLinks; }
 
-:pass(3) [data-type="cite"]::inside {
-  container: sup;
-  class: 'os-end-note-number';
-  content: counter(endNotesLinks); }
+:pass(3) [data-type="cite"] {
+  attr-id: string(pageID) "-endNote" counter(endNotesLinks); }
+  :pass(3) [data-type="cite"]::inside {
+    container: sup;
+    class: 'os-end-note-number';
+    content: target-counter(attr(href), endNotes); }
 
-:pass(3) .references [data-type="note"] a span {
-  content: counter(endNotes); }
+:pass(3) .references [data-type="note"] a {
+  attr-href: "#" string(pageID) "-endNote" counter(endNotes); }
+  :pass(3) .references [data-type="note"] a span {
+    content: counter(endNotes); }
 
 :pass(3) body {
   counter-reset: term; }
