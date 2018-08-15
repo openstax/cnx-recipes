@@ -391,14 +391,18 @@
 
 @mixin number_endNotes($noteCounter, $endNotesLinks) {
   [data-type="cite"] {
+    attr-id: #{string(pageID)} "-endNote" counter($endNotesLinks);
     &::inside {
       container: sup;
       class: 'os-end-note-number';
-      content: counter($endNotesLinks);
+      content: target-counter(attr(href), $noteCounter);
     }
   }
-  .references [data-type="note"] a span{
-    content: counter($noteCounter);
+  .references [data-type="note"] a {
+    attr-href:"#" #{string(pageID)} "-endNote" counter($noteCounter);
+    span{
+      content: counter($noteCounter);
+    }
   }
 }
 
