@@ -10,7 +10,7 @@
 | ap-biology | :x: | :x: | :heavy_check_mark: | :x: | :x: | :x: |
 | ap-physics | :x: | :heavy_check_mark: | :x: | :heavy_check_mark: | :x: | :x: |
 | biology | :x: | :x: | :x: | :x: | :x: | :x: |
-| business-ethics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| business-ethics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | economics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | entrepreneurship | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
 | hs-physics | :x: | :x: | :x: | :x: | :x: | :x: |
