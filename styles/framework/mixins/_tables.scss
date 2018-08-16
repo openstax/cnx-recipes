@@ -1,0 +1,117 @@
+@mixin baseTableStyle() {
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  page-break-inside: auto;
+  table {
+    width: 100%;
+    border-collapse: separate;
+    prince-caption-page: all;
+    line-height: auto; //todo
+    padding: 10px ; //todo
+
+  }
+}
+
+@mixin baseTableHeaders($style) {
+  thead {
+    //font: settings(table-head);
+    font-weight: settings(table-header-font-weight);
+    background: orange;
+    .footnote::footnote-call {}
+    @if $style == default-table {
+      border-top: none;
+      th {
+        background: magenta ;
+      }
+      tr:first-of-type th {
+
+        background-color: color-map(table-first-th-bg);
+        color: color-map(table-first-th);
+        font-weight: bold;
+        // font-size: 9pt;
+        font: settings(table-th-font-size);
+        //rounded corners
+        &:first-child {
+          border-top-left-radius: settings(table-border-radius);
+        }
+
+        &:last-child {
+          border-top-right-radius:  settings(table-border-radius);
+        }
+      }
+      tr:not(first-child) {
+        background-color: color-map(table-second-th-bg);
+        color: color-map(table-second-th);
+        border: 0;
+      }
+    } @else if $style == text-heavy {
+      background: orange;
+    }
+  }
+}
+
+@mixin tableBorders() {
+
+}
+@mixin tableTopTitle() {
+  color: color-map(table-top-title-color);
+}
+
+@mixin tableUnstyled() {
+
+}
+@mixin tableTextHeavy() {
+
+}
+
+@mixin titleInCaption() {
+  background: green;
+}
+
+@mixin table($tableTypes) {
+  // @each $tableType in $tableTypes {
+  //   $getTableTypes: map-get($tableTypes, supported-tables )
+  // }
+
+
+  // @if $tableTypes == top-titled and title-in-caption {
+  //   @error "";
+  // }
+  @debug $tableTypes;
+  
+  .os-table {
+    @include baseTableStyle();
+      @each $getTableType in $tableTypes {
+        @if (nth($getTableType, 1)) == default-table {
+          @include baseTableHeaders($getTableType);
+          @if (nth($getTableType, 1)) == title-in-caption {
+            table {
+              @include titleInCaption();
+            }
+          }
+        }
+        @else {
+          @if (nth($getTableType, 1)) == top-titled {
+            .os-table-title {
+              background: purple;
+            }
+          }
+          table.#{nth($getTableType, 1)} {
+            @if (nth($getTableType, 1)) == unstyled {
+              @include tableUnstyled() {
+              }
+            }
+            @if (nth($getTableType, 1)) == top-titled {
+              @include baseTableHeaders($getTableType);
+            }
+            @if (nth($getTableType, 1)) == text-heavy  {
+              @include baseTableHeaders($getTableType);
+              @include tableTextHeavy() {
+            }
+          }
+        }
+      }
+    }
+  }
+}
