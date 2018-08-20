@@ -1088,24 +1088,20 @@
 :pass(7) [data-type="chapter"]::after {
   container: h2;
   class: "os-title";
-  content: "Chapter " string(ChapNum);
+  data-type: "document-title";
+  content: "Chapter " string(ChapNum) " Solutions";
   move-to: chaptTitleEOB; }
 
 :pass(7) [data-type="chapter"]::after {
-  class: os-chapter-area;
   content: pending(chaptTitleEOB) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
-  move-to: solution-TOCOMPOSITE; }
-
-:pass(7) [data-type="chapter"]::after {
-  content: pending(solution-TOCOMPOSITE);
   class: "os-eob os-solution-container";
   data-type: "composite-page";
-  data-uuid-key: ".solution";
+  data-uuid-key: ".solution" string(ChapNum);
   move-to: solution-TOCOMPOSITECHAPTER; }
 
 :pass(7) body::after {
   content: pending(solution-TOCOMPOSITECHAPTER);
-  class: "os-eob os-solution-container";
+  class: "os-eob os-solution";
   data-type: "composite-chapter";
   data-uuid-key: ".solution";
   /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
@@ -1210,7 +1206,7 @@
 :pass(8) body > [data-type="metadata"] {
   node-set: bookMetadata; }
 
-:pass(8) [data-type="composite-page"] {
+:pass(8) [data-type="composite-page"], :pass(8) [data-type="composite-chapter"] {
   content: nodes(bookMetadata) content(); }
 
 :pass(8) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
@@ -1279,24 +1275,24 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eob.os-solution-container::before {
+:pass(8) [data-type="composite-chapter"].os-eob.os-solution::before {
   container: span;
   content: "Answer Key";
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eob.os-solution-container::before {
+:pass(8) [data-type="composite-chapter"].os-eob.os-solution::before {
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eob.os-index-container::before {
+:pass(8) [data-type="composite-chapter"].os-eob.os-index::before {
   container: span;
   content: "Index";
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eob.os-index-container::before {
+:pass(8) [data-type="composite-chapter"].os-eob.os-index::before {
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
@@ -1671,18 +1667,18 @@
 
 :pass(8) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(8) [data-type="composite-chapter"] > section [data-type="title"],
 :pass(8) [data-type="composite-chapter"] > [data-type="page"] [data-type="document-title"],
-:pass(8) [data-type="composite-chapter"] > [data-type="page"] [data-type="title"] {
+:pass(8) [data-type="composite-chapter"] > [data-type="page"] [data-type="title"], :pass(8) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="document-title"], :pass(8) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="title"] {
   container: h2; }
 
 :pass(8) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(8) [data-type="composite-chapter"] > section > section [data-type="title"],
 :pass(8) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="document-title"],
-:pass(8) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="title"] {
+:pass(8) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="title"], :pass(8) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="document-title"], :pass(8) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="title"] {
   container: h3;
   data-type: title; }
 
 :pass(8) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(8) [data-type="composite-chapter"] > section > section > section [data-type="title"],
 :pass(8) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="document-title"],
-:pass(8) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"] {
+:pass(8) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"], :pass(8) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"], :pass(8) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"] {
   container: h4; }
 
 :pass(8) .appendix > section [data-type="title"], :pass(8) .appendix > section [data-type="document-title"] {
@@ -1694,11 +1690,17 @@
 :pass(9) .os-index-link-separator:last-child {
   move-to: trash; }
 
-:pass(9) [data-type="composite-page"] > [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > [data-type="document-title"] {
+:pass(9) [data-type="composite-page"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
 
-:pass(9) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
+:pass(9) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
+
+:pass(9) [data-type="composite-chapter"] > [data-type="document-title"] {
+  string-set: compositeChapter-doc-title-TOMETADATA content(); }
+
+:pass(9) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
+  content: string(compositeChapter-doc-title-TOMETADATA); }
 
 :pass(9) div.os-table:deferred::before {
   class: 'temp-summary';

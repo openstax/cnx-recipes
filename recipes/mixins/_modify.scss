@@ -171,7 +171,11 @@
 /// @arg {Text} $bookMetadata - The node set that contains the metadata
 /// @group modify
 @mixin modify_compositeMetadata($bookMetadata, $hasCompositeChapter) {
-  [data-type="composite-page"] {
+  $pageAndCompositeChapterSel: ('[data-type="composite-page"]');
+  @if $hasCompositeChapter {
+    $pageAndCompositeChapterSel: append($pageAndCompositeChapterSel, '[data-type="composite-chapter"]', comma);
+  }
+  #{$pageAndCompositeChapterSel} {
     content: nodes($bookMetadata) content();
   }
 }
@@ -179,18 +183,41 @@
 /// Adds the title for each composite page
 /// @group modify
 @mixin modify_retitleCompositeMetadata($hasCompositeChapter) {
-  $pageAndCompositeChapterSel: ('[data-type="composite-page"]');
-  @if $hasCompositeChapter {
-    $pageAndCompositeChapterSel: append($pageAndCompositeChapterSel, '[data-type="composite-chapter"]', comma);
-  }
 
-  #{$pageAndCompositeChapterSel} {
-    > [data-type="document-title"] {
-      string-set: doc-title-TOMETADATA content();
-    }
-    > [data-type="metadata"] {
+  @if feature-enabled(composite-solution) {
+    [data-type="composite-page"] {
       > [data-type="document-title"] {
-        content: string(doc-title-TOMETADATA);
+        string-set: doc-title-TOMETADATA content();
+      }
+      > [data-type="metadata"] {
+        > [data-type="document-title"] {
+          content: string(doc-title-TOMETADATA);
+        }
+      }
+    }
+    [data-type="composite-chapter"]{
+      > [data-type="document-title"] {
+        string-set: compositeChapter-doc-title-TOMETADATA content();
+      }
+      > [data-type="metadata"] {
+        > [data-type="document-title"] {
+          content: string(compositeChapter-doc-title-TOMETADATA);
+        }
+      }
+    }
+  } @else {
+    $pageAndCompositeChapterSel: ('[data-type="composite-page"]');
+    @if $hasCompositeChapter {
+      $pageAndCompositeChapterSel: append($pageAndCompositeChapterSel, '[data-type="composite-chapter"]', comma);
+    }
+    #{$pageAndCompositeChapterSel} {
+      > [data-type="document-title"] {
+        string-set: doc-title-TOMETADATA content();
+      }
+      > [data-type="metadata"] {
+        > [data-type="document-title"] {
+          content: string(doc-title-TOMETADATA);
+        }
       }
     }
   }
@@ -474,7 +501,7 @@
   @if $hasCompositeChapter {
     [data-type="composite-chapter"] {
       > section,
-      > [data-type="page"] {
+      > [data-type="page"], > [data-type="composite-page"]  {
         [data-type="document-title"], [data-type="title"] {
           container: h2;
         }
