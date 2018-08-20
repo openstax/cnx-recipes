@@ -596,20 +596,44 @@
       content: $Config_EOBSolutionsChapterSectionTitle;
       move-to: chaptTitleEOB;
     }
-    &::after {
-      class: os-chapter-area;
-      content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
-      move-to: #{$solutionClassName}-TOCOMPOSITE;
+    @if feature-enabled(composite-solution) {
+      &::after {
+        class: os-chapter-area;
+        content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+        move-to: #{$solutionClassName}-TOCOMPOSITE;
+      }
+      &::after {
+        content: pending(#{$solutionClassName}-TOCOMPOSITE);
+        class: "os-eob os-#{$solutionClassName}-container";
+        data-type: "composite-page";
+        data-uuid-key: ".#{$solutionClassName}";
+        move-to: #{$solutionClassName}-TOCOMPOSITECHAPTER;
+      }
+    } @else {
+      &::after {
+        class: os-chapter-area;
+        content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+        move-to: #{$solutionClassName}-TOCOMPOSITE;
+      }
     }
   }
   body {
-    &::after {
-      container: div;
-      content: pending(#{$solutionClassName}-TOCOMPOSITE);
-      class: "os-eob os-#{$solutionClassName}-container";
-      data-type: "composite-page";
-      data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+    @if feature-enabled(composite-solution) {
+      &::after {
+        content: pending(#{$solutionClassName}-TOCOMPOSITECHAPTER);
+        class: "os-eob os-#{$solutionClassName}-container";
+        data-type: "composite-chapter";
+        data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+      }
+    } @else {
+      &::after {
+        content: pending(#{$solutionClassName}-TOCOMPOSITE);
+        class: "os-eob os-#{$solutionClassName}-container";
+        data-type: "composite-page";
+        data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+      }
     }
+
   }
 }
 
