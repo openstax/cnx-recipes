@@ -939,30 +939,6 @@
 :pass(3) div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="document-title"] {
   container: h2; }
 
-:pass(3) [data-type="chapter"], :pass(3) .appendix {
-  counter-reset: footnotes; }
-
-:pass(3) [data-type="footnote-ref"] {
-  counter-increment: footnotes; }
-
-:pass(3) [data-type="chapter"], :pass(3) .appendix {
-  counter-reset: footnoteLinks; }
-
-:pass(3) [data-type="footnote-number"] {
-  counter-increment: footnoteLinks; }
-
-:pass(3) li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
-  content: counter(footnotes); }
-
-:pass(3) sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
-  content: counter(footnoteLinks); }
-
-:pass(3) li > a[data-type="footnote-ref"] {
-  content: counter(footnotes); }
-
-:pass(3) a[data-type="footnote-number"] > sup {
-  content: counter(footnoteLinks); }
-
 :pass(3) body {
   counter-reset: term; }
 
@@ -1107,6 +1083,30 @@
   class: "os-chapter-outline";
   content: pending(chapOutlineTitle) pending(chapOutline); }
 
+:pass(5) [data-type="chapter"], :pass(5) .appendix {
+  counter-reset: footnotes; }
+
+:pass(5) [data-type="footnote-ref"] {
+  counter-increment: footnotes; }
+
+:pass(5) [data-type="chapter"], :pass(5) .appendix {
+  counter-reset: footnoteLinks; }
+
+:pass(5) [data-type="footnote-number"] {
+  counter-increment: footnoteLinks; }
+
+:pass(5) li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
+  content: counter(footnotes); }
+
+:pass(5) sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
+  content: counter(footnoteLinks); }
+
+:pass(5) li > a[data-type="footnote-ref"] {
+  content: counter(footnotes); }
+
+:pass(5) a[data-type="footnote-number"] > sup {
+  content: counter(footnoteLinks); }
+
 :pass(5) div[data-type="page"] > [data-type="document-title"],
 :pass(5) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
@@ -1228,14 +1228,19 @@
   string-set: ChapNum content(); }
 
 :pass(7) [data-type="chapter"]::after {
-  container: h2;
-  class: "os-title";
-  data-type: "document-title";
+  container: span;
+  class: "os-text-waka";
   content: "Chapter " string(ChapNum) " Solutions";
-  move-to: chaptTitleEOB; }
+  move-to: eobCompositeTitlesContent; }
 
 :pass(7) [data-type="chapter"]::after {
-  content: pending(chaptTitleEOB) pending(note-solutions-GETCHAPTER) pending(solutions-GETCHAPTER);
+  container: h2;
+  data-type: document-title;
+  content: pending(eobCompositeTitlesContentWAKA);
+  move-to: eobCompositeTitles; }
+
+:pass(7) [data-type="chapter"]::after {
+  content: pending(eobCompositeTitlesContent) pending(note-solutions-GETCHAPTER) pending(solutions-GETCHAPTER);
   class: "os-eob os-solutions-container";
   data-type: "composite-page";
   data-uuid-key: ".solutions" string(ChapNum);
@@ -1417,6 +1422,15 @@
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
 
+:pass(8) [data-type="composite-chapter"].os-eob.os-solutions [data-type="composite-page"] > span.os-text-waka {
+  class: os-text;
+  move-to: CCcompositePageTitlesWaka; }
+
+:pass(8) [data-type="composite-chapter"].os-eob.os-solutions [data-type="composite-page"]:deferred::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(CCcompositePageTitlesWaka); }
+
 :pass(8) [data-type="composite-chapter"].os-eob.os-index::before {
   container: span;
   content: "Index";
@@ -1427,6 +1441,15 @@
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-chapter"].os-eob.os-index [data-type="composite-page"] > span.os-text-waka {
+  class: os-text;
+  move-to: CCcompositePageTitlesWaka; }
+
+:pass(8) [data-type="composite-chapter"].os-eob.os-index [data-type="composite-page"]:deferred::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(CCcompositePageTitlesWaka); }
 
 :pass(8) div[data-type='chapter'] > h1[data-type='document-title'] {
   counter-increment: chapTitleNum;
@@ -1725,17 +1748,11 @@
 :pass(9) .os-index-link-separator:last-child {
   move-to: trash; }
 
-:pass(9) [data-type="composite-page"] > [data-type="document-title"] {
+:pass(9) [data-type="composite-page"] > [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
 
-:pass(9) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
+:pass(9) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
-
-:pass(9) [data-type="composite-chapter"] > [data-type="document-title"] {
-  string-set: compositeChapter-doc-title-TOMETADATA content(); }
-
-:pass(9) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
-  content: string(compositeChapter-doc-title-TOMETADATA); }
 
 :pass(10) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(10) div.os-eob [data-type="cnx-archive-uri"] {

@@ -45,7 +45,6 @@
   @each $page in $compositePages {
     $name: map-get($page, name);
     $className: map-get($page, className);
-
     // Validate
    // @include validate_type($name, string);
     @include validate_type($className, string);
@@ -55,6 +54,18 @@
           os-text: $name
           );
         @include utils_title($titleContent, null, h1, "document-title");
+        [data-type="composite-page"] {
+          > span.os-text {
+            move-to: CCcompositePageTitles;
+          }
+          &:deferred {
+            &::before {
+              container: h2;
+              data-type: document-title;
+              content: pending(CCcompositePageTitles);
+            }
+          }
+        }
       }
     } @else {
       [data-type="composite-page"].os-eob.os-#{$className}-container {
@@ -511,7 +522,7 @@
     $hasSolutions: map-get($page, hasSolutions);
     $className: map-get($page, className);
     $pageName: map-get($page, name);
-
+    $compositePageName: map-get($page, compositePageName);
     $childPages: map-get($page, childPages);
 
     // Validate
@@ -594,28 +605,32 @@
     }
   }
   [data-type="chapter"] {
-    > h1[data-type="document-title"] .os-number {
-      string-set: ChapNum content();
-    }
-    &::after {
-      //FIXME wrap the in spans
-      container: h2;
-      class: "os-title";
-      @if feature-enabled(composite-solution) {
-        data-type: "document-title";
+      > h1[data-type="document-title"] .os-number {
+        string-set: ChapNum content();
       }
-      content: $Config_EOBSolutionsChapterSectionTitle;
-      move-to: chaptTitleEOB;
-    }
+
     @if feature-enabled(composite-solution) {
       &::after {
-        content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+        container: span;
+        class: "os-text";
+        content: $Config_EOBSolutionsChapterSectionTitle;
+        move-to: eobCompositeTitlesContent;
+      }
+      &::after {
+        content: pending(eobCompositeTitlesContent) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
         class: "os-eob os-#{$solutionClassName}-container";
         data-type: "composite-page";
         data-uuid-key: ".#{$solutionClassName}" string(ChapNum);
         move-to: #{$solutionClassName}-TOCOMPOSITECHAPTER;
       }
     } @else {
+      &::after {
+        //FIXME wrap the in spans
+        container: h2;
+        class: "os-title";
+        content: $Config_EOBSolutionsChapterSectionTitle;
+        move-to: chaptTitleEOB;
+      }
       &::after {
         class: os-chapter-area;
         content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
