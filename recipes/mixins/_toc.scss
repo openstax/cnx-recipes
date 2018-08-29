@@ -69,11 +69,17 @@
         container: a;
         move-to: page-link;
       }
-      &:not(.appendix)::after {
-        @include _uncountedPage();
-      }
-      &.appendix::after {
-        @include _countedPage();
+      @if feature-enabled(toc-numbered-pages) {
+        &:not(.appendix)::after {
+          @include _uncountedPage();
+        }
+        &.appendix::after {
+          @include _countedPage();
+        }
+      } @else {
+        &::after {
+          @include _uncountedPage();
+        }
       }
     }
     #{$chapterAndCompositeChapterSel} {
