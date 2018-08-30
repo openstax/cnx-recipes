@@ -1788,6 +1788,54 @@
 :pass(8) .appendix > table.unnumbered caption {
   move-to: trash; }
 
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: "Table ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: counter(table);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered) caption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered) caption [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(8) .preface > table.unnumbered caption {
+  move-to: trash; }
+
 :pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
   container: span;
   content: "Figure ";
@@ -1892,6 +1940,54 @@
 :pass(8) .appendix > figure.unnumbered figcaption {
   move-to: trash; }
 
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: "Figure ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: counter(figure);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered) figcaption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::outside {
+  class: os-figure;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(8) .preface > figure.unnumbered figcaption {
+  move-to: trash; }
+
 :pass(8) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(8) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(8) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -1928,6 +2024,13 @@
 
 :pass(9) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
+
+:pass(9) div.os-table:deferred::before {
+  class: 'temp-summary';
+  content: string(tableSummary); }
+
+:pass(9) div.os-table .os-caption-container {
+  string-set: tableSummary content(); }
 
 :pass(10) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(10) div.os-eob [data-type="cnx-archive-uri"] {
@@ -2088,6 +2191,13 @@
   attr-cnx-archive-shortid: string(unit-shortid);
   container: li;
   move-to: eob-toc; }
+
+:pass(10) div.os-table table[summary] {
+  attr-summary: string(tableSummary); }
+
+:pass(10) div.temp-summary {
+  string-set: tableSummary content();
+  move-to: trash; }
 
 :pass(11) nav#toc {
   content: ''; }
