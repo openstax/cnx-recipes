@@ -909,7 +909,13 @@
 :pass(8) [data-type="chapter"] [data-type="equation"]:not(.unnumbered)::before, :pass(8) .appendix [data-type="equation"]:not(.unnumbered)::before {
   container: span;
   content: counter(chapter) "." counter(equation);
-  class: os-number; }
+  class: os-number;
+  move-to: equationNum; }
+
+:pass(8) [data-type="chapter"] [data-type="equation"]:not(.unnumbered)::after, :pass(8) .appendix [data-type="equation"]:not(.unnumbered)::after {
+  class: os-equation-number;
+  container: div;
+  content: pending(equationNum); }
 
 :pass(8) body > [data-type="metadata"] {
   node-set: bookMetadata; }
@@ -1316,6 +1322,10 @@
 
 :pass(9) table > caption:empty {
   move-to: trash; }
+
+:pass(9) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
 
 :pass(10) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(10) div.os-eob [data-type="cnx-archive-uri"] {
