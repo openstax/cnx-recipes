@@ -252,7 +252,10 @@
         // Create an index entry for the term by creating a new element and then moving it
         &::after {
           // i18n: use the @reference="..." version of a term when adding it to the Index (if the attribute is available). See #353
-          content: attr(#{"cmlnle|reference"}) content();
+          @if feature-enabledcontent(math-in-the-index) {
+            content: content();
+          }
+          @else {content: (attr(#{"cmlnle|reference"}), content());}
           attr-group-by: attr(group-by);
           container: span;
           class: "os-term";
