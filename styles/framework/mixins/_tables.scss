@@ -9,7 +9,6 @@
     prince-caption-page: all;
     line-height: auto; //todo
     padding: 10px ; //todo
-
   }
 }
 
@@ -17,42 +16,111 @@
   thead {
     //font: settings(table-head);
     font-weight: settings(table-header-font-weight);
-    background: orange;
     .footnote::footnote-call {}
-    @if $style == default-table {
-      border-top: none;
-      th {
-        background: magenta ;
-      }
+    @if $style == text-heavy {
       tr:first-of-type th {
-
+        background-color: transparent;
+        color: color-map(table-first-th);
+        font-weight: bold;
+        // font-size: 9pt;
+        font: settings(table-th-font-size);
+      }
+      tr:not(first-child) {
+        background-color: transparent;
+        color: color-map(table-second-th);
+        border: 0;
+      }
+    }
+    @if $style == unstyled {
+      tr:first-of-type th {
+        background-color: transparent;
+        color: color-map(table-first-th);
+        font-weight: bold;
+        // font-size: 9pt;
+        font: settings(table-th-font-size);
+      }
+      tr:not(first-child) {
+        background-color: transparent;
+        color: color-map(table-second-th);
+        border: 0;
+      }
+    }
+    @else if $style == default-table {
+      border-top: none;
+      tr:first-of-type th {
         background-color: color-map(table-first-th-bg);
         color: color-map(table-first-th);
         font-weight: bold;
         // font-size: 9pt;
         font: settings(table-th-font-size);
-        //rounded corners
-        &:first-child {
-          border-top-left-radius: settings(table-border-radius);
-        }
-
-        &:last-child {
-          border-top-right-radius:  settings(table-border-radius);
-        }
       }
       tr:not(first-child) {
         background-color: color-map(table-second-th-bg);
         color: color-map(table-second-th);
         border: 0;
       }
-    } @else if $style == text-heavy {
-      background: orange;
     }
   }
 }
 
-@mixin tableBorders() {
+@mixin tableBorders($style) {
+  @if $style == text-heavy {
+    //rounded
+    thead {
+      &:first-child {
+        border-top-left-radius: settings(table-border-radius);
+      }
+      &:last-child {
+       border-top-right-radius:  settings(table-border-radius);
+      }
+      tr {
+        border-left: 0;
+        border-right: 0;
+      }
+    }
+    tbody {
+      tr {
+        td {
+          border-color: color-map(table-body-border);
+          font-family: settings(table-body-font);
+          border-top: settings(table-border-thickness);
+          border-right: settings(table-border-thickness);
+          border-left: none;
+        }
+        &:last-child td {
+          border-bottom: settings(table-border-thickness);
+        }
+      }
+    }
 
+  } @else {
+    thead {
+      &:first-child {
+        border-top-left-radius: settings(table-border-radius);
+      }
+      &:last-child {
+       border-top-right-radius:  settings(table-border-radius);
+      }
+      tr {
+        border-left: 0;
+        border-right: 0;
+      }
+    }
+    tbody {
+      tr {
+        td {
+          border-color: color-map(table-body-border);
+          font-family: settings(table-body-font);
+          border-top: settings(table-border-thickness);
+          border-right: settings(table-border-thickness);
+          border-left: none;
+        }
+        &:last-child td {
+          border-bottom: settings(table-border-thickness);
+        }
+      }
+    }
+  }
 }
 @mixin tableTopTitle() {
   color: color-map(table-top-title-color);
@@ -78,13 +146,13 @@
   // @if $tableTypes == top-titled and title-in-caption {
   //   @error "";
   // }
-  @debug $tableTypes;
-  
+
   .os-table {
     @include baseTableStyle();
       @each $getTableType in $tableTypes {
         @if (nth($getTableType, 1)) == default-table {
           @include baseTableHeaders($getTableType);
+          @include tableBorders($getTableType);
           @if (nth($getTableType, 1)) == title-in-caption {
             table {
               @include titleInCaption();
@@ -94,7 +162,9 @@
         @else {
           @if (nth($getTableType, 1)) == top-titled {
             .os-table-title {
-              background: purple;
+              text-align: center;
+              font-weight: bold;
+              padding: 10px; //todo
             }
           }
           table.#{nth($getTableType, 1)} {
@@ -104,9 +174,11 @@
             }
             @if (nth($getTableType, 1)) == top-titled {
               @include baseTableHeaders($getTableType);
+              @include tableBorders($getTableType);
             }
             @if (nth($getTableType, 1)) == text-heavy  {
               @include baseTableHeaders($getTableType);
+              @include tableBorders($getTableType);
               @include tableTextHeavy() {
             }
           }
