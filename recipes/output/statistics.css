@@ -1091,19 +1091,6 @@ Formula Review page
   data-type: "composite-page";
   data-uuid-key: ".free-response"; }
 
-:pass(3) div[data-type="chapter"] section.bring-together-homework {
-  move-to: bring-together-homework-TOCOMPOSITE; }
-  :pass(3) div[data-type="chapter"] section.bring-together-homework > [data-type="title"] {
-    /* Discard this Page-specific title because a chapter title is added when collated */
-    move-to: trash; }
-
-:pass(3) div[data-type="chapter"]::after {
-  container: div;
-  content: pending(bring-together-homework-TOCOMPOSITE);
-  class: "os-eoc os-bring-together-homework-container";
-  data-type: "composite-page";
-  data-uuid-key: ".bring-together-homework"; }
-
 :pass(3) div[data-type="chapter"] section.references {
   /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
   content: nodes(sectionHeaderNode) content();
@@ -1118,6 +1105,19 @@ Formula Review page
   class: "os-eoc os-references-container";
   data-type: "composite-page";
   data-uuid-key: ".references"; }
+
+:pass(3) div[data-type="chapter"] section.bring-together-homework {
+  move-to: bring-together-homework-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.bring-together-homework > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(bring-together-homework-TOCOMPOSITE);
+  class: "os-eoc os-bring-together-homework-container";
+  data-type: "composite-page";
+  data-uuid-key: ".bring-together-homework"; }
 
 :pass(3) .try [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1192,7 +1192,7 @@ Formula Review page
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
-  content: ".";
+  content: ". ";
   class: os-divider; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
@@ -1202,7 +1202,7 @@ Formula Review page
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
   container: span;
-  content: ".";
+  content: ". ";
   class: os-divider; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
@@ -1416,17 +1416,6 @@ Formula Review page
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
-  container: span;
-  content: "Bringing It Together: Homework";
-  class: os-text;
-  move-to: h2-TITLECONTAINER; }
-
-:pass(8) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
-
 :pass(8) [data-type="composite-page"].os-eoc.os-references-container::before {
   container: span;
   content: "References";
@@ -1434,6 +1423,17 @@ Formula Review page
   move-to: h2-TITLECONTAINER; }
 
 :pass(8) [data-type="composite-page"].os-eoc.os-references-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
+  container: span;
+  content: "Bringing It Together: Homework";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
@@ -1837,6 +1837,10 @@ Formula Review page
 :pass(9) table > caption:empty {
   move-to: trash; }
 
+:pass(9) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
+
 :pass(10) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(10) div.os-eob [data-type="cnx-archive-uri"] {
   move-to: trash; }
@@ -1858,13 +1862,21 @@ Formula Review page
     attr-href: "#" string(page-id);
     container: a;
     move-to: page-link; }
-  :pass(10) body > div[data-type="page"]::after,
-  :pass(10) body > div[data-type="composite-page"]::after {
+  :pass(10) body > div[data-type="page"]:not(.appendix)::after,
+  :pass(10) body > div[data-type="composite-page"]:not(.appendix)::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
+  :pass(10) body > div[data-type="page"].appendix::after,
+  :pass(10) body > div[data-type="composite-page"].appendix::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-counted-page; }
 
 :pass(10) body > div[data-type="chapter"] > [data-type='document-title'] {
   node-set: chapterTitle;
