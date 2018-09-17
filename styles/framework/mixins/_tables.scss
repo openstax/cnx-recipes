@@ -1,0 +1,218 @@
+
+//base styles used in all tables
+@mixin baseTableStyle() {
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  page-break-inside: auto;
+  table {
+    width: 100%;
+    border-collapse: separate;
+    prince-caption-page: all;
+    line-height: auto; //todo
+    padding: 10px ; //todo
+  }
+}
+
+//when the table has a title above it (outside)
+@mixin tableTopTitle() {
+  color: color-map(table-top-title-color);
+}
+
+//generic structural mixin for table header
+@mixin baseTableHeaders($tableHeaderFontWeight, $tableFirstTh, $TableFirstThBg, $tableThFontSize, $tableSecondThColor, $TableSecondThBg) {
+  //font: settings(table-head);
+  thead {
+    font-weight: $tableHeaderFontWeight;
+    tr:first-of-type th {
+      background-color: $TableFirstThBg;
+      color:$tableFirstTh;
+      // font-size: 9pt;
+      font: $tableThFontSize;
+    }
+    tr:not(first-child) {
+      background-color: $TableSecondThBg;
+      color: $tableSecondThColor;
+      border: 0;
+    }
+  }
+}
+
+//table headers in various tables types
+@mixin tableHeaders($style) {
+  @if $style == global-style {
+    @include baseTableHeaders(
+      settings(table-header-font-weight),
+      color-map(table-first-th),
+      color-map(table-first-th-bg),
+      settings(table-th-font-size),
+      color-map(table-second-th),
+      color-map(table-second-th-bg),
+    );
+  }
+  @if $style == text-heavy {
+    @include baseTableHeaders(
+      settings(table-header-font-weight),
+      color-map(bodyText),
+      transparent,
+      settings(table-th-font-size),
+      color-map(bodyText),
+      transparent,
+    );
+  }
+  @if $style == unstyled {
+    @include baseTableHeaders(
+      settings(table-header-font-weight),
+      color-map(bodyText),
+      transparent,
+      settings(table-th-font-size),
+      color-map(bodyText),
+      transparent,
+    );
+  }
+
+  //TODO side-header
+  @if $style == side-header {
+
+    td.#{$style} {
+      //side header styles go here
+    }
+  }
+}
+
+
+//generic structural mixin for table borders
+@mixin baseTableBorders ($tableBorderRadius, $tableBodyBorderColor, $tableBorderThickness) {
+  thead {
+    &:first-child {
+      border-top-left-radius: $tableBorderRadius ;
+    }
+    &:last-child {
+     border-top-right-radius: $tableBorderRadius ;
+    }
+    tr {
+      border-left: 0;
+      border-right: 0;
+    }
+  }
+  tbody {
+    tr {
+      td {
+        border-color: $tableBodyBorderColor;
+        border-top: $tableBorderThickness;
+        border-right: $tableBorderThickness;
+        border-left: none;
+      }
+      &:first-child {
+        //#content>#table>#data>.style('first-column'; any);
+        border-left: $tableBodyBorderColor;
+      }
+      &:last-child td {
+        border-bottom: $tableBorderThickness;
+      }
+    }
+  }
+
+}
+
+//border styles in various types of tables
+@mixin tableBorders($style) {
+  @if $style == text-heavy {
+    @include baseTableBorders(
+    0,
+    color-map(table-body-border),
+    settings(table-border-thickness)
+    );
+  } @else {
+    @include baseTableBorders(
+      settings(table-border-radius),
+      color-map(table-body-border),
+      settings(table-border-thickness)
+    );
+  }
+}
+
+//structural mixin for table body styling
+@mixin baseTableBody() {
+  tbody {
+    tr {
+      td {
+
+      }
+    }
+  }
+}
+
+@mixin baseTableFoot() {
+  tfoot {
+
+  }
+}
+
+//body styling in various table styles
+@mixin tableBody($style){
+  @if $style == global-style {
+    @include baseTableBody();
+  }
+  @if $style == unstyled {
+    @include baseTableBody();
+  }
+  @if $style == text-heavy {
+    @include baseTableBody();
+  }
+}
+
+@mixin titleInCaption() {
+  background: green;
+}
+
+@mixin tables($tableTypes) {
+  .os-table {
+    @include baseTableStyle();
+      @each $getTableType in $tableTypes {
+        //global styles
+        @if (nth($getTableType, 1)) == global-style {
+          @include tableHeaders($getTableType);
+          @include tableBorders($getTableType);
+          @include tableBody($getTableType);
+          @include baseTableFoot();
+          @include caption(table);
+          @if (nth($getTableType, 1)) == title-in-caption {
+            table {
+              @include titleInCaption();
+            }
+          }
+        }
+        @else {
+          @if (nth($getTableType, 1)) == top-titled {
+            .os-table-title {
+              text-align: center;
+              font-weight: bold;
+              padding: 10px; //todo
+            }
+          }
+
+          //special tables
+          table.#{nth($getTableType, 1)} {
+            @if (nth($getTableType, 1)) == unstyled {
+              @include tableBody($getTableType);
+            }
+            @if (nth($getTableType, 1)) == text-heavy  {
+              @include tableHeaders($getTableType);
+              @include tableBorders($getTableType);
+              @include tableBody($getTableType);
+              @include caption(table);
+          }
+          @if (nth($getTableType, 1)) == side-header {
+            //TODO
+          }
+          @if (nth($getTableType, 1)) == coloredTable {
+            .color{}
+          }
+        }
+      }
+    }
+  }
+}
+
+//tables in notes-subtitle
