@@ -477,6 +477,12 @@ Formula Review page
   container: div;
   content: pending(bTitleLabel) content(); }
 
+:pass(1) [data-type="exercise"] [data-type="problem"]::inside {
+  class: "os-problem-container"; }
+
+:pass(1) [data-type="exercise"] [data-type="solution"]::inside {
+  class: "os-solution-container"; }
+
 :pass(1) ol[data-label]:not([data-label=""])::after,
 :pass(1) ul[data-label]:not([data-label=""])::after {
   container: div;
@@ -1085,19 +1091,6 @@ Formula Review page
   data-type: "composite-page";
   data-uuid-key: ".free-response"; }
 
-:pass(3) div[data-type="chapter"] section.bring-together-homework {
-  move-to: bring-together-homework-TOCOMPOSITE; }
-  :pass(3) div[data-type="chapter"] section.bring-together-homework > [data-type="title"] {
-    /* Discard this Page-specific title because a chapter title is added when collated */
-    move-to: trash; }
-
-:pass(3) div[data-type="chapter"]::after {
-  container: div;
-  content: pending(bring-together-homework-TOCOMPOSITE);
-  class: "os-eoc os-bring-together-homework-container";
-  data-type: "composite-page";
-  data-uuid-key: ".bring-together-homework"; }
-
 :pass(3) div[data-type="chapter"] section.references {
   /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
   content: nodes(sectionHeaderNode) content();
@@ -1112,6 +1105,19 @@ Formula Review page
   class: "os-eoc os-references-container";
   data-type: "composite-page";
   data-uuid-key: ".references"; }
+
+:pass(3) div[data-type="chapter"] section.bring-together-homework {
+  move-to: bring-together-homework-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.bring-together-homework > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(bring-together-homework-TOCOMPOSITE);
+  class: "os-eoc os-bring-together-homework-container";
+  data-type: "composite-page";
+  data-uuid-key: ".bring-together-homework"; }
 
 :pass(3) .try [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1186,7 +1192,7 @@ Formula Review page
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
-  content: ".";
+  content: ". ";
   class: os-divider; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
@@ -1196,7 +1202,7 @@ Formula Review page
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
   container: span;
-  content: ".";
+  content: ". ";
   class: os-divider; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
@@ -1212,12 +1218,12 @@ Formula Review page
 
 :pass(6) [data-type="exercise"].os-hasSolution {
   string-set: exerciseId attr(id); }
-  :pass(6) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
+  :pass(6) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
     container: a;
     attr-href: "#" string(exerciseId) "-solution"; }
   :pass(6) [data-type="exercise"].os-hasSolution [data-type="solution"] {
     attr-id: string(exerciseId) "-solution"; }
-    :pass(6) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
+    :pass(6) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
 
@@ -1410,17 +1416,6 @@ Formula Review page
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
-  container: span;
-  content: "Bringing It Together: Homework";
-  class: os-text;
-  move-to: h2-TITLECONTAINER; }
-
-:pass(8) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
-
 :pass(8) [data-type="composite-page"].os-eoc.os-references-container::before {
   container: span;
   content: "References";
@@ -1428,6 +1423,17 @@ Formula Review page
   move-to: h2-TITLECONTAINER; }
 
 :pass(8) [data-type="composite-page"].os-eoc.os-references-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
+  container: span;
+  content: "Bringing It Together: Homework";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
@@ -1589,6 +1595,49 @@ Formula Review page
 :pass(8) .appendix > table.unnumbered caption {
   move-to: trash; }
 
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: "Table ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: counter(table);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered) caption [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(8) .preface > table.unnumbered caption {
+  move-to: trash; }
+
 :pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
   container: span;
   content: "Figure ";
@@ -1611,6 +1660,17 @@ Formula Review page
   container: span;
   class: "os-caption";
   move-to: bCaptionContent; }
+
+:pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
 
 :pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::after {
   container: div;
@@ -1655,6 +1715,19 @@ Formula Review page
 
 :pass(8) .appendix :not(figure) > figure:not(.unnumbered)::after,
 :pass(8) .appendix > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) .appendix :not(figure) > figure:not(.unnumbered) [data-type="title"],
+:pass(8) .appendix > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(8) .appendix :not(figure) > figure:not(.unnumbered)::after,
+:pass(8) .appendix > figure:not(.unnumbered)::after {
   container: div;
   class: "os-caption-container";
   content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
@@ -1667,6 +1740,54 @@ Formula Review page
   content: content() pending(bCaptionContainer); }
 
 :pass(8) .appendix > figure.unnumbered figcaption {
+  move-to: trash; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: "Figure ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: counter(figure);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered) figcaption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::outside {
+  class: os-figure;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(8) .preface > figure.unnumbered figcaption {
   move-to: trash; }
 
 :pass(8) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
@@ -1706,6 +1827,20 @@ Formula Review page
 :pass(9) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
 
+:pass(9) div.os-table:deferred::before {
+  class: 'temp-summary';
+  content: string(tableSummary); }
+
+:pass(9) div.os-table .os-caption-container {
+  string-set: tableSummary content(); }
+
+:pass(9) table > caption:empty {
+  move-to: trash; }
+
+:pass(9) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
+
 :pass(10) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(10) div.os-eob [data-type="cnx-archive-uri"] {
   move-to: trash; }
@@ -1727,13 +1862,21 @@ Formula Review page
     attr-href: "#" string(page-id);
     container: a;
     move-to: page-link; }
-  :pass(10) body > div[data-type="page"]::after,
-  :pass(10) body > div[data-type="composite-page"]::after {
+  :pass(10) body > div[data-type="page"]:not(.appendix)::after,
+  :pass(10) body > div[data-type="composite-page"]:not(.appendix)::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
+  :pass(10) body > div[data-type="page"].appendix::after,
+  :pass(10) body > div[data-type="composite-page"].appendix::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-counted-page; }
 
 :pass(10) body > div[data-type="chapter"] > [data-type='document-title'] {
   node-set: chapterTitle;
@@ -1865,6 +2008,13 @@ Formula Review page
   attr-cnx-archive-shortid: string(unit-shortid);
   container: li;
   move-to: eob-toc; }
+
+:pass(10) div.os-table table[summary] {
+  attr-summary: string(tableSummary); }
+
+:pass(10) div.temp-summary {
+  string-set: tableSummary content();
+  move-to: trash; }
 
 :pass(11) nav#toc {
   content: ''; }
