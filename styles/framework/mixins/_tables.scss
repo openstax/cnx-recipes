@@ -5,12 +5,12 @@
   padding: 0;
   border: none;
   page-break-inside: auto;
+  display: table;
   table {
-    width: 100%;
-    border-collapse: separate;
+    border-collapse: collapse;
     prince-caption-page: all;
     line-height: auto; //todo
-    padding: 10px ; //todo
+    margin-bottom: size-scale(0) ;
   }
 }
 
@@ -84,31 +84,38 @@
 //generic structural mixin for table borders
 @mixin baseTableBorders ($tableBorderRadius, $tableBodyBorderColor, $tableBorderThickness) {
   thead {
-    &:first-child {
-      border-top-left-radius: $tableBorderRadius ;
+    th {
+      padding: size-scale(0);
     }
-    &:last-child {
-     border-top-right-radius: $tableBorderRadius ;
+    tr:first-of-type th {
+      &:first-child {
+        border-top-left-radius: $tableBorderRadius ;
+      }
+      &:last-child {
+       border-top-right-radius: $tableBorderRadius ;
+      }
     }
     tr {
-      border-left: 0;
-      border-right: 0;
     }
   }
   tbody {
+    border: $tableBorderThickness $tableBodyBorderColor;
     tr {
-      td {
-        border-color: $tableBodyBorderColor;
-        border-top: $tableBorderThickness;
-        border-right: $tableBorderThickness;
-        border-left: none;
+      &:last-child td {
+        border-bottom: $tableBorderThickness  $tableBodyBorderColor;
       }
-      &:first-child {
-        //#content>#table>#data>.style('first-column'; any);
-        border-left: $tableBodyBorderColor;
+      td {
+        padding: size-scale(0);
+        border-top: $tableBorderThickness  $tableBodyBorderColor;
+        border-right: $tableBorderThickness  $tableBodyBorderColor;
+        border-left: none;
+        &:first-child {
+          //#content>#table>#data>.style('first-column'; any);
+          border-left: $tableBorderThickness $tableBodyBorderColor;
+        }
       }
       &:last-child td {
-        border-bottom: $tableBorderThickness;
+        border-right: $tableBorderThickness $tableBorderThickness;
       }
     }
   }
@@ -136,6 +143,7 @@
 @mixin baseTableBody() {
   tbody {
     tr {
+      page-break-inside: avoid;
       td {
 
       }
@@ -145,6 +153,7 @@
 
 @mixin baseTableFoot() {
   tfoot {
+    display: table-row-group;
 
   }
 }
