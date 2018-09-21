@@ -14,11 +14,11 @@
 - **Location (page number, chapter/section)**:
 - **Browser**: 
 
-## Screenshots
+# Screenshots
 
 (_attach here (please clearly label what environment each screenshot came from)_)
 
-## Additional notes
+# Additional notes
 
  (_For example, steps to reproduce, related issues, more context, etc._)
 
