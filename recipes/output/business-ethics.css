@@ -813,32 +813,6 @@
 :pass(3) div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="document-title"] {
   container: h2; }
 
-<<<<<<< HEAD
-=======
-:pass(3) [data-type="chapter"], :pass(3) .appendix {
-  counter-reset: footnotes; }
-
-:pass(3) [data-type="footnote-ref"] {
-  counter-increment: footnotes; }
-
-:pass(3) [data-type="chapter"], :pass(3) .appendix {
-  counter-reset: footnoteLinks; }
-
-:pass(3) [data-type="footnote-number"] {
-  counter-increment: footnoteLinks; }
-
-:pass(3) li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
-  content: counter(footnotes); }
-
-:pass(3) sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
-  content: counter(footnoteLinks); }
-
-:pass(3) li > a[data-type="footnote-ref"] {
-  content: counter(footnotes); }
-
-:pass(3) a[data-type="footnote-number"] > sup {
-  content: counter(footnoteLinks); }
-
 :pass(3) [data-type="chapter"] {
   counter-reset: endNotes; }
 
@@ -863,7 +837,6 @@
   :pass(3) .references [data-type="note"] a span {
     content: counter(endNotes); }
 
->>>>>>> origin/queued.quadcopter
 :pass(3) body {
   counter-reset: term; }
 
@@ -1098,7 +1071,7 @@
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
-  content: ".";
+  content: ". ";
   class: os-divider; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
@@ -1108,7 +1081,7 @@
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
   container: span;
-  content: ".";
+  content: ". ";
   class: os-divider; }
 
 :pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
@@ -1144,28 +1117,21 @@
   string-set: ChapNum content(); }
 
 :pass(7) [data-type="chapter"]::after {
-  container: span;
-  class: "os-text-waka";
-  content: "Chapter " string(ChapNum) " Solutions";
-  move-to: eobCompositeTitlesContent; }
-
-:pass(7) [data-type="chapter"]::after {
   container: h2;
-  data-type: document-title;
-  content: pending(eobCompositeTitlesContentWAKA);
-  move-to: eobCompositeTitles; }
+  class: "os-title";
+  content: "Chapter " string(ChapNum) " Solutions";
+  move-to: chaptTitleEOB; }
 
 :pass(7) [data-type="chapter"]::after {
-  content: pending(eobCompositeTitlesContent) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
-  class: "os-eob os-solution-container";
-  data-type: "composite-page";
-  data-uuid-key: ".solution" string(ChapNum);
-  move-to: solution-TOCOMPOSITECHAPTER; }
+  class: os-chapter-area;
+  content: pending(chaptTitleEOB) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
+  move-to: solution-TOCOMPOSITE; }
 
 :pass(7) body::after {
-  content: pending(solution-TOCOMPOSITECHAPTER);
-  class: "os-eob os-solution";
-  data-type: "composite-chapter";
+  container: div;
+  content: pending(solution-TOCOMPOSITE);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
   data-uuid-key: ".solution";
   /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
 
@@ -1349,14 +1315,13 @@
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-chapter"].os-eob.os-solution [data-type="composite-page"] > span.os-text-waka {
-  class: os-text;
-  move-to: CCcompositePageTitlesWaka; }
+:pass(8) [data-type="composite-chapter"].os-eob.os-solution [data-type="composite-page"] > span.os-text {
+  move-to: CCcompositePageTitles; }
 
 :pass(8) [data-type="composite-chapter"].os-eob.os-solution [data-type="composite-page"]:deferred::before {
   container: h2;
   data-type: document-title;
-  content: pending(CCcompositePageTitlesWaka); }
+  content: pending(CCcompositePageTitles); }
 
 :pass(8) [data-type="composite-chapter"].os-eob.os-index::before {
   container: span;
@@ -1369,14 +1334,13 @@
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-chapter"].os-eob.os-index [data-type="composite-page"] > span.os-text-waka {
-  class: os-text;
-  move-to: CCcompositePageTitlesWaka; }
+:pass(8) [data-type="composite-chapter"].os-eob.os-index [data-type="composite-page"] > span.os-text {
+  move-to: CCcompositePageTitles; }
 
 :pass(8) [data-type="composite-chapter"].os-eob.os-index [data-type="composite-page"]:deferred::before {
   container: h2;
   data-type: document-title;
-  content: pending(CCcompositePageTitlesWaka); }
+  content: pending(CCcompositePageTitles); }
 
 :pass(8) div[data-type='chapter'] > h1[data-type='document-title'] {
   counter-increment: chapTitleNum;
@@ -1806,6 +1770,10 @@
 
 :pass(9) table > caption:empty {
   move-to: trash; }
+
+:pass(9) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
 
 :pass(10) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(10) div.os-eob [data-type="cnx-archive-uri"] {
