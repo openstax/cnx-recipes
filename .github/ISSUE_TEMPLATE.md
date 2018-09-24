@@ -12,7 +12,8 @@
 - **Book(s)**:
 - **URL/Server**: 
 - **Location (page number, chapter/section)**:
-- **Browser**: 
+- **Suggested nearby searchable text**: 
+- **Browser**:
 
 # Screenshots
 
