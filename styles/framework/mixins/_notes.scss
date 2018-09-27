@@ -39,10 +39,15 @@
   }
 }
 
+@mixin baseNoteTitle () {
+  font-weight: settings(note-title-weight);
+  font-family: font-map(serif);
+}
+
 //todo: nest notes: come up with a dynamic title selector
 @mixin noteTitle ($type, $titleColor) {
+  @include baseNoteTitle;
   $headerSize: index-header-size($type);
-  font-weight: settings(note-title-weight);
   font-size: size-scale($headerSize);
   line-height: line-height($headerSize);
   color: $titleColor;
@@ -52,6 +57,12 @@
   padding: settings(note-title-padding); //why, oh why isn't this padding working??
 }
 
+@mixin noteSubtitle ($type) {
+  @include baseNoteTitle;
+  $headerSize: index-header-size($type);
+  font-size: size-scale($headerSize);
+}
+
 @mixin noteTopHead () {
   letter-spacing: settings(note-title-letter-spacing);
   text-transform: uppercase;
@@ -59,11 +70,6 @@
   padding: size-scale(2);
 }
 
-@mixin noteSubtitle ($type) {
-  $headerSize: index-header-size($type);
-  font-family: font-map(serif);
-  font-size: size-scale(2);
-}
 
 @mixin simpleNote($titleColor, $subtitleColor, $borderColor, $titleBGcolor, $bodyFontColor, $bgColor, $image: null) {
 
