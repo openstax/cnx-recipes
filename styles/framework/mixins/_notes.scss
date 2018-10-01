@@ -30,9 +30,6 @@
     line-height: line-height(1);
     padding-left: size-scale(2);
     padding-right: size-scale(2);
-    .os-subtitle {
-      padding-bottom: size-scale(1);
-    }
     p {
       // padding-bottom: size-scale(1)
     }
@@ -42,6 +39,7 @@
 @mixin baseNoteTitle () {
   font-weight: settings(note-title-weight);
   font-family: font-map(serif);
+  page-break-after: avoid;
 }
 
 //todo: nest notes: come up with a dynamic title selector
@@ -49,25 +47,23 @@
   @include baseNoteTitle;
   $headerSize: index-header-size($type);
   font-size: size-scale($headerSize);
-  line-height: line-height($headerSize);
   color: $titleColor;
-  font-weight: normal;
-  display: block;
-  page-break-after: avoid;
-  padding: settings(note-title-padding); //why, oh why isn't this padding working??
+  line-height: line-height($headerSize);
+  // padding: settings(note-title-padding); //why, oh why isn't this padding working??
 }
 
-@mixin noteSubtitle ($type) {
+@mixin noteSubtitle ($type, $titleColor) {
   @include baseNoteTitle;
   $headerSize: index-header-size($type);
   font-size: size-scale($headerSize);
+  color: $titleColor;
+  margin-top: settings(note-subtitle-top-margin);
 }
 
 @mixin noteTopHead () {
   letter-spacing: settings(note-title-letter-spacing);
   text-transform: uppercase;
-  font-family: font-map(serif);
-  padding: size-scale(2);
+  padding: settings(note-title-padding);
 }
 
 
@@ -93,7 +89,6 @@
     border: settings(note-border) $borderColor;
 
     h4[data-type="title"] {
-      @include noteTitle(h4, $subtitleColor);
       @include noteSubtitle(h4);
     }
   }
@@ -121,7 +116,6 @@
     color: $bodyFontColor;
     border-bottom: settings(note-border) $borderColor;
     h4[data-type="title"] {
-      @include noteTitle(h4, $subtitleColor);
       @include noteSubtitle(h4);
     }
     p:last-child {
@@ -157,84 +151,3 @@
     }
   }
 }
-
-
-
-// @mixin baseNotesStyles() {
-//
-//   }
-  //TODO: find an exercise in a note and style it
-  // .exercise {
-  //   > .title,
-  //   .solution {
-  //     font-size: size-scale(1);
-  //   }
-  // }
-//}
-// @mixin notes ($title-background-color, $background-color, $icon, $notes-body-text-color: color-map(featureBody1), $icon-width: 110px, $icon-height: 62px, $icon-top: 2px, $icon-right: 15px, $border-bottom-left-radius: 0, $border-bottom-right-radius: 0, $border-top-left-radius: 5px, $border-top-right-radius: 5px) {
-//   @include baseNotesStyles();
-//   background-color: $background-color;
-//   border-bottom-left-radius: $border-bottom-left-radius;
-//   border-bottom-right-radius: $border-bottom-right-radius;
-//   box-sizing: border-box;
-//
-//   h3[data-type="title"] {
-//     background-color: $title-background-color;
-//     color: color-map(standard-white);
-//     border-top-left-radius: $border-top-left-radius;
-//     border-top-right-radius: $border-top-right-radius;
-//     //.scale-padding(1, padding);
-//     letter-spacing: 3px;
-//     text-transform: uppercase;
-//   }
-//
-//   .os-note-body {
-//     &::before {
-//       display: block;
-//       content: '';
-//       // background: url("../books/#{$bookName}/images/#{$icon}.svg") no-repeat 0;
-//       width: $icon-width;
-//       height: $icon-height;
-//       position: absolute;
-//       bottom: $icon-top;
-//       right: $icon-right;
-//     }
-//   }
-// }
-// @mixin note-border-top($note-border-color, $border-radius: 3px, $border-top: 5px) {
-//   @include baseNotesStyles();
-//
-//   h3[data-type="title"] {
-//     border-top: $border-top solid $note-border-color;
-//     border-top-right-radius: $border-radius;
-//     border-top-left-radius: $border-radius;
-//     border-bottom: solid 1px $note-border-color;
-//     letter-spacing: 4px;
-//     text-transform: uppercase;
-//     //  #utils>#pb>.after(avoid);
-//     //.scale-padding(2, padding);
-//     //width: $note-border-top-width;
-//   }
-//   border-left: solid 1px $note-border-color;
-//   border-right: solid 1px $note-border-color;
-//   border-bottom: solid 1px $note-border-color;
-//   //override base generic styles for notes
-//   padding: 0;
-//   margin: 0;
-//   top: 10px;
-//   //override generic note corners
-//   border-top-right-radius: 0;
-//   border-top-left-radius: 0;
-//   width: 100%;
-//
-//   .os-note-body {
-//     border: 0;
-//     h4[data-type="title"] {
-//       @include titles-h4-style($title-color: color-map(featureBodyText));
-//     }
-//   }
-//
-//   a:link {
-//     //@mixin link-style($body-link-color);
-//   }
-// }
