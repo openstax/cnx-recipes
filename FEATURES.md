@@ -1,21 +1,22 @@
-| Recipe Name | sup-footnote-call | trash-empty-table-captions | exercise-container | delete-link-in-equation-number | table-summaries-are-captions | preface-has-captions | add-os-table-class |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| accounting | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: |
-| ap-biology | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| ap-physics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| biology | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| business-ethics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| economics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| entrepreneurship | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: |
-| _example | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
-| hs-physics | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
-| intro-business | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| physics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| principles-management | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: |
-| statistics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| TEAap-biology | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
-| TEAap-physics | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
-| TEAeconomics | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
-| TEAhs-physics | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
-| TEAstatistics | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
-| u-physics | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
+| Recipe Name | sup-footnote-call | trash-empty-table-captions | exercise-container | delete-link-in-equation-number | table-summaries-are-captions | preface-has-captions | toc-numbered-pages | add-os-table-class |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| accounting | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: |
+| ap-biology | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| ap-physics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| astronomy | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| biology | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| business-ethics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| economics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| entrepreneurship | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: |
+| _example | :x: | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
+| hs-physics | :x: | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
+| intro-business | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| physics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: |
+| principles-management | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: |
+| statistics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| TEAap-biology | :x: | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAap-physics | :x: | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAeconomics | :x: | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAhs-physics | :x: | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
+| TEAstatistics | :x: | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
+| u-physics | :x: | :x: | :x: | :x: | :x: | :x: | :x: | :x: |
