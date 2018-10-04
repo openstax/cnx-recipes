@@ -292,6 +292,15 @@
   Style guide: page.link
 
 */
+/*==========================================================
+  ALGEBRA PAGES
+==========================================================*/
+/*==========================================================
+  ALGEBRA TITLING CONTENT
+==========================================================*/
+/*==========================================================
+  ALGEBRA CONFIG
+==========================================================*/
 @namespace xhtml "http://www.w3.org/1999/xhtml";
 @namespace cmlnle "http://katalysteducation.org/cmlnle/1.0";
 :pass(0) [data-type='list']:not([data-list-type]),
@@ -522,6 +531,70 @@
 :pass(3) a[data-type="footnote-number"] > sup {
   content: counter(footnoteLinks); }
 
+:pass(3) [data-type="chapter"], :pass(3) .appendix {
+  counter-reset: example; }
+
+:pass(3) div[data-type="chapter"] [data-type="example"] {
+  counter-increment: example; }
+
+:pass(3) [data-type="example"]::before {
+  container: span;
+  content: "Example ";
+  class: os-title-label;
+  move-to: bExampleLabel; }
+
+:pass(3) [data-type="example"]::before {
+  container: span;
+  content: counter(chapter) "." counter(example);
+  class: os-number;
+  move-to: bExampleLabel; }
+
+:pass(3) [data-type="example"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bExampleLabel; }
+
+:pass(3) [data-type="example"] > [data-type="title"] {
+  move-to: trash; }
+  :pass(3) [data-type="example"] > [data-type="title"]::before {
+    container: span;
+    content: content();
+    class: os-text;
+    move-to: bExampleLabel; }
+
+:pass(3) [data-type="example"]::after {
+  container: div;
+  content: pending(bExampleLabel);
+  class: "os-title";
+  move-to: bExampleHeader; }
+
+:pass(3) [data-type="example"]:deferred {
+  content: pending(bExampleHeader) content(); }
+
+:pass(3) [data-type="example"] [data-type="solution"]::before {
+  container: span;
+  content: "Solution ";
+  class: os-title-label;
+  move-to: div-TITLECONTAINER; }
+
+:pass(3) [data-type="example"] [data-type="solution"]::before {
+  container: span;
+  content: counter(chapter) "." counter(example);
+  class: os-number;
+  move-to: div-TITLECONTAINER; }
+
+:pass(3) [data-type="example"] [data-type="solution"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: div-TITLECONTAINER; }
+
+:pass(3) [data-type="example"] [data-type="solution"]::before {
+  container: div;
+  data-type: "solution-title";
+  content: pending(div-TITLECONTAINER); }
+
 :pass(3) body {
   counter-reset: term; }
 
@@ -550,6 +623,19 @@
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 
+:pass(3) div[data-type="chapter"] section.chapter-review {
+  move-to: chapter-review-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.chapter-review > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(chapter-review-TOCOMPOSITE);
+  class: "os-eoc os-chapter-review-container";
+  data-type: "composite-page";
+  data-uuid-key: ".chapter-review"; }
+
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
   data-visited: true;
@@ -570,6 +656,117 @@
 :pass(4) body:deferred::after {
   content: clear(term-trash); }
 
+:pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  node-set: CompoundSectionHeaderNode; }
+
+:pass(4) [data-type="chapter"] div[data-type="glossary"] {
+  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+  move-to: trash; }
+
+:pass(4) [data-type="chapter"] div[data-type="glossary"] dl {
+  move-to: glossary-DESTINATION; }
+  :pass(4) [data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-glossary-container";
+  content: pending(glossary-DESTINATION);
+  sort-by: xhtml|dl > xhtml|dt, nocase;
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"] section.key-concepts {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: key-concepts-separated; }
+  :pass(4) [data-type="chapter"] section.key-concepts > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-section-area";
+  content: pending(key-concepts-separated);
+  move-to: key-concepts-sectionSeparatedContainer; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: os-key-concepts;
+  content: pending(key-concepts-sectionSeparatedContainer);
+  move-to: key-concepts-DESTINATION; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-key-concepts-container";
+  content: pending(key-concepts-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"] section.review-exercises {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: review-exercises-separated; }
+  :pass(4) [data-type="chapter"] section.review-exercises > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-section-area";
+  content: pending(review-exercises-separated);
+  move-to: review-exercises-sectionSeparatedContainer; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: os-review-exercises;
+  content: pending(review-exercises-sectionSeparatedContainer);
+  move-to: review-exercises-DESTINATION; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-review-exercises-container";
+  content: pending(review-exercises-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"] section.practice-test {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: practice-test-separated; }
+  :pass(4) [data-type="chapter"] section.practice-test > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-section-area";
+  content: pending(practice-test-separated);
+  move-to: practice-test-sectionSeparatedContainer; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: os-practice-test;
+  content: pending(practice-test-sectionSeparatedContainer);
+  move-to: practice-test-DESTINATION; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-practice-test-container";
+  content: pending(practice-test-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-eoc os-chapter-review-container";
+  data-type: composite-page;
+  data-uuid-key: ".chapter-review";
+  content: pending(composite-DESTINATION); }
+
+:pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
+  string-set: outlinePageId attr(id); }
+  :pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"]::after {
+    container: a;
+    class: "os-chapter-objective";
+    content: content();
+    attr-href: "#" string(outlinePageId);
+    move-to: chapOutlineLink; }
+
+:pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  class: "os-chapter-objective";
+  content: pending(chapOutlineLink) pending(outlineLO);
+  move-to: chapOutline; }
+
+:pass(4) [data-type="chapter"]::before {
+  container: h3;
+  class: "os-title";
+  content: "Chapter Outline";
+  move-to: chapOutlineTitle; }
+
+:pass(4) [data-type="chapter"]:deferred::before {
+  class: "os-chapter-outline";
+  content: pending(chapOutlineTitle) pending(chapOutline); }
+
 :pass(5) div[data-type="page"] > [data-type="document-title"],
 :pass(5) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
@@ -577,6 +774,38 @@
 :pass(5) div[data-type="page"] > [data-type="document-title"],
 :pass(5) div[data-type="composite-page"] > [data-type="document-title"] {
   string-set: sectionHeaderString content(); }
+
+:pass(5) .os-chapter-outline {
+  move-to: ChapterOutline; }
+
+:pass(5) .introduction {
+  content: pending(ChapterOutline) content(); }
+
+:pass(5) [data-type="chapter"], :pass(5) .appendix {
+  counter-reset: exercise; }
+
+:pass(5) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
 
 :pass(6) body {
   counter-reset: exerciseAll; }
@@ -613,6 +842,12 @@
 
 :pass(8) div.appendix {
   counter-increment: appendix; }
+
+:pass(8) [data-type="chapter"], :pass(8) .appendix {
+  counter-reset: exercise; }
+
+:pass(8) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
 
 :pass(8) [data-type="chapter"], :pass(8) .appendix {
   counter-reset: example; }
@@ -680,6 +915,61 @@
 
 :pass(8) [data-type="composite-page"] {
   content: nodes(bookMetadata) content(); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container::before {
+  container: span;
+  content: "Chapter Review";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container div.os-glossary-container::before {
+  container: span;
+  content: "Key Terms";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container div.os-glossary-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container div.os-key-concepts-container::before {
+  container: span;
+  content: "Key Concepts";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container div.os-key-concepts-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container div.os-review-exercises-container::before {
+  container: span;
+  content: "Review Exercises";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container div.os-review-exercises-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container div.os-practice-test-container::before {
+  container: span;
+  content: "Practice Test";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-chapter-review-container div.os-practice-test-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
 
 :pass(8) div[data-type='chapter'] > h1[data-type='document-title'] {
   counter-increment: chapTitleNum;

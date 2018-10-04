@@ -1,2 +1,41 @@
 @import '../_common-stuff';
 $RECIPE_NAME: "dev-math";
+
+/*==========================================================
+  ALGEBRA PAGES
+==========================================================*/
+
+$_chapterReviewChildPages: (
+  (className: "glossary",         clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+  (className: "key-concepts",     clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
+  (className: "review-exercises", clusterBy: $CLUSTER_SECTION, hasSolutrios: true, name: "Review Exercises"),
+  (className: "practice-test",    clusterBy: $CLUSTER_SECTION, hasSolutrios: true, name: "Practice Test"),
+);
+
+$Config_ChapterCompositePages: (
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions:true, name: "Chapter Review"),
+);
+
+/*==========================================================
+  ALGEBRA TITLING CONTENT
+==========================================================*/
+
+$_exampleTitleContent        : (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_understandingTitleContent   : (os-title-label: "Check Your Understanding ", os-number: counter(chapter) "." counter(understanding), os-divider: " ");
+$_understandingSolutionContent : (os-number: counter(chapter)"."counter(understanding));
+
+/*==========================================================
+  ALGEBRA CONFIG
+==========================================================*/
+
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true);
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
+$Config_PartType_Example:  (moveTo: $AREA_NONE,                          titleContent: $_exampleTitleContent,
+                                                                  solutionTitleContent: $_exampleSolutionTitleContent);
+$Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
+$Config_PartType_Solution: (moveTo: $AREA_NONE, );
+
+$Config_hasCompositeChapter: false;
