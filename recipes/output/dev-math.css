@@ -298,7 +298,7 @@
 /*==========================================================
   ALGEBRA TITLING CONTENT
 ==========================================================*/
-/*==========================================================
+/*=========================================================
   ALGEBRA CONFIG
 ==========================================================*/
 @namespace xhtml "http://www.w3.org/1999/xhtml";
@@ -493,6 +493,54 @@
   class: "os-title";
   attr-data-type: "title"; }
 
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].try > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].try > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].try::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].try:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].try:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
 :pass(3) body {
   counter-reset: chapter; }
 
@@ -649,6 +697,57 @@
   container: div;
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
+
+:pass(3) [data-type="chapter"], :pass(3) .appendix {
+  counter-reset: try; }
+
+:pass(3) [data-type="note"].try {
+  counter-increment: try; }
+
+:pass(3) [data-type="note"].try::before {
+  container: span;
+  content: "Try It :: ";
+  class: os-title-label;
+  move-to: bNoteLabel-try; }
+
+:pass(3) [data-type="note"].try::before {
+  container: span;
+  content: counter(chapter) "." counter(try);
+  class: os-number;
+  move-to: bNoteLabel-try; }
+
+:pass(3) [data-type="note"].try::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bNoteLabel-try; }
+
+:pass(3) [data-type="note"].try > [data-type="title"] {
+  move-to: trash; }
+
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: "Solution ";
+  class: os-title-label; }
+
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: counter(chapter) "." counter(try);
+  class: os-number; }
+
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: " ";
+  class: os-divider; }
+
+:pass(3) [data-type="note"].try::after {
+  container: div;
+  content: pending(bNoteLabel-try);
+  class: "os-title";
+  move-to: bNoteHeader; }
+
+:pass(3) [data-type="note"].try:deferred {
+  content: pending(bNoteHeader) content(); }
 
 :pass(3) body {
   counter-reset: term; }
@@ -830,6 +929,37 @@
 :pass(5) div[data-type="composite-page"] > [data-type="document-title"] {
   string-set: sectionHeaderString content(); }
 
+:pass(5) div[data-type="page"] span[data-type="term"]::after, :pass(5) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: attr(cmlnle|reference, content());
+  attr-group-by: attr(group-by);
+  container: span;
+  class: "os-term";
+  move-to: index-term; }
+
+:pass(5) div[data-type="page"] span[data-type="term"]::after, :pass(5) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: string(sectionHeaderString);
+  container: span;
+  class: "os-term-section";
+  move-to: index-section; }
+
+:pass(5) div[data-type="page"] span[data-type="term"]::after, :pass(5) div[data-type="composite-page"] span[data-type="term"]::after {
+  container: a;
+  content: pending(index-section);
+  attr-href: "#" attr(id);
+  class: "os-term-section-link";
+  move-to: index-section-link; }
+
+:pass(5) div[data-type="page"] span[data-type="term"]::after, :pass(5) div[data-type="composite-page"] span[data-type="term"]::after {
+  container: span;
+  content: ', ';
+  class: "os-index-link-separator";
+  move-to: index-section-link; }
+
+:pass(5) div[data-type="page"] span[data-type="term"]::after, :pass(5) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: pending(index-term) pending(index-section-link);
+  class: os-index-item;
+  move-to: index-TOCOMPOSITE; }
+
 :pass(5) .os-chapter-outline {
   move-to: ChapterOutline; }
 
@@ -856,6 +986,63 @@
 :pass(7) div[data-type="page"] > [data-type="document-title"],
 :pass(7) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
+
+:pass(7) [data-type="chapter"] [data-type="note"].try [data-type="solution"] {
+  move-to: note-try-solutions-GETSECTION; }
+
+:pass(7) [data-type="chapter"]::before {
+  container: span;
+  class: "os-title-label";
+  content: "Try It :: ";
+  move-to: note-try-title; }
+
+:pass(7) [data-type="chapter"]::before {
+  container: h3;
+  content: pending(note-try-title);
+  move-to: note-try-header; }
+
+:pass(7) [data-type="chapter"]::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(note-try-header) pending(note-try-solutions-GETSECTION);
+  move-to: note-solutions-GETCHAPTER; }
+
+:pass(7) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
+  string-set: ChapNum content(); }
+
+:pass(7) [data-type="chapter"]::after {
+  container: h2;
+  class: "os-title";
+  content: "Chapter " string(ChapNum);
+  move-to: chaptTitleEOB; }
+
+:pass(7) [data-type="chapter"]::after {
+  class: os-chapter-area;
+  content: pending(chaptTitleEOB) pending(note-solutions-GETCHAPTER) pending(solutions-GETCHAPTER);
+  move-to: solutions-TOCOMPOSITE; }
+
+:pass(7) body::after {
+  container: div;
+  content: pending(solutions-TOCOMPOSITE);
+  class: "os-eob os-solutions-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solutions";
+  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
+
+:pass(7) body::after {
+  container: div;
+  content: pending(solutions-TOCOMPOSITE);
+  class: "os-eob os-solutions-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solutions"; }
+
+:pass(7) body::after {
+  container: div;
+  content: pending(index-TOCOMPOSITE);
+  class: "os-eob os-index-container";
+  data-type: "composite-page";
+  data-uuid-key: "<index>";
+  group-by: span, "span::attr(group-by)", nocase; }
 
 :pass(8) .os-index-container > div.group-by:first-of-type > span.group-label:match("^[ ](Symbols|SYMBOLS)") {
   content: "Symbols"; }
@@ -993,6 +1180,28 @@
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eob.os-solutions-container::before {
+  container: span;
+  content: "Answer Key";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eob.os-solutions-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: span;
+  content: "Index";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
 
 :pass(8) div[data-type='chapter'] > h1[data-type='document-title'] {
   counter-increment: chapTitleNum;
