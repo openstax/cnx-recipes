@@ -298,6 +298,9 @@
 /*==========================================================
   ASTRONOMY PAGES
 ==========================================================*/
+/* =========================================================
+  CUSTOM NOTES
+==========================================================*/
 /*==========================================================
   ASTRONOMY TITLING CONTENT
 ==========================================================*/
@@ -314,9 +317,6 @@
 ==========================================================*/
 /* =========================================================
   TARGET LABELS (optional)
-==========================================================*/
-/* =========================================================
-  CUSTOM NOTES
 ==========================================================*/
 /* =========================================================
   OTHER PARTS
@@ -389,6 +389,12 @@
   data-type: "exercise-container";
   container: div;
   content: pending(bTitleLabel) content(); }
+
+:pass(1) [data-type="exercise"] [data-type="problem"]::inside {
+  class: "os-problem-container"; }
+
+:pass(1) [data-type="exercise"] [data-type="solution"]::inside {
+  class: "os-solution-container"; }
 
 :pass(1) ol[data-label]:not([data-label=""])::after,
 :pass(1) ul[data-label]:not([data-label=""])::after {
@@ -921,6 +927,12 @@
   move-to: div-TITLECONTAINER; }
 
 :pass(3) [data-type="example"] [data-type="solution"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: div-TITLECONTAINER; }
+
+:pass(3) [data-type="example"] [data-type="solution"]::before {
   container: div;
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
@@ -985,6 +997,47 @@
   class: "os-eoc os-summary-container";
   data-type: "composite-page";
   data-uuid-key: ".summary"; }
+
+:pass(3) div[data-type="chapter"] section.further-exploration {
+  move-to: further-exploration-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.further-exploration > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(further-exploration-TOCOMPOSITE);
+  class: "os-eoc os-further-exploration-container";
+  data-type: "composite-page";
+  data-uuid-key: ".further-exploration"; }
+
+:pass(3) div[data-type="chapter"] section.group-activities {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
+  move-to: group-activities-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.group-activities > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(group-activities-TOCOMPOSITE);
+  class: "os-eoc os-group-activities-container";
+  data-type: "composite-page";
+  data-uuid-key: ".group-activities"; }
+
+:pass(3) div[data-type="chapter"] section.exercise {
+  move-to: exercise-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.exercise > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(exercise-TOCOMPOSITE);
+  class: "os-eoc os-exercise-container";
+  data-type: "composite-page";
+  data-uuid-key: ".exercise"; }
 
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
@@ -1155,12 +1208,12 @@
 
 :pass(6) [data-type="exercise"].os-hasSolution {
   string-set: exerciseId attr(id); }
-  :pass(6) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
+  :pass(6) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
     container: a;
     attr-href: "#" string(exerciseId) "-solution"; }
   :pass(6) [data-type="exercise"].os-hasSolution [data-type="solution"] {
     attr-id: string(exerciseId) "-solution"; }
-    :pass(6) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
+    :pass(6) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
 
@@ -1280,6 +1333,28 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
+:pass(8) [data-type="composite-page"].os-eoc.os-further-exploration-container::before {
+  container: span;
+  content: "For Further Exploration";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-further-exploration-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-group-activities-container::before {
+  container: span;
+  content: "Collaborative Group Activities";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-group-activities-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
 :pass(8) [data-type="composite-page"].os-eoc.os-exercise-container::before {
   container: span;
   content: "Exercises";
@@ -1389,6 +1464,12 @@
   class: os-number;
   move-to: bCaption; }
 
+:pass(8) [data-type="chapter"] :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
 :pass(8) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption {
   container: span;
   class: "os-caption";
@@ -1475,6 +1556,54 @@
 :pass(8) .appendix > table.unnumbered caption {
   move-to: trash; }
 
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: "Table ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: counter(table);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered) caption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered) caption [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(8) .preface :not(table) > table:not(.unnumbered)::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(8) .preface > table.unnumbered caption {
+  move-to: trash; }
+
 :pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
   container: span;
   content: "Figure ";
@@ -1485,6 +1614,12 @@
   container: span;
   content: counter(chapter) "." counter(figure);
   class: os-number;
+  move-to: bCaption; }
+
+:pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
   move-to: bCaption; }
 
 :pass(8) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption {
@@ -1573,6 +1708,54 @@
 :pass(8) .appendix > figure.unnumbered figcaption {
   move-to: trash; }
 
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: "Figure ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: counter(figure);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered) figcaption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(8) .preface :not(figure) > figure:not(.unnumbered)::outside {
+  class: os-figure;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(8) .preface > figure.unnumbered figcaption {
+  move-to: trash; }
+
 :pass(8) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(8) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(8) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -1609,6 +1792,20 @@
 
 :pass(9) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
+
+:pass(9) div.os-table:deferred::before {
+  class: 'temp-summary';
+  content: string(tableSummary); }
+
+:pass(9) div.os-table .os-caption-container {
+  string-set: tableSummary content(); }
+
+:pass(9) table > caption:empty {
+  move-to: trash; }
+
+:pass(9) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
 
 :pass(10) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(10) div.os-eob [data-type="cnx-archive-uri"] {
@@ -1769,6 +1966,13 @@
   attr-cnx-archive-shortid: string(unit-shortid);
   container: li;
   move-to: eob-toc; }
+
+:pass(10) div.os-table table[summary] {
+  attr-summary: string(tableSummary); }
+
+:pass(10) div.temp-summary {
+  string-set: tableSummary content();
+  move-to: trash; }
 
 :pass(11) nav#toc {
   content: ''; }
