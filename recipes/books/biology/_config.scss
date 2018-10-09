@@ -1,4 +1,5 @@
 @import '../_common-stuff';
+$RECIPE_NAME: "biology";
 
 /*==========================================================
   BIOLOGY PAGES
@@ -24,13 +25,13 @@
   Style guide: book.2-composite.summary
 */
 /*
-  Art Connection Questions
+  Visual Connection Questions
 
   These should be collated at the end of a chapter and have answers collated at the end of the chapter.
 
-  Markup: ./styleguide/book.composite.art-connection-questions.xhtml-baked.html
+  Markup: ./styleguide/book.composite.visual-connection-questions.xhtml-baked.html
 
-  Style guide: book.2-composite.art-connection-questions
+  Style guide: book.2-composite.visual-connection-questions
 */
 /*
   Review Questions
@@ -54,9 +55,9 @@
 // These are defined as variables because they are used in ap-biology
 $BiologyPageKeyTerms        : (className: "glossary",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms");
 $BiologyPageSummary         : (className: "summary",         clusterBy: $CLUSTER_SECTION, name: "Chapter Summary");
-$BiologyPageArtConnection   : (className: "art-exercise",    clusterBy: $CLUSTER_NONE, hasSolutions: true,     name: "Art Connection Questions");
+$BiologyPageArtConnection   : (className: "visual-exercise",    clusterBy: $CLUSTER_NONE, hasSolutions: true,     name: "Visual Connection Questions");
 $BiologyPageReviewQuestions : (className: "multiple-choice", clusterBy: $CLUSTER_NONE, hasSolutions: true,     name: "Review Questions");
-$BiologyPageCriticalThinking: (className: "free-response",   clusterBy: $CLUSTER_NONE, hasSolutions: true,     name: "Critical Thinking Questions");
+$BiologyPageCriticalThinking: (className: "critical-thinking",   clusterBy: $CLUSTER_NONE, hasSolutions: true,     name: "Critical Thinking Questions");
 
 $Config_ChapterCompositePages: (
   $BiologyPageKeyTerms,
@@ -78,13 +79,13 @@ $Config_BookCompositePages: (
 //Usage Note: key: class of the containing span, value: text that will go inside span
 
 /*
-  Art Connection note
+  Visual Connection note
 
-  Contains a title "Art Connection" and a body containing a title and the contents of the note.
+  Contains a title "Visual Connection" and a body containing a title and the contents of the note.
 
-  Markup: ./styleguide/page.note.art-connection.xhtml-baked.html
+  Markup: ./styleguide/page.note.visual-connection.xhtml-baked.html
 
-  Style guide: page.note.art-connection
+  Style guide: page.note.visual-connection
 */
 /*
   Career Connection note
@@ -132,12 +133,13 @@ $Config_BookCompositePages: (
   Style guide: page.note.link-to-learning
 */
 $Config_Notes: (
-  (className: 'art-connection', moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Art Connection",        ),
+  (className: 'visual-connection', moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Visual Connection",        ),
   (className: 'career',         moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Career Connection",),
   (className: 'everyday',       moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Everyday Connection",   ),
   (className: 'evolution',      moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Evolution Connection",  ),
   (className: 'scientific',     moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Scientific Method Connection",  ),
-  (className: 'interactive',    moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Link to Learning",  ),
+  (className: 'interactive:not(.non-majors)',    moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Link to Learning",  ),
+  (className: 'interactive.non-majors',    moveSolutionTo: $AREA_NONE, replaceHeader: true, labelText: "Concepts in Action",  ),
 );
 
 $Config_UnnumberedExercises: (); // There are no unnumbered exercises
@@ -150,7 +152,7 @@ $Config_PartType_Figure_CaptionContentAp: (os-title-label: "Figure ", os-number:
 $Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true);
 $Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
 
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise), ));
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
 $Config_PartType_Example:  (moveTo: $AREA_TRASH, ); // Oddly, this does not trash the examples... But maybe it shoudl be something other than NONE?
 $Config_PartType_Chapter:  (outlineTitle: "Chapter Outline", );
 $Config_PartType_Equation: (titleContent: null, );

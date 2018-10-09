@@ -1,7 +1,8 @@
 @import '../physics/_config';
+$RECIPE_NAME: "ap-physics";
 
 // This is slightly different than physics so it is redefined here.
-$_equationTitleContent: (os-divider: " ", os-number: counter(chapter) "." counter(equation)); // TODO: Make this the same as ap-physics
+$_equationTitleContent: (os-number: counter(chapter) "." counter(equation), os-divider: " "); // TODO: Make this the same as ap-physics
 
 // Add in the solutions
 $PhysicsPageConceptualQuestions: map-merge($PhysicsPageConceptualQuestions, (hasSolutions: true));
@@ -52,13 +53,13 @@ $Config_UnnumberedEquations: (
 );
 
 $Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
-$Config_PartType_Equation: (moveTo: $AREA_NONE, numberAt: $NUMBER_AFTER_MOVE, titleContent: $_equationTitleContent);
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_COMPOSITE_PAGE,  numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Equation: (moveTo: $AREA_NONE, numberAt: $NUMBER_AFTER_MOVE, titleContent: $_equationTitleContent, numberAfterEq: true);
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_COMPOSITE_PAGE,  numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
 $Config_PartType_Example:  (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent,
                                           solutionTitleContent: $_exampleSolutionTitleContent);
 $Config_PartType_Solution: (moveTo: $AREA_NONE);
 
-$Config_HACK_modifyAnyContainerTitleSelector: '[data-element-type="check-understanding"]';
+$Config_HACK_modifyAnyContainerTitleSelector: '[data-type="exercise"][data-element-type="check-understanding"]';
 $Config_addSolutionHeader: ((selector: '[data-element-type="check-understanding"]', title: 'Solution'),);
 
 
@@ -68,3 +69,7 @@ $Config_Coverage_MayHaveIframes: false;
 $Config_Coverage_MayHaveMissingExercises: false;
 
 $Config_hasCompositeChapter: false;
+$Config_hasAbstract: false;
+
+$Config_ContentExercise_TitleContent : (os-number : counter(chapter) "." counter(exerciseMaybeInContent), os-title-label : "Exercise ");
+$Config_ContentExercise_TitleContentAp : (os-number : counter(appendix, upper-alpha ) "." counter(exerciseMaybeInContent), os-title-label : "Exercise ");

@@ -1,0 +1,26 @@
+@function feature-enabled($feature_name) {
+  @if not map-has-key($FEATURES, $feature_name) {
+    @error "This feature has been removed or applied to all recipes";
+  }
+  @return map-get($FEATURES, $feature_name);
+}
+
+@function enable-for($list...) {
+  $RECIPE_NAME: "NONE_SET" !default;
+  @if $RECIPE_NAME == "NONE_SET" {
+    @error "This recipe has no $RECIPE_NAME.";
+  }
+  @return if(index($list, $RECIPE_NAME), true, false);
+}
+
+$FEATURES: (
+  sup-footnote-call: enable-for("statistics", "ap-biology", "biology", "economics", "ap-physics", "physics", "intro-business", "business-ethics", "accounting", "entrepreneurship", "principles-management"),
+  trash-empty-table-captions: enable-for("statistics", "ap-biology", "biology", "economics", "ap-physics", "physics", "intro-business", "business-ethics", "accounting", "entrepreneurship", "principles-management"),
+  exercise-container:  enable-for("statistics", "ap-biology", "biology", "economics", "ap-physics", "physics", "intro-business", "business-ethics", "accounting", "entrepreneurship", "principles-management"),
+  delete-link-in-equation-number: enable-for("statistics", "ap-biology", "biology", "economics", "ap-physics", "physics", "intro-business", "business-ethics", "accounting", "entrepreneurship", "principles-management"),
+  table-summaries-are-captions: enable-for("statistics", "ap-biology", "biology", "economics", "ap-physics", "physics", "accounting", "business-ethics", "entrepreneurship", "intro-business", "principles-management"),
+  preface-has-captions: enable-for("statistics", "ap-biology", "biology", "economics", "ap-physics", "physics", "accounting", "business-ethics", "entrepreneurship", "intro-business", "principles-management"),
+  toc-numbered-pages: enable-for("statistics", "accounting", "entrepreneurship", "principles-management"),
+  add-os-table-class: enable-for("statistics", "ap-biology", "biology", "economics", "ap-physics", "physics", "intro-business", "business-ethics", "accounting", "entrepreneurship", "principles-management")
+
+);

@@ -1,4 +1,5 @@
 @import '../_common-stuff';
+$RECIPE_NAME: "principles-management";
 
 /*==========================================================
   Principles of Management EOC
@@ -39,11 +40,11 @@
   Style guide: book.composite.review
 */
 /*
-  Management Applications Skills: Exercises page
+  Managerial Decisions: Exercises page
 
   These should be collated at the end of a chapter.
 
-  Contains a title "Management Skills Application Exercises"
+  Contains a title "Managerial Decisions: Exercises"
 
   Markup: ./styleguide/book.composite.MSAExercises.xhtml-baked.html
 
@@ -75,9 +76,9 @@
 $Config_ChapterCompositePages: (
   (className: "glossary",             clusterBy: $CLUSTER_NONE,     specialPageType: $PAGE_GLOSSARY,    name: "Key Terms"),
   (className: "section-summary",      clusterBy: $CLUSTER_SECTION,  name: "Summary of Learning Outcomes"),
-  (className: "chapter-review",       clusterBy: $CLUSTER_NONE,     hasSolutions: true,     moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,   name: "Chapter Review"),
-  (className: "manage-skills",        clusterBy: $CLUSTER_NONE,     hasSolutions: true,     moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,   name: "Managerial Applications Skills: Practice"),
-  (className: "manage-exercises",     clusterBy: $CLUSTER_NONE,     hasSolutions: true,     moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,   name: "Managerial Decisions: Practice"),
+  (className: "chapter-review",       clusterBy: $CLUSTER_NONE,     hasSolutions: true,     moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,   name: "Chapter Review Questions"),
+  (className: "manage-skills",        clusterBy: $CLUSTER_NONE,     hasSolutions: true,     moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,   name: "Management Skills Application Exercises"),
+  (className: "manage-exercises",     clusterBy: $CLUSTER_NONE,     hasSolutions: true,     moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,   name: "Managerial Decisions Exercises"),
   (className: "critical-thinking",    clusterBy: $CLUSTER_NONE,     hasSolutions: true,     moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,   name: "Critical Thinking Case"),
 );
 
@@ -192,7 +193,7 @@ $Config_ChapterCompositePages: (
 */
 $Config_Notes: (
   (className: 'learning-outcomes',            moveSolutionTo: $AREA_NONE,   labelText: "Learning Outcomes",   replaceHeader: true),
-  (className: 'exploring-business-careers',   moveSolutionTo: $AREA_NONE,   labelText: "Exploring Business Careers"),
+  (className: 'exploring-manage-careers',   moveSolutionTo: $AREA_NONE,   labelText: "Exploring Managerial Careers"),
   (className: 'link-to-learning',             moveSolutionTo: $AREA_NONE,   labelText: "Link to Learning"),
   (className: 'catching-spirit',              moveSolutionTo: $AREA_NONE,   labelText: "Catching the Entrepreneurial Spirit"),
   (className: 'ethics-in-practice',           moveSolutionTo: $AREA_NONE,   labelText: "Ethics in Practice"),
@@ -224,12 +225,29 @@ $_exampleSolutionTitleContent: (os-title-label: "Solution ",  os-number: counter
 /*==========================================================
   Principles of Management CONFIG
 ==========================================================*/
+
 $Config_PartType_Figure_CaptionContent  : (os-title-label: "Exhibit ", os-number: counter(chapter) "." counter(figure), os-divider: " ");
 $Config_PartType_Figure_CaptionContentAp: (os-title-label: "Exhibit ", os-number: counter(appendix, upper-alpha) counter(figure), os-divider: " ");
 
+
+
+$Config_TargetLabels: (
+  (selector: '.os-eoc [data-type="exercise"]',                                  labelText: "Exercise " counter(chapter) "." counter(exercise)),
+  (selector: 'div[data-type="chapter"] [data-type="example"]',                  labelText: "Example " counter(chapter) "." counter(example)),
+  (selector: 'div[data-type="chapter"] [data-type="equation"]:not(.unnumbered)',labelText: "Equation " counter(chapter) "." counter(equation)),
+  (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered)',      labelText: "Table " counter(chapter) "." counter(table)),
+  (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',    labelText: "Exhibit " counter(chapter) "." counter(figure)),
+  (selector: '.appendix :not(table) > table:not(.unnumbered)',                  labelText: "Table " counter(appendix, upper-alpha) counter(table)),
+  (selector: '.appendix :not(figure) > figure:not(.unnumbered)',                labelText: "Exhibit " counter(appendix, upper-alpha) counter(figure)),
+  (selector: '.appendix > table:not(.unnumbered)',                              labelText: "Table " counter(appendix, upper-alpha) counter(table)),
+  (selector: '.appendix > figure:not(.unnumbered)',                             labelText: "Exhibit " counter(appendix, upper-alpha) counter(figure)),
+  (selector: '.preface :not(table) > table:not(.unnumbered)',                   labelText: "Table " counter(table)),
+  (selector: '.preface :not(figure) > figure:not(.unnumbered)',                 labelText: "Exhibit " counter(figure))
+);
+
 $Config_PartType_Example:  (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
 
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER,  numberAt: $NUMBER_BEFORE_MOVE, titleContent: (os-divider: ".", os-number: counter(exercise)));
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER,  numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
 
 
 /*
@@ -242,4 +260,3 @@ $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER,  numberA
   Style guide: book.references
 */
 $Config_hasCitation: true;
-$Config_TableSummariesAreCaptions: true;
