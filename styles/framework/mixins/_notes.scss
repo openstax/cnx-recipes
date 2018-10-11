@@ -7,8 +7,16 @@
 
 //TODO: notes inside of notes
 
+@mixin noteBody($bgColor, $bodyFontColor, $borderColor) {
+  background: $bgColor;
+  color: $bodyFontColor;
+  border: settings(note-border) $borderColor;
+  line-height: settings(note-body-line-height);
+  padding-left: settings(note-body-padding-left);
+  padding-right: settings(note-body-padding-right);
+}
 
-@mixin baseNoteStyle() {
+@mixin baseNoteStyle($bgColor, $bodyFontColor, $borderColor) {
   width: 100%;
   box-decoration-break: slice;
   box-sizing: border-box;
@@ -26,26 +34,8 @@
     }
   }
   .os-note-body {
-    // line-height: settings(note-body-line-height);
-    // padding-left: settings(note-body-padding-left);
-    // padding-right: settings(note-body-padding-right);
-    line-height: line-height(1);
-    padding-left: size-scale(2);
-    padding-right: size-scale(2);
-    p {
-      // padding-bottom: size-scale(1)
-    }
+    @include noteBody($bgColor, $bodyFontColor, $borderColor);
   }
-}
-
-@mixin noteBody($bgColor, $bodyFontColor, $borderColor) {
-  background: $bgColor;
-  color: $bodyFontColor;
-  border: settings(note-border) $borderColor;
-  border-bottom: settings(note-border) $bottomBorderColor;
-  line-height: settings(note-body-line-height);
-  padding-left: settings(note-body-padding-left);
-  padding-right: settings(note-body-padding-right);
 }
 
 @mixin baseNoteTitle () {
@@ -82,7 +72,7 @@
 
 @mixin simpleNote($titleColor, $subtitleColor, $borderColor, $titleBGcolor, $bodyFontColor, $bgColor, $image: null) {
 
-  @include baseNoteStyle();
+  @include baseNoteStyle($bgColor, $bodyFontColor, $borderColor);
 
   h3[data-type="title"] {
     @include noteTitle(h3, $titleColor);
@@ -97,9 +87,7 @@
 
   }
   .os-note-body {
-    background: $bgColor;
-    color: $bodyFontColor;
-    border: settings(note-border) $borderColor;
+    @include noteBody($bgColor, $bodyFontColor, $borderColor);
 
     h4[data-type="title"] {
       @include noteSubtitle(h4, $subtitleColor);
@@ -107,12 +95,13 @@
   }
 }
 
-@mixin noteTopBorder($titleColor, $subtitleColor, $borderColor, $topBorderColor, $bodyFontColor) {
+@mixin noteTopBorder($titleColor, $subtitleColor, $borderColor, $topBorderColor, $bodyFontColor,$bgColor) {
 
-  @include baseNoteStyle();
+  @include baseNoteStyle($bgColor, $bodyFontColor, $borderColor);
 
   border-left: settings(note-border) $borderColor;
   border-right: settings(note-border) $borderColor;
+  border-bottom: settings(note-border) $borderColor;
   border-top-right-radius: settings(note-TopBar-border-radius);
   border-top-left-radius: settings(note-TopBar-border-radius);
   h3[data-type="title"] {
@@ -126,8 +115,9 @@
     border-top-left-radius: settings(note-TopBar-border-radius);
   }
   .os-note-body {
-    color: $bodyFontColor;
-    border-bottom: settings(note-border) $borderColor;
+    @include noteBody($bgColor, $bodyFontColor, $borderColor);
+    // color: $bodyFontColor;
+    border: 0;
     h4[data-type="title"] {
       @include noteSubtitle(h4, $subtitleColor);
     }
@@ -158,7 +148,7 @@
          @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $noteBodyColor, $noteBGColor, $noteImage);
         }
         @else if $noteType == noteTopBorder {
-         @include noteTopBorder($noteTitleColor,$noteSubtitleColor, $noteBorderColor, $noteTopBorderColor, $noteBodyColor);
+         @include noteTopBorder($noteTitleColor,$noteSubtitleColor, $noteBorderColor, $noteTopBorderColor, $noteBodyColor, $noteBGColor);
         }
       }
     }

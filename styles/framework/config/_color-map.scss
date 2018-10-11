@@ -34,13 +34,13 @@
     table-content: color-scheme(secondary),
     table-head: color-scheme(secondary),
     table-head-bg: color-scheme(quinary),
-    th-border: color-scheme(standard-black),
-    td-border: color-scheme(standard-black),
-    colored-table-bg: color-scheme(accent-quinary),
-    first-th-bg: color-scheme(quinary),
-    first-th: color-scheme(secondary),
-    second-th-bg: color-scheme(primary),
-    second-th: color-scheme(standard-white),
+    table-th-border: color-scheme(standard-black),
+    table-td-border: color-scheme(standard-black),
+    table-colored-table-bg: color-scheme(accent-quinary),
+    table-first-th-bg: color-scheme(quinary),
+    table-first-th: color-scheme(secondary),
+    table-second-th-bg: color-scheme(primary),
+    table-second-th: color-scheme(standard-white),
 
     text-heavy-bg: color-scheme(standard-white),
     text-heavy-border: scale-uniform(color-scheme(standard-white), 0.9),
@@ -119,11 +119,15 @@
 $color-map-manifest: ();
 @mixin color-map-merge($function) {
   $color-map-manifest: append($color-map-manifest, $function) !global;
+  @include update-color-map-config();
+}
+
+// Ensure all default keys are available from $color_map and color_map()
+$color-map: default-color-map() !default;
+
+@mixin update-color-map-config() {
   $color-map: default-color-map() !global;
   @each $map-get-function in $color-map-manifest {
     $color-map: map-merge($color-map, call($map-get-function)) !global;
   }
 }
-
-// Ensure all default keys are available from $color_map and color_map()
-$color-map: default-color-map() !default;
