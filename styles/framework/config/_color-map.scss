@@ -121,11 +121,15 @@
 $color-map-manifest: ();
 @mixin color-map-merge($function) {
   $color-map-manifest: append($color-map-manifest, $function) !global;
+  @include update-color-map-config();
+}
+
+// Ensure all default keys are available from $color_map and color_map()
+$color-map: default-color-map() !default;
+
+@mixin update-color-map-config() {
   $color-map: default-color-map() !global;
   @each $map-get-function in $color-map-manifest {
     $color-map: map-merge($color-map, call($map-get-function)) !global;
   }
 }
-
-// Ensure all default keys are available from $color_map and color_map()
-$color-map: default-color-map() !default;
