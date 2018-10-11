@@ -13,10 +13,9 @@
   box-decoration-break: slice;
   box-sizing: border-box;
   margin-bottom: size-scale(1);
-
-  h3[data-type="title"] {
-    margin-bottom: size-scale(-20);
-  }
+  // h3[data-type="title"] {
+  //   margin-bottom: size-scale(-20);
+  // }
   svg text {
     fill: color-map(featureBodyText) !important; //this is necessary to override the inline svg fill
   }
@@ -27,6 +26,9 @@
     }
   }
   .os-note-body {
+    // line-height: settings(note-body-line-height);
+    // padding-left: settings(note-body-padding-left);
+    // padding-right: settings(note-body-padding-right);
     line-height: line-height(1);
     padding-left: size-scale(2);
     padding-right: size-scale(2);
@@ -34,6 +36,16 @@
       // padding-bottom: size-scale(1)
     }
   }
+}
+
+@mixin noteBody($bgColor, $bodyFontColor, $borderColor) {
+  background: $bgColor;
+  color: $bodyFontColor;
+  border: settings(note-border) $borderColor;
+  border-bottom: settings(note-border) $bottomBorderColor;
+  line-height: settings(note-body-line-height);
+  padding-left: settings(note-body-padding-left);
+  padding-right: settings(note-body-padding-right);
 }
 
 @mixin baseNoteTitle () {
@@ -44,6 +56,7 @@
 
 //todo: nest notes: come up with a dynamic title selector
 @mixin noteTitle ($type, $titleColor) {
+  margin-bottom: size-scale(-20);
   @include baseNoteTitle;
   $headerSize: index-header-size($type);
   font-size: size-scale($headerSize);
