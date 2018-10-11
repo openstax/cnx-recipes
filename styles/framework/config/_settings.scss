@@ -33,12 +33,17 @@
 $settings-manifest: ();
 @mixin settings-merge($function) {
   $settings-manifest: append($settings-manifest, $function) !global;
-  $settings: default-settings() !global;
-  @each $map-get-function in $settings-manifest {
-    $settings: map-merge($settings, call($map-get-function)) !global;
-  }
+  @include update-settings-config();
 }
 
 // Ensure all default keys are available from $settings and settings()
 $settings: default-settings() !default;
 $settings: map-merge(default-settings(), $settings);
+
+
+@mixin update-settings-config() {
+  $settings: default-settings() !global;
+  @each $map-get-function in $settings-manifest {
+    $settings: map-merge($settings, call($map-get-function)) !global;
+  }
+}
