@@ -19,20 +19,18 @@ $Config_ChapterCompositePages: (
 $Config_BookCompositePages: (
   //This doesn't get parsed as a list without a comma at the end
   //the composite builder should account for this rather than using hacky syntax
-  (className: "solutions",    clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
-  (className: "index",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+  (className: "solutions", clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (className: "index",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
 );
 
 /*==========================================================
   ALGEBRA TITLING CONTENT
 ==========================================================*/
 
-$_exampleTitleContent           : (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
-$_exampleSolutionTitleContent   : (os-title-label: "Solution ", os-number: counter(chapter) "." counter(example), os-divider: " ");
-$_tryItTitleContent           : (os-title-label: "Try It :: ", os-number: counter(chapter) "." counter(try), os-divider: " ");
-$_tryItSolutionTitleContent   : (os-title-label: "Solution ",  os-number: counter(chapter) "." counter(try), os-divider: " ");
-
-$Config_PartType_Example:  (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
+$_exampleTitleContent        : (os-title-label: "Example ",   os-number: counter(chapter) "." counter(example),    os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution ",  os-number: counter(chapter) "." counter(example),    os-divider: " ");
+$_tryItTitleContent          : (os-title-label: "Try It ",    os-number: ":: " counter(chapter) "." counter(try),  os-divider: " ");
+$_tryItSolutionTitleContent  : (os-title-label: "Solution ",  os-number: counter(chapter) "." counter(try),        os-divider: " ");
 
 /*==========================================================
   ALGEBRA CONFIG
@@ -41,13 +39,20 @@ $Config_PartType_Example:  (moveTo: $AREA_NONE, titleContent: $_exampleTitleCont
 $Config_SetTableCaption : (captionType: $CAPTION_TABLE,  defaultContainer: caption,    hasCaption: true, hasTitle: true);
 $Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
 
+$Config_ContentExercise_TitleContent: null;
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
+$Config_PartType_Solution: (moveTo: $AREA_NONE, );
+$Config_PartType_Example:  (moveTo: $AREA_NONE, moveSolutionTo: $AREA_NONE, titleContent: $_exampleTitleContent, hasSolutions: true, solutionTitleContent: $_exampleSolutionTitleContent);
+
 $Config_abstractTitle: "Learning Objectives";
-$Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
+$Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
+//$Config_PartType_Solution: (moveTo: $AREA_NONE);
 
 $Config_Notes: (
-  (className: 'manipulative-math', moveSolutionTo: $AREA_NONE, labelText: "Manipulative Mathematics"),
-  (className: 'try',               moveSolutionTo: $AREA_NONE, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
-  //(className: 'media-2',           moveSolutionTo: $AREA_NONE, labelText: "Media :: Access Additional Online Resources"),
-  //(className: 'howto',             moveSolutionTo: $AREA_NONE, labelText: "How To :: " ),
-  //(className: 'try',               moveSolutionTo: $AREA_NONE, titleContent: $_tryItContent),
+  (className: 'manipulative-math', labelText: "Manipulative Mathematics"),
+  (className: 'try',               moveSolutionTo: $AREA_EOC,  counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
+  //(className: 'media-2',         labelText: "Media :: Access Additional Online Resources"),
+  //(className: 'howto',           labelText: "How To :: " ),
 );
+
+//$Config_hasCompositeChapter: false;

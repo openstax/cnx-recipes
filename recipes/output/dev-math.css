@@ -298,7 +298,7 @@
 /*==========================================================
   ALGEBRA TITLING CONTENT
 ==========================================================*/
-/*=========================================================
+/*==========================================================
   ALGEBRA CONFIG
 ==========================================================*/
 @namespace xhtml "http://www.w3.org/1999/xhtml";
@@ -706,13 +706,13 @@
 
 :pass(3) [data-type="note"].try::before {
   container: span;
-  content: "Try It :: ";
+  content: "Try It ";
   class: os-title-label;
   move-to: bNoteLabel-try; }
 
 :pass(3) [data-type="note"].try::before {
   container: span;
-  content: counter(chapter) "." counter(try);
+  content: ":: " counter(chapter) "." counter(try);
   class: os-number;
   move-to: bNoteLabel-try; }
 
@@ -966,6 +966,32 @@
 :pass(5) .introduction {
   content: pending(ChapterOutline) content(); }
 
+:pass(5) [data-type="chapter"], :pass(5) .appendix {
+  counter-reset: exercise; }
+
+:pass(5) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(5) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exercise);
+  class: os-number; }
+
 :pass(6) body {
   counter-reset: exerciseAll; }
 
@@ -993,7 +1019,7 @@
 :pass(7) [data-type="chapter"]::before {
   container: span;
   class: "os-title-label";
-  content: "Try It :: ";
+  content: "Try It ";
   move-to: note-try-title; }
 
 :pass(7) [data-type="chapter"]::before {
@@ -1058,6 +1084,12 @@
 
 :pass(8) div.appendix {
   counter-increment: appendix; }
+
+:pass(8) [data-type="chapter"], :pass(8) .appendix {
+  counter-reset: exercise; }
+
+:pass(8) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
 
 :pass(8) [data-type="chapter"], :pass(8) .appendix {
   counter-reset: example; }
@@ -1212,16 +1244,6 @@
 
 :pass(8) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
   counter-increment: exerciseMaybeInContent; }
-
-:pass(8) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: counter(exerciseMaybeInContent);
-  class: os-number; }
-
-:pass(8) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: "Exercise ";
-  class: os-title-label; }
 
 :pass(8) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
   container: span;
