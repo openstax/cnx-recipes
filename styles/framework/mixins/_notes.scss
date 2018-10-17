@@ -140,13 +140,17 @@
     $noteBorderColor: map-get($getScheme, noteBorderColor);
 
     [data-type="note"] {
-      &.#{$noteName} {
-        @if $noteType == simpleNote {
-         @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $noteBodyColor, $noteBGColor, $noteImage);
+      @if $noteName != null {
+        &.#{$noteName} {
+          @if $noteType == simpleNote {
+           @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $noteBodyColor, $noteBGColor, $noteImage);
+          }
+          @else if $noteType == noteTopBorder {
+           @include noteTopBorder($noteTitleColor,$noteSubtitleColor, $noteBorderColor, $noteTopBorderColor, $noteBodyColor, $noteBGColor);
+          }
         }
-        @else if $noteType == noteTopBorder {
-         @include noteTopBorder($noteTitleColor,$noteSubtitleColor, $noteBorderColor, $noteTopBorderColor, $noteBodyColor, $noteBGColor);
-        }
+      } @else {
+        @include simpleNote($noteTitleColor, $noteSubtitleColor, $noteBorderColor, $noteTitleBGColor, $noteBodyColor, $noteBGColor, $noteImage);
       }
     }
   }
