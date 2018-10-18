@@ -882,6 +882,20 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.key-equations {
+    move-to: key-equations-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.key-equations > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(key-equations-TOCOMPOSITE);
+    class: "os-eoc os-key-equations-container";
+    data-type: "composite-page";
+    data-uuid-key: ".key-equations"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.summary {
     /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
     content: nodes(sectionHeaderNode) content();
@@ -899,6 +913,8 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.exercises {
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
     move-to: exercises-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.exercises > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -909,34 +925,6 @@
     class: "os-eoc os-exercises-container";
     data-type: "composite-page";
     data-uuid-key: ".exercises"; }
-
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.references {
-    move-to: references-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.references > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(references-TOCOMPOSITE);
-    class: "os-eoc os-references-container";
-    data-type: "composite-page";
-    data-uuid-key: ".references"; }
-
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.key-equations {
-    move-to: key-equations-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.key-equations > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(key-equations-TOCOMPOSITE);
-    class: "os-eoc os-key-equations-container";
-    data-type: "composite-page";
-    data-uuid-key: ".key-equations"; }
 
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
@@ -1213,6 +1201,17 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
+:pass(8) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
+  container: span;
+  content: "Key Equations";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
 :pass(8) [data-type="composite-page"].os-eoc.os-summary-container::before {
   container: span;
   content: "Summary";
@@ -1226,33 +1225,11 @@
 
 :pass(8) [data-type="composite-page"].os-eoc.os-exercises-container::before {
   container: span;
-  content: "Chemistry End of Chapter Exercises";
+  content: "Exercises";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
 :pass(8) [data-type="composite-page"].os-eoc.os-exercises-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
-
-:pass(8) [data-type="composite-page"].os-eoc.os-references-container::before {
-  container: span;
-  content: "References";
-  class: os-text;
-  move-to: h2-TITLECONTAINER; }
-
-:pass(8) [data-type="composite-page"].os-eoc.os-references-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
-
-:pass(8) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
-  container: span;
-  content: "Key Equations";
-  class: os-text;
-  move-to: h2-TITLECONTAINER; }
-
-:pass(8) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
