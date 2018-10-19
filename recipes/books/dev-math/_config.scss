@@ -8,12 +8,12 @@ $RECIPE_NAME: "dev-math";
 $_chapterReviewChildPages: (
   (className: "glossary",         clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
   (className: "key-concepts",     clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
-  (className: "review-exercises", clusterBy: $CLUSTER_SECTION, hasSolutions: true, moveSolutionTo: $AREA_EOB, name: "Review Exercises"),
-  (className: "practice-test",    clusterBy: $CLUSTER_SECTION, hasSolutions: true, moveSolutionTo: $AREA_EOB, name: "Practice Test"),
+  (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, moveSolutionsTo: $AREA_EOB, name: "Review Exercises"),
+  (className: "practice-test",    clusterBy: $CLUSTER_NONE, hasSolutions: true, moveSolutionsTo: $AREA_EOB, name: "Practice Test"),
 );
 
 $Config_ChapterCompositePages: (
-  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions:true, name: "Chapter Review"),
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions: true, name: "Chapter Review"),
 );
 
 $Config_BookCompositePages: (
@@ -28,8 +28,8 @@ $Config_BookCompositePages: (
 $_exampleTitleContent      : (os-title-label: "Example ",  os-number: counter(chapter) "." counter(example), os-divider: " ");
 $_solutionTitleContent     : ();
 $_tryItTitleContent        : (os-title-label: "Try It",   os-number: ": " counter(chapter) "." counter(try), os-divider: " ");
-$_tryItSolutionTitleContent: (os-title-label: "Solution ", os-number: counter(chapter) "." counter(try),     os-divider: " ");
-$_howToTitleContent        : (os-title-label: (), os-number: "How To: ", os-divider: " ");
+$_tryItSolutionTitleContent: (os-number: counter(chapter) "." counter(try), os-divider: " ");
+$_howToTitleContent        : (os-number: "How To: ", os-divider: " ");
 
 /*==========================================================
   ALGEBRA CONFIG
@@ -38,8 +38,9 @@ $_howToTitleContent        : (os-title-label: (), os-number: "How To: ", os-divi
 $Config_SetTableCaption : (captionType: $CAPTION_TABLE,  defaultContainer: caption,    hasCaption: true, hasTitle: true);
 $Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
 
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions:true, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
-$Config_PartType_Example:  (moveTo: $AREA_NONE, moveSolutionTo: $AREA_NONE, titleContent: $_exampleTitleContent, hasSolutions: true, solutionTitleContent: $_solutionTitleContent);
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
+$Config_PartType_Solution: (moveTo: $AREA_EOB, );
+$Config_PartType_Example:  (moveTo: $AREA_NONE, moveSolutionsTo: $AREA_NONE, titleContent: $_exampleTitleContent, hasSolutions: true, solutionTitleContent: $_solutionTitleContent);
 
 $Config_UnnumberedExercises: (
   (contextSelector: '.try',                  childSelector: '[data-type="exercise"]'),
@@ -50,7 +51,7 @@ $Config_abstractTitle: "Learning Objectives";
 $Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
 
 $Config_Notes: (
-  (className: 'try',               moveSolutionTo: $AREA_EOB, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
+  (className: 'try',               moveSolutionsTo: $AREA_EOB, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
   (className: 'howto',             titleContent: $_howToTitleContent),
   (className: 'media-2',           labelText: "Media: Access Additional Online Resources", replaceHeader: true),
   (className: 'be-prepared',       labelText: "Be Prepared"),
