@@ -1,0 +1,17 @@
+@function default-config() {
+  $CONFIG: (
+    base-font-size: 12px,
+  );
+  @return $CONFIG;
+}
+
+@function config($name) {
+  @if map-has-key($config, $name) {
+    @return map-get($config, $name);
+  }
+  @error "Unknown config option: #{$name}";
+}
+
+// Ensure all default keys are available from $config and config()
+$config: default-config() !default;
+$config: map-merge(default-config(), $config);
