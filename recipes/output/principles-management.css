@@ -1364,94 +1364,89 @@
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
-    /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+:pass(3) div[data-type="chapter"] div[data-type="glossary"] {
+  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+  move-to: trash; }
+
+:pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
+  move-to: glossary-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
-  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
-    move-to: glossary-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(glossary-TOCOMPOSITE);
-    class: "os-eoc os-glossary-container";
-    data-type: "composite-page";
-    data-uuid-key: "<glossary>"; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.section-summary {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
-    move-to: section-summary-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.section-summary > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(section-summary-TOCOMPOSITE);
-    class: "os-eoc os-section-summary-container";
-    data-type: "composite-page";
-    data-uuid-key: ".section-summary"; }
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(glossary-TOCOMPOSITE);
+  class: "os-eoc os-glossary-container";
+  data-type: "composite-page";
+  data-uuid-key: "<glossary>"; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.chapter-review {
-    move-to: chapter-review-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.chapter-review > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(chapter-review-TOCOMPOSITE);
-    class: "os-eoc os-chapter-review-container";
-    data-type: "composite-page";
-    data-uuid-key: ".chapter-review"; }
+:pass(3) div[data-type="chapter"] section.section-summary {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
+  move-to: section-summary-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.section-summary > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.manage-skills {
-    move-to: manage-skills-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.manage-skills > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(manage-skills-TOCOMPOSITE);
-    class: "os-eoc os-manage-skills-container";
-    data-type: "composite-page";
-    data-uuid-key: ".manage-skills"; }
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(section-summary-TOCOMPOSITE);
+  class: "os-eoc os-section-summary-container";
+  data-type: "composite-page";
+  data-uuid-key: ".section-summary"; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.manage-exercises {
-    move-to: manage-exercises-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.manage-exercises > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(manage-exercises-TOCOMPOSITE);
-    class: "os-eoc os-manage-exercises-container";
-    data-type: "composite-page";
-    data-uuid-key: ".manage-exercises"; }
+:pass(3) div[data-type="chapter"] section.chapter-review {
+  move-to: chapter-review-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.chapter-review > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.critical-thinking {
-    move-to: critical-thinking-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.critical-thinking > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(critical-thinking-TOCOMPOSITE);
-    class: "os-eoc os-critical-thinking-container";
-    data-type: "composite-page";
-    data-uuid-key: ".critical-thinking"; }
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(chapter-review-TOCOMPOSITE);
+  class: "os-eoc os-chapter-review-container";
+  data-type: "composite-page";
+  data-uuid-key: ".chapter-review"; }
+
+:pass(3) div[data-type="chapter"] section.manage-skills {
+  move-to: manage-skills-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.manage-skills > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(manage-skills-TOCOMPOSITE);
+  class: "os-eoc os-manage-skills-container";
+  data-type: "composite-page";
+  data-uuid-key: ".manage-skills"; }
+
+:pass(3) div[data-type="chapter"] section.manage-exercises {
+  move-to: manage-exercises-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.manage-exercises > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(manage-exercises-TOCOMPOSITE);
+  class: "os-eoc os-manage-exercises-container";
+  data-type: "composite-page";
+  data-uuid-key: ".manage-exercises"; }
+
+:pass(3) div[data-type="chapter"] section.critical-thinking {
+  move-to: critical-thinking-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.critical-thinking > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(critical-thinking-TOCOMPOSITE);
+  class: "os-eoc os-critical-thinking-container";
+  data-type: "composite-page";
+  data-uuid-key: ".critical-thinking"; }
 
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {

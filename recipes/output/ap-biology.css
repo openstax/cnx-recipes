@@ -1135,6 +1135,62 @@
   class: "os-title";
   attr-data-type: "title"; }
 
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].visual-connection > div[data-type="title"] {
+  move-to: trash; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].visual-connection > p:first-of-type > span[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].visual-connection > p:first-of-type > span[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].visual-connection::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].visual-connection:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Visual Connection";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].visual-connection:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].visual-connection > div[data-type="title"] {
+  move-to: trash; }
+
+:pass(2) [data-type="note"] [data-type="note"].visual-connection > p:first-of-type > span[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].visual-connection > p:first-of-type > span[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].visual-connection::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].visual-connection:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Visual Connection";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].visual-connection:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
 :pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].ap-everyday > div[data-type="title"] {
   move-to: trash; }
 
@@ -1512,95 +1568,90 @@
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
-    /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+:pass(3) div[data-type="chapter"] div[data-type="glossary"] {
+  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+  move-to: trash; }
+
+:pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
+  move-to: glossary-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
     move-to: trash; }
-  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
-    move-to: glossary-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(glossary-TOCOMPOSITE);
-    class: "os-eoc os-glossary-container";
-    data-type: "composite-page";
-    data-uuid-key: "<glossary>";
-    sort-by: xhtml|dl > xhtml|dt, nocase; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.summary {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
-    move-to: summary-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(summary-TOCOMPOSITE);
-    class: "os-eoc os-summary-container";
-    data-type: "composite-page";
-    data-uuid-key: ".summary"; }
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(glossary-TOCOMPOSITE);
+  class: "os-eoc os-glossary-container";
+  data-type: "composite-page";
+  data-uuid-key: "<glossary>";
+  sort-by: xhtml|dl > xhtml|dt, nocase; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.review {
-    move-to: review-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.review > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(review-TOCOMPOSITE);
-    class: "os-eoc os-review-container";
-    data-type: "composite-page";
-    data-uuid-key: ".review"; }
+:pass(3) div[data-type="chapter"] section.summary {
+  /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+  content: nodes(sectionHeaderNode) content();
+  move-to: summary-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.critical-thinking {
-    move-to: critical-thinking-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.critical-thinking > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(critical-thinking-TOCOMPOSITE);
-    class: "os-eoc os-critical-thinking-container";
-    data-type: "composite-page";
-    data-uuid-key: ".critical-thinking"; }
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(summary-TOCOMPOSITE);
+  class: "os-eoc os-summary-container";
+  data-type: "composite-page";
+  data-uuid-key: ".summary"; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.ap-test-prep {
-    move-to: ap-test-prep-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.ap-test-prep > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(ap-test-prep-TOCOMPOSITE);
-    class: "os-eoc os-ap-test-prep-container";
-    data-type: "composite-page";
-    data-uuid-key: ".ap-test-prep"; }
+:pass(3) div[data-type="chapter"] section.review {
+  move-to: review-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.review > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.science-practice {
-    move-to: science-practice-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.science-practice > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(science-practice-TOCOMPOSITE);
-    class: "os-eoc os-science-practice-container";
-    data-type: "composite-page";
-    data-uuid-key: ".science-practice"; }
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(review-TOCOMPOSITE);
+  class: "os-eoc os-review-container";
+  data-type: "composite-page";
+  data-uuid-key: ".review"; }
+
+:pass(3) div[data-type="chapter"] section.critical-thinking {
+  move-to: critical-thinking-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.critical-thinking > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(critical-thinking-TOCOMPOSITE);
+  class: "os-eoc os-critical-thinking-container";
+  data-type: "composite-page";
+  data-uuid-key: ".critical-thinking"; }
+
+:pass(3) div[data-type="chapter"] section.ap-test-prep {
+  move-to: ap-test-prep-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.ap-test-prep > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(ap-test-prep-TOCOMPOSITE);
+  class: "os-eoc os-ap-test-prep-container";
+  data-type: "composite-page";
+  data-uuid-key: ".ap-test-prep"; }
+
+:pass(3) div[data-type="chapter"] section.science-practice {
+  move-to: science-practice-TOCOMPOSITE; }
+  :pass(3) div[data-type="chapter"] section.science-practice > [data-type="title"] {
+    /* Discard this Page-specific title because a chapter title is added when collated */
+    move-to: trash; }
+
+:pass(3) div[data-type="chapter"]::after {
+  container: div;
+  content: pending(science-practice-TOCOMPOSITE);
+  class: "os-eoc os-science-practice-container";
+  data-type: "composite-page";
+  data-uuid-key: ".science-practice"; }
 
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
