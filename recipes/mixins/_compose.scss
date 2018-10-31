@@ -45,19 +45,49 @@
   @each $page in $compositePages {
     $name: map-get($page, name);
     $className: map-get($page, className);
-
+    $compoundComposite: map-get($page, compoundComposite);
     // Validate
    // @include validate_type($name, string);
     @include validate_type($className, string);
-
-    [data-type="composite-page"].os-eob.os-#{$className}-container {
-      $titleContent: (
-        os-text: $name
-        );
-      @include utils_title($titleContent, null, h1, "document-title");
+    @if feature-enabled(composite-solution) {
+      @if $compoundComposite {
+        [data-type="composite-chapter"].os-eob.os-#{$className}-container {
+          $titleContent: (
+            os-text: $name
+          );
+          @include utils_title($titleContent, null, h1, "document-title");
+          [data-type="composite-page"] {
+            > span.os-text {
+              move-to: CCcompositePageTitles;
+            }
+            &:deferred {
+              &::before {
+                container: h2;
+                data-type: document-title;
+                content: pending(CCcompositePageTitles);
+              }
+            }
+          }
+        }
+      } @else {
+        [data-type="composite-page"].os-eob.os-#{$className}-container {
+          $titleContent: (
+            os-text: $name
+            );
+          @include utils_title($titleContent, null, h1, "document-title");
+        }
+      }
+    } @else {
+      [data-type="composite-page"].os-eob.os-#{$className}-container {
+        $titleContent: (
+          os-text: $name
+          );
+        @include utils_title($titleContent, null, h1, "document-title");
+      }
     }
   }
 }
+
 
 
 /// Creates a title for a set of composite pages at the end of the book
@@ -512,7 +542,7 @@
     $hasSolutions: map-get($page, hasSolutions);
     $className: map-get($page, className);
     $pageName: map-get($page, name);
-
+    $compositePageName: map-get($page, compositePageName);
     $childPages: map-get($page, childPages);
 
     // Validate
@@ -598,26 +628,50 @@
     > h1[data-type="document-title"] .os-number {
       string-set: ChapNum content();
     }
-    &::after {
-      //FIXME wrap the in spans
-      container: h2;
-      class: "os-title";
-      content: $Config_EOBSolutionsChapterSectionTitle;
-      move-to: chaptTitleEOB;
-    }
-    &::after {
-      class: os-chapter-area;
-      content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
-      move-to: #{$solutionClassName}-TOCOMPOSITE;
+    @if feature-enabled(composite-solution) {
+      &::after {
+        container: span;
+        class: "os-text";
+        content: $Config_EOBSolutionsChapterSectionTitle;
+        move-to: eobCompositeTitlesContent;
+      }
+      &::after {
+        content: pending(eobCompositeTitlesContent) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+        class: "os-eob os-#{$solutionClassName}-container";
+        data-type: "composite-page";
+        data-uuid-key: ".#{$solutionClassName}" string(ChapNum);
+        move-to: #{$solutionClassName}-TOCOMPOSITECHAPTER;
+      }
+    } @else {
+      &::after {
+        //FIXME wrap the in spans
+        container: h2;
+        class: "os-title";
+        content: $Config_EOBSolutionsChapterSectionTitle;
+        move-to: chaptTitleEOB;
+      }
+      &::after {
+        class: os-chapter-area;
+        content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+        move-to: #{$solutionClassName}-TOCOMPOSITE;
+      }
     }
   }
   body {
-    &::after {
-      container: div;
-      content: pending(#{$solutionClassName}-TOCOMPOSITE);
-      class: "os-eob os-#{$solutionClassName}-container";
-      data-type: "composite-page";
-      data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+    @if feature-enabled(composite-solution) {
+      &::after {
+        content: pending(#{$solutionClassName}-TOCOMPOSITECHAPTER);
+        class: "os-eob os-#{$solutionClassName}-container";
+        data-type: "composite-chapter";
+        data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+      }
+    } @else {
+      &::after {
+        content: pending(#{$solutionClassName}-TOCOMPOSITE);
+        class: "os-eob os-#{$solutionClassName}-container";
+        data-type: "composite-page";
+        data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
+      }
     }
   }
 }
