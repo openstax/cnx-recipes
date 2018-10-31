@@ -937,18 +937,19 @@
 :pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 
-:pass(3) div[data-type="chapter"] section.chapter-review {
-  move-to: chapter-review-TOCOMPOSITE; }
-  :pass(3) div[data-type="chapter"] section.chapter-review > [data-type="title"] {
-    /* Discard this Page-specific title because a chapter title is added when collated */
-    move-to: trash; }
-
-:pass(3) div[data-type="chapter"]::after {
-  container: div;
-  content: pending(chapter-review-TOCOMPOSITE);
-  class: "os-eoc os-chapter-review-container";
-  data-type: "composite-page";
-  data-uuid-key: ".chapter-review"; }
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.chapter-review {
+    move-to: chapter-review-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.chapter-review > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(chapter-review-TOCOMPOSITE);
+    class: "os-eoc os-chapter-review-container";
+    data-type: "composite-page";
+    data-uuid-key: ".chapter-review"; }
 
 :pass(3) .check-understanding [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
