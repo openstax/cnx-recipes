@@ -12,27 +12,33 @@
     // Validate
     @include validate_type($name, string);
     @include validate_type($className, string);
-
-    [data-type="composite-page"].os-eoc.os-#{$className}-container {
+    @if feature-enabled(composite-eoc) {
+      [data-type="composite-chapter"].os-eoc.os-#{$className} {
       $titleContent: (
         os-text: $name
         );
-      @include utils_title($titleContent, null, h2, "document-title");
-      @if ($childPages != null) {
-        @each $cPage in $childPages {
-          $cClassName: map-get($cPage, className);
-          $cPageName: map-get($cPage, name);
-
-          @include validate_type($cClassName, string);
-          @include validate_type($cPageName, string);
-
-          div.os-#{$cClassName}-container {
-            $cTitleContent: (
-              os-text: $cPageName
-              );
-            @include utils_title($cTitleContent, null, h3, "title");
-          }
+        @include utils_title($titleContent, null, h2, "document-title");
+      }
+    }
+    @if ($childPages != null) {
+      @each $cPage in $childPages {
+        $cClassName: map-get($cPage, className);
+        $cPageName: map-get($cPage, name);
+        @include validate_type($cClassName, string);
+        @include validate_type($cPageName, string);
+        [data-type="composite-page"].os-eoc.os-#{$cClassName}-container {
+          $cTitleContent: (
+            os-text: $cPageName
+            );
+          @include utils_title($cTitleContent, null, h3, "title");
         }
+      }
+    } @else {
+      [data-type="composite-page"].os-eoc.os-#{$className}-container {
+        $titleContent: (
+          os-text: $name
+          );
+        @include utils_title($titleContent, null, h2, "document-title");
       }
     }
   }
@@ -51,7 +57,7 @@
     @include validate_type($className, string);
     @if feature-enabled(composite-solution) {
       @if $compoundComposite {
-        [data-type="composite-chapter"].os-eob.os-#{$className}-container {
+        [data-type="composite-chapter"].os-eob.os-#{$className} {
           $titleContent: (
             os-text: $name
           );
@@ -233,8 +239,9 @@
         }
       }
       &::after {
-        class: "os-#{$className}-container";
+        class: "os-eoc os-#{$className}-container";
         content: pending(#{$className}-DESTINATION);
+        data-type: composite-page;
         @if ($sortBy != null) {
           sort-by: #{$sortBy}, nocase;
         }
@@ -259,10 +266,11 @@
 
     @include _processComposites($childPages);
     [data-type="chapter"] {
+
       &::after {
-        class: "os-eoc os-#{$className}-container";
-        data-type: composite-page;
-        data-uuid-key: "#{$keyName}";
+        class: "os-eoc os-#{$className}";
+        data-type: composite-chapter;
+        data-uuid-key: "composite-#{$keyName}";
         content: pending(composite-DESTINATION);
       }
     }
@@ -661,7 +669,7 @@
     @if feature-enabled(composite-solution) {
       &::after {
         content: pending(#{$solutionClassName}-TOCOMPOSITECHAPTER);
-        class: "os-eob os-#{$solutionClassName}-container";
+        class: "os-eob os-#{$solutionClassName}";
         data-type: "composite-chapter";
         data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
       }
