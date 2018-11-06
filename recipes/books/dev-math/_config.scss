@@ -50,20 +50,28 @@ $RECIPE_NAME: "dev-math";
   Style guide: book.composite.practice-test
 */
 /*
-  Chapter Review
+  Exercises
 
-  Compound Composite that contains: Key Terms, Key Concepts, Review Exercises, Practice Test
+  Should be collated at the end of a chapter.
 
-  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.html
+  Contains a title "Exercises"
 
-  Style guide: book.compoundcomposite.chapterreview
+  Contains: "Review Exercises" and "Practice Test"
+
+  Markup: ./styleguide/book.compoundcomposite.exercises.xhtml-baked.html
+
+  Style guide: book.compoundcomposite.exercises
 */
 
+$_chapterExercises: (
+  (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
+  (className: "practice-test",    clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
+);
+
 $Config_ChapterCompositePages: (
-  (className: "glossary",         clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
-  (className: "key-concepts",     clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
-  (className: "review-exercises", clusterBy: $CLUSTER_NONE, moveSolutionsTo: $AREA_EOB, name: "Review Exercises"),
-  (className: "practice-test",    clusterBy: $CLUSTER_NONE, moveSolutionsTo: $AREA_EOB, name: "Practice Test"),
+  (className: "glossary",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+  (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
+  (className: "exercises",    clusterBy: $CLUSTER_NONE, childPages: $_chapterExercises, hasSolutions: true, name: "Exercises"),
 );
 
 $Config_BookCompositePages: (
@@ -155,7 +163,7 @@ $Config_abstractTitle: "Learning Objectives";
 $Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
 
 $Config_Notes: (
-  (className: 'try',               moveSolutionsTo: $AREA_EOB, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
+  (className: 'try',               moveSolutionTo: $AREA_EOB, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
   (className: 'howto',             labelText: "How To"),
   (className: 'media-2',           labelText: "Media Access Additional Online Resources", replaceHeader: true),
   (className: 'be-prepared',       labelText: "Be Prepared"),

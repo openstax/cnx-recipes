@@ -340,13 +340,17 @@
   Style guide: book.composite.practice-test
 */
 /*
-  Chapter Review
+  Exercises
 
-  Compound Composite that contains: Key Terms, Key Concepts, Review Exercises, Practice Test
+  Should be collated at the end of a chapter.
 
-  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.html
+  Contains a title "Exercises"
 
-  Style guide: book.compoundcomposite.chapterreview
+  Contains: "Review Exercises" and "Practice Test"
+
+  Markup: ./styleguide/book.composite.practice-test.xhtml-baked.html
+
+  Style guide: book.composite.practice-test
 */
 /*==========================================================
   ALGEBRA TITLING CONTENT
@@ -1109,31 +1113,17 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.review-exercises {
-    move-to: review-exercises-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.review-exercises > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.exercises {
+    move-to: exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.exercises > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(review-exercises-TOCOMPOSITE);
-    class: "os-eoc os-review-exercises-container";
+    content: pending(exercises-TOCOMPOSITE);
+    class: "os-eoc os-exercises-container";
     data-type: "composite-page";
-    data-uuid-key: ".review-exercises"; }
-
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.practice-test {
-    move-to: practice-test-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.practice-test > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(practice-test-TOCOMPOSITE);
-    class: "os-eoc os-practice-test-container";
-    data-type: "composite-page";
-    data-uuid-key: ".practice-test"; }
+    data-uuid-key: ".exercises"; }
 
 :pass(3) .try [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1160,6 +1150,35 @@
 
 :pass(4) body:deferred::after {
   content: clear(term-trash); }
+
+:pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  node-set: CompoundSectionHeaderNode; }
+
+:pass(4) [data-type="chapter"] section.review-exercises {
+  move-to: review-exercises-DESTINATION; }
+  :pass(4) [data-type="chapter"] section.review-exercises > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-review-exercises-container";
+  content: pending(review-exercises-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"] section.practice-test {
+  move-to: practice-test-DESTINATION; }
+  :pass(4) [data-type="chapter"] section.practice-test > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-practice-test-container";
+  content: pending(practice-test-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-eoc os-exercises-container";
+  data-type: composite-page;
+  data-uuid-key: ".exercises";
+  content: pending(composite-DESTINATION); }
 
 :pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
   string-set: outlinePageId attr(id); }
@@ -1278,90 +1297,6 @@
   node-set: sectionHeaderNode; }
 
 :pass(7) [data-type="chapter"] [data-type="note"].try [data-type="solution"] {
-  move-to: note-try-review-exercises-GETSECTION; }
-
-:pass(7) [data-type="chapter"]::before {
-  container: span;
-  class: "os-title-label";
-  content: "Try It ";
-  move-to: note-try-title; }
-
-:pass(7) [data-type="chapter"]::before {
-  container: h3;
-  content: pending(note-try-title);
-  move-to: note-try-header; }
-
-:pass(7) [data-type="chapter"]::after {
-  container: div;
-  class: "os-solution-area";
-  content: pending(note-try-header) pending(note-try-review-exercises-GETSECTION);
-  move-to: note-review-exercises-GETCHAPTER; }
-
-:pass(7) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
-  string-set: ChapNum content(); }
-
-:pass(7) [data-type="chapter"]::after {
-  container: h2;
-  class: "os-title";
-  content: "Chapter " string(ChapNum);
-  move-to: chaptTitleEOB; }
-
-:pass(7) [data-type="chapter"]::after {
-  class: os-chapter-area;
-  content: pending(chaptTitleEOB) pending(note-review-exercises-GETCHAPTER) pending(review-exercises-GETCHAPTER);
-  move-to: review-exercises-TOCOMPOSITE; }
-
-:pass(7) body::after {
-  container: div;
-  content: pending(review-exercises-TOCOMPOSITE);
-  class: "os-eob os-review-exercises-container";
-  data-type: "composite-page";
-  data-uuid-key: ".review-exercises";
-  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
-
-:pass(7) [data-type="chapter"] [data-type="note"].try [data-type="solution"] {
-  move-to: note-try-practice-test-GETSECTION; }
-
-:pass(7) [data-type="chapter"]::before {
-  container: span;
-  class: "os-title-label";
-  content: "Try It ";
-  move-to: note-try-title; }
-
-:pass(7) [data-type="chapter"]::before {
-  container: h3;
-  content: pending(note-try-title);
-  move-to: note-try-header; }
-
-:pass(7) [data-type="chapter"]::after {
-  container: div;
-  class: "os-solution-area";
-  content: pending(note-try-header) pending(note-try-practice-test-GETSECTION);
-  move-to: note-practice-test-GETCHAPTER; }
-
-:pass(7) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
-  string-set: ChapNum content(); }
-
-:pass(7) [data-type="chapter"]::after {
-  container: h2;
-  class: "os-title";
-  content: "Chapter " string(ChapNum);
-  move-to: chaptTitleEOB; }
-
-:pass(7) [data-type="chapter"]::after {
-  class: os-chapter-area;
-  content: pending(chaptTitleEOB) pending(note-practice-test-GETCHAPTER) pending(practice-test-GETCHAPTER);
-  move-to: practice-test-TOCOMPOSITE; }
-
-:pass(7) body::after {
-  container: div;
-  content: pending(practice-test-TOCOMPOSITE);
-  class: "os-eob os-practice-test-container";
-  data-type: "composite-page";
-  data-uuid-key: ".practice-test";
-  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
-
-:pass(7) [data-type="chapter"] [data-type="note"].try [data-type="solution"] {
   move-to: note-try-solutions-GETSECTION; }
 
 :pass(7) [data-type="chapter"]::before {
@@ -1380,6 +1315,46 @@
   class: "os-solution-area";
   content: pending(note-try-header) pending(note-try-solutions-GETSECTION);
   move-to: note-solutions-GETCHAPTER; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-exercises-container .os-review-exercises-container [data-type="solution"] {
+  move-to: review-exercises-solutions-GETSECTION; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-exercises-container .os-review-exercises-container::after {
+  container: span;
+  content: "Review Exercises";
+  class: "os-title-label";
+  move-to: review-exercises-title; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-exercises-container .os-review-exercises-container::after {
+  container: h3;
+  content: pending(review-exercises-title);
+  move-to: review-exercises-header; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-exercises-container .os-review-exercises-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(review-exercises-header) pending(review-exercises-solutions-GETSECTION);
+  move-to: solutions-GETCHAPTER; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-exercises-container .os-practice-test-container [data-type="solution"] {
+  move-to: practice-test-solutions-GETSECTION; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-exercises-container .os-practice-test-container::after {
+  container: span;
+  content: "Practice Test";
+  class: "os-title-label";
+  move-to: practice-test-title; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-exercises-container .os-practice-test-container::after {
+  container: h3;
+  content: pending(practice-test-title);
+  move-to: practice-test-header; }
+
+:pass(7) [data-type="chapter"] .os-eoc.os-exercises-container .os-practice-test-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(practice-test-header) pending(practice-test-solutions-GETSECTION);
+  move-to: solutions-GETCHAPTER; }
 
 :pass(7) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
   string-set: ChapNum content(); }
@@ -1528,27 +1503,38 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-review-exercises-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container::before {
+  container: span;
+  content: "Exercises";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-review-exercises-container::before {
   container: span;
   content: "Review Exercises";
   class: os-text;
-  move-to: h2-TITLECONTAINER; }
+  move-to: h3-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-review-exercises-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-review-exercises-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-practice-test-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-practice-test-container::before {
   container: span;
   content: "Practice Test";
   class: os-text;
-  move-to: h2-TITLECONTAINER; }
+  move-to: h3-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-practice-test-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-practice-test-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
 
 :pass(8) [data-type="composite-page"].os-eob.os-solutions-container::before {
   container: span;
