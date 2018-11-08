@@ -184,6 +184,27 @@
   }
 
   // Count examples when moveTo: $AREA_NONE (no moving)
+  @if feature-enabled(appendix-examples-are-numbered) {
+    @include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);
+    @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
+      $titleContent:  map-get($Config_PartType_Example, titleContent);
+      $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
+      $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
+
+      @include count_countExamples(example);
+      @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
+    }
+  } @else {
+    @include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);
+    @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
+      $titleContent:  map-get($Config_PartType_Example, titleContent);
+      $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
+
+      @include count_countExamples(example);
+      @include number_numberExamples($titleContent, $solutionTitleContent);
+    }
+  }
+
   @include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
