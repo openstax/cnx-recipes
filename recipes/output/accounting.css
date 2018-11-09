@@ -1095,17 +1095,21 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.key-terms {
-    move-to: key-terms-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.key-terms > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
+    /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+    move-to: trash; }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
+    move-to: glossary-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(key-terms-TOCOMPOSITE);
-    class: "os-eoc os-key-terms-container";
+    content: pending(glossary-TOCOMPOSITE);
+    class: "os-eoc os-glossary-container";
     data-type: "composite-page";
-    data-uuid-key: ".key-terms"; }
+    data-uuid-key: "<glossary>";
+    sort-by: xhtml|dl > xhtml|dt, nocase; }
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
@@ -1124,8 +1128,6 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.questions {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: questions-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.questions > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1140,8 +1142,6 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.exercise-set-a {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: exercise-set-a-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.exercise-set-a > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1156,8 +1156,6 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.exercise-set-b {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: exercise-set-b-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.exercise-set-b > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1172,8 +1170,6 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.problem-set-a {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: problem-set-a-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.problem-set-a > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1188,8 +1184,6 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.problem-set-b {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: problem-set-b-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.problem-set-b > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1562,13 +1556,13 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-key-terms-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
   content: "Key Terms";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-key-terms-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
