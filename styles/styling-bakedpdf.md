@@ -1,6 +1,8 @@
 # Baked-PDF Styles Framework guide
 <!--
 - Any place that a filename is mentioned, make sure it links to the actual file.
+- This will prob be a long file, so make a table of contents.
+- 
  -->
 
 ## Overview
