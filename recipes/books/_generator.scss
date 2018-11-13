@@ -187,11 +187,15 @@
   @include validate_enumOptional(map-get($Config_PartType_Example, moveTo), $AREA__PREFIX__);
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
-    $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
 
     @include count_countExamples(example);
-    @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
+    @if feature-enabled(appendix-has-numbered-examples) {
+      $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
+      @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
+    } else {
+      @include _numberExamples($titleContent, $solutionTitleContent);
+    }
   }
 
   // Number equations if they have a titleContent
