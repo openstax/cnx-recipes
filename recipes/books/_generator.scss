@@ -337,25 +337,27 @@
   }
 
   // This is mostly copy/pasta from above
-  @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
-    $resetAt:       map-get($Config_PartType_Exercise, resetAt);
-    $numberAt:      map-get($Config_PartType_Exercise, numberAt);
-    $titleContent:  map-get($Config_PartType_Exercise, titleContent);
+  @if not feature-enabled(numbering-continuously) {
+    @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
+      $resetAt:       map-get($Config_PartType_Exercise, resetAt);
+      $numberAt:      map-get($Config_PartType_Exercise, numberAt);
+      $titleContent:  map-get($Config_PartType_Exercise, titleContent);
 
-    @include validate_enum($resetAt, $RESET__PREFIX__);
-    @include validate_enum($numberAt, $NUMBER__PREFIX__);
-    @include validate_type($titleContent, map);
+      @include validate_enum($resetAt, $RESET__PREFIX__);
+      @include validate_enum($numberAt, $NUMBER__PREFIX__);
+      @include validate_type($titleContent, map);
 
-    $resetSel: null;
-    @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
-    @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
-    @else { @error 'BUG: Invalid enum'; }
+      $resetSel: null;
+      @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+      @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
+      @else { @error 'BUG: Invalid enum'; }
 
-    @if $numberAt == $NUMBER_AFTER_MOVE {
-      @include count_countEOCExercises(exercise, $resetSel);
-      @include number_numberEOCExercises($titleContent, $titleContent);
-    } @else if $numberAt == $NUMBER_BEFORE_MOVE {
-    } @else { @error 'BUG: Invalid enum'; }
+      @if $numberAt == $NUMBER_AFTER_MOVE {
+        @include count_countEOCExercises(exercise, $resetSel);
+        @include number_numberEOCExercises($titleContent, $titleContent);
+      } @else if $numberAt == $NUMBER_BEFORE_MOVE {
+      } @else { @error 'BUG: Invalid enum'; }
+    }
   }
 
   // After: Solution trashing
