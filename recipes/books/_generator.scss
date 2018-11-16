@@ -243,6 +243,14 @@
     @include validate_typeOptional($childSelector, string);
     @include modify_addUnnumbered($contextSelector, $childSelector);
   }
+
+  $_chapterPrepCompoundCompositePages: ();
+  @each $page in $Config_ChapterCompositePages {
+    @if map-get($page, childPages) != null {
+      $_chapterPrepCompoundCompositePages: append($_chapterPrepCompoundCompositePages, $page);
+    }
+  }
+  @include compose_prepEOCcompoundCompositesPages($_chapterPrepCompoundCompositePages);
 }
 :pass(4) {
   // After: modify_prepIndexTerms

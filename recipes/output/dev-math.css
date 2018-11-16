@@ -1131,6 +1131,27 @@
 :pass(3) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
 
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  node-set: CompoundSectionHeaderNode; }
+
+:pass(3) [data-type="chapter"] section.review-exercises {
+  move-to: review-exercises-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.review-exercises > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-review-exercises-container";
+  content: pending(review-exercises-DESTINATION); }
+
+:pass(3) [data-type="chapter"] section.practice-test {
+  move-to: practice-test-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.practice-test > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-practice-test-container";
+  content: pending(practice-test-DESTINATION); }
+
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
   data-visited: true;
@@ -1151,27 +1172,16 @@
 :pass(4) body:deferred::after {
   content: clear(term-trash); }
 
-:pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-  node-set: CompoundSectionHeaderNode; }
-
-:pass(4) [data-type="chapter"] section.review-exercises {
-  move-to: review-exercises-DESTINATION; }
-  :pass(4) [data-type="chapter"] section.review-exercises > [data-type="title"] {
-    move-to: trash; }
-
-:pass(4) [data-type="chapter"]::after {
-  class: "os-review-exercises-container";
-  content: pending(review-exercises-DESTINATION);
+:pass(4) [data-type="chapter"] .os-review-exercises-container {
   move-to: composite-DESTINATION; }
 
-:pass(4) [data-type="chapter"] section.practice-test {
-  move-to: practice-test-DESTINATION; }
-  :pass(4) [data-type="chapter"] section.practice-test > [data-type="title"] {
-    move-to: trash; }
-
 :pass(4) [data-type="chapter"]::after {
-  class: "os-practice-test-container";
-  content: pending(practice-test-DESTINATION);
+  class: "os-eoc os-exercises-container";
+  data-type: composite-page;
+  data-uuid-key: ".exercises";
+  content: pending(composite-DESTINATION); }
+
+:pass(4) [data-type="chapter"] .os-practice-test-container {
   move-to: composite-DESTINATION; }
 
 :pass(4) [data-type="chapter"]::after {

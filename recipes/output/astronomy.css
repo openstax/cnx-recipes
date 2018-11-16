@@ -365,15 +365,15 @@
   Style guide: book.composite.group-activities
 */
 /*
-  Exercise
+  Exercises
 
   Should be collated at the end of a chapter.
 
   Contains a title "Exercises"
 
-  Markup: ./styleguide/book.compoundcomposite.exercise.xhtml-baked.html
+  Markup: ./styleguide/book.compoundcomposite.exercises.xhtml-baked.html
 
-  Style guide: book.compoundcomposite.exercise
+  Style guide: book.compoundcomposite.exercises
 */
 /* =========================================================
   CUSTOM NOTES
@@ -1076,17 +1076,47 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.exercise {
-    move-to: exercise-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.exercise > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.exercises {
+    move-to: exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.exercises > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(exercise-TOCOMPOSITE);
-    class: "os-eoc os-exercise-container";
+    content: pending(exercises-TOCOMPOSITE);
+    class: "os-eoc os-exercises-container";
     data-type: "composite-page";
-    data-uuid-key: ".exercise"; }
+    data-uuid-key: ".exercises"; }
+
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  node-set: CompoundSectionHeaderNode; }
+
+:pass(3) [data-type="chapter"] section.review-questions {
+  move-to: review-questions-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.review-questions > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-review-questions-container";
+  content: pending(review-questions-DESTINATION); }
+
+:pass(3) [data-type="chapter"] section.thought-questions {
+  move-to: thought-questions-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.thought-questions > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-thought-questions-container";
+  content: pending(thought-questions-DESTINATION); }
+
+:pass(3) [data-type="chapter"] section.figuring-for-yourself {
+  move-to: figuring-for-yourself-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.figuring-for-yourself > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-figuring-for-yourself-container";
+  content: pending(figuring-for-yourself-DESTINATION); }
 
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
@@ -1108,43 +1138,31 @@
 :pass(4) body:deferred::after {
   content: clear(term-trash); }
 
-:pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-  node-set: CompoundSectionHeaderNode; }
-
-:pass(4) [data-type="chapter"] section.review-questions {
-  move-to: review-questions-DESTINATION; }
-  :pass(4) [data-type="chapter"] section.review-questions > [data-type="title"] {
-    move-to: trash; }
-
-:pass(4) [data-type="chapter"]::after {
-  class: "os-review-questions-container";
-  content: pending(review-questions-DESTINATION);
-  move-to: composite-DESTINATION; }
-
-:pass(4) [data-type="chapter"] section.thought-questions {
-  move-to: thought-questions-DESTINATION; }
-  :pass(4) [data-type="chapter"] section.thought-questions > [data-type="title"] {
-    move-to: trash; }
-
-:pass(4) [data-type="chapter"]::after {
-  class: "os-thought-questions-container";
-  content: pending(thought-questions-DESTINATION);
-  move-to: composite-DESTINATION; }
-
-:pass(4) [data-type="chapter"] section.figuring-for-yourself {
-  move-to: figuring-for-yourself-DESTINATION; }
-  :pass(4) [data-type="chapter"] section.figuring-for-yourself > [data-type="title"] {
-    move-to: trash; }
-
-:pass(4) [data-type="chapter"]::after {
-  class: "os-figuring-for-yourself-container";
-  content: pending(figuring-for-yourself-DESTINATION);
+:pass(4) [data-type="chapter"] .os-review-questions-container {
   move-to: composite-DESTINATION; }
 
 :pass(4) [data-type="chapter"]::after {
-  class: "os-eoc os-exercise-container";
+  class: "os-eoc os-exercises-container";
   data-type: composite-page;
-  data-uuid-key: ".exercise";
+  data-uuid-key: ".exercises";
+  content: pending(composite-DESTINATION); }
+
+:pass(4) [data-type="chapter"] .os-thought-questions-container {
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-eoc os-exercises-container";
+  data-type: composite-page;
+  data-uuid-key: ".exercises";
+  content: pending(composite-DESTINATION); }
+
+:pass(4) [data-type="chapter"] .os-figuring-for-yourself-container {
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-eoc os-exercises-container";
+  data-type: composite-page;
+  data-uuid-key: ".exercises";
   content: pending(composite-DESTINATION); }
 
 :pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
@@ -1403,46 +1421,46 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-exercise-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container::before {
   container: span;
   content: "Exercises";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-exercise-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-exercise-container div.os-review-questions-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-review-questions-container::before {
   container: span;
   content: "Review Questions";
   class: os-text;
   move-to: h3-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-exercise-container div.os-review-questions-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-review-questions-container::before {
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-exercise-container div.os-thought-questions-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-thought-questions-container::before {
   container: span;
   content: "Thought Questions";
   class: os-text;
   move-to: h3-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-exercise-container div.os-thought-questions-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-thought-questions-container::before {
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-exercise-container div.os-figuring-for-yourself-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-figuring-for-yourself-container::before {
   container: span;
   content: "Figuring for Yourself";
   class: os-text;
   move-to: h3-TITLECONTAINER; }
 
-:pass(8) [data-type="composite-page"].os-eoc.os-exercise-container div.os-figuring-for-yourself-container::before {
+:pass(8) [data-type="composite-page"].os-eoc.os-exercises-container div.os-figuring-for-yourself-container::before {
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }

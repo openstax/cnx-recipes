@@ -978,6 +978,110 @@
 :pass(3) .check-understanding [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
 
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  node-set: CompoundSectionHeaderNode; }
+
+:pass(3) [data-type="chapter"] div[data-type="glossary"] {
+  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+  move-to: trash; }
+
+:pass(3) [data-type="chapter"] div[data-type="glossary"] dl {
+  move-to: glossary-DESTINATION; }
+  :pass(3) [data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-glossary-container";
+  content: pending(glossary-DESTINATION);
+  sort-by: xhtml|dl > xhtml|dt, nocase; }
+
+:pass(3) [data-type="chapter"] section.key-equations {
+  move-to: key-equations-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.key-equations > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-key-equations-container";
+  content: pending(key-equations-DESTINATION); }
+
+:pass(3) [data-type="chapter"] section.key-concepts {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: key-concepts-separated; }
+  :pass(3) [data-type="chapter"] section.key-concepts > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-section-area";
+  content: pending(key-concepts-separated);
+  move-to: key-concepts-sectionSeparatedContainer; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: os-key-concepts;
+  content: pending(key-concepts-sectionSeparatedContainer);
+  move-to: key-concepts-DESTINATION; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-key-concepts-container";
+  content: pending(key-concepts-DESTINATION); }
+
+:pass(3) [data-type="chapter"] section.review-conceptual-questions {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: review-conceptual-questions-separated; }
+  :pass(3) [data-type="chapter"] section.review-conceptual-questions > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-section-area";
+  content: pending(review-conceptual-questions-separated);
+  move-to: review-conceptual-questions-sectionSeparatedContainer; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: os-review-conceptual-questions;
+  content: pending(review-conceptual-questions-sectionSeparatedContainer);
+  move-to: review-conceptual-questions-DESTINATION; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-review-conceptual-questions-container";
+  content: pending(review-conceptual-questions-DESTINATION); }
+
+:pass(3) [data-type="chapter"] section.review-problems {
+  content: nodes(CompoundSectionHeaderNode) content();
+  move-to: review-problems-separated; }
+  :pass(3) [data-type="chapter"] section.review-problems > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-section-area";
+  content: pending(review-problems-separated);
+  move-to: review-problems-sectionSeparatedContainer; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: os-review-problems;
+  content: pending(review-problems-sectionSeparatedContainer);
+  move-to: review-problems-DESTINATION; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-review-problems-container";
+  content: pending(review-problems-DESTINATION); }
+
+:pass(3) [data-type="chapter"] section.review-additional-problems {
+  move-to: review-additional-problems-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.review-additional-problems > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-review-additional-problems-container";
+  content: pending(review-additional-problems-DESTINATION); }
+
+:pass(3) [data-type="chapter"] section.review-challenge {
+  move-to: review-challenge-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.review-challenge > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-review-challenge-container";
+  content: pending(review-challenge-DESTINATION); }
+
 :pass(4) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(4) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
   data-visited: true;
@@ -998,115 +1102,61 @@
 :pass(4) body:deferred::after {
   content: clear(term-trash); }
 
-:pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-  node-set: CompoundSectionHeaderNode; }
-
-:pass(4) [data-type="chapter"] div[data-type="glossary"] {
-  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
-  move-to: trash; }
-
-:pass(4) [data-type="chapter"] div[data-type="glossary"] dl {
-  move-to: glossary-DESTINATION; }
-  :pass(4) [data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
-    move-to: trash; }
-
-:pass(4) [data-type="chapter"]::after {
-  class: "os-glossary-container";
-  content: pending(glossary-DESTINATION);
-  sort-by: xhtml|dl > xhtml|dt, nocase;
+:pass(4) [data-type="chapter"] .os-glossary-container {
   move-to: composite-DESTINATION; }
 
-:pass(4) [data-type="chapter"] section.key-equations {
-  move-to: key-equations-DESTINATION; }
-  :pass(4) [data-type="chapter"] section.key-equations > [data-type="title"] {
-    move-to: trash; }
-
 :pass(4) [data-type="chapter"]::after {
-  class: "os-key-equations-container";
-  content: pending(key-equations-DESTINATION);
+  class: "os-eoc os-chapter-review-container";
+  data-type: composite-page;
+  data-uuid-key: ".chapter-review";
+  content: pending(composite-DESTINATION); }
+
+:pass(4) [data-type="chapter"] .os-key-equations-container {
   move-to: composite-DESTINATION; }
 
-:pass(4) [data-type="chapter"] section.key-concepts {
-  content: nodes(CompoundSectionHeaderNode) content();
-  move-to: key-concepts-separated; }
-  :pass(4) [data-type="chapter"] section.key-concepts > [data-type="title"] {
-    move-to: trash; }
-
-:pass(4) [data-type="chapter"] [data-type="page"]::after {
-  class: "os-section-area";
-  content: pending(key-concepts-separated);
-  move-to: key-concepts-sectionSeparatedContainer; }
-
 :pass(4) [data-type="chapter"]::after {
-  class: os-key-concepts;
-  content: pending(key-concepts-sectionSeparatedContainer);
-  move-to: key-concepts-DESTINATION; }
+  class: "os-eoc os-chapter-review-container";
+  data-type: composite-page;
+  data-uuid-key: ".chapter-review";
+  content: pending(composite-DESTINATION); }
 
-:pass(4) [data-type="chapter"]::after {
-  class: "os-key-concepts-container";
-  content: pending(key-concepts-DESTINATION);
+:pass(4) [data-type="chapter"] .os-key-concepts-container {
   move-to: composite-DESTINATION; }
 
-:pass(4) [data-type="chapter"] section.review-conceptual-questions {
-  content: nodes(CompoundSectionHeaderNode) content();
-  move-to: review-conceptual-questions-separated; }
-  :pass(4) [data-type="chapter"] section.review-conceptual-questions > [data-type="title"] {
-    move-to: trash; }
-
-:pass(4) [data-type="chapter"] [data-type="page"]::after {
-  class: "os-section-area";
-  content: pending(review-conceptual-questions-separated);
-  move-to: review-conceptual-questions-sectionSeparatedContainer; }
-
 :pass(4) [data-type="chapter"]::after {
-  class: os-review-conceptual-questions;
-  content: pending(review-conceptual-questions-sectionSeparatedContainer);
-  move-to: review-conceptual-questions-DESTINATION; }
+  class: "os-eoc os-chapter-review-container";
+  data-type: composite-page;
+  data-uuid-key: ".chapter-review";
+  content: pending(composite-DESTINATION); }
 
-:pass(4) [data-type="chapter"]::after {
-  class: "os-review-conceptual-questions-container";
-  content: pending(review-conceptual-questions-DESTINATION);
+:pass(4) [data-type="chapter"] .os-review-conceptual-questions-container {
   move-to: composite-DESTINATION; }
 
-:pass(4) [data-type="chapter"] section.review-problems {
-  content: nodes(CompoundSectionHeaderNode) content();
-  move-to: review-problems-separated; }
-  :pass(4) [data-type="chapter"] section.review-problems > [data-type="title"] {
-    move-to: trash; }
-
-:pass(4) [data-type="chapter"] [data-type="page"]::after {
-  class: "os-section-area";
-  content: pending(review-problems-separated);
-  move-to: review-problems-sectionSeparatedContainer; }
-
 :pass(4) [data-type="chapter"]::after {
-  class: os-review-problems;
-  content: pending(review-problems-sectionSeparatedContainer);
-  move-to: review-problems-DESTINATION; }
+  class: "os-eoc os-chapter-review-container";
+  data-type: composite-page;
+  data-uuid-key: ".chapter-review";
+  content: pending(composite-DESTINATION); }
 
-:pass(4) [data-type="chapter"]::after {
-  class: "os-review-problems-container";
-  content: pending(review-problems-DESTINATION);
+:pass(4) [data-type="chapter"] .os-review-problems-container {
   move-to: composite-DESTINATION; }
 
-:pass(4) [data-type="chapter"] section.review-additional-problems {
-  move-to: review-additional-problems-DESTINATION; }
-  :pass(4) [data-type="chapter"] section.review-additional-problems > [data-type="title"] {
-    move-to: trash; }
-
 :pass(4) [data-type="chapter"]::after {
-  class: "os-review-additional-problems-container";
-  content: pending(review-additional-problems-DESTINATION);
+  class: "os-eoc os-chapter-review-container";
+  data-type: composite-page;
+  data-uuid-key: ".chapter-review";
+  content: pending(composite-DESTINATION); }
+
+:pass(4) [data-type="chapter"] .os-review-additional-problems-container {
   move-to: composite-DESTINATION; }
 
-:pass(4) [data-type="chapter"] section.review-challenge {
-  move-to: review-challenge-DESTINATION; }
-  :pass(4) [data-type="chapter"] section.review-challenge > [data-type="title"] {
-    move-to: trash; }
-
 :pass(4) [data-type="chapter"]::after {
-  class: "os-review-challenge-container";
-  content: pending(review-challenge-DESTINATION);
+  class: "os-eoc os-chapter-review-container";
+  data-type: composite-page;
+  data-uuid-key: ".chapter-review";
+  content: pending(composite-DESTINATION); }
+
+:pass(4) [data-type="chapter"] .os-review-challenge-container {
   move-to: composite-DESTINATION; }
 
 :pass(4) [data-type="chapter"]::after {
