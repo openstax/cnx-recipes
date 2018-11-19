@@ -575,13 +575,6 @@
 :pass(1) cnx-pi {
   move-to: trash; }
 
-:pass(1) :not([data-type="example"]) > [data-type="exercise"] {
-  string-set: isSolution ""; }
-  :pass(1) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
-    string-set: isSolution " os-hasSolution"; }
-  :pass(1) :not([data-type="example"]) > [data-type="exercise"]::deferred {
-    class: attr(class) string(isSolution); }
-
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
 
@@ -1741,38 +1734,11 @@
   content: counter(exercise);
   class: os-number; }
 
-:pass(5) [data-type="chapter"] {
-  counter-reset: solution_trash_half; }
-
-:pass(5) .os-eoc .os-hasSolution[data-type="exercise"] {
-  counter-increment: solution_trash_half;
-  string-set: trashStatus ""; }
-  :pass(5) .os-eoc .os-hasSolution[data-type="exercise"] [data-type="solution"] {
-    string-set: trashStatus counter(solution_trash_half); }
-  :pass(5) .os-eoc .os-hasSolution[data-type="exercise"]::deferred {
-    attr-trash-status: string(trashStatus); }
-
 :pass(6) body {
   counter-reset: exerciseAll; }
 
 :pass(6) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
-
-:pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="0"], :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="2"], :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="4"], :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="6"], :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="8"] {
-  class: attr(class) "-trashed"; }
-  :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="0"] [data-type="solution"], :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="2"] [data-type="solution"], :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="4"] [data-type="solution"], :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="6"] [data-type="solution"], :pass(6) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="8"] [data-type="solution"] {
-    move-to: trash; }
-
-:pass(6) [data-type="exercise"].os-hasSolution[trash-status$="1"], :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="3"], :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="5"], :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="7"], :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="9"] {
-  string-set: exerciseId attr(id); }
-  :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="problem"] > .os-number, :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="problem"] > .os-number, :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="problem"] > .os-number, :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="problem"] > .os-number, :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="problem"] > .os-number {
-    container: a;
-    attr-href: "#" string(exerciseId) "-solution"; }
-  :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"], :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"], :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"], :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"], :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] {
-    attr-id: string(exerciseId) "-solution"; }
-    :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"] > .os-number, :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"] > .os-number, :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"] > .os-number, :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"] > .os-number, :pass(6) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] > .os-number {
-      container: a;
-      attr-href: "#" string(exerciseId); }
 
 :pass(7) div[data-type="page"] > [data-type="document-title"],
 :pass(7) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -2337,11 +2303,14 @@
 :pass(8) [data-type="composite-page"].os-eob > .os-chapter-area > section > [data-type="document-title"] {
   container: h3; }
 
-:pass(8) .appendix > section [data-type="title"], :pass(8) .appendix > section [data-type="document-title"] {
+:pass(8) .appendix > section :not(p) > [data-type="title"], :pass(8) .appendix > section [data-type="document-title"] {
   container: h2; }
 
-:pass(8) .appendix > section > section [data-type="title"], :pass(8) .appendix > section > section [data-type="document-title"] {
+:pass(8) .appendix > section > section :not(p) > [data-type="title"], :pass(8) .appendix > section > section [data-type="document-title"] {
   container: h3; }
+
+:pass(9) .os-eoc [data-type="solution"] {
+  move-to: trash; }
 
 :pass(9) .os-index-link-separator:last-child {
   move-to: trash; }

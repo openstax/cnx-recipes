@@ -1,0 +1,174 @@
+@import '../_common-stuff';
+$RECIPE_NAME: "dev-math";
+
+/*==========================================================
+  ALGEBRA PAGES
+==========================================================*/
+
+/*
+  Key Terms
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Terms"
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
+*/
+/*
+  Key Concepts
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Concepts"
+
+  Markup: ./styleguide/book.composite.key-concepts.xhtml-baked.html
+
+  Style guide: book.composite.key-concepts
+*/
+/*
+  Review Exercises
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Review Exercises"
+
+  Markup: ./styleguide/book.composite.review-exercises.xhtml-baked.html
+
+  Style guide: book.composite.review-exercises
+*/
+/*
+  Practice Test
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Practice Test"
+
+  Markup: ./styleguide/book.composite.practice-test.xhtml-baked.html
+
+  Style guide: book.composite.practice-test
+*/
+/*
+  Exercises
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Exercises"
+
+  Contains: "Review Exercises" and "Practice Test"
+
+  Markup: ./styleguide/book.compoundcomposite.exercises.xhtml-baked.html
+
+  Style guide: book.compoundcomposite.exercises
+*/
+
+$_chapterExercises: (
+  (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
+  (className: "practice-test",    clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
+);
+
+$Config_ChapterCompositePages: (
+  (className: "glossary",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+  (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
+  (className: "exercises",    clusterBy: $CLUSTER_NONE, childPages: $_chapterExercises, hasSolutions: true, name: "Exercises"),
+);
+
+$Config_BookCompositePages: (
+  (className: "solutions", clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (className: "index",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+);
+
+/*==========================================================
+  ALGEBRA TITLING CONTENT
+==========================================================*/
+
+/*
+  Try It note
+
+  Contains a title "Try It" and exercies with solutions collated to the EOB.
+
+  Markup: ./styleguide/page.note.try-it.xhtml-baked.html
+
+  Style guide: page.note.try-it
+*/
+/*
+  How To note
+
+  Contains a title "How To".
+
+  Markup: ./styleguide/page.note.how-to.xhtml-baked.html
+
+  Style guide: page.note.how-to
+*/
+/*
+  Media note
+
+  Contains a title "Media: Access Additional Online Resources".
+
+  Markup: ./styleguide/page.note.media.xhtml-baked.html
+
+  Style guide: page.note.media
+*/
+/*
+  Be Prepared note
+
+  Contains a title "Be Prepared".
+
+  Markup: ./styleguide/page.note.be-prepared.xhtml-baked.html
+
+  Style guide: page.note.be-prepared
+*/
+/*
+  Manipulative Math note
+
+  Contains a title "Manipulative Math".
+
+  Markup: ./styleguide/page.note.manipulative-math.xhtml-baked.html
+
+  Style guide: page.note.manipulative-math
+*/
+/*
+  Links To Literacy note
+
+  Contains a title "Links To Literacy".
+
+  Markup: ./styleguide/page.note.links-to-literacy.xhtml-baked.html
+
+  Style guide: page.note.links-to-literacy
+*/
+
+$_exampleTitleContent      : (os-title-label: "Example ",  os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_solutionTitleContent     : ();
+$_tryItTitleContent        : (os-title-label: "Try It ",    os-number: counter(chapter) "." counter(try),     os-divider: " ");
+$_tryItSolutionTitleContent: (os-number: counter(chapter) "." counter(try), os-divider: " ");
+$_exerciseTitleContent     : (os-divider: ". ", os-number: counter(exerciseMaybeInContent));
+
+/*==========================================================
+  ALGEBRA CONFIG
+==========================================================*/
+
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE,  defaultContainer: caption,    hasCaption: true, hasTitle: true);
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
+
+$Config_ContentExercise_TitleContent: (os-divider: ". ", os-number : counter(exerciseMaybeInContent));
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_AFTER_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Solution: (moveTo: $AREA_EOB, );
+$Config_PartType_Example : (moveTo: $AREA_NONE, moveSolutionsTo: $AREA_NONE, titleContent: $_exampleTitleContent, hasSolutions: true, solutionTitleContent: $_solutionTitleContent);
+
+$Config_UnnumberedExercises: (
+  (contextSelector: '.try',                  childSelector: '[data-type="exercise"]'),
+  (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+);
+
+$Config_abstractTitle: "Learning Objectives";
+$Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
+
+$Config_Notes: (
+  (className: 'try',               moveSolutionTo: $AREA_EOB, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
+  (className: 'howto',             labelText: "How To"),
+  (className: 'media-2',           labelText: "Media Access Additional Online Resources", replaceHeader: true),
+  (className: 'be-prepared',       labelText: "Be Prepared"),
+  (className: 'manipulative-math', labelText: "Manipulative Mathematics"),
+  (className: 'links-to-literacy', labelText: "Links To Literacy"),
+);
