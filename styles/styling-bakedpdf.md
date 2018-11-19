@@ -2,7 +2,7 @@
 <!--
 - Any place that a filename is mentioned, make sure it links to the actual file.
 - This will prob be a long file, so make a table of contents.
--
+- Write error messages for all functions and mixins
  -->
 
 ## Overview
@@ -12,6 +12,8 @@ One of the goals of the baked-pdf styling framework is to give the user of the f
 **Note:** Files named with a leading `_` are not compiled by the SASS compiler, and are imported in another file. This allows us to have control over the compiling order of our files.
 
 **Note:** If you don’t want Sass to use caching, set the :cache option to false
+
+**Note:** Raw values should not be placed into files that are not `_settings.scss` or `-scheme.scss`.
 
 ## Development
 
@@ -61,21 +63,30 @@ The code in `./framework` should not have to be changed during the development o
 Mapping is a native functionality of SASS and is used heavily in the baked-pdf styling framework. For general documentation on mapping in SASS refer to this [link](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#maps).
 
 ###### Color Schemes and Maps (How do they work?)
+**Assigning Color Values**
+- To assign a color to an element, use the `color-scheme` function. Example: `color-scheme(key)`. When `color-scheme(key)` is used, this is what is happening 'behind the scenes':
+- The function `color-scheme` first uses the key passed into it to check if the `$color-scheme` map has that key.
+- Once it confirms that it does exist, it calls the `map-get` function and returns that value of the key passed into the function.
+
 **Color Schemes**
-- `./framework/config/_color-scheme.scss`
-Hexs and other raw color values are stored in `$DEFAULT_COLOR_SCHEME`. This map is returned in `default-color-scheme()`
+- The default color scheme can be found in `./framework/config/_color-scheme.scss`.
+- Hexs and other raw color values are stored in the `_color-scheme.scss` files and can be created at the theme and book level.
 
-- To assign a color to an element, use the `color-scheme` function. Example: `color-scheme(key)`
+- When including `color-scheme-merge`, this is what is happening in the background:
+1. The `color-scheme-merge` appends the passed function to the `$color-scheme-manifest` map
+2. The `update-color-scheme-config` is then called
+3. The `!global` flag is then attached to `default-color-scheme()` so that all values merged into the `$color-scheme-manifest` map will be accessible globally. (When the sass is compile for each book, the manifest will update with the color values specific to that book each time `color-scheme-merge` is called. This is how keys can share the same name in a theme color-scheme **across themes**)
+4. Each new key/value pair that was appended to the `$color-scheme-manifest` is now merged into a new map with the old key/value pairs previously in the `$color-scheme-manifest`. The new values take precedence over the old values.
 
-When `color-scheme(key)` is used, this is what is happening 'behind the scenes':
+
+
+
 - The `default-color-scheme` has two flags attached to it in `./framework/config/_color-scheme.scss`, `!default` and `!global`
-- `!default` is attached so that the variable `color-scheme`'s value is `default-color-scheme()` unless previously assigned (which is should not be)
-- `!global` is attached so that
+- `!default` was attached so that the variable `color-scheme`'s value is `default-color-scheme()` unless previously assigned (which is should not be)
 
 
-- `default-color-scheme()`is the assigned to `$color-scheme` and is made the `!default`
 
-- `update-color-scheme-config()`
+
 
 **Color Maps**
 The `$DEFAULT_COLOR_MAP` map is located `./framework/config/_color-map.scss`. The map is contained in a function named `default-color-map`, and the function returns `$DEFAULT_COLOR_MAP`.
