@@ -36,18 +36,19 @@
   @error "Unknown color scheme designation: #{$name}";
 }
 
-$color-scheme-manifest: ();
+$color-scheme-manifest: (); //initalize map
+
 @mixin color-scheme-merge($function) {
-  $color-scheme-manifest: append($color-scheme-manifest, $function) !global;
+  $color-scheme-manifest: append($color-scheme-manifest, $function) !global; // appends each value passed to $color-scheme-manifest
 @include update-color-scheme-config();
 }
 
 // Ensure all default keys are available from $color-scheme and color-scheme()
-$color-scheme: default-color-scheme() !default;
+$color-scheme: default-color-scheme() !default; //Can this be moved above the functions or at least moved before it is moved?
 
-@mixin update-color-scheme-config() {
+@mixin update-color-scheme-config() { //Can this be moved before it's include in color-scheme-merge
   $color-scheme: default-color-scheme() !global;
   @each $scheme-get-function in $color-scheme-manifest {
-    $color-scheme: map-merge($color-scheme, call($scheme-get-function)) !global;
+    $color-scheme: map-merge($color-scheme, call($scheme-get-function)) !global; //each value in $color-scheme-manifest
   }
 }

@@ -2,7 +2,7 @@
 <!--
 - Any place that a filename is mentioned, make sure it links to the actual file.
 - This will prob be a long file, so make a table of contents.
-- 
+-
  -->
 
 ## Overview
@@ -11,11 +11,13 @@ One of the goals of the baked-pdf styling framework is to give the user of the f
 
 **Note:** Files named with a leading `_` are not compiled by the SASS compiler, and are imported in another file. This allows us to have control over the compiling order of our files.
 
+**Note:** If you don’t want Sass to use caching, set the :cache option to false
+
 ## Development
 
 ### Generating a Styled Baked-PDF Locally
 **Step 1**
-To generate a styled baked-pdf for a new or previously un-styled baked-pdf (skip to step 2 if files exists):
+To generate a styled baked-pdf for a new or previously un-styled baked-book (skip to step 2 if these files exists):
 - Create a directory with the book name in `./books`. `./books/book-name`
 - Create `_import-config.scss` and `book-name.scss`
 - Create `.book-name/config` and inside `./config` create `./config/_color-map.scss` , `./config/_color-scheme.scss`, `./config/_font-map.scss`, `./config/_icon-map.scss`, and `./config/_settings.scss`
@@ -61,7 +63,15 @@ Mapping is a native functionality of SASS and is used heavily in the baked-pdf s
 ###### Color Schemes and Maps (How do they work?)
 **Color Schemes**
 - `./framework/config/_color-scheme.scss`
-Hexs and other raw color values are stored in the `$DEFAULT_COLOR_SCHEME`. This map is returned in `default-color-scheme()`
+Hexs and other raw color values are stored in `$DEFAULT_COLOR_SCHEME`. This map is returned in `default-color-scheme()`
+
+- To assign a color to an element, use the `color-scheme` function. Example: `color-scheme(key)`
+
+When `color-scheme(key)` is used, this is what is happening 'behind the scenes':
+- The `default-color-scheme` has two flags attached to it in `./framework/config/_color-scheme.scss`, `!default` and `!global`
+- `!default` is attached so that the variable `color-scheme`'s value is `default-color-scheme()` unless previously assigned (which is should not be)
+- `!global` is attached so that
+
 
 - `default-color-scheme()`is the assigned to `$color-scheme` and is made the `!default`
 
