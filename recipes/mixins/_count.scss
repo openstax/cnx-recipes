@@ -100,11 +100,19 @@
 /// @arg {Text} $name - Name of the css counter that will control example numbering
 /// @group count
 @mixin count_countExamples($name) {
-  @include _count(
+  @if feature-enabled(appendix-has-numbered-examples) {
+    @include _count(
     $name,
     'div[data-type="chapter"] [data-type="example"], .appendix [data-type="example"]',
     '[data-type="chapter"], .appendix'
-  );
+    );
+  } @else {
+    @include _count(
+    $name,
+    'div[data-type="chapter"] [data-type="example"]',
+    '[data-type="chapter"], .appendix'
+    );
+  }
 }
 
 /// A basic mixin for counting `span[data-type="term"]` using css counters
