@@ -43,7 +43,6 @@ $Config_addSolutionHeader: ();
 $Config_TargetLabels: (
   (selector: '.os-eoc [data-type="exercise"]',                                  labelText: "Exercise " counter(chapter) "." counter(exercise)),
   (selector: 'div[data-type="chapter"] [data-type="example"]',                  labelText: "Example " counter(chapter) "." counter(example)),
-  (selector: '.appendix [data-type="example"]',                                 labelText: "Example " counter(appendix, upper-alpha) counter(example)),
   (selector: 'div[data-type="chapter"] [data-type="equation"]:not(.unnumbered)',labelText: "Equation " counter(chapter) "." counter(equation)),
   (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered)',      labelText: "Table " counter(chapter) "." counter(table)),
   (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',    labelText: "Figure " counter(chapter) "." counter(figure)),
@@ -55,6 +54,11 @@ $Config_TargetLabels: (
   (selector: '.preface :not(figure) > figure:not(.unnumbered)',                 labelText: "Figure " counter(figure))
 );
 
+@if feature-enabled(appendix-has-numbered-examples) {
+  $Config_TargetLabels: append( $Config_TargetLabels,
+    (selector: '.appendix [data-type="example"]', labelText: "Example " counter(appendix, upper-alpha) counter(example))
+  );
+}
 
 // All of these should be allowed to be empty.
 $Config_Notes: ();
