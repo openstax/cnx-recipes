@@ -72,20 +72,18 @@ Mapping is a native functionality of SASS and is used heavily in the baked-pdf s
 - The default color scheme can be found in `./framework/config/_color-scheme.scss`.
 - Hexs and other raw color values are stored in the `_color-scheme.scss` files and can be created at the theme and book level.
 
-- When including `color-scheme-merge`, this is what is happening in the background:
+When including `color-scheme-merge`, this is what is happening in the background (also applicable to `color-map-merge`):
 1. The `color-scheme-merge` appends the passed function to the `$color-scheme-manifest` map
 2. The `update-color-scheme-config` is then called
-3. The `!global` flag is then attached to `default-color-scheme()` so that all values merged into the `$color-scheme-manifest` map will be accessible globally. (When the sass is compile for each book, the manifest will update with the color values specific to that book each time `color-scheme-merge` is called. This is how keys can share the same name in a theme color-scheme **across themes**)
+3. The `!global` flag is then attached to `default-color-scheme()` so that all values merged into the `$color-scheme-manifest` map will be accessible globally. (When the sass is compiled for an individual book, the manifest will update each time `color-scheme-merge` is called.)
 4. Each new key/value pair that was appended to the `$color-scheme-manifest` is now merged into a new map with the old key/value pairs previously in the `$color-scheme-manifest`. The new values take precedence over the old values.
+<!-- todo: explain why the `update-color-scheme-config()` mixin is necessary -->
+<!-- This is needed because we need the FUNCTIONS to re-evaluate each time a merge happens -->
 
-
-
-
-- The `default-color-scheme` has two flags attached to it in `./framework/config/_color-scheme.scss`, `!default` and `!global`
-- `!default` was attached so that the variable `color-scheme`'s value is `default-color-scheme()` unless previously assigned (which is should not be)
-
-
-
+**Color Maps**
+<!-- todo: what is the scale-uniform function for -->
+Raw color values are stored in a map in the color-scheme and those values are called in the color-map and assigned to more descriptive names based on what they're used for.
+Like color schemes, color maps exist on the framework level and can be created on the theme and book level.
 
 
 **Color Maps**
