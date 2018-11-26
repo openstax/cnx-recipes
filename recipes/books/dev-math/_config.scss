@@ -63,6 +63,19 @@ $RECIPE_NAME: "dev-math";
   Style guide: book.compoundcomposite.exercises
 */
 
+$_endOfPage: (
+  (className: "practice-perfect", hasSolutions: true, name: "Practice Makes Perfect"),
+  (className: "everyday",         hasSolutions: true, name: "Everyday Math"),
+  (className: "writing",          hasSolutions: true, name: "Writing Exercises"),
+  (className: "self-check",       hasSolutions: true, name: "Self Check"),
+)
+
+$_eop_title: (os-title-label: "Example ",  os-number: counter(chapter) "." counter(section));
+
+$Config_EndOfPage: (
+  (className: "os-section-exercises", childPages: $_endOfPage, hasSolutions: true, titleContent: $_eop_title),
+)
+
 $_chapterExercises: (
   (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
   (className: "practice-test",    clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
@@ -142,14 +155,12 @@ $_exampleTitleContent      : (os-title-label: "Example ",  os-number: counter(ch
 $_solutionTitleContent     : ();
 $_tryItTitleContent        : (os-title-label: "Try It ",    os-number: counter(chapter) "." counter(try),     os-divider: " ");
 $_tryItSolutionTitleContent: (os-number: counter(chapter) "." counter(try), os-divider: " ");
-$_exerciseTitleContent     : (os-divider: ". ", os-number: counter(exerciseMaybeInContent));
 
 /*==========================================================
   ALGEBRA CONFIG
 ==========================================================*/
 
-$Config_ContentExercise_TitleContent: (os-divider: ". ", os-number : counter(exerciseMaybeInContent));
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_AFTER_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
 $Config_PartType_Solution: (moveTo: $AREA_EOB, );
 $Config_PartType_Example : (moveTo: $AREA_NONE, moveSolutionsTo: $AREA_NONE, titleContent: $_exampleTitleContent, hasSolutions: true, solutionTitleContent: $_solutionTitleContent);
 
