@@ -677,3 +677,31 @@
     content: pending(ChapterOutline) content();
   }
 }
+
+/// patrick's work, in progress
+
+@mixin _createPageComposite($page) {
+  $className: map-get($page, className);
+  @include validate_type($className, string);
+
+  div[data-type="page"] {
+    $keyName: '.#{$className}';
+    $sourceSelector: 'section.#{$className}';
+    #{$sourceSelector} {
+      > [data-type="title"] {
+       move-to: trash;
+      }
+      class: "os-eop os-#{$className}-container";
+      data-type: "end-of-page";
+      data-uuid-key: "#{$keyName}";
+    }
+  }
+}
+
+@mixin compose_EndOfPageContainer($compositePages) {
+  @include validate_type($compositePages, list);
+
+  @each $page in $compositePages {
+    @include _createPageComposite($page);
+  }
+}
