@@ -32,20 +32,20 @@ The output styled PDF will be located in the `./data` directory.
 ### Framework
 If styling a baked-pdf was compared to the construction of a home, the `./framework` would be the steel and wooden beams. It is a necessary component, and you cannot style a baked-pdf without it.
 
-The code in `./framework` should not have to be changed during the development of a book, as it is the basis of baked-pdf styling, and changes to `./framework` will affect *all* previously styled books in the baked-pdf library.
+The code in `./framework` should not have to be changed during the development of a book, as it is the basis of baked-pdf styling, and changes to `./framework` will affect **all** previously styled books in the baked-pdf library.
 
-`./framework/config`
-    `_color-map.scss`, `_color-scheme.scss`, `_constants.scss`, `_font-map.scss`, `_icon-map.scss`, `_settings.scss`
+- `./framework/config`
+    - `_color-map.scss`, `_color-scheme.scss`, `_constants.scss`, `_font-map.scss`, `_icon-map.scss`, `_settings.scss`
     Explained in the 'Schemes and Maps (How do they work?)' section
-`./framework/_import-config.scss`
+- `./framework/_import-config.scss`
   Contains imported files from ./framework/config.
-`./framework/_import-mixins.scss`
+- `./framework/_import-mixins.scss`
   Contains imported files from ./framework/mixins
-`./framework/_update-config.scss`
+- `./framework/_update-config.scss`
   Contains `@include`s of the update-config functions. (See the file for an explanation of the function)
-`./framework/base.scss`
+- `./framework/base.scss`
   Contains imports and styles related to the elements present in all OpenStax PDFs (ex: default `color` and `font-size` of body text)
-`./framework/import-style.scss`
+- `./framework/import-style.scss`
   Contains imported files from ./framework/style
 
 
@@ -75,7 +75,6 @@ Like color schemes, color maps exist on the framework level and can be created o
 **Font and Icon Maps**
 The font and icon maps on the framework level have a `default-font-map` function, `$font/icon-manifest` map, and `update-font/icon-config` mixin and works similarly to the color-scheme on the framework level.
 
-The icon-map
 
 **Settings**
 Although `./_settings.scss` does not share the same naming conventions as the font and color map files, it works in the same way as them.
