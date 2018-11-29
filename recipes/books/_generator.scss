@@ -248,10 +248,16 @@
     @include validate_typeOptional($childSelector, string);
     @include modify_addUnnumbered($contextSelector, $childSelector);
   }
+
+  $_chapterPrepCompoundCompositePages: ();
+  @each $page in $Config_ChapterCompositePages {
+    @if map-get($page, childPages) != null {
+      $_chapterPrepCompoundCompositePages: append($_chapterPrepCompoundCompositePages, $page);
+    }
+  }
+  @include compose_prepEOCcompoundCompositesPages($_chapterPrepCompoundCompositePages);
 }
 :pass(4) {
-  // After: modify_prepIndexTerms
-  @include modify_finishPrepingIndexTerms($Config_Index_NotSymbolRegexp, $Config_Index_SymbolRegexp);
 
   //After: createChapterComposites
   // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
@@ -273,7 +279,14 @@
     @include modify_trash('.introduction [data-type="abstract"]');
   }
 }
+
 :pass(5) {
+
+  // After: modify_prepIndexTerms
+  @include modify_finishPrepingIndexTerms($Config_Index_NotSymbolRegexp, $Config_Index_SymbolRegexp);
+  
+}
+:pass(6) {
 
   //After: ???
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
@@ -310,7 +323,7 @@
     } @else { @error 'BUG: Invalid enum'; }
   }
 }
-:pass(6) {
+:pass(7) {
   @include modify_ExercisePrefix($Config_ChapterCompositePages); //if solutions are being moved on this pass then they will not be prefixed
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
@@ -327,7 +340,7 @@
     @include link_linkToProblemsFromSolutionsEOC($trashHalf: false);
   }
 }
-:pass(7) {
+:pass(8) {
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @each $page in $Config_ChapterCompositePages {
@@ -389,7 +402,7 @@
   //After: prepBookComposites
   @include compose_createBookComposites($Config_BookCompositePages);
 }
-:pass(8) {
+:pass(9) {
   //After: prepIndexTerms, createBookComposites
   @include modify_addIndexSymbolGroup("index", $Config_Index_SymbolsSectionTitle);
 
@@ -459,7 +472,7 @@
 
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
 }
-:pass(9) {
+:pass(10) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
     @if map-get($Config_PartType_Solution, HACKRemoveAllSolutionsNotJustEoC) == true {
@@ -481,7 +494,7 @@
   }
 }
 
-:pass(10) {
+:pass(11) {
   //After: All metadata tasks are completed
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
@@ -489,10 +502,10 @@
     @include modify_tableSummaryToSibling();
   }
 }
-:pass(11) {
+:pass(12) {
   @include toc_putTOCElements();
 }
-:pass(12) {
+:pass(13) {
   @include toc_navTOCUnwrap();
 }
 :pass(100) {

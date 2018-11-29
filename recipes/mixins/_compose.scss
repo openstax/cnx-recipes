@@ -208,32 +208,45 @@
         @if ($sortBy != null) {
           sort-by: #{$sortBy}, nocase;
         }
-        move-to: composite-DESTINATION;
       }
     }
   }
 }
-
-@mixin compose_EOCcompoundCompositesPages ($getAllComposites) {
-
-  @each $page in $getAllComposites {
+@mixin compose_prepEOCcompoundCompositesPages ($prepAllComposites) {
+  @each $page in $prepAllComposites {
     $name: map-get($page, name);
     $className: map-get($page, className);
     $childPages: map-get($page, childPages);
     $specialPageType: map-get($page, specialPageType);
+    $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
 
+    @include validate_type($childPages, list);
+    @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
+    
+    @include _processComposites($childPages);
+  }
+}
+@mixin compose_EOCcompoundCompositesPages ($getAllComposites) {
+  @each $page in $getAllComposites {
+    $className: map-get($page, className);
+    $specialPageType: map-get($page, specialPageType);
+    $childPages: map-get($page, childPages);
     @include validate_type($childPages, list);
     @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
     $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
-
-    @include _processComposites($childPages);
-    [data-type="chapter"] {
-      &::after {
-        class: "os-eoc os-#{$className}-container";
-        data-type: composite-page;
-        data-uuid-key: "#{$keyName}";
-        content: pending(composite-DESTINATION);
+    @each $childPage in $childPages {
+      $childclassName: map-get($childPage, className);
+      [data-type="chapter"] {
+        .os-#{$childclassName}-container {
+          move-to: composite-DESTINATION;
+        }
+         &::after {
+          class: "os-eoc os-#{$className}-container";
+          data-type: composite-page;
+          data-uuid-key: "#{$keyName}";
+          content: pending(composite-DESTINATION);
+        }
       }
     }
   }
