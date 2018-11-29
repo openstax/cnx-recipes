@@ -36,17 +36,17 @@ The code in `./framework` should not have to be changed during the development o
 
 - `./framework/config`
     - `_color-map.scss`, `_color-scheme.scss`, `_constants.scss`, `_font-map.scss`, `_icon-map.scss`, `_settings.scss`
-    Explained in the 'Schemes and Maps (How do they work?)' section
+      - Explained in the 'Schemes and Maps (How do they work?)' section
 - `./framework/_import-config.scss`
-  Contains imported files from ./framework/config.
+  - Contains imported files from ./framework/config.
 - `./framework/_import-mixins.scss`
-  Contains imported files from ./framework/mixins
+  - Contains imported files from ./framework/mixins
 - `./framework/_update-config.scss`
-  Contains `@include`s of the update-config functions. (See the file for an explanation of the function)
+  - Contains `@include`s of the update-config functions. (See the file for an explanation of the function)
 - `./framework/base.scss`
-  Contains imports and styles related to the elements present in all OpenStax PDFs (ex: default `color` and `font-size` of body text)
+  - Contains imports and styles related to the elements present in all OpenStax PDFs (ex: default `color` and `font-size` of body text)
 - `./framework/import-style.scss`
-  Contains imported files from ./framework/style
+  - Contains imported files from ./framework/style
 
 
 ### Schemes and Maps (How do they work?)
