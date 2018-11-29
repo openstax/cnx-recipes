@@ -680,8 +680,10 @@
 
 /// patrick's work, in progress
 
-@mixin _createPageComposite($page) {
+@mixin _createEndOfPage($page) {
   $className: map-get($page, className);
+  $childPages: map-get($page, childPages);
+
   @include validate_type($className, string);
 
   div[data-type="page"] {
@@ -694,6 +696,58 @@
       class: "os-eop os-#{$className}-container";
       data-type: "end-of-page";
       data-uuid-key: "#{$keyName}";
+    }
+    @if ($childPages != null) {
+      @each $cPage in $childPages {
+        $cClassName: map-get($cPage, className);
+        $cPageName: map-get($cPage, name);
+
+        @include validate_type($cClassName, string);
+        @include validate_type($cPageName, string);
+
+        $cKeyName: '.#{$cClassName}';
+        $cSourceSelector: 'section.#{$cClassName}';
+
+        #{$cSourceSelector} {
+          > [data-type="title"] {
+           move-to: trash;
+          }
+          class: "os-eop os-#{$cClassName}-container";
+          data-type: "end-of-page";
+          data-uuid-key: "#{$cKeyName}";
+        }
+      }
+    }
+  }
+}
+
+@mixin compose_titleEOP($compositePages) {
+  @each $page in $compositePages {
+    $titleContent: map-get($page, titleContent);
+    $className: map-get($page, className);
+    $childPages: map-get($page, childPages);
+
+    // Validate
+    @include validate_type($className, string);
+
+    [data-type="page"] .os-eop.os-#{$className}-container {
+      @include utils_title($titleContent, null, h2, "document-title");
+      @if ($childPages != null) {
+        @each $cPage in $childPages {
+          $cClassName: map-get($cPage, className);
+          $cPageName: map-get($cPage, name);
+
+          @include validate_type($cClassName, string);
+          @include validate_type($cPageName, string);
+
+          .os-eop.os-#{$cClassName}-container {
+            $cTitleContent: (
+              os-text: $cPageName
+              );
+            @include utils_title($cTitleContent, null, h3, "title");
+          }
+        }
+      }
     }
   }
 }
