@@ -1079,6 +1079,34 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.self-check {
+    move-to: self-check-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.self-check > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"] [data-type="page"]::after {
+    container: div;
+    content: pending(self-check-TOCOMPOSITE);
+    class: "os-eos os-self-check-container";
+    data-type: "composite-page";
+    data-uuid-key: ".self-check"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.exercises {
+    move-to: exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.exercises > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"] [data-type="page"]::after {
+    container: div;
+    content: pending(exercises-TOCOMPOSITE);
+    class: "os-eos os-exercises-container";
+    data-type: "composite-page";
+    data-uuid-key: ".exercises"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
     /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
     move-to: trash; }
@@ -1150,6 +1178,55 @@
 
 :pass(4) body:deferred::after {
   content: clear(term-trash); }
+
+:pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  node-set: CompoundSectionHeaderNode; }
+
+:pass(4) [data-type="chapter"] section.practice-perfect {
+  move-to: practice-perfect-DESTINATION; }
+  :pass(4) [data-type="chapter"] section.practice-perfect > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-practice-perfect-container";
+  content: pending(practice-perfect-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"] section.everyday {
+  move-to: everyday-DESTINATION; }
+  :pass(4) [data-type="chapter"] section.everyday > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-everyday-container";
+  content: pending(everyday-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"] section.writing {
+  move-to: writing-DESTINATION; }
+  :pass(4) [data-type="chapter"] section.writing > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-writing-container";
+  content: pending(writing-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"] section.self-check {
+  move-to: self-check-DESTINATION; }
+  :pass(4) [data-type="chapter"] section.self-check > [data-type="title"] {
+    move-to: trash; }
+
+:pass(4) [data-type="chapter"]::after {
+  class: "os-self-check-container";
+  content: pending(self-check-DESTINATION);
+  move-to: composite-DESTINATION; }
+
+:pass(4) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-eos os-exercises-container";
+  data-type: composite-page;
+  data-uuid-key: ".exercises";
+  content: pending(composite-DESTINATION); }
 
 :pass(4) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
   node-set: CompoundSectionHeaderNode; }
@@ -1481,6 +1558,72 @@
 
 :pass(8) [data-type="composite-page"] {
   content: nodes(bookMetadata) content(); }
+
+:pass(8) [data-type="composite-page"].os-eos.os-self-check-container::before {
+  container: span;
+  content: "Self Check";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eos.os-self-check-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container::before {
+  container: span;
+  content: "Exercises";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container div.os-practice-perfect-container::before {
+  container: span;
+  content: "Practice Makes Perfect";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container div.os-practice-perfect-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container div.os-everyday-container::before {
+  container: span;
+  content: "Everyday Math";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container div.os-everyday-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container div.os-writing-container::before {
+  container: span;
+  content: "Writing Exercises";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container div.os-writing-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container div.os-self-check-container::before {
+  container: span;
+  content: "Self Check";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(8) [data-type="composite-page"].os-eos.os-exercises-container div.os-self-check-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
 
 :pass(8) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;

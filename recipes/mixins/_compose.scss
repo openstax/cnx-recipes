@@ -1,5 +1,40 @@
 @import "./utils";
 
+@mixin compose_titleEOSComposites($compositePages) {
+  @each $page in $compositePages {
+    $name: map-get($page, name);
+    $className: map-get($page, className);
+    $childPages: map-get($page, childPages);
+
+    // Validate
+    @include validate_type($name, string);
+    @include validate_type($className, string);
+
+    [data-type="composite-page"].os-eos.os-#{$className}-container {
+      $titleContent: (
+        os-text: $name
+        );
+      @include utils_title($titleContent, null, h2, "document-title");
+      @if ($childPages != null) {
+        @each $cPage in $childPages {
+          $cClassName: map-get($cPage, className);
+          $cPageName: map-get($cPage, name);
+
+          @include validate_type($cClassName, string);
+          @include validate_type($cPageName, string);
+
+          div.os-#{$cClassName}-container {
+            $cTitleContent: (
+              os-text: $cPageName
+              );
+            @include utils_title($cTitleContent, null, h3, "title");
+          }
+        }
+      }
+    }
+  }
+}
+
 /// Creates a title for a set of composite pages at the end of a chapter
 /// @arg {Map} $compositePages - each element in this must contain a `name` and `source`
 /// @group compose
@@ -58,6 +93,67 @@
     }
   }
 }
+
+//Create End of Section composite pages
+@mixin compose_createSectionComposites($compositePages, $sectionHeaderNode) {
+  // Validate
+  @include validate_type($compositePages, list);
+
+  @each $page in $compositePages {
+    @include _createSectionComposite($page, $sectionHeaderNode);
+  }
+}
+@mixin _createSectionComposite($page, $sectionHeaderNode) {
+  $className: map-get($page, className);
+  $sortBy: map-get($page, sortBy);
+  $compoundComposite: map-get($page, compoundComposite);
+  $specialPageType: map-get($page, specialPageType);
+
+  // Validate
+  @include validate_type($className, string);
+  @include validate_typeOptional($sortBy, string);
+  @include validate_typeOptional($compoundComposite, bool);
+  @include validate_type($sectionHeaderNode, string);
+  @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
+
+  div[data-type="chapter"] {
+    string-set: chap-id attr(id);
+    @if (not $compoundComposite) {
+      $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
+      $sourceSelector: if($specialPageType == $PAGE_GLOSSARY, 'div[data-type="#{$className}"] dl', 'section.#{$className}');
+      @if ($specialPageType == $PAGE_GLOSSARY) {
+        div[data-type="#{$className}"] {
+          /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+          move-to: trash;
+        }
+      }
+      #{$sourceSelector} {
+        > [data-type="title"] {
+          /* Discard this Page-specific title because a chapter title is added when collated */
+          move-to: trash;
+        }
+
+        move-to: #{$className}-TOCOMPOSITE;
+      }
+      [data-type="page"]::after {
+        container: div;
+        content: pending(#{$className}-TOCOMPOSITE);
+        class: "os-eos os-#{$className}-container";
+        data-type: "composite-page";
+        data-uuid-key: "#{$keyName}";
+        // this needs to be reworked to work see https://github.com/Connexions/cnx-easybake/issues/97
+        // @if feature-enabled(toc-comp-page-linking) {
+        //   attr-id: "#{$className}" string(chap-id);
+        // }
+        @if ($sortBy != null) {
+          sort-by: #{$sortBy}, nocase;
+        }
+      }
+    }
+  }
+}
+
+
 
 
 /// Creates a title for a set of composite pages at the end of the book
@@ -213,6 +309,34 @@
     }
   }
 }
+
+
+@mixin compose_EOScompoundCompositesPages ($getAllComposites) {
+
+  @each $page in $getAllComposites {
+    $name: map-get($page, name);
+    $className: map-get($page, className);
+    $childPages: map-get($page, childPages);
+    $specialPageType: map-get($page, specialPageType);
+
+    @include validate_type($childPages, list);
+    @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
+
+    $keyName: if($specialPageType == $PAGE_GLOSSARY, '<glossary>', '.#{$className}');
+
+    @include _processComposites($childPages);
+    [data-type="chapter"] [data-type="page"] {
+      &::after {
+        class: "os-eos os-#{$className}-container";
+        data-type: composite-page;
+        data-uuid-key: "#{$keyName}";
+        content: pending(composite-DESTINATION);
+      }
+    }
+  }
+}
+
+
 
 @mixin compose_EOCcompoundCompositesPages ($getAllComposites) {
 
