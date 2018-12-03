@@ -17,16 +17,14 @@ The baked-pdf styling framework was designed in a way so that the user of the fr
 **Step 1**
 To generate a styled baked-pdf for a new or previously un-styled baked-book (skip to step 2 if these files exist):
 - Create a directory with the book name in `./books`. `./books/book-name`
-- Create `_import-config.scss` and `book-name.scss`
+- Create `_import-config.scss` and `{book-name}.scss`
 - Create `.book-name/config` and inside `./config` create `./config/_color-map.scss` , `./config/_color-scheme.scss`, `./config/_font-map.scss`, `./config/_icon-map.scss`, and `./config/_settings.scss`
-- Inside of `./config/book-name.scss` import files from the framework and theme and create the `$notes` map to style the book notes. (See `./config/intro-business.scss` for an example)
+- Inside of `./config/{book-name}.scss` import files from the framework and theme and create the `$notes` map to style the book notes. (See [./config/intro-business/book.scss](./config/intro-business/book.scss) for an example)
 
 **Step 2**
-Run the sass command to compile the .scss book file to a .css file `sass ./book-file.scss ./output/book-file.css`
+Run the sass command to compile the .scss book file to a .css file `sass ./{book-file}.scss ./output/{book-file}.css`
 
-Take the path of the output .css book file path and insert it into the head of the `./data/book-name-baked.xhtml`.
-
-Then run Prince on the XTML file with the PrinceXML command `prince ./data/book-name-baked.xhtml`
+Then run Prince on the XTML file with the PrinceXML command `prince --style ./output/{book-file}.css ./data/{book-name}-baked.xhtml`
 
 The output styled PDF will be located in the `./data` directory.
 
@@ -35,7 +33,7 @@ If styling a baked-pdf was compared to the construction of a home, the `./framew
 
 The code in `./framework` should not have to be changed during the development of a book, as it is the basis of baked-pdf styling, and changes to `./framework` will affect **all** previously styled books in the baked-pdf library.
 
-- `./framework/config`
+- `./framework/config/`
     - `_color-map.scss`, `_color-scheme.scss`, `_constants.scss`, `_font-map.scss`, `_icon-map.scss`, `_settings.scss`
       - Explained in the 'Schemes and Maps (How do they work?)' section
 - `./framework/_import-config.scss`
@@ -59,7 +57,8 @@ Mapping is a native functionality of SASS and is used heavily in the baked-pdf s
   * Once it confirms that it does exist, it calls the `map-get` function and returns that value of the key passed into the function.
 
 **Color Schemes**
-- The default color scheme can be found in `./framework/config/_color-scheme.scss`.
+- The default color scheme can be found in [./framework/config/_color-scheme.scss](./framework/config/_color-scheme.scss).
+
 - Hexs and other raw color values are stored in the `_color-scheme.scss` files and can be created at the theme and book level.
 
 When including `color-scheme-merge`, this is what is happening in the background (also applicable to `color-map-merge` and other `-merge` mixins):
