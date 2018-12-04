@@ -95,15 +95,15 @@
 }
 
 //Create End of Section composite pages
-@mixin compose_createSectionComposites($compositePages, $sectionHeaderNode) {
+@mixin compose_createSectionComposites($compositePages) {
   // Validate
   @include validate_type($compositePages, list);
 
   @each $page in $compositePages {
-    @include _createSectionComposite($page, $sectionHeaderNode);
+    @include _createSectionComposite($page);
   }
 }
-@mixin _createSectionComposite($page, $sectionHeaderNode) {
+@mixin _createSectionComposite($page) {
   $className: map-get($page, className);
   $sortBy: map-get($page, sortBy);
   $compoundComposite: map-get($page, compoundComposite);
@@ -113,7 +113,6 @@
   @include validate_type($className, string);
   @include validate_typeOptional($sortBy, string);
   @include validate_typeOptional($compoundComposite, bool);
-  @include validate_type($sectionHeaderNode, string);
   @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
   div[data-type="chapter"] {
