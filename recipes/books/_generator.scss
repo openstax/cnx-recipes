@@ -254,14 +254,6 @@
   // After: modify_prepIndexTerms
   @include modify_finishPrepingIndexTerms($Config_Index_NotSymbolRegexp, $Config_Index_SymbolRegexp);
 
-  $_sectionCompoundCompositePages: ();
-  @each $page in $Config_SectionCompositePages {
-    @if map-get($page, childPages) != null {
-      $_sectionCompoundCompositePages: append($_sectionCompoundCompositePages, $page);
-    }
-  }
-  @include compose_EOScompoundCompositesPages($_sectionCompoundCompositePages);
-
   //After: createChapterComposites
   // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
   // and finding all that have a `childPages:` field
@@ -340,6 +332,18 @@
 :pass(7) {
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
+  @each $page in $Config_SectionCompositePages {
+    $name: map-get($page, name);
+    $moveSolutionsTo: map-get($page, moveSolutionsTo);
+    @include validate_type($name, string);
+    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+
+    @if $moveSolutionsTo == $AREA_EOC {
+      @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
+    } @else if $moveSolutionsTo == $AREA_EOB {
+      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
+    }
+  }
   @each $page in $Config_ChapterCompositePages {
     $name: map-get($page, name);
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
@@ -391,7 +395,7 @@
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
     @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
     @if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
+      @include compose_createEOBSolutions($Config_SectionCompositePages, $Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
     } @else if $moveSolutionsTo == $AREA_EOC {
       @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
     }
