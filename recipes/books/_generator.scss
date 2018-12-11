@@ -239,6 +239,7 @@
   @include modify_prepIndexTerms(term, pageID);
 
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
+  @include compose_createSectionComposites($Config_SectionCompositePages, sectionHeaderNode);
   @include compose_createChapterComposites($Config_ChapterCompositePages, sectionHeaderNode);
 
   @each $unnumberedExercise in $Config_UnnumberedExercises {
@@ -313,6 +314,8 @@
     @else { @error 'BUG: Invalid enum'; }
 
     @if $numberAt == $NUMBER_BEFORE_MOVE {
+      @include count_countEOSExercises(exerciseMaybeInContent, $resetSel);
+      @include number_numberEOSExercises($titleContent, $titleContent);
       @include count_countEOCExercises(exercise, $resetSel);
       @include number_numberEOCExercises($titleContent, $titleContent);
       @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
@@ -342,6 +345,17 @@
 :pass(8) {
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
+  @each $page in $Config_SectionCompositePages {
+    $name: map-get($page, name);
+    $moveSolutionsTo: map-get($page, moveSolutionsTo);
+    @include validate_type($name, string);
+    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+     @if $moveSolutionsTo == $AREA_EOC {
+      @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
+    } @else if $moveSolutionsTo == $AREA_EOB {
+      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
+    }
+  }
   @each $page in $Config_ChapterCompositePages {
     $name: map-get($page, name);
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
@@ -393,7 +407,7 @@
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
     @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
     @if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
+      @include compose_createEOBSolutions($Config_SectionCompositePages, $Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
     } @else if $moveSolutionsTo == $AREA_EOC {
       @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
     }
@@ -449,6 +463,7 @@
   @include reference_refBookMetadataNodeAs(bookMetadata);
   @include modify_compositeMetadata(bookMetadata, $Config_hasCompositeChapter);
   //After: createChapterComposites, createEOCSolutions, createBookComposites
+  @include compose_titleEOSComposites($Config_SectionCompositePages);
   @include compose_titleEOCComposites($Config_ChapterCompositePages);
   @include compose_titleEOBComposites($Config_BookCompositePages);
   //After: createChapterComposites, createEOCSolutions, createBookComposites
