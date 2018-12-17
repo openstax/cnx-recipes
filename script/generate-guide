@@ -134,7 +134,9 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
     do_progress_quiet "Generating HTML coverage report" \
       genhtml --quiet --output ./coverage/ ${coverage_files}
   fi
-
+  if [[ "${CI}" = "true" ]]; then
+    try rm -rf "${tempdir}"
+  fi
   _say "Guide is available at ${styleguideDir}/index.html . You can open it in a browser"
 
 else
