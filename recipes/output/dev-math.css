@@ -1344,6 +1344,18 @@
       container: a;
       attr-href: "#" string(exerciseId); }
 
+:pass(8) body {
+  counter-reset: chapter; }
+
+:pass(8) div[data-type="chapter"] {
+  counter-increment: chapter; }
+
+:pass(8) [data-type="chapter"], :pass(8) .appendix {
+  counter-reset: section; }
+
+:pass(8) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
@@ -1373,7 +1385,7 @@
 
 :pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
   container: span;
-  content: "Section Exercises";
+  content: "Section " counter(chapter) "." counter(section) " Exercises";
   class: "os-title-label";
   move-to: section-exercises-title; }
 
@@ -1474,6 +1486,12 @@
 :pass(9) div[data-type="chapter"] {
   counter-increment: chapter; }
 
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
 :pass(9) body {
   counter-reset: appendix; }
 
@@ -1559,8 +1577,20 @@
 
 :pass(9) .os-eos.os-section-exercises-container::before {
   container: span;
-  content: "Section Exercises";
-  class: os-text;
+  content: "Section ";
+  class: os-beforeLabel;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(9) .os-eos.os-section-exercises-container::before {
+  container: span;
+  content: counter(chapter) "." counter(section);
+  class: os-number;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(9) .os-eos.os-section-exercises-container::before {
+  container: span;
+  content: " Exercises";
+  class: os-afterLabel;
   move-to: h3-TITLECONTAINER; }
 
 :pass(9) .os-eos.os-section-exercises-container::before {

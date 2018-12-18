@@ -3,15 +3,19 @@
 @mixin compose_titleEOSComposites($compositePages) {
   @each $page in $compositePages {
     $name: map-get($page, name);
+    $titleContent: map-get($page, titleContent);
     $className: map-get($page, className);
     $childPages: map-get($page, childPages);
      // Validate
-    @include validate_type($name, string);
     @include validate_type($className, string);
-     .os-eos.os-#{$className}-container {
-      $titleContent: (
-        os-text: $name
+
+    .os-eos.os-#{$className}-container {
+      @if ($name != null) {
+        @include validate_type($name, string);
+        $titleContent: (
+          os-text: $name
         );
+      }
       @include utils_title($titleContent, null, h3, "document-title");
     }
   }
@@ -65,7 +69,7 @@
     $className: map-get($page, className);
 
     // Validate
-   // @include validate_type($name, string);
+    @include validate_type($name, string);
     @include validate_type($className, string);
 
     [data-type="composite-page"].os-eob.os-#{$className}-container {
@@ -596,10 +600,19 @@
     $hasSolutions: map-get($section, hasSolutions);
     $className: map-get($section, className);
     $sectionName: map-get($section, name);
+    $titleContent: map-get($section, titleContent);
      // Validate
     @include validate_typeOptional($hasSolutions, bool);
-    @include validate_type($className, string);
-    @include validate_type($sectionName, string);
+
+    @if ($sectionName != null) {
+       @include validate_type($sectionName, string);
+     }
+     @else {
+       $sectionName: ();
+       @each $elementClass in map-keys($titleContent) {
+         $sectionName: append($sectionName, map-get($titleContent, $elementClass));
+       }
+     }
 
     @if $hasSolutions {
      [data-type="chapter"] { .os-eos.os-#{$className}-container {
