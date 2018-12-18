@@ -11,11 +11,17 @@
 
     .os-eos.os-#{$className}-container {
       @if ($name != null) {
-        @include validate_type($name, string);
-        $titleContent: (
-          os-text: $name
-        );
+         @include validate_type($name, string);
       }
+      @else {
+        $name: ();
+        @each $elementClass in map-keys($titleContent) {
+          $name: append($name, map-get($titleContent, $elementClass));
+        }
+      }
+      $titleContent: (
+        os-text: $name
+      );
       @include utils_title($titleContent, null, h3, "document-title");
     }
   }
@@ -606,13 +612,13 @@
 
     @if ($sectionName != null) {
        @include validate_type($sectionName, string);
-     }
-     @else {
-       $sectionName: ();
-       @each $elementClass in map-keys($titleContent) {
-         $sectionName: append($sectionName, map-get($titleContent, $elementClass));
-       }
-     }
+    }
+    @else {
+      $sectionName: ();
+      @each $elementClass in map-keys($titleContent) {
+        $sectionName: append($sectionName, map-get($titleContent, $elementClass));
+      }
+    }
 
     @if $hasSolutions {
      [data-type="chapter"] { .os-eos.os-#{$className}-container {
