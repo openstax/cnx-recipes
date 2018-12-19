@@ -3,7 +3,8 @@ cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
 # Verify exportable recipes
-try pytest tests
+do_progress_quiet "Running python tests" \
+  try pytest tests
 
 # Make sure the snippets are well-formed XML
 do_progress_quiet "Linting and checking XML snippets" \
@@ -28,12 +29,15 @@ do_progress_quiet "Generating sass docs" \
 source ./books.txt || exit 1
 
 for recipe_name in "${RECIPE_NAMES[@]}"; do
+  # Travis _might_ run out of space in the future. This is here "just in case"
+  if [[ ${TRAVIS} = 'true' ]]; then
+    if [[ -d "./tmp/" ]]; then
+      try rm -rf "./tmp/"
+    fi
+  fi
+
   do_progress_quiet "Generating styleguide for ${recipe_name}" \
     ./script/generate-guide "${recipe_name}"
-  if [[ ${CI} = 'true' ]]; then
-    do_progress_quiet "Cleaning up temporary dir so Travis does not run out of space" \
-      try rm -rf "./tmp/${recipe_name}/"
-  fi
 done
 
 
