@@ -350,12 +350,14 @@
   }
 }
 :pass(8) {
+  @if $Config_SectionCompositePages != () {
+    @include count_countChapters(chapter);
+    @include count_countSections(section);
+  }
   //Only move solutions after exercises/solutions are numbered
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   @each $page in $Config_SectionCompositePages {
-    $name: map-get($page, name);
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    @include validate_type($name, string);
     @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
      @if $moveSolutionsTo == $AREA_EOC {
       @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
@@ -364,9 +366,7 @@
     }
   }
   @each $page in $Config_ChapterCompositePages {
-    $name: map-get($page, name);
     $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    @include validate_type($name, string);
     @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
     @if $moveSolutionsTo == $AREA_EOC {
       @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
@@ -428,6 +428,7 @@
 
   //After: composite page creation
   @include count_countChapters(chapter);
+  @if $Config_SectionCompositePages != () { @include count_countSections(section); }
   @include count_countAppendices(appendix);
 
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC { //check to see if this code is redundent,   same block above
