@@ -1,1 +1,1 @@
-This directory contains the HTML files for the books, both the raw (downloaded from server) and the baked ones.
+This directory contains the HTML files for the books, both the raw (downloaded from server) and the baked ones
