@@ -503,9 +503,9 @@
 :pass(1) :not([data-type="example"]) > [data-type="exercise"] {
   string-set: isSolution ""; }
   :pass(1) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
-    string-set: isSolution " os-hasSolution "; }
+    string-set: isSolution " os-hasSolution"; }
   :pass(1) :not([data-type="example"]) > [data-type="exercise"]::deferred {
-    class: attr(class) string(isSolution, " "); }
+    class: attr(class) string(isSolution); }
 
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
@@ -1109,6 +1109,8 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.summary {
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
     move-to: summary-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1247,26 +1249,80 @@
   content: counter(exercise);
   class: os-number; }
 
+:pass(6) [data-type="chapter"] {
+  counter-reset: solution_trash_half; }
+
+:pass(6) .os-eoc .os-hasSolution[data-type="exercise"] {
+  counter-increment: solution_trash_half;
+  string-set: trashStatus ""; }
+  :pass(6) .os-eoc .os-hasSolution[data-type="exercise"] [data-type="solution"] {
+    string-set: trashStatus counter(solution_trash_half); }
+  :pass(6) .os-eoc .os-hasSolution[data-type="exercise"]::deferred {
+    attr-trash-status: string(trashStatus); }
+
 :pass(7) body {
   counter-reset: exerciseAll; }
 
 :pass(7) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
 
-:pass(7) [data-type="exercise"].os-hasSolution {
+:pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="0"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="2"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="4"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="6"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="8"] {
+  class: attr(class) "-trashed"; }
+  :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="0"] [data-type="solution"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="2"] [data-type="solution"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="4"] [data-type="solution"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="6"] [data-type="solution"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="8"] [data-type="solution"] {
+    move-to: trash; }
+
+:pass(7) [data-type="exercise"].os-hasSolution[trash-status$="1"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="3"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="5"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="7"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="9"] {
   string-set: exerciseId attr(id); }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
+  :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="problem"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="problem"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="problem"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="problem"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="problem"] > .os-number {
     container: a;
     attr-href: "#" string(exerciseId) "-solution"; }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] {
+  :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] {
     attr-id: string(exerciseId) "-solution"; }
-    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
+    :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] > .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
 
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-interactive-exercise-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-multiple-choice-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-free-response-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(8) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
+  string-set: ChapNum content(); }
+
+:pass(8) [data-type="chapter"]::after {
+  container: h2;
+  class: "os-title";
+  content: "Chapter " string(ChapNum);
+  move-to: chaptTitleEOB; }
+
+:pass(8) [data-type="chapter"]::after {
+  class: os-chapter-area;
+  content: pending(chaptTitleEOB) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
+  move-to: solution-TOCOMPOSITE; }
+
+:pass(8) body::after {
+  container: div;
+  content: pending(solution-TOCOMPOSITE);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution";
+  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
+
+:pass(8) body::after {
+  container: div;
+  content: pending(solution-TOCOMPOSITE);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution"; }
 
 :pass(8) body::after {
   container: div;
@@ -1422,6 +1478,17 @@
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
+
+:pass(9) [data-type="composite-page"].os-eob.os-solution-container::before {
+  container: span;
+  content: "Answer Key";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(9) [data-type="composite-page"].os-eob.os-solution-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
 
 :pass(9) [data-type="composite-page"].os-eob.os-index-container::before {
   container: span;
