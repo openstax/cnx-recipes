@@ -500,13 +500,6 @@
 :pass(1) cnx-pi {
   move-to: trash; }
 
-:pass(1) :not([data-type="example"]) > [data-type="exercise"] {
-  string-set: isSolution ""; }
-  :pass(1) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
-    string-set: isSolution " os-hasSolution "; }
-  :pass(1) :not([data-type="example"]) > [data-type="exercise"]::deferred {
-    class: attr(class) string(isSolution, " "); }
-
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
 
@@ -1151,6 +1144,8 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.summary {
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
     move-to: summary-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1294,17 +1289,6 @@
 
 :pass(7) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
-
-:pass(7) [data-type="exercise"].os-hasSolution {
-  string-set: exerciseId attr(id); }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
-    container: a;
-    attr-href: "#" string(exerciseId) "-solution"; }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] {
-    attr-id: string(exerciseId) "-solution"; }
-    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
-      container: a;
-      attr-href: "#" string(exerciseId); }
 
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -1771,6 +1755,9 @@
 
 :pass(9) .appendix > section > section > [data-type="title"], :pass(9) .appendix > section > section [data-type="document-title"] {
   container: h3; }
+
+:pass(10) .os-eoc [data-type="solution"] {
+  move-to: trash; }
 
 :pass(10) .os-index-link-separator:last-child {
   move-to: trash; }
