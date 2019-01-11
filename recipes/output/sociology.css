@@ -952,20 +952,6 @@
     data-type: "composite-page";
     data-uuid-key: ".references"; }
 
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.solutions {
-    move-to: solutions-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.solutions > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(solutions-TOCOMPOSITE);
-    class: "os-eoc os-solutions-container";
-    data-type: "composite-page";
-    data-uuid-key: ".solutions"; }
-
 :pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
   string-set: outlinePageId attr(id); }
   :pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"]::after {
@@ -1101,19 +1087,6 @@
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
-
-:pass(8) [data-type="chapter"] .os-eoc.os-section-quiz-container [data-type="solution"] {
-  move-to: solutions-TOCOMPOSITE; }
-
-:pass(8) [data-type="chapter"] .os-eoc.os-short-answer-container [data-type="solution"] {
-  move-to: solutions-TOCOMPOSITE; }
-
-:pass(8) [data-type="chapter"]::after {
-  container: div;
-  content: pending(solutions-TOCOMPOSITE);
-  class: "os-eoc os-solutions-container";
-  data-type: "composite-page";
-  data-uuid-key: "solutions"; }
 
 :pass(8) body::after {
   container: div;
@@ -1277,17 +1250,6 @@
   move-to: h2-TITLECONTAINER; }
 
 :pass(9) [data-type="composite-page"].os-eoc.os-references-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
-
-:pass(9) [data-type="composite-page"].os-eoc.os-solutions-container::before {
-  container: span;
-  content: "Solutions";
-  class: os-text;
-  move-to: h2-TITLECONTAINER; }
-
-:pass(9) [data-type="composite-page"].os-eoc.os-solutions-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
