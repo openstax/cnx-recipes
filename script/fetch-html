@@ -6,30 +6,50 @@ source ./script/bootstrap || exit 111
 
 set -e
 
-arg1=$1
+with_resources=false
+while [[ $# -ge 1 ]]
+do
+  case $1 in
+    --with-resources)
+      with_resources=true
+      ;;
+    --all)
+      all_books=true
+      ;;
+    *)
+      book=$1
+  esac
+  shift
+done
 
 
 # Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
 
 
+usage() {
+    echo -e "Usage: $0 [--with-resources] {--all|<book-name>}\n"
+}
+
+
 # Check command line args
 
-if [[ ! "${arg1}" ]]; then
+if [ -z "${all_books}" ] && [ -z "${book}" ]; then
   _say "Valid books are (from ./books.txt):"
   for book_config in "${BOOK_CONFIGS[@]}"; do
     read -r book_name recipe_name uuid _ <<< "${book_config}"
     _say "${book_name}"
   done
+  usage
   die 'Argument Missing. You must specify the name of the book as the 1st argument or --all for all books. For example: physics'
 fi
 
-if [[ ! "${arg1}" == "--all" ]]; then
+if [ -n "${book}" ]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for book_config in "${BOOK_CONFIGS[@]}"; do
     read -r book_config_name recipe_name uuid host_name _ <<< "${book_config}"
 
-    if [[ "${arg1}" = "${book_config_name}" ]]; then
+    if [[ "${book}" = "${book_config_name}" ]]; then
       BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid} ${host_name} ${_}")
       host_name=${HOST:-${host_name}}
 
@@ -44,7 +64,8 @@ if [[ ! "${arg1}" == "--all" ]]; then
       read -r book_name recipe_name uuid _ <<< "${book_config}"
       _say "${book_name}"
     done
-    die "Could not find Book info for book named ${arg1}"
+    usage
+    die "Could not find Book info for book named ${book}"
   fi
 fi
 
@@ -73,6 +94,16 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
 
   do_progress_quiet "Copying HTML file from server to local machine" \
     scp "${USER}@${host_name}:${tempHtmlFile}" "${raw_file}"
+
+  if [ $with_resources ]
+  then
+    do_progress_quiet "Copying epub file from server to local machine" \
+      scp "${USER}@${host_name}:${tempEpubFile}" .
+    do_progress_quiet "Extracting resource files from epub" \
+      unzip -o "$(basename ${tempEpubFile})" 'resources/*'
+    do_progress_quiet "Removing epub file" \
+      rm "$(basename ${tempEpubFile})"
+  fi
 
   _say "${c_green}Fetch is Done.${c_none} File is available at ${raw_file}"
 
