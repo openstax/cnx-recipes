@@ -408,6 +408,9 @@
   //After: composite page creation
   @include count_countChapters(chapter);
   @include count_countAppendices(appendix);
+  @if feature-enabled(increment-section-counter-for-lo) {
+    @include count_countSections(section);
+  };
 
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC { //check to see if this code is redundent,   same block above
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
@@ -467,6 +470,10 @@
   } @else {
     @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp);
     @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
+  }
+
+  @if feature-enabled(trash-abstract-in-preface) {
+    @include modify_trash('.preface [data-type="abstract"]');
   }
 
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
