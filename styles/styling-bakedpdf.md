@@ -5,7 +5,7 @@ A general understanding of SASS is required to use this framework [Official Sass
 The framework is modular, and is built on 3 levels, the framework, theme, and book level.
 The baked-pdf styling framework was designed in a way so that the user of the framework has the ability easily generate a styled baked-pdf without applying book specific designs.
 
-**Note:** Files named with a leading `_` are not compiled by the SASS compiler, and are imported in another file. This allows us to have control over the compiling order of our files.
+**Note:** Files named with a leading `_` do not produce any CSS output during compilation, they are imported in another file. This allows us to have control over the compiling order of our files.
 
 **Note:** Avoid placing raw values into files that are not `_settings.scss`, `-scheme.scss`, or `-map.scss`.
 
@@ -71,6 +71,9 @@ When including `color-scheme-merge`, this is what is happening in the background
 <!-- todo: what is the scale-uniform function for -->
 Raw color values are stored in a map in the color-scheme and those values are called in the color-map and assigned to more descriptive names based on what they're used for.
 Like color schemes, color maps exist on the framework level and can be created on the theme and book level.
+
+The `scale-uniform` function decreases all values in an RGB by an equal proportion.
+Example: `scale-uniform(rgb(100,100,100), 0.6)` -> `rgb(60,60,60)`
 
 **Font and Icon Maps**
 The font and icon maps on the framework level have a `default-font-map` function, `$font/icon-manifest` map, and `update-font/icon-config` mixin and works similarly to the color-scheme on the framework level.
