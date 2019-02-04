@@ -65,7 +65,7 @@ When including `color-scheme-merge`, this is what is happening in the background
 1. The `color-scheme-merge` appends the passed function to the `$color-scheme-manifest` map
 2. The `update-color-scheme-config` is then called
 3. The `!global` flag is then attached to `default-color-scheme()` so that all values merged into the `$color-scheme-manifest` map will be accessible globally. (When the sass is compiled for an individual book, the manifest will update each time `color-scheme-merge` is called.)
-4. Each new key/value pair that was appended to the `$color-scheme-manifest` is now merged into a new map with the old key/value pairs previously in the `$color-scheme-manifest`. The new values take precedence over the old values.
+4. Each map returned by a function appended to the `$color-scheme-manifest` is now merged into a new map with the old key/value pairs previously in the `$color-scheme-manifest`. The new values take precedence over the old values. The resulting (and re-evaluated) key-value pairs for the scheme are stored in $color-scheme.
 
 **Color Maps**
 <!-- todo: what is the scale-uniform function for -->
