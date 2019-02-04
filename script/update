@@ -7,4 +7,6 @@ do_progress_quiet 'Reinstalling python packages' \
 
  # Use --force so that the packages are reinstalled
 do_progress_quiet "Reinstalling NodeJS package.json" \
-  yarn install --prefer-offline --force
+  rm ./../node_modules || die "No JS modules installed"
+  [[ $(command -v yarn) ]] && yarn install --prefer-offline || \
+    [[ $(command -v npm) ]] && npm install

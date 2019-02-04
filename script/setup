@@ -7,7 +7,9 @@ source ./script/bootstrap || exit 111
 # JavaScript stuff
 if [[ -f "./package.json" ]]; then
   do_progress_quiet "Installing JavaScript Packages" \
-    yarn --prefer-offline
+    # Prefer yarn but allow npm
+    [[ $(command -v yarn) ]] && yarn --prefer-offline || \
+      [[ $(command -v npm) ]] && npm install
 fi
 
 # Python stuff
