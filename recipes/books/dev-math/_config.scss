@@ -63,6 +63,12 @@ $RECIPE_NAME: "dev-math";
   Style guide: book.compoundcomposite.exercises
 */
 
+$_eosTitle: (os-beforeLabel: "Section ",  os-number: counter(chapter) "." counter(section), os-afterLabel: " Exercises");
+
+$Config_SectionCompositePages: (
+  (className: "section-exercises",    clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle),
+);
+
 $_chapterExercises: (
   (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
   (className: "practice-test",    clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
@@ -104,7 +110,7 @@ $Config_BookCompositePages: (
 /*
   Media note
 
-  Contains a title "Media: Access Additional Online Resources".
+  Contains a title "Media".
 
   Markup: ./styleguide/page.note.media.xhtml-baked.html
 
@@ -151,14 +157,20 @@ $_exerciseTitleContent     : (os-divider: ". ", os-number: counter(exerciseMaybe
 $Config_SetTableCaption : (captionType: $CAPTION_TABLE,  defaultContainer: caption,    hasCaption: true, hasTitle: true);
 $Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
 
-$Config_ContentExercise_TitleContent: (os-divider: ". ", os-number : counter(exerciseMaybeInContent));
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_AFTER_MOVE, titleContent: $_exerciseTitleContent);
+// very improtant to keep this config file empty
+$Config_ContentExercise_TitleContent: ();
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
 $Config_PartType_Solution: (moveTo: $AREA_EOB, );
 $Config_PartType_Example : (moveTo: $AREA_NONE, moveSolutionsTo: $AREA_NONE, titleContent: $_exampleTitleContent, hasSolutions: true, solutionTitleContent: $_solutionTitleContent);
 
 $Config_UnnumberedExercises: (
   (contextSelector: '.try',                  childSelector: '[data-type="exercise"]'),
   (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+);
+
+$Config_CustomList: (
+  (className: "stepwise", beforeLabel: "Step ", afterLabel: ". "),
 );
 
 $Config_abstractTitle: "Learning Objectives";
@@ -171,4 +183,8 @@ $Config_Notes: (
   (className: 'be-prepared',       labelText: "Be Prepared"),
   (className: 'manipulative-math', labelText: "Manipulative Mathematics"),
   (className: 'links-to-literacy', labelText: "Links To Literacy"),
+);
+
+$Config_TargetLabels: append($Config_TargetLabels,
+  (selector: '[data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered)', labelText: "Exercise " counter(chapter) "." counter(exerciseMaybeInContent))
 );
