@@ -64,11 +64,10 @@ Mapping is a native functionality of SASS and is used heavily in the baked-pdf s
 When including `color-scheme-merge`, this is what is happening in the background (also applicable to `color-map-merge` and other `-merge` mixins):
 1. The `color-scheme-merge` appends the passed function to the `$color-scheme-manifest` map
 2. The `update-color-scheme-config` is then called
-3. The `!global` flag is then attached to `default-color-scheme()` so that all values merged into the `$color-scheme-manifest` map will be accessible globally. (When the sass is compiled for an individual book, the manifest will update each time `color-scheme-merge` is called.)
+3. When the sass is compiled for an individual book, the manifest will update each time `color-scheme-merge` is called.
 4. Each new key/value pair that was appended to the `$color-scheme-manifest` is now merged into a new map with the old key/value pairs previously in the `$color-scheme-manifest`. The new values take precedence over the old values.
 
 **Color Maps**
-<!-- todo: what is the scale-uniform function for -->
 Raw color values are stored in a map in the color-scheme and those values are called in the color-map and assigned to more descriptive names based on what they're used for.
 Like color schemes, color maps exist on the framework level and can be created on the theme and book level.
 

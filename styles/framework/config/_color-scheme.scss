@@ -28,6 +28,16 @@
   @return $DEFAULT_COLOR_SCHEME;
 }
 
+// Ensure all default keys are available from $color-scheme and color-scheme()
+$color-scheme: default-color-scheme() !default;
+
+@mixin update-color-scheme-config() {
+  $color-scheme: default-color-scheme() !global;
+  @each $scheme-get-function in $color-scheme-manifest {
+    $color-scheme: map-merge($color-scheme, call($scheme-get-function)) !global;
+  }
+}
+
 // Retrieves color value from color-scheme
 @function color-scheme($name) {
   @if map-has-key($color-scheme, $name) {
@@ -41,14 +51,4 @@ $color-scheme-manifest: (); //initalize map
 @mixin color-scheme-merge($function) {
   $color-scheme-manifest: append($color-scheme-manifest, $function) !global;
 @include update-color-scheme-config();
-}
-
-// Ensure all default keys are available from $color-scheme and color-scheme()
-$color-scheme: default-color-scheme() !default; //Can this be moved above the functions or at least moved before it is used?
-
-@mixin update-color-scheme-config() { //Can this be moved before it's include in color-scheme-merge
-  $color-scheme: default-color-scheme() !global;
-  @each $scheme-get-function in $color-scheme-manifest {
-    $color-scheme: map-merge($color-scheme, call($scheme-get-function)) !global;
-  }
 }
