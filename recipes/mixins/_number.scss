@@ -69,6 +69,18 @@
   }
 }
 
+//EOS composite pages must be created before this runs
+@mixin number_numberEOSExercises($exerciseTitleContent, $solutionTitleContent) {
+  .os-eos [data-type="exercise"] {
+    [data-type="problem"] {
+      @include utils_title($exerciseTitleContent);
+    }
+    [data-type="solution"] {
+      @include utils_title($exerciseTitleContent);
+    }
+  }
+}
+
 //EOC composite pages must be created before this runs
 @mixin number_numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
   .os-eoc [data-type="exercise"] {
@@ -81,7 +93,7 @@
   }
 }
 
-@mixin number_numberExamples($exampleTitleContent, $solutionTitleContent) {
+@mixin _numberExamples($exampleTitleContent, $solutionTitleContent) {
   [data-type="example"] {
     @include utils_title($exampleTitleContent, bExampleLabel);
     > [data-type="title"] {
@@ -104,6 +116,15 @@
     [data-type="solution"] {
       @include utils_title($solutionTitleContent, null, div, "solution-title");
     }
+  }
+}
+
+@mixin number_numberExamples($exampleTitleContent, $solutionTitleContent, $appendixTitleContent) {
+  [data-type="chapter"] {
+    @include _numberExamples($exampleTitleContent, $solutionTitleContent);
+  }
+  .appendix {
+    @include _numberExamples($appendixTitleContent, $solutionTitleContent);
   }
 }
 
@@ -384,7 +405,7 @@
     .reference::before {
       container: span;
       class: os-reference-number;
-      content: counter($citationCounter);
+      content: counter($citationCounter) ". ";
     }
   }
 }
