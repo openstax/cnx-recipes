@@ -187,14 +187,27 @@
           move-to: trash;
         }
       }
+      @if ($clusterBy == $CLUSTER_SECTION) {
+        [data-type="page"] {
+          > [data-type="document-title"] {
+            string-set: moduleTitleId attr(id);
+          }
+
+        }
+      }
       #{$sourceSelector} {
         > [data-type="title"] {
           /* Discard this Page-specific title because a chapter title is added when collated */
           move-to: trash;
         }
         @if ($clusterBy == $CLUSTER_SECTION) {
-          /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-          content: nodes(sectionHeaderNode) content();
+          &::before {
+            container: a;
+            attr-href: "#" string(moduleTitleId);
+            content: nodes(sectionHeaderNode);
+            move-to: sectionLink;
+          }
+          content: pending(sectionLink) content();
         }
         move-to: #{$className}-TOCOMPOSITE;
       }
@@ -674,7 +687,7 @@
       [data-type="chapter"] {
         .os-eoc.os-#{$className}-container {
           @if ($clusterBy == $CLUSTER_SECTION) {
-            @if childPages {
+            @if $childPages {
               @each $child in $childPages {
                 $cHasSolutions: map-get($child, hasSolutions);
                 $cClassName: map-get($child, className);
@@ -684,6 +697,7 @@
                 @include validate_typeOptional($cHasSolutions, bool);
                 @include validate_type($cClassName, string);
                 @include validate_type($cPageName, string);
+
                 @if $cHasSolutions {
                   .os-#{$cClassName}-container {
                     [data-type="solution"] {
