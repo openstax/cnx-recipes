@@ -376,7 +376,7 @@
 /*
   Media note
 
-  Contains a title "Media: Access Additional Online Resources".
+  Contains a title "Media".
 
   Markup: ./styleguide/page.note.media.xhtml-baked.html
 
@@ -1079,6 +1079,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.section-exercises {
+    move-to: section-exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.section-exercises > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"] [data-type="page"]::after {
+    container: div;
+    content: pending(section-exercises-TOCOMPOSITE);
+    class: "os-eos os-section-exercises-container";
+    data-uuid-key: ".section-exercises"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
     /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
     move-to: trash; }
@@ -1262,6 +1275,58 @@
 :pass(6) .introduction {
   content: pending(ChapterOutline) content(); }
 
+:pass(6) [data-type="chapter"], :pass(6) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(6) .os-eos [data-type="exercise"] {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(6) [data-type="chapter"], :pass(6) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(6) .os-eoc [data-type="exercise"] {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
 :pass(7) body {
   counter-reset: exerciseAll; }
 
@@ -1278,6 +1343,18 @@
     :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
+
+:pass(8) body {
+  counter-reset: chapter; }
+
+:pass(8) div[data-type="chapter"] {
+  counter-increment: chapter; }
+
+:pass(8) [data-type="chapter"], :pass(8) .appendix {
+  counter-reset: section; }
+
+:pass(8) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
 
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -1302,6 +1379,26 @@
   class: "os-solution-area";
   content: pending(note-try-header) pending(note-try-solutions-GETSECTION);
   move-to: note-solutions-GETCHAPTER; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container [data-type="solution"] {
+  move-to: section-exercises-solutions-GETSECTION; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: span;
+  content: "Section " counter(chapter) "." counter(section) " Exercises";
+  class: "os-title-label";
+  move-to: section-exercises-title; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: h3;
+  content: pending(section-exercises-title);
+  move-to: section-exercises-header; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(section-exercises-header) pending(section-exercises-solutions-GETSECTION);
+  move-to: solutions-GETCHAPTER; }
 
 :pass(8) [data-type="chapter"] .os-eoc.os-exercises-container .os-review-exercises-container [data-type="solution"] {
   move-to: review-exercises-solutions-GETSECTION; }
@@ -1389,6 +1486,12 @@
 :pass(9) div[data-type="chapter"] {
   counter-increment: chapter; }
 
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
 :pass(9) body {
   counter-reset: appendix; }
 
@@ -1400,26 +1503,6 @@
 
 :pass(9) .os-eoc [data-type="exercise"] {
   counter-increment: exercise; }
-
-:pass(9) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
-  container: span;
-  content: ". ";
-  class: os-divider; }
-
-:pass(9) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
-  container: span;
-  content: counter(exerciseMaybeInContent);
-  class: os-number; }
-
-:pass(9) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
-  container: span;
-  content: ". ";
-  class: os-divider; }
-
-:pass(9) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
-  container: span;
-  content: counter(exerciseMaybeInContent);
-  class: os-number; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: example; }
@@ -1481,6 +1564,10 @@
   string-set: target-label "Example " counter(appendix, upper-alpha) counter(example);
   string-set: target-label-nominative "Example " counter(appendix, upper-alpha) counter(example); }
 
+:pass(9) [data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
+  string-set: target-label "Exercise " counter(chapter) "." counter(exerciseMaybeInContent);
+  string-set: target-label-nominative "Exercise " counter(chapter) "." counter(exerciseMaybeInContent); }
+
 :pass(9) a.autogenerated-content {
   content: target-string(attr(href), target-label); }
   :pass(9) a.autogenerated-content[cmlnle|case="nominative"] {
@@ -1491,6 +1578,17 @@
 
 :pass(9) [data-type="composite-page"] {
   content: nodes(bookMetadata) content(); }
+
+:pass(9) .os-eos.os-section-exercises-container::before {
+  container: span;
+  content: "Section " counter(chapter) "." counter(section) " Exercises";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(9) .os-eos.os-section-exercises-container::before {
+  container: h3;
+  data-type: "document-title";
+  content: pending(h3-TITLECONTAINER); }
 
 :pass(9) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
@@ -1578,16 +1676,6 @@
 
 :pass(9) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
   counter-increment: exerciseMaybeInContent; }
-
-:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: ". ";
-  class: os-divider; }
-
-:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: counter(exerciseMaybeInContent);
-  class: os-number; }
 
 :pass(9) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
   container: span;
@@ -1965,6 +2053,21 @@
 :pass(10) :not(.os-table) > table::outside {
   container: div;
   class: os-table; }
+
+:pass(10) .stepwise {
+  counter-reset: stepwise-COUNTER;
+  class: os-stepwise; }
+  :pass(10) .stepwise > li::inside {
+    container: span;
+    class: "os-stepwise-content"; }
+  :pass(10) .stepwise > li::before {
+    container: span;
+    class: "os-stepwise-token";
+    counter-increment: stepwise-COUNTER;
+    content: "Step " counter(stepwise-COUNTER) ". ";
+    move-to: listBucket; }
+  :pass(10) .stepwise > li:deferred {
+    content: pending(listBucket) content(); }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
