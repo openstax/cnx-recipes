@@ -1097,8 +1097,9 @@
     move-to: trash; }
 
 :pass(3) [data-type="chapter"]::after {
-  class: "os-review-questions-container";
-  content: pending(review-questions-DESTINATION); }
+  class: "os-eoc os-review-questions-container";
+  content: pending(review-questions-DESTINATION);
+  data-type: composite-page; }
 
 :pass(3) [data-type="chapter"] section.thought-questions {
   move-to: thought-questions-DESTINATION; }
@@ -1106,8 +1107,9 @@
     move-to: trash; }
 
 :pass(3) [data-type="chapter"]::after {
-  class: "os-thought-questions-container";
-  content: pending(thought-questions-DESTINATION); }
+  class: "os-eoc os-thought-questions-container";
+  content: pending(thought-questions-DESTINATION);
+  data-type: composite-page; }
 
 :pass(3) [data-type="chapter"] section.figuring-for-yourself {
   move-to: figuring-for-yourself-DESTINATION; }
@@ -1115,8 +1117,9 @@
     move-to: trash; }
 
 :pass(3) [data-type="chapter"]::after {
-  class: "os-figuring-for-yourself-container";
-  content: pending(figuring-for-yourself-DESTINATION); }
+  class: "os-eoc os-figuring-for-yourself-container";
+  content: pending(figuring-for-yourself-DESTINATION);
+  data-type: composite-page; }
 
 :pass(4) [data-type="chapter"] .os-review-questions-container {
   move-to: composite-DESTINATION; }
@@ -1428,46 +1431,35 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-exercises-container::before {
-  container: span;
-  content: "Exercises";
-  class: os-text;
-  move-to: h2-TITLECONTAINER; }
-
-:pass(9) [data-type="composite-page"].os-eoc.os-exercises-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
-
-:pass(9) [data-type="composite-page"].os-eoc.os-exercises-container div.os-review-questions-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-review-questions-container::before {
   container: span;
   content: "Review Questions";
   class: os-text;
   move-to: h3-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-exercises-container div.os-review-questions-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-review-questions-container::before {
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-exercises-container div.os-thought-questions-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-thought-questions-container::before {
   container: span;
   content: "Thought Questions";
   class: os-text;
   move-to: h3-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-exercises-container div.os-thought-questions-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-thought-questions-container::before {
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-exercises-container div.os-figuring-for-yourself-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-figuring-for-yourself-container::before {
   container: span;
   content: "Figuring for Yourself";
   class: os-text;
   move-to: h3-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-exercises-container div.os-figuring-for-yourself-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-figuring-for-yourself-container::before {
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }
@@ -1905,31 +1897,38 @@
   move-to: trash; }
 
 :pass(11) body > div[data-type="page"],
-:pass(11) body > div[data-type="composite-page"] {
+:pass(11) body > div[data-type="composite-page"],
+:pass(11) body > div[data-type="composite-chapter"] {
   string-set: page-id attr(id); }
   :pass(11) body > div[data-type="page"] > [data-type='document-title'],
-  :pass(11) body > div[data-type="composite-page"] > [data-type='document-title'] {
+  :pass(11) body > div[data-type="composite-page"] > [data-type='document-title'],
+  :pass(11) body > div[data-type="composite-chapter"] > [data-type='document-title'] {
     node-set: pageTitle; }
   :pass(11) body > div[data-type="page"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'],
   :pass(11) body > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(11) body > div[data-type="composite-chapter"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
     string-set: page-shortid attr(data-value); }
   :pass(11) body > div[data-type="page"]::after,
-  :pass(11) body > div[data-type="composite-page"]::after {
+  :pass(11) body > div[data-type="composite-page"]::after,
+  :pass(11) body > div[data-type="composite-chapter"]::after {
     content: nodes(pageTitle);
     attr-href: "#" string(page-id);
     container: a;
     move-to: page-link; }
   :pass(11) body > div[data-type="page"]:not(.appendix)::after,
-  :pass(11) body > div[data-type="composite-page"]:not(.appendix)::after {
+  :pass(11) body > div[data-type="composite-page"]:not(.appendix)::after,
+  :pass(11) body > div[data-type="composite-chapter"]:not(.appendix)::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
   :pass(11) body > div[data-type="page"].appendix::after,
-  :pass(11) body > div[data-type="composite-page"].appendix::after {
+  :pass(11) body > div[data-type="composite-page"].appendix::after,
+  :pass(11) body > div[data-type="composite-chapter"].appendix::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);

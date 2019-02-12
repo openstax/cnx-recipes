@@ -2114,31 +2114,38 @@
   move-to: trash; }
 
 :pass(11) body > div[data-type="page"],
-:pass(11) body > div[data-type="composite-page"] {
+:pass(11) body > div[data-type="composite-page"],
+:pass(11) body > div[data-type="composite-chapter"] {
   string-set: page-id attr(id); }
   :pass(11) body > div[data-type="page"] > [data-type='document-title'],
-  :pass(11) body > div[data-type="composite-page"] > [data-type='document-title'] {
+  :pass(11) body > div[data-type="composite-page"] > [data-type='document-title'],
+  :pass(11) body > div[data-type="composite-chapter"] > [data-type='document-title'] {
     node-set: pageTitle; }
   :pass(11) body > div[data-type="page"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'],
   :pass(11) body > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(11) body > div[data-type="composite-chapter"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
     string-set: page-shortid attr(data-value); }
   :pass(11) body > div[data-type="page"]::after,
-  :pass(11) body > div[data-type="composite-page"]::after {
+  :pass(11) body > div[data-type="composite-page"]::after,
+  :pass(11) body > div[data-type="composite-chapter"]::after {
     content: nodes(pageTitle);
     attr-href: "#" string(page-id);
     container: a;
     move-to: page-link; }
   :pass(11) body > div[data-type="page"]:not(.appendix)::after,
-  :pass(11) body > div[data-type="composite-page"]:not(.appendix)::after {
+  :pass(11) body > div[data-type="composite-page"]:not(.appendix)::after,
+  :pass(11) body > div[data-type="composite-chapter"]:not(.appendix)::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
   :pass(11) body > div[data-type="page"].appendix::after,
-  :pass(11) body > div[data-type="composite-page"].appendix::after {
+  :pass(11) body > div[data-type="composite-page"].appendix::after,
+  :pass(11) body > div[data-type="composite-chapter"].appendix::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
