@@ -1117,20 +1117,22 @@
   string-set: ChapNum content(); }
 
 :pass(8) [data-type="chapter"]::after {
-  container: h2;
-  class: "os-title";
+  container: span;
+  class: "os-text";
   content: "Chapter " string(ChapNum);
-  move-to: chaptTitleEOB; }
+  move-to: eobCompositeTitlesContent; }
 
 :pass(8) [data-type="chapter"]::after {
-  class: os-chapter-area;
-  content: pending(chaptTitleEOB) pending(note-solutions-GETCHAPTER) pending(solutions-GETCHAPTER);
-  move-to: solutions-TOCOMPOSITE; }
-
-:pass(8) body::after {
-  content: pending(solutions-TOCOMPOSITE);
+  content: pending(eobCompositeTitlesContent) pending(note-solutions-GETCHAPTER) pending(solutions-GETCHAPTER);
   class: "os-eob os-solutions-container";
   data-type: "composite-page";
+  data-uuid-key: ".solutions" string(ChapNum);
+  move-to: solutions-TOCOMPOSITECHAPTER; }
+
+:pass(8) body::after {
+  content: pending(solutions-TOCOMPOSITECHAPTER);
+  class: "os-eob os-solutions-container";
+  data-type: "composite-chapter";
   data-uuid-key: ".solutions";
   /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
 
@@ -1325,16 +1327,24 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-page"].os-eob.os-solutions-container::before {
+:pass(9) [data-type="composite-chapter"].os-eob.os-solutions-container::before {
   container: span;
   content: "Answer Key";
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eob.os-solutions-container::before {
+:pass(9) [data-type="composite-chapter"].os-eob.os-solutions-container::before {
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
+
+:pass(9) [data-type="composite-chapter"].os-eob.os-solutions-container [data-type="composite-page"] > span.os-text {
+  move-to: CCcompositePageTitles; }
+
+:pass(9) [data-type="composite-chapter"].os-eob.os-solutions-container [data-type="composite-page"]:deferred::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(CCcompositePageTitles); }
 
 :pass(9) [data-type="composite-page"].os-eob.os-references-container::before {
   container: span;
