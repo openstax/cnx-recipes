@@ -2050,6 +2050,12 @@
 :pass(10) .os-index-link-separator:last-child {
   move-to: trash; }
 
+:pass(10) [data-type="composite-page"] > [data-type="composite-page"] > [data-type="title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="title"] {
+  string-set: Cdoc-title-TOMETADATA content(); }
+
+:pass(10) [data-type="composite-page"] > [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
+  content: string(Cdoc-title-TOMETADATA); }
+
 :pass(10) [data-type="composite-page"] > [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
 
@@ -2125,6 +2131,53 @@
     container: li;
     class: os-toc-counted-page; }
 
+:pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'], :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
+  node-set: CchapterTitle;
+  string-set: CchapTitle-id attr(id); }
+
+:pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+  string-set: Cchap-shortid attr(data-value); }
+
+:pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"]::after {
+  content: nodes(CchapterTitle);
+  attr-href: "#" string(CchapTitle-id);
+  container: a;
+  move-to: cc-link; }
+
+:pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"], :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] {
+  string-set: Cpage-id-chap attr(id); }
+  :pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='title'], :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='title'] {
+    node-set: CPageTitle; }
+  :pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+    string-set: Cpage-shortid attr(data-value); }
+  :pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after, :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: nodes(CPageTitle);
+    attr-href: "#" string(Cpage-shortid);
+    container: a;
+    move-to: CpageLink; }
+  :pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after, :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: pending(CpageLink);
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    move-to: Cpage-list; }
+
+:pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(Cpage-list);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(page-shortid);
+  container: ol;
+  move-to: cc-li; }
+
+:pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(cc-link) pending(cc-li);
+  container: li;
+  move-to: eoc-toc-pages; }
+
 :pass(11) body > div[data-type="chapter"] > [data-type='document-title'], :pass(11) body > div[data-type="composite-chapter"] > [data-type='document-title'] {
   node-set: chapterTitle;
   string-set: chapTitle-id attr(id); }
@@ -2199,48 +2252,49 @@
   container: a;
   move-to: eou-toc; }
 
-:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"] > [data-type='document-title'], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"] > [data-type='document-title'] {
+:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
   node-set: CchapterTitle;
   string-set: CchapTitle-id attr(id); }
 
-:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"] > [data-type='metadata']
-> [data-type='cnx-archive-shortid'], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"] > [data-type='metadata']
+:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
   string-set: Cchap-shortid attr(data-value); }
 
-:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"]::after {
+:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"]::after {
   content: nodes(CchapterTitle);
   attr-href: "#" string(CchapTitle-id);
   container: a;
   move-to: cc-link; }
 
-:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"] {
+:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] {
   string-set: Cpage-id-chap attr(id); }
-  :pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"] > [data-type='title'], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"] > [data-type='title'] {
+  :pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='title'], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='title'] {
     node-set: CPageTitle; }
-  :pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"] > [data-type='metadata']
-> [data-type='cnx-archive-shortid'], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"] > [data-type='metadata']
+  :pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
     string-set: Cpage-shortid attr(data-value); }
-  :pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"]::after {
+  :pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
     content: nodes(CPageTitle);
     attr-href: "#" string(Cpage-shortid);
     container: a;
-    move-to: CpageLinks; }
-  :pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"] > div[data-type="composite-page-waka"]::after {
-    content: pending(CpageLinks);
+    move-to: CpageLink; }
+  :pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: pending(CpageLink);
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
     container: li;
     move-to: Cpage-list; }
 
-:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"]::after {
+:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"]::after {
   content: pending(Cpage-list);
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(page-shortid);
-  class: "wiki";
   container: ol;
   move-to: cc-li; }
 
-:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] [data-type="composite-chapter"]::after {
+:pass(11) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type="composite-chapter"]::after, :pass(11) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type="composite-chapter"]::after {
   content: pending(cc-link) pending(cc-li);
   container: li;
   move-to: eoc-toc-pages; }
