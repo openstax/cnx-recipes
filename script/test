@@ -14,24 +14,8 @@ do_progress_quiet "Compiling CSS Style files" \
   ./script/build-styles
 
 # Test the styles (manual now, for feedback)
-book_baked="./data/intro-business-baked.xhtml"
-book_style="./styles/output/intro-business.css"
-book_test_min_snippet="./styles/books/intro-business/tests/min-snippet.xhtml"
-book_test_generic="./styles/books/intro-business/tests/generic.xhtml"
-
-# Create the coverage directory if it does not exist
-[[ -e "./coverage" ]] || try mkdir "./coverage/"
-
-# Rebuild the min-snippet file if the baked book exists (not on travis)
-if [[ -f ${book_baked} ]]; then
-  node "./node_modules/min-snippet/index.js" ${book_baked} ${book_test_min_snippet}
-fi
-
-do_progress "Generating CSS Style code coverage (min-snippet)" \
-  "$(npm bin)/css-coverage" --css ${book_style} --html ${book_test_min_snippet} --lcov "./coverage/intro-business-min-snippet.lcov"
-
-do_progress "Generating CSS Style code coverage (generic)" \
-  "$(npm bin)/css-coverage" --css ${book_style} --html ${book_test_generic} --lcov "./coverage/intro-business-generic.lcov"
+do_progress_quiet "Testing intro-business styles" \
+  ./script/test-style "intro-business"
 
 # Generate the CSS files for books
 do_progress_quiet "Compiling CSS Recipe files" \

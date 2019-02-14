@@ -1,0 +1,27 @@
+#!/bin/bash
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+book_name=$1
+
+book_baked="./data/${book_name}-baked.xhtml"
+book_style="./styles/output/${book_name}.css"
+book_test_dir="./styles/books/${book_name}/tests"
+book_test_min_snippet="${book_test_dir}/baked-min-snippet.xhtml"
+book_tests=$(cd "${book_test_dir}" && ls *html)
+
+
+# Create the coverage directory if it does not exist
+[[ -e "./coverage" ]] || try mkdir "./coverage/"
+
+# Rebuild the min-snippet file if the baked book exists (not on travis)
+if [[ -f ${book_baked} ]]; then
+  do_progress_quiet "Rebuilding min-snippet" \
+    node "./node_modules/min-snippet/index.js" ${book_baked} ${book_test_min_snippet}
+fi
+
+for test_name in ${book_tests}; do
+  # Report coverage of the `.scss` files _and_ the `.css` files
+  try "$(npm bin)/css-coverage" --css ${book_style} --html "${book_test_dir}/${test_name}" --lcov "./coverage/${book_name}-${test_name}-scss.lcov" --cover-declarations
+  try "$(npm bin)/css-coverage" --css ${book_style} --html "${book_test_dir}/${test_name}" --lcov "./coverage/${book_name}-${test_name}-css.lcov" --cover-declarations --ignore-source-map 
+done
