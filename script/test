@@ -13,6 +13,23 @@ do_progress_quiet "Linting and checking XML snippets" \
 do_progress_quiet "Compiling CSS Style files" \
   ./script/build-styles
 
+# Test the styles (manual now, for feedback)
+book_baked="./data/intro-business-baked.xhtml"
+book_style="./styles/output/intro-business.css"
+book_test_min_snippet="./styles/books/intro-business/tests/min-snippet.xhtml"
+book_test_generic="./styles/books/intro-business/tests/generic.xhtml"
+
+# Rebuild the min-snippet file if the baked book exists (not on travis)
+if [[ -f ${book_baked} ]]; then
+  node "./node_modules/min-snippet/index.js" ${book_baked} ${book_test_min_snippet}
+fi
+
+do_progress "Generating CSS Style code coverage (min-snippet)" \
+  "$(npm bin)/css-coverage" --css ${book_style} --html ${book_test_min_snippet} --lcov "./coverage/intro-business-min-snippet.lcov"
+
+do_progress "Generating CSS Style code coverage (generic)" \
+  "$(npm bin)/css-coverage" --css ${book_style} --html ${book_test_generic} --lcov "./coverage/intro-business-generic.lcov"
+
 # Generate the CSS files for books
 do_progress_quiet "Compiling CSS Recipe files" \
   ./script/compile-books
@@ -60,7 +77,7 @@ if [[ -n "$(command -v genhtml)" ]]; then
   coverage_files=$(find ./tmp/ -name "*.lcov")
   # shellcheck disable=SC2086
   do_progress_quiet "Generating HTML Coverage report at ./coverage/" \
-    genhtml --quiet --output ./coverage/ ${coverage_files}
+    genhtml --quiet --output ./coverage/ ${coverage_files} ./coverage/*.lcov
 fi
 
 # Validate the shell scripts
