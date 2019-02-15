@@ -22,7 +22,7 @@ do_progress_quiet "Looking for unused variables" \
   ./script/find-unused-vars
 
 # Make sure the docs and guides still generate
-do_progress_quiet "Generating sass docs" \
+do_progress_quiet "Building sass docs" \
   ./script/build-docs
 
 # Pull in the BOOK_CONFIGS and BOOK_NAMES
@@ -36,7 +36,7 @@ for recipe_name in "${RECIPE_NAMES[@]}"; do
     fi
   fi
 
-  do_progress_quiet "Generating styleguide for ${recipe_name}" \
+  do_progress_quiet "Building styleguide for ${recipe_name}" \
     ./script/build-guide "${recipe_name}"
 done
 
@@ -56,7 +56,7 @@ echo "</ul></body></html>" >> "${styleguide_dir}/index.html"
 if [[ -n "$(command -v genhtml)" ]]; then
   coverage_files=$(find ./tmp/ -name "*.lcov")
   # shellcheck disable=SC2086
-  do_progress_quiet "Generating HTML Coverage report at ./coverage/" \
+  do_progress_quiet "Building HTML Coverage report at ./coverage/" \
     genhtml --quiet --output ./coverage/ ${coverage_files}
 fi
 
