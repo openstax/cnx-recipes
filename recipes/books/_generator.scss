@@ -487,13 +487,8 @@
   @include count_countTables(table);
   @include count_countFigures(figure);
 
-  @if feature-enabled(preface-has-captions) {
-    @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr);
-    @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr);
-  } @else {
-    @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp);
-    @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp);
-  }
+  @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr);
+  @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr);
 
   @if feature-enabled(trash-abstract-in-preface) {
     @include modify_trash('.preface [data-type="abstract"]');
@@ -512,9 +507,8 @@
   }
   @include modify_trash('.os-index-link-separator:last-child');
   @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
-  @if feature-enabled(table-summaries-are-captions) {
-    @include modify_tableSummaryToParent();
-  }
+  @include modify_tableSummaryToParent();
+
   @if feature-enabled(trash-empty-table-captions) {
     @include trashEmptyElement ('table > caption');
   }
@@ -528,9 +522,7 @@
   //After: All metadata tasks are completed
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
-  @if feature-enabled(table-summaries-are-captions) {
-    @include modify_tableSummaryToSibling();
-  }
+  @include modify_tableSummaryToSibling();
 }
 :pass(12) {
   @include toc_putTOCElements();
