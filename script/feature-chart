@@ -1,14 +1,13 @@
-#!/usr/bin/env bash
+#! /bin/bash
 cd "$(dirname "$0")/.." || exit 111
-source ./books.txt || exit 1
-
+recipe_file_list=$(ls ./recipes/books/*/book.scss)
 rm ./FEATURES.md
-
 counter=0
 
-for recipe_name in "${RECIPE_NAMES[@]}"; do
-  echo -e "\$RECIPE_NAME: \"${recipe_name}\";\\n" | \
-    cat  - ./recipes/books/_feature.scss | \
+for recipe_file in $recipe_file_list; do
+  recipe_dir_name=$(dirname "${recipe_file}")
+  recipe_name=$(basename "${recipe_dir_name}")
+  (echo -e "\$RECIPE_NAME: \"${recipe_name}\";\\n"; cat ./recipes/books/_feature.scss) | \
     node ./js/check-feature-enabled/extract-chart.js $counter >> \
     ./FEATURES.md
   counter=$((counter+1))
