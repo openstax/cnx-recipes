@@ -20,5 +20,5 @@ PATH=/root/.rbenv/shims:/root/.rbenv/bin:/root/.nodenv/shims:/root/.nodenv/bin:$
 
 CI=true
 
-LOG_LEVEL=trace $(pwd)/resource-repo/script/setup
+$(pwd)/resource-repo/script/setup
 $(pwd)/resource-repo/script/test
