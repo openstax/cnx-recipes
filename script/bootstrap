@@ -209,7 +209,10 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
   # ensure yarn is installed (for installing JS packages)
   if [[ -f "./package.json" ]]; then
-    [[ $(command -v yarn) ]] || die "Install yarn by going to https://yarnpkg.com or adding it to Brewfile (macos)"
+    if [[ ! $(command -v yarn) ]]; then
+      do_progress "Installing yarn but you can also go to https://yarnpkg.com or adding it to Brewfile (macos)" \
+        npm install --global yarn
+    fi
   fi
 
   # Note: Skip rbenv for Travis because it already has ruby
