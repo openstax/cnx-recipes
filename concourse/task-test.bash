@@ -6,7 +6,7 @@ apt-get install libxml2-utils xsltproc
 
 # Install pyenv
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-export PATH="/root/.pyenv/bin:$PATH"
+PATH="/root/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
@@ -19,5 +19,5 @@ git clone https://github.com/nodenv/nodenv.git /root/.nodenv && \
 PATH=/root/.rbenv/shims:/root/.rbenv/bin:/root/.nodenv/shims:/root/.nodenv/bin:$PATH
 
 
-$(pwd)/resource-repo/script/setup
+LOG_LEVEL=trace $(pwd)/resource-repo/script/setup
 $(pwd)/resource-repo/script/test
