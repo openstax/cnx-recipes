@@ -96,7 +96,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
   fi
 
   # Python: Install & Activate python virtualenv
-  if [[ ! "${CI}" = "true" ]] && [[ -f "./setup.py" || -f "./requirements.txt" ]]; then
+  if [[ ! "${TRAVIS}" = "true" ]] && [[ -f "./setup.py" || -f "./requirements.txt" ]]; then
     # Only install & activate the virtualenv if not already in one
     if [[ -z "${VIRTUAL_ENV}" ]]; then
 
@@ -158,7 +158,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
   # Javascript environment
   # Set up the correct version of node (Travis automatically does this)
-  if [[ ! "${CI}" = "true" ]]; then
+  if [[ ! "${TRAVIS}" = "true" ]]; then
     # Move from using .nvmrc to .node-version
     if [[ -f "./.nvmrc" ]]; then
       _say "${c_red}DEPRECATED:${c_none} using .nvmrc file but renaming it to be .node-version"
@@ -216,7 +216,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
   fi
 
   # Note: Skip rbenv for Travis because it already has ruby
-  if [[ ! "${CI}" = "true" ]] && [[ -f ".ruby-version" ]]; then
+  if [[ ! "${TRAVIS}" = "true" ]] && [[ -f ".ruby-version" ]]; then
     if [[ -n $(command -v rbenv) ]]; then
       if [[ -z "$(rbenv version-name 2>/dev/null)" ]]; then
         do_progress_quiet "Installing Ruby (see ./.ruby-version)" \
