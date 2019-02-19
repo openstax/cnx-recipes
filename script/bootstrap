@@ -107,8 +107,8 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       python_version="$(< .python-version)"
       virtualenv_command="virtualenv"
 
-      # macOS needs a little extra love
-      if [[ "$(uname -s)" = "Darwin" ]]; then
+      # macOS (& Concourse) needs a little extra love
+      if [[ "$(uname -s)" = "Darwin" || "${CI}" = "true" ]]; then
         # Install the correct python version if it is not installed yet
         if [[ ! $(pyenv which python) ]]; then
           do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
