@@ -6,7 +6,7 @@ apt-get install libxml2-utils xsltproc
 
 # Install pyenv
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-PATH="/root/.pyenv/bin:$PATH"
+export PATH="/root/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
