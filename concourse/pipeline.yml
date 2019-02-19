@@ -1,0 +1,15 @@
+---
+resources:
+- name: resource-repo
+  type: git
+  source:
+    uri: https://github.com/openstax/cnx-recipes.git
+    branch: concourse
+
+jobs:
+- name: start-docker
+  public: true
+  plan:
+  - get: resource-repo
+  - task: run-tests
+    file: resource-repo/concourse/task-tests.yml
