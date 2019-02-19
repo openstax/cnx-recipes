@@ -202,13 +202,18 @@
           move-to: trash;
         }
         @if ($clusterBy == $CLUSTER_SECTION) {
-          &::before {
-            container: a;
-            attr-href: "#" string(moduleTitleId);
-            content: nodes(sectionHeaderNode);
-            move-to: sectionLink;
+          @if feature-enabled(EOCsection-links) {
+            &::before {
+              container: a;
+              attr-href: "#" string(moduleTitleId);
+              content: nodes(sectionHeaderNode);
+              move-to: sectionLink;
+            }
+            content: pending(sectionLink) content();
+          } @else {
+             /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+             content: nodes(sectionHeaderNode) content();
           }
-          content: pending(sectionLink) content();
         }
         move-to: #{$className}-TOCOMPOSITE;
       }
