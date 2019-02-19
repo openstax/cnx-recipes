@@ -28,20 +28,6 @@
   @return $DEFAULT_COLOR_SCHEME;
 }
 
-// Quick get function from the color-theme
-@function color-scheme($name) {
-  @if map-has-key($color-scheme, $name) {
-    @return map-get($color-scheme, $name);
-  }
-  @error "Unknown color scheme designation: #{$name}";
-}
-
-$color-scheme-manifest: ();
-@mixin color-scheme-merge($function) {
-  $color-scheme-manifest: append($color-scheme-manifest, $function) !global;
-@include update-color-scheme-config();
-}
-
 // Ensure all default keys are available from $color-scheme and color-scheme()
 $color-scheme: default-color-scheme() !default;
 
@@ -50,4 +36,19 @@ $color-scheme: default-color-scheme() !default;
   @each $scheme-get-function in $color-scheme-manifest {
     $color-scheme: map-merge($color-scheme, call($scheme-get-function)) !global;
   }
+}
+
+// Retrieves color value from color-scheme
+@function color-scheme($name) {
+  @if map-has-key($color-scheme, $name) {
+    @return map-get($color-scheme, $name);
+  }
+  @error "Unknown color scheme designation: #{$name}";
+}
+
+$color-scheme-manifest: (); //initalize map
+
+@mixin color-scheme-merge($function) {
+  $color-scheme-manifest: append($color-scheme-manifest, $function) !global;
+@include update-color-scheme-config();
 }

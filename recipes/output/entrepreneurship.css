@@ -490,6 +490,12 @@
   container: div;
   content: pending(bTitleLabel) content(); }
 
+:pass(1) [data-type="exercise"] [data-type="problem"]::inside {
+  class: "os-problem-container"; }
+
+:pass(1) [data-type="exercise"] [data-type="solution"]::inside {
+  class: "os-solution-container"; }
+
 :pass(1) ol[data-label]:not([data-label=""])::after,
 :pass(1) ul[data-label]:not([data-label=""])::after {
   container: div;
@@ -1187,12 +1193,12 @@
 
 :pass(7) [data-type="exercise"].os-hasSolution {
   string-set: exerciseId attr(id); }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
+  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
     container: a;
     attr-href: "#" string(exerciseId) "-solution"; }
   :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] {
     attr-id: string(exerciseId) "-solution"; }
-    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
+    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
 
@@ -1262,6 +1268,12 @@
 :pass(9) div.appendix {
   counter-increment: appendix; }
 
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
 :pass(9) [data-type="composite-page"], :pass(9) .appendix {
   counter-reset: exercise; }
 
@@ -1271,7 +1283,7 @@
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: example; }
 
-:pass(9) div[data-type="chapter"] [data-type="example"] {
+:pass(9) div[data-type="chapter"] [data-type="example"], :pass(9) .appendix [data-type="example"] {
   counter-increment: example; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
@@ -1788,6 +1800,9 @@
 :pass(9) .preface > figure.unnumbered figcaption {
   move-to: trash; }
 
+:pass(9) .preface [data-type="abstract"] {
+  move-to: trash; }
+
 :pass(9) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -1854,6 +1869,13 @@
 :pass(10) div.os-table .os-caption-container {
   string-set: tableSummary content(); }
 
+:pass(10) table > caption:empty {
+  move-to: trash; }
+
+:pass(10) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
+
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
   move-to: trash; }
@@ -1878,13 +1900,21 @@
     attr-href: "#" string(page-id);
     container: a;
     move-to: page-link; }
-  :pass(11) body > div[data-type="page"]::after,
-  :pass(11) body > div[data-type="composite-page"]::after {
+  :pass(11) body > div[data-type="page"]:not(.appendix)::after,
+  :pass(11) body > div[data-type="composite-page"]:not(.appendix)::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
+  :pass(11) body > div[data-type="page"].appendix::after,
+  :pass(11) body > div[data-type="composite-page"].appendix::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-counted-page; }
 
 :pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'], :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
   node-set: CchapterTitle;
