@@ -44,8 +44,8 @@ This will run the linter, generate sassdocs, and generate the guides to verify t
 
 Recipe documentation can be found at [./recipes/](./recipes/) and an [example config file](./recipes/books/_example/).
 
-1. run `./script/generate-docs` to generate the SASS Docs
-1. run `./script/generate-guide statistics` to generate the HTML Guide for a book
+1. run `./script/build-docs` to generate the SASS Docs
+1. run `./script/build-guide statistics` to generate the HTML Guide for a book
 1. open the generated file in your browser
 
 ## CSS Coverage
@@ -78,7 +78,7 @@ By checking the code coverage, whenever a new feature in a book is added, a corr
 To rebake a book on a development instance.
 To do that, you will need to upload a CSS recipe file, trigger a rebake, and then clear the cache.
 
-1. run `./script/compile-books` to generate the recipes CSS file
+1. run `./script/build-recipes` to generate the recipes CSS file
 1. run `./script/bake-book-remote ${BOOK_NAME} ${VERSION}` to upload, trigger, and clear the cache
 
    - `${BOOK_NAME]` is the book’s name in the book list of `/books.txt`
@@ -136,7 +136,7 @@ To do this, just replace every occurrence of `./script/diff-book ${BOOK_NAME}` (
 To update the Documentation in the gh-pages branch:
 
 1. `git checkout master`
-1. `./script/generate-and-update-gh-pages`
+1. `./script/build-and-update-gh-pages`
 
 **Note:** This will push changes if successful
 
