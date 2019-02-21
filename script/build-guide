@@ -25,7 +25,7 @@ sass_bin="$(npm bin)/node-sass"
 if [[ -z "${baked_or_prepared_suffix}" ]]; then
   baked_or_prepared_suffix="baked"
 else
-  _say "INFO: Generating -${baked_or_prepared_suffix}.xhtml files instead of -baked.xhtml files"
+  _say "INFO: Building -${baked_or_prepared_suffix}.xhtml files instead of -baked.xhtml files"
 fi
 
 
@@ -35,7 +35,7 @@ do_progress_quiet "Compiling the guide.scss file for ${recipe_name}" \
   "${sass_bin}" --source-map true "${sass_file}" "${css_file}"
 
 
-progress "Generating the baked example HTML files"
+progress "Building the baked example HTML files"
 
 # Create a temporary directory which contains the recipes/mixins/ and recipes/${recipe_name} directories.
 # This is because we want the styleguide to contain docs of all the common/ elements
@@ -111,7 +111,7 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
 
   # The CSS path is relative to the styleguide directory, hence `./guide.css`
   # Exclude parsing the output/*.css files by setting the --mask
-  do_progress_quiet "Generating the style guide" \
+  do_progress_quiet "Building the style guide" \
     "$(npm bin)/kss-node" --verbose \
     --template ./js/openstax-kss-builder \
     --homepage "${guideHomepageFile}" \
@@ -131,7 +131,7 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
   if [[ -n "$(command -v genhtml)" ]]; then
     coverage_files=$(find "${tempRecipeDir}" -name '*.lcov')
     # shellcheck disable=SC2086
-    do_progress_quiet "Generating HTML coverage report" \
+    do_progress_quiet "Building HTML coverage report" \
       genhtml --quiet --output ./coverage/ ${coverage_files}
   fi
   if [[ "${CI}" = "true" ]]; then
@@ -140,5 +140,5 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
   _say "Guide is available at ${styleguideDir}/index.html . You can open it in a browser"
 
 else
-  _say "INFO: Skipping actual styleguide generation because the additional arg '${baked_or_prepared_suffix}' was provided (probably for diff-guide-prepare)"
+  _say "INFO: Skipping actual styleguide build because the additional arg '${baked_or_prepared_suffix}' was provided (probably for diff-guide-prepare)"
 fi

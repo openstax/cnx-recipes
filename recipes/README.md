@@ -7,7 +7,7 @@ The generated CSS is stored in the [./output](./output) directory.
 ```sh
 ./script/fetch-html ${book_name}     # Stores result in `./data/`
 ./script/bake-book ${book_name}      # Uses the results of `./script/fetch-html`
-./script/generate-guide ${book_name}
+./script/build-guide ${book_name}
 ```
 
 
