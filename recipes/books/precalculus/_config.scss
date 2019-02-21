@@ -69,7 +69,10 @@ $Config_ChapterCompositePages: (
   (className: "practice-test", clusterBy: $CLUSTER_NONE, name: "Practice Test"),
 );
 
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent, );
+$_tryItTitleContent: (os-title-label: "Try It ", os-number:"#" counter(try), os-divider: " ");
+$_tryItSolutionTitleContent: (os-number: counter(try), os-divider: " ");
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
 
 $Config_BookCompositePages: (
   (className: "solution",    clusterBy: $CLUSTER_CHAPTER, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
@@ -120,18 +123,19 @@ $Config_Notes: (
   (className: 'howto', labelText: "How To"),
   (className: 'qa', labelText: "QA"),
   (className: 'try', labelText: "Try"),
+  (className: 'try', moveSolutionTo: $AREA_EOB, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
   (className: 'media', labelText: "Media"),
 
 );
 
 /*==========================================================
-  PRECALCULUS TITLING CONTENT
+  PRECALCULUS CONFIG
 ==========================================================*/
 
 $Config_SetTableCaption: (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: false, hasTopTitle: false);
 $Config_PartType_Table_CaptionContent: (os-title-label: "Table ", os-number: counter(table), os-divider: ' ');
 $Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: counter(figure), os-divider: ' ');
 
-/*==========================================================
-  PRECALCULUS CONFIG
-==========================================================*/
+$Config_UnnumberedExercises: (
+  (contextSelector: '.try', childSelector: '[data-type="exercise"]'),
+);
