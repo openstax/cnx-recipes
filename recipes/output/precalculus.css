@@ -390,9 +390,6 @@
   Style guide: page.note.media
 */
 /*==========================================================
-  PRECALCULUS TITLING CONTENT
-==========================================================*/
-/*==========================================================
   PRECALCULUS CONFIG
 ==========================================================*/
 @namespace xhtml "http://www.w3.org/1999/xhtml";
@@ -682,6 +679,54 @@
   class: "os-title";
   attr-data-type: "title"; }
 
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].try > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].try > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].try::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].try:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].try:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
 :pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media > div[data-type="title"]::deferred {
   container: h4;
   class: "os-subtitle";
@@ -877,6 +922,52 @@
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
 
+:pass(3) [data-type="chapter"], :pass(3) .appendix {
+  counter-reset: try; }
+
+:pass(3) [data-type="note"].try {
+  counter-increment: try; }
+
+:pass(3) [data-type="note"].try::before {
+  container: span;
+  content: "Try It ";
+  class: os-title-label;
+  move-to: bNoteLabel-try; }
+
+:pass(3) [data-type="note"].try::before {
+  container: span;
+  content: "#" counter(try);
+  class: os-number;
+  move-to: bNoteLabel-try; }
+
+:pass(3) [data-type="note"].try::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bNoteLabel-try; }
+
+:pass(3) [data-type="note"].try > [data-type="title"] {
+  move-to: trash; }
+
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: counter(try);
+  class: os-number; }
+
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: " ";
+  class: os-divider; }
+
+:pass(3) [data-type="note"].try::after {
+  container: div;
+  content: pending(bNoteLabel-try);
+  class: "os-title";
+  move-to: bNoteHeader; }
+
+:pass(3) [data-type="note"].try:deferred {
+  content: pending(bNoteHeader) content(); }
+
 :pass(3) body {
   counter-reset: term; }
 
@@ -982,6 +1073,9 @@
     class: "os-eoc os-practice-test-container";
     data-type: "composite-page";
     data-uuid-key: ".practice-test"; }
+
+:pass(3) .try [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
 
 :pass(3) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1091,6 +1185,26 @@
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
+
+:pass(8) [data-type="chapter"] [data-type="note"].try [data-type="solution"] {
+  move-to: note-try-solution-GETSECTION; }
+
+:pass(8) [data-type="chapter"]::before {
+  container: span;
+  class: "os-title-label";
+  content: "Try It ";
+  move-to: note-try-title; }
+
+:pass(8) [data-type="chapter"]::before {
+  container: h3;
+  content: pending(note-try-title);
+  move-to: note-try-header; }
+
+:pass(8) [data-type="chapter"]::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(note-try-header) pending(note-try-solution-GETSECTION);
+  move-to: note-solution-GETCHAPTER; }
 
 :pass(8) [data-type="chapter"] .os-eoc.os-review-exercises-container [data-type="solution"] {
   move-to: solution-GETCHAPTER; }
