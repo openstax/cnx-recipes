@@ -64,14 +64,14 @@ $Config_ChapterCompositePages: (
   (className: "glossary", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
   (className: "key-equations", clusterBy: $CLUSTER_NONE, name: "Key Equations"),
   (className: "key-concepts", clusterBy: $CLUSTER_NONE, name: "Key Concepts"),
-  (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
-  (className: "practice-test", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
+  (className: "review-exercises", clusterBy: $CLUSTER_SECTION, hasSolutions: true, name: "Review Exercises"),
+  (className: "practice-test", clusterBy: $CLUSTER_SECTION, hasSolutions: true, name: "Practice Test"),
 );
 
 $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent, );
 
 $Config_BookCompositePages: (
-  (className: "solution", clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (className: "solution", clusterBy: $CLUSTER_CHAPTER, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
   (className: "index", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
 );
 
@@ -133,6 +133,14 @@ $_exampleTitleContent: (os-title-label: "Example ", os-number: counter(example),
 $_exampleSolutionTitleContent: (os-title-label: "Solution");
 $Config_PartType_Example: (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
 
+$Config_UnnumberedExercises: (
+  (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+);
+
 /*==========================================================
   PRECALCULUS CONFIG
 ==========================================================*/
+
+$Config_TargetLabels: append($Config_TargetLabels,
+  (selector: '[data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered)', labelText: "Exercise " counter(chapter) "." counter(exerciseMaybeInContent))
+);
