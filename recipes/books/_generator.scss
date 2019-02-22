@@ -190,7 +190,7 @@
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
 
     @include count_countExamples(example);
-    @if feature-enabled(appendix-has-numbered-examples) {
+    @if release-flag-enabled(appendix-has-numbered-examples) {
       $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
       @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
     } @else {
@@ -376,7 +376,7 @@
   }
 
   // This is mostly copy/pasta from above
-  @if not feature-enabled(numbering-continuously) {
+  @if not release-flag-enabled(numbering-continuously) {
     @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
       $resetAt:       map-get($Config_PartType_Exercise, resetAt);
       $numberAt:      map-get($Config_PartType_Exercise, numberAt);
@@ -430,7 +430,7 @@
   @include count_countChapters(chapter);
   @if $Config_SectionCompositePages != () { @include count_countSections(section); }
   @include count_countAppendices(appendix);
-  @if feature-enabled(increment-section-counter-for-lo) {
+  @if release-flag-enabled(increment-section-counter-for-lo) {
     @include count_countSections(section);
   };
 
@@ -490,7 +490,7 @@
   @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr);
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr);
 
-  @if feature-enabled(trash-abstract-in-preface) {
+  @if release-flag-enabled(trash-abstract-in-preface) {
     @include modify_trash('.preface [data-type="abstract"]');
   }
 
@@ -509,10 +509,10 @@
   @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
   @include modify_tableSummaryToParent();
 
-  @if feature-enabled(trash-empty-table-captions) {
+  @if release-flag-enabled(trash-empty-table-captions) {
     @include trashEmptyElement ('table > caption');
   }
-  @if feature-enabled(add-os-table-class) {
+  @if release-flag-enabled(add-os-table-class) {
     @include modify_addTableClass();
   }
   @include modify_lists($Config_CustomList);

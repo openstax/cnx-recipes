@@ -2,14 +2,15 @@
 cd "$(dirname "$0")/.." || exit 111
 source ./books.txt || exit 1
 
-rm ./FEATURES.md
+output_file="./RELEASE_FLAGS.md"
+[[ -f ${output_file} ]] && rm ${output_file}
 
 counter=0
 
 for recipe_name in "${RECIPE_NAMES[@]}"; do
   echo -e "\$RECIPE_NAME: \"${recipe_name}\";\\n" | \
-    cat  - ./recipes/books/_feature.scss | \
-    node ./js/check-feature-enabled/extract-chart.js $counter >> \
-    ./FEATURES.md
+    cat  - ./recipes/books/_release.scss | \
+    node ./js/check-release-flag-enabled/extract-chart.js $counter >> \
+    ${output_file}
   counter=$((counter+1))
 done
