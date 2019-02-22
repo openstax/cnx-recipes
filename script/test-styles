@@ -6,15 +6,20 @@ source ./script/bootstrap || exit 111
 source ./books.txt || exit 1
 
 if [ ! "${arg1}" == "" ]; then
-  STYLE_NAMES=("${arg1}")
+  if [[ "${arg2}" ]]; then
+    STYLE_NAMES=("${arg1} ${arg2}")
+  else
+    die "either 0 or 2 arguments (style name and book name) are required."
+  fi
 fi
 
-for style_name in "${STYLE_NAMES[@]}"; do
+for style_config in "${STYLE_NAMES[@]}"; do
+  read -r style_name book_name <<< "${style_config}"
 
-  book_baked="./data/${style_name}-baked.xhtml"
+  book_baked="./data/${book_name}-baked.xhtml"
   book_style="./styles/output/${style_name}.css"
   book_test_dir="./styles/books/${style_name}/tests"
-  book_test_min_snippet="${book_test_dir}/baked-min-snippet.xhtml"
+  book_test_min_snippet="${book_test_dir}/baked-min-snippet-${book_name}.xhtml"
   book_tests=$(cd "${book_test_dir}" && ls -- *html)
 
 
