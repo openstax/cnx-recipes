@@ -5,25 +5,23 @@ source ./script/bootstrap || exit 111
 arg1=$1
 
 styles_root="./styles/books"
-# By default, compile all the books (but not the '__book-template')
-book_paths=$(ls -d ${styles_root}/*/)
+
+# Pull in the BOOK_CONFIGS and STYLE_NAMES
+source ./books.txt || exit 1
+
+if [ ! "${arg1}" == "" ]; then
+  STYLE_NAMES=("${arg1}")
+fi
 
 sass_bin="$(npm bin)/sass"
 output_dir="./styles/output"
 
-if [ ! "${arg1}" == "" ]; then
-  book_paths="${styles_root}/${arg1}"
-fi
+for style_name in "${STYLE_NAMES[@]}"; do
 
-for book_path in ${book_paths}; do
+  sass_file="${styles_root}/${style_name}/book.scss"
+  css_file="${output_dir}/${style_name}.css"
 
-  book_name=$(basename "${book_path}")
-  if [[ $book_name != "__book-template__" ]]; then
-
-    sass_file="${styles_root}/${book_name}/book.scss"
-    css_file="${output_dir}/${book_name}.css"
-
-    do_progress "Generating ${css_file}" \
-      "${sass_bin}" --source-map "${sass_file}" "${css_file}"
-  fi
+  do_progress "Generating ${css_file}" \
+    "${sass_bin}" --source-map "${sass_file}" "${css_file}"
+  
 done
