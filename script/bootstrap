@@ -96,7 +96,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
   fi
 
   # Python: Install & Activate python virtualenv
-  if [[ ! "${TRAVIS}" = "true" ]] && [[ -f "./setup.py" || -f "./requirements.txt" ]]; then
+  if [[ ! "${CI}" = "true" ]] && [[ -f "./setup.py" || -f "./requirements.txt" ]]; then
     # Only install & activate the virtualenv if not already in one
     if [[ -z "${VIRTUAL_ENV}" ]]; then
 
@@ -107,15 +107,18 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       python_version="$(< .python-version)"
       virtualenv_command="virtualenv"
 
-      # Install the correct python version if it is not installed yet
-      if [[ ! $(pyenv which python) ]]; then
-        do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
-          pyenv install "${python_version}"
-      fi
-      # Ensure pyenv is initialized
-      eval "$(pyenv init -)"
+      # macOS needs a little extra love
+      if [[ "$(uname -s)" = "Darwin" ]]; then
+        # Install the correct python version if it is not installed yet
+        if [[ ! $(pyenv which python) ]]; then
+          do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
+            pyenv install "${python_version}"
+        fi
+        # Ensure pyenv is initialized
+        eval "$(pyenv init -)"
 
-      virtualenv_command="pyenv exec virtualenv"
+        virtualenv_command="pyenv exec virtualenv"
+      fi
 
       # Install pip if it is not available
       if [[ ! $(command -v pip) ]]; then
@@ -155,7 +158,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
   # Javascript environment
   # Set up the correct version of node (Travis automatically does this)
-  if [[ ! "${TRAVIS}" = "true" ]]; then
+  if [[ ! "${CI}" = "true" ]]; then
     # Move from using .nvmrc to .node-version
     if [[ -f "./.nvmrc" ]]; then
       _say "${c_red}DEPRECATED:${c_none} using .nvmrc file but renaming it to be .node-version"
@@ -206,14 +209,11 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
   # ensure yarn is installed (for installing JS packages)
   if [[ -f "./package.json" ]]; then
-    if [[ ! $(command -v yarn) ]]; then
-      do_progress "Installing yarn but you can also go to https://yarnpkg.com or adding it to Brewfile (macos)" \
-        npm install --global yarn
-    fi
+    [[ $(command -v yarn) ]] || die "Install yarn by going to https://yarnpkg.com or adding it to Brewfile (macos)"
   fi
 
   # Note: Skip rbenv for Travis because it already has ruby
-  if [[ ! "${TRAVIS}" = "true" ]] && [[ -f ".ruby-version" ]]; then
+  if [[ ! "${CI}" = "true" ]] && [[ -f ".ruby-version" ]]; then
     if [[ -n $(command -v rbenv) ]]; then
       if [[ -z "$(rbenv version-name 2>/dev/null)" ]]; then
         do_progress_quiet "Installing Ruby (see ./.ruby-version)" \
