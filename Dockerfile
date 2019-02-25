@@ -28,11 +28,11 @@ RUN apt-get install \
 
 # Install python first (since it changes infrequently)
 COPY .python-version ./
-RUN pyenv install "$(< .python-version)"
+RUN pyenv install --skip-existing "$(< .python-version)"
 
 # Install node (since it changes less frequently than code)
 COPY .node-version ./
-RUN nodenv install "$(< .node-version)"
+RUN nodenv install --skip-existing "$(< .node-version)"
 
 # Install yarn for the specific version of node we are using
 RUN nodenv local "$(< .node-version)"
