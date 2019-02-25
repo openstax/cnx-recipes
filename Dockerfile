@@ -17,7 +17,7 @@
 ## for details.
 ##
 
-FROM openstax/ci-image:latest as baseline
+FROM openstax/ci-image:latest as build-os-dependencies
 WORKDIR /code
 
 RUN apt-get update
@@ -38,6 +38,7 @@ RUN nodenv install "$(< .node-version)"
 RUN nodenv local "$(< .node-version)"
 RUN nodenv exec npm install --global yarn
 
+FROM build-os-dependencies as build-dependencies
 
 # Install dependencies
 COPY \
@@ -46,15 +47,16 @@ COPY \
     yarn.lock \
     ./
 
-COPY ./script/ ./script/
+COPY \
+    ./script/bootstrap \
+    ./script/setup \
+    ./script/_bootstrap.sh \
+    ./script/_setup.sh \
+    ./script/
 
 RUN ./script/setup
 
+FROM build-dependencies as code
 
-
-COPY ./books.txt ./books.txt
-COPY ./styles ./styles
-COPY ./recipes ./recipes
-COPY ./tests ./tests
-COPY ./cnxrecipes ./cnxrecipes
-COPY ./js ./js
+# Install code
+COPY . ./
