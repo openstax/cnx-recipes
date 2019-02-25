@@ -1,26 +1,31 @@
 #!/bin/bash
 
-apt-get update
-apt-get install libxml2-utils xsltproc
-
-root_dir=$(pwd)
-
-# so pyenv uses .python-version (& nodenv)
-cd "${root_dir}"/resource-repo/ || exit 111
-
-# Temp: ensure pyenv is initialized
-eval "$(pyenv init -)"
-
-npm install --global yarn
-
-./script/setup
-./script/test
+echo "TODO: Sending styleguides for commit '$(cat .git/ref)'"
 
 # Host the built styleguide
 key_path="${root_dir}"/scp-package-secret-key
 echo "${SCP_PACKAGE_SECRET_KEY}" > "${key_path}"
 
-echo "TODO: Sending styleguides for commit $(cat .git/ref)"
+
+# apt-get update
+# apt-get install libxml2-utils xsltproc
+
+# root_dir=$(pwd)
+
+# # so pyenv uses .python-version (& nodenv)
+# cd "${root_dir}"/resource-repo/ || exit 111
+
+# # Temp: ensure pyenv is initialized
+# eval "$(pyenv init -)"
+
+# npm install --global yarn
+
+# ./script/setup
+# ./script/test
+
+# # Host the built styleguide
+# key_path="${root_dir}"/scp-package-secret-key
+# echo "${SCP_PACKAGE_SECRET_KEY}" > "${key_path}"
 
 # remote_user="rundeck"
 # remote_host="packages.cnx.org"
