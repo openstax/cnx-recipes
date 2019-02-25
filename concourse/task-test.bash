@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd "$(pwd)"/resource-repo/ || exit 111
 echo "TODO: Sending styleguides for commit '$(cat .git/ref)'"
 
 # Host the built styleguide
