@@ -3,7 +3,8 @@
 apt-get update
 apt-get install libxml2-utils xsltproc
 
-cd $(pwd)/resource-repo/ && npm install --global yarn
+root_dir=$(pwd)
+cd "${root_dir}"/resource-repo/ && npm install --global yarn
 
-$(pwd)/resource-repo/script/setup
-$(pwd)/resource-repo/script/test
+"${root_dir}"/resource-repo/script/setup
+"${root_dir}"/resource-repo/script/test
