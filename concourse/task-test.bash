@@ -3,8 +3,10 @@
 apt-get update
 apt-get install libxml2-utils xsltproc
 
-root_dir=$(pwd)
-cd "${root_dir}"/resource-repo/ && npm install --global yarn
+# so pyenv uses .python-version (& nodenv)
+cd "$(pwd)"/resource-repo/ || exit 111
 
-"${root_dir}"/resource-repo/script/setup
-"${root_dir}"/resource-repo/script/test
+npm install --global yarn
+
+./script/setup
+./script/test
