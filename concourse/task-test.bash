@@ -20,9 +20,10 @@ npm install --global yarn
 key_path=$(mktemp)
 echo "${SCP_PACKAGE_SECRET_KEY}" > "${key_path}"
 
+commit_sha=$(cat .git/ref)
 remote_user="rundeck"
 remote_host="packages.cnx.org"
-remote_dir="/var/www/repo/cnx-rulesets/$(cat .git/ref)/"
+remote_dir="/var/www/repo/cnx-rulesets/${commit_sha}/"
 
 local_styleguide_dir="./styleguide/"
 
@@ -31,3 +32,5 @@ ssh -o "StrictHostKeyChecking no" -o UserKnownHostsFile=/dev/null -i "${key_path
 
 # shellcheck disable=SC2029
 rsync -avp -e "ssh -o 'StrictHostKeyChecking no' -o UserKnownHostsFile=/dev/null -i '${key_path}' -l${remote_user}" "${local_styleguide_dir}" "${remote_host}:${remote_dir}" || exit 6
+
+echo "Done. See https://${remote_host}/cnx-rulesets/${commit_sha}/"
