@@ -30,4 +30,4 @@ local_styleguide_dir="./styleguide/"
 ssh -o "StrictHostKeyChecking no" -o UserKnownHostsFile=/dev/null -i "${key_path}" ${remote_user}@${remote_host} "mkdir -p '${remote_dir}'" || exit 5
 
 # shellcheck disable=SC2029
-rsync -avp -e "ssh -o 'StrictHostKeyChecking no' -o UserKnownHostsFile=/dev/null -i '${key_path} '-l${remote_user}" "${local_styleguide_dir}" "${remote_host}:${remote_dir}" || exit 6
+rsync -avp -e "ssh -o 'StrictHostKeyChecking no' -o UserKnownHostsFile=/dev/null -i '${key_path}' -l${remote_user}" "${local_styleguide_dir}" "${remote_host}:${remote_dir}" || exit 6
