@@ -11,7 +11,7 @@ if [[ -d $1 || -f $1 ]]; then
   echo "Files for $1 already exist. Aborting."
   exit 1
 fi
-echo "Generating template for $1 under theme $2."
+echo "Building template for $1 under theme $2."
 working_dir="$(pwd)"
 cd "${0%/*}"
 book_template_name="__book-template__"
