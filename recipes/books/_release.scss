@@ -1,8 +1,8 @@
-@function feature-enabled($feature_name) {
-  @if not map-has-key($FEATURES, $feature_name) {
-    @error "The feature `#{$feature_name}` has been removed or applied to all recipes";
+@function release-flag-enabled($flag_name) {
+  @if not map-has-key($RELEASE_FLAGS, $flag_name) {
+    @error "The flag `#{$flag_name}` has been removed or applied to all recipes";
   }
-  @return map-get($FEATURES, $feature_name);
+  @return map-get($RELEASE_FLAGS, $flag_name);
 }
 
 @function enable-for($list...) {
@@ -13,7 +13,7 @@
   @return if(index($list, $RECIPE_NAME), true, false);
 }
 
-$FEATURES: (
+$RELEASE_FLAGS: (
 
   sup-footnote-call: enable-for("principles-management", "accounting", "statistics", "ap-biology", "biology", "economics", "ap-physics", "physics", "intro-business", "business-ethics", "dev-math", "chemistry", "astronomy", "u-physics", "psychology", "sociology", "american-government", "anatomy", "history", "microbiology", "entrepreneurship"),
 
