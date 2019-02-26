@@ -208,7 +208,11 @@
 /// @arg {Text} $bookMetadata - The node set that contains the metadata
 /// @group modify
 @mixin modify_compositeMetadata($bookMetadata, $hasCompositeChapter) {
-  [data-type="composite-page"] {
+  $pageAndCompositeChapterSel: ('[data-type="composite-page"]');
+  @if $hasCompositeChapter {
+    $pageAndCompositeChapterSel: append($pageAndCompositeChapterSel, '[data-type="composite-chapter"]', comma);
+  }
+  #{$pageAndCompositeChapterSel} {
     content: nodes($bookMetadata) content();
   }
 }
@@ -220,8 +224,19 @@
   @if $hasCompositeChapter {
     $pageAndCompositeChapterSel: append($pageAndCompositeChapterSel, '[data-type="composite-chapter"]', comma);
   }
-
   #{$pageAndCompositeChapterSel} {
+    @if $hasCompositeChapter {
+      > [data-type="composite-chapter"] > [data-type="composite-page"] {
+        > [data-type="title"] {
+          string-set: Cdoc-title-TOMETADATA content();
+        }
+        > [data-type="metadata"] {
+          > [data-type="document-title"] {
+            content: string(Cdoc-title-TOMETADATA);
+          }
+        }
+      }
+    }
     > [data-type="document-title"] {
       string-set: doc-title-TOMETADATA content();
     }
@@ -485,8 +500,14 @@
  [data-type="composite-page"] {
   &.os-eoc {
     > section {
+      @if feature-enabled(EOCsection-links) {
+        >a [data-type="document-title"] {
+          container: h3;
+        }
+      } @else {
         >[data-type="document-title"] {
-        container: h3;
+          container: h3;
+        }
       }
     }
     > div > div > div > section {
@@ -511,7 +532,7 @@
   @if $hasCompositeChapter {
     [data-type="composite-chapter"] {
       > section,
-      > [data-type="page"] {
+      > [data-type="page"], > [data-type="composite-page"], [data-type="composite-chapter"] {
         [data-type="document-title"], [data-type="title"] {
           container: h2;
         }
@@ -523,6 +544,26 @@
           > section {
               [data-type="document-title"], [data-type="title"] {
                 container: h4;
+            }
+          }
+        }
+      }
+
+      @if feature-enabled(composite-eoc) {
+        > section,
+        > [data-type="composite-page"] {
+          [data-type="document-title"], [data-type="title"] {
+            container: h3;
+          }
+          > section {
+            [data-type="document-title"], [data-type="title"] {
+              container: h4;
+              data-type: title;
+            }
+            > section {
+                [data-type="document-title"], [data-type="title"] {
+                  container: h5;
+              }
             }
           }
         }
