@@ -1,0 +1,147 @@
+@import '../_common-stuff';
+$RECIPE_NAME: "precalculus";
+
+/*==========================================================
+  PRECALCULUS PAGES
+==========================================================*/
+/*
+  Key Terms
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Terms"
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
+*/
+/*
+  Key Equations
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Equations"
+
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
+
+  Style guide: book.composite.key-equations
+*/
+/*
+  Key Concepts
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Concepts"
+
+  Markup: ./styleguide/book.composite.key-concepts.xhtml-baked.html
+
+  Style guide: book.composite.key-concepts
+*/
+/*
+  Review Exercises
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Review Exercises"
+
+  Markup: ./styleguide/book.composite.review-exercises.xhtml-baked.html
+
+  Style guide: book.composite.review-exercises
+*/
+/*
+  Practice Test
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Practice Test"
+
+  Markup: ./styleguide/book.composite.practice-test.xhtml-baked.html
+
+  Style guide: book.composite.practice.test
+*/
+
+$Config_ChapterCompositePages: (
+  (className: "glossary", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+  (className: "key-equations", clusterBy: $CLUSTER_NONE, name: "Key Equations"),
+  (className: "key-concepts", clusterBy: $CLUSTER_NONE, name: "Key Concepts"),
+  (className: "review-exercises", clusterBy: $CLUSTER_SECTION, hasSolutions: true, name: "Review Exercises"),
+  (className: "practice-test", clusterBy: $CLUSTER_SECTION, hasSolutions: true, name: "Practice Test"),
+);
+
+$_tryItTitleContent: (os-title-label: "Try It ", os-number:"#" counter(try), os-divider: " ");
+$_tryItSolutionTitleContent: (os-number: counter(try), os-divider: " ");
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
+
+$Config_BookCompositePages: (
+  (className: "solution", clusterBy: $CLUSTER_CHAPTER, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+  (className: "index", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+);
+
+/* =========================================================
+  CUSTOM NOTES
+==========================================================*/
+/*
+  How To
+
+  Contains a title "How To" and the content of the note.
+
+  Markup: ./styleguide/page.note.how-to.xhtml-baked.html
+
+  Style guide: page.note.how-to
+*/
+/*
+  QA
+
+  Contains a title "QA" and the content of the note.
+
+  Markup: ./styleguide/page.note.qa.xhtml-baked.html
+
+  Style guide: page.note.qa
+*/
+/*
+  Try
+
+  Contains a title "Try" and the content of the note.
+
+  Markup: ./styleguide/page.note.try.xhtml-baked.html
+
+  Style guide: page.note.try
+*/
+/*
+  Media
+
+  Contains a title "Media" and the content of the note.
+
+  Markup: ./styleguide/page.note.media.xhtml-baked.html
+
+  Style guide: page.note.media
+*/
+
+$Config_Notes: (
+  (className: 'howto', labelText: "How To"),
+  (className: 'qa', labelText: "QA"),
+  (className: 'try', labelText: "Try"),
+  (className: 'try', moveSolutionTo: $AREA_EOB, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
+  (className: 'media', labelText: "Media"),
+);
+
+/*==========================================================
+  PRECALCULUS CONFIG
+==========================================================*/
+
+$Config_SetTableCaption: (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: false, hasTopTitle: false);
+$Config_PartType_Table_CaptionContent: (os-title-label: "Table ", os-number: counter(table), os-divider: ' ');
+$Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: counter(figure), os-divider: ' ');
+$_exampleTitleContent: (os-title-label: "Example ", os-number: counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution");
+$Config_PartType_Example: (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
+
+$Config_UnnumberedExercises: (
+  (contextSelector: '.try', childSelector: '[data-type="exercise"]'),
+  (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+);
+
+$Config_TargetLabels: append($Config_TargetLabels,
+  (selector: '[data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered)', labelText: "Exercise " counter(chapter) "." counter(exerciseMaybeInContent))
+);

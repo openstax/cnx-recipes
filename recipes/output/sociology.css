@@ -874,13 +874,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.section-summary {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
+    content: pending(sectionLink) content();
     move-to: section-summary-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.section-summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.section-summary::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode);
+      move-to: sectionLink; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(section-summary-TOCOMPOSITE);
@@ -890,13 +896,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.section-quiz {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
+    content: pending(sectionLink) content();
     move-to: section-quiz-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.section-quiz > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.section-quiz::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode);
+      move-to: sectionLink; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(section-quiz-TOCOMPOSITE);
@@ -906,13 +918,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.short-answer {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
+    content: pending(sectionLink) content();
     move-to: short-answer-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.short-answer > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.short-answer::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode);
+      move-to: sectionLink; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(short-answer-TOCOMPOSITE);
@@ -922,13 +940,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.further-research {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
+    content: pending(sectionLink) content();
     move-to: further-research-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.further-research > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.further-research::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode);
+      move-to: sectionLink; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(further-research-TOCOMPOSITE);
@@ -938,13 +962,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.references {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
+    content: pending(sectionLink) content();
     move-to: references-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.references > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.references::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode);
+      move-to: sectionLink; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(references-TOCOMPOSITE);
@@ -1621,7 +1651,7 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
+:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
@@ -1848,6 +1878,7 @@
 
 :pass(13) nav#toc li > a > h1 > span,
 :pass(13) nav#toc li > a > h2 > span,
+:pass(13) nav#toc li > a > h3 > span,
 :pass(13) nav#toc li > a > div > span {
   move-to: title-spans; }
 
