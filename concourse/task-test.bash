@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt-get update
-apt-get install libxml2-utils xsltproc
+apt-get install libxml2-utils xsltproc rsync
 
 root_dir=$(pwd)
 
