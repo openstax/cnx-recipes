@@ -17,7 +17,7 @@ npm install --global yarn
 ./script/test
 
 # Host the built styleguide
-key_path="${root_dir}"/scp-package-secret-key
+key_path=$(mktemp)
 echo "${SCP_PACKAGE_SECRET_KEY}" > "${key_path}"
 
 remote_user="rundeck"
