@@ -8,6 +8,16 @@ root_dir=$(pwd)
 # so pyenv uses .python-version (& nodenv)
 cd "${root_dir}"/resource-repo/ || exit 111
 
+commit_sha=$(cat .git/ref)
+if [[ ${commit_sha} == '' ]]; then
+    echo "Could not determine commit sha"
+    echo ".git/resource/version.json"
+    cat .git/resource/version.json
+    echo ".git/resource/metadata.json"
+    cat .git/resource/metadata.json
+    exit 111
+fi
+
 # Temp: ensure pyenv is initialized
 eval "$(pyenv init -)"
 
@@ -20,7 +30,6 @@ npm install --global yarn
 key_path=$(mktemp)
 echo "${SCP_PACKAGE_SECRET_KEY}" > "${key_path}"
 
-commit_sha=$(cat .git/ref)
 remote_user="rundeck"
 remote_host="packages.cnx.org"
 remote_dir="/var/www/repo/cnx-rulesets/${commit_sha}/"
