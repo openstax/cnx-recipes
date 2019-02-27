@@ -8,17 +8,16 @@ root_dir=$(pwd)
 # so pyenv uses .python-version (& nodenv)
 cd "${root_dir}"/resource-repo/ || exit 111
 
-commit_sha=$(cat .git/ref)
+# .git/resource/version.json format: {pr: "123", commit: "c1a2f3e", committed: "2000-01-01T00:00:00Z"}
+# .git/resource/metadata.json format: array of "name" and "value" pairs where "name" is
+# one of https://github.com/telia-oss/github-pr-resource/blob/72bb329c7996232ddc72bf70d1fd6ef257f6116c/in.go#L51-L60
+commit_sha=$(cat .git/resource/version.json | python3 -c "import sys, json; print(json.load(sys.stdin)['commit'])")
 if [[ ${commit_sha} == '' ]]; then
     echo "Could not determine commit sha"
-    echo ".git/resource/version.json"
-    cat .git/resource/version.json
-    echo ".git/resource/metadata.json"
-    cat .git/resource/metadata.json
     exit 111
 fi
 
-# Temp: ensure pyenv is initialized
+# ensure pyenv is initialized
 eval "$(pyenv init -)"
 
 npm install --global yarn
