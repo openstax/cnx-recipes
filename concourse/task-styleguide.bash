@@ -11,7 +11,7 @@ cd "${root_dir}"/resource-repo/ || exit 111
 # .git/resource/version.json format: {pr: "123", commit: "c1a2f3e", committed: "2000-01-01T00:00:00Z"}
 # .git/resource/metadata.json format: array of "name" and "value" pairs where "name" is
 # one of https://github.com/telia-oss/github-pr-resource/blob/72bb329c7996232ddc72bf70d1fd6ef257f6116c/in.go#L51-L60
-commit_sha=$(cat .git/resource/version.json | python3 -c "import sys, json; print(json.load(sys.stdin)['commit'])")
+commit_sha=$(python3 -c "import sys, json; print(json.load(sys.stdin)['commit']) < .git/resource/version.json")
 if [[ ${commit_sha} == '' ]]; then
     echo "Could not determine commit sha"
     exit 111
