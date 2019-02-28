@@ -439,6 +439,12 @@
   container: div;
   content: pending(bTitleLabel) content(); }
 
+:pass(1) [data-type="exercise"] [data-type="problem"]::inside {
+  class: "os-problem-container"; }
+
+:pass(1) [data-type="exercise"] [data-type="solution"]::inside {
+  class: "os-solution-container"; }
+
 :pass(1) ol[data-label]:not([data-label=""])::after,
 :pass(1) ul[data-label]:not([data-label=""])::after {
   container: div;
@@ -1026,13 +1032,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.key-concepts {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
+    content: pending(sectionLink) content();
     move-to: key-concepts-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.key-concepts > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.key-concepts::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode);
+      move-to: sectionLink; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(key-concepts-TOCOMPOSITE);
@@ -1212,12 +1224,12 @@
 
 :pass(7) [data-type="exercise"].os-hasSolution {
   string-set: exerciseId attr(id); }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
+  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
     container: a;
     attr-href: "#" string(exerciseId) "-solution"; }
   :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] {
     attr-id: string(exerciseId) "-solution"; }
-    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
+    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
 
@@ -1864,7 +1876,7 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
+:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
@@ -1891,6 +1903,22 @@
 :pass(9) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="document-title"],
 :pass(9) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"], :pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"], :pass(9) [data-type="composite-chapter"] [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] [data-type="composite-chapter"] > section > section [data-type="title"] {
   container: h4; }
+
+:pass(9) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > section [data-type="title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="document-title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="title"] {
+  container: h3; }
+
+:pass(9) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > section > section [data-type="title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="document-title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="title"] {
+  container: h4;
+  data-type: title; }
+
+:pass(9) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > section > section > section [data-type="title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"] {
+  container: h5; }
 
 :pass(9) .appendix > section > [data-type="title"], :pass(9) .appendix > section [data-type="document-title"] {
   container: h2; }
@@ -1919,6 +1947,13 @@
 
 :pass(10) div.os-table .os-caption-container {
   string-set: tableSummary content(); }
+
+:pass(10) table > caption:empty {
+  move-to: trash; }
+
+:pass(10) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
@@ -2208,6 +2243,7 @@
 
 :pass(13) nav#toc li > a > h1 > span,
 :pass(13) nav#toc li > a > h2 > span,
+:pass(13) nav#toc li > a > h3 > span,
 :pass(13) nav#toc li > a > div > span {
   move-to: title-spans; }
 
