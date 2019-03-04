@@ -1,0 +1,23 @@
+| Recipe Name | toc-numbered-pages | appendix-has-numbered-examples | increment-section-counter-for-lo | trash-abstract-in-preface | composite-eoc | EOCsection-links |
+| --- | --- | --- | --- | --- | --- | --- |
+| microbiology | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| anatomy | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| history | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| psychology | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| chemistry | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| astronomy | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| principles-management | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| entrepreneurship | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| accounting | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| business-ethics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| intro-business | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| statistics | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| economics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| biology | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| ap-biology | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| physics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| ap-physics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| u-physics | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| sociology | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| dev-math | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| american-government | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
