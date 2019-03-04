@@ -2,10 +2,19 @@
   nav#toc {
     li {
       > a {
-        > h1 > span,
-        > h2 > span,
-        > div > span {
-          move-to: title-spans;
+        @if feature-enabled(composite-eoc) {
+          > h1 > span,
+          > h2 > span,
+          > h3 > span,
+          > div > span {
+            move-to: title-spans;
+          }
+        } @else {
+          > h1 > span,
+          > h2 > span,
+          > div > span {
+            move-to: title-spans;
+          }
         }
         &:deferred {
           content: pending(title-spans);
@@ -50,6 +59,62 @@
     $chapterAndCompositeChapterSel: append($chapterAndCompositeChapterSel, '> div[data-type="composite-chapter"]', comma);
   }
 
+@mixin compositeChapterTOC () {
+  @if $hasCompositeChapter {
+    > [data-type="composite-chapter"] {
+      > [data-type='document-title'] {
+        node-set: CchapterTitle;
+        string-set: CchapTitle-id attr(id);
+        //copy-to: eoc-toc;
+      }
+      > [data-type='metadata']
+      > [data-type='cnx-archive-shortid'] {
+        string-set: Cchap-shortid attr(data-value);
+      }
+      &::after {
+        content: nodes(CchapterTitle);
+        attr-href: "#" string(CchapTitle-id);
+        container: a;
+        move-to: cc-link;
+      }
+      > div[data-type="composite-page"] {
+        string-set: Cpage-id-chap attr(id);
+        > [data-type='title'] {
+          node-set: CPageTitle;
+        }
+        > [data-type='metadata']
+        > [data-type='cnx-archive-shortid'] {
+          string-set: Cpage-shortid attr(data-value);
+        }
+        &::after {
+          content: nodes(CPageTitle);
+          attr-href: "#" string(Cpage-shortid);
+          container: a;
+          move-to: CpageLink;
+        }
+        &::after {
+          content: pending(CpageLink);
+          attr-cnx-archive-uri: attr(id);
+          attr-cnx-archive-shortid: string(page-shortid);
+          container: li;
+          move-to: Cpage-list;
+        }
+      }
+      &::after {
+        content: pending(Cpage-list);
+        attr-cnx-archive-uri: attr(id);
+        attr-cnx-archive-shortid: string(page-shortid);
+        container: ol;
+        move-to: cc-li;
+      }
+      &::after {
+        content: pending(cc-link) pending(cc-li);
+        container: li;
+        move-to: eoc-toc-pages;
+      }
+    }
+  }
+}
   body {
     > div[data-type="page"],
     > div[data-type="composite-page"] {
@@ -69,7 +134,7 @@
         container: a;
         move-to: page-link;
       }
-      @if feature-enabled(toc-numbered-pages) {
+      @if release-flag-enabled(toc-numbered-pages) {
         &:not(.appendix)::after {
           @include _uncountedPage();
         }
@@ -83,6 +148,7 @@
       }
     }
     #{$chapterAndCompositeChapterSel} {
+      @include compositeChapterTOC();
       > [data-type='document-title'] {
         node-set: chapterTitle;
         string-set: chapTitle-id attr(id);
@@ -153,6 +219,7 @@
       }
 
       #{$chapterAndCompositeChapterSel} {
+        @include compositeChapterTOC();
         > [data-type='document-title'] {
           node-set: chapterTitle;
           string-set: chapTitle-id attr(id);
