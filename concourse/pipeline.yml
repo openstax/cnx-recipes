@@ -1,0 +1,40 @@
+---
+# Run this when updating this file:
+# fly set-pipeline -c ./pipeline.yml -p cnx-recipes
+
+resource_types:
+- name: pull-request
+  type: docker-image
+  source:
+    repository: teliaoss/github-pr-resource
+
+resources:
+- name: resource-repo
+  type: pull-request
+  check_every: 1m
+  source:
+    repository: openstax/cnx-recipes
+    access_token: ((github-access-token))
+
+jobs:
+- name: Build Styleguide
+  public: true
+  plan:
+  - get: resource-repo
+    trigger: true
+  - put: resource-repo
+    params:
+      path: resource-repo
+      status: PENDING
+  - task: test
+    file: resource-repo/concourse/task-styleguide.yml
+    on_failure:
+      put: resource-repo
+      params:
+        path: resource-repo
+        status: FAILURE
+  - put: resource-repo
+    params:
+      path: resource-repo
+      status: SUCCESS
+
