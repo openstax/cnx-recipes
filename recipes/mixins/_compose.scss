@@ -40,27 +40,31 @@
     // Validate
     @include validate_type($name, string);
     @include validate_type($className, string);
-
-    [data-type="composite-page"].os-eoc.os-#{$className}-container {
+    @if ($childPages != null) {
+      [data-type="composite-chapter"].os-eoc.os-#{$className}-container {
       $titleContent: (
         os-text: $name
         );
-      @include utils_title($titleContent, null, h2, "document-title");
-      @if ($childPages != null) {
-        @each $cPage in $childPages {
-          $cClassName: map-get($cPage, className);
-          $cPageName: map-get($cPage, name);
-
-          @include validate_type($cClassName, string);
-          @include validate_type($cPageName, string);
-
-          div.os-#{$cClassName}-container {
-            $cTitleContent: (
-              os-text: $cPageName
-              );
-            @include utils_title($cTitleContent, null, h3, "title");
-          }
+        @include utils_title($titleContent, null, h2, "document-title");
+      }
+      @each $cPage in $childPages {
+        $cClassName: map-get($cPage, className);
+        $cPageName: map-get($cPage, name);
+        @include validate_type($cClassName, string);
+        @include validate_type($cPageName, string);
+        [data-type="composite-page"].os-eoc.os-#{$cClassName}-container {
+          $cTitleContent: (
+            os-text: $cPageName
+            );
+          @include utils_title($cTitleContent, null, h3, "title");
         }
+      }
+    } @else {
+      [data-type="composite-page"].os-eoc.os-#{$className}-container {
+        $titleContent: (
+          os-text: $name
+          );
+        @include utils_title($titleContent, null, h2, "document-title");
       }
     }
   }
@@ -73,16 +77,37 @@
   @each $page in $compositePages {
     $name: map-get($page, name);
     $className: map-get($page, className);
-
+    $compoundComposite: map-get($page, compoundComposite);
     // Validate
     @include validate_type($name, string);
     @include validate_type($className, string);
-
-    [data-type="composite-page"].os-eob.os-#{$className}-container {
-      $titleContent: (
-        os-text: $name
+    @include validate_typeOptional($compoundComposite, bool);
+    @if $compoundComposite and $Config_hasCompositeChapter {
+      [data-type="composite-chapter"].os-eob.os-#{$className}-container {
+        $titleContent: (
+          os-text: $name
         );
-      @include utils_title($titleContent, null, h1, "document-title");
+        @include utils_title($titleContent, null, h1, "document-title");
+        [data-type="composite-page"] {
+          > span.os-text {
+            move-to: CCcompositePageTitles;
+          }
+          &:deferred {
+            &::before {
+              container: h2;
+              data-type: document-title;
+              content: pending(CCcompositePageTitles);
+            }
+          }
+        }
+      }
+    } @else {
+      [data-type="composite-page"].os-eob.os-#{$className}-container {
+        $titleContent: (
+          os-text: $name
+          );
+        @include utils_title($titleContent, null, h1, "document-title");
+      }
     }
   }
 }
@@ -130,7 +155,7 @@
         class: "os-eos os-#{$className}-container";
         data-uuid-key: "#{$keyName}";
         // this needs to be reworked to work see https://github.com/Connexions/cnx-easybake/issues/97
-        // @if feature-enabled(toc-comp-page-linking) {
+        // @if release-flag-enabled(toc-comp-page-linking) {
         //   attr-id: "#{$className}" string(chap-id);
         // }
         @if ($sortBy != null) {
@@ -140,6 +165,7 @@
     }
   }
 }
+
 
 
 /// Creates a title for a set of composite pages at the end of the book
@@ -187,14 +213,33 @@
           move-to: trash;
         }
       }
+      @if feature-enabled(EOCsection-links) {
+        @if ($clusterBy == $CLUSTER_SECTION) {
+          [data-type="page"] {
+            > [data-type="document-title"] {
+              string-set: moduleTitleId attr(id);
+            }
+          }
+        }
+      }
       #{$sourceSelector} {
         > [data-type="title"] {
           /* Discard this Page-specific title because a chapter title is added when collated */
           move-to: trash;
         }
         @if ($clusterBy == $CLUSTER_SECTION) {
-          /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-          content: nodes(sectionHeaderNode) content();
+          @if feature-enabled(EOCsection-links) {
+            &::before {
+              container: a;
+              attr-href: "#" string(moduleTitleId);
+              content: nodes(sectionHeaderNode);
+              move-to: sectionLink;
+            }
+            content: pending(sectionLink) content();
+          } @else {
+             /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+             content: nodes(sectionHeaderNode) content();
+          }
         }
         move-to: #{$className}-TOCOMPOSITE;
       }
@@ -205,7 +250,7 @@
         data-type: "composite-page";
         data-uuid-key: "#{$keyName}";
         // this needs to be reworked to work see https://github.com/Connexions/cnx-easybake/issues/97
-        // @if feature-enabled(toc-comp-page-linking) {
+        // @if release-flag-enabled(toc-comp-page-linking) {
         //   attr-id: "#{$className}" string(chap-id);
         // }
         @if ($sortBy != null) {
@@ -285,8 +330,9 @@
         }
       }
       &::after {
-        class: "os-#{$className}-container";
+        class: "os-eoc os-#{$className}-container";
         content: pending(#{$className}-DESTINATION);
+        data-type: composite-page;
         @if ($sortBy != null) {
           sort-by: #{$sortBy}, nocase;
         }
@@ -325,7 +371,7 @@
         }
          &::after {
           class: "os-eoc os-#{$className}-container";
-          data-type: composite-page;
+          data-type: composite-chapter;
           data-uuid-key: "#{$keyName}";
           content: pending(composite-DESTINATION);
         }
@@ -470,7 +516,7 @@
       data-type: "composite-page";
       data-uuid-key: "#{$keyName}";
       // this needs to be reworked to work, see https://github.com/Connexions/cnx-easybake/issues/97
-      // @if feature-enabled(toc-comp-page-linking) {
+      // @if release-flag-enabled(toc-comp-page-linking) {
       //   attr-id: "#{$className}" string(chap-id);
       // }
       @if ($specialPageType == $PAGE_INDEX) {
@@ -662,7 +708,6 @@
     $hasSolutions: map-get($page, hasSolutions);
     $className: map-get($page, className);
     $pageName: map-get($page, name);
-
     $childPages: map-get($page, childPages);
 
     // Validate
@@ -749,25 +794,44 @@
     > h1[data-type="document-title"] .os-number {
       string-set: ChapNum content();
     }
-    &::after {
-      //FIXME wrap the in spans
-      container: h2;
-      class: "os-title";
-      content: $Config_EOBSolutionsChapterSectionTitle;
-      move-to: chaptTitleEOB;
-    }
-    &::after {
-      class: os-chapter-area;
-      content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
-      move-to: #{$solutionClassName}-TOCOMPOSITE;
+    @if $Config_hasCompositeChapter {
+      &::after {
+        container: span;
+        class: "os-text";
+        content: $Config_EOBSolutionsChapterSectionTitle;
+        move-to: eobCompositeTitlesContent;
+      }
+      &::after {
+        content: pending(eobCompositeTitlesContent) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+        class: "os-eob os-#{$solutionClassName}-container";
+        data-type: "composite-page";
+        data-uuid-key: ".#{$solutionClassName}" string(ChapNum);
+        move-to: #{$solutionClassName}-TOCOMPOSITECHAPTER;
+      }
+    } @else {
+      &::after {
+        //FIXME wrap the in spans
+        container: h2;
+        class: "os-title";
+        content: $Config_EOBSolutionsChapterSectionTitle;
+        move-to: chaptTitleEOB;
+      }
+      &::after {
+        class: os-chapter-area;
+        content: pending(chaptTitleEOB) pending(note-#{$solutionClassName}-GETCHAPTER) pending(#{$solutionClassName}-GETCHAPTER);
+        move-to: #{$solutionClassName}-TOCOMPOSITE;
+      }
     }
   }
   body {
-    &::after {
-      container: div;
-      content: pending(#{$solutionClassName}-TOCOMPOSITE);
+      &::after {
+      content: pending(#{$solutionClassName}-TOCOMPOSITECHAPTER);
       class: "os-eob os-#{$solutionClassName}-container";
-      data-type: "composite-page";
+      @if $Config_hasCompositeChapter {
+        data-type: "composite-chapter";
+      } @else {
+        data-type: "composite-page";
+      }
       data-uuid-key: ".#{$solutionClassName}"; /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */
     }
   }

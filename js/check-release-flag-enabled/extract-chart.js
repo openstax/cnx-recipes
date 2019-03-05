@@ -7,7 +7,7 @@ getStdin().then(recipeFeaturesScss => {
     data: recipeFeaturesScss
   }).then(rendered => {
     recipeName = rendered.vars['global']['$RECIPE_NAME']['value'];
-    features = rendered.vars['global']['$FEATURES']['value'];
+    features = rendered.vars['global']['$RELEASE_FLAGS']['value'];
 
     if(order == 0) {
       header_row = "| Recipe Name |";
