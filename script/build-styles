@@ -13,7 +13,7 @@ if [ ! "${arg1}" == "" ]; then
   STYLE_NAMES=("${arg1} ${arg1}")
 fi
 
-sass_bin="$(npm bin)/sass"
+sass_bin="$(npm bin)/node-sass"
 output_dir="./styles/output"
 
 for style_config in "${STYLE_NAMES[@]}"; do
@@ -23,6 +23,6 @@ for style_config in "${STYLE_NAMES[@]}"; do
   css_file="${output_dir}/${style_name}.css"
 
   do_progress "Generating ${css_file}" \
-    "${sass_bin}" --source-map "${sass_file}" "${css_file}"
+    "${sass_bin}" --source-map true --output-style nested "${sass_file}" "${css_file}"
   
 done
