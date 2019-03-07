@@ -53,13 +53,7 @@
   @include _pageEntry(false);
 }
 
-@mixin toc_prepTOCElements($hasCompositeChapter) {
-  $chapterAndCompositeChapterSel: ('> div[data-type="chapter"]');
-  @if $hasCompositeChapter {
-    $chapterAndCompositeChapterSel: append($chapterAndCompositeChapterSel, '> div[data-type="composite-chapter"]', comma);
-  }
-
-@mixin compositeChapterTOC () {
+@mixin compositeChapterTOC($hasCompositeChapter) {
   @if $hasCompositeChapter {
     > [data-type="composite-chapter"] {
       > [data-type='document-title'] {
@@ -115,6 +109,13 @@
     }
   }
 }
+
+@mixin toc_prepTOCElements($hasCompositeChapter) {
+  $chapterAndCompositeChapterSel: ('> div[data-type="chapter"]');
+  @if $hasCompositeChapter {
+    $chapterAndCompositeChapterSel: append($chapterAndCompositeChapterSel, '> div[data-type="composite-chapter"]', comma);
+  }
+
   body {
     > div[data-type="page"],
     > div[data-type="composite-page"] {
@@ -148,7 +149,7 @@
       }
     }
     #{$chapterAndCompositeChapterSel} {
-      @include compositeChapterTOC();
+      @include compositeChapterTOC($hasCompositeChapter);
       > [data-type='document-title'] {
         node-set: chapterTitle;
         string-set: chapTitle-id attr(id);
@@ -219,7 +220,7 @@
       }
 
       #{$chapterAndCompositeChapterSel} {
-        @include compositeChapterTOC();
+        @include compositeChapterTOC($hasCompositeChapter);
         > [data-type='document-title'] {
           node-set: chapterTitle;
           string-set: chapTitle-id attr(id);
