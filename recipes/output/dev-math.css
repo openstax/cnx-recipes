@@ -1110,19 +1110,13 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.key-concepts {
-    content: pending(sectionLink) content();
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
     move-to: key-concepts-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.key-concepts > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
-    :pass(3) div[data-type="chapter"] section.key-concepts::before {
-      container: a;
-      attr-href: "#" string(moduleTitleId);
-      content: nodes(sectionHeaderNode);
-      move-to: sectionLink; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(key-concepts-TOCOMPOSITE);
@@ -2030,7 +2024,7 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
+:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
