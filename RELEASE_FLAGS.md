@@ -1,23 +1,23 @@
-| Recipe Name | toc-numbered-pages | appendix-has-numbered-examples | increment-section-counter-for-lo | trash-abstract-in-preface | composite-eoc | EOCsection-links |
-| --- | --- | --- | --- | --- | --- | --- |
-| microbiology | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| anatomy | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| history | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| psychology | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| chemistry | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| astronomy | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| principles-management | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| entrepreneurship | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| accounting | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| business-ethics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| intro-business | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| statistics | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| economics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| biology | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| ap-biology | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| physics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| ap-physics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| u-physics | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| sociology | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| dev-math | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
-| american-government | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
+| Recipe Name | chapter-page-class | toc-numbered-pages | appendix-has-numbered-examples | increment-section-counter-for-lo | trash-abstract-in-preface | composite-eoc | EOCsection-links |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| microbiology | :x: | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| anatomy | :x: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: |
+| history | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :x: |
+| psychology | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :x: |
+| chemistry | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :x: |
+| astronomy | :x: | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| principles-management | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :x: |
+| entrepreneurship | :x: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: |
+| accounting | :x: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: | :x: |
+| business-ethics | :x: | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| intro-business | :heavy_check_mark: | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| statistics | :x: | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| economics | :x: | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| biology | :x: | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| ap-biology | :x: | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| physics | :x: | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| ap-physics | :x: | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| u-physics | :x: | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| sociology | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :x: |
+| dev-math | :x: | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| american-government | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :x: |
