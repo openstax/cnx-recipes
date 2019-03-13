@@ -163,7 +163,7 @@
   }
 }
 
-@mixin modify_finishPrepingIndexTerms($regexpForNotASymbol, $regexpForASymbol) {
+@mixin modify_finishPreppingIndexTerms($regexpForNotASymbol, $regexpForASymbol) {
   @include validate_type($regexpForASymbol, string);
   @include validate_type($regexpForNotASymbol, string);
   div[data-type="page"],
@@ -171,11 +171,11 @@
     span[data-type="term"] {
       > span[data-type="term-content"] {
         data-visited: true;
-        &:match("#{$regexpForNotASymbol}") {
+        &:match(#{$regexpForNotASymbol}) {
           string-set: group-by first-letter(content());
           data-done: true;
         }
-        &:match("#{$regexpForASymbol}") {
+        &:match(#{$regexpForASymbol}) {
           string-set: group-by " Symbols";
           data-done: true;
         }
@@ -199,7 +199,7 @@
 /// @group modify
 @mixin modify_addIndexSymbolGroup($location, $name) {
   .os-#{$location}-container > div.group-by:first-of-type > span.group-label {
-    &:match("^[ ](Symbols|SYMBOLS)") {
+    &:match(\^\[ \]\(Symbols\|SYMBOLS\)) {
       content: $name;
     }
   }

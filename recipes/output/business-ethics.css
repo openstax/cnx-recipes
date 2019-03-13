@@ -1010,12 +1010,12 @@
 :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
   data-visited: true;
   move-to: term-trash; }
-  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match("^[a-zA-Z]"),
-  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match("^[a-zA-Z]") {
+  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[a-zA-Z\]),
+  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[a-zA-Z\]) {
     string-set: group-by first-letter(content());
     data-done: true; }
-  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match("^[^a-zA-Z]"),
-  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match("^[^a-zA-Z]") {
+  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[\^a-zA-Z\]),
+  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[\^a-zA-Z\]) {
     string-set: group-by " Symbols";
     data-done: true; }
 
@@ -1159,7 +1159,7 @@
   data-uuid-key: "index";
   group-by: span, "span::attr(group-by)", nocase; }
 
-:pass(9) .os-index-container > div.group-by:first-of-type > span.group-label:match("^[ ](Symbols|SYMBOLS)") {
+:pass(9) .os-index-container > div.group-by:first-of-type > span.group-label:match(\^\[ \]\(Symbols\|SYMBOLS\)) {
   content: "Symbols"; }
 
 :pass(9) body {
@@ -1175,6 +1175,12 @@
   counter-increment: appendix; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: exercise; }
 
 :pass(9) .os-eoc [data-type="exercise"] {
@@ -1183,7 +1189,7 @@
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: example; }
 
-:pass(9) div[data-type="chapter"] [data-type="example"] {
+:pass(9) div[data-type="chapter"] [data-type="example"], :pass(9) .appendix [data-type="example"] {
   counter-increment: example; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
@@ -1713,6 +1719,9 @@
 :pass(9) .preface > figure.unnumbered figcaption {
   move-to: trash; }
 
+:pass(9) .preface [data-type="abstract"] {
+  move-to: trash; }
+
 :pass(9) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -1826,13 +1835,21 @@
     attr-href: "#" string(page-id);
     container: a;
     move-to: page-link; }
-  :pass(11) body > div[data-type="page"]::after,
-  :pass(11) body > div[data-type="composite-page"]::after {
+  :pass(11) body > div[data-type="page"]:not(.appendix)::after,
+  :pass(11) body > div[data-type="composite-page"]:not(.appendix)::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
+  :pass(11) body > div[data-type="page"].appendix::after,
+  :pass(11) body > div[data-type="composite-page"].appendix::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-counted-page; }
 
 :pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'], :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
   node-set: CchapterTitle;
