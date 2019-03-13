@@ -9,8 +9,8 @@
 | principles-management | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :x: |
 | entrepreneurship | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: |
 | accounting | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: | :heavy_check_mark: | :x: |
-| business-ethics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
-| intro-business | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
+| business-ethics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: |
+| intro-business | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :x: |
 | statistics | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
 | economics | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
 | biology | :x: | :x: | :x: | :x: | :heavy_check_mark: | :x: |
