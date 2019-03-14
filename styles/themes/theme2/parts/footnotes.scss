@@ -16,23 +16,31 @@
   }
   // Footnotes in table headings (which may have white text) need to reset their colors.
 
-  > *,
-  &::footnote-marker {
+  > * {
     //#content>#footnote>.descendants-style();
     line-height: 1.5em;
     //.font-scale(-1);
     color: $footnote-color;
   }
-
-  &::footnote-call {
-    // #content>#footnote>.call-style();
-    content: counter(footnote);
-    color: $footnote-color !important;
-    //margin-right: 1.33em !important; not sure why this was needed so commenting out for now
+  @if PLATFORM() == 'PDF' {
+    &::footnote-marker {
+      //#content>#footnote>.descendants-style();
+      line-height: 1.5em;
+      //.font-scale(-1);
+      color: $footnote-color;
+    }
+  
+    &::footnote-call {
+      // #content>#footnote>.call-style();
+      content: counter(footnote);
+      color: $footnote-color !important;
+      //margin-right: 1.33em !important; not sure why this was needed so commenting out for now
+    }
+  
+    &::footnote-marker {
+      //from numbering
+      //#content>#footnote>.marker-style();
+    }
   }
 
-  &::footnote-marker {
-    //from numbering
-    //#content>#footnote>.marker-style();
-  }
 }

@@ -7,6 +7,7 @@
   @include pageBreak('INSIDE', auto);
 }
 
+/* TODO: These should be scoped in a Page */
 div.table {
   // First, reset div.table so it just goes away. Apply styling to the actual
   // table element.
@@ -24,7 +25,9 @@ div.table {
     border-collapse: separate;
     //.line-height();
     // If a table spans more than 1 page then put caption on all following pages
-    prince-caption-page: all;
+    @if PLATFORM() == 'PDF' {
+      prince-caption-page: all;
+    }
     //table head
     //
     thead {
@@ -32,10 +35,12 @@ div.table {
       border-top: none;
       font-family: $font-family;
 
-      .footnote::footnote-call {
-        //do not delete
-        //TODO
-        //#content>#table>#header>.footnote(any; any);
+      @if PLATFORM() == 'PDF' {
+        .footnote::footnote-call {
+          //do not delete
+          //TODO
+          //#content>#table>#header>.footnote(any; any);
+        }
       }
 
       th {
@@ -60,9 +65,11 @@ div.table {
         border-left: 0;
         border-right: 0;
 
-        .footnote::footnote-call {
-          //do not delete
-          // #content>#table>#header>#title>.footnote(any; any);
+        @if PLATFORM() == 'PDF' {
+          .footnote::footnote-call {
+            //do not delete
+            // #content>#table>#header>#title>.footnote(any; any);
+          }
         }
       }
 
