@@ -1,179 +1,181 @@
-/* -------------------------
- * Book TOC
- * ------------------------
- */
- .part > .toc,
- .toc {
-  //#part>#toc>.style();
-  counter-reset: toc-chapter-counter 0;
+@if PLATFORM() == 'PDF' {
+  /* -------------------------
+  * Book TOC
+  * ------------------------
+  */
+  .part > .toc,
+  .toc {
+    //#part>#toc>.style();
+    counter-reset: toc-chapter-counter 0;
 
-  a {
-    //#part>#toc>#link>.style();
-    //TODO variable
-    color: $toc-links-color;
-    text-align: left;
+    a {
+      //#part>#toc>#link>.style();
+      //TODO variable
+      color: $toc-links-color;
+      text-align: left;
 
-    &::after {
-      //#part>#toc>#link>.number();
-      content: target-counter(attr(href), page);
-      //.scale-padding(1, padding-left);
-    }
-  }
-
-  > .title {
-    // #part>#toc>#title>.style();
-    text-align: left;
-    //.font-scale(2);
-    text-transform: uppercase;
-    color: $toc-title-color;
-    display: inline-block;
-    font-family: $font-family;
-    background: $toc-title-background;
-    //.scale-padding(1, padding-right);
-    //.scale-padding(7, padding-left);
-    //.scale-padding(-1, padding-bottom);
-    //.scale-padding(-2, padding-top);
-    //.scale-padding(-1, margin-left);
-    //.scale-padding(1, margin-bottom);
-    background-size: 28px;
-
-    &::before {
-      // display: none;
-      // content: $toc-title-icon;
-      // padding-right: 15px;
-      // margin-left: 10px;
-    }
-  }
-
-  a.target-appendix {
-    // #content>#link>.style('preface'; any; toc);
-    @include toc-titles-styles();
-  }
-
-  .toc-index,
-  .toc-preface {
-    //#content>#list>.item('preface'; any; toc);
-    //.scale-padding(2, padding-bottom);
-
-    a.target-preface {
-      @include toc-titles-styles();
+      &::after {
+        //#part>#toc>#link>.number();
+        content: target-counter(attr(href), page);
+        //.scale-padding(1, padding-left);
+      }
     }
 
-    a.target-index {
+    > .title {
+      // #part>#toc>#title>.style();
+      text-align: left;
+      //.font-scale(2);
+      text-transform: uppercase;
+      color: $toc-title-color;
+      display: inline-block;
+      font-family: $font-family;
+      background: $toc-title-background;
+      //.scale-padding(1, padding-right);
+      //.scale-padding(7, padding-left);
+      //.scale-padding(-1, padding-bottom);
+      //.scale-padding(-2, padding-top);
+      //.scale-padding(-1, margin-left);
+      //.scale-padding(1, margin-bottom);
+      background-size: 28px;
+
+      &::before {
+        // display: none;
+        // content: $toc-title-icon;
+        // padding-right: 15px;
+        // margin-left: 10px;
+      }
+    }
+
+    a.target-appendix {
       // #content>#link>.style('preface'; any; toc);
       @include toc-titles-styles();
     }
 
-    a.target-index,
-    a.target-preface {
-      /// should use
-      /////.scale-padding(5, margin-left);
-      /// but isn't precise enough to align properly, resorting to
-      margin-left: 29px;
-    }
-  }
+    .toc-index,
+    .toc-preface {
+      //#content>#list>.item('preface'; any; toc);
+      //.scale-padding(2, padding-bottom);
 
-  .toc-chapter {
-    //#content>#list>.item('chapter'; any; toc);
-    counter-increment: toc-chapter-counter;
-    //.scale-padding(2, margin-bottom);
-    //.scale-padding(1, padding-bottom);
-    //.scale-padding(1, padding-top);
-
-    &:nth-child(2n) {
-      //#content>#list>.item('2n+1', 'chapter'; any; toc);
-      background-color: $toc-odd-bg-color;
-    }
-    //hard coded values are used here for alignment. due to the current limitation of the scale-padding mixin, negative values of this size are too large to acheive
-    // & when ($has-units = true) {
-    //   margin-left: -36.4px;
-    // }
-    //
-    // & when ($has-units = false) {
-    //   margin-left: -15px;
-    // }
-
-    &::before {
-      @include toc-square-number-styles();
-      content: counter(toc-chapter-counter, decimal);
-    }
-
-    a.target-chapter {
-      // #content>#link>.style('chapter'; any; toc);
-      @include toc-titles-styles();
-      width: 90%;
-      display: inline-block;
-    }
-
-    .cnx-gentext-chapter {
-      display: none;
-    }
-
-    > ul {
-      //#content>#list>.style('chapter'; any; toc);
-      border-left: 4px solid $toc-side-border-color;
-      //.scale-padding(9, margin-left);
-      //.scale-padding(1, margin-top);
-
-      li {
-        margin-left: 0;
+      a.target-preface {
+        @include toc-titles-styles();
       }
 
-      li a span.cnx-gentext-n {
-        font-weight: 700;
+      a.target-index {
+        // #content>#link>.style('preface'; any; toc);
+        @include toc-titles-styles();
       }
 
-      > li.toc-chapter:nth-child(2n+1) {
+      a.target-index,
+      a.target-preface {
+        /// should use
+        /////.scale-padding(5, margin-left);
+        /// but isn't precise enough to align properly, resorting to
+        margin-left: 29px;
+      }
+    }
+
+    .toc-chapter {
+      //#content>#list>.item('chapter'; any; toc);
+      counter-increment: toc-chapter-counter;
+      //.scale-padding(2, margin-bottom);
+      //.scale-padding(1, padding-bottom);
+      //.scale-padding(1, padding-top);
+
+      &:nth-child(2n) {
         //#content>#list>.item('2n+1', 'chapter'; any; toc);
         background-color: $toc-odd-bg-color;
       }
+      //hard coded values are used here for alignment. due to the current limitation of the scale-padding mixin, negative values of this size are too large to acheive
+      // & when ($has-units = true) {
+      //   margin-left: -36.4px;
+      // }
+      //
+      // & when ($has-units = false) {
+      //   margin-left: -15px;
+      // }
 
-      > ul > li {
-        margin: 0;
-        //.scale-padding(1, padding-top);
-        //.scale-padding(1, padding-right);
-        //.scale-padding(1, padding-bottom);
-        padding-bottom: 0;
+      &::before {
+        @include toc-square-number-styles();
+        content: counter(toc-chapter-counter, decimal);
+      }
+
+      a.target-chapter {
+        // #content>#link>.style('chapter'; any; toc);
+        @include toc-titles-styles();
+        width: 90%;
+        display: inline-block;
+      }
+
+      .cnx-gentext-chapter {
+        display: none;
+      }
+
+      > ul {
+        //#content>#list>.style('chapter'; any; toc);
+        border-left: 4px solid $toc-side-border-color;
+        //.scale-padding(9, margin-left);
+        //.scale-padding(1, margin-top);
+
+        li {
+          margin-left: 0;
+        }
+
+        li a span.cnx-gentext-n {
+          font-weight: 700;
+        }
+
+        > li.toc-chapter:nth-child(2n+1) {
+          //#content>#list>.item('2n+1', 'chapter'; any; toc);
+          background-color: $toc-odd-bg-color;
+        }
+
+        > ul > li {
+          margin: 0;
+          //.scale-padding(1, padding-top);
+          //.scale-padding(1, padding-right);
+          //.scale-padding(1, padding-bottom);
+          padding-bottom: 0;
+        }
+      }
+
+      .cnx-gentext-chapter.cnx-gentext-t {
+        display: inline;
+        float: left;
+        max-width: 90%;
+      }
+
+      > .target-chapter::before {
+        display: none;
       }
     }
 
-    .cnx-gentext-chapter.cnx-gentext-t {
-      display: inline;
-      float: left;
-      max-width: 90%;
-    }
+    .toc-appendix {
+      //.scale-padding(1, padding-bottom);
+      counter-increment: toc-appendix-counter; //#content>#link>.style('appendix'; any; toc);
+      //values cannot be acheived with //.scale-padding
+      // & when ($has-units = true) {
+      //   margin-left: -36.4px;
+      // }
+      //
+      // & when ($has-units = false) {
+      //   margin-left: -15px;
+      // }
 
-    > .target-chapter::before {
-      display: none;
-    }
-  }
-
-  .toc-appendix {
-    //.scale-padding(1, padding-bottom);
-    counter-increment: toc-appendix-counter; //#content>#link>.style('appendix'; any; toc);
-    //values cannot be acheived with //.scale-padding
-    // & when ($has-units = true) {
-    //   margin-left: -36.4px;
-    // }
-    //
-    // & when ($has-units = false) {
-    //   margin-left: -15px;
-    // }
-
-    &::before {
-      //#part>#toc>#chapter>.number('appendix'; any; toc);
-      content: counter(toc-appendix-counter, upper-latin);
-      @include toc-square-number-styles();
-    }
-    .cnx-gentext-autogenerated,
-    .cnx-gentext-n {
-      display: none;
+      &::before {
+        //#part>#toc>#chapter>.number('appendix'; any; toc);
+        content: counter(toc-appendix-counter, upper-latin);
+        @include toc-square-number-styles();
+      }
+      .cnx-gentext-autogenerated,
+      .cnx-gentext-n {
+        display: none;
+      }
     }
   }
-}
-//UGLY overrides from base
+  //UGLY overrides from base
 
-.book > .toc > .title {
-  border-bottom-width: 0;
-  border-bottom-style: none;
+  .book > .toc > .title {
+    border-bottom-width: 0;
+    border-bottom-style: none;
+  }
 }

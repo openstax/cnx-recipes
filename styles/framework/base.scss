@@ -6,22 +6,26 @@
 @import 'parts/modules.scss';
 @import 'parts/notes.scss';
 @import 'parts/eoc.scss';
-cnx-pi {
-  display: none;
+
+@if PLATFORM() == 'PDF' {
+  cnx-pi {
+    display: none;
+  }
+
+  [data-type="metadata"] {
+    display: none;
+  }
+
+  body {
+    color: color-map(bodyText);
+    font-size: base-font-size();
+    font-family: font-map(sans-serif);
+    line-height: base-line-height();
+    //vs line-height: line-height(0); vs $base-line-height???
+  }
 }
 
-[data-type="metadata"] {
-  display: none;
-}
-
-body {
-  color: color-map(bodyText);
-  font-size: base-font-size();
-  font-family: font-map(sans-serif);
-  line-height: base-line-height();
-  //vs line-height: line-height(0); vs $base-line-height???
-}
-
+/* TODO: These should always be scoped rather than floating outside of a page */
 a[href] {
   @include link-style(color-map(bodyLink));
 }
