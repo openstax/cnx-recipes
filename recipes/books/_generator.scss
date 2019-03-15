@@ -220,6 +220,7 @@
     $className: map-get($note, className);
     $titleContent: map-get($note, titleContent);
     $counterName: map-get($note, counterName);
+    $resetAt: map-get($note, resetAt);
     $hasSolutions: map-get($note, hasSolutions);
     $solutionTitleContent: map-get($note, solutionTitleContent);
     @include validate_type($className, string);
@@ -228,7 +229,11 @@
 
     @if $titleContent {
       @if $counterName {
-        @include count_countNote($counterName, $className);
+        @if $resetAt == moduleReset {
+          @include count_countSectionNote($counterName, $className);
+        } @else {
+          @include count_countNote($counterName, $className);
+        }
       }
       @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
     }
