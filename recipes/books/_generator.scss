@@ -188,8 +188,13 @@
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
+    $resetAt: map-get($Config_PartType_Example, resetAt);
 
-    @include count_countExamples(example);
+    @if $resetAt == moduleReset {
+      @include count_countSectionExamples(exampleInSection);
+    } @else {
+      @include count_countExamples(example);
+    }
     @if feature-enabled(appendix-has-numbered-examples) {
       $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
       @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
