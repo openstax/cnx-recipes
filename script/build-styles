@@ -3,7 +3,7 @@ cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
 arg1=$1
-
+platforms=(PDF unified)
 styles_root="./styles/books"
 
 # Pull in the BOOK_CONFIGS and STYLE_NAMES
@@ -20,13 +20,24 @@ if [[ ${#STYLE_NAMES[@]} == 0 ]]; then
   die "No styles were found. Check books.txt"
 fi
 
-for style_config in "${STYLE_NAMES[@]}"; do
-  read -r style_name _ <<< "${style_config}"
-  
-  sass_file="${styles_root}/${style_name}/book.scss"
-  css_file="${output_dir}/${style_name}.css"
 
-  do_progress "Generating ${css_file}" \
-    "${sass_bin}" --source-map true --output-style nested "${sass_file}" "${css_file}"
-  
+for style_config in "${STYLE_NAMES[@]}"; do
+  read -r style_name _ <<< "${style_config}" \
+
+  sass_file="${styles_root}/${style_name}/book.scss"
+
+  for platform in "${platforms[@]}"; do
+
+    css_file="${output_dir}/${style_name}-${platform}.css"
+
+    sed -i 's/PFname/'${platform}'/g' ${sass_file}
+
+    # echo "\$platform: \"${platform}"\"";"| cat - "${sass_file}" > temp && mv temp "${sass_file}" \
+
+    do_progress "Generating ${css_file}" \
+      "${sass_bin}" --source-map true --output-style nested "${sass_file}" "${css_file}"
+
+      sed -i 's/'${platform}'/PFname/g' ${sass_file}
+
+  done
 done
