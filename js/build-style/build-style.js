@@ -23,7 +23,7 @@ const scssResult = sass.renderSync({
   file: inputFile,
   includePaths: [platformIncludesPath],
   functions: {
-    'get-platform()': getPlatform
+    'PLATFORM()': getPlatform
   },
   sourceMap: true,
   outputStyle: "nested",
