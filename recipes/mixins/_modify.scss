@@ -60,75 +60,41 @@
   }
 }
 
-/// Adds labels to list with special classes
+/// Adds labels to list with special classes or data-type
 /// @group modify
 @mixin modify_lists ($listConfig) {
   @if $listConfig {
     @each $list in $listConfig {
+      $selector: map-get($list, selector);
       $className: map-get($list, className);
       $beforeLabel: map-get($list, beforeLabel);
       $afterLabel: map-get($list, afterLabel);
 
-      @include validate_type($className, string);
-      @include validate_type($beforeLabel, string);
       @include validate_type($afterLabel, string);
 
-      $counterName: #{$className}-COUNTER;
+      @if variable-exists(className) {
+        $selector: $className;
+      }
 
-      .#{$className} {
+      $counterName: #{$selector}-COUNTER;
+
+      [data-type = "#{$selector}"], .#{$selector} {
         counter-reset: #{$counterName};
-        class: os-#{$className};
+        class: os-#{$selector};
         > li {
           &::inside {
             container: span;
-            class: "os-#{$className}-content";
+            class: "os-#{$selector}-content";
           }
           &::before {
             container: span;
-            class: "os-#{$className}-token";
+            class: "os-#{$selector}-token";
             counter-increment: #{$counterName};
             content: $beforeLabel counter(#{$counterName}) $afterLabel;
             move-to: listBucket;
           }
           &:deferred {
             content: pending(listBucket) content();
-          }
-        }
-      }
-    }
-  }
-}
-
-/// Adds labels to list in abstract
-/// @group modify
-@mixin modify_abstractList($abstractListConfig) {
-  @if $abstractListConfig {
-    @each $list in $abstractListConfig {
-      $beforeLabel: map-get($list, beforeLabel);
-      $afterLabel: map-get($list, afterLabel);
-
-      @include validate_type($beforeLabel, list);
-      @include validate_type($afterLabel, string);
-
-      div[data-type="abstract"] {
-        ul {
-          container: ol;
-          counter-reset: abstractCounter;
-          > li {
-            &::inside {
-              container: span;
-              class: "os-abstract-content";
-            }
-            &::before {
-              container: span;
-              class: "os-abstract-token";
-              counter-increment: abstractCounter;
-              content: $beforeLabel counter(abstractCounter) $afterLabel;
-              move-to: abstractBucket;
-            }
-            &:deferred {
-              content: pending(abstractBucket) content();
-            }
           }
         }
       }
