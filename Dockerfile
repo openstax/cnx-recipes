@@ -6,7 +6,7 @@
 ##    docker build -t openstax/cnx-recipes:latest .
 ##
 ## To start the container:
-##    docker run --mount type=bind,source=$(pwd),target=/src -it openstax/cnx-recipes:latest /bin/bash
+##    docker run --mount type=bind,source=$(pwd),target=/code -it openstax/cnx-recipes:latest /bin/bash
 ## where the cnx-recipes repo has been cloned into the
 ## current working directory.
 ##

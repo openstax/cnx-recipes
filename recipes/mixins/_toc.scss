@@ -2,19 +2,11 @@
   nav#toc {
     li {
       > a {
-        @if feature-enabled(composite-eoc) {
-          > h1 > span,
-          > h2 > span,
-          > h3 > span,
-          > div > span {
-            move-to: title-spans;
-          }
-        } @else {
-          > h1 > span,
-          > h2 > span,
-          > div > span {
-            move-to: title-spans;
-          }
+        > h1 > span,
+        > h2 > span,
+        > h3 > span,
+        > div > span {
+          move-to: title-spans;
         }
         &:deferred {
           content: pending(title-spans);
@@ -53,13 +45,7 @@
   @include _pageEntry(false);
 }
 
-@mixin toc_prepTOCElements($hasCompositeChapter) {
-  $chapterAndCompositeChapterSel: ('> div[data-type="chapter"]');
-  @if $hasCompositeChapter {
-    $chapterAndCompositeChapterSel: append($chapterAndCompositeChapterSel, '> div[data-type="composite-chapter"]', comma);
-  }
-
-@mixin compositeChapterTOC () {
+@mixin compositeChapterTOC($hasCompositeChapter) {
   @if $hasCompositeChapter {
     > [data-type="composite-chapter"] {
       > [data-type='document-title'] {
@@ -115,6 +101,13 @@
     }
   }
 }
+
+@mixin toc_prepTOCElements($hasCompositeChapter) {
+  $chapterAndCompositeChapterSel: ('> div[data-type="chapter"]');
+  @if $hasCompositeChapter {
+    $chapterAndCompositeChapterSel: append($chapterAndCompositeChapterSel, '> div[data-type="composite-chapter"]', comma);
+  }
+
   body {
     > div[data-type="page"],
     > div[data-type="composite-page"] {
@@ -148,7 +141,7 @@
       }
     }
     #{$chapterAndCompositeChapterSel} {
-      @include compositeChapterTOC();
+      @include compositeChapterTOC($hasCompositeChapter);
       > [data-type='document-title'] {
         node-set: chapterTitle;
         string-set: chapTitle-id attr(id);
@@ -219,7 +212,7 @@
       }
 
       #{$chapterAndCompositeChapterSel} {
-        @include compositeChapterTOC();
+        @include compositeChapterTOC($hasCompositeChapter);
         > [data-type='document-title'] {
           node-set: chapterTitle;
           string-set: chapTitle-id attr(id);
