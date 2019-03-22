@@ -56,6 +56,15 @@
   @return $map;
 }
 
+@function map-has-nested-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+    $map: map-get($map, $key);
+  }
+  @return true;
+}
 
 @function reverse($list, $recursive: false) {
   $result: ();

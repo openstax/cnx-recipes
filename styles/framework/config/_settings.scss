@@ -1,6 +1,14 @@
 
 @function default-settings() {
   $DEFAULT_SETTINGS: (
+    PLATFORM: (
+       PDF: (
+        table-border-radius: 3px,
+       ),
+       rex-web: (
+          table-border-radius: 5px,
+        ),
+     ),
     base-font-size: 12px,
     h1-font: font-map(serif),
     h1-title-color: color-map(h1-title),
@@ -23,10 +31,15 @@
   @return $DEFAULT_SETTINGS;
 }
 
+
 @function settings($name) {
-  @if map-has-key($settings, $name) {
+
+  @if map-has-nested-keys($settings, PLATFORM, PLATFORM(), $name) {
+    @return nested-map-get($settings, PLATFORM, PLATFORM(), $name);
+  } @else if map-has-key($settings, $name) {
     @return map-get($settings, $name);
   }
+
   @error "Unknown settings option: #{$name}";
 }
 
