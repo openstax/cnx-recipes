@@ -2080,6 +2080,21 @@
 :pass(9) .appendix > section > section > [data-type="title"], :pass(9) .appendix > section > section [data-type="document-title"] {
   container: h3; }
 
+:pass(9) [data-type="stepwise"], :pass(9) .stepwise {
+  counter-reset: stepwise-COUNTER;
+  class: os-stepwise; }
+  :pass(9) [data-type="stepwise"] > li::inside, :pass(9) .stepwise > li::inside {
+    container: span;
+    class: "os-stepwise-content"; }
+  :pass(9) [data-type="stepwise"] > li::before, :pass(9) .stepwise > li::before {
+    container: span;
+    class: "os-stepwise-token";
+    counter-increment: stepwise-COUNTER;
+    content: "Step " counter(stepwise-COUNTER) ". ";
+    move-to: listBucket; }
+  :pass(9) [data-type="stepwise"] > li:deferred, :pass(9) .stepwise > li:deferred {
+    content: pending(listBucket) content(); }
+
 :pass(10) .os-index-link-separator:last-child {
   move-to: trash; }
 
@@ -2108,21 +2123,6 @@
 :pass(10) :not(.os-table) > table::outside {
   container: div;
   class: os-table; }
-
-:pass(10) .stepwise {
-  counter-reset: stepwise-COUNTER;
-  class: os-stepwise; }
-  :pass(10) .stepwise > li::inside {
-    container: span;
-    class: "os-stepwise-content"; }
-  :pass(10) .stepwise > li::before {
-    container: span;
-    class: "os-stepwise-token";
-    counter-increment: stepwise-COUNTER;
-    content: "Step " counter(stepwise-COUNTER) ". ";
-    move-to: listBucket; }
-  :pass(10) .stepwise > li:deferred {
-    content: pending(listBucket) content(); }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
