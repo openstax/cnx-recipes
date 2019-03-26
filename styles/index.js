@@ -1,46 +1,21 @@
-const fs = require('fs')
-const path = require('path')
+// const fs = require('fs') not allowed because this package is used in webpack
+const webStyles = require('./output/_web-styles.json')
 
-const PLATFORMS = {
-  WEB: 'rex-web',
-  PDF: 'pdf'
-}
+const suffix = '-rex-web.css'
 
-const root = path.join(__dirname, 'output')
+const books = new Map()
 
-function getSuffix(platform) {
-  return `-${platform}.css`
-}
-
-function getStyleFilenames(platform) {
-  const files = fs.readdirSync(root)
-  const styleFiles = files.filter(filename => filename.endsWith(getSuffix(platform)))
-  if (styleFiles.length === 0) {
-    throw new Error(`BUG: Could not find files for the "${platform}" platform`)
+for (const {fileName, content} of webStyles) {
+  if (!fileName.endsWith(suffix) || fileName.indexOf('/') >= 0) {
+    throw new Error(`BUG: the _web-styles.json file is malformed`)
   }
-  return styleFiles.map(filename => path.join(root, filename))
+  const bookName = fileName.replace(suffix, '')
+  books.set(bookName, content)
 }
 
-function getStyleFiles(platform) {
-  const styleFiles = getStyleFilenames(platform)
-  const styleMap = new Map()
-  styleFiles.forEach(styleFile => {
-    const styleName = path.basename(styleFile.replace(getSuffix(platform), ''))
-    styleMap.set(styleName, styleFile)
-  })
 
-  return styleMap
+function getBookStyles() {
+  return books
 }
 
-function getStyleContents(platform) {
-  const styleFiles = getStyleFilenames(platform)
-  const styleMap = new Map()
-  styleFiles.forEach(styleFile => {
-    const styleName = path.basename(styleFile.replace(getSuffix(platform), ''))
-    styleMap.set(styleName, fs.readFileSync(styleFile, 'utf-8'))
-  })
-
-  return styleMap
-}
-
-module.exports = { getStyleFiles, getStyleContents, PLATFORMS }
+module.exports = { getBookStyles }

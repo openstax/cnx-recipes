@@ -135,8 +135,7 @@ To do this, just replace every occurrence of `./script/diff-book ${BOOK_NAME}` (
 
 This package provides a few methods for use by other packages:
 
-- `getStyleFiles(platform): Map<string, string>`: returns a `Map` of filenames to the CSS files
-- `getStyleContents(platform): Map<string, string>`: returns a `Map` of the CSS contents for each book style
+- `getBookStyles(): Map<string, string>`: returns a `Map` of the CSS contents for each book style
 
 ## Experimental
 

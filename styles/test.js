@@ -8,13 +8,8 @@ function assertTrue(value, message) {
   }
 }
 
-const styleMap = main.getStyleFiles(main.PLATFORMS.WEB)
-assertTrue(styleMap.size > 0, `Test failed. styleMap.size is greater than zero. It is "${styleMap.size}"`)
+const bookStyles = main.getBookStyles()
+assertTrue(bookStyles.has(introBusiness), `Missing "${introBusiness}" in the style map`)
+assertTrue(bookStyles.get(introBusiness).length > 100, `Missing "${introBusiness}" in the style contents map`)
 
-const styleContentsMap = main.getStyleContents(main.PLATFORMS.WEB)
-assertTrue(styleMap.size === styleContentsMap.size, `FAILED: style maps do not match`)
-assertTrue(styleMap.has(introBusiness), `Missing "${introBusiness}" in the style map`)
-assertTrue(styleContentsMap.has(introBusiness), `Missing "${introBusiness}" in the style contents map`)
-assertTrue(styleContentsMap.get(introBusiness).length > 1, `Missing "${introBusiness}" in the style contents map`)
-
-console.log(`Success: Found ${styleMap.size} styles`)
+console.log(`Success: Found ${bookStyles.size} styles`)

@@ -10,12 +10,18 @@
     "min-snippet": "github:openstax/min-snippet#4ab54184c8f0a307b65dac14ea6a960a7aa3a1bb",
     "node-sass": "^4.11.0",
     "normalize-scss": "^7.0.1",
+    "sass-extract": "^2.1.0",
     "sass-lint": "^1.9.1",
-    "sassdoc": "^2.1.20",
-    "sass-extract": "^2.1.0"
+    "sassdoc": "^2.1.20"
   },
   "scripts": {
-    "pretest": "sass-lint --verbose",
+    "lint": "sass-lint --verbose",
+    "build:styles": "./script/build-styles",
+    "postinstall": "npm run-script build:styles",
+    "pretest": "npm run-script build:styles && npm run-script lint",
     "test": "node ./styles/test.js"
+  },
+  "dependencies": {
+    "fs-to-json": "^0.1.7"
   }
 }
