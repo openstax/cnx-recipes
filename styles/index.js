@@ -1,6 +1,11 @@
 const fs = require('fs')
 const path = require('path')
 
+const PLATFORMS = {
+  WEB: 'rex-web',
+  PDF: 'pdf'
+}
+
 const root = path.join(__dirname, 'output')
 
 function getSuffix(platform) {
@@ -38,4 +43,4 @@ function getStyleContents(platform) {
   return styleMap
 }
 
-module.exports = { getStyleFiles, getStyleContents }
+module.exports = { getStyleFiles, getStyleContents, PLATFORMS }

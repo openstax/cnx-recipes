@@ -1,4 +1,4 @@
-export enum PLATFORM {
+export enum PLATFORMS {
   WEB = 'rex-web',
   PDF = 'PDF'
 }
