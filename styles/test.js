@@ -18,7 +18,7 @@ main.getStyleFiles(platform).then(styleMap => {
     assertTrue(styleContentsMap.has(introBusiness), `Missing "${introBusiness}" in the style contents map`)
     assertTrue(styleContentsMap.get(introBusiness).length > 1, `Missing "${introBusiness}" in the style contents map`)
 
-    console.log(`Succes: Found ${styleMap.size} styles`)
+    console.log(`Success: Found ${styleMap.size} styles`)
   })
 }, err => {
   console.error('FAILED')
