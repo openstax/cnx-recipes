@@ -131,6 +131,13 @@ Instead of diffing the whole book, you can find differences in the styleguide fo
 To do this, just replace every occurrence of `./script/diff-book ${BOOK_NAME}` (and `./script/diff-book-prepare`) with `diff-guide ${RECIPE_NAME}` in the instructions above.
 
 
+## JavaScript Package
+
+This package provides a few methods for use by other packages:
+
+- `async getStyleFiles(platform): Map<string, string>`: returns a `Map` of filenames to the CSS files
+- `async getStyleContents(platform): Map<string, string>`: returns a `Map` of the CSS contents for each book style
+
 ## Experimental
 
 To update the Documentation in the gh-pages branch:
