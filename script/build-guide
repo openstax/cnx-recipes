@@ -113,12 +113,12 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
   # Exclude parsing the output/*.css files by setting the --mask
   do_progress_quiet "Building the style guide" \
     "$(npm bin)/kss" --verbose \
+    --builder "$(pwd)/js/custom-builder/index.js" \
     --homepage "${guideHomepageFile}" \
     --destination "${styleguideDir}" \
     --css ./guide.css \
     --source "${tempRecipeDir}" \
     --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"
-    # --template ./js/openstax-kss-builder \
 
   # HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
   # So, check the output of kss to see if any errors were reported.
