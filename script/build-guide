@@ -112,13 +112,13 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
   # The CSS path is relative to the styleguide directory, hence `./guide.css`
   # Exclude parsing the output/*.css files by setting the --mask
   do_progress_quiet "Building the style guide" \
-    "$(npm bin)/kss-node" --verbose \
-    --template ./js/openstax-kss-builder \
+    "$(npm bin)/kss" --verbose \
     --homepage "${guideHomepageFile}" \
     --destination "${styleguideDir}" \
     --css ./guide.css \
     --source "${tempRecipeDir}" \
     --mask '*.less|*.sass|*.scss|*.styl|*.stylus' > "${kssOutputFile}"
+    # --template ./js/openstax-kss-builder \
 
   # HACK: KSS-node does not error if an HTML file is missing. Instead, it prints out a warning.
   # So, check the output of kss to see if any errors were reported.
@@ -127,13 +127,6 @@ if [[ "${baked_or_prepared_suffix}" == "baked" ]]; then
     die "Some HTML files were missing: ${missingFiles}. Check ${kssOutputFile} for more details"
   fi
 
-  # Generate an HTML report (if genhtml is installed)
-  if [[ -n "$(command -v genhtml)" ]]; then
-    coverage_files=$(find "${tempRecipeDir}" -name '*.lcov')
-    # shellcheck disable=SC2086
-    do_progress_quiet "Building HTML coverage report" \
-      genhtml --quiet --output ./coverage/ ${coverage_files}
-  fi
   if [[ "${CI}" = "true" ]]; then
     try rm -rf "${tempDir}"
   fi
