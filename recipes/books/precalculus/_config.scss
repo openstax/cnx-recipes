@@ -60,6 +60,12 @@ $RECIPE_NAME: "precalculus";
   Style guide: book.composite.practice.test
 */
 
+$_eosTitle: (os-number: counter(chapter) "." counter(section) " ", os-afterLabel: "Section Exercises");
+
+$Config_SectionCompositePages: (
+  (className: "section-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle),
+);
+
 $Config_ChapterCompositePages: (
   (className: "glossary", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
   (className: "key-equations", clusterBy: $CLUSTER_NONE, name: "Key Equations"),
@@ -71,8 +77,12 @@ $Config_ChapterCompositePages: (
 $_tryItTitleContent: (os-title-label: "Try It ", os-number:"#" counter(try));
 $_tryItSolutionTitleContent: (os-divider: ". ", os-number: counter(try));
 
-$Config_ContentExercise_TitleContent: (os-divider: ". ", os-number : counter(exerciseMaybeInContent));
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
+// very improtant to keep this config file empty
+$Config_ContentExercise_TitleContent: ();
+$_eosExerciseTitleContent: (os-divider: ". ", os-number: counter(exerciseMaybeInContent));
+
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_SECTION, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_eosExerciseTitleContent);
 
 $Config_BookCompositePages: (
   (className: "solution", clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
