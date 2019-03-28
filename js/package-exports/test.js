@@ -1,4 +1,4 @@
-const main = require('./')
+const main = require('.')
 
 const introBusiness = 'intro-business'
 

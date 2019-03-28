@@ -1,5 +1,5 @@
 // const fs = require('fs') not allowed because this package is used in webpack
-const webStyles = require('./output/_web-styles.json')
+const webStyles = require('../../styles/output/_web-styles.json')
 
 const suffix = '-rex-web.css'
 
