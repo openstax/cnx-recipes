@@ -26,23 +26,20 @@ class OpenstaxBuilder extends KssBuilderBaseHandlebars {
         // ****************************************
         const handlebar = this.Handlebars.compile(content)
         const wrapper = (context) => {
-          if (context.sections && context.sections.length > 5) {
-            context.sections.forEach(section => {
-              if (section.markupFile) {
-                // Try to find the source snippet
-                if (section.markupFile.indexOf(markupFileSuffix) < 0) {
-                  throw new Error(`KSS Custom builder: markup file format does not end in "${markupFileSuffix}". It is "${section.markupFile}"`)
-                }
-                const markupSnippetFile = section.markupFile.replace(markupFileSuffix, snippetFileSuffix)
-                const root = section.source.path.replace(section.source.filename, '')
-                const snippetPath = path.join(root, markupSnippetFile)
-                const markupSnippet = fs.readFileSync(snippetPath, 'utf-8')
-                section.markupFile = markupSnippetFile
-                section.markupSource = markupSnippet
+          context.sections.forEach(section => {
+            if (section.markupFile) {
+              // Try to find the source snippet
+              if (section.markupFile.indexOf(markupFileSuffix) < 0) {
+                throw new Error(`KSS Custom builder: markup file format does not end in "${markupFileSuffix}". It is "${section.markupFile}"`)
               }
-            })
-            console.log('WE FOUND IT BOYS!')
-          }
+              const markupSnippetFile = section.markupFile.replace(markupFileSuffix, snippetFileSuffix)
+              const root = section.source.path.replace(section.source.filename, '')
+              const snippetPath = path.join(root, markupSnippetFile)
+              const markupSnippet = fs.readFileSync(snippetPath, 'utf-8')
+              section.markupFile = markupSnippetFile
+              section.markupSource = markupSnippet
+            }
+          })
           return handlebar(context)
         }
         return wrapper;

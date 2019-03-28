@@ -7,7 +7,7 @@ baked_or_prepared_suffix=$2 # Overridden when running ./diff-guide-prepare
 
 sassDir='./recipes/'
 styleguideDir="./styleguide/${recipe_name}"
-sass_file="${sassDir}/books/${recipe_name}/book.scss"
+source_css_file="./styles/output/${recipe_name}-rex-web.css"
 css_file="${styleguideDir}/guide.css"
 guideHomepageFile="./guide-homepage.md" # Relative to ${sassDir}/recipes/
 
@@ -31,9 +31,10 @@ fi
 
 [[ -e ${styleguideDir} ]] || mkdir -p "${styleguideDir}" || exit 111
 
-do_progress_quiet "Compiling the guide.scss file for ${recipe_name}" \
-  "${sass_bin}" --source-map true "${sass_file}" "${css_file}"
-
+if [[ -f ${source_css_file} ]]; then
+  do_progress_quiet "Copying the css file for ${recipe_name}" \
+    cp "${source_css_file}" "${css_file}"
+fi
 
 progress "Building the baked example HTML files"
 
@@ -70,7 +71,7 @@ done
 
 [[ 1 -eq "${found_config}" ]] || die "Could not find Book info for book named ${recipe_name}. check ./books.txt"
 
-cp -R "${bookDocumentationDir}" "${tempRecipeDir}" || exit 111
+try cp -R "${bookDocumentationDir}" "${tempRecipeDir}"
 
 
 # Find all the styleguide html files and convert them
@@ -82,28 +83,14 @@ while IFS= read -r -d '' snippet_file_name; do # generic for loop
   destFileName="${snippetBase}.xhtml-${baked_or_prepared_suffix}.html"
 
   # Convert the snippet (which is HTML + CNXML) into just HTML
-  xsltproc ./script/xsl/_cnxml-to-xhtml.xsl "${snippet_file_name}" > "${raw_file_name}" || exit 111
+  try xsltproc ./script/xsl/_cnxml-to-xhtml.xsl "${snippet_file_name}" > "${raw_file_name}" || exit 111
 
   # commented because xmllint does not like html5 element names like <figure>
   # ./script/bake-file ${recipe_name} ${snippet_file_name} /dev/stdout | xmllint --html --format - > ${snippet_file_name}-baked.xhtml
   # use `source` so we do not have to re-initialize python/node/ruby
   do_progress_quiet "Baking ${raw_file_name}" \
-    source ./script/bake-file "${recipe_name}" "${raw_file_name}" "${raw_file_name}-temp1-${baked_or_prepared_suffix}.xhtml" --use-repeatable-ids
+    source ./script/bake-file "${recipe_name}" "${raw_file_name}" "${destFileName}" --use-repeatable-ids
 
-  # Construct an HTML file that contains both the raw and baked HTML
-  # so it can be separated in the browser
-  # (and so Phil does not have to completely rewrite kss becuase it assumes only 1 file for markup)
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="cnxml">' > "${destFileName}" || exit 111
-  cat "${snippet_file_name}" >> "${destFileName}" || exit 111
-  echo '</section>' >> "${destFileName}" || exit 111
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-raw">' >> "${destFileName}" || exit 111
-  cat "${raw_file_name}" >> "${destFileName}" || exit 111
-  echo '</section>' >> "${destFileName}" || exit 111
-  echo '<section class="-kss-autogen-guide-markup" data-kss-format="html-baked">' >> "${destFileName}" || exit 111
-  cat "${raw_file_name}-temp1-${baked_or_prepared_suffix}.xhtml" >> "${destFileName}" || exit 111
-  echo '</section>' >> "${destFileName}" || exit 111
-
-  rm "${raw_file_name}-temp1-${baked_or_prepared_suffix}.xhtml" || exit 111
 done <   <(find "${tempRecipeDir}" -name "*.snippet.xml" -print0)
 
 
