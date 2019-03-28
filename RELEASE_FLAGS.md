@@ -1,4 +1,4 @@
-| Recipe Name | chapter-page-class | toc-numbered-pages | appendix-has-numbered-examples | increment-section-counter-for-lo | trash-abstract-in-preface | composite-eoc | EOCsection-links | titles-in-examples-and-exercises |
+| Recipe Name | chapter-page-class | toc-numbered-pages | appendix-has-numbered-examples | increment-section-counter-for-lo | trash-abstract-in-preface | composite-eoc | EOCsection-links | titles-in-examples |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | microbiology | :x: | :heavy_check_mark: | :x: | :x: | :x: | :heavy_check_mark: | :x: | :x: |
 | anatomy | :x: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: |
