@@ -65,39 +65,62 @@
 @mixin modify_lists ($listConfig) {
   @if $listConfig {
     @each $list in $listConfig {
-      $selector: map-get($list, selector);
       $className: map-get($list, className);
+      $selector: map-get($list, selector);
       $beforeLabel: map-get($list, beforeLabel);
       $afterLabel: map-get($list, afterLabel);
 
       @include validate_type($afterLabel, string);
 
-      @if variable-exists(className) {
-        $selector: $className;
-      }
+      @if $className {
+        $counterName: #{$className}-COUNTER;
 
-      $counterName: #{$selector}-COUNTER;
-
-      [data-type = "#{$selector}"], .#{$selector} {
-        counter-reset: #{$counterName};
-        class: os-#{$selector};
-        > li {
-          &::inside {
-            container: span;
-            class: "os-#{$selector}-content";
-          }
-          &::before {
-            container: span;
-            class: "os-#{$selector}-token";
-            counter-increment: #{$counterName};
-            content: $beforeLabel counter(#{$counterName}) $afterLabel;
-            move-to: listBucket;
-          }
-          &:deferred {
-            content: pending(listBucket) content();
+        .#{$className} {
+          counter-reset: #{$counterName};
+          class: os-#{$className};
+          > li {
+            &::inside {
+              container: span;
+              class: "os-#{$className}-content";
+            }
+            &::before {
+              container: span;
+              class: "os-#{$className}-token";
+              counter-increment: #{$counterName};
+              content: $beforeLabel counter(#{$counterName}) $afterLabel;
+              move-to: listBucket;
+            }
+            &:deferred {
+              content: pending(listBucket) content();
+            }
           }
         }
-      }
+      } @else if $selector {
+        $counterName: #{$selector}-COUNTER;
+
+        [data-type = "#{$selector}"] {
+          ul {
+            counter-reset: #{$counterName};
+            class: os-#{$selector};
+            > li {
+              &::inside {
+                container: span;
+                class: "os-#{$selector}-content";
+              }
+              &::before {
+                container: span;
+                class: "os-#{$selector}-token";
+                counter-increment: #{$counterName};
+                content: $beforeLabel counter(#{$counterName}) $afterLabel;
+                move-to: listBucket;
+              }
+              &:deferred {
+                content: pending(listBucket) content();
+              }
+            }
+          }
+        }
+      }      
     }
   }
 }
