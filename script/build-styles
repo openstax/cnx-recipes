@@ -13,7 +13,6 @@ if [ ! "${arg1}" == "" ]; then
   STYLE_NAMES=("${arg1} ${arg1}")
 fi
 
-sass_bin="$(npm bin)/node-sass"
 output_dir="./styles/output"
 
 if [[ ${#STYLE_NAMES[@]} == 0 ]]; then
@@ -22,11 +21,17 @@ fi
 
 for style_config in "${STYLE_NAMES[@]}"; do
   read -r style_name _ <<< "${style_config}"
-  
-  sass_file="${styles_root}/${style_name}/book.scss"
-  css_file="${output_dir}/${style_name}.css"
 
-  do_progress "Generating ${css_file}" \
-    "${sass_bin}" --source-map true --output-style nested "${sass_file}" "${css_file}"
+  sass_file="${styles_root}/${style_name}/book.scss"
+
+  for platform in "${PLATFORMS[@]}"; do
+    css_file="${output_dir}/${style_name}-${platform}.css"
+
+    PLATFORM="${platform}" do_progress "Generating ${css_file}" \
+      node js/build-style/build-style.js "${sass_file}" "${css_file}"
+  done
+
+  do_progress "Building webpackable _web-styles.json" \
+    npm run-script build:web-styles
   
 done

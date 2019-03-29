@@ -21,10 +21,10 @@ for style_config in "${STYLE_NAMES[@]}"; do
   read -r style_name book_name <<< "${style_config}"
 
   book_baked="./data/${book_name}-baked.xhtml"
-  book_style="./styles/output/${style_name}.css"
   book_test_dir="./styles/books/${style_name}/tests"
   book_test_min_snippet="${book_test_dir}/baked-min-snippet-${book_name}.xhtml"
-  book_tests=$(cd "${book_test_dir}" && ls -- *html)
+  book_tests=$(find ./styles/books/"${style_name}"/tests/ -type f -print0 | xargs -0I {} basename {})
+  # book_tests=$(cd "${book_test_dir}" && ls -- *html)
 
 
   # Create the coverage directory if it does not exist
@@ -33,19 +33,24 @@ for style_config in "${STYLE_NAMES[@]}"; do
   # Rebuild the min-snippet file if the baked book exists (not on travis)
   if [[ -f ${book_baked} ]]; then
     do_progress_quiet "Rebuilding min-snippet for ${style_name}" \
-      node "./node_modules/min-snippet/index.js" "${book_baked}" "${book_test_min_snippet}"
+      "$(npm bin)/min-snippet" "${book_baked}" "${book_test_min_snippet}"
   fi
 
-  for test_name in ${book_tests}; do
-    test_file="${book_test_dir}/${test_name}"
-    lcov_css_file="./coverage/${style_name}-${test_name}-css.lcov"
-    lcov_scss_file="./coverage/${style_name}-${test_name}-scss.lcov"
+  for platform in "${PLATFORMS[@]}"; do
+    book_style="./styles/output/${style_name}-${platform}.css"
+    for test_name in ${book_tests}; do
+      test_file="${book_test_dir}/${test_name}"
+      lcov_css_file="./coverage/${style_name}-${test_name}-css.lcov"
+      lcov_scss_file="./coverage/${style_name}-${test_name}-scss.lcov"
 
-    # Verify that the file is valid XML (attributes might not be escaped, closing tags might not be correct, etc)
-    try xmllint "${test_file}" --noout
-    # Report coverage of the `.scss` files _and_ the `.css` files
-    try "$(npm bin)/css-coverage" --cover-declarations --css "${book_style}" --html "${test_file}" --lcov "${lcov_scss_file}"
-    try "$(npm bin)/css-coverage" --cover-declarations --css "${book_style}" --html "${test_file}" --lcov "${lcov_css_file}" --ignore-source-map 
+      # Verify that the file is valid XML (attributes might not be escaped, closing tags might not be correct, etc)
+      try xmllint "${test_file}" --noout
+      # Report coverage of the `.scss` files _and_ the `.css` files
+      do_progress_quiet "Running SCSS coverage - test: ${test_name} - style: ${style_name} - platform: ${platform}" \
+        "$(npm bin)/css-coverage" --cover-declarations --css "${book_style}" --html "${test_file}" --lcov "${lcov_scss_file}"
+      do_progress_quiet "Running CSS coverage - test: ${test_name} - style: ${style_name} - platform: ${platform}" \
+        "$(npm bin)/css-coverage" --cover-declarations --css "${book_style}" --html "${test_file}" --lcov "${lcov_css_file}" --ignore-source-map
+    done
   done
 
 done
