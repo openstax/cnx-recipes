@@ -513,6 +513,15 @@
   class: "os-title";
   attr-data-type: "title"; }
 
+:pass(1) .try [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+
+:pass(1) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+
+:pass(1) .introduction .splash:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+
 :pass(1) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
 
@@ -936,6 +945,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.section-exercises {
+    move-to: section-exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.section-exercises > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"] [data-type="page"]::after {
+    container: div;
+    content: pending(section-exercises-TOCOMPOSITE);
+    class: "os-eos os-section-exercises-container";
+    data-uuid-key: ".section-exercises"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
     /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
     move-to: trash; }
@@ -983,8 +1005,6 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.review-exercises {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: review-exercises-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.review-exercises > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -999,8 +1019,6 @@
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.practice-test {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: practice-test-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.practice-test > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
@@ -1011,12 +1029,6 @@
     class: "os-eoc os-practice-test-container";
     data-type: "composite-page";
     data-uuid-key: ".practice-test"; }
-
-:pass(3) .try [data-type="exercise"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
-
-:pass(3) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
 
 :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
@@ -1077,11 +1089,37 @@
   class: os-index-item;
   move-to: index-TOCOMPOSITE; }
 
-:pass(6) [data-type="chapter"], :pass(6) .appendix {
-  counter-reset: exercise; }
+:pass(6) .os-eos, :pass(6) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(6) .os-eos [data-type="exercise"] {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(6) .os-eos, :pass(6) .appendix {
+  counter-reset: exerciseMaybeInContent; }
 
 :pass(6) .os-eoc [data-type="exercise"] {
-  counter-increment: exercise; }
+  counter-increment: exerciseMaybeInContent; }
 
 :pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
@@ -1090,7 +1128,7 @@
 
 :pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
-  content: counter(exercise);
+  content: counter(exerciseMaybeInContent);
   class: os-number; }
 
 :pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
@@ -1100,7 +1138,7 @@
 
 :pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
   container: span;
-  content: counter(exercise);
+  content: counter(exerciseMaybeInContent);
   class: os-number; }
 
 :pass(7) body {
@@ -1119,6 +1157,18 @@
     :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
+
+:pass(8) body {
+  counter-reset: chapter; }
+
+:pass(8) div[data-type="chapter"] {
+  counter-increment: chapter; }
+
+:pass(8) [data-type="chapter"], :pass(8) .appendix {
+  counter-reset: section; }
+
+:pass(8) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
 
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
@@ -1143,6 +1193,26 @@
   class: "os-solution-area";
   content: pending(note-try-header) pending(note-try-solution-GETSECTION);
   move-to: note-solution-GETCHAPTER; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container [data-type="solution"] {
+  move-to: section-exercises-solution-GETSECTION; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: span;
+  content: counter(chapter) "." counter(section) " " "Section Exercises";
+  class: "os-title-label";
+  move-to: section-exercises-title; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: h3;
+  content: pending(section-exercises-title);
+  move-to: section-exercises-header; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(section-exercises-header) pending(section-exercises-solution-GETSECTION);
+  move-to: solution-GETCHAPTER; }
 
 :pass(8) [data-type="chapter"] .os-eoc.os-review-exercises-container [data-type="solution"] {
   move-to: review-exercises-solution-GETSECTION; }
@@ -1231,13 +1301,19 @@
 :pass(9) div[data-type="chapter"] {
   counter-increment: chapter; }
 
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
 :pass(9) body {
   counter-reset: appendix; }
 
 :pass(9) div.appendix {
   counter-increment: appendix; }
 
-:pass(9) [data-type="chapter"], :pass(9) .appendix {
+:pass(9) .os-eos, :pass(9) .appendix {
   counter-reset: exercise; }
 
 :pass(9) .os-eoc [data-type="exercise"] {
@@ -1255,6 +1331,10 @@
 :pass(9) [data-type="equation"]:not(.unnumbered) {
   counter-increment: equation; }
 
+:pass(9) [data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
+  string-set: target-label "Exercise " counter(chapter) "." counter(exerciseMaybeInContent);
+  string-set: target-label-nominative "Exercise " counter(chapter) "." counter(exerciseMaybeInContent); }
+
 :pass(9) .os-eoc [data-type="exercise"] {
   string-set: target-label "Exercise " counter(chapter) "." counter(exercise);
   string-set: target-label-nominative "Exercise " counter(chapter) "." counter(exercise); }
@@ -1271,25 +1351,13 @@
   string-set: target-label "Table " counter(chapter) "." counter(table);
   string-set: target-label-nominative "Table " counter(chapter) "." counter(table); }
 
-:pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
-  string-set: target-label "Figure " counter(chapter) "." counter(figure);
-  string-set: target-label-nominative "Figure " counter(chapter) "." counter(figure); }
-
 :pass(9) .appendix :not(table) > table:not(.unnumbered) {
   string-set: target-label "Table " counter(appendix, upper-alpha) counter(table);
   string-set: target-label-nominative "Table " counter(appendix, upper-alpha) counter(table); }
 
-:pass(9) .appendix :not(figure) > figure:not(.unnumbered) {
-  string-set: target-label "Figure " counter(appendix, upper-alpha) counter(figure);
-  string-set: target-label-nominative "Figure " counter(appendix, upper-alpha) counter(figure); }
-
 :pass(9) .appendix > table:not(.unnumbered) {
   string-set: target-label "Table " counter(appendix, upper-alpha) counter(table);
   string-set: target-label-nominative "Table " counter(appendix, upper-alpha) counter(table); }
-
-:pass(9) .appendix > figure:not(.unnumbered) {
-  string-set: target-label "Figure " counter(appendix, upper-alpha) counter(figure);
-  string-set: target-label-nominative "Figure " counter(appendix, upper-alpha) counter(figure); }
 
 :pass(9) .preface :not(table) > table:not(.unnumbered) {
   string-set: target-label "Table " counter(table);
@@ -1299,13 +1367,21 @@
   string-set: target-label "Figure " counter(figure);
   string-set: target-label-nominative "Figure " counter(figure); }
 
-:pass(9) .appendix [data-type="example"] {
-  string-set: target-label "Example " counter(appendix, upper-alpha) counter(example);
-  string-set: target-label-nominative "Example " counter(appendix, upper-alpha) counter(example); }
+:pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
 
-:pass(9) [data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
-  string-set: target-label "Exercise " counter(chapter) "." counter(exerciseMaybeInContent);
-  string-set: target-label-nominative "Exercise " counter(chapter) "." counter(exerciseMaybeInContent); }
+:pass(9) .appendix :not(figure) > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
+
+:pass(9) .appendix > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
+
+:pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
 
 :pass(9) a.autogenerated-content {
   content: target-string(attr(href), target-label); }
@@ -1317,6 +1393,17 @@
 
 :pass(9) [data-type="composite-page"], :pass(9) [data-type="composite-chapter"] {
   content: nodes(bookMetadata) content(); }
+
+:pass(9) .os-eos.os-section-exercises-container::before {
+  container: span;
+  content: counter(chapter) "." counter(section) " " "Section Exercises";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(9) .os-eos.os-section-exercises-container::before {
+  container: h3;
+  data-type: "document-title";
+  content: pending(h3-TITLECONTAINER); }
 
 :pass(9) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
@@ -1413,16 +1500,6 @@
 :pass(9) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
   counter-increment: exerciseMaybeInContent; }
 
-:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: ". ";
-  class: os-divider; }
-
-:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: counter(exerciseMaybeInContent);
-  class: os-number; }
-
 :pass(9) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
   container: span;
   content: counter(exerciseMaybeInContent);
@@ -1439,7 +1516,7 @@
 :pass(9) :not(table) > table:not(.unnumbered) {
   counter-increment: table; }
 
-:pass(9) [data-type="chapter"], :pass(9) .appendix, :pass(9) .preface {
+:pass(9) [data-type="page"], :pass(9) .appendix, :pass(9) .preface {
   counter-reset: figure; }
 
 :pass(9) :not(figure) > figure:not(.unnumbered) {
