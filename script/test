@@ -10,8 +10,15 @@ do_progress_quiet "Running python tests" \
 do_progress_quiet "Linting and checking XML snippets" \
   ./script/lint-snippets
 
+do_progress_quiet "Compiling CSS Style files" \
+  ./script/build-styles
+
+# Test the styles
+do_progress_quiet "Testing CSS Style files" \
+  ./script/test-styles
+
 # Generate the CSS files for books
-do_progress_quiet "Compiling CSS files" \
+do_progress_quiet "Compiling CSS Recipe files" \
   ./script/build-recipes
 
 # Run the linter
@@ -57,7 +64,7 @@ if [[ -n "$(command -v genhtml)" ]]; then
   coverage_files=$(find ./tmp/ -name "*.lcov")
   # shellcheck disable=SC2086
   do_progress_quiet "Building HTML Coverage report at ./coverage/" \
-    genhtml --quiet --output ./coverage/ ${coverage_files}
+    genhtml --quiet --output ./coverage/ ${coverage_files} ./coverage/*.lcov
 fi
 
 # Validate the shell scripts

@@ -477,9 +477,9 @@
 :pass(1) :not([data-type="example"]) > [data-type="exercise"] {
   string-set: isSolution ""; }
   :pass(1) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
-    string-set: isSolution " os-hasSolution "; }
+    string-set: isSolution " os-hasSolution"; }
   :pass(1) :not([data-type="example"]) > [data-type="exercise"]::deferred {
-    class: attr(class) string(isSolution, " "); }
+    class: attr(class) string(isSolution); }
 
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
@@ -873,19 +873,13 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.summary {
-    content: pending(sectionLink) content();
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
     move-to: summary-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
-    :pass(3) div[data-type="chapter"] section.summary::before {
-      container: a;
-      attr-href: "#" string(moduleTitleId);
-      content: nodes(sectionHeaderNode);
-      move-to: sectionLink; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(summary-TOCOMPOSITE);
@@ -952,12 +946,12 @@
 :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
   data-visited: true;
   move-to: term-trash; }
-  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match("^[a-zA-Z]"),
-  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match("^[a-zA-Z]") {
+  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[a-zA-Z\]),
+  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[a-zA-Z\]) {
     string-set: group-by first-letter(content());
     data-done: true; }
-  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match("^[^a-zA-Z]"),
-  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match("^[^a-zA-Z]") {
+  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[\^a-zA-Z\]),
+  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[\^a-zA-Z\]) {
     string-set: group-by " Symbols";
     data-done: true; }
 
@@ -1039,20 +1033,36 @@
   content: counter(exercise);
   class: os-number; }
 
+:pass(6) [data-type="chapter"] {
+  counter-reset: solution_trash_half; }
+
+:pass(6) .os-eoc .os-hasSolution[data-type="exercise"] {
+  counter-increment: solution_trash_half;
+  string-set: trashStatus ""; }
+  :pass(6) .os-eoc .os-hasSolution[data-type="exercise"] [data-type="solution"] {
+    string-set: trashStatus counter(solution_trash_half); }
+  :pass(6) .os-eoc .os-hasSolution[data-type="exercise"]::deferred {
+    attr-trash-status: string(trashStatus); }
+
 :pass(7) body {
   counter-reset: exerciseAll; }
 
 :pass(7) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
 
-:pass(7) [data-type="exercise"].os-hasSolution {
+:pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="0"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="2"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="4"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="6"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="8"] {
+  class: attr(class) "-trashed"; }
+  :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="0"] [data-type="solution"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="2"] [data-type="solution"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="4"] [data-type="solution"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="6"] [data-type="solution"], :pass(7) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="8"] [data-type="solution"] {
+    move-to: trash; }
+
+:pass(7) [data-type="exercise"].os-hasSolution[trash-status$="1"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="3"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="5"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="7"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="9"] {
   string-set: exerciseId attr(id); }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
+  :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="problem"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="problem"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="problem"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="problem"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="problem"] > .os-number {
     container: a;
     attr-href: "#" string(exerciseId) "-solution"; }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] {
+  :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"], :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] {
     attr-id: string(exerciseId) "-solution"; }
-    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
+    :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"] > .os-number, :pass(7) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] > .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
 
@@ -1104,7 +1114,7 @@
   data-uuid-key: "index";
   group-by: span, "span::attr(group-by)", nocase; }
 
-:pass(9) .os-index-container > div.group-by:first-of-type > span.group-label:match("^[ ](Symbols|SYMBOLS)") {
+:pass(9) .os-index-container > div.group-by:first-of-type > span.group-label:match(\^\[ \]\(Symbols\|SYMBOLS\)) {
   content: "Symbols"; }
 
 :pass(9) body {
@@ -1595,7 +1605,7 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
+:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {

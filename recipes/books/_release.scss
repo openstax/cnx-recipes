@@ -1,0 +1,87 @@
+@function release-flag-enabled($flag_name) {
+  @if not map-has-key($RELEASE_FLAGS, $flag_name) {
+    @error "The flag `#{$flag_name}` has been removed or applied to all recipes";
+  }
+  @return map-get($RELEASE_FLAGS, $flag_name);
+}
+
+@function enable-for($list...) {
+  $RECIPE_NAME: "NONE_SET" !default;
+  @if $RECIPE_NAME == "NONE_SET" {
+    @error "This recipe has no $RECIPE_NAME.";
+  }
+  @return if(index($list, $RECIPE_NAME), true, false);
+}
+
+$RELEASE_FLAGS: (
+  chapter-page-class: enable-for(
+    "intro-business",
+    "economics",
+    "biology"
+  ),
+  
+  toc-numbered-pages: enable-for(
+    "principles-management",
+    "accounting",
+    "statistics",
+    "dev-math",
+    "chemistry",
+    "astronomy",
+    "u-physics",
+    "psychology",
+    "sociology",
+    "american-government",
+    "anatomy",
+    "history",
+    "microbiology",
+    "entrepreneurship",
+    "intro-business",
+    "business-ethics",
+    "economics",
+    "biology"
+  ),
+
+  appendix-has-numbered-examples: enable-for(
+    "principles-management",
+    "accounting",
+    "chemistry",
+    "psychology",
+    "sociology",
+    "american-government",
+    "history",
+    "entrepreneurship",
+    "intro-business",
+    "business-ethics",
+    "economics",
+    "biology"
+  ),
+
+  increment-section-counter-for-lo: enable-for(
+    "accounting",
+    "entrepreneurship",
+    "intro-business",
+    "business-ethics",
+    "economics",
+    "biology"
+  ),
+
+  trash-abstract-in-preface: enable-for(
+    "anatomy",
+    "entrepreneurship",
+    "intro-business",
+    "business-ethics",
+    "economics",
+    "biology"
+  ),
+
+  EOCsection-links: enable-for(
+    "economics",
+    "biology"
+  ),
+
+  has-unnumbered-elements: enable-for(
+    "precalculus"
+  ),
+
+  //toc-comp-page-linking: enable-for("intro-business")        // this needs to be reworked to work see https://github.com/Connexions/cnx-easybake/issues/97
+);

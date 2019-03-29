@@ -105,10 +105,9 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
       virtualenv_dir="./venv/"
       python_version="$(< .python-version)"
-      virtualenv_command="virtualenv"
 
-      # macOS needs a little extra love
-      if [[ "$(uname -s)" = "Darwin" ]]; then
+      # Use pyenv if it is installed
+      if [[ -n "$(which pyenv)" ]]; then
         # Install the correct python version if it is not installed yet
         if [[ ! $(pyenv which python) ]]; then
           do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
@@ -116,8 +115,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
         fi
         # Ensure pyenv is initialized
         eval "$(pyenv init -)"
-
-        virtualenv_command="pyenv exec virtualenv"
+        pyenv global "${python_version}"
       fi
 
       # Install pip if it is not available
@@ -134,9 +132,9 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       fi
 
       # Install virtualenv
-      # If macOS then check that the pyenv virtualenv is installed.
-      # If not running macOS then check that some virtualenv is installed.
-      if [[ "$(uname -s)" != "Darwin" && ! $(command -v virtualenv) ]] || [[ "$(uname -s)" = "Darwin" && ! $(pyenv which virtualenv) ]]; then
+      # If pyenv is installed then check that the pyenv virtualenv is installed.
+      # If not then check that some virtualenv is installed.
+      if [[ -z "$(which pyenv)" && ! $(command -v virtualenv) ]] || [[ -n "$(which pyenv)" && ! $(pyenv which virtualenv) ]]; then
         do_progress_quiet "Installing Python virtualenv" \
           pip install virtualenv
         # Rehash so that virtualenv is available
@@ -146,7 +144,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
       if [[ ! -d "${virtualenv_dir}" ]]; then
         # shellcheck disable=SC2086
         do_progress_quiet "Setting up a Python virtualenv" \
-          ${virtualenv_command} "${virtualenv_dir}"
+          virtualenv -p "$(which python)" "${virtualenv_dir}"
       fi
 
       do_progress_quiet "Activating Python virtualenv" \

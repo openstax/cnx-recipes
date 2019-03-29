@@ -445,6 +445,12 @@
   container: div;
   content: pending(bTitleLabel) content(); }
 
+:pass(1) [data-type="exercise"] [data-type="problem"]::inside {
+  class: "os-problem-container"; }
+
+:pass(1) [data-type="exercise"] [data-type="solution"]::inside {
+  class: "os-solution-container"; }
+
 :pass(1) ol[data-label]:not([data-label=""])::after,
 :pass(1) ul[data-label]:not([data-label=""])::after {
   container: div;
@@ -1041,12 +1047,12 @@
 :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
   data-visited: true;
   move-to: term-trash; }
-  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match("^[a-zA-Z]"),
-  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match("^[a-zA-Z]") {
+  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[a-zA-Z\]),
+  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[a-zA-Z\]) {
     string-set: group-by first-letter(content());
     data-done: true; }
-  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match("^[^a-zA-Z]"),
-  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match("^[^a-zA-Z]") {
+  :pass(5) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[\^a-zA-Z\]),
+  :pass(5) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[\^a-zA-Z\]) {
     string-set: group-by " Symbols";
     data-done: true; }
 
@@ -1156,12 +1162,12 @@
 
 :pass(7) [data-type="exercise"].os-hasSolution {
   string-set: exerciseId attr(id); }
-  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] .os-number {
+  :pass(7) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
     container: a;
     attr-href: "#" string(exerciseId) "-solution"; }
   :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] {
     attr-id: string(exerciseId) "-solution"; }
-    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] .os-number {
+    :pass(7) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
       container: a;
       attr-href: "#" string(exerciseId); }
 
@@ -1299,7 +1305,7 @@
   data-uuid-key: "index";
   group-by: span, "span::attr(group-by)", nocase; }
 
-:pass(9) .os-index-container > div.group-by:first-of-type > span.group-label:match("^[ ](Symbols|SYMBOLS)") {
+:pass(9) .os-index-container > div.group-by:first-of-type > span.group-label:match(\^\[ \]\(Symbols\|SYMBOLS\)) {
   content: "Symbols"; }
 
 :pass(9) body {
@@ -1383,10 +1389,6 @@
   string-set: target-label-nominative "Figure " counter(figure); }
 
 :pass(9) .appendix > figure:not(.unnumbered) {
-  string-set: target-label "Figure " counter(figure);
-  string-set: target-label-nominative "Figure " counter(figure); }
-
-:pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
   string-set: target-label "Figure " counter(figure);
   string-set: target-label-nominative "Figure " counter(figure); }
 
@@ -1836,6 +1838,22 @@
 :pass(9) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"], :pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"], :pass(9) [data-type="composite-chapter"] [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] [data-type="composite-chapter"] > section > section [data-type="title"] {
   container: h4; }
 
+:pass(9) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > section [data-type="title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="document-title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="title"] {
+  container: h3; }
+
+:pass(9) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > section > section [data-type="title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="document-title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="title"] {
+  container: h4;
+  data-type: title; }
+
+:pass(9) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(9) [data-type="composite-chapter"] > section > section > section [data-type="title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"],
+:pass(9) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"] {
+  container: h5; }
+
 :pass(9) .appendix > section > [data-type="title"], :pass(9) .appendix > section [data-type="document-title"] {
   container: h2; }
 
@@ -1863,6 +1881,13 @@
 
 :pass(10) div.os-table .os-caption-container {
   string-set: tableSummary content(); }
+
+:pass(10) table > caption:empty {
+  move-to: trash; }
+
+:pass(10) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
@@ -2152,6 +2177,7 @@
 
 :pass(13) nav#toc li > a > h1 > span,
 :pass(13) nav#toc li > a > h2 > span,
+:pass(13) nav#toc li > a > h3 > span,
 :pass(13) nav#toc li > a > div > span {
   move-to: title-spans; }
 
