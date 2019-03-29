@@ -138,10 +138,20 @@ $_exampleTitleContent: (os-title-label: "Example ", os-number: counter(exampleIn
 $_exampleSolutionTitleContent: (os-title-label: "Solution");
 $Config_PartType_Example: (moveTo: $AREA_NONE, resetAt: moduleReset, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
 
-$Config_UnnumberedExercises: (
-  (contextSelector: '.try', childSelector: '[data-type="exercise"]'),
-  (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
-);
+$Config_hasUnnumberedElements: true;
+
+@if $Config_hasUnnumberedElements {
+  $Config_UnnumberedElements: (
+    (contextSelector: '.try', childSelector: '[data-type="exercise"]'),
+    (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+    (contextSelector: '.introduction', childSelector: '.splash'),
+  );
+} @else {
+  $Config_UnnumberedExercises: (
+    (contextSelector: '.try', childSelector: '[data-type="exercise"]'),
+    (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+  );
+}
 
 $Config_TargetLabels: (
   (selector: '[data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered)', labelText: "Exercise " counter(chapter) "." counter(exerciseMaybeInContent)),
@@ -156,6 +166,5 @@ $Config_TargetLabels: (
   (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',    labelText: "Figure " counter(figure)),
   (selector: '.appendix :not(figure) > figure:not(.unnumbered)',                labelText: "Figure " counter(figure)),
   (selector: '.appendix > figure:not(.unnumbered)',                             labelText: "Figure " counter(figure))
-);
 
 $Config_hasCompositeChapter: true;
