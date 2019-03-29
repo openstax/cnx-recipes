@@ -95,12 +95,22 @@
   }
   @include modify_GenericNote();
 
-  @each $unnumberedEquation in $Config_UnnumberedEquations {
-    $contextSelector: map-get($unnumberedEquation, contextSelector);
-    $childSelector: map-get($unnumberedEquation, childSelector);
-    @include validate_type($contextSelector, string);
-    @include validate_typeOptional($childSelector, string);
-    @include modify_addUnnumbered($contextSelector, $childSelector);
+  @if feature-enabled(has-unnumbered-elements) {
+    @each $unnumberedElement in $Config_UnnumberedElements {
+      $contextSelector: map-get($unnumberedElement, contextSelector);
+      $childSelector: map-get($unnumberedElement, childSelector);
+      @include validate_type($contextSelector, string);
+      @include validate_typeOptional($childSelector, string);
+      @include modify_addUnnumbered($contextSelector, $childSelector);
+    }
+  } @else {
+    @each $unnumberedEquation in $Config_UnnumberedEquations {
+      $contextSelector: map-get($unnumberedEquation, contextSelector);
+      $childSelector: map-get($unnumberedEquation, childSelector);
+      @include validate_type($contextSelector, string);
+      @include validate_typeOptional($childSelector, string);
+      @include modify_addUnnumbered($contextSelector, $childSelector);
+    }
   }
 
   //the metadata has been moved to the content, remove it from the metadata
@@ -252,12 +262,14 @@
   @include compose_createSectionComposites($Config_SectionCompositePages, sectionHeaderNode);
   @include compose_createChapterComposites($Config_ChapterCompositePages, sectionHeaderNode);
 
-  @each $unnumberedExercise in $Config_UnnumberedExercises {
-    $contextSelector: map-get($unnumberedExercise, contextSelector);
-    $childSelector: map-get($unnumberedExercise, childSelector);
-    @include validate_type($contextSelector, string);
-    @include validate_typeOptional($childSelector, string);
-    @include modify_addUnnumbered($contextSelector, $childSelector);
+  @if feature-enabled(has-unnumbered-elements) {} @else {
+    @each $unnumberedExercise in $Config_UnnumberedExercises {
+      $contextSelector: map-get($unnumberedExercise, contextSelector);
+      $childSelector: map-get($unnumberedExercise, childSelector);
+      @include validate_type($contextSelector, string);
+      @include validate_typeOptional($childSelector, string);
+      @include modify_addUnnumbered($contextSelector, $childSelector);
+    }
   }
 
   $_chapterPrepCompoundCompositePages: ();
@@ -319,7 +331,8 @@
     @include validate_exists($titleContent);
 
     $resetSel: null;
-    @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+    @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos'; }
+    @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
 
@@ -397,7 +410,8 @@
       @include validate_type($titleContent, map);
 
       $resetSel: null;
-      @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+      @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos'; }
+      @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
       @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
       @else { @error 'BUG: Invalid enum'; }
 
@@ -454,7 +468,8 @@
     @include validate_type($titleContent, map);
 
     $resetSel: null;
-    @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+    @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos'; }
+    @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
     @include count_countEOCExercises(exercise, $resetSel);
@@ -494,8 +509,19 @@
   @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent,
                                          $Config_ContentExercise_TitleContentAp, $Config_ContentSolution_TitleContentAp);
 
-  @include count_countTables(table);
-  @include count_countFigures(figure);
+  $resetAt: map-get($Config_SetTableCaption, resetAt);
+  @if $resetAt == moduleReset {
+    @include count_countSectionTables(table);
+  } @else {
+    @include count_countTables(table);
+  }
+
+  $resetAt: map-get($Config_SetFigureCaption, resetAt);
+  @if $resetAt == moduleReset {
+    @include count_countSectionFigures(figure);
+  } @else {
+    @include count_countFigures(figure);
+  }
 
   @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr);
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr);
