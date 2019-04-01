@@ -54,6 +54,10 @@ COPY \
     ./script/_setup.sh \
     ./script/
 
+# Post-install builds the styles/output/_web-styles.json
+# which is not needed for being in a docker container.
+ENV SKIP_MY_POSTINSTALL=true
+
 RUN ./script/setup
 
 FROM build-dependencies as code
