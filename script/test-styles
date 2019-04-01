@@ -45,11 +45,17 @@ for style_config in "${STYLE_NAMES[@]}"; do
 
       # Verify that the file is valid XML (attributes might not be escaped, closing tags might not be correct, etc)
       try xmllint "${test_file}" --noout
+
+      ignore_declarations="''"
+      if [[ ${platform} = 'pdf' ]]; then
+        ignore_declarations="content,bookmark-level,prince-caption-page,box-decoration-break,prince-image-resolution,prince-background-image-resolution,prince-page-group"
+      fi
+
       # Report coverage of the `.scss` files _and_ the `.css` files
       do_progress_quiet "Running SCSS coverage - test: ${test_name} - style: ${style_name} - platform: ${platform}" \
-        "$(npm bin)/css-coverage" --cover-declarations --css "${book_style}" --html "${test_file}" --lcov "${lcov_scss_file}"
+        "$(npm bin)/css-coverage" --css "${book_style}" --html "${test_file}" --lcov "${lcov_scss_file}" --ignore-declarations ${ignore_declarations}
       do_progress_quiet "Running CSS coverage - test: ${test_name} - style: ${style_name} - platform: ${platform}" \
-        "$(npm bin)/css-coverage" --cover-declarations --css "${book_style}" --html "${test_file}" --lcov "${lcov_css_file}" --ignore-source-map
+        "$(npm bin)/css-coverage" --css "${book_style}" --html "${test_file}" --lcov "${lcov_css_file}" --ignore-source-map --ignore-declarations ${ignore_declarations}
     done
   done
 
