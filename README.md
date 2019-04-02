@@ -117,7 +117,7 @@ Here are the steps to run it:
 # Any differences would pop up at this point
 
 # Optional: Create a diff and give it to a GUI
-diff ./data/statistics-prepared.xhtml ./data/statistics-baked.xhtml > foo.diff
+diff ./data/statistics-prepared.xhtml ./data/statistics/collection.baked.xhtml > foo.diff
 ```
 
 **Note:** You can specify `--all` instead of `statistics` to diff all the books (after fetching them earlier)
