@@ -12,12 +12,17 @@
     "normalize-scss": "^7.0.1",
     "sass-extract": "^2.1.0",
     "sass-lint": "^1.9.1",
-    "sassdoc": "^2.1.20"
+    "sassdoc": "^2.1.20",
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-no-px": "^0.12.1"
   },
   "scripts": {
-    "lint": "sass-lint --verbose",
+    "lint": "npm run-script lint:sass && npm run-script lint:styles",
+    "lint:sass": "sass-lint --verbose",
+    "lint:styles": "stylelint './styles/**/*.scss'",
     "build:web-styles": "cd ./styles/output && fs-to-json --input '*rex-web.css' --output ./_web-styles.json --outputStyle array",
-    "postinstall": "npm run-script build:web-styles",
+    "postinstall": "[ ${SKIP_MY_POSTINSTALL} = 'true' ] || npm run-script build:web-styles",
     "pretest": "npm run-script build:web-styles && npm run-script lint",
     "test": "node ./js/package-exports/test.js"
   },
