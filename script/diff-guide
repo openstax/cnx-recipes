@@ -41,7 +41,7 @@ for recipe_name in "${RECIPE_NAMES[@]}"; do
 
   while IFS= read -r -d '' baked_file; do # generic for loop
 
-    prepared_file="${baked_file/-baked/-prepared}"
+    prepared_file="${baked_file/baked/prepared}"
     if [[ -s "${prepared_file}" ]]; then
 
       diff_count=$(diff "${prepared_file}" "${baked_file}" | wc -l)
@@ -55,7 +55,7 @@ for recipe_name in "${RECIPE_NAMES[@]}"; do
       die "FAILING ${recipe_name} because the prepared file '${prepared_file}' was not found. Did you run './script/diff-guide-prepare ${recipe_name}' earlier?"
     fi
 
-  done < <(find "./tmp/${recipe_name}" -name "*-baked.html" -print0)
+  done < <(find "./tmp/${recipe_name}" -name "*.baked.xhtml" -print0)
 done
 
 if [[ ! "${diff_found}" -eq "0" ]]; then
