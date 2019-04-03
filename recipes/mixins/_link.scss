@@ -39,7 +39,18 @@
 @mixin link_setTargetLabels($targetLabels) {
   @each $target in $targetLabels {
     $selector: map-get($target, selector);
+    $titleSelector: map-get($target, titleSelector);
     $labelText: map-get($target, labelText);
+
+    @if $titleSelector {
+      #{$selector} {
+        #{$titleSelector} {
+          string-set: title content();
+        }
+        $labelText: string(title);
+      }
+    }
+
     #{$selector} {
       // i18n: define the different cases (nominative, etc) for a term so the proper one is used. See #353
       // It uses the @cmlnle:case="..." later on to determine which case should be used
