@@ -1,0 +1,93 @@
+#!/bin/bash
+BOOTSTRAP_ALREADY_RAN=1
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+# This converts the math in the HTML to svg (by default, can be set using MATH_FORMAT)
+
+set -e
+
+# TL;DR neb mathify runs a docker container, it creates complications when
+# we're already in a docker container
+# ---
+# "neb mathify" uses docker, that currently does not work inside a docker
+# container.  People don't recommend running docker inside docker, the way
+# to do this is by running a sibling container.  You would mount your
+# host's `/var/run/docker.sock` in your container and launch a new
+# container in your container from your host.  The complication comes from
+# the path being incorrect.  When I tried this, I got this error:
+#
+# ```
+# docker.errors.APIError: 400 Client Error: Bad Request ("invalid mount
+# config for type "bind": bind source path does not exist:
+# /code/data/intro-business")
+# ```
+#
+# I think this is because `/code/data/intro-business` does not exist on
+# the host.
+#
+if [ -f "/.dockerenv" ]; then
+  die "Please run mathify outside of a docker container"
+fi
+
+# if the virtualenv is set to work in a docker container, we need to create a
+# different virtualenv dir
+if [[ "$(head -1 "${virtualenv_dir}/bin/neb")" == '#!'"/code/${virtualenv_dir/\.\//}/bin/python" ]]; then
+  install_python "${virtualenv_dir}.local"
+  if [ ! -f "${VIRTUAL_ENV}/bin/neb" ]; then
+    pip install -r requirements.txt
+  fi
+fi
+
+book_name=$1
+
+# Check command line args
+if [ -z "${book_name}" ]; then
+  _say 'ERROR: Argument missing.  You must specify the name of the book as the 1st argument (or --all).  For example: physics'
+  die 'Stopping because no commandline args were passed in'
+fi
+
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [ "${book_name}" != "--all" ]; then
+  found_config=false
+  # Filter BOOK_CONFIGS to only contain the book you want to mathify
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name _ <<< "${book_config}"
+
+    if [[ "${book_name}" == "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name}")
+      found_config=true
+      break
+    fi
+  done
+
+  if ! ${found_config}; then
+    _say "Valid books are (from ./books.txt):"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name _ <<< "${book_config}"
+      _say "${book_name}"
+    done
+    die "Could not find book info for book named ${book_name}"
+  fi
+fi
+
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_config_name _ <<< "${book_config}"
+
+  book_dir="./data/${book_config_name}"
+  baked_file="${book_dir}/collection.baked.xhtml"
+  mathified_file="${book_dir}/collection.mathified.xhtml"
+  math_format=${MATH_FORMAT:-svg}
+
+  if [[ -z "$(which neb)" ]]; then
+    do_progress_quiet "Activating Python virtualenv" \
+      source "${virtualenv_dir}/bin/activate"
+  fi
+
+  do_progress_quiet "Converting math in ${baked_file} to ${math_format}" \
+    neb mathify -i "${baked_file}" -f "${math_format}" "${book_dir}"
+
+  _say "Output is available at ${mathified_file}"
+done
