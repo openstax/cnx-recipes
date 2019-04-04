@@ -91,6 +91,71 @@ _wrong_virtualenv_python_version() {
   fi
 }
 
+install_python() {
+  virtualenv_dir="$1"
+  # Check that a .python-version file is set
+  [[ -f "./.python-version" ]] || die "Repository is missing a .python-version file. Please add one. The contents should contain the python version (ie 3.6)"
+
+  python_version="$(< .python-version)"
+
+  # Use pyenv if it is installed
+  if [[ -n "$(which pyenv)" ]]; then
+    # Install the correct python version if it is not installed yet
+    if [[ ! $(pyenv which python) ]]; then
+      do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
+        pyenv install "${python_version}"
+    fi
+    # Ensure pyenv is initialized
+    eval "$(pyenv init -)"
+    pyenv global "${python_version}"
+  fi
+
+  # Install pip if it is not available
+  if [[ ! $(command -v pip) ]]; then
+    pwd=$(pwd)
+    do_progress_quiet "Downloading pip" \
+      curl --output "${pwd}/get-pip.py" https://bootstrap.pypa.io/get-pip.py
+    do_progress_quiet "Installing pip" \
+      sudo -H python "${pwd}/get-pip.py"
+    do_progress_quiet "Cleaning up after pip installation" \
+      rm "${pwd}/get-pip.py"
+    # Rehash so that pip is available
+    try pyenv rehash
+  fi
+
+  # Install virtualenv
+  # If pyenv is installed then check that the pyenv virtualenv is installed.
+  # If not then check that some virtualenv is installed.
+  if [[ -z "$(which pyenv)" && ! $(command -v virtualenv) ]] || [[ -n "$(which pyenv)" && ! $(pyenv which virtualenv) ]]; then
+    do_progress_quiet "Installing Python virtualenv" \
+      pip install virtualenv
+    # Rehash so that virtualenv is available
+    try pyenv rehash
+  fi
+  # Create a new virtualenv if wrong python version
+  if [[ -d "${virtualenv_dir}" ]] && _wrong_virtualenv_python_version; then
+    _say "Recreating virtualenv with python version ${python_version}"
+    mv "${virtualenv_dir}" "${virtualenv_dir}.old"
+    do_progress_quiet "Setting up a Python virtualenv" \
+      virtualenv -p "$(which python)" "${virtualenv_dir}"
+    do_progress_quiet "Activating Python virtualenv" \
+      source "${virtualenv_dir}/bin/activate"
+    do_progress_quiet "Installing python packages" \
+      pip install -r "./requirements.txt"
+  fi
+  # Create a virtualenv
+  if [[ ! -d "${virtualenv_dir}" ]]; then
+    # shellcheck disable=SC2086
+    do_progress_quiet "Setting up a Python virtualenv" \
+      virtualenv -p "$(which python)" "${virtualenv_dir}"
+  fi
+
+  do_progress_quiet "Activating Python virtualenv" \
+    source "${virtualenv_dir}/bin/activate"
+}
+
+virtualenv_dir="./venv"
+
 # This provides a > 10% speedup because we do not have to reinitialize node and ruby
 if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
 
@@ -109,67 +174,7 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
   if [[ ! "${CI}" = "true" ]] && [[ -f "./setup.py" || -f "./requirements.txt" ]]; then
     # Only install & activate the virtualenv if not already in one
     if [[ -z "${VIRTUAL_ENV}" ]]; then
-
-      # Check that a .python-version file is set
-      [[ -f "./.python-version" ]] || die "Repository is missing a .python-version file. Please add one. The contents should contain the python version (ie 3.6)"
-
-      virtualenv_dir="./venv"
-      python_version="$(< .python-version)"
-
-      # Use pyenv if it is installed
-      if [[ -n "$(which pyenv)" ]]; then
-        # Install the correct python version if it is not installed yet
-        if [[ ! $(pyenv which python) ]]; then
-          do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
-            pyenv install "${python_version}"
-        fi
-        # Ensure pyenv is initialized
-        eval "$(pyenv init -)"
-        pyenv global "${python_version}"
-      fi
-
-      # Install pip if it is not available
-      if [[ ! $(command -v pip) ]]; then
-        pwd=$(pwd)
-        do_progress_quiet "Downloading pip" \
-          curl --output "${pwd}/get-pip.py" https://bootstrap.pypa.io/get-pip.py
-        do_progress_quiet "Installing pip" \
-          sudo -H python "${pwd}/get-pip.py"
-        do_progress_quiet "Cleaning up after pip installation" \
-          rm "${pwd}/get-pip.py"
-        # Rehash so that pip is available
-        try pyenv rehash
-      fi
-
-      # Install virtualenv
-      # If pyenv is installed then check that the pyenv virtualenv is installed.
-      # If not then check that some virtualenv is installed.
-      if [[ -z "$(which pyenv)" && ! $(command -v virtualenv) ]] || [[ -n "$(which pyenv)" && ! $(pyenv which virtualenv) ]]; then
-        do_progress_quiet "Installing Python virtualenv" \
-          pip install virtualenv
-        # Rehash so that virtualenv is available
-        try pyenv rehash
-      fi
-      # Create a new virtualenv if wrong python version
-      if [[ -d "${virtualenv_dir}" ]] && _wrong_virtualenv_python_version; then
-        _say "Recreating virtualenv with python version ${python_version}"
-        mv "${virtualenv_dir}" "${virtualenv_dir}.old"
-        do_progress_quiet "Setting up a Python virtualenv" \
-          virtualenv -p "$(which python)" "${virtualenv_dir}"
-        do_progress_quiet "Activating Python virtualenv" \
-          source "${virtualenv_dir}/bin/activate"
-        do_progress_quiet "Installing python packages" \
-          pip install -r "./requirements.txt"
-      fi
-      # Create a virtualenv
-      if [[ ! -d "${virtualenv_dir}" ]]; then
-        # shellcheck disable=SC2086
-        do_progress_quiet "Setting up a Python virtualenv" \
-          virtualenv -p "$(which python)" "${virtualenv_dir}"
-      fi
-
-      do_progress_quiet "Activating Python virtualenv" \
-        source "${virtualenv_dir}/bin/activate"
+      install_python "${virtualenv_dir}"
     else
       _say "${c_yellow}Skipping virtualenv${c_none} because already in one"
     fi
