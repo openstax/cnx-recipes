@@ -173,6 +173,14 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
     }
   fi
 
+  # Install docker
+  if [[ -z "$(which docker)" ]]; then
+    if [[ -n "$(which apt-get)" ]]; then
+      sudo apt-get install docker.io
+    fi
+    # TODO install docker on other platforms
+  fi
+
   # Python: Install & Activate python virtualenv
   if [[ ! "${CI}" = "true" ]] && [[ -f "./setup.py" || -f "./requirements.txt" ]]; then
     # Only install & activate the virtualenv if not already in one
