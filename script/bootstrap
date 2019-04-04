@@ -108,6 +108,9 @@ install_python() {
     # Ensure pyenv is initialized
     eval "$(pyenv init -)"
     pyenv global "${python_version}"
+    which_python="$(which python)"
+  else
+    which_python="$(which "python${python_version%%.*}")"
   fi
 
   # Install pip if it is not available
@@ -137,7 +140,7 @@ install_python() {
     _say "Recreating virtualenv with python version ${python_version}"
     mv "${virtualenv_dir}" "${virtualenv_dir}.old"
     do_progress_quiet "Setting up a Python virtualenv" \
-      virtualenv -p "$(which python)" "${virtualenv_dir}"
+      virtualenv -p "${which_python}" "${virtualenv_dir}"
     do_progress_quiet "Activating Python virtualenv" \
       source "${virtualenv_dir}/bin/activate"
     do_progress_quiet "Installing python packages" \
@@ -147,7 +150,7 @@ install_python() {
   if [[ ! -d "${virtualenv_dir}" ]]; then
     # shellcheck disable=SC2086
     do_progress_quiet "Setting up a Python virtualenv" \
-      virtualenv -p "$(which python)" "${virtualenv_dir}"
+      virtualenv -p "${which_python}" "${virtualenv_dir}"
   fi
 
   do_progress_quiet "Activating Python virtualenv" \
