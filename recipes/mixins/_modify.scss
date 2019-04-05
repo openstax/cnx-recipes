@@ -70,63 +70,48 @@
 /// @group modify
 @mixin modify_lists ($listConfig) {
   @if $listConfig {
+    $name: null;
+    $selector: null;
     @each $list in $listConfig {
       $className: map-get($list, className);
-      $selector: map-get($list, selector);
+      $dataTypeName: map-get($list, dataTypeName);
       $beforeLabel: map-get($list, beforeLabel);
       $afterLabel: map-get($list, afterLabel);
 
       @include validate_type($afterLabel, string);
 
       @if $className {
-        $counterName: #{$className}-COUNTER;
+        $name: $className;
+        $selector: '.#{$className}';
+      }
 
-        .#{$className} {
-          counter-reset: #{$counterName};
-          class: os-#{$className};
-          > li {
-            &::inside {
-              container: span;
-              class: "os-#{$className}-content";
-            }
-            &::before {
-              container: span;
-              class: "os-#{$className}-token";
-              counter-increment: #{$counterName};
-              content: $beforeLabel counter(#{$counterName}) $afterLabel;
-              move-to: listBucket;
-            }
-            &:deferred {
-              content: pending(listBucket) content();
-            }
+      @if $dataTypeName {
+        $name: $dataTypeName;
+        $selector: '[data-type="#{$dataTypeName}"] ul';
+      }
+
+      $counterName: #{$name}-COUNTER;
+
+      #{$selector} {
+        counter-reset: #{$counterName};
+        class: os-#{$name};
+        > li {
+          &::inside {
+            container: span;
+            class: "os-#{$name}-content";
+          }
+          &::before {
+            container: span;
+            class: "os-#{$name}-token";
+            counter-increment: #{$counterName};
+            content: $beforeLabel counter(#{$counterName}) $afterLabel;
+            move-to: listBucket;
+          }
+          &:deferred {
+            content: pending(listBucket) content();
           }
         }
-      } @else if $selector {
-        $counterName: #{$selector}-COUNTER;
-
-        [data-type = "#{$selector}"] {
-          ul {
-            counter-reset: #{$counterName};
-            class: os-#{$selector};
-            > li {
-              &::inside {
-                container: span;
-                class: "os-#{$selector}-content";
-              }
-              &::before {
-                container: span;
-                class: "os-#{$selector}-token";
-                counter-increment: #{$counterName};
-                content: $beforeLabel counter(#{$counterName}) $afterLabel;
-                move-to: listBucket;
-              }
-              &:deferred {
-                content: pending(listBucket) content();
-              }
-            }
-          }
-        }
-      }      
+      }
     }
   }
 }
