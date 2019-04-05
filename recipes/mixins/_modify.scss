@@ -7,6 +7,12 @@
   }
 }
 
+@mixin modify_trashElement($trashConfig) {
+  @if $trashConfig {
+    @include modify_trash($trashConfig);
+  }
+}
+
 /// Changes preface title's container to `<h1>`
 /// @group modify
 @mixin modify_titlePreface() {
@@ -520,6 +526,25 @@
             container: h4;
           }
         }
+      }  
+      [data-type="example"] {
+        @if release-flag-enabled(titles-in-examples) {
+          [data-type="problem"] {
+            .os-problem-container > [data-type="title"] {
+              container: h4;
+            }
+          }
+          [data-type="solution"] {
+            [data-type="solution-title"] {
+              container: h4;
+            }
+          }
+          [data-type="commentary"] {
+            > [data-type="title"] {
+              container: h4;
+            }
+          }
+        } 
       }
     }
   }
