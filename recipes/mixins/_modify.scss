@@ -70,25 +70,14 @@
 /// @group modify
 @mixin modify_lists ($listConfig) {
   @if $listConfig {
-    $name: null;
-    $selector: null;
     @each $list in $listConfig {
-      $className: map-get($list, className);
-      $dataTypeName: map-get($list, dataTypeName);
+      $selector: map-get($list, selector);
+      $name: map-get($list, name);
       $beforeLabel: map-get($list, beforeLabel);
       $afterLabel: map-get($list, afterLabel);
 
+      @include validate_type($name, string);
       @include validate_type($afterLabel, string);
-
-      @if $className {
-        $name: $className;
-        $selector: '.#{$className}';
-      }
-
-      @if $dataTypeName {
-        $name: $dataTypeName;
-        $selector: '[data-type="#{$dataTypeName}"] ul';
-      }
 
       $counterName: #{$name}-COUNTER;
 
