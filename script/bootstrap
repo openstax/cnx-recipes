@@ -99,7 +99,7 @@ install_python() {
   python_version="$(< .python-version)"
 
   # Use pyenv if it is installed
-  if [[ -n "$(which pyenv)" ]]; then
+  if [[ -n "$(command -v pyenv)" ]]; then
     # Install the correct python version if it is not installed yet
     if [[ ! $(pyenv which python) ]]; then
       do_progress_quiet "Installing Python ${python_version} (using pyenv)" \
@@ -108,9 +108,9 @@ install_python() {
     # Ensure pyenv is initialized
     eval "$(pyenv init -)"
     pyenv global "${python_version}"
-    which_python="$(which python)"
+    which_python="$(command -v python)"
   else
-    which_python="$(which "python${python_version%%.*}")"
+    which_python="$(command -v "python${python_version%%.*}")"
   fi
 
   # Install pip if it is not available
@@ -129,7 +129,7 @@ install_python() {
   # Install virtualenv
   # If pyenv is installed then check that the pyenv virtualenv is installed.
   # If not then check that some virtualenv is installed.
-  if [[ -z "$(which pyenv)" && ! $(command -v virtualenv) ]] || [[ -n "$(which pyenv)" && ! $(pyenv which virtualenv) ]]; then
+  if [[ -z "$(command -v pyenv)" && ! $(command -v virtualenv) ]] || [[ -n "$(command -v pyenv)" && ! $(pyenv which virtualenv) ]]; then
     do_progress_quiet "Installing Python virtualenv" \
       pip install virtualenv
     # Rehash so that virtualenv is available
@@ -174,8 +174,8 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
   fi
 
   # Install docker
-  if [[ -z "$(which docker)" ]]; then
-    if [[ -n "$(which apt-get)" ]]; then
+  if [[ -z "$(command -v docker)" ]]; then
+    if [[ -n "$(command -v apt-get)" ]]; then
       do_progress "Installing docker" \
         sudo apt-get install docker.io
     fi
