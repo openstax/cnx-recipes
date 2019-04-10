@@ -1946,6 +1946,21 @@
 :pass(9) .appendix > section > section > [data-type="title"], :pass(9) .appendix > section > section [data-type="document-title"] {
   container: h3; }
 
+:pass(9) [data-type="abstract"] ul {
+  counter-reset: abstract-COUNTER;
+  class: os-abstract; }
+  :pass(9) [data-type="abstract"] ul > li::inside {
+    container: span;
+    class: "os-abstract-content"; }
+  :pass(9) [data-type="abstract"] ul > li::before {
+    container: span;
+    class: "os-abstract-token";
+    counter-increment: abstract-COUNTER;
+    content: counter(chapter) "." counter(section) "." counter(abstract-COUNTER) ". ";
+    move-to: listBucket; }
+  :pass(9) [data-type="abstract"] ul > li:deferred {
+    content: pending(listBucket) content(); }
+
 :pass(9) .checkpoint [data-type="commentary"] {
   move-to: trash; }
 
