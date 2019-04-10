@@ -24,7 +24,7 @@ To generate a styled baked-pdf for a new or previously un-styled baked-book (ski
 **Step 2**
 Run the sass command to compile the .scss book file to a .css file `sass ./{book-file}.scss ./output/{book-file}.css`
 
-Then run Prince on the XTML file with the PrinceXML command `prince --style ./output/{book-file}.css ./data/{book-name}-baked.xhtml`
+Then run Prince on the XTML file with the PrinceXML command `prince --style ./output/{book-file}.css ./data/{book-name}/collection.baked.xhtml`
 
 The output styled PDF will be located in the `./data` directory.
 
