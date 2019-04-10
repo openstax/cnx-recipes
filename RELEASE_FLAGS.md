@@ -14,9 +14,9 @@
 | statistics | :x: | :heavy_check_mark: | :x: | :x: | :x: | :x: |
 | economics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | biology | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| ap-biology | :x: | :x: | :x: | :x: | :x: | :x: |
-| physics | :x: | :x: | :x: | :x: | :x: | :x: |
-| ap-physics | :x: | :x: | :x: | :x: | :x: | :x: |
+| ap-biology | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| physics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| ap-physics | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | u-physics | :x: | :heavy_check_mark: | :x: | :x: | :x: | :x: |
 | sociology | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :x: |
 | dev-math | :x: | :heavy_check_mark: | :x: | :x: | :x: | :x: |
