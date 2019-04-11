@@ -53,7 +53,7 @@ Recipe Development Workflow
 2. Build the recipe
     *  `./script/build-recipes intro-business`
 3. Open the raw HTML file (Book HTML file) 
-   * `atom ./data/intro-business-raw.xhtml`
+   * `atom ./data/intro-business/collection.assembled.xhtml`
 4. Add the style link to the \<head>` of the HTML
     * add <link rel="stylesheet" type="text/css"  href="../styles/output/intro-business.css" />`
 5. Bake the HTML 
@@ -67,13 +67,13 @@ PDF Style Development Workflow
 **NOTE**: This workflow assumes the recipe workflow has been completed
 
 1. Move the baked HTML file to the location of the book resources
-    * `cp ./data/intro-business-baked.xhtml ./data/intro-business-baked/contents`
+    * `cp ./data/intro-business-baked.xhtml ./data/intro-business/`
 2.  Update path to the style CSS file in the baked HTML
 3.  Build the styles
     * `./script/build-styles intro-business`
 4.  Test the styles by viewing the baked HTML in the browser
 5.  Convert the baked HTML and style into a PDF
-    * `prince -s styles/output/intro-business.css ./data/intro-business-baked/contents/intro-business-baked.xhtml -o bakedEcon.pdf`
+    * `prince -s styles/output/intro-business-pdf.css ./data/intro-business/intro-business.baked.xhtml -o bakedEcon.pdf`
 6. View the PDF to test the results.
 
 
@@ -96,9 +96,6 @@ Installation of Neb and cnx-recipes on Ubuntu
 **Install virtualenv**
  * `sudo pip install virtualenv`
 
-**Install Neb**
- * `pip install nebuchadnezzar`
-
 **Create git folder**
  * `mkdir git`
 
@@ -116,7 +113,7 @@ Installation of Neb and cnx-recipes on Ubuntu
  * `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
 * `sudo apt-get update && sudo apt-get install yarn`
 
-**Install nvm**
+**Install npm**
 * `sudo apt-get install npm`
 
 **Install node 8.9.4**
