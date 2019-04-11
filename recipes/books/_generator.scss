@@ -459,7 +459,13 @@
     } @else { @error 'BUG: Invalid enum'; }
   }
 
-  @include count_countExamples(example);
+  $resetAt: map-get($Config_PartType_Example, resetAt);
+  @if $resetAt == moduleReset {
+    @include count_countSectionExamples(exampleInSection);
+  } @else {
+    @include count_countExamples(example);
+  }
+
   @include count_countEquations(equation);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
