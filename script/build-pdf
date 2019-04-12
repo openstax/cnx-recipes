@@ -1,0 +1,60 @@
+#!/bin/bash
+BOOTSTRAP_ALREADY_RAN=1
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+book_name=$1
+
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [ ! "${book_name}" == "--all" ]; then
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name _ <<< "${book_config}"
+
+    if [[ "${book_name}" == "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name}")
+      found_config=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${found_config}" ]]; then
+    _say "Valid books are (from ./books.txt):"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_config_name _ <<< "${book_config}"
+      _say "${book_config_name}"
+    done
+    die "Could not find Book info for book named ${book_name}"
+  fi
+fi
+
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name _ <<< "${book_config}"
+
+  mathified_file="./data/${book_name}/collection.mathified.xhtml"
+  baked_file="./data/${book_name}/collection.baked.xhtml"
+  style_file="./styles/output/${book_name}-pdf.css"
+
+  if [ -f "${mathified_file}" ]; then
+    input_file="${mathified_file}"
+  else
+    input_file="${baked_file}"
+  fi
+
+  if ! docker images | grep -q openstax/princexml; then
+    do_progress_quiet "Building the openstax/princexml image (~1min)" \
+      docker build -t openstax/princexml princexml/
+  fi
+
+  style_flag=()
+  if [ -f "${style_file}" ]; then
+    style_flag=('--style' "$(basename "${style_file}")")
+    cp "${style_file}" "./data/${book_name}"
+  fi
+
+  do_progress_quiet "Generating pdf using princexml" \
+    docker run --rm -v "$(pwd)/data/${book_name}":/out openstax/princexml prince -v --output=/out/collection.pdf "${style_flag[@]}" "/out/$(basename "${input_file}")"
+  _say "Output in ./data/${book_name}/collection.pdf"
+done
