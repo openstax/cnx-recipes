@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# This script can be used to run cnx-recipes scripts inside a docker container,
+# e.g. ./script/docker-run ./script/fetch-html statistics
+# will download statistics in ./data
+#
+# The only prerequisite for this script is that docker is installed.  This can
+# be done by running ./script/install-docker
+# There is no need to run ./script/setup etc
+
+BOOTSTRAP_ALREADY_RAN=1
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+if ! docker images | grep -q openstax/cnx-recipes; then
+  do_progress_quiet "Building the cnx-recipes image (takes ~15 minutes)" \
+    docker build -t openstax/cnx-recipes:latest .
+fi
+
+if [ ! -d ./node_modules ]; then
+  do_progress_quiet "Running ./script/setup in the container" \
+    docker run --rm -v "$(pwd)":/code openstax/cnx-recipes ./script/setup
+fi
+
+docker run --rm -v "$(pwd)":/code -ti openstax/cnx-recipes "$@"
+docker run --rm -v "$(pwd)":/code openstax/cnx-recipes chown -R "$UID" .
