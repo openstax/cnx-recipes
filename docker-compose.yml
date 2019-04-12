@@ -34,3 +34,23 @@ services:
       - .:/code
       - /var/run/docker.sock:/var/run/docker.sock
     entrypoint: /code/script/bake-book
+
+  build-pdf:
+    build: .
+    image: openstax/cnx-recipes
+    environment:
+      # This is necessary in order to mount the correct directory if we start
+      # sibling containers
+      HOST_PWD: "${PWD}"
+      OUTPUT_DIR: /out
+      BOOTSTRAP_ALREADY_RAN: 1
+    volumes:
+      - .:/code
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: /code/script/build-pdf
+
+  pdf:
+    build: https://github.com/openstax/docker-princexml.git
+    image: openstax/princexml
+    volumes:
+      - "${HOST_PWD:-.}/data:/out"
