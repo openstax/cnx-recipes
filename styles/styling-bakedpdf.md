@@ -38,6 +38,7 @@ In another example, if table1 and table2 both require the same properties but di
 
 ### How will these concepts be implemented (a rough summary)? 
 The `./styles` directory will be reorganized: 
+```bash
     |-- `./Framework`
     |-- `./Design`
           |-- `./lisa-design`
@@ -50,7 +51,7 @@ The `./styles` directory will be reorganized:
           |-- `color-map.scss`
     |-- `./Book`
           |-- `book-name.scss`
-
+```
 - `./Framework` will contain global variables for values such as `$NOT_NULL` and various functions and mixins to use throughout `./styles`
 - `./Design` contains super and subspaces grouped by the specific design from which they came 
 - `./Schemes` contains the color schemes maps
