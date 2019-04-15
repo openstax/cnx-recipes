@@ -37,7 +37,7 @@ For example, if table1 requires only a color and background property, and table2
 In another example, if table1 and table2 both require the same properties but different values, both of their styles will be derived from the same superspace but different subspaces. 
 
 ### How will these concepts be implemented (a rough summary)? 
-- The `./styles` directory will be reorganized: 
+The `./styles` directory will be reorganized: 
     |-- `./Framework`
     |-- `./Design`
           |-- `./lisa-design`
