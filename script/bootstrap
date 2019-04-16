@@ -80,16 +80,6 @@ do_progress_quiet() {
     _quiet_ok
   fi
 }
-_wrong_virtualenv_python_version() {
-  virtualenv_python_version="$("${virtualenv_dir}/bin/python" -c 'import sys; print(sys.version_info.major)' 2>/dev/null)"
-  expected_python_version="$(cut -d. -f1 <.python-version)"
-  if [[ "${virtualenv_python_version}" != "${expected_python_version}" ]]
-  then
-    true
-  else
-    false
-  fi
-}
 
 # This provides a > 10% speedup because we do not have to reinitialize node and ruby
 if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
@@ -111,9 +101,9 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
     if [[ -z "${VIRTUAL_ENV}" ]]; then
 
       # Check that a .python-version file is set
-      [[ -f "./.python-version" ]] || die "Repository is missing a .python-version file. Please add one. The contents should contain the python version (ie 3.6)"
+      [[ -f "./.python-version" ]] || die "Repository is missing a .python-version file. Please add one. The contents should contain the python version (ie 2.7)"
 
-      virtualenv_dir="./venv"
+      virtualenv_dir="./venv/"
       python_version="$(< .python-version)"
 
       # Use pyenv if it is installed
@@ -149,17 +139,6 @@ if [[ ! ${BOOTSTRAP_ALREADY_RAN} ]]; then
           pip install virtualenv
         # Rehash so that virtualenv is available
         try pyenv rehash
-      fi
-      # Create a new virtualenv if wrong python version
-      if [[ -d "${virtualenv_dir}" ]] && _wrong_virtualenv_python_version; then
-        _say "Recreating virtualenv with python version ${python_version}"
-        mv "${virtualenv_dir}" "${virtualenv_dir}.old"
-        do_progress_quiet "Setting up a Python virtualenv" \
-          virtualenv -p "$(which python)" "${virtualenv_dir}"
-        do_progress_quiet "Activating Python virtualenv" \
-          source "${virtualenv_dir}/bin/activate"
-        do_progress_quiet "Installing python packages" \
-          pip install -r "./requirements.txt"
       fi
       # Create a virtualenv
       if [[ ! -d "${virtualenv_dir}" ]]; then

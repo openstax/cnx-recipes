@@ -47,10 +47,10 @@ fi
 if [ -n "${book}" ]; then
   # Filter BOOK_CONFIGS to only contain the book you want to fetch
   for book_config in "${BOOK_CONFIGS[@]}"; do
-    read -r book_config_name recipe_name uuid colid host_name _ <<< "${book_config}"
+    read -r book_config_name recipe_name uuid host_name _ <<< "${book_config}"
 
     if [[ "${book}" = "${book_config_name}" ]]; then
-      BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid} ${colid} ${host_name} ${_}")
+      BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid} ${host_name} ${_}")
       host_name=${HOST:-${host_name}}
 
       found_config=1
@@ -70,27 +70,40 @@ if [ -n "${book}" ]; then
 fi
 
 for book_config in "${BOOK_CONFIGS[@]}"; do
-  read -r book_name recipe_name uuid colid host_name _ <<< "${book_config}"
+  read -r book_name recipe_name uuid host_name _ <<< "${book_config}"
   # Allow user to override the hostname
   host_name=${HOST:-${host_name}}
 
-  book_dir="./data/${book_name}"
-  raw_dir="${book_dir}/raw"
-  raw_file="${book_dir}/collection.assembled.xhtml"
+  raw_file="./data/${book_name}-raw.xhtml"
 
-  mkdir -p "${book_dir}"
-  rm -rf "${raw_dir}"
+  # These are expanded on the remote machine, hence single-quotes
+  # shellcheck disable=SC2016
+  tempEpubFile='${HOME}/temp.internal.epub'
+  # shellcheck disable=SC2016
+  tempHtmlFile='${HOME}/temp.xhtml'
 
-  neb_get_flag=''
-  if $with_resources; then
-    neb_get_flag="-r"
+  rmTempEpubCmd="[ -e ${tempEpubFile} ] && rm ${tempEpubFile}"
+  rmTempHtmlCmd="[ -e ${tempHtmlFile} ] && rm ${tempHtmlFile}"
+  generateEpubCmd="/var/cnx/venvs/publishing/bin/cnx-archive-export_epub /etc/cnx/publishing/app.ini ${uuid} ${tempEpubFile}"
+  generateHtmlCmd="/var/cnx/venvs/publishing/bin/cnx-epub-single_html --exercise_host exercises.openstax.org --mathmlcloud_url http://mathmlcloud.cnx.org:1337/equation/ ${tempEpubFile} > ${tempHtmlFile}"
+
+  commands="${rmTempEpubCmd}; ${rmTempHtmlCmd}; ${generateEpubCmd} && ${generateHtmlCmd}"
+
+  do_progress_quiet "Fetching ${book_name} from ${host_name} (~20 minutes if it has exercises)" \
+    ssh "${USER}@${host_name}" "${commands}"
+
+  do_progress_quiet "Copying HTML file from server to local machine" \
+    scp "${USER}@${host_name}:${tempHtmlFile}" "${raw_file}"
+
+  if [ $with_resources ]
+  then
+    do_progress_quiet "Copying epub file from server to local machine" \
+      scp "${USER}@${host_name}:${tempEpubFile}" .
+    do_progress_quiet "Extracting resource files from epub" \
+      unzip -o "$(basename ${tempEpubFile})" 'resources/*'
+    do_progress_quiet "Removing epub file" \
+      rm "$(basename ${tempEpubFile})"
   fi
-
-  NEB_CONFIG=./config/neb-config do_progress_quiet "Fetching ${book_name} from ${host_name}" \
-    neb get ${neb_get_flag} -d "${raw_dir}" "${host_name}" "${colid}" ''
-
-  do_progress_quiet "Creating HTML file for ${book_name}" \
-    neb assemble "${raw_dir}" "${book_dir}"
 
   _say "${c_green}Fetch is Done.${c_none} File is available at ${raw_file}"
 
