@@ -4,7 +4,17 @@ $FRAMEWORK_IMPORTED: false;
 @import "framework";
 
 @include describe('Framework') {
-  @include it('framework is successfully imported') {
+  @include it('is successfully imported') {
     @include assert-true($FRAMEWORK_IMPORTED);
+  }
+  @include it('allows enum creation') {
+    @include create_enum_type('Test',
+        'TEST',
+        'ENUM'
+    );
+    @include assert-equal(
+      'ENUM__Test::TEST',
+      enum('Test::TEST')
+    );
   }
 }
