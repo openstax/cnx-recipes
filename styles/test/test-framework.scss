@@ -66,14 +66,39 @@ $DEBUG: true;
   @return (my-setting: test-value);
 }
 
+@function test_add_settings_function_after() {
+  @return (my-setting: overriden-value);
+}
+
 @include describe('Settings') {
 
   @include it('can be added via map-returning functions') {
-    @include add_settings_function(get-function('test_add_settings_function'));
-    @include assert-equal(
-      settings(my-setting),
-      'test-value'
-    )
+    @include add_temp_settings_functions(get-function('test_add_settings_function')) {
+      @include assert-equal(
+        settings(my-setting),
+        'test-value'
+      );
+    }
+  }
+
+  @include it('prioritize settings functions added later (front of manifest)') {
+    @include add_temp_settings_functions(get-function('test_add_settings_function')) {
+      @include add_temp_settings_functions(get-function('test_add_settings_function_after')) {
+        @include assert-equal(
+          settings(my-setting),
+          'overriden-value'
+        );
+      }
+    }
+    @include add_temp_settings_functions(
+      get-function('test_add_settings_function_after'),
+      get-function('test_add_settings_function')
+    ) {
+      @include assert-equal(
+        settings(my-setting),
+        'overriden-value'
+      );
+    }
   }
 
   @include it('get functions error on non-existent key') {

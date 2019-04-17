@@ -1,9 +1,20 @@
 $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: ();
 $FRAMEWORK_USED_SETTINGS: ();
 
-@mixin add_settings_function($function) {
-  $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: join(($function,), $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL) !global;
+@mixin add_settings_functions($function...) {
+  $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: join($function, $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL) !global;
 }
+
+@mixin clear_settings_functions() {
+  $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: () !global;
+}
+
+@mixin add_temp_settings_functions($function...) {
+  @include add_settings_functions($function...);
+  @content;
+  @include clear_settings_functions();
+}
+
 
 @function settings($name, $default: enum('Argument:::NONE')) {
   @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
