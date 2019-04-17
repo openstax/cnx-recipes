@@ -1,12 +1,26 @@
+$IS_FRAMEWORK_IMPORTED: false;
+$IS_TEST: true;
+
 @import "true";
 
-$FRAMEWORK_IMPORTED: false;
 @import "framework";
 
 @include describe('Framework') {
   @include it('is successfully imported') {
-    @include assert-true($FRAMEWORK_IMPORTED);
+    @include assert-true($IS_FRAMEWORK_IMPORTED);
   }
+  @include it('can throw a test error') {
+    @include assert {
+      @include output {
+        @include error('Explode.')
+      } @include expect {
+        error: 'Explode.';
+      }
+    }
+  }
+}
+
+@include describe('Enums') {
   @include it('allows enum creation') {
     @include create_enum_type('Test',
         'TEST',
@@ -17,4 +31,5 @@ $FRAMEWORK_IMPORTED: false;
       enum('Test::TEST')
     );
   }
+  @include it('')
 }
