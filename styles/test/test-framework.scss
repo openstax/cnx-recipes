@@ -93,15 +93,17 @@ $DEBUG: true;
     );
   }
 
-  @include it('can output unused settings values') {
+  @include it('can clear and output unused settings values') {
+    $_: settings(my-setting);
+    @include clear_used_settings();
     @include scoped_add_settings_functions(
       get-function('test_add_other_settings_function'),
       get-function('test_add_settings_function')
     ) {
-      $_: settings(my-setting);
+      $_: settings(my-other-setting);
       @include assert-equal(
         get_unused_settings(),
-        (my-other-setting)
+        ((my-setting, test-value),)
       );
     }
   }
@@ -244,4 +246,9 @@ $DEBUG: true;
       )
     );
   }
+}
+
+
+@include describe("Design Space") {
+  @include it('')
 }

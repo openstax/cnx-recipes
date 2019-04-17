@@ -17,6 +17,22 @@ $FRAMEWORK_USED_SETTINGS: ();
   }
 }
 
+@mixin clear_used_settings() {
+  $FRAMEWORK_USED_SETTINGS: () !global;
+}
+
+@function get_unused_settings() {
+  $unused_entries: ();
+  @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    @each $key, $value in call($function) {
+      @if index($FRAMEWORK_USED_SETTINGS, $key) == null {
+        $unused_entries: append($unused_entries, ($key, $value), comma);
+      }
+    }
+  }
+  @return $unused_entries;
+}
+
 @mixin add_settings_functions($functions...) {
   $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: join($functions, $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL) !global;
 }
@@ -37,7 +53,7 @@ $FRAMEWORK_USED_SETTINGS: ();
   @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
     $function_settings: call($function);
     @if map-has-key($function_settings, $name) {
-      $FRAMEWORK_USED_SETTINGS: map-merge($FRAMEWORK_USED_SETTINGS, ($name: true)) !global;
+      $FRAMEWORK_USED_SETTINGS: append($FRAMEWORK_USED_SETTINGS, $name) !global;
       @return map-get($function_settings, $name);
     }
   }
