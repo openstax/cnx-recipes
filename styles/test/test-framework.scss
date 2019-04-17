@@ -24,13 +24,15 @@ $DEBUG: true;
   }
 
   @include it('can error in a function') {
-    @include assert {
-      @include output {
-        test: error("Explode.");
-      } @include expect {
-        test: "ERROR: Explode.";
-      }
-    }
+    @include assert-equal(
+      error(enum('Error:::INDEX_ERROR'), "Explode."),
+      (
+        error: (
+          type: "ENUM__Error:::INDEX_ERROR",
+          message: "Explode."
+        )
+      )
+    )
   }
 }
 
