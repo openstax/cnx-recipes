@@ -269,11 +269,34 @@ $DEBUG: true;
   }
 }
 
+$test_note_space: (
+  _spaces: (
+    (
+      _name: 'container',
+      _subselector: '.note',
+      _properties: (
+        color: enum('ValueSet:::NOT_NULL'),
+        background: enum('ValueSet:::NULLABLE'),
+        width: enum('ValueSet:::NULLABLE')
+      ),
+    ),
+    (
+      _name: 'title',
+      _subselector: '.note > .title',
+      _properties: (
+        font-size: 2rem,
+      ),
+    ),
+  )
+);
 
 @include describe("Design Space") {
-  @include it('can create a superspace') {
-    
+  @include it('can create and find a superspace') {
+    @include create_superspace('TestNote', $test_note_space);
+    @include assert-true(superspace_exists('TestNote'));
   }
   
-  @include it('')
+  @include it('can create a subspace') {
+
+  }
 }
