@@ -5,12 +5,14 @@ $IS_TEST: true;
 @import "framework";
 
 @include describe('Framework') {
-
   @include it('is successfully imported') {
     @include assert-true($IS_FRAMEWORK_IMPORTED);
   }
+}
 
-  @include it('can throw a test error in a mixin') {
+
+@include describe('Errors') {
+  @include it('can error in a mixin') {
     @include assert {
       @include output {
         @include error("Explode.")
@@ -20,7 +22,7 @@ $IS_TEST: true;
     }
   }
 
-  @include it('can throw a test error in a function') {
+  @include it('can error in a function') {
     @include assert {
       @include output {
         test: error("Explode.");
@@ -29,22 +31,10 @@ $IS_TEST: true;
       }
     }
   }
-
-  @include it('provides the NULLABLE and NOT_NULL ValueSet enums') {
-    @include assert-equal(
-      enum('ValueSet::NULLABLE'),
-      'ENUM__ValueSet::NULLABLE'
-    );
-    @include assert-equal(
-      enum('ValueSet::NOT_NULL'),
-      'ENUM__ValueSet::NOT_NULL'
-    );
-  }
 }
 
 
-@include describe('Enums') {
-
+@include describe('Enum Utility') {
   @include it('allows enum creation') {
     @include create_enum_type('Test',
         'TEST',
@@ -60,20 +50,62 @@ $IS_TEST: true;
     );
   }
 
-  @include it('errors when getting a non-existant enum') {
-    @include assert {
-      @include output {
-        test: enum('Null::NULL');
-      } @include expect {
-        test: "ERROR: Enum `Null::NULL` does not exist.";
-      }
-    }
+  @include it('errors when getting a non-existent enum') {
+    @include assert-equal(
+      enum('Null::NULL'),
+      "ERROR: Enum `Null::NULL` does not exist."
+    );
+  }
+}
+
+
+@include describe('Settings') {
+  @include it('settings get functions can use default values') {
+    @include assert-equal(
+      settings(non-existent-setting, "default-value"),
+      "default-value"
+    );
+    @include assert-equal(
+      settings_not_null(non-existent-setting, "default-value"),
+      "default-value"
+    );
+  }
+
+  @include it('settings get functions error on non-existent key') {
+    @include assert-equal(
+      settings(non-existent-setting),
+      "ERROR: Unknown setting `non-existent-setting`."
+    );
+    @include assert-equal(
+      settings_not_null(non-existent-setting),
+      "ERROR: Unknown setting `non-existent-setting`."
+    );
+  }
+
+  @include it('settings_not_null function errors on null values') {
+    @include assert-equal(
+      settings_not_null(non-existent-setting, null),
+      "ERROR: Received a disallowed NULL value for option `non-existent-setting`."
+    );
+  }
+}
+
+
+@include describe('ValueSet') {
+  @include it('provides values NULLABLE and NOT_NULL') {
+    @include assert-equal(
+      enum('ValueSet::NULLABLE'),
+      'ENUM__ValueSet::NULLABLE'
+    );
+    @include assert-equal(
+      enum('ValueSet::NOT_NULL'),
+      'ENUM__ValueSet::NOT_NULL'
+    );
   }
 }
 
 
 @include describe('The null Function') {
-
   @include it('returns null') {
     @include assert-equal(
       null(),
@@ -83,8 +115,7 @@ $IS_TEST: true;
 }
 
 
-@include describe('The map-key-prefix-flatten Function') {
-
+@include describe('The map-key-prefix-flatten Function') {  
   @include it('flattens map leaf entry with namespace of parent keys') {
     @include assert-equal(
       map-key-prefix-flatten(
