@@ -30,6 +30,18 @@ $IS_TEST: true;
       'ENUM__Test::TEST',
       enum('Test::TEST')
     );
+    @include assert-equal(
+      'ENUM__Test::ENUM',
+      enum('Test::ENUM')
+    );
   }
-  @include it('')
+  @include it('errors when getting a non-existant enum') {
+    @include assert {
+      @include output {
+        test: enum('Null::NULL');
+      } @include expect {
+        error: "Enum `Null::NULL` does not exist.";
+      }
+    }
+  }
 }
