@@ -49,7 +49,7 @@ $FRAMEWORK_USED_SETTINGS: ();
   @include remove_settings_functions($functions...);
 }
 
-@function settings($name, $default: enum('Argument:::NONE')) {
+@function settings($name, $default: enum('Object:::NONE')) {
   @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
     $function_settings: map_key_prefix_flatten(call($function));
     @if map-has-key($function_settings, $name) {
@@ -57,16 +57,16 @@ $FRAMEWORK_USED_SETTINGS: ();
       @return map-get($function_settings, $name);
     }
   }
-  @if $default != enum('Argument:::NONE') {
+  @if $default != enum('Object:::NONE') {
     @return $default;
   }
-  @return error("Unknown setting `#{$name}`.");
+  @return error(enum('Error:::INDEX_ERROR'), "Unknown setting `#{$name}`.");
 }
 
-@function settings_not_null($name, $default: enum('Argument:::NONE')) {
+@function settings_not_null($name, $default: enum('Object:::NONE')) {
   $settings-result: settings($name, $default);
   @if $settings-result != null {
     @return $settings-result;
   }
-  @return error("Received a disallowed NULL value for setting `#{$name}`.");
+  @return error(enum('Error:::TYPE_ERROR'), "Received a disallowed NULL value for setting `#{$name}`.");
 }

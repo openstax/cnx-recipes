@@ -7,83 +7,183 @@ $FRAMEWORK_SPACE_PLACE: ();
   }
 }
 
-@mixin scoped_create_superspace($name, $space) {
-  @include create_superspace($name, $space);
-  @content;
-  @include remove_superspace($name);
-}
-
 @mixin create_superspace($name, $space) {
-  $FRAMEWORK_SPACE_PLACE: map-merge($FRAMEWORK_SPACE_PLACE, ($name: $space)) !global;
+  $FRAMEWORK_SPACE_PLACE: map-merge($FRAMEWORK_SPACE_PLACE, ($name: map-merge($space, (_parent: enum('Object:::NONE'))))) !global;
 }
 
-@mixin remove_superspace($name) {
+@mixin remove_space($name) {
   $FRAMEWORK_SPACE_PLACE: map-remove($FRAMEWORK_SPACE_PLACE, $name) !global;
 }
 
-@function get_superspace($name) {
+@mixin scoped_create_superspace($name, $space) {
+  @include create_superspace($name, $space);
+  @content;
+  @include remove_space($name);
+}
+
+@function space_exists($name) {
+  @return map-has-key($FRAMEWORK_SPACE_PLACE, $name);
+}
+
+@function get_space($name) {
+  @if not space-exists($name) {
+    @return error('Error:::INDEX_ERROR', "Space `#{$name}` does not exist");
+  }
   @return map-get($FRAMEWORK_SPACE_PLACE, $name);
 }
 
 @mixin create_subspace($name, $parent, $changes) {
-
+  @if not space-exists($parent) {
+    @include error("Space `#{$parent}` does not exist");
+  }
+  $components: ();
+  $groups_map: ();
+  @each $component_name, $declaration_changes in $changes {
+    @if $component_name == "_groups" {
+      $groups_map: (_groups: $declaration_changes);
+    } @else {
+      $components: append($components, (
+        _name: $component_name,
+        _properties: $declaration_changes
+      ), comma);
+    }
+  }
+  $subspace: map-merge((_parent: $parent), map-merge($groups_map, (_components: $components)));
+  $FRAMEWORK_SPACE_PLACE: map-merge($FRAMEWORK_SPACE_PLACE, ($name: $subspace)) !global;
 }
 
-@function superspace_exists($name) {
-  @return map-has-key($FRAMEWORK_SPACE_PLACE, $name);
+@mixin scoped_create_subspace($name, $parent, $changes) {
+  @include create_subspace($name, $parent, $changes);
+  @content;
+  @include remove_space($name);
 }
 
-@function construct_subspace($subspace_name) {
-  @return false;
+@function get_parent($space) {
+  @return map_deep_get($space, _parent);
+}
+
+@function get_lineage($name) {
+  $lineage: ($name);
+  $current: get_space($name);
+  $parent: get_parent($current);
+  @while $parent != enum('Object:::NONE') {
+    $lineage: append($lineage, $parent, comma);
+    $current: get_space($parent);
+    $parent: get_parent($current);
+  }
+  @return $lineage;
+}
+
+@function get_root_name($name) {
+  @return last(get_lineage($name));
+}
+
+@function get_root($name) {
+  @return get_space(get_root_name($name));
+}
+
+@function get_root_subselector($name, $component_name) {
+  $superspace: get_root($name);
+  $components: map-get($superspace, _components);
+  @each $component in $components {
+    @if map-get($component, _name) == $component_name {
+      @return map-get($component, _subselector);
+    }
+  }
+  @return error('Error:::INDEX_ERROR', "No root subselector found for `#{$name} -> #{$component_name}`");
+}
+
+@function get_properties($space, $component_name) {
+  $components: map-get($space, _components);
+  @each $component in $components {
+    @if map-get($component, _name) == $component_name {
+      @return map-get($component, _properties);
+    }
+  }
+  @return ();
+}
+
+@function resolve_declaration($context_name, $groups, $key, $property, $description) {
+  $value_set: null;
+  $value: enum('Object:::NONE');
+  $resolved_description: resolve_description($description, $groups);
+  @if $description != $resolved_description {
+    $value_set: nth($description, 1);
+    $value: nth($description, 2);
+    @return resolve_declaration($context_name, $groups, "#{$context_name}:::#{$value}", $property, $resolved_description);
+  } @else {
+    $value_set: $description;
+  }
+  @if type-of($description) == "list" {
+    $value_set: nth($description, 1);
+    $value: nth($description, 2);
+  }
+  @if $value_set == enum('ValueSet:::NULLABLE') {
+    $value: settings($key, if($value == enum('Object:::NONE'), null(), $value));
+  } @else if $value_set == enum('ValueSet:::NOT_NULL') {
+    $value: settings-not-null($key, $value);
+  } @else if $value_set == enum('ValueSet:::GROUPED') {
+    @error "Error: ValueSet should never be grouped after resolution.";
+  } @else {
+    $value: #{$value_set};
+  }
+  @return $value;
+}
+
+@function resolve_description($description, $groups) {
+  @if type-of($description) == "list" {
+    $value_set: nth($description, 1);
+    $value: nth($description, 2);
+    @if $value_set == enum('ValueSet:::GROUPED') {
+      @return map-get($groups, $value);
+    }
+  }
+  @return $description;
 }
 
 @mixin use($name, $subspace_name) {
-  $subspace: get_superspace($subspace_name);
-  @if settings("#{$name}:::_selectors") == "ERROR: Unknown setting `ChapterNote:::_selectors`." {
-    @include error("Unknown setting `ChapterNote:::_selectors`.");
-  } @else {
+  $context_selectors: settings("#{$name}:::_selectors");
+  @if is_error($context_selectors) {
+    @include error(error_message($context_selectors));
+  } @else { 
     @each $selector in settings("#{$name}:::_selectors") {
-      $groups: map-get($subspace, _groups);
-      @each $member in map-get($subspace, _spaces) {
-        $subname: map-get($member, _name);
-        $subselector: map-get($member, _subselector);
-        $properties: map-get($member, _properties);
-  
+      $superspace: get_root($subspace_name);
+      @each $component in map-get($superspace, _components) {
+        $component_name: map-get($component, _name);
+        $subselector: map-get($component, _subselector);
+        $root_properties: get_properties($superspace, $component_name);
+        @if is_error($subselector) {
+          @include error(error_message($subselector));
+        }
+        $spent_keys: ();
         #{$selector}#{$subselector} {
-          @each $property, $state in $properties {
-            $key: "#{$name}:::#{$subname}:::#{$property}";
-            $default_value: enum('Argument:::NONE');
-            @if type-of($state) == list {
-              $state: nth($state, 1);
-              $default_value: nth($state, 2);
-            }
-            @if $state == enum('ValueSet:::GROUPED') {
-              $state: map-get($groups, $default_value);
-              $key: "#{$name}:::#{$default_value}";
-              @if type-of($state) == list {
-                $state: nth($state, 1);
-                $default_value: nth($state, 2);
+          @each $ancestor_name in get_lineage($subspace_name) {
+            $ancestor: get_space($ancestor_name);
+            $groups: map-get($ancestor, _groups);
+            $properties: get_properties($ancestor, $component_name);
+            @each $property, $description in $properties {
+              @if not map-has-key($root_properties, $property) {
+                @include error("Space `#{$ancestor_name}` is not a proper subspace due to addition of property `#{$property}`.");
+              }
+              $key: "#{$name}:::#{$component_name}:::#{$property}";
+              $resolved_description: resolve_description($description, $groups);
+              $value_set: if(type-of($resolved_description) == "list", first($resolved_description), $resolved_description);
+              @if not map-has-key($spent_keys, $key) {
+                $spent_keys: map-merge($spent_keys, ($key: $value_set));
+                $value: resolve_declaration($name, $groups, $key, $property, $description);
+                @if is_error($value) {
+                  @include error(error_message($value));
+                } @else {
+                  #{$property}: #{$value}
+                }
+              } @else {
+                $old_value_set: map-get($spent_keys, $key);
+                @if $value_set != enum('ValueSet:::NULLABLE') and 
+                  ($value_set != enum('ValueSet:::NOT_NULL') or $old_value_set == enum('ValueSet:::NULLABLE')) {
+                    @include error("Space `#{$ancestor_name}` is not a proper superspace due to `#{$key}`.");
+                }
               }
             }
-            $value: null;
-            @if $state == enum('ValueSet:::NULLABLE') {
-              $value: settings(
-                $key, 
-                if($default_value != enum('Argument:::NONE'),
-                  $default_value,
-                  null()
-                )
-              );
-            } @else if $state == enum('ValueSet:::NOT_NULL') {
-              $value: settings-not-null(
-                $key, 
-                $default_value
-              );
-            } @else {
-              $value: #{$state};
-            }
-            
-            #{$property}: #{$value}
           }
         }
       }

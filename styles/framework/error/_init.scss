@@ -1,10 +1,14 @@
-@function error($message, $override: $IS_TEST) {
+@function error($type, $message, $override: $IS_TEST) {
   @if $override {
-    @return "ERROR: #{$message}";
+    @return (
+      error: (
+        type: $type,
+        message: $message
+      )
+    );
   }
-  @error '#{$message}';
+  @error 'Error [#{$type}]: #{$message}';
 }
-
 
 @mixin error($message, $override: $IS_TEST) {
   @if $override {
@@ -13,4 +17,19 @@
   @else {
     @error $message;
   }
+}
+
+@function error_type($error) {
+  @return map_deep_get($error, error, type);
+}
+
+@function error_message($error) {
+  @return map_deep_get($error, error, message);
+}
+
+@function is_error($object) {
+  @return (type-of($object) == "map" and
+    map_deep_has_key($object, error) and
+    map_deep_has_key($object, error, type) and
+    map_deep_has_key($object, error, message));
 }

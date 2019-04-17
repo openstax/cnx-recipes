@@ -34,6 +34,24 @@ $DEBUG: true;
       )
     )
   }
+
+  @include it('can identify an error object') {
+    @include assert-true(
+      is_error(error(enum('Error:::TYPE_ERROR'), "Boom."))
+    );
+  }
+
+  @include it('can identify type and message of an error') {
+    $error: error(enum('Error:::INDEX_ERROR'), "Out of Bounds");
+    @include assert-equal(
+      error_type($error),
+      enum('Error:::INDEX_ERROR')
+    );
+    @include assert-equal(
+      error_message($error),
+      "Out of Bounds"
+    );
+  }
 }
 
 
@@ -55,9 +73,8 @@ $DEBUG: true;
   }
 
   @include it('errors when getting a non-existent enum') {
-    @include assert-equal(
-      enum('Null:::NULL'),
-      "ERROR: Enum `Null:::NULL` does not exist."
+    @include assert-true(
+      is_error(enum('Null:::NULL'))
     );
   }
 }
@@ -152,13 +169,11 @@ $DEBUG: true;
   }
 
   @include it('get functions error on non-existent key') {
-    @include assert-equal(
-      settings(non-existent-setting),
-      "ERROR: Unknown setting `non-existent-setting`."
+    @include assert-true(
+      is_error(settings(non-existent-setting))
     );
-    @include assert-equal(
-      settings_not_null(non-existent-setting),
-      "ERROR: Unknown setting `non-existent-setting`."
+    @include assert-true(
+      is_error(settings_not_null(non-existent-setting))
     );
   }
 
@@ -174,9 +189,8 @@ $DEBUG: true;
   }
 
   @include it('settings_not_null function errors on null values') {
-    @include assert-equal(
-      settings_not_null(non-existent-setting, null),
-      "ERROR: Received a disallowed NULL value for setting `non-existent-setting`."
+    @include assert-true(
+      is_error(settings_not_null(non-existent-setting, null))
     );
   }
 }
@@ -215,14 +229,20 @@ $DEBUG: true;
       'ENUM__Error:::INDEX_ERROR'
     );
   }
+  @include it('provides value TYPE_ERROR') {
+    @include assert-equal(
+      enum('Error:::TYPE_ERROR'),
+      'ENUM__Error:::TYPE_ERROR'
+    );
+  }
 }
 
 
-@include describe('Argument Enum Type') {
+@include describe('Object Enum Type') {
   @include it('provides value NONE') {
     @include assert-equal(
-      enum('Argument:::NONE'),
-      'ENUM__Argument:::NONE'
+      enum('Object:::NONE'),
+      'ENUM__Object:::NONE'
     )
   }
 }
@@ -246,6 +266,71 @@ $DEBUG: true;
         "lovely"
       ),
       ("hello", "world")
+    );
+  }
+}
+
+
+
+@include describe('The map_deep_has_key Function') {
+  @include it('returns a values given a key path') {
+    @include assert-true(
+      map_deep_has_key((
+        root: (
+          key: (
+            child: test-value
+          )
+        )
+      ), root, key, child)
+    );
+  }
+}
+
+
+@include describe('The map_deep_get Function') {
+  @include it('returns a values given a key path') {
+    @include assert-equal(
+      map_deep_get((
+        root: (
+          key: (
+            child: test-value
+          )
+        )
+      ), root, key, child),
+      'test-value'
+    );
+  }
+  @include it('errors when a value is not found') {
+    @include assert-true(
+      is_error(
+        map_deep_get((
+          root: (
+            key: (
+              child: test-value
+            )
+          )
+        ), root, not-key, child)
+      )
+    );
+  }
+}
+
+
+@include describe('The first Function') {
+  @include it('returns the first item in a list') {
+    @include assert-equal(
+      first((3, 4, 6, 9, 12)),
+      3
+    );
+  }
+}
+
+
+@include describe('The last Function') {
+  @include it('returns the last item in a list') {
+    @include assert-equal(
+      last((3, 4, 6, 9, 12)),
+      12
     );
   }
 }
@@ -294,14 +379,16 @@ $DEBUG: true;
 }
 
 $test_note_space: (
-  _spaces: (
+  _components: (
     (
       _name: 'container',
       _subselector: '.note',
       _properties: (
         color: enum('ValueSet:::NOT_NULL'),
         background: enum('ValueSet:::NULLABLE'),
-        width: enum('ValueSet:::NULLABLE')
+        width: enum('ValueSet:::NULLABLE'),
+        height: 200px,
+        border-color: enum('ValueSet:::NULLABLE')
       ),
     ),
     (
@@ -309,29 +396,126 @@ $test_note_space: (
       _subselector: '.note > .title',
       _properties: (
         font-size: 2rem,
+        border-color: enum('ValueSet:::NULLABLE'),
       ),
     ),
   )
 );
 
+$test_not_real_subspace-first: (
+  container: (
+    color: enum('ValueSet:::NULLABLE'),
+  ),
+);
+
+$test_not_real_subspace-second: (
+  title: (
+    font-size: 5rem,
+  ),
+);
+
+$test_not_real_subspace-third: (
+  container: (
+    line-height: enum('ValueSet:::NOT_NULL'),
+  ),
+);
+
+$test_subspace: (
+  container: (
+    color: blue,
+    background: enum('ValueSet:::NOT_NULL')
+  )
+);
+
+$test_subspace_with_default: (
+  container: (
+    color: blue,
+    background: (enum('ValueSet:::NOT_NULL'), orange)
+  )
+);
+
+$test_subspace_with_groups: (
+  _groups: (
+    note-border-color: enum('ValueSet:::NOT_NULL')
+  ),
+  container: (
+    color: blue,
+    border-color: (enum('ValueSet:::GROUPED'), note-border-color)
+  ),
+  title: (
+    border-color: (enum('ValueSet:::GROUPED'), note-border-color)
+  )
+);
+
 @function test_add_ChapterNote_context() {
-  @return ('ChapterNote:::_selectors': ('.chapter > '));
+  @return ('ChapterNote:::_selectors': ('.chapter > ',));
+}
+
+@function test_note_dual_context() {
+  @return (
+    ChapterNote: (
+      _selectors: ('.chapter > ', '.appendix > .special'),
+      container: (
+        background: yellow
+      )
+    )
+  );
+}
+
+@function test_note_color_line_height() {
+  @return (
+    ChapterNote: (
+      _selectors: ('.chapter > ', '.appendix > .special'),
+      container: (
+        color: yellow,
+        line-height: 1.3rem
+      )
+    )
+  );
+}
+
+@function test_note_grouped() {
+  @return (
+    ChapterNote: (
+      _selectors: ('.chapter > ', '.appendix > .special'),
+      note-border-color: lightgrey
+    )
+  );
 }
 
 @include describe("Design Space") {
   @include it('can create and find a superspace') {
     @include scoped_create_superspace('TestNote', $test_note_space) {
-      @include assert-true(superspace_exists('TestNote'));
+      @include assert-true(space_exists('TestNote'));
     }
   }
 
   @include it('can create a superspace only within a scope') {
     @include scoped_create_superspace('TestNote', $test_note_space) {}
-    @include assert-false(superspace_exists('TestNote'));
+    @include assert-false(space_exists('TestNote'));
   }
   
   @include it('can create and find a subspace') {
-    @include assert-true(false);
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+        @include assert-true(space_exists('SpecificTestNote'));
+      }
+    }
+  }
+
+  @include it('can query a subspace for its root information') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+        @include assert-equal(
+          get_root_name('SpecificTestNote'),
+          'TestNote'
+        );
+        @include assert-equal(
+          get_root_subselector('SpecificTestNote', 'title'),
+          '.note > .title'
+        );
+      }
+    }
   }
 
   @include it('will error when required context is missing') {
@@ -353,32 +537,147 @@ $test_note_space: (
         @include assert {
           @include output {
             @include use('ChapterNote','TestNote');
-          } @include expect {
-            ERROR: "Unknown setting `ChapterNote:::_selectors`."
+          } @include contains {
+            .chapter > .note {
+              ERROR: "Unknown setting `ChapterNote:::container:::color`.";
+            }
           }
         }
-        
+      }
+    }
+
+    @include it('will error when required setting is missing - subspace') {
+      @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+        @include scoped_create_superspace('TestNote', $test_note_space) {
+          @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+            @include assert {
+              @include output {
+                @include use('ChapterNote','SpecificTestNote');
+              } @include contains {
+                .chapter > .note {
+                  ERROR: "Unknown setting `ChapterNote:::container:::background`.";
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
 
   @include it('allows use of the same subspace with different settings') {
-
+    @include scoped_add_settings_functions(get-function('test_note_dual_context')) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                color: blue;
+                background: yellow;
+                height: 200px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   @include it('allows ValueSets to include a default value if setting is missing') {
-    @include assert-true(false);
+    @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_default) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                color: blue;
+                background: orange;
+                height: 200px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include it('setting groups for a space') {
+    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                color: blue;
+                height: 200px;
+                border-color: lightgrey;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   @include it('forbids subspaces from being more general') {
-    @include assert-true(false);
+    @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace-first) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                ERROR: "Space `TestNote` is not a proper superspace due to `ChapterNote:::container:::color`.";
+              }
+            }
+          }
+        }
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace-second) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note > .title {
+                ERROR: "Space `TestNote` is not a proper superspace due to `ChapterNote:::title:::font-size`.";
+              }
+            }
+          }
+        }
+        @include scoped_add_settings_functions(get-function('test_note_color_line_height')) {
+          @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace-third) {
+            @include assert {
+              @include output {
+                @include use('ChapterNote','SpecificTestNote');
+              } @include contains {
+                .chapter > .note {
+                  ERROR: "Space `SpecificTestNote` is not a proper subspace due to addition of property `line-height`.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
   
-  @include it('defaults all values to null') {
-    @include assert-true(false);
-  }
 
   @include it('can debug output of all parents of a subspace') {
-    @include assert-true(false);
+    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups) {
+          @include assert-equal(
+            get_lineage('SpecificTestNote'),
+            ('SpecificTestNote', 'TestNote')
+          );
+        }
+      }
+    }
   }
 }

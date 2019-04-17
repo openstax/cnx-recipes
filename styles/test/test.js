@@ -14,7 +14,7 @@ const importOnce = (url, prev, done) => {
     return (isSameDir && isCompatibleBase)
   }
   if (alreadyImported.some(isSameFile)) {
-    console.log(`Not imported: ${asAbsolute}`)
+    // console.log(`Not imported: ${asAbsolute}`)
     return {};
   } else {
     alreadyImported.push(asAbsolute)
@@ -26,8 +26,12 @@ const importOnce = (url, prev, done) => {
 const frameworkIncludesPath = path.join(__dirname, '../framework')
 const sassFile = path.join(__dirname, 'test-framework.scss')
 
+try {
 sassTrue.runSass({
   file: sassFile,
   importer: [globImporter(), importOnce],
   includePaths: [frameworkIncludesPath],
 }, describe, it)
+} catch (error) {
+  console.log(error.formatted)
+}
