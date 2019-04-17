@@ -1,7 +1,7 @@
 | Recipe Name | chapter-page-class | toc-numbered-pages | appendix-has-numbered-examples | increment-section-counter-for-lo | trash-abstract-in-preface | EOCsection-links |
 | --- | --- | --- | --- | --- | --- | --- |
 | microbiology | :x: | :heavy_check_mark: | :x: | :x: | :x: | :x: |
-| anatomy | :x: | :heavy_check_mark: | :x: | :x: | :heavy_check_mark: | :x: |
+| anatomy | :x: | :heavy_check_mark: | :x: | :x: | :x: | :x: |
 | history | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :x: |
 | psychology | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :x: |
 | chemistry | :x: | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :x: |
