@@ -62,9 +62,21 @@ $DEBUG: true;
 }
 
 
+@function test_add_settings_function() {
+  @return (my-setting: test-value);
+}
+
 @include describe('Settings') {
 
-  @include it('settings get functions error on non-existent key') {
+  @include it('can be added via map-returning functions') {
+    @include add_settings_function(get-function('test_add_settings_function'));
+    @include assert-equal(
+      settings(my-setting),
+      'test-value'
+    )
+  }
+
+  @include it('get functions error on non-existent key') {
     @include assert-equal(
       settings(non-existent-setting),
       "ERROR: Unknown setting `non-existent-setting`."
@@ -75,7 +87,7 @@ $DEBUG: true;
     );
   }
 
-  @include it('settings get functions can use default values') {
+  @include it('get functions can use default values') {
     @include assert-equal(
       settings(non-existent-setting, "default-value"),
       "default-value"

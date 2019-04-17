@@ -1,19 +1,17 @@
-$FRAMEWORK_SETTINGS_GLOBAL: ();
 $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: ();
-
-@function setting_exists($name) {
-  
-}
-
-@function get_setting($name) {
-
-}
-
 $FRAMEWORK_USED_SETTINGS: ();
+
+@mixin add_settings_function($function) {
+  // $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: join(($function,), $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL) !global;
+}
+
 @function settings($name, $default: enum('Argument:::NONE')) {
-  @if map-has-key($FRAMEWORK_SETTINGS_GLOBAL, $name) {
-    $FRAMEWORK_USED_SETTINGS: map-merge($FRAMEWORK_USED_SETTINGS, ($name: true)) !global;
-    @return map-get($FRAMEWORK_SETTINGS_GLOBAL, $name);
+  @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    $function_settings: call($function);
+    @if map-has-key($function_settings, $name) {
+      
+      @return map-get($function_settings, $name);
+    }
   }
   @if $default != enum('Argument:::NONE') {
     @return $default;
