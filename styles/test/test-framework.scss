@@ -1,8 +1,10 @@
 $IS_FRAMEWORK_IMPORTED: false;
 $IS_TEST: true;
+$DEBUG: true;
 
 @import "true";
 @import "framework";
+
 @include debug_enums();
 
 @include describe('Framework') {
@@ -42,19 +44,19 @@ $IS_TEST: true;
         'ENUM'
     );
     @include assert-equal(
-      'ENUM__Test::TEST',
-      enum('Test::TEST')
+      'ENUM__Test:::TEST',
+      enum('Test:::TEST')
     );
     @include assert-equal(
-      'ENUM__Test::ENUM',
-      enum('Test::ENUM')
+      'ENUM__Test:::ENUM',
+      enum('Test:::ENUM')
     );
   }
 
   @include it('errors when getting a non-existent enum') {
     @include assert-equal(
-      enum('Null::NULL'),
-      "ERROR: Enum `Null::NULL` does not exist."
+      enum('Null:::NULL'),
+      "ERROR: Enum `Null:::NULL` does not exist."
     );
   }
 }
@@ -96,12 +98,12 @@ $IS_TEST: true;
 @include describe('ValueSet Enum Type') {
   @include it('provides values NULLABLE and NOT_NULL') {
     @include assert-equal(
-      enum('ValueSet::NULLABLE'),
-      'ENUM__ValueSet::NULLABLE'
+      enum('ValueSet:::NULLABLE'),
+      'ENUM__ValueSet:::NULLABLE'
     );
     @include assert-equal(
-      enum('ValueSet::NOT_NULL'),
-      'ENUM__ValueSet::NOT_NULL'
+      enum('ValueSet:::NOT_NULL'),
+      'ENUM__ValueSet:::NOT_NULL'
     );
   }
 }
@@ -110,8 +112,8 @@ $IS_TEST: true;
 @include describe('Argument Enum Type') {
   @include it('provides value NONE') {
     @include assert-equal(
-      enum('Argument::NONE'),
-      'ENUM__Argument::NONE'
+      enum('Argument:::NONE'),
+      'ENUM__Argument:::NONE'
     )
   }
 }
@@ -139,7 +141,7 @@ $IS_TEST: true;
           )
         )
       ),
-      ('rootkey::key::childkey': value)
+      ('rootkey:::key:::childkey': value)
     );
   }
 
@@ -160,10 +162,10 @@ $IS_TEST: true;
         )
       ),
       (
-        'rootkey::key::childkey': value,
-        'rootkey::key::childkey2': value2,
-        'rootkey::key2::childkey': value3,
-        'rootkey::key2::childkey2': value4
+        'rootkey:::key:::childkey': value,
+        'rootkey:::key:::childkey2': value2,
+        'rootkey:::key2:::childkey': value3,
+        'rootkey:::key2:::childkey2': value4
       )
     );
   }

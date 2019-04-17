@@ -14,7 +14,7 @@ const importOnce = (url, prev, done) => {
     return (isSameDir && isCompatibleBase)
   }
   if (alreadyImported.some(isSameFile)) {
-    // console.log(`Not imported: ${asAbsolute}`)
+    console.log(`Not imported: ${asAbsolute}`)
     return {};
   } else {
     alreadyImported.push(asAbsolute)
