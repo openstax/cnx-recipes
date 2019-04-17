@@ -290,18 +290,56 @@ $test_note_space: (
   )
 );
 
+@function test_add_ChapterNote_context() {
+  @return ('ChapterNote:::_selectors': ('.chapter > '));
+}
+
 @include describe("Design Space") {
   @include it('can create and find a superspace') {
-    @include create_superspace('TestNote', $test_note_space);
-    @include assert-true(superspace_exists('TestNote'));
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include assert-true(superspace_exists('TestNote'));
+    }
+  }
+
+  @include it('can create a superspace only within a scope') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {}
+    @include assert-false(superspace_exists('TestNote'));
   }
   
-  @include it('can create a subspace') {
+  @include it('can create and find a subspace') {
     @include assert-true(false);
   }
 
-  @include it('will error when required settings are missing') {
-    @include assert-true(false);
+  @include it('will error when required context is missing') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include assert {
+        @include output {
+          @include use('ChapterNote','TestNote');
+        } @include expect {
+          ERROR: "Unknown setting `ChapterNote:::_selectors`."
+        }
+      }
+      
+    }
+  }
+
+  @include it('will error when required setting is missing') {
+    @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include assert {
+          @include output {
+            @include use('ChapterNote','TestNote');
+          } @include expect {
+            ERROR: "Unknown setting `ChapterNote:::_selectors`."
+          }
+        }
+        
+      }
+    }
+  }
+
+  @include it('allows use of the same subspace with different settings') {
+
   }
 
   @include it('allows ValueSets to include a default value if setting is missing') {

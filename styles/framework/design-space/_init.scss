@@ -1,13 +1,92 @@
 $FRAMEWORK_SPACE_PLACE: ();
 
+@mixin debug_superspaces() {
+  @debug "All superspaces =>";
+  @each $key, $value in $FRAMEWORK_SPACE_PLACE {
+    @debug $key;
+  }
+}
+
+@mixin scoped_create_superspace($name, $space) {
+  @include create_superspace($name, $space);
+  @content;
+  @include remove_superspace($name);
+}
+
 @mixin create_superspace($name, $space) {
-  
+  $FRAMEWORK_SPACE_PLACE: map-merge($FRAMEWORK_SPACE_PLACE, ($name: $space)) !global;
+}
+
+@mixin remove_superspace($name) {
+  $FRAMEWORK_SPACE_PLACE: map-remove($FRAMEWORK_SPACE_PLACE, $name) !global;
+}
+
+@function get_superspace($name) {
+  @return map-get($FRAMEWORK_SPACE_PLACE, $name);
 }
 
 @mixin create_subspace($name, $parent, $changes) {
-  
+
 }
 
 @function superspace_exists($name) {
+  @return map-has-key($FRAMEWORK_SPACE_PLACE, $name);
+}
+
+@function construct_subspace($subspace_name) {
   @return false;
+}
+
+@mixin use($name, $subspace_name) {
+  $subspace: get_superspace($subspace_name);
+  @if settings("#{$name}:::_selectors") == "ERROR: Unknown setting `ChapterNote:::_selectors`." {
+    @include error("Unknown setting `ChapterNote:::_selectors`.");
+  } @else {
+    @each $selector in settings("#{$name}:::_selectors") {
+      $groups: map-get($subspace, _groups);
+      @each $member in map-get($subspace, _spaces) {
+        $subname: map-get($member, _name);
+        $subselector: map-get($member, _subselector);
+        $properties: map-get($member, _properties);
+  
+        #{$selector}#{$subselector} {
+          @each $property, $state in $properties {
+            $key: "#{$name}:::#{$subname}:::#{$property}";
+            $default_value: enum('Argument:::NONE');
+            @if type-of($state) == list {
+              $state: nth($state, 1);
+              $default_value: nth($state, 2);
+            }
+            @if $state == enum('ValueSet:::GROUPED') {
+              $state: map-get($groups, $default_value);
+              $key: "#{$name}:::#{$default_value}";
+              @if type-of($state) == list {
+                $state: nth($state, 1);
+                $default_value: nth($state, 2);
+              }
+            }
+            $value: null;
+            @if $state == enum('ValueSet:::NULLABLE') {
+              $value: settings(
+                $key, 
+                if($default_value != enum('Argument:::NONE'),
+                  $default_value,
+                  null()
+                )
+              );
+            } @else if $state == enum('ValueSet:::NOT_NULL') {
+              $value: settings-not-null(
+                $key, 
+                $default_value
+              );
+            } @else {
+              $value: #{$state};
+            }
+            
+            #{$property}: #{$value}
+          }
+        }
+      }
+    }
+  }
 }
