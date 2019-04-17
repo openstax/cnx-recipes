@@ -9,12 +9,21 @@ $IS_TEST: true;
   @include it('is successfully imported') {
     @include assert-true($IS_FRAMEWORK_IMPORTED);
   }
-  @include it('can throw a test error') {
+  @include it('can throw a test error in a mixin') {
     @include assert {
       @include output {
         @include error("Explode.")
       } @include expect {
-        error: "Explode.";
+        ERROR: "Explode.";
+      }
+    }
+  }
+  @include it('can throw a test error in a function') {
+    @include assert {
+      @include output {
+        test: error("Explode.");
+      } @include expect {
+        test: "ERROR: Explode.";
       }
     }
   }
@@ -40,7 +49,7 @@ $IS_TEST: true;
       @include output {
         test: enum('Null::NULL');
       } @include expect {
-        error: "Enum `Null::NULL` does not exist.";
+        test: "ERROR: Enum `Null::NULL` does not exist.";
       }
     }
   }
