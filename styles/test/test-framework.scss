@@ -10,13 +10,6 @@ $IS_TEST: true;
     @include assert-true($IS_FRAMEWORK_IMPORTED);
   }
 
-  @include it('provides a null() function') {
-    @include assert-equal(
-      null(),
-      null
-    );
-  }
-
   @include it('can throw a test error in a mixin') {
     @include assert {
       @include output {
@@ -47,7 +40,61 @@ $IS_TEST: true;
       'ENUM__ValueSet::NOT_NULL'
     );
   }
+}
 
+
+@include describe('The null Function') {
+
+  @include it('returns null') {
+    @include assert-equal(
+      null(),
+      null
+    );
+  }
+}
+
+
+@include describe('The map-key-prefix-flatten Function') {
+
+  @include it('flattens map leaf entry with namespace of parent keys') {
+    @include assert-equal(
+      map-key-prefix-flatten(
+        (
+          rootkey: (
+            key: (
+              childkey: value
+            )
+          )
+        )
+      ),
+      ('rootkey::key::childkey': value)
+    );
+  }
+
+  @include it('can unwrap multiple keys on multiple levels') {
+    @include assert-equal(
+      map-key-prefix-flatten(
+        (
+          rootkey: (
+            key: (
+              childkey: value,
+              childkey2: value2
+            ),
+            key2: (
+              childkey: value3,
+              childkey2: value4
+            )
+          )
+        )
+      ),
+      (
+        'rootkey::key::childkey': value,
+        'rootkey::key::childkey2': value2,
+        'rootkey::key2::childkey': value3,
+        'rootkey::key2::childkey2': value4
+      )
+    );
+  }
 }
 
 
@@ -77,5 +124,4 @@ $IS_TEST: true;
       }
     }
   }
-
 }
