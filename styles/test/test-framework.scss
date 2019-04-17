@@ -73,6 +73,16 @@ $DEBUG: true;
   @return (my-setting: overriden-value);
 }
 
+@function test_settings_key_prefix_flatten() {
+  @return (
+    rootkey: (
+      key: (
+        childkey: my-prefixed-value
+      )
+    )
+  );
+}
+
 @include describe('Settings') {
   @include it('can be added via map-returning functions') {
     @include scoped_add_settings_functions(get-function('test_add_settings_function')) {
@@ -91,6 +101,17 @@ $DEBUG: true;
       settings(my-setting),
       'test-value'
     );
+  }
+
+  @include it('can access the settings with keys flattened') {
+    @include scoped_add_settings_functions(
+      get-function('test_settings_key_prefix_flatten')
+    ) {
+      @include assert-equal(
+        settings('rootkey:::key:::childkey'),
+        'my-prefixed-value'
+      )
+    }
   }
 
   @include it('can clear and output unused settings values') {
@@ -250,5 +271,9 @@ $DEBUG: true;
 
 
 @include describe("Design Space") {
+  @include it('can create a superspace') {
+    
+  }
+  
   @include it('')
 }

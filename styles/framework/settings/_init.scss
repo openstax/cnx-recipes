@@ -11,7 +11,7 @@ $FRAMEWORK_USED_SETTINGS: ();
 @mixin debug_settings() {
   @debug "All available settings =>";
   @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
-    @each $key, $value in call($function) {
+    @each $key, $value in map_key_prefix_flatten(call($function)) {
       @debug "#{$key} : #{$value}";
     }
   }
@@ -24,7 +24,7 @@ $FRAMEWORK_USED_SETTINGS: ();
 @function get_unused_settings() {
   $unused_entries: ();
   @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
-    @each $key, $value in call($function) {
+    @each $key, $value in map_key_prefix_flatten(call($function)) {
       @if index($FRAMEWORK_USED_SETTINGS, $key) == null {
         $unused_entries: append($unused_entries, ($key, $value), comma);
       }
@@ -51,7 +51,7 @@ $FRAMEWORK_USED_SETTINGS: ();
 
 @function settings($name, $default: enum('Argument:::NONE')) {
   @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
-    $function_settings: call($function);
+    $function_settings: map_key_prefix_flatten(call($function));
     @if map-has-key($function_settings, $name) {
       $FRAMEWORK_USED_SETTINGS: append($FRAMEWORK_USED_SETTINGS, $name) !global;
       @return map-get($function_settings, $name);
