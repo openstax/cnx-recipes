@@ -39,18 +39,19 @@ $DEBUG: true;
 
 @include describe('Enum Utility') {
   @include it('allows enum creation') {
-    @include create_enum_type('Test',
+    @include scoped_create_enum_type('Test',
         'TEST',
         'ENUM'
-    );
-    @include assert-equal(
-      'ENUM__Test:::TEST',
-      enum('Test:::TEST')
-    );
-    @include assert-equal(
-      'ENUM__Test:::ENUM',
-      enum('Test:::ENUM')
-    );
+    ) {
+      @include assert-equal(
+        enum('Test:::TEST'),
+        'ENUM__Test:::TEST'        
+      );
+      @include assert-equal(
+        enum('Test:::ENUM'),
+        'ENUM__Test:::ENUM'
+      );
+    }
   }
 
   @include it('errors when getting a non-existent enum') {
@@ -71,9 +72,8 @@ $DEBUG: true;
 }
 
 @include describe('Settings') {
-
   @include it('can be added via map-returning functions') {
-    @include add_temp_settings_functions(get-function('test_add_settings_function')) {
+    @include scoped_add_settings_functions(get-function('test_add_settings_function')) {
       @include assert-equal(
         settings(my-setting),
         'test-value'
@@ -81,16 +81,26 @@ $DEBUG: true;
     }
   }
 
+  @include it('can add settings functions only to a certain scope if desired') {
+    @include scoped_add_settings_functions(
+      get-function('test_add_settings_function')
+    ) {}
+    @include assert-unequal(
+      settings(my-setting),
+      'test-value'
+    );
+  }
+
   @include it('prioritize settings functions added later (front of manifest)') {
-    @include add_temp_settings_functions(get-function('test_add_settings_function')) {
-      @include add_temp_settings_functions(get-function('test_add_settings_function_after')) {
+    @include scoped_add_settings_functions(get-function('test_add_settings_function')) {
+      @include scoped_add_settings_functions(get-function('test_add_settings_function_after')) {
         @include assert-equal(
           settings(my-setting),
           'overriden-value'
         );
       }
     }
-    @include add_temp_settings_functions(
+    @include scoped_add_settings_functions(
       get-function('test_add_settings_function_after'),
       get-function('test_add_settings_function')
     ) {
@@ -166,10 +176,23 @@ $DEBUG: true;
 }
 
 
-@include describe('The map-key-prefix-flatten Function') {  
+@include describe('The remove_value Function') {
+  @include it('returns a copy of a list with the value removed') {
+    @include assert-equal(
+      remove_value(
+        ("hello", "lovely", "world"),
+        "lovely"
+      ),
+      ("hello", "world")
+    );
+  }
+}
+
+
+@include describe('The map_key_prefix_flatten Function') {  
   @include it('flattens map leaf entry with namespace of parent keys') {
     @include assert-equal(
-      map-key-prefix-flatten(
+      map_key_prefix_flatten(
         (
           rootkey: (
             key: (
@@ -184,7 +207,7 @@ $DEBUG: true;
 
   @include it('can unwrap multiple keys on multiple levels') {
     @include assert-equal(
-      map-key-prefix-flatten(
+      map_key_prefix_flatten(
         (
           rootkey: (
             key: (

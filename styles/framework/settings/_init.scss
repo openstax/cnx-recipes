@@ -1,20 +1,37 @@
 $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: ();
 $FRAMEWORK_USED_SETTINGS: ();
 
-@mixin add_settings_functions($function...) {
-  $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: join($function, $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL) !global;
+@mixin debug_settings_manifest() {
+  @debug "Settings manifest =>";
+  @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    @debug $function;
+  }
 }
 
-@mixin clear_settings_functions() {
-  $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: () !global;
+@mixin debug_settings() {
+  @debug "All available settings =>";
+  @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    @each $key, $value in call($function) {
+      @debug "#{$key} : #{$value}";
+    }
+  }
 }
 
-@mixin add_temp_settings_functions($function...) {
-  @include add_settings_functions($function...);
+@mixin add_settings_functions($functions...) {
+  $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: join($functions, $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL) !global;
+}
+
+@mixin remove_settings_functions($functions...) {
+  @each $function in $functions {
+    $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: remove_value($FRAMEWORK_SETTINGS_MANIFEST_GLOBAL, $function) !global;
+  }
+}
+
+@mixin scoped_add_settings_functions($functions...) {
+  @include add_settings_functions($functions...);
   @content;
-  @include clear_settings_functions();
+  @include remove_settings_functions($functions...);
 }
-
 
 @function settings($name, $default: enum('Argument:::NONE')) {
   @each $function in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {

@@ -1,5 +1,12 @@
 $FRAMEWORK_ENUM_GLOBAL: ();
 
+@mixin debug_enums() {
+  @debug "All available enums =>";
+  @each $enum in $FRAMEWORK_ENUM_GLOBAL {
+    @debug $enum;
+  }
+}
+
 @mixin create_enum_type($namespace, $values...) {
   @each $value in $values {
     $FRAMEWORK_ENUM_GLOBAL: map-merge(
@@ -9,16 +16,24 @@ $FRAMEWORK_ENUM_GLOBAL: ();
   }
 }
 
+@mixin remove_enum_type($namespace, $values...) {
+  @each $value in $values {
+    $FRAMEWORK_ENUM_GLOBAL: map-remove(
+      $FRAMEWORK_ENUM_GLOBAL,
+      "#{$namespace}:::#{$value}")
+    !global;
+  }
+}
+
+@mixin scoped_create_enum_type($namespace, $values...) {
+  @include create_enum_type($namespace, $values...);
+  @content;
+  @include remove_enum_type($namespace, $values...);
+}
+
 @function enum($name) {
   @if not map-has-key($FRAMEWORK_ENUM_GLOBAL, $name) {
     @return error("Enum `#{$name}` does not exist.");  
   }
   @return map-get($FRAMEWORK_ENUM_GLOBAL, $name);
-}
-
-@mixin debug_enums() {
-  @debug "All available enums =>";
-  @each $enum in $FRAMEWORK_ENUM_GLOBAL {
-    @debug $enum;
-  }
 }
