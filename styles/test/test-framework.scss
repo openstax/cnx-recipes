@@ -5,8 +5,6 @@ $DEBUG: true;
 @import "true";
 @import "framework";
 
-@include debug_enums();
-
 @include describe('Framework') {
   @include it('is successfully imported') {
     @include assert-true($IS_FRAMEWORK_IMPORTED);
@@ -67,6 +65,10 @@ $DEBUG: true;
   @return (my-setting: test-value);
 }
 
+@function test_add_other_settings_function() {
+  @return (my-other-setting: other-test-value);
+}
+
 @function test_add_settings_function_after() {
   @return (my-setting: overriden-value);
 }
@@ -89,6 +91,19 @@ $DEBUG: true;
       settings(my-setting),
       'test-value'
     );
+  }
+
+  @include it('can output unused settings values') {
+    @include scoped_add_settings_functions(
+      get-function('test_add_other_settings_function'),
+      get-function('test_add_settings_function')
+    ) {
+      $_: settings(my-setting);
+      @include assert-equal(
+        get_unused_settings(),
+        (my-other-setting)
+      );
+    }
   }
 
   @include it('prioritize settings functions added later (front of manifest)') {
