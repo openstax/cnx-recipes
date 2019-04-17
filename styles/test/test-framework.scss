@@ -2,13 +2,14 @@ $IS_FRAMEWORK_IMPORTED: false;
 $IS_TEST: true;
 
 @import "true";
-
 @import "framework";
 
 @include describe('Framework') {
+
   @include it('is successfully imported') {
     @include assert-true($IS_FRAMEWORK_IMPORTED);
   }
+
   @include it('can throw a test error in a mixin') {
     @include assert {
       @include output {
@@ -18,6 +19,7 @@ $IS_TEST: true;
       }
     }
   }
+
   @include it('can throw a test error in a function') {
     @include assert {
       @include output {
@@ -27,9 +29,23 @@ $IS_TEST: true;
       }
     }
   }
+
+  @include it('provides the NULLABLE and NOT_NULL ValueSet enums') {
+    @include assert-equal(
+      enum('ValueSet::NULLABLE'),
+      'ENUM__ValueSet::NULLABLE'
+    );
+    @include assert-equal(
+      enum('ValueSet::NOT_NULL'),
+      'ENUM__ValueSet::NOT_NULL'
+    );
+  }
+  
 }
 
+
 @include describe('Enums') {
+
   @include it('allows enum creation') {
     @include create_enum_type('Test',
         'TEST',
@@ -44,6 +60,7 @@ $IS_TEST: true;
       enum('Test::ENUM')
     );
   }
+
   @include it('errors when getting a non-existant enum') {
     @include assert {
       @include output {
@@ -53,4 +70,5 @@ $IS_TEST: true;
       }
     }
   }
+
 }
