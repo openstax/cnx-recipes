@@ -43,6 +43,35 @@ $IS_TEST: true;
 }
 
 
+@include describe('Enums') {
+
+  @include it('allows enum creation') {
+    @include create_enum_type('Test',
+        'TEST',
+        'ENUM'
+    );
+    @include assert-equal(
+      'ENUM__Test::TEST',
+      enum('Test::TEST')
+    );
+    @include assert-equal(
+      'ENUM__Test::ENUM',
+      enum('Test::ENUM')
+    );
+  }
+
+  @include it('errors when getting a non-existant enum') {
+    @include assert {
+      @include output {
+        test: enum('Null::NULL');
+      } @include expect {
+        test: "ERROR: Enum `Null::NULL` does not exist.";
+      }
+    }
+  }
+}
+
+
 @include describe('The null Function') {
 
   @include it('returns null') {
@@ -94,34 +123,5 @@ $IS_TEST: true;
         'rootkey::key2::childkey2': value4
       )
     );
-  }
-}
-
-
-@include describe('Enums') {
-
-  @include it('allows enum creation') {
-    @include create_enum_type('Test',
-        'TEST',
-        'ENUM'
-    );
-    @include assert-equal(
-      'ENUM__Test::TEST',
-      enum('Test::TEST')
-    );
-    @include assert-equal(
-      'ENUM__Test::ENUM',
-      enum('Test::ENUM')
-    );
-  }
-
-  @include it('errors when getting a non-existant enum') {
-    @include assert {
-      @include output {
-        test: enum('Null::NULL');
-      } @include expect {
-        test: "ERROR: Enum `Null::NULL` does not exist.";
-      }
-    }
   }
 }
