@@ -1220,10 +1220,20 @@
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 
-:pass(8) [data-type="chapter"] [data-type="note"].try [data-type="solution"] {
+:pass(8) [data-type="chapter"] [data-type="page"]:not(.introduction) [data-type="note"].try [data-type="solution"] {
   move-to: note-try-solution-GETSECTION; }
 
-:pass(8) [data-type="chapter"]::before {
+:pass(8) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  content: nodes(sectionHeaderNode);
+  move-to: moduleTitleName; }
+
+:pass(8) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(moduleTitleName) pending(note-try-solution-GETSECTION);
+  move-to: note-solution-SECTIONS; }
+
+:pass(8) [data-type="chapter"]::after {
   container: span;
   class: "os-title-label";
   content: "Try It ";
@@ -1235,9 +1245,8 @@
   move-to: note-try-header; }
 
 :pass(8) [data-type="chapter"]::after {
-  container: div;
-  class: "os-solution-area";
-  content: pending(note-try-header) pending(note-try-solution-GETSECTION);
+  class: "waka";
+  content: pending(note-try-header) pending(note-solution-SECTIONS);
   move-to: note-solution-GETCHAPTER; }
 
 :pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container [data-type="solution"] {
