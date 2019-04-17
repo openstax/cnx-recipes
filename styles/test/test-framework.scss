@@ -3,6 +3,7 @@ $IS_TEST: true;
 
 @import "true";
 @import "framework";
+@include debug_enums();
 
 @include describe('Framework') {
   @include it('is successfully imported') {
@@ -60,16 +61,6 @@ $IS_TEST: true;
 
 
 @include describe('Settings') {
-  @include it('settings get functions can use default values') {
-    @include assert-equal(
-      settings(non-existent-setting, "default-value"),
-      "default-value"
-    );
-    @include assert-equal(
-      settings_not_null(non-existent-setting, "default-value"),
-      "default-value"
-    );
-  }
 
   @include it('settings get functions error on non-existent key') {
     @include assert-equal(
@@ -82,16 +73,27 @@ $IS_TEST: true;
     );
   }
 
+  @include it('settings get functions can use default values') {
+    @include assert-equal(
+      settings(non-existent-setting, "default-value"),
+      "default-value"
+    );
+    @include assert-equal(
+      settings_not_null(non-existent-setting, "default-value"),
+      "default-value"
+    );
+  }
+
   @include it('settings_not_null function errors on null values') {
     @include assert-equal(
       settings_not_null(non-existent-setting, null),
-      "ERROR: Received a disallowed NULL value for option `non-existent-setting`."
+      "ERROR: Received a disallowed NULL value for setting `non-existent-setting`."
     );
   }
 }
 
 
-@include describe('ValueSet') {
+@include describe('ValueSet Enum Type') {
   @include it('provides values NULLABLE and NOT_NULL') {
     @include assert-equal(
       enum('ValueSet::NULLABLE'),
@@ -101,6 +103,16 @@ $IS_TEST: true;
       enum('ValueSet::NOT_NULL'),
       'ENUM__ValueSet::NOT_NULL'
     );
+  }
+}
+
+
+@include describe('Argument Enum Type') {
+  @include it('provides value NONE') {
+    @include assert-equal(
+      enum('Argument::NONE'),
+      'ENUM__Argument::NONE'
+    )
   }
 }
 
