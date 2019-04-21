@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path');
 const sassTrue = require('sass-true')
-const globImporter = require('node-sass-glob-importer')
 
 const alreadyImported = []
 const importOnce = (url, prev) => {
@@ -91,7 +90,7 @@ sassTrue.runSass({
   // sourceMap: true,
   // sourceMapEmbed: true,
   file: sassFile,
-  importer: [globImporter(), importOnce, coverageReporter],
+  importer: [importOnce, coverageReporter],
   includePaths: [frameworkIncludesPath],
 }, describe, it)
 } catch (error) {
