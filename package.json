@@ -28,7 +28,8 @@
     "postinstall": "[ ${SKIP_MY_POSTINSTALL} = 'true' ] || npm run-script build:web-styles",
     "pretest": "npm run-script build:web-styles && npm run-script lint",
     "test": "node ./js/package-exports/test.js",
-    "test:styles": "mocha ./styles/test/test.js"
+    "test:styles": "mocha ./styles/test/test.js 2> ./styles/test/test-coverage.log",
+    "posttest:styles": "node ./styles/test/generateCoverage.js ./styles/test/test-coverage.log > ./coverage/framework-unit-tests.lcov"
   },
   "dependencies": {
     "fs-to-json": "^0.1.7"
