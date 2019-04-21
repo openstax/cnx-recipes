@@ -681,3 +681,69 @@ $test_subspace_with_groups: (
     }
   }
 }
+
+@include describe('Debug functions (just for code coverage)') {
+  @include it('Outputs debug_superspaces') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include debug_superspaces();
+    }
+  }
+
+  @include it('Outputs debug_enums') {
+    @include debug_enums();
+  }
+
+  @include it('Outputs debug_settings_manifest') {
+    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+      @include debug_settings_manifest();
+    }
+  }
+
+  @include it('Outputs debug_settings') {
+    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+      @include debug_settings();
+    }
+  }
+}
+
+@include describe('Misc error cases (for code coverage)') {
+  @include it('Errors when a non-map argument is passed in to map_deep_get') {
+    @include assert-true(
+      is_error(
+        map_deep_get('non-map', key1, key2)
+      )
+    );
+  }
+
+  @include it('Errors when a non-map argument is passed in to map_deep_get') {
+    @include assert-false(
+      map_deep_has_key((key1: true), key2)
+    );
+  }
+
+  @include it('Errors when get_space name does not exist') {
+    @include assert-true(
+      is_error(
+        get_space('non-existant-space-name')
+      )
+    );
+  }
+
+  @include it('Errors when create_subspace is given an invalid parent') {
+    :root {
+      @include create_subspace('child-space-name', 'non-existant-space-name', ());
+    }
+  }
+
+  @include it('Errors when a subselector is invalid') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+        @include assert-true(
+          is_error(
+            get_root_subselector('SpecificTestNote', 'invalid-field-name')
+          )
+        );
+      }
+    }
+  }
+}

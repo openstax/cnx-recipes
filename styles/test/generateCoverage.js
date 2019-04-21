@@ -45,7 +45,7 @@ fs.readFileSync(inputFile, 'utf-8').split('\n').forEach((line, inputLineNumber) 
   } else if (line.length === 0) {
     // skip
   } else {
-    throw new error(`Malformed coverage line at ${inputFile}:${inputLineNumber}. Expected it to contain '__CODECOVERAGE_COVERED' or '__CODECOVERAGE_ALL_POSSIBLE'. If the tests start executing @debug commands then this error can be removed.`)
+    // Ignore generic @debug messages that are in the log
   }
 })
 
