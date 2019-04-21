@@ -1,9 +1,10 @@
+const fs = require('fs')
 const path = require('path');
 const sassTrue = require('sass-true')
 const globImporter = require('node-sass-glob-importer')
 
 const alreadyImported = []
-const importOnce = (url, prev, done) => {
+const importOnce = (url, prev) => {
   const asAbsolute = path.isAbsolute(url) ? url : path.join(path.dirname(prev), url)
   const asAbsoluteDirname = path.dirname(asAbsolute)
   const asAbsoluteBaseStrip = path.basename(asAbsolute).replace(/^_/, '').replace(/.s[ca]ss$/, '')
@@ -22,14 +23,59 @@ const importOnce = (url, prev, done) => {
   }
 }
 
+const coverageReporter = (url, prev) => {
+  const asAbsolute = path.isAbsolute(url) ? url : path.join(path.dirname(prev), url)
+  const filenameSlug = path.basename(asAbsolute)
+  const dirname = path.dirname(asAbsolute)
+  let realPath = null
+  if (fs.existsSync(path.join(dirname, `${filenameSlug}.scss`))) {
+    realPath = path.join(dirname, `${filenameSlug}.scss`)
+  } else if (fs.existsSync(path.join(dirname, `_${filenameSlug}.scss`))) {
+    realPath = path.join(dirname, `_${filenameSlug}.scss`)
+  } else if (fs.existsSync(path.join(dirname, filenameSlug, 'index.scss'))) {
+    realPath = path.join(dirname, filenameSlug, 'index.scss')
+  } else {
+    return null
+  }
+
+  // Don't cover packages in node_modules
+  if (/node_modules/.test(realPath)) {
+    return null
+  }
+  try {
+    const contents = fs.readFileSync(realPath, 'utf-8')
+    const allPossibleLines = []
+    const originalLines = contents.split('\n')
+    const lines = originalLines.map((line, index) => {
+      const lastChar = line.trim()[line.trim().length - 1]
+      const debugMsg = `@debug '__CODECOVERAGE_COVERED: ${JSON.stringify([realPath, index+1])}';`
+      switch (lastChar) {
+        case '{':
+        case ';': 
+          allPossibleLines.push(index+1)
+          return `${line} ${debugMsg}`
+        default: return line
+      }
+    })
+    // Inject all the possible lines at the top
+    lines[0] = `@debug '__CODECOVERAGE_ALL_POSSIBLE: ${JSON.stringify([realPath, allPossibleLines])}';${lines[0]}`
+    return {contents: lines.join('\n')}
+  } catch (err) {
+    console.log(err)
+    return {file: realPath}
+  }
+}
+
 
 const frameworkIncludesPath = path.join(__dirname, '../framework')
 const sassFile = path.join(__dirname, 'test-framework.scss')
 
 try {
 sassTrue.runSass({
+  // sourceMap: true,
+  // sourceMapEmbed: true,
   file: sassFile,
-  importer: [globImporter(), importOnce],
+  importer: [globImporter(), importOnce, coverageReporter],
   includePaths: [frameworkIncludesPath],
 }, describe, it)
 } catch (error) {
