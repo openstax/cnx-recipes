@@ -46,12 +46,27 @@ const coverageReporter = (url, prev) => {
     const contents = fs.readFileSync(realPath, 'utf-8')
     const allPossibleLines = []
     const originalLines = contents.split('\n')
+    let nextSemicolonIsForTheReturn = false // returns can span multiple lines so count the return but don't add a @debug after the return
     const lines = originalLines.map((line, index) => {
-      const lastChar = line.trim()[line.trim().length - 1]
+      const trimmed = line.trim()
+      const lastChar = trimmed[trimmed.length - 1]
       const debugMsg = `@debug '__CODECOVERAGE_COVERED: ${JSON.stringify([realPath, index+1])}';`
+      if (trimmed.startsWith('@return') 
+        || trimmed.startsWith('@include')
+        || trimmed.startsWith('@if')
+        || trimmed.startsWith('@error')) {
+
+        nextSemicolonIsForTheReturn = trimmed.startsWith('@return')
+        allPossibleLines.push(index+1)
+        return `${debugMsg}; ${line}`
+      }
       switch (lastChar) {
         case '{':
         case ';': 
+          if (nextSemicolonIsForTheReturn && lastChar === ';') {
+            nextSemicolonIsForTheReturn = false
+            return line
+          } 
           allPossibleLines.push(index+1)
           return `${line} ${debugMsg}`
         default: return line
