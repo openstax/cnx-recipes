@@ -46,25 +46,26 @@ const coverageReporter = (url, prev) => {
     const contents = fs.readFileSync(realPath, 'utf-8')
     const allPossibleLines = []
     const originalLines = contents.split('\n')
-    let nextSemicolonIsForTheReturn = false // returns can span multiple lines so count the return but don't add a @debug after the return
+    let isMultiLineReturn = false // returns can span multiple lines so count the return but don't add a @debug after the return
     const lines = originalLines.map((line, index) => {
       const trimmed = line.trim()
+      const firstWord = trimmed.split(' ')[0]
       const lastChar = trimmed[trimmed.length - 1]
       const debugMsg = `@debug '__CODECOVERAGE_COVERED: ${JSON.stringify([realPath, index+1])}';`
-      if (trimmed.startsWith('@return') 
-        || trimmed.startsWith('@include')
-        || trimmed.startsWith('@if')
-        || trimmed.startsWith('@error')) {
+      if (firstWord === '@return'
+        || firstWord === '@include'
+        || firstWord === '@if'
+        || firstWord === '@error') {
 
-        nextSemicolonIsForTheReturn = trimmed.startsWith('@return')
+        isMultiLineReturn = firstWord === '@return' && trimmed.indexOf(';') < 0
         allPossibleLines.push(index+1)
         return `${debugMsg}; ${line}`
       }
       switch (lastChar) {
         case '{':
         case ';': 
-          if (nextSemicolonIsForTheReturn && lastChar === ';') {
-            nextSemicolonIsForTheReturn = false
+          if (isMultiLineReturn && lastChar === ';') {
+            isMultiLineReturn = false
             return line
           } 
           allPossibleLines.push(index+1)
