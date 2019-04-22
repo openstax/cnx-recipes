@@ -51,6 +51,11 @@ const coverageReporter = (url, prev) => {
       const firstWord = trimmed.split(' ')[0]
       const lastChar = trimmed[trimmed.length - 1]
       const debugMsg = `@debug '__CODECOVERAGE_COVERED: ${JSON.stringify([realPath, index+1])}';`
+
+      if (trimmed.endsWith('coverage:disable-line') && /\/\/\ *coverage:disable-line/.test(trimmed)) {
+        return line
+      }
+
       if (firstWord === '@return'
         || firstWord === '@include'
         || firstWord === '@if'
