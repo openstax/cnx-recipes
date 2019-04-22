@@ -22,14 +22,14 @@ $FRAMEWORK_SPACE_PLACE: ();
 }
 
 @function space_exists($name) {
-  @return map-has-key($FRAMEWORK_SPACE_PLACE, $name);
+  @return map-deep-has-key($FRAMEWORK_SPACE_PLACE, $name);
 }
 
 @function get_space($name) {
   @if not space-exists($name) {
     @return error('Error:::INDEX_ERROR', "Space `#{$name}` does not exist");
   }
-  @return map-get($FRAMEWORK_SPACE_PLACE, $name);
+  @return map-deep-get($FRAMEWORK_SPACE_PLACE, $name);
 }
 
 @mixin create_subspace($name, $parent, $changes) {
@@ -84,20 +84,20 @@ $FRAMEWORK_SPACE_PLACE: ();
 
 @function get_root_subselector($name, $component_name) {
   $superspace: get_root($name);
-  $components: map-get($superspace, _components);
+  $components: map-deep-get($superspace, _components);
   @each $component in $components {
-    @if map-get($component, _name) == $component_name {
-      @return map-get($component, _subselector);
+    @if map-deep-get($component, _name) == $component_name {
+      @return map-deep-get($component, _subselector);
     }
   }
   @return error('Error:::INDEX_ERROR', "No root subselector found for `#{$name} -> #{$component_name}`");
 }
 
 @function get_properties($space, $component_name) {
-  $components: map-get($space, _components);
+  $components: map-deep-get($space, _components);
   @each $component in $components {
-    @if map-get($component, _name) == $component_name {
-      @return map-get($component, _properties);
+    @if map-deep-get($component, _name) == $component_name {
+      @return map-deep-get($component, _properties);
     }
   }
   @return ();
@@ -122,8 +122,6 @@ $FRAMEWORK_SPACE_PLACE: ();
     $value: settings($key, if($value == enum('Object:::NONE'), null(), $value));
   } @else if $value_set == enum('ValueSet:::NOT_NULL') {
     $value: settings-not-null($key, $value);
-  } @else if $value_set == enum('ValueSet:::GROUPED') {
-    @return error('Error::TYPE_ERROR', "Error: ValueSet should never be grouped after resolution.");
   } @else {
     $value: #{$value_set};
   }
@@ -135,7 +133,10 @@ $FRAMEWORK_SPACE_PLACE: ();
     $value_set: nth($description, 1);
     $value: nth($description, 2);
     @if $value_set == enum('ValueSet:::GROUPED') {
-      @return map-get($groups, $value);
+      @if not map-has-key($groups, $value) {
+        @return error(enum('Error:::INDEX_ERROR'), "Group `#{$value}` does not exist.");
+      }
+      @return resolve_description(map-deep-get($groups, $value), $groups);
     }
   }
   @return $description;
@@ -148,39 +149,48 @@ $FRAMEWORK_SPACE_PLACE: ();
   } @else { 
     @each $selector in settings("#{$name}:::_selectors") {
       $superspace: get_root($subspace_name);
-      @each $component in map-get($superspace, _components) {
-        $component_name: map-get($component, _name);
-        $subselector: map-get($component, _subselector);
+      @each $component in map-deep-get($superspace, _components) {
+        $component_name: map-deep-get($component, _name);
+        $subselector: map-deep-get($component, _subselector);
         $root_properties: get_properties($superspace, $component_name);
-        @if is_error($subselector) {
+        @if is_error($component_name) {
+          @include error(error_message($component_name));
+        } @else if is_error($subselector) {
           @include error(error_message($subselector));
-        }
-        $spent_keys: ();
-        #{$selector}#{$subselector} {
-          @each $ancestor_name in get_lineage($subspace_name) {
-            $ancestor: get_space($ancestor_name);
-            $groups: map-get($ancestor, _groups);
-            $properties: get_properties($ancestor, $component_name);
-            @each $property, $description in $properties {
-              @if not map-has-key($root_properties, $property) {
-                @include error("Space `#{$ancestor_name}` is not a proper subspace due to addition of property `#{$property}`.");
-              }
-              $key: "#{$name}:::#{$component_name}:::#{$property}";
-              $resolved_description: resolve_description($description, $groups);
-              $value_set: if(type-of($resolved_description) == "list", first($resolved_description), $resolved_description);
-              @if not map-has-key($spent_keys, $key) {
-                $spent_keys: map-merge($spent_keys, ($key: $value_set));
-                $value: resolve_declaration($name, $groups, $key, $property, $description);
-                @if is_error($value) {
-                  @include error(error_message($value));
-                } @else {
-                  #{$property}: #{$value}
+        } @else if is_error($root_properties) {
+          @include error(error_message($root_properties));
+        } @else {
+          $spent_keys: ();
+          #{$selector}#{$subselector} {
+            @each $ancestor_name in get_lineage($subspace_name) {
+              $ancestor: get_space($ancestor_name);
+              $groups: map-deep-get($ancestor, _groups);
+              $properties: get_properties($ancestor, $component_name);
+              @each $property, $description in $properties {
+                @if not map-has-key($root_properties, $property) {
+                  @include error("Space `#{$ancestor_name}` is not a proper subspace due to addition of property `#{$property}`.");
                 }
-              } @else {
-                $old_value_set: map-get($spent_keys, $key);
-                @if $value_set != enum('ValueSet:::NULLABLE') and 
-                  ($value_set != enum('ValueSet:::NOT_NULL') or $old_value_set == enum('ValueSet:::NULLABLE')) {
-                    @include error("Space `#{$ancestor_name}` is not a proper superspace due to `#{$key}`.");
+                $key: "#{$name}:::#{$component_name}:::#{$property}";
+                $resolved_description: resolve_description($description, $groups);
+                @if is_error($resolved_description) {
+                  @include error(error_message($resolved_description));
+                } @else {
+                  $value_set: if(type-of($resolved_description) == "list", first($resolved_description), $resolved_description);
+                  @if not map-has-key($spent_keys, $key) {
+                    $spent_keys: map-merge($spent_keys, ($key: $value_set));
+                    $value: resolve_declaration($name, $groups, $key, $property, $description);
+                    @if is_error($value) {
+                      @include error(error_message($value));
+                    } @else {
+                      #{$property}: #{$value}
+                    }
+                  } @else {
+                    $old_value_set: map-deep-get($spent_keys, $key);
+                    @if $value_set != enum('ValueSet:::NULLABLE') and 
+                      ($value_set != enum('ValueSet:::NOT_NULL') or $old_value_set == enum('ValueSet:::NULLABLE')) {
+                        @include error("Space `#{$ancestor_name}` is not a proper superspace due to `#{$key}`.");
+                    }
+                  }
                 }
               }
             }
