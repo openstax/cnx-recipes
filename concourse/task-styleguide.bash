@@ -20,7 +20,10 @@ fi
 # ensure pyenv is initialized
 eval "$(pyenv init -)"
 
-npm install --global yarn
+# Install yarn for the specific version of node we are using
+nodenv local "$(< .node-version)"
+nodenv exec npm install --global yarn
+
 
 ./script/setup
 ./script/test
