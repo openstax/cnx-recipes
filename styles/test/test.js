@@ -1,5 +1,5 @@
 const fs = require('fs')
-const path = require('path');
+const path = require('path')
 const sassTrue = require('sass-true')
 
 const alreadyImported = []
@@ -15,10 +15,10 @@ const importOnce = (url, prev) => {
   }
   if (alreadyImported.some(isSameFile)) {
     // console.log(`Not imported: ${asAbsolute}`)
-    return {};
+    return {}
   } else {
     alreadyImported.push(asAbsolute)
-    return null;
+    return null
   }
 }
 
@@ -50,42 +50,40 @@ const coverageReporter = (url, prev) => {
       const trimmed = line.trim()
       const firstWord = trimmed.split(' ')[0]
       const lastChar = trimmed[trimmed.length - 1]
-      const debugMsg = `@debug '__CODECOVERAGE_COVERED: ${JSON.stringify([realPath, index+1])}';`
+      const debugMsg = `@debug '__CODECOVERAGE_COVERED: ${JSON.stringify([realPath, index + 1])}';`
 
-      if (trimmed.endsWith('coverage:disable-line') && /\/\/\ *coverage:disable-line/.test(trimmed)) {
+      if (trimmed.endsWith('coverage:disable-line') && /\/\/ *coverage:disable-line/.test(trimmed)) {
         return line
       }
 
-      if (firstWord === '@return'
-        || firstWord === '@include'
-        || firstWord === '@if'
-        || firstWord === '@error') {
-
+      if (firstWord === '@return' ||
+        firstWord === '@include' ||
+        firstWord === '@if' ||
+        firstWord === '@error') {
         isMultiLineReturn = firstWord === '@return' && trimmed.indexOf(';') < 0
-        allPossibleLines.push(index+1)
+        allPossibleLines.push(index + 1)
         return `${debugMsg}; ${line}`
       }
       switch (lastChar) {
         case '{':
-        case ';': 
+        case ';':
           if (isMultiLineReturn && lastChar === ';') {
             isMultiLineReturn = false
             return line
-          } 
-          allPossibleLines.push(index+1)
+          }
+          allPossibleLines.push(index + 1)
           return `${line} ${debugMsg}`
         default: return line
       }
     })
     // Inject all the possible lines at the top
     lines[0] = `@debug '__CODECOVERAGE_ALL_POSSIBLE: ${JSON.stringify([realPath, allPossibleLines])}';${lines[0]}`
-    return {contents: lines.join('\n')}
+    return { contents: lines.join('\n') }
   } catch (err) {
     console.log(err)
-    return {file: realPath}
+    return { file: realPath }
   }
 }
-
 
 const frameworkIncludesPath = path.join(__dirname, '../framework')
 const sassFile = path.join(__dirname, 'test-framework.scss')
@@ -96,8 +94,8 @@ try {
     // sourceMapEmbed: true,
     file: sassFile,
     importer: [importOnce, coverageReporter],
-    includePaths: [frameworkIncludesPath],
-  }, describe, it)
+    includePaths: [frameworkIncludesPath]
+  }, describe, it) // eslint-disable-line no-undef
 } catch (error) {
   console.log(error.formatted)
 }

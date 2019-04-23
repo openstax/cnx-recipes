@@ -4,30 +4,29 @@ const inputFile = process.argv[2]
 const CODECOVERAGE_COVERED = '__CODECOVERAGE_COVERED: '
 const CODECOVERAGE_ALL_POSSIBLE = '__CODECOVERAGE_ALL_POSSIBLE: '
 
-const coverageFiles = new Map/*<string, FileCoverage>*/()
+const coverageFiles = new Map/* <string, FileCoverage> */()
 
 class FileCoverage {
-  constructor(allPossibleLines) {
+  constructor (allPossibleLines) {
     this.allPossibleLines = allPossibleLines
     this.coveredCount = [] // sparse array
   }
-  addCovered(line) {
+  addCovered (line) {
     this.coveredCount[line] = this.coveredCount[line] || 0
     this.coveredCount[line]++
   }
 }
 
-function addAllPossible([filename, lines]) {
+function addAllPossible ([filename, lines]) {
   if (coverageFiles.has(filename)) {
     throw new Error(`BUG: duplicate definition of all covered lines for '${filename}'`)
   }
   coverageFiles.set(filename, new FileCoverage(lines))
 }
 
-function addCovered([filename, line]) {
+function addCovered ([filename, line]) {
   const cov = coverageFiles.get(filename)
   if (!cov) {
-    debugger
     throw new Error(`BUG: line was counted before it was defined`)
   }
   cov.addCovered(line)
