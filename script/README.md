@@ -49,7 +49,8 @@ Recipe Development Workflow
 ----------------------------
 
 1. Fetch the data 
-   * `./script/fetch-html intro-business`
+   * Fetch HTML only: `./script/fetch-html intro-business`
+   * Fetch HTML and resources: `./script/fetch-html --with-resources intro-business`
 2. Build the recipe
     *  `./script/build-recipes intro-business`
 3. Open the raw HTML file (Book HTML file) 
@@ -66,15 +67,13 @@ PDF Style Development Workflow
 
 **NOTE**: This workflow assumes the recipe workflow has been completed
 
-1. Move the baked HTML file to the location of the book resources
-    * `cp ./data/intro-business-baked.xhtml ./data/intro-business/`
-2.  Update path to the style CSS file in the baked HTML
-3.  Build the styles
+1.  Update path to the style CSS file in the baked HTML
+2.  Build the styles
     * `./script/build-styles intro-business`
-4.  Test the styles by viewing the baked HTML in the browser
-5.  Convert the baked HTML and style into a PDF
-    * `prince -s styles/output/intro-business-pdf.css ./data/intro-business/intro-business.baked.xhtml -o bakedEcon.pdf`
-6. View the PDF to test the results.
+3.  Test the styles by viewing the baked HTML in the browser
+4.  Convert the baked HTML and style into a PDF
+    * `prince -s styles/output/intro-business-pdf.css ./intro-business/intro-business.baked.xhtml -o bakedEcon.pdf`
+5. View the PDF to test the results.
 
 
 Installation of Neb and cnx-recipes on Ubuntu
