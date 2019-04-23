@@ -36,6 +36,7 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   mathified_file="./data/${book_name}/collection.mathified.xhtml"
   baked_file="./data/${book_name}/collection.baked.xhtml"
   style_file="./styles/output/${book_name}-pdf.css"
+  output_file="./data/${book_name}/collection.pdf"
 
   if [ -f "${mathified_file}" ]; then
     input_file="${mathified_file}"
@@ -45,16 +46,16 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
 
   if ! docker images | grep -q openstax/princexml; then
     do_progress_quiet "Building the openstax/princexml image (~1min)" \
-      docker build -t openstax/princexml princexml/
+      docker-compose build pdf
   fi
 
   style_flag=()
   if [ -f "${style_file}" ]; then
-    style_flag=('--style' "$(basename "${style_file}")")
+    style_flag=('--style' "./${book_name}/$(basename "${style_file}")")
     cp "${style_file}" "./data/${book_name}"
   fi
 
   do_progress_quiet "Generating pdf using princexml" \
-    docker run --rm -v "$(pwd)/data/${book_name}":/out openstax/princexml prince -v --output=/out/collection.pdf "${style_flag[@]}" "/out/$(basename "${input_file}")"
-  _say "Output in ./data/${book_name}/collection.pdf"
+    docker-compose run --rm pdf prince -v --output="${output_file/data\//}" "${style_flag[@]}" "${input_file/data\//}"
+  _say "Output in ${output_file}"
 done

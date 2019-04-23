@@ -7,38 +7,6 @@ source ./script/bootstrap || exit 111
 
 set -e
 
-# TL;DR neb mathify runs a docker container, it creates complications when
-# we're already in a docker container
-# ---
-# "neb mathify" uses docker, that currently does not work inside a docker
-# container.  People don't recommend running docker inside docker, the way
-# to do this is by running a sibling container.  You would mount your
-# host's `/var/run/docker.sock` in your container and launch a new
-# container in your container from your host.  The complication comes from
-# the path being incorrect.  When I tried this, I got this error:
-#
-# ```
-# docker.errors.APIError: 400 Client Error: Bad Request ("invalid mount
-# config for type "bind": bind source path does not exist:
-# /code/data/intro-business")
-# ```
-#
-# I think this is because `/code/data/intro-business` does not exist on
-# the host.
-#
-if [ -f "/.dockerenv" ]; then
-  die "Please run mathify outside of a docker container"
-fi
-
-# if the virtualenv is set to work in a docker container, we need to create a
-# different virtualenv dir
-if [[ "$(head -1 "${virtualenv_dir}/bin/neb")" == '#!'"/code/${virtualenv_dir/\.\//}/bin/python" ]]; then
-  install_python "${virtualenv_dir}.local"
-  if [ ! -f "${VIRTUAL_ENV}/bin/neb" ]; then
-    pip install -r requirements.txt
-  fi
-fi
-
 book_name=$1
 
 # Check command line args
@@ -87,7 +55,7 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   fi
 
   do_progress_quiet "Converting math in ${baked_file} to ${math_format}" \
-    neb mathify -i "${baked_file}" -f "${math_format}" "${book_dir}"
+    docker-compose run --rm mathify /bin/bash -c "node typeset/start -i \"${baked_file/.\/data/\/out}\" -o \"${mathified_file/.\/data/\/out}\" -f \"${math_format}\" && cp -r node_modules/mathjax \"${book_dir/.\/data/\/out}\" && chmod a+w \"${mathified_file/.\/data/\/out}\""
 
   _say "Output is available at ${mathified_file}"
 done

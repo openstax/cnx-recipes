@@ -74,7 +74,7 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   # Allow user to override the hostname
   host_name=${HOST:-${host_name}}
 
-  book_dir="./data/${book_name}"
+  book_dir="${OUTPUT_DIR:-./data}/${book_name}"
   raw_dir="${book_dir}/raw"
   raw_file="${book_dir}/collection.assembled.xhtml"
 
@@ -87,10 +87,10 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   fi
 
   NEB_CONFIG=./config/neb-config do_progress_quiet "Fetching ${book_name} from ${host_name}" \
-    neb get ${neb_get_flag} -d "${raw_dir}" "${host_name}" "${colid}" ''
+    docker-compose run --rm -e NEB_CONFIG=/etc/neb/config neb neb get ${neb_get_flag} -d "${raw_dir}" "${host_name}" "${colid}" ''
 
   do_progress_quiet "Creating HTML file for ${book_name}" \
-    neb assemble "${raw_dir}" "${book_dir}"
+    docker-compose run --rm -e NEB_CONFIG=/etc/neb/config neb neb assemble "${raw_dir}" "${book_dir}"
 
   _say "${c_green}Fetch is Done.${c_none} File is available at ${raw_file}"
 
