@@ -27,9 +27,10 @@
     "lint:js": "standard --verbose --fix",
     "build:web-styles": "cd ./styles/output && fs-to-json --input '*rex-web.css' --output ./_web-styles.json --outputStyle array",
     "postinstall": "[ \"${SKIP_MY_POSTINSTALL}\" = 'true' ] || npm run-script build:web-styles",
-    "pretest": "npm run-script build:web-styles && npm run-script lint",
-    "test": "node ./js/package-exports/test.js",
+    "pretest:exports": "npm run-script build:web-styles",
+    "test:exports": "node ./js/package-exports/test.js",
     "test:styles": "mocha ./styles/test/test.js 2> ./styles/test/test-coverage.log",
+    "pretest:styles": "[ -d ./coverage/ ] || mkdir ./coverage/",
     "posttest:styles": "node ./styles/test/generateCoverage.js ./styles/test/test-coverage.log > ./coverage/framework-unit-tests.lcov"
   },
   "dependencies": {
