@@ -1,4 +1,12 @@
 #!/bin/bash
+
+if [ -f /.dockerenv ]; then
+  if [ "${1:0:1}" == "/" ]; then
+    exec "$@"
+    exit
+  fi
+fi
+
 BOOTSTRAP_ALREADY_RAN=1
 cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111

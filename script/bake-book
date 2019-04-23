@@ -1,6 +1,12 @@
 #!/bin/bash
 
-./script/setup
+if [ -f /.dockerenv ]; then
+  ./script/setup
+  if [ "${1:0:1}" == "/" ]; then
+    exec "$@"
+    exit
+  fi
+fi
 
 cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
