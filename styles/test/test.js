@@ -91,13 +91,13 @@ const frameworkIncludesPath = path.join(__dirname, '../framework')
 const sassFile = path.join(__dirname, 'test-framework.scss')
 
 try {
-sassTrue.runSass({
-  // sourceMap: true,
-  // sourceMapEmbed: true,
-  file: sassFile,
-  importer: [importOnce, coverageReporter],
-  includePaths: [frameworkIncludesPath],
-}, describe, it)
+  sassTrue.runSass({
+    // sourceMap: true,
+    // sourceMapEmbed: true,
+    file: sassFile,
+    importer: [importOnce, coverageReporter],
+    includePaths: [frameworkIncludesPath],
+  }, describe, it)
 } catch (error) {
   console.log(error.formatted)
 }

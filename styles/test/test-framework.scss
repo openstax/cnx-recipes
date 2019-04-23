@@ -250,6 +250,20 @@ $DEBUG: true;
 }
 
 
+@include describe('The empty_map Function') {
+  @include it('returns an empty map') {
+    @include assert-equal(
+      type-of(empty_map()),
+      'map'
+    );
+    @include assert-equal(
+      length(map-keys(empty_map())),
+      0
+    );
+  }
+}
+
+
 @include describe('The null Function') {
   @include it('returns null') {
     @include assert-equal(
@@ -442,7 +456,7 @@ $test_note_space_nested: (
   )
 );
 
-$test_note_space_bad_schema: (
+$test_note_space_bad_schema_first: (
   _components: (
     (
       _subselector: '.note',
@@ -454,33 +468,46 @@ $test_note_space_bad_schema: (
         border-color: enum('ValueSet:::NULLABLE')
       ),
     ),
-    (
-      _name: 'title',
-      _properties: (
-        font-size: 2rem,
-        border-color: enum('ValueSet:::NULLABLE'),
-      ),
-    ),
-    (
-      _name: 'content',
-      _subselector: '.note > p'
-    )
   )
 );
 
-$test_not_real_subspace-first: (
+$test_note_space_bad_schema_second: (
+  _components: (
+    (
+      _name: 'container',
+      _properties: (
+        color: enum('ValueSet:::NOT_NULL'),
+        background: enum('ValueSet:::NULLABLE'),
+        width: enum('ValueSet:::NULLABLE'),
+        height: 200px,
+        border-color: enum('ValueSet:::NULLABLE')
+      ),
+    ),
+  )
+);
+
+$test_note_space_bad_schema_third: (
+  _components: (
+    (
+      _name: 'container',
+      _subselector: '.note',
+    ),
+  )
+);
+
+$test_not_real_subspace_first: (
   container: (
     color: enum('ValueSet:::NULLABLE'),
   ),
 );
 
-$test_not_real_subspace-second: (
+$test_not_real_subspace_second: (
   title: (
     font-size: 5rem,
   ),
 );
 
-$test_not_real_subspace-third: (
+$test_not_real_subspace_third: (
   container: (
     line-height: enum('ValueSet:::NOT_NULL'),
   ),
@@ -615,21 +642,33 @@ $test_subspace_with_groups_nonexist: (
 
   @include it('errors when a superspace has a bad schema') {
     @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
-      @include scoped_create_superspace('TestNote', $test_note_space_bad_schema) {
-        @include assert {
-          @include output {
-            @include use('ChapterNote', 'TestNote');
+      @include assert {
+        @include output {
+          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_first) {}
+        }
+        @include expect {
+          .error {
+            ERROR: "Missing key `_name`.";
           }
-          @include expect {
-            .error {
-              ERROR: "Missing key `_name`.";
-            }
-            .error {
-              ERROR: "Missing key `_subselector`.";
-            }
-            .error {
-              ERROR: "Missing key `_properties`.";
-            }
+        }
+      }
+      @include assert {
+        @include output {
+          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_second) {}
+        }
+        @include expect {
+          .error {
+            ERROR: "Missing key `_subselector`.";
+          }
+        }
+      }
+      @include assert {
+        @include output {
+          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_third) {}
+        }
+        @include expect {
+          .error {
+            ERROR: "Missing key `_properties`.";
           }
         }
       }
@@ -832,7 +871,7 @@ $test_subspace_with_groups_nonexist: (
   @include it('forbids subspaces from being more general') {
     @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace-first) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_first) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
@@ -845,7 +884,7 @@ $test_subspace_with_groups_nonexist: (
             }
           }
         }
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace-second) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_second) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
@@ -859,7 +898,7 @@ $test_subspace_with_groups_nonexist: (
           }
         }
         @include scoped_add_settings_functions(get-function('test_note_color_line_height')) {
-          @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace-third) {
+          @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_third) {
             @include assert {
               @include output {
                 @include use('ChapterNote','SpecificTestNote');
