@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const sass = require('node-sass');
+const sass = require('node-sass')
 const { String: SassString } = sass.types
 
 const platform = (process.env.PLATFORM || "NONE").toLowerCase()

@@ -416,6 +416,32 @@ $test_note_space: (
   )
 );
 
+$test_note_space_nested: (
+  _components: (
+    (
+      _name: 'container',
+      _subselector: '.note',
+      _properties: (
+        color: enum('ValueSet:::NOT_NULL'),
+        background: enum('ValueSet:::NULLABLE'),
+        width: enum('ValueSet:::NULLABLE'),
+        height: 200px,
+        border-color: enum('ValueSet:::NULLABLE')
+      ),
+      _components: (
+        (
+          _name: 'title',
+          _subselector: ' > .title',
+          _properties: (
+            font-size: 2rem,
+            border-color: enum('ValueSet:::NULLABLE'),
+          ),
+        ),
+      )
+    ),
+  )
+);
+
 $test_note_space_bad_schema: (
   _components: (
     (
@@ -575,6 +601,15 @@ $test_subspace_with_groups_nonexist: (
   @include it('can create and find a superspace') {
     @include scoped_create_superspace('TestNote', $test_note_space) {
       @include assert-true(space_exists('TestNote'));
+    }
+  }
+
+  @include it('can nest superspace components to represent subselector nesting') {
+    @include scoped_create_superspace('TestNote', $test_note_space_nested) {
+      @include assert-equal(
+        get_root_subselector('TestNote', 'title'),
+        '.note > .title'
+      );
     }
   }
 
