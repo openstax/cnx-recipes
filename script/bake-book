@@ -1,4 +1,13 @@
 #!/bin/bash
+
+if [ -f /.dockerenv ]; then
+  ./script/setup
+  if [ "${1:0:1}" == "/" ]; then
+    exec "$@"
+    exit
+  fi
+fi
+
 cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
@@ -76,6 +85,10 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   if [ -f "${style_file}" ]; then
     do_progress_quiet "Adding style file ${style_file}" \
       sed -i "s%<\/head>%<link rel=\"stylesheet\" type=\"text/css\" href=\"../../${style_file}\" />&%" "${baked_file}"
+  fi
+
+  if [ -f /.dockerenv ]; then
+    chown -R "$(stat -c '%u:%g' ./data)" ./data
   fi
 
   # Validate the cooked file

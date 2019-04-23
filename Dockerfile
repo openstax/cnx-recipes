@@ -23,8 +23,17 @@ WORKDIR /code
 RUN apt-get update
 RUN apt-get install \
     libxml2-utils \
-    xsltproc \
-    unzip           # required by fetch-html
+    xsltproc
+
+# Install docker
+RUN apt-get install -y curl && \
+    curl -sSL https://get.docker.com | sh
+
+# Install docker-compose
+ENV DOCKER_COMPOSE_VERSION=1.24.0
+RUN curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
+RUN apt-get purge -y curl
 
 # Install python first (since it changes infrequently)
 COPY .python-version ./
