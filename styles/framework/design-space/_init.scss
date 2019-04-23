@@ -215,43 +215,35 @@ $FRAMEWORK_SPACE_PLACE: ();
         $component_name: map-deep-get($component, _name);
         $subselector: map-deep-get($component, _subselector);
         $root_properties: get_properties($superspace, $component_name);
-        @if is_error($component_name) {
-          @include error(error_message($component_name));
-        } @else if is_error($subselector) {
-          @include error(error_message($subselector));
-        } @else if is_error($root_properties) {
-          @include error(error_message($root_properties));
-        } @else {
-          $spent_keys: empty_map();
-          #{$selector}#{$subselector} {
-            @each $ancestor_name in get_lineage($subspace_name) {
-              $ancestor: get_space($ancestor_name);
-              $groups: map-deep-get($ancestor, _groups);
-              $properties: get_properties($ancestor, $component_name);
-              @each $property, $description in $properties {
-                @if not map-has-key($root_properties, $property) {
-                  @include error("Space `#{$ancestor_name}` is not a proper subspace due to addition of property `#{$property}`.");
-                }
-                $key: "#{$name}:::#{$component_name}:::#{$property}";
-                $resolved_description: resolve_description($description, $groups);
-                @if is_error($resolved_description) {
-                  @include error(error_message($resolved_description));
-                } @else {
-                  $value_set: if(type-of($resolved_description) == "list", first($resolved_description), $resolved_description);
-                  @if not map-has-key($spent_keys, $key) {
-                    $spent_keys: map-merge($spent_keys, ($key: $value_set));
-                    $value: resolve_declaration($name, $groups, $key, $property, $description);
-                    @if is_error($value) {
-                      @include error(error_message($value));
-                    } @else {
-                      #{$property}: #{$value}
-                    }
+        $spent_keys: empty_map();
+        #{$selector}#{$subselector} {
+          @each $ancestor_name in get_lineage($subspace_name) {
+            $ancestor: get_space($ancestor_name);
+            $groups: map-deep-get($ancestor, _groups);
+            $properties: get_properties($ancestor, $component_name);
+            @each $property, $description in $properties {
+              @if not map-has-key($root_properties, $property) {
+                @include error("Space `#{$ancestor_name}` is not a proper subspace due to addition of property `#{$property}`.");
+              }
+              $key: "#{$name}:::#{$component_name}:::#{$property}";
+              $resolved_description: resolve_description($description, $groups);
+              @if is_error($resolved_description) {
+                @include error(error_message($resolved_description));
+              } @else {
+                $value_set: if(type-of($resolved_description) == "list", first($resolved_description), $resolved_description);
+                @if not map-has-key($spent_keys, $key) {
+                  $spent_keys: map-merge($spent_keys, ($key: $value_set));
+                  $value: resolve_declaration($name, $groups, $key, $property, $description);
+                  @if is_error($value) {
+                    @include error(error_message($value));
                   } @else {
-                    $old_value_set: map-deep-get($spent_keys, $key);
-                    @if $value_set != enum('ValueSet:::NULLABLE') and 
-                      ($value_set != enum('ValueSet:::NOT_NULL') or $old_value_set == enum('ValueSet:::NULLABLE')) {
-                        @include error("Space `#{$ancestor_name}` is not a proper superspace due to `#{$key}`.");
-                    }
+                    #{$property}: #{$value}
+                  }
+                } @else {
+                  $old_value_set: map-deep-get($spent_keys, $key);
+                  @if $value_set != enum('ValueSet:::NULLABLE') and 
+                    ($value_set != enum('ValueSet:::NOT_NULL') or $old_value_set == enum('ValueSet:::NULLABLE')) {
+                      @include error("Space `#{$ancestor_name}` is not a proper superspace due to `#{$key}`.");
                   }
                 }
               }
