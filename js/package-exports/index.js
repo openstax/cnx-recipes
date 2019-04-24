@@ -5,7 +5,7 @@ const suffix = '-rex-web.css'
 
 const books = new Map()
 
-for (const {fileName, content} of webStyles) {
+for (const { fileName, content } of webStyles) {
   if (!fileName.endsWith(suffix) || fileName.indexOf('/') >= 0) {
     throw new Error(`BUG: the _web-styles.json file is malformed`)
   }
@@ -13,8 +13,7 @@ for (const {fileName, content} of webStyles) {
   books.set(bookName, content)
 }
 
-
-function getBookStyles() {
+function getBookStyles () {
   return books
 }
 
