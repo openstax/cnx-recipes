@@ -96,6 +96,15 @@ $test_settings_key_prefix_flatten: (
   )
 );
 
+$test_settings_with_reference: (
+  primaryColor: (_ref: design1Color),
+  design1Color: blue
+);
+
+$test_settings_with_invalid_reference: (
+  primaryColor: (_ref: invalidTarget),
+);
+
 
 @include describe('Settings') {
   @include it('can be added via map-returning functions') {
@@ -177,6 +186,23 @@ $test_settings_key_prefix_flatten: (
     @include assert-true(
       is_error(settings_not_null(non-existent-setting, null))
     );
+  }
+
+  @include it('settings supports looking up references') {
+    @include scoped_add_settings($test_settings_with_reference) {
+      @include assert-equal(
+        settings(primaryColor), 
+        blue
+      );
+    }
+  }
+
+  @include it('settings supports looking up references') {
+    @include scoped_add_settings($test_settings_with_invalid_reference) {
+      @include assert-true(
+        is_error(settings(primaryColor))
+      );
+    }
   }
 }
 
@@ -925,7 +951,9 @@ $test_note_grouped: (
   }
 
   @include it('outputs debug_settings') {
-    @include scoped_add_settings($test_note_grouped) {
+    @include scoped_add_settings(
+      $test_add_settings_function,
+      $test_add_settings_function_after) {
       @include debug_settings();
     }
   }

@@ -64,8 +64,8 @@ $FRAMEWORK_USED_SETTINGS: ();
       $value: map-deep-get($function_settings, $name);
       @if type-of($value) == map {
         $ref: map-get($value, '_ref');
-        @if not $ref {
-          @return error(enum('Error:::INVALID_REFERENCE'), "Invalid reference in `#{$name}`.");
+        @if not has_setting($ref) {
+          @return error(enum('Error:::INVALID_REFERENCE'), "Invalid reference `#{$ref}` in `#{$name}`.");
         }
         @return settings($ref, $default);
       } @else {
@@ -85,4 +85,14 @@ $FRAMEWORK_USED_SETTINGS: ();
     @return $settings-result;
   }
   @return error(enum('Error:::TYPE_ERROR'), "Received a disallowed NULL value for setting `#{$name}`.");
+}
+
+@function has_setting($name) {
+  @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    $function_settings: map_key_prefix_flatten($settings);
+    @if map-has-key($function_settings, $name) {
+      @return true;
+    }
+  }
+  @return false;
 }
