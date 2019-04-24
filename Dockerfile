@@ -45,7 +45,15 @@ RUN nodenv install --skip-existing "$(< .node-version)"
 
 # Install yarn for the specific version of node we are using
 RUN nodenv local "$(< .node-version)"
-RUN nodenv exec npm install --global yarn
+# https://stackoverflow.com/questions/46111738/how-to-install-global-module-in-docker
+#
+# When you run npm as root (this is the default user in Docker build) and
+# install a global package, for security reasons, npm installs and executes
+# binaries as user nobody, who doesn't have any permissions. This is for
+# security reasons.
+#
+# Get around this by adding the --unsafe-perm flag
+RUN nodenv exec npm install --global --unsafe-perm yarn
 
 FROM build-os-dependencies as build-dependencies
 
