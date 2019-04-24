@@ -38,17 +38,15 @@
 
 @mixin link_setTargetLabels($targetLabels) {
   @each $target in $targetLabels {
+    $hasSubtitleLabel: map-get($target, hasSubtitleLabel);
     $selector: map-get($target, selector);
-    $titleSelector: map-get($target, titleSelector);
     $labelText: map-get($target, labelText);
 
-    @if $titleSelector {
+    @if $hasSubtitleLabel == true {
       #{$selector} {
-        #{$titleSelector} {
-          string-set: title content();
-        }
-        $labelText: string(title);
+        string-set: title content();
       }
+      $labelText: string(title); 
     }
 
     #{$selector} {
