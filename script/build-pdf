@@ -7,7 +7,6 @@ if [ -f /.dockerenv ]; then
   fi
 fi
 
-BOOTSTRAP_ALREADY_RAN=1
 cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
@@ -41,20 +40,16 @@ fi
 for book_config in "${BOOK_CONFIGS[@]}"; do
   read -r book_name _ <<< "${book_config}"
 
-  mathified_file="./data/${book_name}/collection.mathified.xhtml"
-  baked_file="./data/${book_name}/collection.baked.xhtml"
+  book_dir="${OUTPUT_DIR:-./data}/${book_name}"
+  mathified_file="${book_dir}/collection.mathified.xhtml"
+  baked_file="${book_dir}/collection.baked.xhtml"
   style_file="${STYLE:-./styles/output/${book_name}-pdf.css}"
-  output_file="./data/${book_name}/collection.pdf"
+  output_file="${book_dir}/collection.pdf"
 
   if [ -f "${mathified_file}" ]; then
     input_file="${mathified_file}"
   else
     input_file="${baked_file}"
-  fi
-
-  if ! docker images | grep -q openstax/princexml; then
-    do_progress_quiet "Building the openstax/princexml image (~1min)" \
-      docker-compose build pdf
   fi
 
   style_flag=()
@@ -64,6 +59,6 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   fi
 
   do_progress_quiet "Generating pdf using princexml" \
-    docker-compose run --rm pdf prince -v --output="${output_file/data\//}" "${style_flag[@]}" "${input_file/data\//}"
-  _say "Output in ${output_file}"
+    docker-compose run --rm pdf prince -v --output="${output_file}" "${style_flag[@]}" "${input_file}"
+  _say "Output in ${output_file/$OUTPUT_DIR/$HOST_PWD\/data}"
 done
