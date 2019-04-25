@@ -14,13 +14,9 @@ source ./script/bootstrap || exit 111
 
 set -e
 
-with_resources=false
 while [[ $# -ge 1 ]]
 do
   case $1 in
-    --with-resources)
-      with_resources=true
-      ;;
     --all)
       all_books=true
       ;;
@@ -84,18 +80,11 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
 
   book_dir="${OUTPUT_DIR:-./data}/${book_name}"
   raw_dir="${book_dir}/raw"
+  raw_file="${book_dir}/collection.assembled.xhtml"
 
-  mkdir -p "${book_dir/$OUTPUT_DIR/.\/data}"
-  rm -rf "${raw_dir/$OUTPUT_DIR/.\/data}"
+  do_progress "Creating HTML file for ${book_name}" \
+    docker-compose run --rm neb neb assemble "${raw_dir}" "${book_dir}"
 
-  neb_get_flag=''
-  if $with_resources; then
-    neb_get_flag="-r"
-  fi
-
-  do_progress "Fetching ${book_name} from ${host_name}" \
-    docker-compose run --rm neb neb get ${neb_get_flag} -d "${raw_dir}" "${host_name}" "${colid}" ''
-
-  ./script/assemble-book "${book_name}"
+  _say "${c_green}Fetch is Done.${c_none} File is available at ${raw_file/$OUTPUT_DIR/$HOST_PWD\/data}"
 
 done
