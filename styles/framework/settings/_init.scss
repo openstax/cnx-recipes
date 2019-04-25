@@ -1,6 +1,10 @@
 $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: ();
 $FRAMEWORK_USED_SETTINGS: ();
 
+@function flatten_keep_references($settings) {
+  @return map_key_prefix_flatten($settings, '', '_ref');
+}
+
 @mixin debug_settings_manifest() {
   @debug "Settings manifest =>";
   @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
@@ -13,7 +17,7 @@ $FRAMEWORK_USED_SETTINGS: ();
   $already_defined: ();
   @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
     @debug "=== Clump Start ===";
-    @each $key, $value in map_key_prefix_flatten($settings) {
+    @each $key, $value in flatten_keep_references($settings) {
       @if map-get($already_defined, $key) {
         @debug "~~#{$key} : #{$value}~~ (overridden above)";
       } @else {
@@ -31,7 +35,7 @@ $FRAMEWORK_USED_SETTINGS: ();
 @function get_unused_settings() {
   $unused_entries: ();
   @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
-    @each $key, $value in map_key_prefix_flatten($settings) {
+    @each $key, $value in flatten_keep_references($settings) {
       @if index($FRAMEWORK_USED_SETTINGS, $key) == null {
         $unused_entries: append($unused_entries, ($key, $value), comma);
       }
@@ -57,11 +61,11 @@ $FRAMEWORK_USED_SETTINGS: ();
 }
 
 @function settings($name, $default: enum('Object:::NONE')) {
-  @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
-    $function_settings: map_key_prefix_flatten($settings);
-    @if map-has-key($function_settings, $name) {
+  @each $settings_member in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    $settings: flatten_keep_references($settings_member);
+    @if map-has-key($settings, $name) {
       $FRAMEWORK_USED_SETTINGS: append($FRAMEWORK_USED_SETTINGS, $name) !global;
-      $value: map-deep-get($function_settings, $name);
+      $value: map-deep-get($settings, $name);
       @if type-of($value) == map {
         $ref: map-get($value, '_ref');
         @if not has_setting($ref) {
@@ -80,17 +84,17 @@ $FRAMEWORK_USED_SETTINGS: ();
 }
 
 @function settings_not_null($name, $default: enum('Object:::NONE')) {
-  $settings-result: settings($name, $default);
-  @if $settings-result != null {
-    @return $settings-result;
+  $settings_result: settings($name, $default);
+  @if $settings_result != null {
+    @return $settings_result;
   }
   @return error(enum('Error:::TYPE_ERROR'), "Received a disallowed NULL value for setting `#{$name}`.");
 }
 
 @function has_setting($name) {
-  @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
-    $function_settings: map_key_prefix_flatten($settings);
-    @if map-has-key($function_settings, $name) {
+  @each $settings_member in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    $settings: flatten_keep_references($settings_member);
+    @if map-has-key($settings, $name) {
       @return true;
     }
   }

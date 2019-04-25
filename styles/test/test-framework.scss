@@ -97,12 +97,16 @@ $test_settings_key_prefix_flatten: (
 );
 
 $test_settings_with_reference: (
-  primaryColor: (_ref: design1Color),
+  colorScheme: (
+    primaryColor: (_ref: design1Color),
+  ),
   design1Color: blue
 );
 
 $test_settings_with_invalid_reference: (
-  primaryColor: (_ref: invalidTarget),
+  colorScheme: (
+    primaryColor: (_ref: invalidTarget),
+  ),
 );
 
 
@@ -191,7 +195,7 @@ $test_settings_with_invalid_reference: (
   @include it('settings supports looking up references') {
     @include scoped_add_settings($test_settings_with_reference) {
       @include assert-equal(
-        settings(primaryColor), 
+        settings('colorScheme:::primaryColor'),
         blue
       );
     }
@@ -200,7 +204,7 @@ $test_settings_with_invalid_reference: (
   @include it('settings supports looking up references') {
     @include scoped_add_settings($test_settings_with_invalid_reference) {
       @include assert-true(
-        is_error(settings(primaryColor))
+        is_error(settings('colorScheme:::primaryColor'))
       );
     }
   }

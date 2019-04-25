@@ -1,8 +1,8 @@
-@function map_key_prefix_flatten($map, $prefix: "") {
+@function map_key_prefix_flatten($map, $prefix: "", $flatten_exclude_key: "") {
   $flattened: empty_map();
   @each $key, $value in $map {
-    @if type-of($value) == "map" and not map-get($value, '_ref') {
-      $flattened: map-merge($flattened, map_key_prefix_flatten($value, "#{$prefix}#{$key}:::"))
+    @if type-of($value) == "map" and not map-get($value, $flatten_exclude_key) {
+      $flattened: map-merge($flattened, map_key_prefix_flatten($value, "#{$prefix}#{$key}:::", $flatten_exclude_key))
     } @else {
       $flattened: map-merge($flattened, (#{$prefix}#{$key}: $value));
     }
