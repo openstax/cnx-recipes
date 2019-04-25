@@ -15,8 +15,6 @@
 
 1. run `./script/fetch-html statistics`
    - **Note:** To see the list of books available see `./books.txt`
-   - **Note:** This will require you to log in via ssh.
-   - **Note:** You can set the ssh username by running `USER=myusername ./script/fetch-html ...`
    - **Note:** You can set the remote server to pull from by running `HOST=dev.cnx.org ./script/fetch-html ...`
    - **Note:** You can run `./script/fetch-html --all` to fetch all the books
 1. run `./script/bake-book statistics`
@@ -119,7 +117,7 @@ Here are the steps to run it:
 # Any differences would pop up at this point
 
 # Optional: Create a diff and give it to a GUI
-diff ./data/statistics-prepared.xhtml ./data/statistics-baked.xhtml > foo.diff
+diff ./data/statistics-prepared.xhtml ./data/statistics/collection.baked.xhtml > foo.diff
 ```
 
 **Note:** You can specify `--all` instead of `statistics` to diff all the books (after fetching them earlier)
@@ -130,6 +128,12 @@ Instead of diffing the whole book, you can find differences in the styleguide fo
 
 To do this, just replace every occurrence of `./script/diff-book ${BOOK_NAME}` (and `./script/diff-book-prepare`) with `diff-guide ${RECIPE_NAME}` in the instructions above.
 
+
+## JavaScript Package
+
+This package provides a few methods for use by other packages:
+
+- `getBookStyles(): Map<string, string>`: returns a `Map` of the CSS contents for each book style
 
 ## Experimental
 

@@ -25,3 +25,4 @@ end
 module Sass::Script::Functions
   include FunctionsCNX
 end
+
