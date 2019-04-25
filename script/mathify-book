@@ -62,7 +62,7 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   fi
 
   do_progress_quiet "Converting math in ${baked_file} to ${math_format}" \
-    docker-compose run --rm mathify /bin/bash -c "node typeset/start -i \"${baked_file}\" -o \"${mathified_file}\" -f \"${math_format}\" && cp -r node_modules/mathjax \"${book_dir}\" && chmod a+w \"${mathified_file}\""
+    docker-compose run --rm mathify /bin/bash -c "node --max_old_space_size=${MAX_OLD_SPACE_SIZE:-8192} typeset/start -i \"${baked_file}\" -o \"${mathified_file}\" -f \"${math_format}\" && cp -r node_modules/mathjax \"${book_dir}\" && chmod a+w \"${mathified_file}\""
 
   _say "Output is available at ${mathified_file/$OUTPUT_DIR/$HOST_PWD\/data}"
 done
