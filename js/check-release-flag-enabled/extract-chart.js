@@ -9,7 +9,7 @@ getStdin().then(recipeFeaturesScss => {
     const recipeName = rendered.vars['global']['$RECIPE_NAME']['value']
     const features = rendered.vars['global']['$RELEASE_FLAGS']['value']
 
-    if (order === 0) {
+    if (order === '0') {
       let headerRow = '| Recipe Name |'
       let headerBorder = '| --- |'
       Object.keys(features).forEach(featureName => {
