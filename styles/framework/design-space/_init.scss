@@ -196,7 +196,7 @@ $FRAMEWORK_SPACE_PLACE: ();
     $value: nth($description, 2);
     @if $value_set == enum('ValueSet:::GROUPED') {
       @if not map-has-key($groups, $value) {
-        @return error(enum('Error:::INDEX_ERROR'), "Group `#{$value}` does not exist.");
+        @return error(enum('Error:::INVALID_REFERENCE'), "Group `#{$value}` does not exist.");
       }
       @return resolve_description(map-deep-get($groups, $value), $groups);
     }
@@ -219,7 +219,10 @@ $FRAMEWORK_SPACE_PLACE: ();
         #{$selector}#{$subselector} {
           @each $ancestor_name in get_lineage($subspace_name) {
             $ancestor: get_space($ancestor_name);
-            $groups: map-deep-get($ancestor, _groups);
+            $groups: empty_map();
+            @if map-has-key($ancestor, _groups) {
+              $groups: map-deep-get($ancestor, _groups);
+            }
             $properties: get_properties($ancestor, $component_name);
             @each $property, $description in $properties {
               @if not map-has-key($root_properties, $property) {

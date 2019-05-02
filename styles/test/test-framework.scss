@@ -82,31 +82,37 @@ $DEBUG: true;
 }
 
 
-@function test_add_settings_function() {
-  @return (my-setting: test-value);
-}
+$test_add_settings_function: (my-setting: test-value);
 
-@function test_add_other_settings_function() {
-  @return (my-other-setting: other-test-value);
-}
+$test_add_other_settings_function: (my-other-setting: other-test-value);
 
-@function test_add_settings_function_after() {
-  @return (my-setting: overriden-value);
-}
+$test_add_settings_function_after: (my-setting: overriden-value);
 
-@function test_settings_key_prefix_flatten() {
-  @return (
-    rootkey: (
-      key: (
-        childkey: my-prefixed-value
-      )
+$test_settings_key_prefix_flatten: (
+  rootkey: (
+    key: (
+      childkey: my-prefixed-value
     )
-  );
-}
+  )
+);
+
+$test_settings_with_reference: (
+  colorScheme: (
+    primaryColor: (_ref: design1Color),
+  ),
+  design1Color: blue
+);
+
+$test_settings_with_invalid_reference: (
+  colorScheme: (
+    primaryColor: (_ref: invalidTarget),
+  ),
+);
+
 
 @include describe('Settings') {
   @include it('can be added via map-returning functions') {
-    @include scoped_add_settings_functions(get-function('test_add_settings_function')) {
+    @include scoped_add_settings($test_add_settings_function) {
       @include assert-equal(
         settings(my-setting),
         'test-value'
@@ -115,9 +121,7 @@ $DEBUG: true;
   }
 
   @include it('can add settings functions only to a certain scope if desired') {
-    @include scoped_add_settings_functions(
-      get-function('test_add_settings_function')
-    ) {}
+    @include scoped_add_settings($test_add_settings_function) {}
     @include assert-unequal(
       settings(my-setting),
       'test-value'
@@ -125,9 +129,7 @@ $DEBUG: true;
   }
 
   @include it('can access the settings with keys flattened') {
-    @include scoped_add_settings_functions(
-      get-function('test_settings_key_prefix_flatten')
-    ) {
+    @include scoped_add_settings($test_settings_key_prefix_flatten) {
       @include assert-equal(
         settings('rootkey:::key:::childkey'),
         'my-prefixed-value'
@@ -138,10 +140,7 @@ $DEBUG: true;
   @include it('can clear and output unused settings values') {
     $_: settings(my-setting);
     @include clear_used_settings();
-    @include scoped_add_settings_functions(
-      get-function('test_add_other_settings_function'),
-      get-function('test_add_settings_function')
-    ) {
+    @include scoped_add_settings($test_add_other_settings_function, $test_add_settings_function) {
       $_: settings(my-other-setting);
       @include assert-equal(
         get_unused_settings(),
@@ -151,18 +150,15 @@ $DEBUG: true;
   }
 
   @include it('prioritize settings functions added later (front of manifest)') {
-    @include scoped_add_settings_functions(get-function('test_add_settings_function')) {
-      @include scoped_add_settings_functions(get-function('test_add_settings_function_after')) {
+    @include scoped_add_settings($test_add_settings_function) {
+      @include scoped_add_settings($test_add_settings_function_after) {
         @include assert-equal(
           settings(my-setting),
           'overriden-value'
         );
       }
     }
-    @include scoped_add_settings_functions(
-      get-function('test_add_settings_function_after'),
-      get-function('test_add_settings_function')
-    ) {
+    @include scoped_add_settings($test_add_settings_function_after, $test_add_settings_function) {
       @include assert-equal(
         settings(my-setting),
         'overriden-value'
@@ -194,6 +190,23 @@ $DEBUG: true;
     @include assert-true(
       is_error(settings_not_null(non-existent-setting, null))
     );
+  }
+
+  @include it('settings supports looking up references') {
+    @include scoped_add_settings($test_settings_with_reference) {
+      @include assert-equal(
+        settings('colorScheme:::primaryColor'),
+        blue
+      );
+    }
+  }
+
+  @include it('settings supports looking up references') {
+    @include scoped_add_settings($test_settings_with_invalid_reference) {
+      @include assert-true(
+        is_error(settings('colorScheme:::primaryColor'))
+      );
+    }
   }
 }
 
@@ -235,6 +248,12 @@ $DEBUG: true;
     @include assert-equal(
       enum('Error:::TYPE_ERROR'),
       'ENUM__Error:::TYPE_ERROR'
+    );
+  }
+  @include it('provides value INVALID_REFERENCE') {
+    @include assert-equal(
+      enum('Error:::INVALID_REFERENCE'),
+      'ENUM__Error:::INVALID_REFERENCE'
     );
   }
 }
@@ -568,41 +587,33 @@ $test_subspace_with_groups_nonexist: (
   )
 );
 
-@function test_add_ChapterNote_context() {
-  @return ('ChapterNote:::_selectors': ('.chapter > ',));
-}
+$test_add_ChapterNote_context: ('ChapterNote:::_selectors': ('.chapter > ',));
 
-@function test_note_dual_context() {
-  @return (
-    ChapterNote: (
-      _selectors: ('.chapter > ', '.appendix > .special'),
-      container: (
-        background: yellow
-      )
+$test_note_dual_context: (
+  ChapterNote: (
+    _selectors: ('.chapter > ', '.appendix > .special'),
+    container: (
+      background: yellow
     )
-  );
-}
+  )
+);
 
-@function test_note_color_line_height() {
-  @return (
-    ChapterNote: (
-      _selectors: ('.chapter > ', '.appendix > .special'),
-      container: (
-        color: yellow,
-        line-height: 1.3rem
-      )
+$test_note_color_line_height: (
+  ChapterNote: (
+    _selectors: ('.chapter > ', '.appendix > .special'),
+    container: (
+      color: yellow,
+      line-height: 1.3rem
     )
-  );
-}
+  )
+);
 
-@function test_note_grouped() {
-  @return (
-    ChapterNote: (
-      _selectors: ('.chapter > ', '.appendix > .special'),
-      note-border-color: lightgrey
-    )
-  );
-}
+$test_note_grouped: (
+  ChapterNote: (
+    _selectors: ('.chapter > ', '.appendix > .special'),
+    note-border-color: lightgrey
+  )
+);
 
 @include describe("Design Space") {
   @include it('errors when get_space errors when name does not exist') {
@@ -642,7 +653,7 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('errors when a superspace has a bad schema') {
-    @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+    @include scoped_add_settings($test_add_ChapterNote_context) {
       @include assert {
         @include output {
           @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_first) {}
@@ -732,7 +743,7 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('errors when required setting is missing') {
-    @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+    @include scoped_add_settings($test_add_ChapterNote_context) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
         @include assert {
           @include output {
@@ -749,7 +760,7 @@ $test_subspace_with_groups_nonexist: (
     }
 
     @include it('errors when required setting is missing - subspace') {
-      @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+      @include scoped_add_settings($test_add_ChapterNote_context) {
         @include scoped_create_superspace('TestNote', $test_note_space) {
           @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
             @include assert {
@@ -770,7 +781,7 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('allows use of the same subspace with different settings') {
-    @include scoped_add_settings_functions(get-function('test_note_dual_context')) {
+    @include scoped_add_settings($test_note_dual_context) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
         @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
           @include assert {
@@ -790,7 +801,7 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('allows ValueSets to include a default value if setting is missing') {
-    @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+    @include scoped_add_settings($test_add_ChapterNote_context) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
         @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_default) {
           @include assert {
@@ -810,7 +821,7 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('allows setting groups for a space') {
-    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+    @include scoped_add_settings($test_note_grouped) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
         @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups) {
           @include assert {
@@ -830,7 +841,7 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('allows group to point to another group') {
-    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+    @include scoped_add_settings($test_note_grouped) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
         @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups_twostep) {
           @include assert {
@@ -850,7 +861,7 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('errors when a referenced group does not exist') {
-    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+    @include scoped_add_settings($test_note_grouped) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
         @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups_nonexist) {
           @include assert {
@@ -870,7 +881,7 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('forbids subspaces from being more general') {
-    @include scoped_add_settings_functions(get-function('test_add_ChapterNote_context')) {
+    @include scoped_add_settings($test_add_ChapterNote_context) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
         @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_first) {
           @include assert {
@@ -898,7 +909,7 @@ $test_subspace_with_groups_nonexist: (
             }
           }
         }
-        @include scoped_add_settings_functions(get-function('test_note_color_line_height')) {
+        @include scoped_add_settings($test_note_color_line_height) {
           @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_third) {
             @include assert {
               @include output {
@@ -919,7 +930,7 @@ $test_subspace_with_groups_nonexist: (
   
 
   @include it('can debug output of all parents of a subspace') {
-    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+    @include scoped_add_settings($test_note_grouped) {
       @include scoped_create_superspace('TestNote', $test_note_space) {
         @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups) {
           @include assert-equal(
@@ -944,13 +955,15 @@ $test_subspace_with_groups_nonexist: (
   }
 
   @include it('outputs debug_settings_manifest') {
-    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+    @include scoped_add_settings($test_note_grouped) {
       @include debug_settings_manifest();
     }
   }
 
   @include it('outputs debug_settings') {
-    @include scoped_add_settings_functions(get-function('test_note_grouped')) {
+    @include scoped_add_settings(
+      $test_add_settings_function,
+      $test_add_settings_function_after) {
       @include debug_settings();
     }
   }
