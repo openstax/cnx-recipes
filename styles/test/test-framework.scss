@@ -111,7 +111,7 @@ $test_settings_with_invalid_reference: (
 
 
 @include describe('Settings') {
-  @include it('can be added via map-returning functions') {
+  @include it('can be added via a map') {
     @include scoped_add_settings($test_add_settings_function) {
       @include assert-equal(
         settings(my-setting),
@@ -120,7 +120,7 @@ $test_settings_with_invalid_reference: (
     }
   }
 
-  @include it('can add settings functions only to a certain scope if desired') {
+  @include it('can add settings only to a certain scope if desired') {
     @include scoped_add_settings($test_add_settings_function) {}
     @include assert-unequal(
       settings(my-setting),
@@ -149,7 +149,7 @@ $test_settings_with_invalid_reference: (
     }
   }
 
-  @include it('prioritize settings functions added later (front of manifest)') {
+  @include it('prioritize settings added later (front of manifest)') {
     @include scoped_add_settings($test_add_settings_function) {
       @include scoped_add_settings($test_add_settings_function_after) {
         @include assert-equal(
@@ -201,7 +201,7 @@ $test_settings_with_invalid_reference: (
     }
   }
 
-  @include it('settings supports looking up references') {
+  @include it('errors when a setting references a non-existent key') {
     @include scoped_add_settings($test_settings_with_invalid_reference) {
       @include assert-true(
         is_error(settings('colorScheme:::primaryColor'))
