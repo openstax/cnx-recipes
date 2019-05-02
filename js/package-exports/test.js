@@ -2,7 +2,7 @@ const main = require('.')
 
 const introBusiness = 'intro-business'
 
-function assertTrue(value, message) {
+function assertTrue (value, message) {
   if (value !== true) {
     throw new Error(message)
   }
