@@ -1,0 +1,17 @@
+@mixin for_platform($platform) {
+  @if not is_enum($platform) {
+    @include error("Argument `#{$platform}` must be an enum value.")
+  }
+  @if $platform == enum("Platform:::#{PLATFORM()}"){
+    @content;
+  }
+}
+
+@function if_platform($platform, $if_true, $if_false) {
+  @if not is_enum($platform) {
+    @return error(enum('Error:::TYPE_ERROR'), "Argument `#{$platform}` must be an enum value.");
+  }
+  @return if($platform == enum("Platform:::#{PLATFORM()}"),
+    $if_true,
+    $if_false);
+}

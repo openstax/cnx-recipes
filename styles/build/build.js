@@ -4,7 +4,7 @@ const sass = require('node-sass')
 const { String: SassString } = sass.types
 
 const platform = (process.env.PLATFORM || 'NONE').toLowerCase()
-const platformIncludesPath = `${__dirname}/../platforms/${platform}`
+const platformIncludesPath = `${__dirname}/../framework/platform/${platform}`
 if (!fs.existsSync(platformIncludesPath)) {
   throw new Error(`Specified platform '${platform}' does not have an associated directory.`)
 }

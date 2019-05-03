@@ -5,6 +5,10 @@ $DEBUG: true;
 @import "true";
 @import "framework";
 
+@function PLATFORM() {
+  @return "PDF";
+}
+
 @include describe('Framework') {
   @include it('is successfully imported') {
     @include assert-true($IS_FRAMEWORK_IMPORTED);
@@ -254,6 +258,22 @@ $test_settings_with_invalid_reference: (
     @include assert-equal(
       enum('Error:::INVALID_REFERENCE'),
       'ENUM__Error:::INVALID_REFERENCE'
+    );
+  }
+}
+
+
+@include describe('Platform Enum Type') {
+  @include it('provides value PDF') {
+    @include assert-equal(
+      enum('Platform:::PDF'),
+      'ENUM__Platform:::PDF'
+    );
+  }
+  @include it('provides value REX_WEB') {
+    @include assert-equal(
+      enum('Platform:::REX_WEB'),
+      'ENUM__Platform:::REX_WEB'
     );
   }
 }
@@ -966,5 +986,47 @@ $test_note_grouped: (
       $test_add_settings_function_after) {
       @include debug_settings();
     }
+  }
+}
+
+@include describe('Platform-specifics') {
+  @include it('allows conditional execution') {
+    @include assert {
+      @include output {
+        @include for_platform(enum('Platform:::PDF')) {
+          platform: pdf;
+          color: blue;
+        }
+        @include for_platform(enum('Platform:::REX_WEB')) {
+          platform: rex_web;
+          color: green;
+        }
+      } @include expect {
+        platform: pdf;
+        color: blue;
+      }
+    }
+  }
+  @include it('allows function-based platform branching') {
+    @include assert-equal(
+      if_platform(enum('Platform:::PDF'), "hello", "goodbye"),
+      "hello"
+    );
+  }
+  @include it('errors upon an invalid platform enum value') {
+    @include assert {
+      @include output {
+        @include for_platform('some value') {
+          platform: silly;
+        }
+      } @include expect {
+        .error {
+          ERROR: "Argument `some value` must be an enum value.";
+        }
+      }
+    }
+    @include assert-true(
+      is_error(if_platform('some value', "hello", "goodbye"))
+    )
   }
 }
