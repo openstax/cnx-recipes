@@ -1,6 +1,7 @@
 const fs = require('fs')
 const sass = require('node-sass')
 const toConstantCase = require('to-constant-case')
+const importOnce = require('./../../js/node-sass-importer/import-once')
 
 const { String: SassString } = sass.types
 
@@ -30,6 +31,7 @@ try {
   scssResult = sass.renderSync({
     file: inputFile,
     includePaths: [stylesRoot, platformIncludesPath],
+    importer: [importOnce()],
     functions: {
       'PLATFORM()': getPlatform
     },
