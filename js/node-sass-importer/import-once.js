@@ -1,8 +1,8 @@
 const path = require('path')
 
-module.exports = function() {
+module.exports = function () {
   const alreadyImported = []
-  return (function(url, prev) {
+  return function (url, prev) {
     const asAbsolute = path.isAbsolute(url) ? url : path.join(path.dirname(prev), url)
     const asAbsoluteDirname = path.dirname(asAbsolute)
     const asAbsoluteBaseStrip = path.basename(asAbsolute).replace(/^_/, '').replace(/.s[ca]ss$/, '')
@@ -19,5 +19,5 @@ module.exports = function() {
       alreadyImported.push(asAbsolute)
       return null
     }
-  })
+  }
 }
