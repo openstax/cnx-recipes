@@ -44,6 +44,12 @@ $FRAMEWORK_SPACE_PLACE: ();
 
 @function get_nested_components($components, $subselector_prefix: '') {
   $all_components: ();
+
+  // Typecast to list needed for SCSS corner-case of list of single element = the single element
+  @if type-of($components) != 'list' {
+    $components: append((), $components)
+  }
+
   @each $component in $components {
     $copied_component: empty_map();
 
