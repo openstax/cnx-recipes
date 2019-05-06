@@ -23,7 +23,7 @@ Let's assume we have an html document in the following form:
           Lorem ipsum...
         </div>
         <div class="note type-four">
-          <div class="title">Lorem Ipsum Three</div>
+          <div class="title">Lorem Ipsum Four</div>
           Lorem ipsum...
         </div>
         <div class="note type-five">
