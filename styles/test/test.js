@@ -1,26 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const sassTrue = require('sass-true')
-
-const alreadyImported = []
-const importOnce = (url, prev) => {
-  const asAbsolute = path.isAbsolute(url) ? url : path.join(path.dirname(prev), url)
-  const asAbsoluteDirname = path.dirname(asAbsolute)
-  const asAbsoluteBaseStrip = path.basename(asAbsolute).replace(/^_/, '').replace(/.s[ca]ss$/, '')
-  const isSameFile = (otherPath) => {
-    const isSameDir = path.dirname(otherPath) === asAbsoluteDirname
-    const otherPathBaseStrip = path.basename(otherPath).replace(/^_/, '').replace(/.s[ca]ss$/, '')
-    const isCompatibleBase = otherPathBaseStrip === asAbsoluteBaseStrip
-    return (isSameDir && isCompatibleBase)
-  }
-  if (alreadyImported.some(isSameFile)) {
-    // console.log(`Not imported: ${asAbsolute}`)
-    return {}
-  } else {
-    alreadyImported.push(asAbsolute)
-    return null
-  }
-}
+const importOnce = require('./../../js/node-sass-importer/import-once')
 
 const coverageReporter = (url, prev) => {
   const asAbsolute = path.isAbsolute(url) ? url : path.join(path.dirname(prev), url)
@@ -93,7 +74,7 @@ try {
     // sourceMap: true,
     // sourceMapEmbed: true,
     file: sassFile,
-    importer: [importOnce, coverageReporter],
+    importer: [importOnce(), coverageReporter],
     includePaths: [frameworkIncludesPath]
   }, describe, it) // eslint-disable-line no-undef
 } catch (error) {
