@@ -1,5 +1,6 @@
 $FRAMEWORK_SPACE_PLACE: ();
 
+/// @group debug
 @mixin debug_superspaces() {
   @debug "All superspaces =>";
   @each $key, $value in $FRAMEWORK_SPACE_PLACE {
@@ -7,6 +8,8 @@ $FRAMEWORK_SPACE_PLACE: ();
   }
 }
 
+
+/// @group publicapi
 @mixin create_superspace($name, $space) {
   $unwrapped_superspace: unwrap_superspace($space);
   @if is_error($unwrapped_superspace) {
@@ -100,6 +103,7 @@ $FRAMEWORK_SPACE_PLACE: ();
   @return map-deep-get($FRAMEWORK_SPACE_PLACE, $name);
 }
 
+/// @group publicapi
 @mixin create_subspace($name, $parent, $changes) {
   @if not space-exists($parent) {
     @include error("Space `#{$parent}` does not exist");
@@ -210,6 +214,7 @@ $FRAMEWORK_SPACE_PLACE: ();
   @return $description;
 }
 
+/// @group publicapi
 @mixin use($name, $subspace_name) {
   $context_selectors: settings("#{$name}:::_selectors");
   @if is_error($context_selectors) {
