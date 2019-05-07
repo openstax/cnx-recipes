@@ -476,7 +476,13 @@
 
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
 
-  @include modify_trashElement($Config_TrashSelectedElement);
+  @if $Config_TrashSelectedElements {
+    @each $trash in $Config_TrashSelectedElements {
+      $selector: map-get($trash, selector);
+
+      @include modify_trash($selector);
+    }
+  }
 }
 :pass(10) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
