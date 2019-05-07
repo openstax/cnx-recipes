@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 apt-get update && \
     apt-get install -y libxml2-utils xsltproc rsync && \
@@ -20,7 +21,14 @@ fi
 # ensure pyenv is initialized
 eval "$(pyenv init -)"
 
-npm install --global yarn
+# Set the npm user to root so we do not get permission errors for postinstall
+npm config set user 0
+npm config set unsafe-perm true
+
+# Install yarn for the specific version of node we are using
+nodenv local "$(< .node-version)"
+nodenv exec npm install --global yarn
+
 
 ./script/setup
 ./script/test
