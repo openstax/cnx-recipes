@@ -5,6 +5,10 @@ $DEBUG: true;
 @import "true";
 @import "framework";
 
+@function PLATFORM() {
+  @return "PDF";
+}
+
 @include describe('Framework') {
   @include it('is successfully imported') {
     @include assert-true($IS_FRAMEWORK_IMPORTED);
@@ -97,17 +101,21 @@ $test_settings_key_prefix_flatten: (
 );
 
 $test_settings_with_reference: (
-  primaryColor: (_ref: design1Color),
+  colorScheme: (
+    primaryColor: (_ref: design1Color),
+  ),
   design1Color: blue
 );
 
 $test_settings_with_invalid_reference: (
-  primaryColor: (_ref: invalidTarget),
+  colorScheme: (
+    primaryColor: (_ref: invalidTarget),
+  ),
 );
 
 
 @include describe('Settings') {
-  @include it('can be added via map-returning functions') {
+  @include it('can be added via a map') {
     @include scoped_add_settings($test_add_settings_function) {
       @include assert-equal(
         settings(my-setting),
@@ -116,7 +124,7 @@ $test_settings_with_invalid_reference: (
     }
   }
 
-  @include it('can add settings functions only to a certain scope if desired') {
+  @include it('can add settings only to a certain scope if desired') {
     @include scoped_add_settings($test_add_settings_function) {}
     @include assert-unequal(
       settings(my-setting),
@@ -145,7 +153,7 @@ $test_settings_with_invalid_reference: (
     }
   }
 
-  @include it('prioritize settings functions added later (front of manifest)') {
+  @include it('prioritize settings added later (front of manifest)') {
     @include scoped_add_settings($test_add_settings_function) {
       @include scoped_add_settings($test_add_settings_function_after) {
         @include assert-equal(
@@ -191,16 +199,16 @@ $test_settings_with_invalid_reference: (
   @include it('settings supports looking up references') {
     @include scoped_add_settings($test_settings_with_reference) {
       @include assert-equal(
-        settings(primaryColor), 
+        settings('colorScheme:::primaryColor'),
         blue
       );
     }
   }
 
-  @include it('settings supports looking up references') {
+  @include it('errors when a setting references a non-existent key') {
     @include scoped_add_settings($test_settings_with_invalid_reference) {
       @include assert-true(
-        is_error(settings(primaryColor))
+        is_error(settings('colorScheme:::primaryColor'))
       );
     }
   }
@@ -244,6 +252,28 @@ $test_settings_with_invalid_reference: (
     @include assert-equal(
       enum('Error:::TYPE_ERROR'),
       'ENUM__Error:::TYPE_ERROR'
+    );
+  }
+  @include it('provides value INVALID_REFERENCE') {
+    @include assert-equal(
+      enum('Error:::INVALID_REFERENCE'),
+      'ENUM__Error:::INVALID_REFERENCE'
+    );
+  }
+}
+
+
+@include describe('Platform Enum Type') {
+  @include it('provides value PDF') {
+    @include assert-equal(
+      enum('Platform:::PDF'),
+      'ENUM__Platform:::PDF'
+    );
+  }
+  @include it('provides value REX_WEB') {
+    @include assert-equal(
+      enum('Platform:::REX_WEB'),
+      'ENUM__Platform:::REX_WEB'
     );
   }
 }
@@ -956,5 +986,51 @@ $test_note_grouped: (
       $test_add_settings_function_after) {
       @include debug_settings();
     }
+  }
+}
+
+@include describe('Platform-specifics') {
+  @include it('allows conditional execution') {
+    @include assert {
+      @include output {
+        @include for_platform(enum('Platform:::PDF')) {
+          platform: pdf;
+          color: blue;
+        }
+        @include for_platform(enum('Platform:::REX_WEB')) {
+          platform: rex_web;
+          color: green;
+        }
+      } @include expect {
+        platform: pdf;
+        color: blue;
+      }
+    }
+  }
+  @include it('allows function-based platform branching') {
+    @include assert-equal(
+      if_platform(enum('Platform:::REX_WEB'), "hello", "goodbye"),
+      "goodbye"
+    );
+    @include assert-equal(
+      if_platform(enum('Platform:::PDF'), "hello", "goodbye"),
+      "hello"
+    );
+  }
+  @include it('errors upon an invalid platform enum value') {
+    @include assert {
+      @include output {
+        @include for_platform('some value') {
+          platform: silly;
+        }
+      } @include expect {
+        .error {
+          ERROR: "Argument `some value` must be an enum value.";
+        }
+      }
+    }
+    @include assert-true(
+      is_error(if_platform('some value', "hello", "goodbye"))
+    )
   }
 }
