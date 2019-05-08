@@ -82,7 +82,7 @@ There are four main options for the values for properties in a superspace, 3 of 
 
 ### Writing the superspaces
 
-Open the file we just created in your favorite editor to get started writing our design superspaces. We will write our components to variables to that they can be reused.
+Open the file we just created in your favorite editor to get started writing our design superspaces. We will write our components to variables so that they can be reused.
 ```scss
 // _design.scss
 $boxed_note_container: (
