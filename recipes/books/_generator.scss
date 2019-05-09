@@ -235,7 +235,6 @@
         @include count_countNote($counterName, $className);
       }
       @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
-      @include reference_refNoteSubtitleStringAs(#{$className}SubtitleString, #{$className});
     }
   }
 
@@ -482,6 +481,12 @@
   }
 
   @include modify_trashElement($Config_TrashSelectedElement);
+
+  @each $note in $Config_Notes {
+    $className: map-get($note, className);
+    @include validate_type($className, string);
+    @include reference_refNoteSubtitleStringAs(#{$className}SubtitleString, #{$className});
+  }
 }
 :pass(10) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
