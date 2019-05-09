@@ -1,4 +1,4 @@
-| Recipe Name | chapter-page-class | toc-numbered-pages | appendix-has-numbered-examples | increment-section-counter-for-lo | trash-abstract-in-preface | EOCsection-links | has-unnumbered-elements | titles-in-examples |
+| Recipe Name | chapter-page-class | toc-numbered-pages | appendix-has-numbered-examples | increment-section-counter-for-lo | trash-abstract-in-preface | EOCsection-links | titles-in-examples | module-titled-notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | precalculus | :x: | :x: | :x: | :x: | :x: | :x: | :heavy_check_mark: | :heavy_check_mark: |
 | microbiology | :x: | :heavy_check_mark: | :x: | :x: | :x: | :x: | :x: | :x: |
