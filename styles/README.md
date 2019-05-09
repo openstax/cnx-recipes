@@ -187,7 +187,7 @@ In the blank book.scss file, let's import our framework and the design we have j
 Let's try to build our new book.scss. If there is an entry added to books.txt for your book style you can use
 ```bash
 # bash
-./script/build-styles # This with output css in the ./styles/output directory
+./script/build-styles # This will output css in the ./styles/output directory
 ```
 otherwise, you can call the build script directly whilst specifying a platform
 ```bash
