@@ -312,7 +312,7 @@ This is sufficient to remove the previous error, but a new one arises again. Let
 
 ### Finishing up
 
-The preceding book file will yield some CSS, but we aren't yet finished. We have to handle the values which we deemed NULLABLE, such as the font weight for our type-one notes. This means to finish our styles, we must add the following to our settings:
+The preceding book file will yield some CSS, but we aren't yet finished. We have to handle the values which we deemed `NULLABLE`, such as the font weight for our type-one notes. This means to finish our styles, we must add the following to our settings:
 ```
 // somewhere in settings
 'TypeOne:::title': (font-weight: bold)
