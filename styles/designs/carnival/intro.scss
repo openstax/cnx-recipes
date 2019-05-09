@@ -1,0 +1,78 @@
+$intro_container: (
+    _name: 'container', 
+    _subselector: '.introduction', 
+    _properties: (
+        display: 'flex',
+        flex-direction: 'column', 
+        flex-flow: 'wrap',
+
+    )
+);
+$intro_title: (
+    _name: 'title', 
+    _subselector: ' h2.document-title',
+    _properties: (
+        font-size: '12pt',
+        text-transform: 'uppercase',
+    )
+);
+$intro_para: (
+    _name: 'para',
+    _subselector: ' p',
+    _properties: (
+        order: '1', 
+        display: 'flex',
+    )
+);
+
+$chapter_outline_container: (
+    _name: 'container', 
+    _subselector: ' .os-chapter-outline', 
+    _properties: (
+        background-color: enum('ValueSet:::NOT_NULL'),
+        order: '2',
+        
+    )
+);
+$chapter_outline_title: (
+    _name: 'title', 
+    _subselector: ' .os-title', 
+    _properties: (
+        
+    )
+);
+$chapter_outline_objective: (
+    _name: 'objective', 
+    _subselector: ' .os-chapter-objective', 
+    _properties: (
+        
+    )
+);
+
+@include create_superspace (
+    'introduction', (
+        _components: (
+            map-merge($intro_container, (
+                _components: (
+                    $intro_title,
+                    $intro_para,
+                )
+            ))
+        )
+    )
+);
+
+@include create_superspace (
+    'chapter-outline', (
+        _components: (
+            map-merge($chapter_outline_container, (
+                _components: (
+                    $chapter_outline_title,
+                    $chapter_outline_objective,
+                )
+            ))
+        )
+    )
+);
+
+@include debug_settings();
