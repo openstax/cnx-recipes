@@ -8,7 +8,56 @@ $FRAMEWORK_SPACE_PLACE: ();
   }
 }
 
-
+/// This creates a component based superspace and adds it to the global manifest based off of the name and map given as arguments.
+/// The schema for a superspace map is as follows:
+/// ```
+/// Superspace -> Map (
+///   _groups(Optional) -> Map ( String -> ValueSet | String ),
+///   _components -> List ( ...Component )
+///   )
+/// )
+/// ```
+/// with the schema for a Component being:
+/// ```
+/// Component -> Map (
+///   _name -> String,
+///   _subselector -> String,
+///   _properties -> Map ( String -> ValueSet | String ),
+///   _components(Optional) -> List ( ...Component )
+/// )
+/// ```
+///
+/// @param {String} $name - The name for the created superspace
+/// @param {Map} $space - The map representing the superspace.
+///
+/// @example scss
+///   @include create_superspace('MyNote', (
+///     _groups: (),
+///     _components: (
+///       (
+///         _name: 'container',
+///         _subselector: '.note',
+///         _properties: (
+///           color: enum('ValueSet:::NOT_NULL'),
+///           background: enum('ValueSet:::NULLABLE'),
+///           width: enum('ValueSet:::NULLABLE'),
+///           height: 20rem,
+///           border-color: enum('ValueSet:::NULLABLE')
+///         ),
+///         _components: (
+///           (
+///             _name: 'title',
+///             _subselector: ' > .title',
+///             _properties: (
+///               font-size: 2rem,
+///               border-color: enum('ValueSet:::NULLABLE'),
+///             ),
+///           ),
+///         )
+///       ),
+///     )
+///   ));
+///
 /// @group publicapi
 @mixin create_superspace($name, $space) {
   $unwrapped_superspace: unwrap_superspace($space);
@@ -103,6 +152,7 @@ $FRAMEWORK_SPACE_PLACE: ();
   @return map-deep-get($FRAMEWORK_SPACE_PLACE, $name);
 }
 
+/// 
 /// @group publicapi
 @mixin create_subspace($name, $parent, $changes) {
   @if not space-exists($parent) {
