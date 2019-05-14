@@ -55,15 +55,15 @@ CLI Usage
       docker-compose run --rm -e HOST=katalyst01.cnx.org fetch-book --with-resources intro-business
       ```
 
-    2. To download all of the books in books.txt, use the --all flag:
+    2. To download all of the books in books.txt, use the --all flag. If a book in books.txt is not found, the process will fail:
 
         ```
         docker-compose run --rm fetch-book --all
         
         ```
-    3. If downloading a single book, a short book name must be used as detailed in books.txt. An example is `into-business` in the first example.
+    3. If downloading a single book, a short book name must be used as detailed in books.txt. An example is `intro-business` in the first example.
 
-    4. The `--rm` flag is used to remove the previous docker image if there is one.
+    4. The `--rm` flag is used to remove the docker container after the command has completed.
 
 
 2. Generate the single html file for the book:
@@ -74,15 +74,15 @@ CLI Usage
 
      The output is in `./data/intro-business/collection.assembled.xhtml`.
 
-    1. To assemble all of the books in books.txt, use the --all flag:
+    1. To assemble all of the books in books.txt, use the --all flag. If a book in books.txt is not found, the process will fail:
 
         ```
         docker-compose run --rm assemble-book --all
         
         ```
-    2. If assembling a single book, a short book name must be used as detailed in books.txt. An example is `into-business` in the first example.
+    2. If assembling a single book, a short book name must be used as detailed in books.txt. An example is `intro-business` in the first example.
 
-    3. The `--rm` flag is used to remove the previous docker image if there is one.
+    3. The `--rm` flag is used to remove the docker container after the command has completed.
 
 3. Bake the book:
 
@@ -98,7 +98,7 @@ CLI Usage
       docker-compose run --rm -e RECIPE=recipes/output/my-recipe.css -e STYLE=styles/output/my-style.css bake-book intro-business
       ``` 
 
-    1. If you want to bake all of the books, use the --all flag
+    1. If you want to bake all of the books, use the --all flag. If a book in books.txt is not found, the process will fail:
 
         ```
         docker-compose run --rm bake-book --all
@@ -108,9 +108,9 @@ CLI Usage
         ```
         docker-compose run --rm bake-book -d intro-business
         ```
-    3. If baking a single book, a short book name must be used as detailed in books.txt. An example is `into-business` in the first example.
+    3. If baking a single book, a short book name must be used as detailed in books.txt. An example is `intro-business` in the first example.
 
-    4. The `--rm` flag is used to remove the previous docker image if there is one.
+    4. The `--rm` flag is used to remove the docker container after the command has completed.
 
 4. (*Optional*) Transform the math in the book:
 
@@ -120,15 +120,15 @@ CLI Usage
 
    This creates `./data/intro-business/collection.mathified.xhtml`.
 
-   1. If you want to mathify all of the books, use the --all flag
+   1. If you want to mathify all of the books, use the --all flag. If a book in books.txt is not found, the process will fail:
 
         ```
         docker-compose run --rm bake-book --all
         ```
 
-    2. If mathifying a single book, a short book name must be used as detailed in books.txt. An example is `into-business` in the first example.
+    2. If mathifying a single book, a short book name must be used as detailed in books.txt. An example is `intro-business` in the first example.
 
-    3. The `--rm` flag is used to remove the previous docker image if there is one.
+    3. The `--rm` flag is used to remove the docker container after the command has completed.
    
 5. Create a pdf for the book:
 
@@ -143,15 +143,15 @@ CLI Usage
       ```
       docker-compose run --rm -e STYLE=recipes/output/my-style.css build-pdf intro-business
       ```
-    2. If you want to generate pdfs for all of the books, use the --all flag
+    2. If you want to generate pdfs for all of the books, use the --all flag. If a book in books.txt is not found, the process will fail:
 
         ```
         docker-compose run --rm build-pdf --all
         ```
 
-    3. If generating a pdf for a single book, a short book name must be used as detailed in books.txt. An example is `into-business` in the first example.
+    3. If generating a pdf for a single book, a short book name must be used as detailed in books.txt. An example is `intro-business` in the first example.
 
-    4. The `--rm` flag is used to remove the previous docker image if there is one.
+    4. The `--rm` flag is used to remove the docker container after the command has completed.
 
 
 
