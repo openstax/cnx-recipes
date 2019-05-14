@@ -123,7 +123,7 @@ CLI Usage
    1. If you want to mathify all of the books, use the --all flag. If a book in books.txt is not found, the process will fail:
 
         ```
-        docker-compose run --rm bake-book --all
+        docker-compose run --rm mathify-book --all
         ```
 
     2. If mathifying a single book, a short book name must be used as detailed in books.txt. An example is `intro-business` in the first example.
