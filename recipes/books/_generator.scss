@@ -401,6 +401,22 @@
   }
   //After: prepBookComposites
   @include compose_createBookComposites($Config_BookCompositePages);
+  
+  @each $subtitle in $Config_SubtitleLabels {
+    $selector: map-get($subtitle, selector);
+    $subtitleSelector: map-get($subtitle, subtitleSelector);
+    $stringName: map-get($subtitle, stringName);
+
+    #{$selector} #{$subtitleSelector} {
+      @include _refStringAs(#{$stringName}, content());
+    }
+
+    #{$selector} {
+      &:deferred {
+        attr-use-subtitle: string(#{$stringName});
+      }
+    }
+  }
 }
 :pass(9) {
   //After: prepIndexTerms, createBookComposites
@@ -437,6 +453,7 @@
 
   @include count_countExamples(example);
   @include count_countEquations(equation);
+  @include link_setTargetLabels($Config_SubtitleLabels);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
   
@@ -481,12 +498,6 @@
   }
 
   @include modify_trashElement($Config_TrashSelectedElement);
-
-  @each $note in $Config_Notes {
-    $className: map-get($note, className);
-    @include validate_type($className, string);
-    @include reference_refNoteSubtitleStringAs(#{$className}SubtitleString, #{$className});
-  }
 }
 :pass(10) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
@@ -505,6 +516,14 @@
   
   @if not release-flag-enabled(custom-lists) {
     @include modify_lists($Config_CustomList);
+  }
+
+  @each $subtitle in $Config_SubtitleLabels {
+    $selector: map-get($subtitle, selector);
+
+    #{$selector} {
+      attr-use-subtitle: "true";
+    }
   }
 }
 

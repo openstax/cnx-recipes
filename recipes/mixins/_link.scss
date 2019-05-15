@@ -35,22 +35,25 @@
   }
 }
 
-
 @mixin link_setTargetLabels($targetLabels) {
   @each $target in $targetLabels {
     $selector: map-get($target, selector);
     $labelText: map-get($target, labelText);
 
     #{$selector} {
-      // i18n: define the different cases (nominative, etc) for a term so the proper one is used. See #353
-      // It uses the @cmlnle:case="..." later on to determine which case should be used
-      @if type-of($labelText) != map {
-        string-set: target-label $labelText;
-        string-set: target-label-nominative $labelText;
+      @if $labelText == subtitle {
+        string-set: target-label attr(use-subtitle);
       } @else {
-        string-set: target-label map-get($labelText, nominative);
-        @each $case, $value in $labelText {
-          string-set: target-label-#{$case} $value;
+        // i18n: define the different cases (nominative, etc) for a term so the proper one is used. See #353
+        // It uses the @cmlnle:case="..." later on to determine which case should be used
+        @if type-of($labelText) != map {
+          string-set: target-label $labelText;
+          string-set: target-label-nominative $labelText;
+        } @else {
+          string-set: target-label map-get($labelText, nominative);
+          @each $case, $value in $labelText {
+            string-set: target-label-#{$case} $value;
+          }
         }
       }
     }
