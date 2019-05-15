@@ -1,0 +1,144 @@
+//Generic Design goes here
+
+//Components
+
+//QoL: typing or copying/pasting those are a bit tedious
+$notNull: enum('ValueSet:::NOT_NULL');
+$nullable: emum('ValueSet:::NULLABLE');
+
+//TOC components
+$TOCContainerComponent: (
+  _name: 'global',
+  //does not have a parent, but is required = must be left blank
+  _subselector: '',
+  _properties: (
+    background: $nullable,
+    font-size: $notNull,
+  )
+);
+
+//does not exist yet, must make a recipe change for this to work
+$TOCTitleComponent: (
+  _name: "mainTitle",
+  //this is a nested component = use subselector. Must be known at time of writing
+  _subselector: '.title',
+  _properties: (
+    background: $nullable,
+    color: $notNull,
+    font-family: $notNull,
+    font-size: $notNull,
+    padding-bottom: $notNull
+  )
+);
+$TOCwrapperComponent: (
+  _name: 'wrapper',
+  _subselector: "",
+  _properties: (
+    list-style-type: $notNull,
+    padding: $notNull
+  )
+);
+
+$TOCcountedPagesComponent:(
+  _name: "countedPages",
+  _subselector: "ol >li.os-toc-counted-page",
+  _properties: (
+  )
+);
+
+$TOCUnCountedPagesComponent:(
+  _name: "unCountedPages",
+  _subselector: "ol >li",
+  _properties: (
+  )
+);
+
+//Titles
+$defaultTitles:(
+  _name: "regularTitle",
+  _subselector: "",
+  _properties: (
+    font-family: $notNull,
+    font-size: $notNull,
+    color: $notNull,
+    line-height: $notNull,
+    bookmark-level: $notNull,
+    page-break-after: $notNull,
+    margin: $notNull,
+    padding: $notNull,
+  )
+);
+
+$iconTitle:(
+  _name: "iconTitle",
+  _subselector: '.os-text',
+  _properties: (
+    padding: $notNull,
+    margin-left: $notNull,
+  )
+);
+
+$numberedTitle:(
+  _name: "iconTitle",
+  _subselector: '.os-number',
+  _properties: (
+   // border: , todo apply group
+    color: $notNull,
+    padding: $notNull,
+    vertical-align: $notNull,
+    position: $notNull,
+    top: $notNull,
+    display: $notNull,
+  )
+);
+
+
+// Superspaces
+//TOC global superspace
+@include create_superspace('TOCGlobalSuperspace', (
+  _components: (
+    map-merge($TOCContainerComponent, (
+      _components: (
+        $TOCTitleComponent,
+      ),
+    ))
+  )
+));
+
+//TOC list (wrapper) and list items (counted pages and uncounted pages)
+@include create_superspace('TOCWrappedSuperspace', (
+  _components: (
+    map-merge($TOCwrapperComponent, (
+      _components: (
+        $TOCUnCountedPagesComponent,
+        $TOCcountedPagesComponent,
+      )
+    ))
+  )
+));
+
+@include create_superspace('defaultTitleSpace', (
+  _components: ($defaultTitles)
+));
+
+
+@include create_superspace('numberedTitleSpace', (
+  _components: (
+    map-merge($defaultTitles, (
+      _components: (
+        $numberedTitle
+      )
+    ))
+  )
+));
+
+@include create_superspace('iconTitleSpace', (
+  _components: (
+    map-merge($defaultTitles, (
+      _components: (
+        $iconTitle
+      )
+    ))
+  )
+));
+
