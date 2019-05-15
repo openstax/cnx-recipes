@@ -54,7 +54,7 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_SetFigureCaption`: A [Caption](#caption)
 - `$Config_TargetLabels`: A list of [TargetLabels](#targetlabel)
 - `$Config_Notes`: A list of [Notes](#note)
-- `$Config_UnnumberedExercises`: A list of [UnnumberedExercises](#unnumberedexercise)
+- `$Config_UnnumberedElements`: A list of [UnnumberedElements](#unnumberedelements)
 - `$Config_PartType_*`
   - `$Config_PartType_Exercise`: A [CustomPart](#custompart)
   - `$Config_PartType_Example`: A [CustomPart](#custompart)
@@ -74,7 +74,6 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_Coverage_MayHaveSimlinks`: a boolean
   - `$Config_Coverage_MayHaveIframes`: a boolean
   - `$Config_Coverage_MayHaveMissingExercises`: a boolean
-- `$Config_UnnumberedEquations`: a list of [UnnumberedExercises](#unnumberedexercise)
 - `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
 - `$Config_hasCompositeAppendixes`: a boolean (used for some TEA books)
 - `$Config_hasCitation`: a boolean used for References.
