@@ -99,14 +99,6 @@
   }
   @include modify_GenericNote();
 
-  @each $unnumberedEquation in $Config_UnnumberedEquations {
-    $contextSelector: map-get($unnumberedEquation, contextSelector);
-    $childSelector: map-get($unnumberedEquation, childSelector);
-    @include validate_type($contextSelector, string);
-    @include validate_typeOptional($childSelector, string);
-    @include modify_addUnnumbered($contextSelector, $childSelector);
-  }
-
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
   @if $Config_Coverage_MayHaveMissingExercises {
@@ -246,9 +238,9 @@
   @include compose_createSectionComposites($Config_SectionCompositePages, sectionHeaderNode);
   @include compose_createChapterComposites($Config_ChapterCompositePages, sectionHeaderNode);
 
-  @each $unnumberedExercise in $Config_UnnumberedExercises {
-    $contextSelector: map-get($unnumberedExercise, contextSelector);
-    $childSelector: map-get($unnumberedExercise, childSelector);
+  @each $unnumberedElement in $Config_UnnumberedElements {
+    $contextSelector: map-get($unnumberedElement, contextSelector);
+    $childSelector: map-get($unnumberedElement, childSelector);
     @include validate_type($contextSelector, string);
     @include validate_typeOptional($childSelector, string);
     @include modify_addUnnumbered($contextSelector, $childSelector);
@@ -493,6 +485,7 @@
   }
 
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
+  
   @if release-flag-enabled(custom-lists) {
     @include modify_lists($Config_CustomList);
   }
