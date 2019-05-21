@@ -1347,6 +1347,12 @@
   data-uuid-key: "index";
   group-by: span, "span::attr(group-by)", nocase; }
 
+:pass(8) [data-type="note"].theorem [data-type="title"] {
+  string-set: theoremSubtitleContent content(); }
+
+:pass(8) [data-type="note"].theorem:deferred {
+  attr-use-subtitle: string(theoremSubtitleContent); }
+
 :pass(9) .os-index-container > div.group-by:first-of-type > span.group-label:match(\^\[ \]\(Symbols\|SYMBOLS\)) {
   content: "Symbols"; }
 
@@ -1385,6 +1391,10 @@
 
 :pass(9) [data-type="equation"]:not(.unnumbered) {
   counter-increment: equation; }
+
+:pass(9) [data-type="note"].theorem {
+  string-set: target-label attr(use-subtitle);
+  string-set: target-label-nominative attr(use-subtitle); }
 
 :pass(9) .os-eoc [data-type="exercise"] {
   string-set: target-label "Exercise " counter(chapter) "." counter(exercise);
@@ -1992,6 +2002,9 @@
 :pass(10) :not(.os-table) > table::outside {
   container: div;
   class: os-table; }
+
+:pass(10) [data-type="note"].theorem {
+  attr-use-subtitle: "true"; }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
