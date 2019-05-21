@@ -1,9 +1,9 @@
 const fs = require('fs')
 
-const sass = require('node-sass');
+const sass = require('node-sass')
 const { String: SassString } = sass.types
 
-const platform = (process.env.PLATFORM || "NONE").toLowerCase()
+const platform = (process.env.PLATFORM || 'NONE').toLowerCase()
 const platformIncludesPath = `${__dirname}/../../styles/platforms/${platform}`
 if (!fs.existsSync(platformIncludesPath)) {
   throw new Error(`Specified platform '${platform}' does not have an associated directory.`)
@@ -12,7 +12,7 @@ if (!fs.existsSync(platformIncludesPath)) {
 const inputFile = process.argv[2]
 const outputFile = process.argv[3]
 if (!inputFile || !outputFile) {
-  throw new Error("Input/Output arguments not given.")
+  throw new Error('Input/Output arguments not given.')
 }
 
 const getPlatform = () => {
@@ -26,7 +26,7 @@ const scssResult = sass.renderSync({
     'PLATFORM()': getPlatform
   },
   sourceMap: true,
-  outputStyle: "nested",
+  outputStyle: 'nested',
   outFile: outputFile
 })
 
