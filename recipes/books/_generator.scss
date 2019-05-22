@@ -404,6 +404,22 @@
   }
   //After: prepBookComposites
   @include compose_createBookComposites($Config_BookCompositePages);
+  
+  @each $subtitle in $Config_SubtitleLabels {
+    $selector: map-get($subtitle, selector);
+    $subtitleSelector: map-get($subtitle, subtitleSelector);
+    $stringName: map-get($subtitle, stringName);
+
+    #{$selector} #{$subtitleSelector} {
+      @include _refStringAs(#{$stringName}, content());
+    }
+
+    #{$selector} {
+      &:deferred {
+        attr-use-subtitle: string(#{$stringName});
+      }
+    }
+  }
 }
 :pass(9) {
   //After: prepIndexTerms, createBookComposites
@@ -447,8 +463,10 @@
   }
 
   @include count_countEquations(equation);
+  @include link_setTargetLabels($Config_SubtitleLabels);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
+  
   // Number equations if they have a titleContent
   // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
@@ -496,6 +514,10 @@
   }
 
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
+  
+  @if release-flag-enabled(custom-lists) {
+    @include modify_lists($Config_CustomList);
+  }
 
   @if $Config_TrashSelectedElements {
     @each $trash in $Config_TrashSelectedElements {
@@ -517,8 +539,18 @@
   @include modify_tableSummaryToParent();
   @include trashEmptyElement ('table > caption');
   @include modify_addTableClass();
+  
+  @if not release-flag-enabled(custom-lists) {
+    @include modify_lists($Config_CustomList);
+  }
 
-  @include modify_lists($Config_CustomList);
+  @each $subtitle in $Config_SubtitleLabels {
+    $selector: map-get($subtitle, selector);
+
+    #{$selector} {
+      attr-use-subtitle: "true";
+    }
+  }
 }
 
 :pass(11) {

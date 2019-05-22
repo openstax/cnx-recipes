@@ -60,32 +60,32 @@
   }
 }
 
-/// Adds labels to list with special classes
+/// Adds labels to list with special classes or other selector
 /// @group modify
 @mixin modify_lists ($listConfig) {
   @if $listConfig {
     @each $list in $listConfig {
-      $className: map-get($list, className);
+      $selector: map-get($list, selector);
+      $name: map-get($list, name);
       $beforeLabel: map-get($list, beforeLabel);
       $afterLabel: map-get($list, afterLabel);
 
-      @include validate_type($className, string);
-      @include validate_type($beforeLabel, string);
+      @include validate_type($name, string);
       @include validate_type($afterLabel, string);
 
-      $counterName: #{$className}-COUNTER;
+      $counterName: #{$name}-COUNTER;
 
-      .#{$className} {
+      #{$selector} {
         counter-reset: #{$counterName};
-        class: os-#{$className};
+        class: os-#{$name};
         > li {
           &::inside {
             container: span;
-            class: "os-#{$className}-content";
+            class: "os-#{$name}-content";
           }
           &::before {
             container: span;
-            class: "os-#{$className}-token";
+            class: "os-#{$name}-token";
             counter-increment: #{$counterName};
             content: $beforeLabel counter(#{$counterName}) $afterLabel;
             move-to: listBucket;
@@ -494,7 +494,7 @@
             container: h4;
           }
         }
-      }
+      }  
       [data-type="example"] {
         @if release-flag-enabled(titles-in-examples) {
           [data-type="problem"] {
@@ -512,7 +512,7 @@
               container: h4;
             }
           }
-        }
+        } 
       }
     }
   }
