@@ -1,0 +1,102 @@
+$FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: ();
+$FRAMEWORK_USED_SETTINGS: ();
+
+@function flatten_keep_references($settings) {
+  @return map_key_prefix_flatten($settings, '', '_ref');
+}
+
+@mixin debug_settings_manifest() {
+  @debug "Settings manifest =>";
+  @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    @debug $settings;
+  }
+}
+
+@mixin debug_settings() {
+  @debug "All available settings (last-added is on top) =>";
+  $already_defined: ();
+  @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    @debug "=== Clump Start ===";
+    @each $key, $value in flatten_keep_references($settings) {
+      @if map-get($already_defined, $key) {
+        @debug "~~#{$key} : #{$value}~~ (overridden above)";
+      } @else {
+        @debug "#{$key} : #{$value}";
+      }
+      $already_defined: map-merge($already_defined, ($key: true));
+    }
+  }
+}
+
+@mixin clear_used_settings() {
+  $FRAMEWORK_USED_SETTINGS: () !global;
+}
+
+@function get_unused_settings() {
+  $unused_entries: ();
+  @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    @each $key, $value in flatten_keep_references($settings) {
+      @if index($FRAMEWORK_USED_SETTINGS, $key) == null {
+        $unused_entries: append($unused_entries, ($key, $value), comma);
+      }
+    }
+  }
+  @return $unused_entries;
+}
+
+@mixin add_settings($settings...) {
+  $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: join($settings, $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL) !global;
+}
+
+@mixin remove_settings($settings...) {
+  @each $member in $settings {
+    $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: remove_value($FRAMEWORK_SETTINGS_MANIFEST_GLOBAL, $member) !global;
+  }
+}
+
+@mixin scoped_add_settings($settings...) {
+  @include add_settings($settings...);
+  @content;
+  @include remove_settings($settings...);
+}
+
+@function settings($name, $default: enum('Object:::NONE')) {
+  @each $settings_member in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    $settings: flatten_keep_references($settings_member);
+    @if map-has-key($settings, $name) {
+      $FRAMEWORK_USED_SETTINGS: append($FRAMEWORK_USED_SETTINGS, $name) !global;
+      $value: map-deep-get($settings, $name);
+      @if type-of($value) == map {
+        $ref: map-get($value, '_ref');
+        @if not has_setting($ref) {
+          @return error(enum('Error:::INVALID_REFERENCE'), "Invalid reference `#{$ref}` in `#{$name}`.");
+        }
+        @return settings($ref, $default);
+      } @else {
+        @return $value
+      }
+    }
+  }
+  @if $default != enum('Object:::NONE') {
+    @return $default;
+  }
+  @return error(enum('Error:::INDEX_ERROR'), "Unknown setting `#{$name}`.");
+}
+
+@function settings_not_null($name, $default: enum('Object:::NONE')) {
+  $settings_result: settings($name, $default);
+  @if $settings_result != null {
+    @return $settings_result;
+  }
+  @return error(enum('Error:::TYPE_ERROR'), "Received a disallowed NULL value for setting `#{$name}`.");
+}
+
+@function has_setting($name) {
+  @each $settings_member in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
+    $settings: flatten_keep_references($settings_member);
+    @if map-has-key($settings, $name) {
+      @return true;
+    }
+  }
+  @return false;
+}
