@@ -12,7 +12,7 @@ pipeline {
       }
       steps {
         // Install git, run the python build, upload to pypi, and cleanup
-        sh "docker run --rm -e TWINE_USERNAME -e TWINE_PASSWORD -v ${WORKSPACE}:/src:rw --workdir /src python:3 /bin/bash -c \"apt-get update && apt-get install -y git && pip install -q twine && python setup.py bdist_wheel --universal && twine upload dist/* && rm -rf dist build *.egg-info versioneer.pyc\""
+        sh "docker run --rm -e TWINE_USERNAME -e TWINE_PASSWORD -v ${WORKSPACE}:/src:rw --workdir /src python:2-slim /bin/bash -c \"apt-get update && apt-get install -y git && pip install -q twine && python setup.py bdist_wheel && twine upload dist/* && rm -rf dist build *.egg-info versioneer.pyc\""
       }
     }
   }

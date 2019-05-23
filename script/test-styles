@@ -20,10 +20,9 @@ fi
 for style_config in "${STYLE_NAMES[@]}"; do
   read -r style_name book_name <<< "${style_config}"
 
-  book_baked="./data/${book_name}/collection.baked.xhtml"
+  book_baked="./data/${book_name}-baked.xhtml"
   book_test_dir="./styles/books/${style_name}/tests"
   book_test_min_snippet="${book_test_dir}/baked-min-snippet-${book_name}.xhtml"
-  book_test_min_snippet_temp="${book_test_min_snippet}.tmp"
   book_tests=$(find ./styles/books/"${style_name}"/tests/ -type f -print0 | xargs -0I {} basename {})
   # book_tests=$(cd "${book_test_dir}" && ls -- *html)
 
@@ -34,9 +33,7 @@ for style_config in "${STYLE_NAMES[@]}"; do
   # Rebuild the min-snippet file if the baked book exists (not on travis)
   if [[ -f ${book_baked} ]]; then
     do_progress_quiet "Rebuilding min-snippet for ${style_name}" \
-      "$(npm bin)/min-snippet" "${book_baked}" "${book_test_min_snippet_temp}"
-    try xmllint --pretty 2 "${book_test_min_snippet_temp}" > "${book_test_min_snippet}"
-    try rm "${book_test_min_snippet_temp}"
+      "$(npm bin)/min-snippet" "${book_baked}" "${book_test_min_snippet}"
   fi
 
   for platform in "${PLATFORMS[@]}"; do
