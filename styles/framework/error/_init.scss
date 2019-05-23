@@ -1,0 +1,38 @@
+@function error($type, $message, $override: $IS_TEST) {
+  @if $override {
+    $error: (
+      error: (
+        type: $type,
+        message: $message
+      )
+    );
+    @return $error;
+  }
+  @error 'Error [#{$type}]: #{$message}'; // coverage:disable-line
+}
+
+@mixin error($message, $override: $IS_TEST) {
+  @if $override {
+    .error {
+      ERROR: $message;
+    }
+  }
+  @else { // coverage:disable-line
+    @error $message; // coverage:disable-line
+  }
+}
+
+@function error_type($error) {
+  @return map_deep_get($error, error, type);
+}
+
+@function error_message($error) {
+  @return map_deep_get($error, error, message);
+}
+
+@function is_error($object) {
+  @return (type-of($object) == "map" and
+    map_deep_has_key($object, error) and
+    map_deep_has_key($object, error, type) and
+    map_deep_has_key($object, error, message));
+}
