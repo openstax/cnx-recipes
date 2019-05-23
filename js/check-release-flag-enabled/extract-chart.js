@@ -1,6 +1,6 @@
 const getStdin = require('get-stdin')
 const sassExtract = require('sass-extract')
-const order = process.argv[2]
+const order = Number.parseInt(process.argv[2])
 
 getStdin().then(recipeFeaturesScss => {
   sassExtract.render({

@@ -191,7 +191,7 @@
 
     }
   }
-
+  
   [data-type="chapter"] {
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
       @include utils_title($labeling, bCaption);
@@ -215,6 +215,15 @@
     > #{$elementName}:not(.unnumbered) {
       @include utils_title($labelingAp, bCaption);
       @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
+      @if ($hasTopTitle and release-flag-enabled(appendix-top-title-copy)) {
+        &.top-titled {
+          //this will have to be rewritten after all the content has been updated to contain the title within the title instead of the hacky first header in the table.
+          thead tr:first-child {
+            string-set: TopTitleContent content();
+            move-to: trash;
+          }
+        }
+      }
     }
     @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
