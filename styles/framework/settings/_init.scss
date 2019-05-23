@@ -5,6 +5,7 @@ $FRAMEWORK_USED_SETTINGS: ();
   @return map_key_prefix_flatten($settings, '', '_ref');
 }
 
+/// @group debug
 @mixin debug_settings_manifest() {
   @debug "Settings manifest =>";
   @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
@@ -12,6 +13,7 @@ $FRAMEWORK_USED_SETTINGS: ();
   }
 }
 
+/// @group debug
 @mixin debug_settings() {
   @debug "All available settings (last-added is on top) =>";
   $already_defined: ();
@@ -44,6 +46,30 @@ $FRAMEWORK_USED_SETTINGS: ();
   @return $unused_entries;
 }
 
+/// This mixin is used to add maps to the globally-accessible settings.
+/// Settings are a key -> value map relationship, with the key typically being a namespaced CSS property name,
+/// and the value being either a concrete value or reference to the value of some other key.
+/// Some helpful tips:
+/// - Settings maps added later take priority over those added earlier.
+/// - When the maps are read, a nested key is equivalent to a namespaced one -- See Nested Keys Notation Example
+/// - Settings values can reference a different value by marking its key -- See Settings References Example
+/// @example scss - Nested Keys Notation
+///   @include add_settings(('name1:::name2': value))
+///   // equivalent to
+///   @include add_settings((name1: (name2: value)))
+/// @example scss - Settings References
+///   @include add_settings((
+///     colorScheme: (
+///       primaryColor: (_ref: design1Color),
+///     ),
+///     design1Color: blue
+///   ));
+///   @debug settings(colorScheme:::primaryColor); // => blue
+///
+/// @group internal
+///
+/// @param {Map arglist} $settings - A map to append to the globally-accessible settings.
+
 @mixin add_settings($settings...) {
   $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL: join($settings, $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL) !global;
 }
@@ -60,6 +86,19 @@ $FRAMEWORK_USED_SETTINGS: ();
   @include remove_settings($settings...);
 }
 
+/// This function is used to get values from the globally-accessible settings.
+///
+/// @param {String} $name - The key for the desired setting
+/// @param {String} $default [enum('Object:::NONE')] - The default value to use if a setting for the key is not found
+///
+/// @group internal
+///
+/// @example scss - Settings Function
+///   @include add_settings((
+///     'colorScheme:::primaryColor': blue,
+///   ));
+///   @debug settings(colorScheme:::primaryColor); // => blue
+///
 @function settings($name, $default: enum('Object:::NONE')) {
   @each $settings_member in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
     $settings: flatten_keep_references($settings_member);
@@ -73,7 +112,7 @@ $FRAMEWORK_USED_SETTINGS: ();
         }
         @return settings($ref, $default);
       } @else {
-        @return $value
+        @return $value;
       }
     }
   }
