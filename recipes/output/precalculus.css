@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*
   Book Page
 
@@ -294,67 +293,105 @@
 
 */
 /*==========================================================
-  PHYSICS PAGES
+  PRECALCULUS PAGES
 ==========================================================*/
 /*
-  Section Review
+  Key Terms
 
-  These should be collated at the end of a chapter.
+  Should be collated at the end of a chapter.
 
-  Markup: ./styleguide/book.composite.summary.xhtml-baked.html
+  Contains a title "Key Terms"
 
-  Style guide: book.2-composite.summary
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
 */
 /*
-  Conceptual Questions
+  Key Equations
 
-  These should be collated at the end of a chapter.
+  Should be collated at the end of a chapter.
 
-  Markup: ./styleguide/book.composite.conceptual.xhtml-baked.html
+  Contains a title "Key Equations"
 
-  Style guide: book.2-composite.conceptual
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
+
+  Style guide: book.composite.key-equations
 */
 /*
-  Problems and Exercises
+  Key Concepts
 
-  These should be collated at the end of a chapter.
+  Should be collated at the end of a chapter.
 
-  Markup: ./styleguide/book.composite.problems.xhtml-baked.html
+  Contains a title "Key Concepts"
 
-  Style guide: book.2-composite.problems
+  Markup: ./styleguide/book.composite.key-concepts.xhtml-baked.html
+
+  Style guide: book.composite.key-concepts
+*/
+/*
+  Review Exercises
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Review Exercises"
+
+  Markup: ./styleguide/book.composite.review-exercises.xhtml-baked.html
+
+  Style guide: book.composite.review-exercises
+*/
+/*
+  Practice Test
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Practice Test"
+
+  Markup: ./styleguide/book.composite.practice-test.xhtml-baked.html
+
+  Style guide: book.composite.practice.test
+*/
+/* =========================================================
+  CUSTOM NOTES
+==========================================================*/
+/*
+  How To
+
+  Contains a title "How To" and the content of the note.
+
+  Markup: ./styleguide/page.note.how-to.xhtml-baked.html
+
+  Style guide: page.note.how-to
+*/
+/*
+  QA
+
+  Contains a title "QA" and the content of the note.
+
+  Markup: ./styleguide/page.note.qa.xhtml-baked.html
+
+  Style guide: page.note.qa
+*/
+/*
+  Try
+
+  Contains a title "Try" and the content of the note.
+
+  Markup: ./styleguide/page.note.try.xhtml-baked.html
+
+  Style guide: page.note.try
+*/
+/*
+  Media
+
+  Contains a title "Media" and the content of the note.
+
+  Markup: ./styleguide/page.note.media.xhtml-baked.html
+
+  Style guide: page.note.media
 */
 /*==========================================================
-  PHYSICS TITLING CONTENT
+  PRECALCULUS CONFIG
 ==========================================================*/
-/*==========================================================
-  PHYSICS CONFIG
-==========================================================*/
-/*
-  Chapter Objectives
-
-  This is a Note that appears in the Introduction page of every chapter.
-
-  Markup: ./styleguide/page.note.chapter-objectives.xhtml-baked.html
-
-  Style guide: page.note.chapter-objectives
-*/
-/*
-  Test Prep for AP® Courses
-  These should be collated at the end of a chapter.
-
-  Markup: ./styleguide/book.composite.ap-test-prep.xhtml-baked.html
-
-  Style guide: book.composite.ap-test-prep
-*/
-/*
-  Check Your Understanding Exercise
-
-  These should be unnumbered.
-
-  Markup: ./styleguide/page.exercise.understanding.xhtml-baked.html
-
-  Style guide: page.exercise.understanding
- */
 @namespace xhtml "http://www.w3.org/1999/xhtml";
 @namespace cmlnle "http://katalysteducation.org/cmlnle/1.0";
 :pass(0) [data-type='list']:not([data-list-type]),
@@ -383,9 +420,6 @@
 :pass(0) div[data-type="page"] > [data-type="document-title"] {
   content: string(page-title); }
 
-:pass(1) [data-type="chapter"] > [data-type="page"]:not(.introduction) {
-  class: "chapter-content-module"; }
-
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
@@ -396,6 +430,9 @@
     content: content();
     container: span;
     class: "os-text"; }
+
+:pass(1) a.os-interactive-link {
+  attr-target: "_blank"; }
 
 :pass(1) [data-type="exercise"][data-label]:not([data-label=""])::after {
   container: div;
@@ -427,6 +464,21 @@
   container: div;
   content: pending(bListLabel) content(); }
 
+:pass(1) :not([data-type="alternatives"]) > iframe {
+  class: attr(class) "os-is-iframe"; }
+  :pass(1) :not([data-type="alternatives"]) > iframe::after {
+    container: a;
+    class: "os-is-link";
+    attr-target: "_window";
+    attr-href: attr(src);
+    content: "Click to view content";
+    move-to: bIframeLink; }
+  :pass(1) :not([data-type="alternatives"]) > iframe::outside {
+    container: div;
+    data-type: "alternatives";
+    class: "os-has-iframe os-has-link";
+    content: pending(bIframeLink) content(); }
+
 :pass(1) cnx-pi {
   move-to: trash; }
 
@@ -436,23 +488,6 @@
     string-set: isSolution " os-hasSolution "; }
   :pass(1) :not([data-type="example"]) > [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
-
-:pass(1) div[data-type="exercise"][data-element-type="check-understanding"] > div[data-type="title"] {
-  move-to: trash; }
-  :pass(1) div[data-type="exercise"][data-element-type="check-understanding"] > div[data-type="title"]::before {
-    container: span;
-    class: "os-title-label";
-    content: content();
-    move-to: anyContainerLabel; }
-
-:pass(1) div[data-type="exercise"][data-element-type="check-understanding"]::after {
-  container: div;
-  content: pending(anyContainerLabel);
-  class: "os-title";
-  move-to: anyContainer; }
-
-:pass(1) div[data-type="exercise"][data-element-type="check-understanding"]:deferred {
-  content: pending(anyContainer) content(); }
 
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
@@ -487,8 +522,221 @@
 :pass(1) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
 
-:pass(1) [data-type="abstract"] {
+:pass(1) [data-type="exercise"] {
+  string-set: missing ""; }
+  :pass(1) [data-type="exercise"] div.missing-exercise {
+    string-set: missing " missing-exercise"; }
+  :pass(1) [data-type="exercise"]::deferred {
+    class: attr(class) string(missing); }
+
+:pass(1) ol[data-number-style="lower-alpha"] {
+  attr-type: "a"; }
+
+:pass(1) [data-type="abstract"]::before {
+  container: h3;
+  data-type: "title";
+  content: "Learning Objectives"; }
+
+:pass(2) [data-type="exercise"].missing-exercise {
   move-to: trash; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "How To";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].howto > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].howto > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].howto::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].howto:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "How To";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].howto:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "QA";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].qa > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].qa > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].qa::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].qa:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "QA";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].qa:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].try > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].try > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].try::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].try:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].try:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Media";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].media > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].media > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].media::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].media:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Media";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].media:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
 
 :pass(3) body {
   counter-reset: chapter; }
@@ -583,121 +831,91 @@
 :pass(3) a[data-type="footnote-number"] > sup {
   content: counter(footnoteLinks); }
 
-:pass(3) [data-type="chapter"], :pass(3) .appendix {
-  counter-reset: example; }
+:pass(3) div[data-type="page"], :pass(3) .appendix {
+  counter-reset: exampleInSection; }
 
-:pass(3) div[data-type="chapter"] [data-type="example"], :pass(3) .appendix [data-type="example"] {
-  counter-increment: example; }
+:pass(3) section > [data-type="example"] {
+  counter-increment: exampleInSection; }
 
-:pass(3) [data-type="chapter"] [data-type="example"]::before {
+:pass(3) [data-type="example"]::before {
   container: span;
   content: "Example ";
   class: os-title-label;
   move-to: bExampleLabel; }
 
-:pass(3) [data-type="chapter"] [data-type="example"]::before {
+:pass(3) [data-type="example"]::before {
   container: span;
-  content: counter(chapter) "." counter(example);
+  content: counter(exampleInSection);
   class: os-number;
   move-to: bExampleLabel; }
 
-:pass(3) [data-type="chapter"] [data-type="example"]::before {
-  container: span;
-  content: " ";
-  class: os-divider;
-  move-to: bExampleLabel; }
-
-:pass(3) [data-type="chapter"] [data-type="example"] > [data-type="title"] {
+:pass(3) [data-type="example"] > [data-type="title"] {
   move-to: trash; }
-  :pass(3) [data-type="chapter"] [data-type="example"] > [data-type="title"]::before {
+  :pass(3) [data-type="example"] > [data-type="title"]::before {
     container: span;
     content: content();
     class: os-text;
     move-to: bExampleLabel; }
 
-:pass(3) [data-type="chapter"] [data-type="example"]::after {
+:pass(3) [data-type="example"]::after {
   container: div;
   content: pending(bExampleLabel);
   class: "os-title";
   move-to: bExampleHeader; }
 
-:pass(3) [data-type="chapter"] [data-type="example"]:deferred {
+:pass(3) [data-type="example"]:deferred {
   content: pending(bExampleHeader) content(); }
 
-:pass(3) [data-type="chapter"] [data-type="example"] [data-type="solution"]::before {
+:pass(3) [data-type="example"] [data-type="solution"]::before {
   container: span;
-  content: "Solution ";
+  content: "Solution";
   class: os-title-label;
   move-to: div-TITLECONTAINER; }
 
-:pass(3) [data-type="chapter"] [data-type="example"] [data-type="solution"]::before {
-  container: span;
-  content: counter(chapter) "." counter(example);
-  class: os-number;
-  move-to: div-TITLECONTAINER; }
-
-:pass(3) [data-type="chapter"] [data-type="example"] [data-type="solution"]::before {
+:pass(3) [data-type="example"] [data-type="solution"]::before {
   container: div;
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
 
-:pass(3) .appendix [data-type="example"]::before {
+:pass(3) [data-type="page"], :pass(3) .appendix {
+  counter-reset: try; }
+
+:pass(3) [data-type="note"].try {
+  counter-increment: try; }
+
+:pass(3) [data-type="note"].try::before {
   container: span;
-  content: "Example ";
+  content: "Try It ";
   class: os-title-label;
-  move-to: bExampleLabel; }
+  move-to: bNoteLabel-try; }
 
-:pass(3) .appendix [data-type="example"]::before {
+:pass(3) [data-type="note"].try::before {
   container: span;
-  content: counter(appendix, upper-alpha) counter(example);
+  content: "#" counter(try);
   class: os-number;
-  move-to: bExampleLabel; }
+  move-to: bNoteLabel-try; }
 
-:pass(3) .appendix [data-type="example"]::before {
-  container: span;
-  content: " ";
-  class: os-divider;
-  move-to: bExampleLabel; }
-
-:pass(3) .appendix [data-type="example"] > [data-type="title"] {
+:pass(3) [data-type="note"].try > [data-type="title"] {
   move-to: trash; }
-  :pass(3) .appendix [data-type="example"] > [data-type="title"]::before {
-    container: span;
-    content: content();
-    class: os-text;
-    move-to: bExampleLabel; }
 
-:pass(3) .appendix [data-type="example"]::after {
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: counter(try);
+  class: os-number; }
+
+:pass(3) [data-type="note"].try::after {
   container: div;
-  content: pending(bExampleLabel);
+  content: pending(bNoteLabel-try);
   class: "os-title";
-  move-to: bExampleHeader; }
+  move-to: bNoteHeader; }
 
-:pass(3) .appendix [data-type="example"]:deferred {
-  content: pending(bExampleHeader) content(); }
-
-:pass(3) .appendix [data-type="example"] [data-type="solution"]::before {
-  container: span;
-  content: "Solution ";
-  class: os-title-label;
-  move-to: div-TITLECONTAINER; }
-
-:pass(3) .appendix [data-type="example"] [data-type="solution"]::before {
-  container: span;
-  content: counter(chapter) "." counter(example);
-  class: os-number;
-  move-to: div-TITLECONTAINER; }
-
-:pass(3) .appendix [data-type="example"] [data-type="solution"]::before {
-  container: div;
-  data-type: "solution-title";
-  content: pending(div-TITLECONTAINER); }
-
-:pass(3) [data-type="chapter"], :pass(3) .appendix {
-  counter-reset: equation; }
-
-:pass(3) [data-type="equation"]:not(.unnumbered) {
-  counter-increment: equation; }
+:pass(3) [data-type="note"].try:deferred {
+  content: pending(bNoteHeader) content(); }
 
 :pass(3) body {
   counter-reset: term; }
@@ -729,6 +947,19 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.section-exercises {
+    move-to: section-exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.section-exercises > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"] [data-type="page"]::after {
+    container: div;
+    content: pending(section-exercises-TOCOMPOSITE);
+    class: "os-eos os-section-exercises-container";
+    data-uuid-key: ".section-exercises"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
     /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
     move-to: trash; }
@@ -747,91 +978,69 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-    string-set: moduleTitleId attr(id); }
-  :pass(3) div[data-type="chapter"] section.section-summary {
-    move-to: section-summary-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.section-summary > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.key-equations {
+    move-to: key-equations-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.key-equations > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
-    :pass(3) div[data-type="chapter"] section.section-summary::before {
-      container: a;
-      attr-href: "#" string(moduleTitleId);
-      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(section-summary-TOCOMPOSITE);
-    class: "os-eoc os-section-summary-container";
+    content: pending(key-equations-TOCOMPOSITE);
+    class: "os-eoc os-key-equations-container";
     data-type: "composite-page";
-    data-uuid-key: ".section-summary"; }
+    data-uuid-key: ".key-equations"; }
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-    string-set: moduleTitleId attr(id); }
-  :pass(3) div[data-type="chapter"] section.conceptual-questions {
-    move-to: conceptual-questions-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.conceptual-questions > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.key-concepts {
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
+    move-to: key-concepts-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.key-concepts > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
-    :pass(3) div[data-type="chapter"] section.conceptual-questions::before {
-      container: a;
-      attr-href: "#" string(moduleTitleId);
-      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(conceptual-questions-TOCOMPOSITE);
-    class: "os-eoc os-conceptual-questions-container";
+    content: pending(key-concepts-TOCOMPOSITE);
+    class: "os-eoc os-key-concepts-container";
     data-type: "composite-page";
-    data-uuid-key: ".conceptual-questions"; }
+    data-uuid-key: ".key-concepts"; }
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-    string-set: moduleTitleId attr(id); }
-  :pass(3) div[data-type="chapter"] section.problems-exercises {
-    move-to: problems-exercises-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.problems-exercises > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.review-exercises {
+    move-to: review-exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.review-exercises > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
-    :pass(3) div[data-type="chapter"] section.problems-exercises::before {
-      container: a;
-      attr-href: "#" string(moduleTitleId);
-      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(problems-exercises-TOCOMPOSITE);
-    class: "os-eoc os-problems-exercises-container";
+    content: pending(review-exercises-TOCOMPOSITE);
+    class: "os-eoc os-review-exercises-container";
     data-type: "composite-page";
-    data-uuid-key: ".problems-exercises"; }
+    data-uuid-key: ".review-exercises"; }
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-    string-set: moduleTitleId attr(id); }
-  :pass(3) div[data-type="chapter"] section.ap-test-prep {
-    move-to: ap-test-prep-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.ap-test-prep > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.practice-test {
+    move-to: practice-test-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.practice-test > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
-    :pass(3) div[data-type="chapter"] section.ap-test-prep::before {
-      container: a;
-      attr-href: "#" string(moduleTitleId);
-      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(ap-test-prep-TOCOMPOSITE);
-    class: "os-eoc os-ap-test-prep-container";
+    content: pending(practice-test-TOCOMPOSITE);
+    class: "os-eoc os-practice-test-container";
     data-type: "composite-page";
-    data-uuid-key: ".ap-test-prep"; }
+    data-uuid-key: ".practice-test"; }
+
+:pass(3) .try [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
 
 :pass(3) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
 
-:pass(3) [data-type="exercise"][data-element-type="check-understanding"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
-
-:pass(3) section.section-summary [data-type="equation"]:not(.unnumbered) {
+:pass(3) .introduction .splash:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
 
 :pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
@@ -926,11 +1135,37 @@
 :pass(6) .introduction {
   content: pending(ChapterOutline) content(); }
 
-:pass(6) [data-type="composite-page"], :pass(6) .appendix {
-  counter-reset: exercise; }
+:pass(6) .os-eos, :pass(6) [data-type="composite-page"], :pass(6) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(6) .os-eos [data-type="exercise"] {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(6) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(6) .os-eos, :pass(6) [data-type="composite-page"], :pass(6) .appendix {
+  counter-reset: exerciseMaybeInContent; }
 
 :pass(6) .os-eoc [data-type="exercise"] {
-  counter-increment: exercise; }
+  counter-increment: exerciseMaybeInContent; }
 
 :pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
@@ -939,7 +1174,7 @@
 
 :pass(6) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
   container: span;
-  content: counter(exercise);
+  content: counter(exerciseMaybeInContent);
   class: os-number; }
 
 :pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
@@ -949,7 +1184,7 @@
 
 :pass(6) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
   container: span;
-  content: counter(exercise);
+  content: counter(exerciseMaybeInContent);
   class: os-number; }
 
 :pass(7) body {
@@ -969,33 +1204,110 @@
       container: a;
       attr-href: "#" string(exerciseId); }
 
+:pass(8) body {
+  counter-reset: chapter; }
+
+:pass(8) div[data-type="chapter"] {
+  counter-increment: chapter; }
+
+:pass(8) [data-type="chapter"], :pass(8) .appendix {
+  counter-reset: section; }
+
+:pass(8) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
 
-:pass(8) [data-element-type="check-understanding"] [data-type="solution"] > [data-type="title"] {
-  move-to: trash; }
+:pass(8) [data-type="chapter"] [data-type="page"]:not(.introduction) [data-type="note"].try [data-type="solution"] {
+  move-to: note-try-solution-GETSECTION; }
 
-:pass(8) [data-element-type="check-understanding"] [data-type="solution"]::before {
+:pass(8) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  content: nodes(sectionHeaderNode);
+  move-to: moduleTitleName; }
+
+:pass(8) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(moduleTitleName) pending(note-try-solution-GETSECTION);
+  move-to: note-solution-SECTIONS; }
+
+:pass(8) [data-type="chapter"]::before {
   container: span;
-  content: "Solution";
-  class: os-text;
-  move-to: bSolutionHeader; }
+  class: "os-title-label";
+  content: "Try It ";
+  move-to: note-try-title; }
 
-:pass(8) [data-element-type="check-understanding"] [data-type="solution"]::before {
-  content: pending(bSolutionHeader);
-  data-type: "title";
-  class: "solution-title";
-  container: h4; }
+:pass(8) [data-type="chapter"]::before {
+  container: h3;
+  content: pending(note-try-title);
+  move-to: note-try-header; }
 
-:pass(8) [data-type="chapter"] .os-eoc.os-conceptual-questions-container [data-type="solution"] {
-  move-to: solutions-GETCHAPTER; }
+:pass(8) [data-type="chapter"]::after {
+  class: "os-try-solution-area";
+  content: pending(note-try-header) pending(note-solution-SECTIONS);
+  move-to: note-solution-GETCHAPTER; }
 
-:pass(8) [data-type="chapter"] .os-eoc.os-problems-exercises-container [data-type="solution"] {
-  move-to: solutions-GETCHAPTER; }
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container [data-type="solution"] {
+  move-to: section-exercises-solution-GETSECTION; }
 
-:pass(8) [data-type="chapter"] .os-eoc.os-ap-test-prep-container [data-type="solution"] {
-  move-to: solutions-GETCHAPTER; }
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: span;
+  content: counter(chapter) "." counter(section) " " "Section Exercises";
+  class: "os-title-label";
+  move-to: section-exercises-title; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: h3;
+  content: pending(section-exercises-title);
+  move-to: section-exercises-header; }
+
+:pass(8) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(section-exercises-header) pending(section-exercises-solution-GETSECTION);
+  move-to: solution-GETCHAPTER; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-review-exercises-container [data-type="solution"] {
+  move-to: review-exercises-solution-GETSECTION; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-review-exercises-container::after {
+  container: span;
+  content: "Review Exercises";
+  class: "os-title-label";
+  move-to: review-exercises-title; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-review-exercises-container::after {
+  container: h3;
+  content: pending(review-exercises-title);
+  move-to: review-exercises-header; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-review-exercises-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(review-exercises-header) pending(review-exercises-solution-GETSECTION);
+  move-to: solution-GETCHAPTER; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-practice-test-container [data-type="solution"] {
+  move-to: practice-test-solution-GETSECTION; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-practice-test-container::after {
+  container: span;
+  content: "Practice Test";
+  class: "os-title-label";
+  move-to: practice-test-title; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-practice-test-container::after {
+  container: h3;
+  content: pending(practice-test-title);
+  move-to: practice-test-header; }
+
+:pass(8) [data-type="chapter"] .os-eoc.os-practice-test-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(practice-test-header) pending(practice-test-solution-GETSECTION);
+  move-to: solution-GETCHAPTER; }
 
 :pass(8) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
   string-set: ChapNum content(); }
@@ -1007,25 +1319,25 @@
   move-to: eobCompositeTitlesContent; }
 
 :pass(8) [data-type="chapter"]::after {
-  content: pending(eobCompositeTitlesContent) pending(note-solutions-GETCHAPTER) pending(solutions-GETCHAPTER);
-  class: "os-eob os-solutions-container";
+  content: pending(eobCompositeTitlesContent) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
+  class: "os-eob os-solution-container";
   data-type: "composite-page";
-  data-uuid-key: ".solutions" string(ChapNum);
-  move-to: solutions-TOCOMPOSITECHAPTER; }
+  data-uuid-key: ".solution" string(ChapNum);
+  move-to: solution-TOCOMPOSITECHAPTER; }
 
 :pass(8) body::after {
-  content: pending(solutions-TOCOMPOSITECHAPTER);
-  class: "os-eob os-solutions-container";
+  content: pending(solution-TOCOMPOSITECHAPTER);
+  class: "os-eob os-solution-container";
   data-type: "composite-chapter";
-  data-uuid-key: ".solutions";
+  data-uuid-key: ".solution";
   /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
 
 :pass(8) body::after {
   container: div;
-  content: pending(solutions-TOCOMPOSITE);
-  class: "os-eob os-solutions-container";
+  content: pending(solution-TOCOMPOSITE);
+  class: "os-eob os-solution-container";
   data-type: "composite-page";
-  data-uuid-key: ".solutions"; }
+  data-uuid-key: ".solution"; }
 
 :pass(8) body::after {
   container: div;
@@ -1044,29 +1356,29 @@
 :pass(9) div[data-type="chapter"] {
   counter-increment: chapter; }
 
-:pass(9) body {
-  counter-reset: appendix; }
-
-:pass(9) div.appendix {
-  counter-increment: appendix; }
-
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: section; }
 
 :pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
   counter-increment: section; }
 
-:pass(9) [data-type="composite-page"], :pass(9) .appendix {
+:pass(9) body {
+  counter-reset: appendix; }
+
+:pass(9) div.appendix {
+  counter-increment: appendix; }
+
+:pass(9) .os-eos, :pass(9) .appendix {
   counter-reset: exercise; }
 
 :pass(9) .os-eoc [data-type="exercise"] {
   counter-increment: exercise; }
 
-:pass(9) [data-type="chapter"], :pass(9) .appendix {
-  counter-reset: example; }
+:pass(9) div[data-type="page"], :pass(9) .appendix {
+  counter-reset: exampleInSection; }
 
-:pass(9) div[data-type="chapter"] [data-type="example"], :pass(9) .appendix [data-type="example"] {
-  counter-increment: example; }
+:pass(9) section > [data-type="example"] {
+  counter-increment: exampleInSection; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: equation; }
@@ -1074,41 +1386,33 @@
 :pass(9) [data-type="equation"]:not(.unnumbered) {
   counter-increment: equation; }
 
+:pass(9) [data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
+  string-set: target-label "Exercise " counter(chapter) "." counter(exerciseMaybeInContent);
+  string-set: target-label-nominative "Exercise " counter(chapter) "." counter(exerciseMaybeInContent); }
+
 :pass(9) .os-eoc [data-type="exercise"] {
   string-set: target-label "Exercise " counter(chapter) "." counter(exercise);
   string-set: target-label-nominative "Exercise " counter(chapter) "." counter(exercise); }
 
 :pass(9) div[data-type="chapter"] [data-type="example"] {
-  string-set: target-label "Example " counter(chapter) "." counter(example);
-  string-set: target-label-nominative "Example " counter(chapter) "." counter(example); }
+  string-set: target-label "Example " counter(exampleInSection);
+  string-set: target-label-nominative "Example " counter(exampleInSection); }
 
 :pass(9) div[data-type="chapter"] [data-type="equation"]:not(.unnumbered) {
   string-set: target-label "Equation " counter(chapter) "." counter(equation);
   string-set: target-label-nominative "Equation " counter(chapter) "." counter(equation); }
 
 :pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered) {
-  string-set: target-label "Table " counter(chapter) "." counter(table);
-  string-set: target-label-nominative "Table " counter(chapter) "." counter(table); }
-
-:pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
-  string-set: target-label "Figure " counter(chapter) "." counter(figure);
-  string-set: target-label-nominative "Figure " counter(chapter) "." counter(figure); }
+  string-set: target-label "Table " counter(table);
+  string-set: target-label-nominative "Table " counter(table); }
 
 :pass(9) .appendix :not(table) > table:not(.unnumbered) {
   string-set: target-label "Table " counter(appendix, upper-alpha) counter(table);
   string-set: target-label-nominative "Table " counter(appendix, upper-alpha) counter(table); }
 
-:pass(9) .appendix :not(figure) > figure:not(.unnumbered) {
-  string-set: target-label "Figure " counter(appendix, upper-alpha) counter(figure);
-  string-set: target-label-nominative "Figure " counter(appendix, upper-alpha) counter(figure); }
-
 :pass(9) .appendix > table:not(.unnumbered) {
   string-set: target-label "Table " counter(appendix, upper-alpha) counter(table);
   string-set: target-label-nominative "Table " counter(appendix, upper-alpha) counter(table); }
-
-:pass(9) .appendix > figure:not(.unnumbered) {
-  string-set: target-label "Figure " counter(appendix, upper-alpha) counter(figure);
-  string-set: target-label-nominative "Figure " counter(appendix, upper-alpha) counter(figure); }
 
 :pass(9) .preface :not(table) > table:not(.unnumbered) {
   string-set: target-label "Table " counter(table);
@@ -1118,31 +1422,22 @@
   string-set: target-label "Figure " counter(figure);
   string-set: target-label-nominative "Figure " counter(figure); }
 
-:pass(9) .appendix [data-type="example"] {
-  string-set: target-label "Example " counter(appendix, upper-alpha) counter(example);
-  string-set: target-label-nominative "Example " counter(appendix, upper-alpha) counter(example); }
+:pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
+
+:pass(9) .appendix :not(figure) > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
+
+:pass(9) .appendix > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
 
 :pass(9) a.autogenerated-content {
   content: target-string(attr(href), target-label); }
   :pass(9) a.autogenerated-content[cmlnle|case="nominative"] {
     content: target-string(attr(href), target-label-nominative); }
-
-:pass(9) [data-type="chapter"] [data-type="equation"]:not(.unnumbered)::before, :pass(9) .appendix [data-type="equation"]:not(.unnumbered)::before {
-  container: span;
-  content: counter(chapter) "." counter(equation);
-  class: os-number;
-  move-to: equationNum; }
-
-:pass(9) [data-type="chapter"] [data-type="equation"]:not(.unnumbered)::before, :pass(9) .appendix [data-type="equation"]:not(.unnumbered)::before {
-  container: span;
-  content: " ";
-  class: os-divider;
-  move-to: equationNum; }
-
-:pass(9) [data-type="chapter"] [data-type="equation"]:not(.unnumbered)::after, :pass(9) .appendix [data-type="equation"]:not(.unnumbered)::after {
-  class: os-equation-number;
-  container: div;
-  content: pending(equationNum); }
 
 :pass(9) body > [data-type="metadata"] {
   node-set: bookMetadata; }
@@ -1150,9 +1445,20 @@
 :pass(9) [data-type="composite-page"], :pass(9) [data-type="composite-chapter"] {
   content: nodes(bookMetadata) content(); }
 
+:pass(9) .os-eos.os-section-exercises-container::before {
+  container: span;
+  content: counter(chapter) "." counter(section) " " "Section Exercises";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(9) .os-eos.os-section-exercises-container::before {
+  container: h3;
+  data-type: "document-title";
+  content: pending(h3-TITLECONTAINER); }
+
 :pass(9) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
-  content: "Glossary";
+  content: "Key Terms";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
@@ -1161,65 +1467,65 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
   container: span;
-  content: "Section Summary";
+  content: "Key Equations";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-conceptual-questions-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
   container: span;
-  content: "Conceptual Questions";
+  content: "Key Concepts";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-conceptual-questions-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-problems-exercises-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-review-exercises-container::before {
   container: span;
-  content: "Problems & Exercises";
+  content: "Review Exercises";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-problems-exercises-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-review-exercises-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-ap-test-prep-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-practice-test-container::before {
   container: span;
-  content: "Test Prep for AP® Courses";
+  content: "Practice Test";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-ap-test-prep-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-practice-test-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-chapter"].os-eob.os-solutions-container::before {
+:pass(9) [data-type="composite-chapter"].os-eob.os-solution-container::before {
   container: span;
   content: "Answer Key";
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-chapter"].os-eob.os-solutions-container::before {
+:pass(9) [data-type="composite-chapter"].os-eob.os-solution-container::before {
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
 
-:pass(9) [data-type="composite-chapter"].os-eob.os-solutions-container [data-type="composite-page"] > span.os-text {
+:pass(9) [data-type="composite-chapter"].os-eob.os-solution-container [data-type="composite-page"] > span.os-text {
   move-to: CCcompositePageTitles; }
 
-:pass(9) [data-type="composite-chapter"].os-eob.os-solutions-container [data-type="composite-page"]:deferred::before {
+:pass(9) [data-type="composite-chapter"].os-eob.os-solution-container [data-type="composite-page"]:deferred::before {
   container: h2;
   data-type: document-title;
   content: pending(CCcompositePageTitles); }
@@ -1245,19 +1551,9 @@
 :pass(9) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
   counter-increment: exerciseMaybeInContent; }
 
-:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: counter(chapter) "." counter(exerciseMaybeInContent);
-  class: os-number; }
-
-:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: "Exercise ";
-  class: os-title-label; }
-
 :pass(9) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
   container: span;
-  content: counter(appendix, upper-alpha) "." counter(exerciseMaybeInContent);
+  content: counter(exerciseMaybeInContent);
   class: os-number; }
 
 :pass(9) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
@@ -1265,13 +1561,13 @@
   content: "Exercise ";
   class: os-title-label; }
 
-:pass(9) [data-type="chapter"], :pass(9) .appendix, :pass(9) .preface {
+:pass(9) [data-type="page"], :pass(9) [data-type="composite-page"], :pass(9) .appendix, :pass(9) .preface {
   counter-reset: table; }
 
 :pass(9) :not(table) > table:not(.unnumbered) {
   counter-increment: table; }
 
-:pass(9) [data-type="chapter"], :pass(9) .appendix, :pass(9) .preface {
+:pass(9) [data-type="page"], :pass(9) [data-type="composite-page"], :pass(9) .appendix, :pass(9) .preface {
   counter-reset: figure; }
 
 :pass(9) :not(figure) > figure:not(.unnumbered) {
@@ -1285,7 +1581,7 @@
 
 :pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) "." counter(table);
+  content: counter(table);
   class: os-number;
   move-to: bCaption; }
 
@@ -1295,16 +1591,10 @@
   class: os-divider;
   move-to: bCaption; }
 
-:pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered)::after {
+:pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption {
   container: span;
-  class: 'os-divider';
-  content: ' ';
-  move-to: bCaptionDivider; }
-
-:pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption [data-type="title"] {
-  container: span;
-  class: "os-title";
-  move-to: bCaptionTitle; }
+  class: "os-caption";
+  move-to: bCaptionContent; }
 
 :pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered)::after {
   container: div;
@@ -1341,18 +1631,11 @@
   class: os-divider;
   move-to: bCaption; }
 
-:pass(9) .appendix :not(table) > table:not(.unnumbered)::after,
-:pass(9) .appendix > table:not(.unnumbered)::after {
+:pass(9) .appendix :not(table) > table:not(.unnumbered) caption,
+:pass(9) .appendix > table:not(.unnumbered) caption {
   container: span;
-  class: 'os-divider';
-  content: ' ';
-  move-to: bCaptionDivider; }
-
-:pass(9) .appendix :not(table) > table:not(.unnumbered) caption [data-type="title"],
-:pass(9) .appendix > table:not(.unnumbered) caption [data-type="title"] {
-  container: span;
-  class: "os-title";
-  move-to: bCaptionTitle; }
+  class: "os-caption";
+  move-to: bCaptionContent; }
 
 :pass(9) .appendix :not(table) > table:not(.unnumbered)::after,
 :pass(9) .appendix > table:not(.unnumbered)::after {
@@ -1388,16 +1671,10 @@
   class: os-divider;
   move-to: bCaption; }
 
-:pass(9) .preface :not(table) > table:not(.unnumbered)::after {
+:pass(9) .preface :not(table) > table:not(.unnumbered) caption {
   container: span;
-  class: 'os-divider';
-  content: ' ';
-  move-to: bCaptionDivider; }
-
-:pass(9) .preface :not(table) > table:not(.unnumbered) caption [data-type="title"] {
-  container: span;
-  class: "os-title";
-  move-to: bCaptionTitle; }
+  class: "os-caption";
+  move-to: bCaptionContent; }
 
 :pass(9) .preface :not(table) > table:not(.unnumbered)::after {
   container: div;
@@ -1421,7 +1698,7 @@
 
 :pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) "." counter(figure);
+  content: counter(figure);
   class: os-number;
   move-to: bCaption; }
 
@@ -1435,6 +1712,17 @@
   container: span;
   class: "os-caption";
   move-to: bCaptionContent; }
+
+:pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
 
 :pass(9) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::after {
   container: div;
@@ -1479,6 +1767,19 @@
 
 :pass(9) .appendix :not(figure) > figure:not(.unnumbered)::after,
 :pass(9) .appendix > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(9) .appendix :not(figure) > figure:not(.unnumbered) [data-type="title"],
+:pass(9) .appendix > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(9) .appendix :not(figure) > figure:not(.unnumbered)::after,
+:pass(9) .appendix > figure:not(.unnumbered)::after {
   container: div;
   class: "os-caption-container";
   content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
@@ -1517,6 +1818,17 @@
   move-to: bCaptionContent; }
 
 :pass(9) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(9) .preface :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(9) .preface :not(figure) > figure:not(.unnumbered)::after {
   container: div;
   class: "os-caption-container";
   content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
@@ -1530,9 +1842,6 @@
 :pass(9) .preface > figure.unnumbered figcaption {
   move-to: trash; }
 
-:pass(9) .preface [data-type="abstract"] {
-  move-to: trash; }
-
 :pass(9) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -1543,7 +1852,16 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="problem"] .os-problem-container > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] [data-type="solution-title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
@@ -1646,21 +1964,13 @@
     attr-href: "#" string(page-id);
     container: a;
     move-to: page-link; }
-  :pass(11) body > div[data-type="page"]:not(.appendix)::after,
-  :pass(11) body > div[data-type="composite-page"]:not(.appendix)::after {
+  :pass(11) body > div[data-type="page"]::after,
+  :pass(11) body > div[data-type="composite-page"]::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
-  :pass(11) body > div[data-type="page"].appendix::after,
-  :pass(11) body > div[data-type="composite-page"].appendix::after {
-    content: pending(page-link);
-    move-to: eob-toc;
-    attr-cnx-archive-uri: attr(id);
-    attr-cnx-archive-shortid: string(page-shortid);
-    container: li;
-    class: os-toc-counted-page; }
 
 :pass(11) body > div[data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'], :pass(11) body > div[data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
   node-set: CchapterTitle;
@@ -1931,4 +2241,4 @@
 :pass(100) body:deferred::after {
   content: clear(trash); }
 
-/*# sourceMappingURL=ap-physics.css.map */
+/*# sourceMappingURL=precalculus.css.map */
