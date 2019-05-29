@@ -1,26 +1,36 @@
 //settings
+@import "_colors";
+@import "_typography";
+
 @include add_settings((
- toc: (
+  //use these as defaults for the book
+  globalBookStyles: (
+    _selectors: ("body"),
+    globalTypography: (
+      font-family: (_ref: 'typography:::serifFont'), //book default font
+      font-size: (_ref: 'typography:::baseFontSize'), //base font size
+      line-height: (_ref: 'typography:::baseLineHeight'), //base font height
+      )
+  ),
   // define the super selector for the superspace. Think block that contains everything inside of it
+   toc: (
     _selectors: ("nav#toc"),
     //access all components in the superspace
     //this gives access to the properties listed for the TOC wrapper, all NOT_NULL properties must be set here
     //Failing to list a NOT_NULL property here will return:
-    //Error: Error [ENUM__Error:::INDEX_ERROR]: Unknown setting `toc:::wrapper:::background`.
-    //TODO: can the phrasing in this error be improved?
     global: (
-    background: green,
-    font-size: 12px,
+    background: (_ref: "colorMap:::tocbg"),
+    font-size: (_ref: 'typography:::baseFontSize'),
     ),
     mainTitle: (
-      background: yellow,
-      color: gray,
-      font-family: "IBM Plex Sans Light",
+      background: (_ref: "colorMap:::tocTitleBGColor"),
+      color: (_ref: "colorMap:::tocTitleColor"),
+      font-family: (_ref: 'typography:::sansFont'),
       font-size: 30em,
-      padding-bottom: 3em,
+      padding-bottom: rythm(1), //vertical rhythm function (this is compass, not installed atm but could be anything we want)
     ),
   ),
- tocWrapped: (
+   tocWrapped: (
     _selectors: ("nav#toc > ol"),
     wrapper: (
       list-style-type: none,
@@ -32,48 +42,44 @@
     )
   ),
 
- // h1Title: (
- //  _selectors: ("h1"),
- //  regularTitle: (
- //    font-family: arial,
- //    font-size: 24px,
- //    color: gray,
- //    line-height: 1.2em,
- //    bookmark-level: 1,
- //    page-break-after: avoid,
- //    margin: 0,
- //    padding: 0,
- //    )
- //  ),
- //  h2Title: (
- //  _selectors: ("h2"),
- //  regularTitle: (
- //    font-family: arial,
- //    font-size: 20px,
- //    color: gray,
- //    line-height: 1.2em,
- //    bookmark-level: 1,
- //    page-break-after: avoid,
- //    margin: 0,
- //    padding: 0,
- //    )
- //  ),
- //   h3Title: (
- //  _selectors: ("h3"),
- //  regularTitle: (
- //    font-family: arial,
- //    font-size: 18px,
- //    color: gray,
- //    line-height: 1.2em,
- //    bookmark-level: 1,
- //    page-break-after: avoid,
- //    margin: 0,
- //    padding: 0,
- //    )
- //  ),
- // iconTitles: (
- //  ),
- // numberedTitles: (
- //  )
-
-));
+//probably want to break those down as well. Maybe something like create "modules", 3 files for each chunk: _foo-component.scss, _foo-space.scss, _foo-settings.scss. That way, each chunk could be imported separately and configured in a more readable, neatly packaged manner.
+ h1Title: (
+  _selectors: ("h1"),
+  regularTitle: (
+    font-family: (_ref: 'typography:::sansFont'),
+    font-size: 24px, //TODO font scale
+    color: (_ref: "colorMap:::h1TitleColor"),
+    line-height: 1.2em, //TODO font-scale for line-height
+    bookmark-level: 1,
+    page-break-after: avoid,
+    margin: 0, //TODO vertical rhythm
+    padding: 0,//TODO vertical rhythm
+    )
+  ),
+  h2Title: (
+    _selectors: ("h2"),
+    regularTitle: (
+      font-family: (_ref: 'typography:::sansFont'),
+      font-size: 20px,
+      color: (_ref: "colorMap:::h2TitleColor"),
+      line-height: 1.2em,
+      bookmark-level: 1,
+      page-break-after: avoid,
+      margin: 0,
+      padding: 0,
+    )
+  ),
+  h3Title: (
+    _selectors: ("h3"),
+    regularTitle: (
+      font-family: (_ref: 'typography:::sansFont'),
+      font-size: 18px,
+      color: (_ref: "colorMap:::h3TitleColor"),
+      line-height: 1.2em,
+      bookmark-level: 1,
+      page-break-after: avoid,
+      margin: 0,
+      padding: 0,
+    )
+  ),
+)),
