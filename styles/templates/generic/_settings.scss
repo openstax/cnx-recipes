@@ -1,20 +1,79 @@
-//global template settings
-@import "_colors";
-@import "_typography";
-
-//template parts
-//@import "parts/some-setting";
-
-
+//settings
 @include add_settings((
-  //use these as defaults for the book
-  commonStyles: (
-    _selectors: (":root"),
-    commonTypography: (
-      font-family: (_ref: 'typography:::sansFont'), //book default font
-      font-size: (_ref: 'typography:::baseFontSize'), //base font size
-      line-height: (_ref: 'typography:::baseLineHeight'), //base font height
-      color: (_ref: "colorMap:::fontBodyColor")
+ toc: (
+  // define the super selector for the superspace. Think block that contains everything inside of it
+    _selectors: ("nav#toc"),
+    //access all components in the superspace
+    //this gives access to the properties listed for the TOC wrapper, all NOT_NULL properties must be set here
+    //Failing to list a NOT_NULL property here will return:
+    //Error: Error [ENUM__Error:::INDEX_ERROR]: Unknown setting `toc:::wrapper:::background`.
+    //TODO: can the phrasing in this error be improved?
+    global: (
+    background: green,
+    font-size: 12px,
+    ),
+    mainTitle: (
+      background: yellow,
+      color: gray,
+      font-family: "IBM Plex Sans Light",
+      font-size: 30em,
+      padding-bottom: 3em,
+    ),
+  ),
+ tocWrapped: (
+    _selectors: ("nav#toc > ol"),
+    wrapper: (
+      list-style-type: none,
+      padding: 0,
+    ),
+    countedPages: (
+    ),
+    unCountedPages: (
     )
   ),
+
+ // h1Title: (
+ //  _selectors: ("h1"),
+ //  regularTitle: (
+ //    font-family: arial,
+ //    font-size: 24px,
+ //    color: gray,
+ //    line-height: 1.2em,
+ //    bookmark-level: 1,
+ //    page-break-after: avoid,
+ //    margin: 0,
+ //    padding: 0,
+ //    )
+ //  ),
+ //  h2Title: (
+ //  _selectors: ("h2"),
+ //  regularTitle: (
+ //    font-family: arial,
+ //    font-size: 20px,
+ //    color: gray,
+ //    line-height: 1.2em,
+ //    bookmark-level: 1,
+ //    page-break-after: avoid,
+ //    margin: 0,
+ //    padding: 0,
+ //    )
+ //  ),
+ //   h3Title: (
+ //  _selectors: ("h3"),
+ //  regularTitle: (
+ //    font-family: arial,
+ //    font-size: 18px,
+ //    color: gray,
+ //    line-height: 1.2em,
+ //    bookmark-level: 1,
+ //    page-break-after: avoid,
+ //    margin: 0,
+ //    padding: 0,
+ //    )
+ //  ),
+ // iconTitles: (
+ //  ),
+ // numberedTitles: (
+ //  )
+
 ));
