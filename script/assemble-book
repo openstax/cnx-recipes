@@ -1,0 +1,92 @@
+#!/bin/bash
+
+if [ -f /.dockerenv ]; then
+  if [ "${1:0:1}" == "/" ]; then
+    exec "$@"
+    exit
+  fi
+fi
+
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+# This fetches the raw HTML for a book (or all books if using the --all argument) from ${host_name}
+
+set -e
+
+while [[ $# -ge 1 ]]
+do
+  case $1 in
+    --all)
+      all_books=true
+      ;;
+    *)
+      book=$1
+  esac
+  shift
+done
+
+
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+
+usage() {
+    echo -e "Usage: $0 [--with-resources] {--all|<book-name>}\n"
+}
+
+
+# Check command line args
+
+if [ -z "${all_books}" ] && [ -z "${book}" ]; then
+  _say "Valid books are (from ./books.txt):"
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_name recipe_name uuid _ <<< "${book_config}"
+    _say "${book_name}"
+  done
+  usage
+  die 'Argument Missing. You must specify the name of the book as the 1st argument or --all for all books. For example: physics'
+fi
+
+if [ -n "${book}" ]; then
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name recipe_name uuid colid host_name _ <<< "${book_config}"
+
+    if [[ "${book}" = "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name} ${recipe_name} ${uuid} ${colid} ${host_name} ${_}")
+      host_name=${HOST:-${host_name}}
+
+      found_config=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${found_config}" ]]; then
+    _say "Valid books are (from ./books.txt):"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name recipe_name uuid _ <<< "${book_config}"
+      _say "${book_name}"
+    done
+    usage
+    die "Could not find Book info for book named ${book}"
+  fi
+fi
+
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name recipe_name uuid colid host_name _ <<< "${book_config}"
+  # Allow user to override the hostname
+  host_name=${HOST:-${host_name}}
+
+  book_dir="${OUTPUT_DIR:-./data}/${book_name}"
+  raw_dir="${book_dir}/raw"
+  raw_file="${book_dir}/collection.assembled.xhtml"
+
+  rm -rf "${raw_file/$OUTPUT_DIR/.\/data}"
+
+  do_progress "Creating HTML file for ${book_name}" \
+    docker-compose run --rm neb /bin/bash -c "neb assemble \"${raw_dir}\" \"${book_dir}\" && chown -R $(stat -c '%u:%g' ./data) \"${book_dir}\""
+
+  _say "${c_green}Assemble is Done.${c_none} File is available at ${raw_file/$OUTPUT_DIR/$HOST_PWD\/data}"
+
+done

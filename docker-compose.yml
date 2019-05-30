@@ -1,0 +1,90 @@
+version: '3.2'
+services:
+  fetch-book:
+    build: .
+    image: openstax/cnx-recipes
+    environment:
+      # This is necessary in order to mount the correct directory if we start
+      # sibling containers
+      HOST_PWD: "${PWD}"
+      OUTPUT_DIR: /out
+      BOOTSTRAP_ALREADY_RAN: 1
+    volumes:
+      - .:/code
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: /code/script/fetch-book
+
+  neb:
+    build: https://github.com/openstax/nebuchadnezzar.git
+    image: openstax/nebuchadnezzar:latest
+    environment:
+      NEB_CONFIG: /etc/neb/config
+    volumes:
+      - "${HOST_PWD:-.}/data:/out"
+      - "${HOST_PWD:-.}/config/neb-config:/etc/neb/config:ro"
+
+  assemble-book:
+    build: .
+    image: openstax/cnx-recipes
+    environment:
+      # This is necessary in order to mount the correct directory if we start
+      # sibling containers
+      HOST_PWD: "${PWD}"
+      OUTPUT_DIR: /out
+      BOOTSTRAP_ALREADY_RAN: 1
+    volumes:
+      - .:/code
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: /code/script/assemble-book
+
+  bake-book:
+    build: .
+    image: openstax/cnx-recipes
+    environment:
+      # This is necessary in order to mount the correct directory if we start
+      # sibling containers
+      HOST_PWD: "${PWD}"
+    volumes:
+      - .:/code
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: /code/script/bake-book
+
+  mathify-book:
+    build: .
+    image: openstax/cnx-recipes
+    environment:
+      # This is necessary in order to mount the correct directory if we start
+      # sibling containers
+      HOST_PWD: "${PWD}"
+      OUTPUT_DIR: /out
+      BOOTSTRAP_ALREADY_RAN: 1
+    volumes:
+      - .:/code
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: /code/script/mathify-book
+
+  mathify:
+    build: https://github.com/openstax/mathify.git
+    image: openstax/mathify
+    volumes:
+      - "${HOST_PWD:-.}/data:/out"
+
+  build-pdf:
+    build: .
+    image: openstax/cnx-recipes
+    environment:
+      # This is necessary in order to mount the correct directory if we start
+      # sibling containers
+      HOST_PWD: "${PWD}"
+      OUTPUT_DIR: /out
+      BOOTSTRAP_ALREADY_RAN: 1
+    volumes:
+      - .:/code
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: /code/script/build-pdf
+
+  pdf:
+    build: https://github.com/openstax/docker-princexml.git
+    image: openstax/princexml
+    volumes:
+      - "${HOST_PWD:-.}/data:/out"
