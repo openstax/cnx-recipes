@@ -1,0 +1,86 @@
+// Superspace -> Map (
+//   _groups(Optional) -> Map ( String -> ValueSet | String ),
+//   _components -> List ( ...Component )
+//   )
+// )
+
+// Component -> Map (
+//   _name -> String,
+//   _subselector -> String,
+//   _properties -> Map ( String -> ValueSet | String ),
+//   _components(Optional) -> List ( ...Component )
+// )
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Component Variables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$boxed_note_container: (
+  _name: 'container',
+  _subselector: '.note',
+  _properties: (
+    border-color: enum('ValueSet:::NOT_NULL'),
+    border-style: solid
+  )
+);
+$boxed_note_title: (
+  _name: 'title',
+  _subselector: ' > .title',
+  _properties: (
+    font-weight: enum('ValueSet:::NULLABLE')
+  )
+);
+$bg_note_container: (
+  _name: 'container',
+  _subselector: '.note',
+  _properties: (
+    color: (enum('ValueSet:::NULLABLE'), white),
+    background-color: enum('ValueSet:::NOT_NULL')
+  )
+);
+$bg_note_title: (
+  _name: 'title',
+  _subselector: ' > .title',
+  _properties: (
+    color: (enum('ValueSet:::NULLABLE'), white),
+    background-color: (enum('ValueSet:::NULLABLE'), blue)
+  )
+);
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Superspaces ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// type-one, type-two
+@include create_superspace('BoxedNoteTitled', (
+  _components: (
+    map-merge($boxed_note_container, (
+      _components: (
+        $boxed_note_title
+      )
+    ))
+  )
+));
+
+// type-three, type-four
+@include create_superspace('BgNote', (
+  _components: (
+    map-merge($bg_note_container, (
+      _components: (
+        $bg_note_title
+      )
+    ))
+  )
+));
+
+// type-five
+@include create_superspace('BoxedNote', (
+  _components: (
+    $boxed_note_container
+  )
+));
+
+// For the page title, a simpler superspace with a default
+@include create_superspace('PageTitle', (
+  _components: (
+    _name: 'container',
+    _subselector: ' > .title',
+    _properties: (
+      font-size: (enum('ValueSet:::NULLABLE'), 2em)
+    )
+  )
+));

@@ -1,0 +1,26 @@
+/*
+The goal of this tutorial is to add a class-less div to the end of every note repeating the title of the note.
+No new functions are needed for this. string-set and content are the only attributes needed.
+*/
+:pass(1) {
+    body {
+        .note {
+            counter-increment: test;
+            data-type: counter(test);
+        }
+    }
+}
+:pass(2) {
+    body {
+        @for $i from 1 to 10 {
+            [data-type="#{$i}"] {
+                & > .title {
+                    string-set: new-div#{$i} content();
+                }
+                &::after {
+                    content: string(new-div#{$i});
+                }
+            }
+        }
+    }
+}

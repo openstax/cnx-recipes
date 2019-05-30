@@ -1,0 +1,101 @@
+/*
+### This supposes you have the css from previous exercises 01-move-to & 02-created-nested-content working.
+1. `move-to: trash`: delete the extra title in the Critical Thinking and Review question sections
+2. `node-set: my-node`: use node-set to duplicate the book metadata into the EOC section
+3. `string-set: my-string content()`: use string-set to change the h1 title in the EOC title to the title of the EOC section
+4. more exercises: replicate metadata node-set and string-set for each assessment container (Critical Thinking and Review Questions)
+Notes:
+   make sure that the clear trash is set to :pass(100)
+   remember that clear(trash); is set to the body::after pseudo selector.
+    example:
+    :pass(100) body::after {
+      content: clear(trash);
+    }
+   make sure to create enough passes to use string-set (string-set and string() cannot be on the same pass)
+*/
+:pass(1) {
+    .book {
+        div[data-type='metadata'] {
+            node-set: my-node;
+            string-set: eoc-string "End of Chapter Section";
+            string-set: cri-string "Critical Thinking Section";
+            string-set: rev-string "Review Questions Section";
+        }
+    }
+
+    [data-type='chapter'] {
+        .critical-thinking {
+            container: div;
+            move-to: critical-thinking-container;
+            h3 {
+                move-to: trash;
+            }
+        }
+        .review-questions {
+            container: div;
+            move-to: review-questions-container;
+            h3 {
+                move-to: trash;
+            }
+        }
+
+        &::before {
+            class: os-title;
+            container: h2;
+            content: "Critical Thinking Questions";
+            move-to: critical-thinking-container;
+        }
+        &::before {
+            class: os-title;
+            container: h2;
+            content: "Review Questions";
+            move-to: review-questions-container;
+        }
+        &::before {
+            content: string(eoc-string);
+            container: h2;
+            move-to: eoc
+        }
+        &::after {
+            content: nodes(my-node) pending(critical-thinking-container);
+            class: critical;
+            move-to: eoc;
+        }
+        &::after {
+            content: nodes(my-node) pending(review-questions-container);
+            class: review;
+            move-to: eoc;
+        }
+        &::after {
+            content: nodes(my-node) pending(eoc);
+            class: eoc;
+        }
+}
+
+    :pass(2) {
+        .eoc {
+            div[data-type='metadata'] {
+                h1[data-type='document-title'] {
+                    content: string(eoc-string);
+                }
+            }
+            .critical {
+                div[data-type='metadata'] {
+                    h1[data-type='document-title'] {
+                        content: string(cri-string);
+                    }
+                }
+            }
+            .review {
+                div[data-type='metadata'] {
+                    h1[data-type='document-title'] {
+                        content: string(rev-string);
+                    }
+                }
+            }
+        }
+    }
+    :pass(100) &::after {
+        content: clear(trash);
+    } 
+}

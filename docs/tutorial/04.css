@@ -1,0 +1,152 @@
+/*
+  ### This supposes you have the css from previous exercises 01-move-to, 02-created-nested-content & 03-passes working.
+   1. using two counters, number the chapters and the page title:
+    - create a span inside the chapter headers with the class "os-number" containing the chapter number
+      example: <h1 data-type="document-title"><span class="os-number">1</span>Chapter Title</h1>
+    - create a span inside the page title with the class "os-number" containing the chapter and page number
+      example: <h2 data-type="document-title"><span class="os-number">1.1</span>Page Title</h2>
+  2. move the sections "practice" to the end of chapter area
+  3. number all the exercises continuously across the two chapters.
+  4. number all solutions continuously across the two chapters.
+      Note: you must first label the exercises (using the class "os-hasSolution") that have a solution using ::deferred then count the solutions that are within a "os-hasSolution" exercise
+  5. Create an end of book container with the class "eob", with a title of End of Book Solutions
+  6. Move the solutions to the EOB section.
+*/
+:pass(1) .book div[data-type=metadata] {
+  node-set: my-node;
+  string-set: eoc-string "End of Chapter Section";
+  string-set: cri-string "Critical Thinking Section";
+  string-set: rev-string "Review Questions Section";
+  string-set: pra-string "Practice Questions Section";
+}
+:pass(1) .book div[data-type=metadata] h1 {
+  data-type: document-title-meta;
+}
+:pass(1) [data-type=chapter] .critical-thinking {
+  container: div;
+  move-to: critical-thinking-container;
+}
+:pass(1) [data-type=chapter] .critical-thinking h3 {
+  move-to: trash;
+}
+:pass(1) [data-type=chapter] .review-questions {
+  container: div;
+  move-to: review-questions-container;
+}
+:pass(1) [data-type=chapter] .review-questions h3 {
+  move-to: trash;
+}
+:pass(1) [data-type=chapter] .practice {
+  container: div;
+  move-to: practice-container;
+}
+:pass(1) [data-type=chapter] .practice h3 {
+  move-to: trash;
+}
+:pass(1) [data-type=chapter]::before {
+  class: os-title;
+  container: h2;
+  content: "Critical Thinking Questions";
+  move-to: critical-thinking-container;
+}
+:pass(1) [data-type=chapter]::before {
+  class: os-title;
+  container: h2;
+  content: "Review Questions";
+  move-to: review-questions-container;
+}
+:pass(1) [data-type=chapter]::before {
+  class: os-title;
+  container: h2;
+  content: "Practice Questions";
+  move-to: practice-container;
+}
+:pass(1) [data-type=chapter]::before {
+  content: string(eoc-string);
+  container: h2;
+  move-to: eoc;
+}
+:pass(1) [data-type=chapter]::after {
+  content: nodes(my-node) pending(critical-thinking-container);
+  class: critical;
+  move-to: eoc;
+}
+:pass(1) [data-type=chapter]::after {
+  content: nodes(my-node) pending(review-questions-container);
+  class: review;
+  move-to: eoc;
+}
+:pass(1) [data-type=chapter]::after {
+  content: nodes(my-node) pending(practice-container);
+  class: practice;
+  move-to: eoc;
+}
+:pass(1) [data-type=chapter]::after {
+  content: nodes(my-node) pending(eoc);
+  class: eoc;
+}
+
+:pass(2) .eoc div[data-type=metadata] h1[data-type=document-title-meta] {
+  content: string(eoc-string);
+}
+:pass(2) .eoc .critical div[data-type=metadata] h1[data-type=document-title-meta] {
+  content: string(cri-string);
+}
+:pass(2) .eoc .review div[data-type=metadata] h1[data-type=document-title-meta] {
+  content: string(rev-string);
+}
+:pass(2) .eoc .practice div[data-type=metadata] h1[data-type=document-title-meta] {
+  content: string(pra-string);
+}
+:pass(100) :pass(2)::after {
+  content: clear(trash);
+}
+
+:pass(3) .book div[data-type=chapter] {
+  counter-increment: chapters;
+}
+:pass(3) .book div[data-type=chapter] h1[data-type=document-title]:before {
+  content: counter(chapters);
+  class: span;
+}
+:pass(3) .book div[data-type=page] {
+  counter-increment: pages;
+}
+:pass(3) .book div[data-type=page] h2[data-type=document-title]:before {
+  content: counter(pages);
+  class: span;
+}
+
+:pass(4) .book .exercise:before {
+  counter-increment: problems;
+  content: counter(problems);
+  class: span;
+}
+:pass(4) .book .exercise {
+  string-set: potential-class "";
+}
+:pass(4) .book .exercise .solution {
+  string-set: potential-class " os-hasSolution";
+}
+:pass(4) .book .exercise:deferred {
+  class: attr(class) string(potential-class);
+}
+
+:pass(10) .book .os-hasSolution .solution::after {
+  counter-increment: solutions;
+  content: counter(solutions);
+  class: span;
+}
+:pass(10) .book .solution {
+  move-to: eob;
+}
+:pass(10) .book::after {
+  content: "End of Book Section";
+  container: h1;
+}
+:pass(10) .book::after {
+  content: pending(eob);
+  class: eob;
+}
+
+/*# sourceMappingURL=04.css.map */

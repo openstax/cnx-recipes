@@ -1,0 +1,26 @@
+/*
+The goal of this tutorial is two-fold:
+a) Correctly number each table and figure (e.g. Table 1, Figure 1) with a caption element and div of `figure-caption`, respectively
+b) Ensure that each link (<a>) element of class `needs-label` that references a figure or table replaces its [LINK]
+  text with the numbering of the referenced table/figure
+In addition to the string(ident) function, easybake also provides a target-string(string, ident) function
+  which will return the value of string(ident) in the context of the element with the id=string[1..-1].
+  Use this to achieve the linking present in the baked version of this file.
+*/
+:pass(1) .book table:before {
+  counter-increment: tables;
+  container: caption;
+  string-set: labels "Table " counter(tables);
+  content: "Table " counter(tables);
+}
+:pass(1) .book figure:before {
+  counter-increment: figures;
+  class: figure-caption;
+  string-set: labels "Figure " counter(figures);
+  content: "Figure " counter(figures);
+}
+:pass(1) .needs-label {
+  content: target-string(attr(href), labels);
+}
+
+/*# sourceMappingURL=05.css.map */

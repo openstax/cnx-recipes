@@ -1,0 +1,43 @@
+/*
+1. Create a container for .critical-thinking with the class="critical-thinking-container" and a container for .review-questions with the class "review-questions-container"
+2. Move all .review-questions into review-questions-container
+3. Move all .critical-thinking into critical-thinking-container
+4. Add a title to each newly created containers with the title of the section:
+Critical Thinking Questions and Review Questions
+5. Create a new container with the class `.eoc` at the end of the chapter
+6. Move the two assessment containers to the EOC section
+7. Create a title for the EOC container. Use the proper container (header) based on nesting, with a data-type: document-title
+Note: moving critical-thinking and review-questions can be done using one value for the two move-to or two different values. What are the benefits/limitations of each methods?
+*/
+[data-type=chapter] .critical-thinking {
+  container: critical;
+  move-to: critical-thinking-container;
+}
+[data-type=chapter] .review-questions {
+  container: review;
+  move-to: review-questions-container;
+}
+[data-type=chapter]::before {
+  class: os-title;
+  container: h2;
+  content: "Critical Thinking Questions";
+  move-to: critical-thinking-container;
+}
+[data-type=chapter]::before {
+  class: os-title;
+  container: h2;
+  content: "Review Questions";
+  move-to: review-questions-container;
+}
+[data-type=chapter]::before {
+  container: h1;
+  data-type: document-title;
+  content: "End of Chapter Collation";
+  move-to: eoc;
+}
+[data-type=chapter]::after {
+  content: pending(eoc) pending(critical-thinking-container) pending(review-questions-container);
+  class: eoc;
+}
+
+/*# sourceMappingURL=02.css.map */
