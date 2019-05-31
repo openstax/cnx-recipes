@@ -1,3 +1,4 @@
+//can be deleated
 const fs = require('fs')
 
 const sass = require('node-sass')
