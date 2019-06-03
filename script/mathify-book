@@ -1,0 +1,68 @@
+#!/bin/bash
+
+if [ -f /.dockerenv ]; then
+  if [ "${1:0:1}" == "/" ]; then
+    exec "$@"
+    exit
+  fi
+fi
+
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+# This converts the math in the HTML to svg (by default, can be set using MATH_FORMAT)
+
+set -e
+
+book_name=$1
+
+# Check command line args
+if [ -z "${book_name}" ]; then
+  _say 'ERROR: Argument missing.  You must specify the name of the book as the 1st argument (or --all).  For example: physics'
+  die 'Stopping because no commandline args were passed in'
+fi
+
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [ "${book_name}" != "--all" ]; then
+  found_config=false
+  # Filter BOOK_CONFIGS to only contain the book you want to mathify
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name _ <<< "${book_config}"
+
+    if [[ "${book_name}" == "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config_name}")
+      found_config=true
+      break
+    fi
+  done
+
+  if ! ${found_config}; then
+    _say "Valid books are (from ./books.txt):"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name _ <<< "${book_config}"
+      _say "${book_name}"
+    done
+    die "Could not find book info for book named ${book_name}"
+  fi
+fi
+
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_config_name _ <<< "${book_config}"
+
+  book_dir="${OUTPUT_DIR:-./data}/${book_config_name}"
+  baked_file="${book_dir}/collection.baked.xhtml"
+  mathified_file="${book_dir}/collection.mathified.xhtml"
+  math_format=${MATH_FORMAT:-svg}
+
+  # Some books (e.g. physics) run out of memory when running mathify:
+  #   FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed
+  #   - JavaScript heap out of memory
+  # Use free -m to find out the maximum amount of memory available, and allow
+  # node to use all of it by setting --max_old_space_size
+  do_progress "Converting math in ${baked_file} to ${math_format}" \
+    docker-compose run --rm mathify /bin/bash -c "node --max_old_space_size=\$(free -m | awk '/Mem:/ { print \$2 }') typeset/start -i \"${baked_file}\" -o \"${mathified_file}\" -f \"${math_format}\" && cp -r node_modules/mathjax \"${book_dir}\" && chown -R $(stat -c '%u:%g' ./data) \"${book_dir}\""
+
+  _say "Output is available at ${mathified_file/$OUTPUT_DIR/$HOST_PWD\/data}"
+done

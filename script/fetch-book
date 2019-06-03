@@ -1,4 +1,12 @@
 #!/bin/bash
+
+if [ -f /.dockerenv ]; then
+  if [ "${1:0:1}" == "/" ]; then
+    exec "$@"
+    exit
+  fi
+fi
+
 cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
@@ -74,24 +82,20 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   # Allow user to override the hostname
   host_name=${HOST:-${host_name}}
 
-  book_dir="./data/${book_name}"
+  book_dir="${OUTPUT_DIR:-./data}/${book_name}"
   raw_dir="${book_dir}/raw"
-  raw_file="${book_dir}/collection.assembled.xhtml"
 
-  mkdir -p "${book_dir}"
-  rm -rf "${raw_dir}"
+  mkdir -p "${book_dir/$OUTPUT_DIR/.\/data}"
+  rm -rf "${raw_dir/$OUTPUT_DIR/.\/data}"
 
   neb_get_flag=''
   if $with_resources; then
     neb_get_flag="-r"
   fi
 
-  NEB_CONFIG=./config/neb-config do_progress_quiet "Fetching ${book_name} from ${host_name}" \
-    neb get ${neb_get_flag} -d "${raw_dir}" "${host_name}" "${colid}" ''
+  do_progress "Fetching ${book_name} from ${host_name}" \
+    docker-compose run --rm neb /bin/bash -c "neb get ${neb_get_flag} -d \"${raw_dir}\" \"${host_name}\" \"${colid}\" '' && chown -R $(stat -c '%u:%g' ./data) \"${book_dir}\""
 
-  do_progress_quiet "Creating HTML file for ${book_name}" \
-    neb assemble "${raw_dir}" "${book_dir}"
-
-  _say "${c_green}Fetch is Done.${c_none} File is available at ${raw_file}"
+  _say "${c_green}Fetch is Done.${c_none} The book is in ${raw_dir/$OUTPUT_DIR/$HOST_PWD\/data}"
 
 done

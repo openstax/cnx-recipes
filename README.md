@@ -2,24 +2,17 @@
 
 # Install
 
-1. If not already installed, install Yarn at https://yarnpkg.com/lang/en/docs/install
-
-1. Run `./script/setup`
-    - See `./.*-version` for the versions of python and node that are used
-
-**Note:** To update the dependencies, run `./script/update`
+1. Run `./script/install-docker` to install docker and docker-compose.
 
 **For Windows Users:** If your username contains whitespace, the setup and installation will not work. Create a new user without whitespace in the username in order to succesfully complete installation.
 
-# Bake a New Book
+# Create a baked pdf for a new book
 
-1. run `./script/fetch-html statistics`
+1. Run `docker-compose run --rm -e HOST=katalyst01.cnx.org fetch-html --with-resources intro-business` to download the cnxml from the server to create the single-file HTML for the book.
    - **Note:** To see the list of books available see `./books.txt`
-   - **Note:** You can set the remote server to pull from by running `HOST=dev.cnx.org ./script/fetch-html ...`
-   - **Note:** You can run `./script/fetch-html --all` to fetch all the books
-1. run `./script/bake-book statistics`
-
-You will first need to get the single-file HTML from the server (`fetch-html`) and then convert the single-file HTML locally into the "baked" book via `bake-book`. Once you have done the first part, you can run `./script/bake-book statistics` to your :heart:'s content!
+1. Run `docker-compose run --rm bake-book intro-business` to convert the single-file HTML locally into the "baked" book.
+1. Run `docker-compose run --rm mathify-book intro-business` to convert all the math to svg.
+1. Run `docker-compose run --rm build-pdf intro-business` to create the pdf.
 
 
 ## Add a New Book to the config

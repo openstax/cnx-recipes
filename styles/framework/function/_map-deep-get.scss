@@ -1,0 +1,12 @@
+@function map_deep_get($map, $keys...) {
+  @each $key in $keys {
+    @if type-of($map) != "map" {
+      @return error(enum('Error:::TYPE_ERROR'), "Expected map, got #{type-of($map)} `#{$map}`.");
+    }
+    @if not map-has-key($map, $key) {
+      @return error(enum('Error:::INDEX_ERROR'), "Missing key `#{$key}`.");
+    }
+    $map: map-get($map, $key);
+  }
+  @return $map;
+}
