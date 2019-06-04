@@ -1,2 +1,46 @@
 @import 'framework/framework';
 @import 'design/example/design';
+
+// Settings
+@include add_settings((
+  TypeOne: (
+    _selectors: (".page > .type-one"),
+    container: (
+      border-color: grey,
+    ),
+    title: (
+      font-weight: bold,
+    )
+  ),
+  TypeTwo: (
+    _selectors: (".page > .type-two"),
+    container: (
+      border-color: green,
+    )
+  ),
+  TypeThreeFour: (
+    _selectors: (".page > .type-three", ".page > .type-four"),
+    container: (
+      background-color: darkgrey,
+    ),
+    title: (
+      background-color: blue,
+    )
+  ),
+  TypeFive: (
+    _selectors: (".page > .type-five"),
+    container: (
+      border-color: red,
+    )
+  ),
+  PageTitleImpl: (
+    _selectors: (".page"),
+  )
+));
+
+// Uses
+@include use('TypeOne', 'BoxedNoteTitled');
+@include use('TypeTwo', 'BoxedNoteTitled');
+@include use('TypeThreeFour', 'BgNote'); // Types three and four are EXACTLY the same, so we can have one `use` for both
+@include use('TypeFive', 'BoxedNote');
+@include use('PageTitleImpl', 'PageTitle');

@@ -12,75 +12,51 @@
 // )
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Component Variables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-$boxed_note_container: (
-  _name: 'container',
-  _subselector: '.note',
-  _properties: (
-    border-color: enum('ValueSet:::NOT_NULL'),
-    border-style: solid
-  )
-);
-$boxed_note_title: (
+$learning_objective_title: (
   _name: 'title',
-  _subselector: ' > .title',
+  _subselector: '[data-type=\'abstract\']',
   _properties: (
-    font-weight: enum('ValueSet:::NULLABLE')
+    font-color: enum('ValueSet:::NOT_NULL'),
+    italics: enum('ValueSet:::NULLABLE'),
+    font-face: (enum('ValueSet:::NULLABLE'), 'IBM Plex Sans Medium')
   )
 );
-$bg_note_container: (
-  _name: 'container',
-  _subselector: '.note',
+$learning_objective_list: (
+  _name: 'list',
+  _subselector: ' > ul',
   _properties: (
-    color: (enum('ValueSet:::NULLABLE'), white),
-    background-color: enum('ValueSet:::NOT_NULL')
+
   )
 );
-$bg_note_title: (
-  _name: 'title',
-  _subselector: ' > .title',
+$learning_objective_point: (
+  _name: 'list',
+  _subselector: ' > ul',
   _properties: (
-    color: (enum('ValueSet:::NULLABLE'), white),
-    background-color: (enum('ValueSet:::NULLABLE'), blue)
+    font-color: (enum('ValueSet:::NULLABLE'), black)
+    font-face:  (enum('ValueSet:::NULLABLE'), 'Muli')
+    bullet-color: enum('ValueSet:::NULLABLE')
   )
 );
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Superspaces ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // type-one, type-two
-@include create_superspace('BoxedNoteTitled', (
+@include create_superspace('LearningObjectiveTitle', (
   _components: (
-    map-merge($boxed_note_container, (
+    map-merge($learning_objective_title, (
       _components: (
-        $boxed_note_title
+        $learning_objective_list
       )
     ))
   )
 ));
 
 // type-three, type-four
-@include create_superspace('BgNote', (
+@include create_superspace('LearningObjectiveList', (
   _components: (
-    map-merge($bg_note_container, (
+    map-merge($learning_objective_list, (
       _components: (
-        $bg_note_title
+        $learning_objective_point
       )
     ))
-  )
-));
-
-// type-five
-@include create_superspace('BoxedNote', (
-  _components: (
-    $boxed_note_container
-  )
-));
-
-// For the page title, a simpler superspace with a default
-@include create_superspace('PageTitle', (
-  _components: (
-    _name: 'container',
-    _subselector: ' > .title',
-    _properties: (
-      font-size: (enum('ValueSet:::NULLABLE'), 2em)
-    )
   )
 ));
