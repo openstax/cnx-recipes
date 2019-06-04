@@ -1,0 +1,113 @@
+//will RM later, just testing
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans');
+@import url('https://fonts.googleapis.com/css?family=Muli');
+
+$icon_feature_container: (
+    _name: 'container',
+    _subselector: '[data-type="note"]',
+    _properties: (
+        text-align: 'left',
+        border-bottom: enum('ValueSet:::NOT_NULL'), 
+        font-family: 'IBM Plex Sans',
+        font-weight: lighter,
+        font-size: '9pt',
+    )
+);
+$icon_feature_title: (
+    _name: 'title',
+    _subselector: ' .os-title[data-type="title"]', 
+    _properties: (
+        text-transform: 'uppercase',
+    )
+);
+$icon_feature_body: (
+    _name: 'body',
+    _subselector: ' .os-note-body',
+    _properties: (
+        padding-bottom: '1.5em'
+    )
+);
+
+$boxed_feature_container: (
+    _name: 'container',
+    _subselector: '[data-type="note"]',
+    _properties: (
+        padding: '1em',
+        border: enum('ValueSet:::NOT_NULL'),
+        font-family: 'IBM Plex Sans',
+        margin-bottom: '2rem',
+    )
+);
+$boxed_feature_title: (
+    _name: 'title', 
+    _subselector: ' .os-title[data-type="title"]',
+    _properties: (
+        text-transform: 'uppercase',
+        font-family: 'Muli',
+        border-bottom: enum('ValueSet:::NOT_NULL'),
+    )
+);
+$boxed_feature_subtitle: (
+    _name: 'subtitle', 
+    _subselector: ' .os-subtitle', 
+    _properties: (
+        font-weight: 'bolder',
+    )
+);
+
+$example_feature_container: (
+    _name: 'container',
+    _subselector: '[data-type="example"]',
+    _properties: (
+
+    )
+);
+$example_feature_title: (
+    _name: 'title', 
+        _subselector: '.os-title',
+        _properties: (
+
+        )
+);
+
+
+@include create_superspace (
+    'icon-feature', (
+        _components: (
+            map-merge($icon_feature_container, (
+                _components: (
+                    $icon_feature_title, 
+                    $icon_feature_body,
+                )
+            ))
+        )
+    )
+);
+
+@include create_superspace (
+    'boxed-feature', (
+        _components: (
+            map-merge($boxed_feature_container, (
+                _components: (
+                    $boxed_feature_title, 
+                    $boxed_feature_subtitle,
+                )
+            ))
+        )
+    )
+);
+
+@include create_superspace (
+    'example', (
+        _components: (
+            map-merge($example_feature_title, (
+                _components: (
+                    $boxed_feature_title
+                )
+            ))
+        )
+    )
+);
+
+
+@include debug_settings();
