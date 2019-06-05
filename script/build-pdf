@@ -56,6 +56,8 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   if [ -f "${style_file}" ]; then
     style_flag=('--style' "${book_dir}/$(basename "${style_file}")")
     cp "${style_file}" "./data/${book_name}"
+  elif [ -n "${STYLE}" ] || [ -n "${style_name}" ]; then
+    _say "${c_red}WARNING${c_none} style not found: ${style_file}"
   fi
 
   # Run princexml as root to bypass permission issues:
