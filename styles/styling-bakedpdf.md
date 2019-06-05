@@ -7,7 +7,7 @@ The baked-pdf styling framework was designed in a way so that the user of the fr
 
 **Note:** Files named with a leading `_` do not produce any CSS output during compilation, they are imported in another file. This allows us to have control over the compiling order of our files.
 
-**Note:** Avoid placing raw values into files that are not `_settings.scss`, `_scheme.scss`, or `_map.scss`.
+**Note:** Avoid placing raw values into files that are not `_settings.scss`, or `_map.scss`.
 
 ## Concepts
 
@@ -43,8 +43,6 @@ The `./styles` directory will be reorganized:
     |-- `./Design`
           |-- `./lisa-design`
           |-- `./maher-design`
-    |-- `./Schemes`
-          |-- `color-scheme.scss`
     |-- `./Templates`
           |-- `template-name.scss`
           |-- `settings.scss`
@@ -54,7 +52,6 @@ The `./styles` directory will be reorganized:
 ```
 - `./Framework` will contain global variables for values such as `$NOT_NULL` and various functions and mixins to use throughout `./styles`
 - `./Design` contains super and subspaces grouped by the specific design from which they came 
-- `./Schemes` contains the color schemes maps
 - `./Templates` contain the individual templates which are made up of a combination of design specs from ./Design
 - `./Book` contains book specific styles
 
@@ -69,7 +66,7 @@ The `./styles` directory will be reorganized:
 To generate a styled baked-pdf for a new or previously un-styled baked-book (skip to step 2 if these files exist):
 - Create a directory with the book name in `./books`. `./books/book-name`
 - Create `_import-config.scss` and `{book-name}.scss`
-- Create `.book-name/config` and inside `./config` create `./config/_color-map.scss` , `./config/_color-scheme.scss`, `./config/_font-map.scss`, `./config/_icon-map.scss`, and `./config/_settings.scss`
+- Create `.book-name/config` and inside `./config` create `./config/_color-map.scss`, `./config/_font-map.scss`, `./config/_icon-map.scss`, and `./config/_settings.scss`
 - Inside of `./config/{book-name}.scss` import files from the framework and theme and create the `$notes` map to style the book notes. (See [./config/intro-business/book.scss](./config/intro-business/book.scss) for an example)
 
 **Step 2**
