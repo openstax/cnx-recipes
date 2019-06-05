@@ -1,20 +1,21 @@
 const fs = require('fs')
 
 const sass = require('node-sass')
-const { String: SassString } = sass.types
 
-const inputFile = process.argv[2]
-const outputFile = process.argv[2]
+const input = process.argv[2]
+
+const inputFile = `./recipes/books/${input}/book.scss`
+const outputFile = `./recipes/output/${input}`
 if (!inputFile) {
     throw new Error('Input/Output arguments not given.')
   }
 
 const scssResult = sass.renderSync({
-    file: `./recipes/books/${inputFile}/book.scss`,
-    sourceMap: true,
-    outputStyle: 'nested',
-    outFile: `./recipes/output/${inputFile}.css`
+  file: inputFile,
+  sourceMap: true,
+  outputStyle: 'nested',
+  outFile: outputFile
 })
 
-fs.writeFileSync(outputFile, scssResult.css)
-fs.writeFileSync(`${outputFile}.map`, scssResult.map)
+fs.writeFileSync(`${outputFile}.css`, scssResult.css)
+fs.writeFileSync(`${outputFile}.css.map`, scssResult.map)
