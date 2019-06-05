@@ -1,0 +1,32 @@
+#!/bin/bash
+
+BOOTSTRAP_ALREADY_RAN=1
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+if [[ -z "$(command -v docker)" ]]; then
+  if [[ -n "$(command -v apt-get)" ]]; then
+    do_progress_quiet "Installing docker" \
+      sudo apt-get install -y docker.io
+    sudo usermod -a -G docker "${SUDO_USER:-$USER}"
+    _say "Docker installed.  You need to logout and log back in for it to work."
+  elif [[ -n "$(command -v brew)" ]]; then
+    do_progress_quiet "Installing docker" \
+      brew cask install docker
+  else
+    die "Please go to https://www.docker.com/get-started for instructions to install docker."
+  fi
+else
+  _say "Docker is already installed."
+fi
+
+if [[ -z "$(command -v docker-compose)" ]]; then
+  if [[ -n "$(command -v apt-get)" ]]; then
+    do_progress_quiet "Installing docker-compose" \
+      sudo apt-get install -y docker-compose
+  else
+    die "Please go to https://docs.docker.com/compose/install/ for instructions to install docker-compose."
+  fi
+else
+  _say "Docker-compose is already installed."
+fi

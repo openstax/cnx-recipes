@@ -123,6 +123,17 @@
   }
 }
 
+/// A basic mixin for counting examples within a section using css counters
+/// @arg {Text} $name - Name of the css counter that will control example numbering
+/// @group count
+@mixin count_countSectionExamples($name) {
+  @include _count(
+  $name,
+  'section > [data-type="example"]',
+  'div[data-type="page"], .appendix'
+  );
+}
+
 /// A basic mixin for counting `span[data-type="term"]` using css counters
 /// @arg {Text} $name - Name of the css counter that will control term numbering
 /// @group count
@@ -145,6 +156,17 @@
   );
 }
 
+/// A basic mixin for counting tables within a module using css counters
+/// @arg {Text} $name - Name of the css counter that will control table numbering
+/// @group count
+@mixin count_countSectionTables($name) {
+  @include _count(
+    $name,
+    ':not(table) > table:not(.unnumbered)',
+    '[data-type="page"], [data-type="composite-page"], .appendix, .preface'
+  );
+}
+
 /// A basic mixin for counting figures using css counters
 /// @arg {Text} $name - Name of the css counter that will control figure numbering
 /// @group count
@@ -153,6 +175,17 @@
     $name,
     ':not(figure) > figure:not(.unnumbered)',
     '[data-type="chapter"], .appendix, .preface'
+  );
+}
+
+/// A basic mixin for counting figures within a module using css counters
+/// @arg {Text} $name - Name of the css counter that will control figure numbering
+/// @group count
+@mixin count_countSectionFigures($name) {
+  @include _count(
+    $name,
+    ':not(figure) > figure:not(.unnumbered)',
+    '[data-type="page"], [data-type="composite-page"], .appendix, .preface'
   );
 }
 
@@ -165,6 +198,18 @@
     $name,
     '[data-type="note"].#{$type}',
     '[data-type="chapter"], .appendix'
+  );
+}
+
+/// A basic mixin for counting notes within a module using css counters
+/// @arg {Text} $name - Name of the css counter that will control note numbering
+/// @arg {String} $type - A string of the selector of the note type you want to count
+/// @group count
+@mixin count_countSectionNote($name, $type) {
+  @include _count(
+    $name,
+    '[data-type="note"].#{$type}',
+    '[data-type="page"], .appendix'
   );
 }
 
