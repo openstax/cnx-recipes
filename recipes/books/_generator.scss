@@ -100,14 +100,6 @@
   }
   @include modify_GenericNote();
 
-  @each $unnumberedEquation in $Config_UnnumberedEquations {
-    $contextSelector: map-get($unnumberedEquation, contextSelector);
-    $childSelector: map-get($unnumberedEquation, childSelector);
-    @include validate_type($contextSelector, string);
-    @include validate_typeOptional($childSelector, string);
-    @include modify_addUnnumbered($contextSelector, $childSelector);
-  }
-
   //the metadata has been moved to the content, remove it from the metadata
   @include modify_trash('[data-type="metadata"] > [data-type="description"]');
   @if $Config_Coverage_MayHaveMissingExercises {
@@ -193,8 +185,13 @@
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
+    $resetAt: map-get($Config_PartType_Example, resetAt);
 
-    @include count_countExamples(example);
+    @if $resetAt == moduleReset {
+      @include count_countSectionExamples(exampleInSection);
+    } @else {
+      @include count_countExamples(example);
+    }
     @if release-flag-enabled(appendix-has-numbered-examples) {
       $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
       @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
@@ -225,6 +222,7 @@
     $className: map-get($note, className);
     $titleContent: map-get($note, titleContent);
     $counterName: map-get($note, counterName);
+    $resetAt: map-get($note, resetAt);
     $hasSolutions: map-get($note, hasSolutions);
     $solutionTitleContent: map-get($note, solutionTitleContent);
     @include validate_type($className, string);
@@ -233,7 +231,11 @@
 
     @if $titleContent {
       @if $counterName {
-        @include count_countNote($counterName, $className);
+        @if $resetAt == moduleReset {
+          @include count_countSectionNote($counterName, $className);
+        } @else {
+          @include count_countNote($counterName, $className);
+        }
       }
       @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
     }
@@ -247,9 +249,9 @@
   @include compose_createSectionComposites($Config_SectionCompositePages, sectionHeaderNode);
   @include compose_createChapterComposites($Config_ChapterCompositePages, sectionHeaderNode);
 
-  @each $unnumberedExercise in $Config_UnnumberedExercises {
-    $contextSelector: map-get($unnumberedExercise, contextSelector);
-    $childSelector: map-get($unnumberedExercise, childSelector);
+  @each $unnumberedElement in $Config_UnnumberedElements {
+    $contextSelector: map-get($unnumberedElement, contextSelector);
+    $childSelector: map-get($unnumberedElement, childSelector);
     @include validate_type($contextSelector, string);
     @include validate_typeOptional($childSelector, string);
     @include modify_addUnnumbered($contextSelector, $childSelector);
@@ -314,7 +316,8 @@
     @include validate_exists($titleContent);
 
     $resetSel: null;
-    @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+    @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos', '[data-type="composite-page"]'; }
+    @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
 
@@ -402,6 +405,22 @@
   }
   //After: prepBookComposites
   @include compose_createBookComposites($Config_BookCompositePages);
+  
+  @each $subtitle in $Config_SubtitleLabels {
+    $selector: map-get($subtitle, selector);
+    $subtitleSelector: map-get($subtitle, subtitleSelector);
+    $stringName: map-get($subtitle, stringName);
+
+    #{$selector} #{$subtitleSelector} {
+      @include _refStringAs(#{$stringName}, content());
+    }
+
+    #{$selector} {
+      &:deferred {
+        attr-use-subtitle: string(#{$stringName});
+      }
+    }
+  }
 }
 :pass(9) {
   //After: prepIndexTerms, createBookComposites
@@ -425,7 +444,8 @@
     @include validate_type($titleContent, map);
 
     $resetSel: null;
-    @if       $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+    @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos'; }
+    @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
     @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
     @else { @error 'BUG: Invalid enum'; }
     @include count_countEOCExercises(exercise, $resetSel);
@@ -436,10 +456,18 @@
     } @else { @error 'BUG: Invalid enum'; }
   }
 
-  @include count_countExamples(example);
+  $resetAt: map-get($Config_PartType_Example, resetAt);
+  @if $resetAt == moduleReset {
+    @include count_countSectionExamples(exampleInSection);
+  } @else {
+    @include count_countExamples(example);
+  }
+
   @include count_countEquations(equation);
+  @include link_setTargetLabels($Config_SubtitleLabels);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
+  
   // Number equations if they have a titleContent
   // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
@@ -465,8 +493,19 @@
   @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent,
                                          $Config_ContentExercise_TitleContentAp, $Config_ContentSolution_TitleContentAp);
 
-  @include count_countTables(table);
-  @include count_countFigures(figure);
+  $resetAt: map-get($Config_SetTableCaption, resetAt);
+  @if $resetAt == moduleReset {
+    @include count_countSectionTables(table);
+  } @else {
+    @include count_countTables(table);
+  }
+
+  $resetAt: map-get($Config_SetFigureCaption, resetAt);
+  @if $resetAt == moduleReset {
+    @include count_countSectionFigures(figure);
+  } @else {
+    @include count_countFigures(figure);
+  }
 
   @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr);
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr);
@@ -476,6 +515,16 @@
   }
 
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
+  
+  @if release-flag-enabled(custom-lists) {
+    @include modify_lists($Config_CustomList);
+  }
+
+  @if $Config_TrashSelectedElements {
+    @each $trash in $Config_TrashSelectedElements {
+      @include modify_trash($trash);
+    }
+  }
 }
 :pass(10) {
   //No Answer Key, make sure that solutions that are still present in the content are discarded
@@ -491,8 +540,18 @@
   @include modify_tableSummaryToParent();
   @include trashEmptyElement ('table > caption');
   @include modify_addTableClass();
+  
+  @if not release-flag-enabled(custom-lists) {
+    @include modify_lists($Config_CustomList);
+  }
 
-  @include modify_lists($Config_CustomList);
+  @each $subtitle in $Config_SubtitleLabels {
+    $selector: map-get($subtitle, selector);
+
+    #{$selector} {
+      attr-use-subtitle: "true";
+    }
+  }
 }
 
 :pass(11) {

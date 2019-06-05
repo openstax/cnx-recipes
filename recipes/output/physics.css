@@ -412,6 +412,23 @@
 :pass(1) cnx-pi {
   move-to: trash; }
 
+:pass(1) div[data-type="exercise"][data-element-type="check-understanding"] > div[data-type="title"] {
+  move-to: trash; }
+  :pass(1) div[data-type="exercise"][data-element-type="check-understanding"] > div[data-type="title"]::before {
+    container: span;
+    class: "os-title-label";
+    content: content();
+    move-to: anyContainerLabel; }
+
+:pass(1) div[data-type="exercise"][data-element-type="check-understanding"]::after {
+  container: div;
+  content: pending(anyContainerLabel);
+  class: "os-title";
+  move-to: anyContainer; }
+
+:pass(1) div[data-type="exercise"][data-element-type="check-understanding"]:deferred {
+  content: pending(anyContainer) content(); }
+
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
 
@@ -441,9 +458,6 @@
   content: pending(genericNoteLabeldepth1);
   class: "os-title";
   attr-data-type: "title"; }
-
-:pass(1) section.section-summary [data-type="equation"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
 
 :pass(1) [data-type="metadata"] > [data-type="description"] {
   move-to: trash; }
@@ -766,6 +780,9 @@
 :pass(3) [data-type="exercise"][data-element-type="check-understanding"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
 
+:pass(3) section.section-summary [data-type="equation"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+
 :pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
   string-set: outlinePageId attr(id); }
   :pass(4) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"]::after {
@@ -901,6 +918,21 @@
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
+
+:pass(8) [data-element-type="check-understanding"] [data-type="solution"] > [data-type="title"] {
+  move-to: trash; }
+
+:pass(8) [data-element-type="check-understanding"] [data-type="solution"]::before {
+  container: span;
+  content: "Solution";
+  class: os-text;
+  move-to: bSolutionHeader; }
+
+:pass(8) [data-element-type="check-understanding"] [data-type="solution"]::before {
+  content: pending(bSolutionHeader);
+  data-type: "title";
+  class: "solution-title";
+  container: h4; }
 
 :pass(8) body::after {
   container: div;

@@ -643,25 +643,63 @@
 
 
       [data-type="chapter"] {
-        [data-type="note"].#{$className} [data-type="solution"] {
-          move-to: note-#{$className}-#{$solutionClassName}-GETSECTION;
-        }
-        &::before {
-          container: span;
-          class: "os-title-label";
-          content: $noteTitle;
-          move-to: note-#{$className}-title;
-        }
-        &::before {
-          container: h3;
-          content: pending(note-#{$className}-title);
-          move-to: note-#{$className}-header;
-        }
-        &::after {
-          container: div;
-          class: "os-solution-area";
-          content: pending(note-#{$className}-header) pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
-          move-to: note-#{$solutionClassName}-GETCHAPTER;
+        @if ($clusterBy == $CLUSTER_SECTION) and release-flag-enabled(module-titled-notes) {
+          [data-type="page"]:not(.introduction) {
+            //do we want to set only the number and reconstruct "section + secion number or should we just string-set the whole title for the module?
+            // [data-type="document-title"] .os-number {
+            //   string-set: myWonderfulTitleNumb content();
+            // }
+            [data-type="note"].#{$className} [data-type="solution"] {
+              move-to: note-#{$className}-#{$solutionClassName}-GETSECTION;
+            }
+            &::after {
+              content: nodes($sectionHeaderNode);
+              move-to: moduleTitleName;
+            }
+            &::after {
+              container: div;
+              class: "os-solution-area";
+              content: pending(moduleTitleName) pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
+              move-to: note-#{$solutionClassName}-SECTIONS;
+            }
+          }
+          &::before {
+            container: span;
+            class: "os-title-label";
+            content: $noteTitle;
+            move-to: note-#{$className}-title;
+          }
+          &::before {
+            container: h3;
+            content: pending(note-#{$className}-title);
+            move-to: note-#{$className}-header;
+          }
+          &::after {
+            class: "os-#{$className}-solution-area";
+            content: pending(note-#{$className}-header)  pending(note-#{$solutionClassName}-SECTIONS);
+            move-to: note-#{$solutionClassName}-GETCHAPTER;
+          }
+        } @else {
+          [data-type="note"].#{$className} [data-type="solution"] {
+            move-to: note-#{$className}-#{$solutionClassName}-GETSECTION;
+          }
+          &::before {
+            container: span;
+            class: "os-title-label";
+            content: $noteTitle;
+            move-to: note-#{$className}-title;
+          }
+          &::before {
+            container: h3;
+            content: pending(note-#{$className}-title);
+            move-to: note-#{$className}-header;
+          }
+          &::after {
+            container: div;
+            class: "os-solution-area";
+            content: pending(note-#{$className}-header) pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
+            move-to: note-#{$solutionClassName}-GETCHAPTER;
+          }
         }
       }
     }

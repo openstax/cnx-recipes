@@ -1,0 +1,1036 @@
+$IS_FRAMEWORK_IMPORTED: false;
+$IS_TEST: true;
+$DEBUG: true;
+
+@import "true";
+@import "framework";
+
+@function PLATFORM() {
+  @return "PDF";
+}
+
+@include describe('Framework') {
+  @include it('is successfully imported') {
+    @include assert-true($IS_FRAMEWORK_IMPORTED);
+  }
+}
+
+
+@include describe('Errors') {
+  @include it('can error in a mixin') {
+    @include assert {
+      @include output {
+        @include error("Explode.")
+      } @include expect {
+        .error {
+          ERROR: "Explode.";
+        }
+      }
+    }
+  }
+
+  @include it('can error in a function') {
+    @include assert-equal(
+      error(enum('Error:::INDEX_ERROR'), "Explode."),
+      (
+        error: (
+          type: "ENUM__Error:::INDEX_ERROR",
+          message: "Explode."
+        )
+      )
+    )
+  }
+
+  @include it('can identify an error object') {
+    @include assert-true(
+      is_error(error(enum('Error:::TYPE_ERROR'), "Boom."))
+    );
+  }
+
+  @include it('can identify type and message of an error') {
+    $error: error(enum('Error:::INDEX_ERROR'), "Out of Bounds");
+    @include assert-equal(
+      error_type($error),
+      enum('Error:::INDEX_ERROR')
+    );
+    @include assert-equal(
+      error_message($error),
+      "Out of Bounds"
+    );
+  }
+}
+
+
+@include describe('Enum Utility') {
+  @include it('allows enum creation') {
+    @include scoped_create_enum_type('Test',
+        'TEST',
+        'ENUM'
+    ) {
+      @include assert-equal(
+        enum('Test:::TEST'),
+        'ENUM__Test:::TEST'        
+      );
+      @include assert-equal(
+        enum('Test:::ENUM'),
+        'ENUM__Test:::ENUM'
+      );
+    }
+  }
+
+  @include it('errors when getting a non-existent enum') {
+    @include assert-true(
+      is_error(enum('Null:::NULL'))
+    );
+  }
+}
+
+
+$test_add_settings_function: (my-setting: test-value);
+
+$test_add_other_settings_function: (my-other-setting: other-test-value);
+
+$test_add_settings_function_after: (my-setting: overriden-value);
+
+$test_settings_key_prefix_flatten: (
+  rootkey: (
+    key: (
+      childkey: my-prefixed-value
+    )
+  )
+);
+
+$test_settings_with_reference: (
+  colorScheme: (
+    primaryColor: (_ref: design1Color),
+  ),
+  design1Color: blue
+);
+
+$test_settings_with_invalid_reference: (
+  colorScheme: (
+    primaryColor: (_ref: invalidTarget),
+  ),
+);
+
+
+@include describe('Settings') {
+  @include it('can be added via a map') {
+    @include scoped_add_settings($test_add_settings_function) {
+      @include assert-equal(
+        settings(my-setting),
+        'test-value'
+      );
+    }
+  }
+
+  @include it('can add settings only to a certain scope if desired') {
+    @include scoped_add_settings($test_add_settings_function) {}
+    @include assert-unequal(
+      settings(my-setting),
+      'test-value'
+    );
+  }
+
+  @include it('can access the settings with keys flattened') {
+    @include scoped_add_settings($test_settings_key_prefix_flatten) {
+      @include assert-equal(
+        settings('rootkey:::key:::childkey'),
+        'my-prefixed-value'
+      )
+    }
+  }
+
+  @include it('can clear and output unused settings values') {
+    $_: settings(my-setting);
+    @include clear_used_settings();
+    @include scoped_add_settings($test_add_other_settings_function, $test_add_settings_function) {
+      $_: settings(my-other-setting);
+      @include assert-equal(
+        get_unused_settings(),
+        ((my-setting, test-value),)
+      );
+    }
+  }
+
+  @include it('prioritize settings added later (front of manifest)') {
+    @include scoped_add_settings($test_add_settings_function) {
+      @include scoped_add_settings($test_add_settings_function_after) {
+        @include assert-equal(
+          settings(my-setting),
+          'overriden-value'
+        );
+      }
+    }
+    @include scoped_add_settings($test_add_settings_function_after, $test_add_settings_function) {
+      @include assert-equal(
+        settings(my-setting),
+        'overriden-value'
+      );
+    }
+  }
+
+  @include it('get functions error on non-existent key') {
+    @include assert-true(
+      is_error(settings(non-existent-setting))
+    );
+    @include assert-true(
+      is_error(settings_not_null(non-existent-setting))
+    );
+  }
+
+  @include it('get functions can use default values') {
+    @include assert-equal(
+      settings(non-existent-setting, "default-value"),
+      "default-value"
+    );
+    @include assert-equal(
+      settings_not_null(non-existent-setting, "default-value"),
+      "default-value"
+    );
+  }
+
+  @include it('settings_not_null function errors on null values') {
+    @include assert-true(
+      is_error(settings_not_null(non-existent-setting, null))
+    );
+  }
+
+  @include it('settings supports looking up references') {
+    @include scoped_add_settings($test_settings_with_reference) {
+      @include assert-equal(
+        settings('colorScheme:::primaryColor'),
+        blue
+      );
+    }
+  }
+
+  @include it('errors when a setting references a non-existent key') {
+    @include scoped_add_settings($test_settings_with_invalid_reference) {
+      @include assert-true(
+        is_error(settings('colorScheme:::primaryColor'))
+      );
+    }
+  }
+}
+
+
+@include describe('ValueSet Enum Type') {
+  @include it('provides value NULLABLE') {
+    @include assert-equal(
+      enum('ValueSet:::NULLABLE'),
+      'ENUM__ValueSet:::NULLABLE'
+    );
+    @include assert-equal(
+      enum('ValueSet:::NOT_NULL'),
+      'ENUM__ValueSet:::NOT_NULL'
+    );
+  }
+  @include it('provides value NOT_NULL') {
+    @include assert-equal(
+      enum('ValueSet:::NOT_NULL'),
+      'ENUM__ValueSet:::NOT_NULL'
+    );
+  }
+  @include it('provides value GROUPED') {
+    @include assert-equal(
+      enum('ValueSet:::GROUPED'),
+      'ENUM__ValueSet:::GROUPED'
+    );
+  }
+}
+
+
+@include describe('Error Enum Type') {
+  @include it('provides value INDEX_ERROR') {
+    @include assert-equal(
+      enum('Error:::INDEX_ERROR'),
+      'ENUM__Error:::INDEX_ERROR'
+    );
+  }
+  @include it('provides value TYPE_ERROR') {
+    @include assert-equal(
+      enum('Error:::TYPE_ERROR'),
+      'ENUM__Error:::TYPE_ERROR'
+    );
+  }
+  @include it('provides value INVALID_REFERENCE') {
+    @include assert-equal(
+      enum('Error:::INVALID_REFERENCE'),
+      'ENUM__Error:::INVALID_REFERENCE'
+    );
+  }
+}
+
+
+@include describe('Platform Enum Type') {
+  @include it('provides value PDF') {
+    @include assert-equal(
+      enum('Platform:::PDF'),
+      'ENUM__Platform:::PDF'
+    );
+  }
+  @include it('provides value REX_WEB') {
+    @include assert-equal(
+      enum('Platform:::REX_WEB'),
+      'ENUM__Platform:::REX_WEB'
+    );
+  }
+}
+
+
+@include describe('Object Enum Type') {
+  @include it('provides value NONE') {
+    @include assert-equal(
+      enum('Object:::NONE'),
+      'ENUM__Object:::NONE'
+    )
+  }
+}
+
+
+@include describe('The empty_map Function') {
+  @include it('returns an empty map') {
+    @include assert-equal(
+      type-of(empty_map()),
+      'map'
+    );
+    @include assert-equal(
+      length(map-keys(empty_map())),
+      0
+    );
+  }
+}
+
+
+@include describe('The null Function') {
+  @include it('returns null') {
+    @include assert-equal(
+      null(),
+      null
+    );
+  }
+}
+
+
+@include describe('The remove_value Function') {
+  @include it('returns a copy of a list with the value removed') {
+    @include assert-equal(
+      remove_value(
+        ("hello", "lovely", "world"),
+        "lovely"
+      ),
+      ("hello", "world")
+    );
+  }
+}
+
+
+
+@include describe('The map_deep_has_key Function') {
+  @include it('returns if a value exists at a key path') {
+    @include assert-true(
+      map_deep_has_key((
+        root: (
+          key: (
+            child: test-value
+          )
+        )
+      ), root, key, child)
+    );
+    @include assert-false(
+      map_deep_has_key((key1: true), key2)
+    );
+  }
+}
+
+
+@include describe('The map_deep_get Function') {
+  @include it('returns a values given a key path') {
+    @include assert-equal(
+      map_deep_get((
+        root: (
+          key: (
+            child: test-value
+          )
+        )
+      ), root, key, child),
+      'test-value'
+    );
+  }
+
+  @include it('errors when a value is not found') {
+    @include assert-true(
+      is_error(
+        map_deep_get((
+          root: (
+            key: (
+              child: test-value
+            )
+          )
+        ), root, not-key, child)
+      )
+    );
+  }
+
+  @include it('errors when a non-map argument is passed in to map_deep_get') {
+    @include assert-true(
+      is_error(
+        map_deep_get('non-map', key1, key2)
+      )
+    );
+  }
+}
+
+
+@include describe('The first Function') {
+  @include it('returns the first item in a list') {
+    @include assert-equal(
+      first((3, 4, 6, 9, 12)),
+      3
+    );
+  }
+}
+
+
+@include describe('The last Function') {
+  @include it('returns the last item in a list') {
+    @include assert-equal(
+      last((3, 4, 6, 9, 12)),
+      12
+    );
+  }
+}
+
+
+@include describe('The map_key_prefix_flatten Function') {  
+  @include it('flattens map leaf entry with namespace of parent keys') {
+    @include assert-equal(
+      map_key_prefix_flatten(
+        (
+          rootkey: (
+            key: (
+              childkey: value
+            )
+          )
+        )
+      ),
+      ('rootkey:::key:::childkey': value)
+    );
+  }
+
+  @include it('can unwrap multiple keys on multiple levels') {
+    @include assert-equal(
+      map_key_prefix_flatten(
+        (
+          rootkey: (
+            key: (
+              childkey: value,
+              childkey2: value2
+            ),
+            key2: (
+              childkey: value3,
+              childkey2: value4
+            )
+          )
+        )
+      ),
+      (
+        'rootkey:::key:::childkey': value,
+        'rootkey:::key:::childkey2': value2,
+        'rootkey:::key2:::childkey': value3,
+        'rootkey:::key2:::childkey2': value4
+      )
+    );
+  }
+}
+
+$test_note_space: (
+  _components: (
+    (
+      _name: 'container',
+      _subselector: '.note',
+      _properties: (
+        color: enum('ValueSet:::NOT_NULL'),
+        background: enum('ValueSet:::NULLABLE'),
+        width: enum('ValueSet:::NULLABLE'),
+        height: 20rem,
+        border-color: enum('ValueSet:::NULLABLE')
+      ),
+    ),
+    (
+      _name: 'title',
+      _subselector: '.note > .title',
+      _properties: (
+        font-size: 2rem,
+        border-color: enum('ValueSet:::NULLABLE'),
+      ),
+    ),
+  )
+);
+
+$test_note_space_nested: (
+  _groups: (),
+  _components: (
+    (
+      _name: 'container',
+      _subselector: '.note',
+      _properties: (
+        color: enum('ValueSet:::NOT_NULL'),
+        background: enum('ValueSet:::NULLABLE'),
+        width: enum('ValueSet:::NULLABLE'),
+        height: 20rem,
+        border-color: enum('ValueSet:::NULLABLE')
+      ),
+      _components: (
+        (
+          _name: 'title',
+          _subselector: ' > .title',
+          _properties: (
+            font-size: 2rem,
+            border-color: enum('ValueSet:::NULLABLE'),
+          ),
+        ),
+      )
+    ),
+  )
+);
+
+$test_note_space_bad_schema_first: (
+  _components: (
+    (
+      _subselector: '.note',
+      _properties: (
+        color: enum('ValueSet:::NOT_NULL'),
+        background: enum('ValueSet:::NULLABLE'),
+        width: enum('ValueSet:::NULLABLE'),
+        height: 20rem,
+        border-color: enum('ValueSet:::NULLABLE')
+      ),
+    ),
+  )
+);
+
+$test_note_space_bad_schema_second: (
+  _components: (
+    (
+      _name: 'container',
+      _properties: (
+        color: enum('ValueSet:::NOT_NULL'),
+        background: enum('ValueSet:::NULLABLE'),
+        width: enum('ValueSet:::NULLABLE'),
+        height: 20rem,
+        border-color: enum('ValueSet:::NULLABLE')
+      ),
+    ),
+  )
+);
+
+$test_note_space_bad_schema_third: (
+  _components: (
+    (
+      _name: 'container',
+      _subselector: '.note',
+    ),
+  )
+);
+
+$test_not_real_subspace_first: (
+  container: (
+    color: enum('ValueSet:::NULLABLE'),
+  ),
+);
+
+$test_not_real_subspace_second: (
+  title: (
+    font-size: 5rem,
+  ),
+);
+
+$test_not_real_subspace_third: (
+  container: (
+    line-height: enum('ValueSet:::NOT_NULL'),
+  ),
+);
+
+$test_subspace: (
+  container: (
+    color: blue,
+    background: enum('ValueSet:::NOT_NULL')
+  )
+);
+
+$test_subspace_with_default: (
+  container: (
+    color: blue,
+    background: (enum('ValueSet:::NOT_NULL'), orange)
+  )
+);
+
+$test_subspace_with_groups: (
+  _groups: (
+    note-border-color: enum('ValueSet:::NOT_NULL')
+  ),
+  container: (
+    color: blue,
+    border-color: (enum('ValueSet:::GROUPED'), note-border-color)
+  ),
+  title: (
+    border-color: (enum('ValueSet:::GROUPED'), note-border-color)
+  )
+);
+
+$test_subspace_with_groups_twostep: (
+  _groups: (
+    note-border-color-ref: enum('ValueSet:::NOT_NULL'),
+    note-border-color: (enum('ValueSet:::GROUPED'), note-border-color-ref)
+  ),
+  container: (
+    color: blue,
+    border-color: (enum('ValueSet:::GROUPED'), note-border-color)
+  ),
+  title: (
+    border-color: (enum('ValueSet:::GROUPED'), note-border-color)
+  )
+);
+
+$test_subspace_with_groups_nonexist: (
+  _groups: (
+    note-border-color: enum('ValueSet:::NOT_NULL')
+  ),
+  container: (
+    color: blue,
+    border-color: (enum('ValueSet:::GROUPED'), non-existent)
+  ),
+  title: (
+    border-color: (enum('ValueSet:::GROUPED'), non-existent)
+  )
+);
+
+$test_add_ChapterNote_context: ('ChapterNote:::_selectors': ('.chapter > ',));
+
+$test_note_dual_context: (
+  ChapterNote: (
+    _selectors: ('.chapter > ', '.appendix > .special'),
+    container: (
+      background: yellow
+    )
+  )
+);
+
+$test_note_color_line_height: (
+  ChapterNote: (
+    _selectors: ('.chapter > ', '.appendix > .special'),
+    container: (
+      color: yellow,
+      line-height: 1.3rem
+    )
+  )
+);
+
+$test_note_grouped: (
+  ChapterNote: (
+    _selectors: ('.chapter > ', '.appendix > .special'),
+    note-border-color: lightgrey
+  )
+);
+
+@include describe("Design Space") {
+  @include it('errors when get_space errors when name does not exist') {
+    @include assert-true(
+      is_error(
+        get_space('non-existant-space-name')
+      )
+    );
+  }
+
+  @include it('errors when create_subspace is given an invalid parent') {
+    @include assert {
+      @include output {
+        @include scoped_create_subspace('child-space-name', 'non-existant-space-name', ()){}
+      } @include expect {
+        .error {
+          ERROR: "Superspace or subspace `non-existant-space-name` does not exist";
+        }
+      }
+    }
+    
+  }
+
+  @include it('can create and find a superspace') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include assert-true(space_exists('TestNote'));
+    }
+  }
+
+  @include it('can nest superspace components to represent subselector nesting') {
+    @include scoped_create_superspace('TestNote', $test_note_space_nested) {
+      @include assert-equal(
+        get_root_subselector('TestNote', 'title'),
+        '.note > .title'
+      );
+    }
+  }
+
+  @include it('errors when a superspace has a bad schema') {
+    @include scoped_add_settings($test_add_ChapterNote_context) {
+      @include assert {
+        @include output {
+          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_first) {}
+        }
+        @include expect {
+          .error {
+            ERROR: "Missing key `_name`.";
+          }
+        }
+      }
+      @include assert {
+        @include output {
+          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_second) {}
+        }
+        @include expect {
+          .error {
+            ERROR: "Missing key `_subselector`.";
+          }
+        }
+      }
+      @include assert {
+        @include output {
+          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_third) {}
+        }
+        @include expect {
+          .error {
+            ERROR: "Missing key `_properties`.";
+          }
+        }
+      }
+    }
+  }
+
+  @include it('can create a superspace only within a scope') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {}
+    @include assert-false(space_exists('TestNote'));
+  }
+  
+  @include it('can create and find a subspace') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+        @include assert-true(space_exists('SpecificTestNote'));
+      }
+    }
+  }
+
+  @include it('can query a subspace for its root information') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+        @include assert-equal(
+          get_root_name('SpecificTestNote'),
+          'TestNote'
+        );
+        @include assert-equal(
+          get_root_subselector('SpecificTestNote', 'title'),
+          '.note > .title'
+        );
+      }
+    }
+  }
+
+  @include it('errors when a attempting to find the subselector for a non-existent component') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+        @include assert-true(
+          is_error(
+            get_root_subselector('SpecificTestNote', 'invalid-field-name')
+          )
+        );
+      }
+    }
+  }
+
+  @include it('errors when required context is missing') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include assert {
+        @include output {
+          @include use('ChapterNote','TestNote');
+        } @include expect {
+          .error {
+            ERROR: "Unknown setting `ChapterNote:::_selectors`."
+          }
+        }
+      }
+      
+    }
+  }
+
+  @include it('errors when required setting is missing') {
+    @include scoped_add_settings($test_add_ChapterNote_context) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include assert {
+          @include output {
+            @include use('ChapterNote','TestNote');
+          } @include contains {
+            .chapter > .note {
+              .error {
+                ERROR: "Unknown setting `ChapterNote:::container:::color`.";
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @include it('errors when required setting is missing - subspace') {
+      @include scoped_add_settings($test_add_ChapterNote_context) {
+        @include scoped_create_superspace('TestNote', $test_note_space) {
+          @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+            @include assert {
+              @include output {
+                @include use('ChapterNote','SpecificTestNote');
+              } @include contains {
+                .chapter > .note {
+                  .error {
+                    ERROR: "Unknown setting `ChapterNote:::container:::background`.";
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include it('allows use of the same subspace with different settings') {
+    @include scoped_add_settings($test_note_dual_context) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                color: blue;
+                background: yellow;
+                height: 20rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include it('allows ValueSets to include a default value if setting is missing') {
+    @include scoped_add_settings($test_add_ChapterNote_context) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_default) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                color: blue;
+                background: orange;
+                height: 20rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include it('allows setting groups for a space') {
+    @include scoped_add_settings($test_note_grouped) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                color: blue;
+                height: 20rem;
+                border-color: lightgrey;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include it('allows group to point to another group') {
+    @include scoped_add_settings($test_note_grouped) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups_twostep) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                color: blue;
+                height: 20rem;
+                border-color: lightgrey;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include it('errors when a referenced group does not exist') {
+    @include scoped_add_settings($test_note_grouped) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups_nonexist) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                .error {
+                  ERROR: "Group `non-existent` does not exist.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include it('forbids subspaces from being more general') {
+    @include scoped_add_settings($test_add_ChapterNote_context) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_first) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note {
+                .error {
+                  ERROR: "Space `TestNote` is not a proper superspace due to `ChapterNote:::container:::color`.";
+                }
+              }
+            }
+          }
+        }
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_second) {
+          @include assert {
+            @include output {
+              @include use('ChapterNote','SpecificTestNote');
+            } @include contains {
+              .chapter > .note > .title {
+                .error {
+                  ERROR: "Space `TestNote` is not a proper superspace due to `ChapterNote:::title:::font-size`.";
+                }
+              }
+            }
+          }
+        }
+        @include scoped_add_settings($test_note_color_line_height) {
+          @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_third) {
+            @include assert {
+              @include output {
+                @include use('ChapterNote','SpecificTestNote');
+              } @include contains {
+                .chapter > .note {
+                  .error {
+                    ERROR: "Space `SpecificTestNote` is not a proper subspace due to addition of property `line-height`.";
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+
+  @include it('can debug output of all parents of a subspace') {
+    @include scoped_add_settings($test_note_grouped) {
+      @include scoped_create_superspace('TestNote', $test_note_space) {
+        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups) {
+          @include assert-equal(
+            get_lineage('SpecificTestNote'),
+            ('SpecificTestNote', 'TestNote')
+          );
+        }
+      }
+    }
+  }
+}
+
+@include describe('Debug functions (just for code coverage)') {
+  @include it('outputs debug_superspaces') {
+    @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include debug_superspaces();
+    }
+  }
+
+  @include it('outputs debug_enums') {
+    @include debug_enums();
+  }
+
+  @include it('outputs debug_settings_manifest') {
+    @include scoped_add_settings($test_note_grouped) {
+      @include debug_settings_manifest();
+    }
+  }
+
+  @include it('outputs debug_settings') {
+    @include scoped_add_settings(
+      $test_add_settings_function,
+      $test_add_settings_function_after) {
+      @include debug_settings();
+    }
+  }
+}
+
+@include describe('Platform-specifics') {
+  @include it('allows conditional execution') {
+    @include assert {
+      @include output {
+        @include for_platform(enum('Platform:::PDF')) {
+          platform: pdf;
+          color: blue;
+        }
+        @include for_platform(enum('Platform:::REX_WEB')) {
+          platform: rex_web;
+          color: green;
+        }
+      } @include expect {
+        platform: pdf;
+        color: blue;
+      }
+    }
+  }
+  @include it('allows function-based platform branching') {
+    @include assert-equal(
+      if_platform(enum('Platform:::REX_WEB'), "hello", "goodbye"),
+      "goodbye"
+    );
+    @include assert-equal(
+      if_platform(enum('Platform:::PDF'), "hello", "goodbye"),
+      "hello"
+    );
+  }
+  @include it('errors upon an invalid platform enum value') {
+    @include assert {
+      @include output {
+        @include for_platform('some value') {
+          platform: silly;
+        }
+      } @include expect {
+        .error {
+          ERROR: "Argument `some value` must be an enum value.";
+        }
+      }
+    }
+    @include assert-true(
+      is_error(if_platform('some value', "hello", "goodbye"))
+    )
+  }
+}
