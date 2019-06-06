@@ -1,56 +1,53 @@
 @import './styles/framework/_framework';
+@import '../../designs/carnival/learning-components';
+@import '../../designs/carnival/learning-spaces';
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans');
+@import url('https://fonts.googleapis.com/css?family=Muli');
+
 // @import './styles/designs/carnival/_color-scheme.scss';
-//just have these here for testing convienece, will RM later
-$Y1:    #ECCF48;
-$Y2:    #F3BE57; 
-$O1:    #E27C4E; 
-$R1:    #B32B2F; 
-$R2:    #A11F67; 
-$BR1:   #A5633B; 
-$B1:    #57BCD8; 
-$B2:    #3172B6; 
-$B3:    #388097; 
-$G1:    #99CDBF; 
-$G2:    #6EBB9E; 
-$G3:    #84AE52;
-$G4:    #9C9D4A; 
-$G5:    #479177; 
-$Grey1: #EEEAE1;
+$B2: #3172B6; 
 
 @include add_settings((
-    icon-feature-2: (
-        _selectors: ('.link-to-learning'),
-        'container': (
-            border-bottom: '1.5pt solid #{$G3}',
+    LearningTitle: (
+        _selectors: ('[data-type=\'page\']'),
+        title: (
+            color: '#{$B2}',
+            font-family: 'Muli',
+            font-style: italic,
+            font-weight: 900,
+            font-size: 15px,
         ),
-    ), 
-    boxed: (
-        _selectors: ('.everyday-life'),
-        'container': (
-            border: '1.5pt solid #{$B3}',
+        container: (
+            margin-top: 4px,
+            padding-left: 20px,
         ),
-        'title': (
-            border-bottom: '1pt dotted #{$B3}',
-        )
     ),
-    intro: (
-        _selectors: ('[data-type="chapter"]'), 
-        'outline-container': (
-            background-color: '#{$B3}'
+
+    // Actual list
+    LearningWrapper: (
+        _selectors: ('[data-type=\'abstract\']'),
+        container: (
+            margin-top: 5px,
+            padding-left: 20px,
         ),
-        'splash_image': (
-            margin-bottom: '3em',
-        )
+        listItem: (
+            color: black,
+            font-family: 'IBM Plex Sans',
+            font-style: normal,
+            font-weight: normal,
+            font-size: 14px,
+            padding-top: 3px,
+            list-style: none,
+        ),
+        listDot: (
+            color: '#{$B2}',
+            content: "\"\2022\"",
+            display: inline-block,
+            width: 1em,
+            margin-left: -1em,
+        ),
     ),
-    eoc-container: (
-        _selectors: 
-            ('[data-type="composite-page"]'),
-    ),
-    
 ));
 
-@page {
-  margin-right: 0in; }
-
-$IS_TEST: true !global;
-@import './styles/templates/template1/template1';
+@include use('LearningTitle', 'LearningTitleSpace');
+@include use('LearningWrapper', 'LearningContainerSpace');
