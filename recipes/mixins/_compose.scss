@@ -393,41 +393,21 @@
     @if ($specialPageType == $PAGE_INDEX) {
       $sourceSelector: 'div[data-type="page"] span[data-type="term"], div[data-type="composite-page"] span[data-type="term"]';
       #{$sourceSelector} {
-        // Create an index entry for the term by creating a new element and then moving it
-        &::after {
-          // i18n: use the @reference="..." version of a term when adding it to the Index (if the attribute is available). See #353
-          content: attr(#{"cmlnle|reference"}, content());
-          attr-group-by: attr(group-by);
-          container: span;
-          class: "os-term";
-          move-to: index-term;
-        }
-        &::after {
-          content: string($sectionHeaderString);
-          container: span;
-          class: "os-term-section";
-          move-to: index-section;
-        }
-        // Create a link next to the index term which points to the term in the book
-        // Make sure there is a space between each link
-        // HACK: generate a span that only contains a comma and a space, the last-child one must be removed on the next pass. See modify_trash('.os-index-link-separator:last-child') in book.scss
-        &::after {
-          container: a;
-          content: pending(index-section);
-          attr-href: "#" attr(id);
-          class: "os-term-section-link";
-          move-to: index-section-link
-        }
-        &::after {
-          container: span;
-          content: ', ';
-          class: "os-index-link-separator";
-          move-to: index-section-link;
-        }
-        &::after {
-          content: pending(index-term) pending(index-section-link);
-          class: os-index-item;
-          move-to: #{$className}-TOCOMPOSITE;
+        @include _buildIndexTerms($className, $sectionHeaderString);
+      }
+    } @else if ($specialPageType == $PAGE_INDEX_PARTIAL) {
+      $indexType: map-get($page, indexType);
+      $isDefault: map-get($page, defaultIndex);
+
+      $sourceSelector: 'div[data-type="page"] span[data-type="term"][cxlxt|index="#{$indexType}"], div[data-type="composite-page"] span[data-type="term"][cxlxt|index="#{$indexType}"]';
+      #{$sourceSelector} {
+        @include _buildIndexTerms($className, $sectionHeaderString);
+      }
+
+      @if ($isDefault) {
+        $sourceSelector: 'div[data-type="page"] span[data-type="term"]:not([cxlxt|index]), div[data-type="composite-page"] span[data-type="term"]:not([cxlxt|index])';
+        #{$sourceSelector} {
+          @include _buildIndexTerms($className, $sectionHeaderString);
         }
       }
     } @else {
@@ -482,6 +462,45 @@
   }
 }
 
+@mixin _buildIndexTerms($className, $sectionHeaderString) {
+  // Create an index entry for the term by creating a new element and then moving it
+  &::after {
+    // i18n: use the @reference="..." version of a term when adding it to the Index (if the attribute is available). See #353
+    content: attr(#{"cmlnle|reference"}, content());
+    attr-group-by: attr(group-by);
+    container: span;
+    class: "os-term";
+    move-to: index-term;
+  }
+  &::after {
+    content: string($sectionHeaderString);
+    container: span;
+    class: "os-term-section";
+    move-to: index-section;
+  }
+  // Create a link next to the index term which points to the term in the book
+  // Make sure there is a space between each link
+  // HACK: generate a span that only contains a comma and a space, the last-child one must be removed on the next pass. See modify_trash('.os-index-link-separator:last-child') in book.scss
+  &::after {
+    container: a;
+    content: pending(index-section);
+    attr-href: "#" attr(id);
+    class: "os-term-section-link";
+    move-to: index-section-link
+  }
+  &::after {
+    container: span;
+    content: ', ';
+    class: "os-index-link-separator";
+    move-to: index-section-link;
+  }
+  &::after {
+    content: pending(index-term) pending(index-section-link);
+    class: os-index-item;
+    move-to: #{$className}-TOCOMPOSITE;
+  }
+}
+
 /// @see {mixin} _createBookComposite
 /// @group compose
 @mixin compose_createBookComposites($compositePages) {
@@ -517,7 +536,7 @@
       // @if release-flag-enabled(toc-comp-page-linking) {
       //   attr-id: "#{$className}" string(chap-id);
       // }
-      @if ($specialPageType == $PAGE_INDEX) {
+      @if ($specialPageType == $PAGE_INDEX or $specialPageType == $PAGE_INDEX_PARTIAL) {
         group-by: span, "span::attr(group-by)", nocase;
       }
     }
