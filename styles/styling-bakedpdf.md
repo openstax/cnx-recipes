@@ -8,7 +8,6 @@ The baked-pdf styling framework was designed in a way so that the user of the fr
 **Note:** Files named with a leading `_` do not produce any CSS output during compilation, they are imported in another file. This allows us to have control over the compiling order of our files.
 
 **Note:** Avoid placing raw values into files that are not `_settings.scss` or `_map.scss`.
-**Note:** Avoid placing raw values into files that are not `_settings.scss`, or `_map.scss`.
 
 ## Concepts
 
