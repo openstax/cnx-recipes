@@ -454,6 +454,53 @@ $test_settings_with_invalid_reference: (
   }
 }
 
+@include describe('Linting Functions') {
+  @include describe('The is_camel_case Function') {
+    @include it('returns true if a string is CamelCase (not lowerCamelCase') {
+      @include assert-equal(
+        is_camel_case('CamelCase'),
+        true
+      );
+    }
+    @include it('returns false if a string is not CamelCase') {
+      @include assert-equal(
+        is_camel_case('lowerCamelCase'),
+        false
+      );
+      @include assert-equal(
+        is_camel_case('snake_case'),
+        false
+      );
+      @include assert-equal(
+        is_camel_case('dash-case'),
+        false
+      );
+    }
+  }
+  @include describe('The has_namespace Function') {
+    @include it('returns true if a string has a namespace (*:::*)') {
+      @include assert-equal(
+        has_namespace('ns:::value'),
+        true
+      );
+    }
+    @include it('returns false if a string has no namespace') {
+      @include assert-equal(
+        has_namespace('value'),
+        false
+      );
+      @include assert-equal(
+        has_namespace(':::bad'),
+        false
+      );
+      @include assert-equal(
+        has_namespace('bad:::'),
+        false
+      );
+    }
+  }
+}
+
 $test_note_space: (
   _components: (
     (
