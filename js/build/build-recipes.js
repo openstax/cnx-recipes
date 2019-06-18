@@ -16,5 +16,5 @@ const scssResult = sass.renderSync({
   outFile: output
 })
 
-fs.writeFileSync(`${output}`, scssResult.css)
+fs.writeFileSync(output, scssResult.css)
 fs.writeFileSync(`${output}.map`, scssResult.map)
