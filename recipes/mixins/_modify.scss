@@ -841,16 +841,14 @@
 }
 
 @mixin modify_customFootnotes($footnoteConfig) {
-  @if $footnoteConfig {
-    @each $footnote in $footnoteConfig {
-      $incrementParentSelector: map-get($footnote, incrementParentSelector);
-      $resetSelector: map-get($footnote, resetSelector);
-      $counterName: map-get($footnote, counterName);
-      $counterType: map-get($footnote, counterType);
+  @each $footnote in $footnoteConfig {
+    $incrementParentSelector: map-get($footnote, incrementParentSelector);
+    $resetSelector: map-get($footnote, resetSelector);
+    $counterName: map-get($footnote, counterName);
+    $counterType: map-get($footnote, counterType);
 
-      @include count_customFootnotes(#{$counterName}, $incrementParentSelector, $resetSelector);
-      @include count_customFootnoteLinks(#{$counterName}Link, $incrementParentSelector, $resetSelector);
-      @include number_customFootnotes($incrementParentSelector, #{$counterName}, #{$counterName}Link, $counterType);
-    }
+    @include count_customFootnotes(#{$counterName}, $incrementParentSelector, $resetSelector);
+    @include count_customFootnoteLinks(#{$counterName}Link, $incrementParentSelector, $resetSelector);
+    @include number_customFootnotes($incrementParentSelector, #{$counterName}, #{$counterName}Link, $counterType);
   }
 }
