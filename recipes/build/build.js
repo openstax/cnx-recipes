@@ -9,12 +9,18 @@ if (!input || !output) {
   throw new Error('Input/Output arguments not given.')
 }
 
-const scssResult = sass.renderSync({
-  file: input,
-  sourceMap: true,
-  outputStyle: 'nested',
-  outFile: output
-})
+let scssResult
+try {
+  scssResult = sass.renderSync({
+    file: input,
+    sourceMap: true,
+    outputStyle: 'nested',
+    outFile: output
+  })
+} catch(error) {
+  console.log(error.formatted) 
+  process.exit()
+}
 
 fs.writeFileSync(`${output}`, scssResult.css)
 fs.writeFileSync(`${output}.map`, scssResult.map)
