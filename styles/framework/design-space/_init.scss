@@ -109,9 +109,6 @@ $FRAMEWORK_SPACE_PLACE: ();
     $copied_component: empty_map();
 
     $component_name: map-deep-get($component, _name);
-    @if not is_camel_case($component_name) {
-      @warn 'Convention for component names is CamelCase. Given `#{$component_name}`.'; // coverage:disable-line
-    }
     $component_subselector: map-deep-get($component, _subselector);
     $component_properties: map-deep-get($component, _properties);
     
@@ -123,6 +120,10 @@ $FRAMEWORK_SPACE_PLACE: ();
     }
     @if is_error($component_properties) {
       @return $component_properties;
+    }
+
+    @if not is_camel_case($component_name) {
+      @warn 'Convention for component names is CamelCase. Given `#{$component_name}`.'; // coverage:disable-line
     }
 
     $computed_subselector: #{$subselector_prefix}#{$component_subselector};
