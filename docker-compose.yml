@@ -88,3 +88,15 @@ services:
     image: openstax/princexml
     volumes:
       - "${HOST_PWD:-.}/data:/out"
+
+  command:
+    build: .
+    image: openstax/cnx-recipes
+    environment:
+      # This is necessary in order to mount the correct directory if we start
+      # sibling containers
+      HOST_PWD: "${PWD}"
+      OUTPUT_DIR: /out
+    volumes:
+      - .:/code
+      - /var/run/docker.sock:/var/run/docker.sock
