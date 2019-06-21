@@ -312,6 +312,15 @@ $test_settings_with_invalid_reference: (
   }
 }
 
+@include describe('The not_implemented Function') {
+  @include it('passes its argument through') {
+    @include assert-equal(
+      not_implemented(2rem),
+      2rem
+    );
+  }
+}
+
 
 @include describe('The remove_value Function') {
   @include it('returns a copy of a list with the value removed') {
@@ -442,6 +451,53 @@ $test_settings_with_invalid_reference: (
         'rootkey:::key2:::childkey2': value4
       )
     );
+  }
+}
+
+@include describe('Linting Functions') {
+  @include describe('The is_camel_case Function') {
+    @include it('returns true if a string is CamelCase (not lowerCamelCase') {
+      @include assert-equal(
+        is_camel_case('CamelCase'),
+        true
+      );
+    }
+    @include it('returns false if a string is not CamelCase') {
+      @include assert-equal(
+        is_camel_case('lowerCamelCase'),
+        false
+      );
+      @include assert-equal(
+        is_camel_case('snake_case'),
+        false
+      );
+      @include assert-equal(
+        is_camel_case('dash-case'),
+        false
+      );
+    }
+  }
+  @include describe('The is_namespaced_camel Function') {
+    @include it('returns true if a string has a namespace (*:::*)') {
+      @include assert-equal(
+        is_namespaced_camel('ns:::Value'),
+        true
+      );
+    }
+    @include it('returns false if a string has no namespace') {
+      @include assert-equal(
+        is_namespaced_camel('value'),
+        false
+      );
+      @include assert-equal(
+        is_namespaced_camel(':::Bad'),
+        false
+      );
+      @include assert-equal(
+        is_namespaced_camel('bad:::'),
+        false
+      );
+    }
   }
 }
 

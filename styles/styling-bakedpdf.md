@@ -7,10 +7,51 @@ The baked-pdf styling framework was designed in a way so that the user of the fr
 
 **Note:** Files named with a leading `_` do not produce any CSS output during compilation, they are imported in another file. This allows us to have control over the compiling order of our files.
 
-**Note:** Avoid placing raw values into files that are not `_settings.scss`, `_scheme.scss`, or `_map.scss`.
+**Note:** Avoid placing raw values into files that are not `_settings.scss` or `_map.scss`.
+
+## Concepts
+
+### Definitions
+- Design Specs: a visual design requirement given a markup structure 
+- Design: a coherent set of design specs that reflects designer intent
+  - Multiple designs can be used for a book 
+- Template: a set of design specs from a variety of designs
+- Design Space: a complete set of styling definitions given a markup structure
+- Design Superspace: within a design space, a set of styling properties given a markup structure
+- Design Subspace: within a desgin superspace, a set of property values given a markup structure 
+  - Properties are the same, values are different 
+The designer will provide the design. 
+The design will contain design specifications or design specs that give details about the design requirement based on a markup structure. 
+The markup is very important and helps to define not only the design specs but the design space as well. 
+Imagine that you are given the markup for a table. There are seemingly endless combinations of properties that you could apply to this table. This describes the design space for the table markup.
+A design space depends on the markup and is restricted by it. 
+Within a design space, design superspaces and design subspaces are found. 
+The design superspace can be seen as a parent to the design subspace. 
+Design superspaces vary in properties while design subspaces vary in property values. 
+For example, if table1 requires only a color and background property, and table2 only requires a border property, styles for table1 will be derived from superspace1 and styles for table2 will be derived from superspace2.
+In another example, if table1 and table2 both require the same properties but different values, both of their styles will be derived from the same superspace but different subspaces. 
+
+### How will these concepts be implemented (a rough summary)? 
+The `./styles` directory will be reorganized: 
+```bash
+    |-- `./Framework`
+    |-- `./Design`
+          |-- `./lisa-design`
+          |-- `./maher-design`
+    |-- `./Templates`
+          |-- `template-name.scss`
+          |-- `settings.scss`
+          |-- `color-map.scss`
+    |-- `./Book`
+          |-- `book-name.scss`
+
+```
+- `./Framework` will contain global variables for values such as `$NOT_NULL` and various functions and mixins to use throughout `./styles`
+- `./Design` contains super and subspaces grouped by the specific design from which they came 
+- `./Templates` contain the individual templates which are made up of a combination of design specs from ./Design
+- `./Book` contains book specific styles
 
 ## Development
-
 ### Generating a Styled Baked-PDF Locally
 (*The Baked-PDF pipeline is currently being developed*)
 
@@ -18,7 +59,7 @@ The baked-pdf styling framework was designed in a way so that the user of the fr
 To generate a styled baked-pdf for a new or previously un-styled baked-book (skip to step 2 if these files exist):
 - Create a directory with the book name in `./books`. `./books/book-name`
 - Create `_import-config.scss` and `{book-name}.scss`
-- Create `.book-name/config` and inside `./config` create `./config/_color-map.scss` , `./config/_color-scheme.scss`, `./config/_font-map.scss`, `./config/_icon-map.scss`, and `./config/_settings.scss`
+- Create `.book-name/config` and inside `./config` create `./config/_color-map.scss`, `./config/_font-map.scss`, `./config/_icon-map.scss`, and `./config/_settings.scss`
 - Inside of `./config/{book-name}.scss` import files from the framework and theme and create the `$notes` map to style the book notes. (See [./config/intro-business/book.scss](./config/intro-business/book.scss) for an example)
 
 **Step 2**
@@ -45,8 +86,7 @@ The code in `./framework` should not have to be changed during the development o
 - `./framework/base.scss`
   - Contains imports and styles related to the elements present in all OpenStax PDFs (ex: default `color` and `font-size` of body text)
 - `./framework/import-style.scss`
-  - Contains imported files from ./framework/style
-
+  - Contains imported files from ./framework/style 
 
 ### Schemes and Maps (How do they work?)
 Mapping is a native functionality of SASS and is used heavily in the baked-pdf styling framework. For general documentation on mapping in SASS refer to this [link](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#maps).
@@ -76,7 +116,6 @@ Example: `scale-uniform(rgb(100,100,100), 0.6)` -> `rgb(60,60,60)`
 
 **Font and Icon Maps**
 The font and icon maps on the framework level have a `default-font-map` function, `$font/icon-manifest` map, and `update-font/icon-config` mixin and works similarly to the color-scheme on the framework level.
-
 
 **Settings**
 Although `./_settings.scss` does not share the same naming conventions as the font and color map files, it works in the same way as them.
