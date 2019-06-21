@@ -17,7 +17,7 @@ try {
     outputStyle: 'nested',
     outFile: output
   })
-} catch(error) {
+} catch (error) {
   console.log(error.formatted) 
   process.exit()
 }
