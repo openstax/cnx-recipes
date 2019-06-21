@@ -60,6 +60,9 @@ $FRAMEWORK_SPACE_PLACE: ();
 ///
 /// @group publicapi
 @mixin create_superspace($name, $space) {
+  @if not is_namespaced_camel($name) {
+    @warn 'Convention for superspace name is namespaced:::CamelCase. Given `#{$name}`.'; // coverage:disable-line
+  }
   $unwrapped_superspace: unwrap_superspace($space);
   @if is_error($unwrapped_superspace) {
     @include error(error_message($unwrapped_superspace));
@@ -117,6 +120,10 @@ $FRAMEWORK_SPACE_PLACE: ();
     }
     @if is_error($component_properties) {
       @return $component_properties;
+    }
+
+    @if not is_camel_case($component_name) {
+      @warn 'Convention for component names is CamelCase. Given `#{$component_name}`.'; // coverage:disable-line
     }
 
     $computed_subselector: #{$subselector_prefix}#{$component_subselector};
@@ -266,6 +273,9 @@ $FRAMEWORK_SPACE_PLACE: ();
 
 /// @group publicapi
 @mixin use($name, $subspace_name) {
+  @if not is_camel_case($name) {
+    @warn 'Convention for superspace instantiations is CamelCase. Given `#{$name}`.'; // coverage:disable-line
+  }
   $context_selectors: settings("#{$name}:::_selectors");
   @if is_error($context_selectors) {
     @include error(error_message($context_selectors));

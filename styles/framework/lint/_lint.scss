@@ -1,0 +1,66 @@
+@function upper_chars() {
+  @return (
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+  );
+}
+@function lower_chars() {
+  @return (
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+  );
+}
+@function numeric_chars() {
+  @return ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+}
+
+@function str_contains($string, $char_sequence) {
+  @return not not str-index($string, $char_sequence);
+}
+
+@function char_at_index($string, $index) {
+  @return str-slice($string, $index, $index);
+}
+
+@function str_is_upper($string) {
+  @for $char_index from 1 through str-length($string) {
+    @if not list_contains(upper_chars(), char_at_index($string, $char_index)) {
+      @return false;
+    }
+  }
+  @return true;
+}
+
+@function list_contains($list, $value) {
+  @return not not index($list, $value);
+}
+
+
+@function is_camel_case($string) {
+  $allowed: join(join(upper_chars(), lower_chars()), numeric_chars());
+  @for $char_index from 1 through str-length($string) {
+    @if not list_contains($allowed, char_at_index($string, $char_index)) {
+      @return false;
+    }
+  }
+  @if not str_is_upper(char_at_index($string, 1)) {
+    @return false;
+  }
+  @return true;
+}
+
+@function has_namespace($string) {
+  $allowed: join(join(upper_chars(), lower_chars()), numeric_chars());
+  @return list_contains($allowed, char_at_index($string, 1))
+    and str_contains($string, ':::')
+    and list_contains($allowed, char_at_index($string, -1));
+}
+
+@function is_namespaced_camel($string) {
+  @if not has_namespace($string) {
+    @return false;
+  }
+  $namespace_index: str-index($string, ':::');
+  @return is_camel_case(str-slice($string, $namespace_index + 3))
+}
+
