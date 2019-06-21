@@ -83,8 +83,11 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   fi
 
   if [ -f "${style_file}" ]; then
+    ln "${style_file}" "./data/${book_name}"
     do_progress_quiet "Adding style file ${style_file}" \
-      sed -i "s%<\/head>%<link rel=\"stylesheet\" type=\"text/css\" href=\"../../${style_file}\" />&%" "${baked_file}"
+      sed -i "s%<\/head>%<link rel=\"stylesheet\" type=\"text/css\" href=\"$(basename "${style_file}")\" />&%" "${baked_file}"
+  elif [ -n "${STYLE}" ] || [ -n "${style_name}" ]; then
+    _say "${c_red}WARNING${c_none} style not found: ${style_file}"
   fi
 
   if [ -f /.dockerenv ]; then
