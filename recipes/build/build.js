@@ -18,7 +18,7 @@ try {
     outFile: output
   })
 } catch (error) {
-  console.log(error.formatted) 
+  console.log(error.formatted)
   process.exit()
 }
 
