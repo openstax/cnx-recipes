@@ -31,6 +31,32 @@
   }
 }
 
+@mixin utils_titlePartsOrder($titleConfig, $bucket: null) {
+  @each $titlePart in map-keys($titleConfig) {
+    $contentType: map-get($titleConfig, $titlePart);
+    
+    $partOrder: map-values($titleConfig);
+    $created: null;
+    $existing: null;
+
+    @if $contentType == createdContent {
+      $created: pending(#{$bucket});
+    }
+    @if $contentType == existingContent {
+      $existing: content();
+    }
+
+    $stepZero: (pending(#{$bucket}), content());
+    $stepOne: set-nth($stepZero, index($partOrder, createdContent), $created);
+    $stepTwo: set-nth($stepOne, index($partOrder, existingContent), $existing);
+
+    $partOne: nth($stepTwo, 1);
+    $partTwo: nth($stepTwo, 2);
+
+    content: #{$partOne} #{$partTwo};
+  }
+}
+
 //Relies on hitting To Selector then From Selector without anything in between repeatedly
 //:'( this is less robust and useful than originally envisioned, still works great for solutions -> exercises though
 //Additionally a counter may not need to be passed, and a new method could rely on an internal counter
