@@ -4,18 +4,34 @@
 /// @arg {Text} $container [null] - The unquoted type of container element to send the titling spans to (e.g. h1, h2, div). If null, resulting spans will not be wrapped
 /// @arg {String} $containerType [null] - The data-type to give to the created container element. If null, resulting spans will not be wrapped
 /// @group utils
-@mixin utils_title($content, $bucket: null, $container: null, $containerType: null) {
+@mixin utils_title($content, $bucket: null, $container: null, $containerType: null, $titleSelector: null, $selectorContainer: null) {
   //TODO: Restrict what things titlePart can be. Currently any key will work.
   @each $titleClassName in map-keys($content) {
     $titleValue: map-get($content, $titleClassName);
-    &::before {
-      container: span;
-      content: $titleValue;
-      class: $titleClassName;
-      @if ($container != null and $containerType != null) {
-        move-to: #{$container}-TITLECONTAINER
-      } @else if ($bucket != null) {
-        move-to: $bucket;
+
+    @if $titleValue != existingContent {
+      &::before {
+        container: span;
+        content: $titleValue;
+        class: $titleClassName;
+        @if ($container != null and $containerType != null) {
+          move-to: #{$container}-TITLECONTAINER
+        } @else if ($bucket != null) {
+          move-to: $bucket;
+        }
+      }
+    } @else {
+      @if index(($content), ($titleClassName existingContent)) == 1 {
+        #{$titleSelector} {
+          container: #{$selectorContainer};
+          content: content() pending(#{$bucket});
+        }
+      }
+      @if index(($content), ($titleClassName existingContent)) == 3 {
+        #{$titleSelector} {
+          container: #{$selectorContainer};
+          content: pending(#{$bucket}) content();
+        }
       }
     }
   }
@@ -28,32 +44,6 @@
         move-to: $bucket;
       }
     }
-  }
-}
-
-@mixin utils_titlePartsOrder($titleConfig, $bucket: null) {
-  @each $titlePart in map-keys($titleConfig) {
-    $contentType: map-get($titleConfig, $titlePart);
-    
-    $partOrder: map-values($titleConfig);
-    $created: null;
-    $existing: null;
-
-    @if $contentType == createdContent {
-      $created: pending(#{$bucket});
-    }
-    @if $contentType == existingContent {
-      $existing: content();
-    }
-
-    $stepZero: (pending(#{$bucket}), content());
-    $stepOne: set-nth($stepZero, index($partOrder, createdContent), $created);
-    $stepTwo: set-nth($stepOne, index($partOrder, existingContent), $existing);
-
-    $partOne: nth($stepTwo, 1);
-    $partTwo: nth($stepTwo, 2);
-
-    content: #{$partOne} #{$partTwo};
   }
 }
 
