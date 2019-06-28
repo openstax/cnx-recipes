@@ -4,34 +4,18 @@
 /// @arg {Text} $container [null] - The unquoted type of container element to send the titling spans to (e.g. h1, h2, div). If null, resulting spans will not be wrapped
 /// @arg {String} $containerType [null] - The data-type to give to the created container element. If null, resulting spans will not be wrapped
 /// @group utils
-@mixin utils_title($content, $bucket: null, $container: null, $containerType: null, $titleSelector: null, $selectorContainer: null) {
+@mixin utils_title($content, $bucket: null, $container: null, $containerType: null) {
   //TODO: Restrict what things titlePart can be. Currently any key will work.
   @each $titleClassName in map-keys($content) {
     $titleValue: map-get($content, $titleClassName);
-
-    @if $titleValue != existingContent {
-      &::before {
-        container: span;
-        content: $titleValue;
-        class: $titleClassName;
-        @if ($container != null and $containerType != null) {
-          move-to: #{$container}-TITLECONTAINER
-        } @else if ($bucket != null) {
-          move-to: $bucket;
-        }
-      }
-    } @else {
-      @if index(($content), ($titleClassName existingContent)) == 1 {
-        #{$titleSelector} {
-          container: #{$selectorContainer};
-          content: content() pending(#{$bucket});
-        }
-      }
-      @if index(($content), ($titleClassName existingContent)) == 3 {
-        #{$titleSelector} {
-          container: #{$selectorContainer};
-          content: pending(#{$bucket}) content();
-        }
+    &::before {
+      container: span;
+      content: $titleValue;
+      class: $titleClassName;
+      @if ($container != null and $containerType != null) {
+        move-to: #{$container}-TITLECONTAINER
+      } @else if ($bucket != null) {
+        move-to: $bucket;
       }
     }
   }

@@ -1,0 +1,39 @@
+@function order_documentTitle($documentTitleConfig, $element) {
+    $contentValue: null;
+
+    @each $titlePart in map-keys($documentTitleConfig) {
+        $titleValue: map-get($documentTitleConfig, $titlePart);
+        $value: null;
+
+        @if $titleValue == 'partTypeTitleConfig' {
+            $value: pending(b#{$element}Label);
+        }
+        @if $titleValue == 'existingContent' {
+            $value: content();
+        }
+
+        $contentValue: $contentValue $value;
+    }
+
+    @return $contentValue;
+}
+
+@function order_figTableCaption($figTableConfig) {
+    $contentValue: null;
+
+    @each $captionPart in map-keys($figTableConfig) {
+        $captionValue: map-get($figTableConfig, $captionPart);
+        $value: null;
+
+        @if $captionValue == 'partTypeCaptionConfig' {
+            $value: pending(bCaption);
+        }
+        @if $captionValue == 'existing#{$captionPart}' {
+            $value: pending(bCaption#{$captionPart});
+        }
+        
+        $contentValue: $contentValue $value;
+    }
+
+    @return $contentValue;
+}
