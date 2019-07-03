@@ -153,7 +153,7 @@
   }
 }
 
-@mixin number_setCaptions($setFigTableCaptions, $labeling, $labelingAp, $labelingPr: null) {
+@mixin number_setCaptions($setFigTableCaptions, $labeling, $figTableConfig, $labelingAp, $labelingPr: null) {
   $captionType:         map-get($setFigTableCaptions, captionType);
   $defaultContainer:    map-get($setFigTableCaptions, defaultContainer);
   $hasCaption:          map-get($setFigTableCaptions, hasCaption);
@@ -206,7 +206,7 @@
           }
         }
       }
-      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
+      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle, $figTableConfig);
     }
     @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
@@ -214,7 +214,7 @@
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered),
     > #{$elementName}:not(.unnumbered) {
       @include utils_title($labelingAp, bCaption);
-      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
+      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle, $figTableConfig);
       @if ($hasTopTitle and release-flag-enabled(appendix-top-title-copy)) {
         &.top-titled {
           //this will have to be rewritten after all the content has been updated to contain the title within the title instead of the hacky first header in the table.
@@ -231,7 +231,7 @@
     .preface {
       :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
         @include utils_title($labelingPr, bCaption);
-        @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
+        @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle, $figTableConfig);
       }
       @include trashUnnumberedCaption($elementName, $defaultContainer);
     }
@@ -314,7 +314,7 @@
   }
 }
 
-@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle) {
+@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle, $figTableConfig) {
 
   @if ($hasCaption) {
     #{$defaultContainer} {
@@ -348,10 +348,16 @@
       @error "BUG: Invalid captionType '#{$captionType}'";
     }
   }
+
+  $partOne: nth($figTableConfig, 1);
+  $partTwo: nth($figTableConfig, 2);
+  $partThree: nth($figTableConfig, 3);
+  $partFour: nth($figTableConfig, 4);
+
   &::after {
     container: div;
     class: "os-caption-container";
-    content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+    content: pending($partOne) pending($partTwo) pending($partThree) pending($partFour);
     move-to: bCaptionContainer;
   }
   @if $captionType == $CAPTION_TABLE {
