@@ -1,37 +1,31 @@
-@function order_documentTitle($documentTitleConfig, $element) {
+@function order_titleCaption($titleCaptionConfig, $element, $type) {
     $contentValue: null;
 
-    @each $titlePart in map-keys($documentTitleConfig) {
-        $titleValue: map-get($documentTitleConfig, $titlePart);
+    @each $part in map-keys($titleCaptionConfig) {
+        $partValue: map-get($titleCaptionConfig, $part);
+        $createdValue: null;
+        $existingValue: null;
         $value: null;
 
-        @if $titleValue == 'partTypeTitleConfig' {
-            $value: pending(b#{$element}Label);
-        }
-        @if $titleValue == 'existingContent' {
-            $value: content();
-        }
-
-        $contentValue: $contentValue $value;
-    }
-
-    @return $contentValue;
-}
-
-@function order_figTableCaption($figTableConfig) {
-    $contentValue: null;
-
-    @each $captionPart in map-keys($figTableConfig) {
-        $captionValue: map-get($figTableConfig, $captionPart);
-        $value: null;
-
-        @if $captionValue == 'partTypeCaptionConfig' {
-            $value: pending(bCaption);
-        }
-        @if $captionValue == 'existing#{$captionPart}' {
-            $value: pending(bCaption#{$captionPart});
-        }
         
+        @if $type == '#{$element}Captions' {
+            $createdValue: pending(bCaption);
+            $existingValue: pending(bCaption#{$part});
+        } @else if $type == '#{$element}DocumentTitles' {
+            $createdValue: pending(b#{$element}Label);
+            $existingValue: content();
+        } @else {
+            @error "There is no support for changing order for this type.";
+        }
+
+        @if $partValue == 'partType#{$element}Config' {
+            $value: $createdValue;
+        } @else if $partValue == 'existing#{$part}' {
+            $value: $existingValue;
+        } @else {
+            @error "Name of the value is incorrect";
+        }
+
         $contentValue: $contentValue $value;
     }
 

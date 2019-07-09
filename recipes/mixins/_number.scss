@@ -6,7 +6,7 @@
     //use the title mixin for this? and that way content() can be wrapped
     > [data-type="document-title"] {
       container: h1;
-      content: order_documentTitle($chapterTitleContentOrder, Chapter);
+      content: order_titleCaption($chapterTitleContentOrder, Chapter, ChapterDocumentTitles);
     }
   }
 }
@@ -17,7 +17,7 @@
     //use the title mixin for this? and that way content() can be wrapped
     > [data-type="document-title"] {
       container: h1;
-      content: order_documentTitle($appendixTitleContentOrder, Appendix);
+      content: order_titleCaption($appendixTitleContentOrder, Appendix, AppendixDocumentTitles);
     }
   }
 }
@@ -29,7 +29,7 @@
       //use the title mixin for this? and that way content() can be wrapped
       > [data-type="document-title"] {
         container: h2;
-        content: order_documentTitle($sectionTitleContentOrder, Section);
+        content: order_titleCaption($sectionTitleContentOrder, Section, SectionDocumentTitles);
       }
     }
     &.introduction {
@@ -351,7 +351,15 @@
   &::after {
     container: div;
     class: "os-caption-container";
-    content: order_figTableCaption($figTableConfig);
+
+    @if $captionType == $CAPTION_TABLE {
+      content: order_titleCaption($figTableConfig, Table, TableCaptions);    
+    } @else if $captionType == $CAPTION_FIGURE {
+      content: order_titleCaption($figTableConfig, Figure, FigureCaptions);    
+    } @else {
+      @error "BUG: Invalid captionType '#{$captionType}'";
+    }
+
     move-to: bCaptionContainer;
   }
   @if $captionType == $CAPTION_TABLE {
