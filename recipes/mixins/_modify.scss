@@ -852,3 +852,19 @@
     @include number_customFootnotes($incrementParentSelector, #{$counterName}, #{$counterName}Link, $counterType);
   }
 }
+
+@mixin modify_classOrder($classNameList) {
+  @each $class in $classNameList {
+    .#{$class} {
+      string-set: #{$class}Span content();
+      move-to: trash ;
+    }
+    &:deferred {
+      &::after {
+        container: span;
+        content: string(#{$class}Span);
+        class: #{$class};
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+@mixin order_documentTitle($titleConfig) {
+    @each $order in $titleConfig {
+        $parentSelector: map-get($order, parentSelector);
+        $classNameOrder: map-get($order, classNameOrder);
+
+        #{$parentSelector} {
+            > [data-type="document-title"] {
+                @include modify_classOrder($classNameOrder);
+            }
+        }
+    }
+}
+
+@mixin order_usedExistingTitles($usedTitleConfig) {
+    @each $order in $usedTitleConfig {
+        $selector: map-get($order, selector);
+        $classNameOrder: map-get($order, classNameOrder);
+
+        #{$selector} {
+            @include modify_classOrder($classNameOrder);
+        }
+    }
+}
+
+@mixin order_figTableCaption($captionConfig) {
+    @each $order in $captionConfig {
+        $parentSelector: map-get($order, parentSelector);
+        $elementName: map-get($order, elementName);
+        $classNameOrder: map-get($order, classNameOrder);
+
+        #{$parentSelector} {
+            .os-#{$elementName} {
+                .os-caption-container {
+                    @include modify_classOrder($classNameOrder);
+                }
+            }
+        }
+    }
+}
