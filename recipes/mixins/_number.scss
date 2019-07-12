@@ -72,24 +72,54 @@
 //EOS composite pages must be created before this runs
 @mixin number_numberEOSExercises($exerciseTitleContent, $solutionTitleContent) {
   .os-eos [data-type="exercise"] {
-    [data-type="problem"] {
-      @include utils_title($exerciseTitleContent);
-    }
-    [data-type="solution"] {
-      @include utils_title($exerciseTitleContent);
-    }
+    @if release-flag-enabled(exercise-label-order) {
+      [data-type="problem"] {
+        @include utils_title($exerciseTitleContent, bEOSExerciseLabel);
+        &:deferred {
+          content: pending(bEOSExerciseLabel) content();
+        }
+      }
+      [data-type="solution"] {
+        @include utils_title($exerciseTitleContent, bEOSSolutionLabel);
+        &:deferred {
+          content: pending(bEOSSolutionLabel) content();
+        }
+      }
+    } @else {
+      [data-type="problem"] {
+        @include utils_title($exerciseTitleContent);
+      }
+      [data-type="solution"] {
+        @include utils_title($exerciseTitleContent);
+      }
+    }    
   }
 }
 
 //EOC composite pages must be created before this runs
 @mixin number_numberEOCExercises($exerciseTitleContent, $solutionTitleContent) {
   .os-eoc [data-type="exercise"] {
-    [data-type="problem"] {
-      @include utils_title($exerciseTitleContent);
-    }
-    [data-type="solution"] {
-      @include utils_title($exerciseTitleContent);
-    }
+    @if release-flag-enabled(exercise-label-order) {
+      [data-type="problem"] {
+        @include utils_title($exerciseTitleContent, bEOCExerciseLabel);
+        &:deferred {
+          content: pending(bEOCExerciseLabel) content();
+        }
+      }
+      [data-type="solution"] {
+        @include utils_title($exerciseTitleContent, bEOCSolutionLabel);
+        &:deferred {
+          content: pending(bEOCSolutionLabel) content();
+        }
+      }
+    } @else {
+      [data-type="problem"] {
+        @include utils_title($exerciseTitleContent);
+      }
+      [data-type="solution"] {
+        @include utils_title($exerciseTitleContent);
+      }
+    }    
   }
 }
 
