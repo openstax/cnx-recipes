@@ -868,3 +868,30 @@
     }
   }
 }
+
+@mixin modify_elementsOrder($orderConfig, $mainSelector: null) {
+  @each $order in $orderConfig {
+    $parentSelector: map-get($order, parentSelector);
+    $childSelector: map-get($order, childSelector);
+    $selector: map-get($order, selector);
+    $classNameOrder: map-get($order, classNameOrder);
+
+    @if $parentSelector {
+      #{$parentSelector} {
+        #{$mainSelector} {
+          @include modify_classOrder($classNameOrder);
+        }
+      }
+    } @else if $childSelector {
+      #{$mainSelector} {
+        #{$childSelector} {
+          @include modify_classOrder($classNameOrder);
+        }
+      }
+    } @else {
+      #{$selector} {
+        @include modify_classOrder($classNameOrder);
+      }
+    }
+  }
+}
