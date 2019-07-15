@@ -43,27 +43,66 @@
 /// This has to run before number_numberEOCExercises because its selector is more general
 /// @group number
 @mixin number_numberContentExercises($exerciseTitleContent, $solutionTitleContent, $exerciseTitleContentAp, $solutionTitleContentAp) {
-  [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) {
-    @if $exerciseTitleContent {
-      [data-type="problem"] {
-        @include utils_title($exerciseTitleContent);
+  @if release-flag-enabled(exercise-label-order) {
+    [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) {
+      @if $exerciseTitleContent {
+        [data-type="problem"] {
+          @include utils_title($exerciseTitleContent, bContentExerciseLabel);
+          &:deferred {
+            content: pending(bContentExerciseLabel) content();
+          }
+        }
+      }
+      @if $solutionTitleContent {
+        [data-type="solution"] {
+          @include utils_title($solutionTitleContent, bContentSolutionLabel);
+          &:deferred {
+            content: pending(bContentSolutionLabel) content();
+          }
+        }
       }
     }
-    @if $solutionTitleContent {
-      [data-type="solution"] {
-        @include utils_title($solutionTitleContent);
+    .appendix [data-type="exercise"]:not(.unnumbered) {
+      @if $exerciseTitleContentAp {
+        [data-type="problem"] {
+          @include utils_title($exerciseTitleContentAp, bContentApExerciseLabel);
+          &:deferred {
+            content: pending(bContentApExerciseLabel) content();
+          }
+        }
+      }
+      @if $solutionTitleContentAp {
+        [data-type="solution"] {
+          @include utils_title($solutionTitleContentAp, bContentApSolutionLabel);
+          &:deferred {
+            content: pending(bContentApSolutionLabel) content();
+          }
+        }
       }
     }
-  }
-  .appendix [data-type="exercise"]:not(.unnumbered) {
-    @if $exerciseTitleContentAp {
-      [data-type="problem"] {
-        @include utils_title($exerciseTitleContentAp);
+  } @else {
+    [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) {
+      @if $exerciseTitleContent {
+        [data-type="problem"] {
+          @include utils_title($exerciseTitleContent);
+        }
+      }
+      @if $solutionTitleContent {
+        [data-type="solution"] {
+          @include utils_title($solutionTitleContent);
+        }
       }
     }
-    @if $solutionTitleContentAp {
-      [data-type="solution"] {
-        @include utils_title($solutionTitleContentAp);
+    .appendix [data-type="exercise"]:not(.unnumbered) {
+      @if $exerciseTitleContentAp {
+        [data-type="problem"] {
+          @include utils_title($exerciseTitleContentAp);
+        }
+      }
+      @if $solutionTitleContentAp {
+        [data-type="solution"] {
+          @include utils_title($solutionTitleContentAp);
+        }
       }
     }
   }

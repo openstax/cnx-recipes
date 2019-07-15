@@ -1587,15 +1587,23 @@
 :pass(9) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
   counter-increment: exerciseMaybeInContent; }
 
-:pass(9) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
-  container: span;
-  content: counter(exerciseMaybeInContent);
-  class: os-number; }
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"]:deferred {
+  content: pending(bContentExerciseLabel) content(); }
 
 :pass(9) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
   container: span;
   content: "Exercise ";
-  class: os-title-label; }
+  class: os-title-label;
+  move-to: bContentApExerciseLabel; }
+
+:pass(9) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number;
+  move-to: bContentApExerciseLabel; }
+
+:pass(9) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]:deferred {
+  content: pending(bContentApExerciseLabel) content(); }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix, :pass(9) .preface {
   counter-reset: table; }
