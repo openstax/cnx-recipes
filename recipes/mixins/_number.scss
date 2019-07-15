@@ -166,8 +166,17 @@
       move-to: trash;
     }
     @if $hasSolutions {
-      [data-type="solution"] {
-        @include utils_title($solutionTitleContent)
+      @if release-flag-enabled(exercise-label-order) {
+        [data-type="solution"] {
+          @include utils_title($solutionTitleContent, bNoteSolutionLabel);
+          &:deferred {
+            content: pending(bNoteSolutionLabel) content();
+          }
+        }
+      } @else {
+        [data-type="solution"] {
+          @include utils_title($solutionTitleContent)
+        }
       }
     }
     &::after {
