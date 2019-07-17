@@ -501,7 +501,7 @@ $test_settings_with_invalid_reference: (
   }
 }
 
-$test_note_space: (
+$test_note_shape: (
   _components: (
     (
       _name: 'container',
@@ -525,7 +525,7 @@ $test_note_space: (
   )
 );
 
-$test_note_space_nested: (
+$test_note_shape_nested: (
   _groups: (),
   _components: (
     (
@@ -552,7 +552,7 @@ $test_note_space_nested: (
   )
 );
 
-$test_note_space_bad_schema_first: (
+$test_note_shape_bad_schema_first: (
   _components: (
     (
       _subselector: '.note',
@@ -567,7 +567,7 @@ $test_note_space_bad_schema_first: (
   )
 );
 
-$test_note_space_bad_schema_second: (
+$test_note_shape_bad_schema_second: (
   _components: (
     (
       _name: 'container',
@@ -582,7 +582,7 @@ $test_note_space_bad_schema_second: (
   )
 );
 
-$test_note_space_bad_schema_third: (
+$test_note_shape_bad_schema_third: (
   _components: (
     (
       _name: 'container',
@@ -591,39 +591,39 @@ $test_note_space_bad_schema_third: (
   )
 );
 
-$test_not_real_subspace_first: (
+$test_not_real_subshape_first: (
   container: (
     color: enum('ValueSet:::NULLABLE'),
   ),
 );
 
-$test_not_real_subspace_second: (
+$test_not_real_subshape_second: (
   title: (
     font-size: 5rem,
   ),
 );
 
-$test_not_real_subspace_third: (
+$test_not_real_subshape_third: (
   container: (
     line-height: enum('ValueSet:::NOT_NULL'),
   ),
 );
 
-$test_subspace: (
+$test_subshape: (
   container: (
     color: blue,
     background: enum('ValueSet:::NOT_NULL')
   )
 );
 
-$test_subspace_with_default: (
+$test_subshape_with_default: (
   container: (
     color: blue,
     background: (enum('ValueSet:::NOT_NULL'), orange)
   )
 );
 
-$test_subspace_with_groups: (
+$test_subshape_with_groups: (
   _groups: (
     note-border-color: enum('ValueSet:::NOT_NULL')
   ),
@@ -636,7 +636,7 @@ $test_subspace_with_groups: (
   )
 );
 
-$test_subspace_with_groups_twostep: (
+$test_subshape_with_groups_twostep: (
   _groups: (
     note-border-color-ref: enum('ValueSet:::NOT_NULL'),
     note-border-color: (enum('ValueSet:::GROUPED'), note-border-color-ref)
@@ -650,7 +650,7 @@ $test_subspace_with_groups_twostep: (
   )
 );
 
-$test_subspace_with_groups_nonexist: (
+$test_subshape_with_groups_nonexist: (
   _groups: (
     note-border-color: enum('ValueSet:::NOT_NULL')
   ),
@@ -692,35 +692,35 @@ $test_note_grouped: (
 );
 
 @include describe("Design Space") {
-  @include it('errors when get_space errors when name does not exist') {
+  @include it('errors when get_shape errors when name does not exist') {
     @include assert-true(
       is_error(
-        get_space('non-existant-space-name')
+        get_shape('non-existant-shape-name')
       )
     );
   }
 
-  @include it('errors when create_subspace is given an invalid parent') {
+  @include it('errors when create_subshape is given an invalid parent') {
     @include assert {
       @include output {
-        @include scoped_create_subspace('child-space-name', 'non-existant-space-name', ()){}
+        @include scoped_create_subshape('child-shape-name', 'non-existant-shape-name', ()){}
       } @include expect {
         .error {
-          ERROR: "Superspace or subspace `non-existant-space-name` does not exist";
+          ERROR: "Shape or subshape `non-existant-shape-name` does not exist";
         }
       }
     }
     
   }
 
-  @include it('can create and find a superspace') {
-    @include scoped_create_superspace('TestNote', $test_note_space) {
-      @include assert-true(space_exists('TestNote'));
+  @include it('can create and find a shape') {
+    @include scoped_create_shape('TestNote', $test_note_shape) {
+      @include assert-true(shape_exists('TestNote'));
     }
   }
 
-  @include it('can nest superspace components to represent subselector nesting') {
-    @include scoped_create_superspace('TestNote', $test_note_space_nested) {
+  @include it('can nest shape components to represent subselector nesting') {
+    @include scoped_create_shape('TestNote', $test_note_shape_nested) {
       @include assert-equal(
         get_root_subselector('TestNote', 'title'),
         '.note > .title'
@@ -728,11 +728,11 @@ $test_note_grouped: (
     }
   }
 
-  @include it('errors when a superspace has a bad schema') {
+  @include it('errors when a shape has a bad schema') {
     @include scoped_add_settings($test_add_ChapterNote_context) {
       @include assert {
         @include output {
-          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_first) {}
+          @include scoped_create_shape('TestNote', $test_note_shape_bad_schema_first) {}
         }
         @include expect {
           .error {
@@ -742,7 +742,7 @@ $test_note_grouped: (
       }
       @include assert {
         @include output {
-          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_second) {}
+          @include scoped_create_shape('TestNote', $test_note_shape_bad_schema_second) {}
         }
         @include expect {
           .error {
@@ -752,7 +752,7 @@ $test_note_grouped: (
       }
       @include assert {
         @include output {
-          @include scoped_create_superspace('TestNote', $test_note_space_bad_schema_third) {}
+          @include scoped_create_shape('TestNote', $test_note_shape_bad_schema_third) {}
         }
         @include expect {
           .error {
@@ -763,22 +763,22 @@ $test_note_grouped: (
     }
   }
 
-  @include it('can create a superspace only within a scope') {
-    @include scoped_create_superspace('TestNote', $test_note_space) {}
-    @include assert-false(space_exists('TestNote'));
+  @include it('can create a shape only within a scope') {
+    @include scoped_create_shape('TestNote', $test_note_shape) {}
+    @include assert-false(shape_exists('TestNote'));
   }
   
-  @include it('can create and find a subspace') {
-    @include scoped_create_superspace('TestNote', $test_note_space) {
-      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
-        @include assert-true(space_exists('SpecificTestNote'));
+  @include it('can create and find a subshape') {
+    @include scoped_create_shape('TestNote', $test_note_shape) {
+      @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape) {
+        @include assert-true(shape_exists('SpecificTestNote'));
       }
     }
   }
 
-  @include it('can query a subspace for its root information') {
-    @include scoped_create_superspace('TestNote', $test_note_space) {
-      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+  @include it('can query a subshape for its root information') {
+    @include scoped_create_shape('TestNote', $test_note_shape) {
+      @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape) {
         @include assert-equal(
           get_root_name('SpecificTestNote'),
           'TestNote'
@@ -792,8 +792,8 @@ $test_note_grouped: (
   }
 
   @include it('errors when a attempting to find the subselector for a non-existent component') {
-    @include scoped_create_superspace('TestNote', $test_note_space) {
-      @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+    @include scoped_create_shape('TestNote', $test_note_shape) {
+      @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape) {
         @include assert-true(
           is_error(
             get_root_subselector('SpecificTestNote', 'invalid-field-name')
@@ -804,7 +804,7 @@ $test_note_grouped: (
   }
 
   @include it('errors when required context is missing') {
-    @include scoped_create_superspace('TestNote', $test_note_space) {
+    @include scoped_create_shape('TestNote', $test_note_shape) {
       @include assert {
         @include output {
           @include use('ChapterNote','TestNote');
@@ -820,7 +820,7 @@ $test_note_grouped: (
 
   @include it('errors when required setting is missing') {
     @include scoped_add_settings($test_add_ChapterNote_context) {
-      @include scoped_create_superspace('TestNote', $test_note_space) {
+      @include scoped_create_shape('TestNote', $test_note_shape) {
         @include assert {
           @include output {
             @include use('ChapterNote','TestNote');
@@ -835,10 +835,10 @@ $test_note_grouped: (
       }
     }
 
-    @include it('errors when required setting is missing - subspace') {
+    @include it('errors when required setting is missing - subshape') {
       @include scoped_add_settings($test_add_ChapterNote_context) {
-        @include scoped_create_superspace('TestNote', $test_note_space) {
-          @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+        @include scoped_create_shape('TestNote', $test_note_shape) {
+          @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape) {
             @include assert {
               @include output {
                 @include use('ChapterNote','SpecificTestNote');
@@ -856,10 +856,10 @@ $test_note_grouped: (
     }
   }
 
-  @include it('allows use of the same subspace with different settings') {
+  @include it('allows use of the same subshape with different settings') {
     @include scoped_add_settings($test_note_dual_context) {
-      @include scoped_create_superspace('TestNote', $test_note_space) {
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace) {
+      @include scoped_create_shape('TestNote', $test_note_shape) {
+        @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
@@ -878,8 +878,8 @@ $test_note_grouped: (
 
   @include it('allows ValueSets to include a default value if setting is missing') {
     @include scoped_add_settings($test_add_ChapterNote_context) {
-      @include scoped_create_superspace('TestNote', $test_note_space) {
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_default) {
+      @include scoped_create_shape('TestNote', $test_note_shape) {
+        @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape_with_default) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
@@ -896,10 +896,10 @@ $test_note_grouped: (
     }
   }
 
-  @include it('allows setting groups for a space') {
+  @include it('allows setting groups for a shape') {
     @include scoped_add_settings($test_note_grouped) {
-      @include scoped_create_superspace('TestNote', $test_note_space) {
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups) {
+      @include scoped_create_shape('TestNote', $test_note_shape) {
+        @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape_with_groups) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
@@ -918,8 +918,8 @@ $test_note_grouped: (
 
   @include it('allows group to point to another group') {
     @include scoped_add_settings($test_note_grouped) {
-      @include scoped_create_superspace('TestNote', $test_note_space) {
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups_twostep) {
+      @include scoped_create_shape('TestNote', $test_note_shape) {
+        @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape_with_groups_twostep) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
@@ -938,8 +938,8 @@ $test_note_grouped: (
 
   @include it('errors when a referenced group does not exist') {
     @include scoped_add_settings($test_note_grouped) {
-      @include scoped_create_superspace('TestNote', $test_note_space) {
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups_nonexist) {
+      @include scoped_create_shape('TestNote', $test_note_shape) {
+        @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape_with_groups_nonexist) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
@@ -956,44 +956,44 @@ $test_note_grouped: (
     }
   }
 
-  @include it('forbids subspaces from being more general') {
+  @include it('forbids subshapes from being more general') {
     @include scoped_add_settings($test_add_ChapterNote_context) {
-      @include scoped_create_superspace('TestNote', $test_note_space) {
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_first) {
+      @include scoped_create_shape('TestNote', $test_note_shape) {
+        @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_not_real_subshape_first) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
             } @include contains {
               .chapter > .note {
                 .error {
-                  ERROR: "Space `TestNote` is not a proper superspace due to `ChapterNote:::container:::color`.";
+                  ERROR: "Space `TestNote` is not a proper shape due to `ChapterNote:::container:::color`.";
                 }
               }
             }
           }
         }
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_second) {
+        @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_not_real_subshape_second) {
           @include assert {
             @include output {
               @include use('ChapterNote','SpecificTestNote');
             } @include contains {
               .chapter > .note > .title {
                 .error {
-                  ERROR: "Space `TestNote` is not a proper superspace due to `ChapterNote:::title:::font-size`.";
+                  ERROR: "Space `TestNote` is not a proper shape due to `ChapterNote:::title:::font-size`.";
                 }
               }
             }
           }
         }
         @include scoped_add_settings($test_note_color_line_height) {
-          @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_not_real_subspace_third) {
+          @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_not_real_subshape_third) {
             @include assert {
               @include output {
                 @include use('ChapterNote','SpecificTestNote');
               } @include contains {
                 .chapter > .note {
                   .error {
-                    ERROR: "Space `SpecificTestNote` is not a proper subspace due to addition of property `line-height`.";
+                    ERROR: "Space `SpecificTestNote` is not a proper subshape due to addition of property `line-height`.";
                   }
                 }
               }
@@ -1005,10 +1005,10 @@ $test_note_grouped: (
   }
   
 
-  @include it('can debug output of all parents of a subspace') {
+  @include it('can debug output of all parents of a subshape') {
     @include scoped_add_settings($test_note_grouped) {
-      @include scoped_create_superspace('TestNote', $test_note_space) {
-        @include scoped_create_subspace('SpecificTestNote', 'TestNote', $test_subspace_with_groups) {
+      @include scoped_create_shape('TestNote', $test_note_shape) {
+        @include scoped_create_subshape('SpecificTestNote', 'TestNote', $test_subshape_with_groups) {
           @include assert-equal(
             get_lineage('SpecificTestNote'),
             ('SpecificTestNote', 'TestNote')
@@ -1020,9 +1020,9 @@ $test_note_grouped: (
 }
 
 @include describe('Debug functions (just for code coverage)') {
-  @include it('outputs debug_superspaces') {
-    @include scoped_create_superspace('TestNote', $test_note_space) {
-      @include debug_superspaces();
+  @include it('outputs debug_shapes') {
+    @include scoped_create_shape('TestNote', $test_note_shape) {
+      @include debug_shapes();
     }
   }
 
