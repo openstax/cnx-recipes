@@ -1,17 +1,17 @@
 $FRAMEWORK_SPACE_PLACE: ();
 
 /// @group debug
-@mixin debug_superspaces() {
-  @debug "All superspaces =>";
+@mixin debug_shapes() {
+  @debug "All shapes =>";
   @each $key, $value in $FRAMEWORK_SPACE_PLACE {
     @debug $key;
   }
 }
 
-/// This creates a component based superspace and adds it to the global manifest based off of the name and map given as arguments.
-/// The schema for a superspace map is as follows:
+/// This creates a component based shape and adds it to the global manifest based off of the name and map given as arguments.
+/// The schema for a shape map is as follows:
 /// ```
-/// Superspace -> Map (
+/// Shape -> Map (
 ///   _groups(Optional) -> Map ( String -> ValueSet | String ),
 ///   _components -> List ( ...Component )
 ///   )
@@ -27,22 +27,22 @@ $FRAMEWORK_SPACE_PLACE: ();
 /// )
 /// ```
 ///
-/// @param {String} $name - The name for the created superspace
-/// @param {Map} $space - The map representing the superspace.
+/// @param {String} $name - The name for the created shape
+/// @param {Map} $shape - The map representing the shape.
 ///
 /// @example scss
-///   @include create_superspace('MyNote', (
+///   @include create_shape('MyNote', (
 ///     _groups: (),
 ///     _components: (
 ///       (
 ///         _name: 'container',
 ///         _subselector: '.note',
 ///         _properties: (
-///           color: enum('ValueSet:::NOT_NULL'),
-///           background: enum('ValueSet:::NULLABLE'),
-///           width: enum('ValueSet:::NULLABLE'),
+///           color: enum('ValueSet:::REQUIRED'),
+///           background: enum('ValueSet:::OPTIONAL'),
+///           width: enum('ValueSet:::OPTIONAL'),
 ///           height: 20rem,
-///           border-color: enum('ValueSet:::NULLABLE')
+///           border-color: enum('ValueSet:::OPTIONAL')
 ///         ),
 ///         _components: (
 ///           (
@@ -50,7 +50,7 @@ $FRAMEWORK_SPACE_PLACE: ();
 ///             _subselector: ' > .title',
 ///             _properties: (
 ///               font-size: 2rem,
-///               border-color: enum('ValueSet:::NULLABLE'),
+///               border-color: enum('ValueSet:::OPTIONAL'),
 ///             ),
 ///           ),
 ///         )
@@ -59,40 +59,40 @@ $FRAMEWORK_SPACE_PLACE: ();
 ///   ));
 ///
 /// @group publicapi
-@mixin create_superspace($name, $space) {
+@mixin create_shape($name, $shape) {
   @if not is_namespaced_camel($name) {
-    @warn 'Convention for superspace name is namespaced:::CamelCase. Given `#{$name}`.'; // coverage:disable-line
+    @warn 'Convention for shape name is namespaced:::CamelCase. Given `#{$name}`.'; // coverage:disable-line
   }
-  $unwrapped_superspace: unwrap_superspace($space);
-  @if is_error($unwrapped_superspace) {
-    @include error(error_message($unwrapped_superspace));
+  $unwrapped_shape: unwrap_shape($shape);
+  @if is_error($unwrapped_shape) {
+    @include error(error_message($unwrapped_shape));
   } @else {
     $FRAMEWORK_SPACE_PLACE: map-merge(
       $FRAMEWORK_SPACE_PLACE, 
       ($name: map-merge(
-        $unwrapped_superspace,
+        $unwrapped_shape,
         (_parent: enum('Object:::NONE'))
       ))
     ) !global;
   }
 }
 
-@mixin remove_space($name) {
+@mixin remove_shape($name) {
   $FRAMEWORK_SPACE_PLACE: map-remove($FRAMEWORK_SPACE_PLACE, $name) !global;
 }
 
-@function unwrap_superspace($superspace) {
+@function unwrap_shape($shape) {
   $unwrapped: ();
-  @if map-has-key($superspace, _groups) {
-    $unwrapped: map-merge($unwrapped, (_groups: map-deep-get($superspace, _groups)));
+  @if map-has-key($shape, _groups) {
+    $unwrapped: map-merge($unwrapped, (_groups: map-deep-get($shape, _groups)));
   }
-  $superspace_components: get_nested_components(map-deep-get($superspace, _components));
-  @if is_error($superspace_components) {
-    @return $superspace_components;
+  $shape_components: get_nested_components(map-deep-get($shape, _components));
+  @if is_error($shape_components) {
+    @return $shape_components;
   } @else {
     @return map-merge(
       $unwrapped,
-      (_components: $superspace_components)
+      (_components: $shape_components)
     );
   }  
 }
@@ -142,28 +142,28 @@ $FRAMEWORK_SPACE_PLACE: ();
   @return $all_components;
 }
 
-@mixin scoped_create_superspace($name, $space) {
-  @include create_superspace($name, $space);
+@mixin scoped_create_shape($name, $shape) {
+  @include create_shape($name, $shape);
   @content;
-  @include remove_space($name);
+  @include remove_shape($name);
 }
 
-@function space_exists($name) {
+@function shape_exists($name) {
   @return map-deep-has-key($FRAMEWORK_SPACE_PLACE, $name);
 }
 
-@function get_space($name) {
-  @if not space-exists($name) {
-    @return error('Error:::INDEX_ERROR', "Superspace or subspace `#{$name}` does not exist");
+@function get_shape($name) {
+  @if not shape-exists($name) {
+    @return error('Error:::INDEX_ERROR', "Shape or subshape `#{$name}` does not exist");
   }
   @return map-deep-get($FRAMEWORK_SPACE_PLACE, $name);
 }
 
 /// 
 /// @group publicapi
-@mixin create_subspace($name, $parent, $changes) {
-  @if not space-exists($parent) {
-    @include error("Superspace or subspace `#{$parent}` does not exist");
+@mixin create_subshape($name, $parent, $changes) {
+  @if not shape-exists($parent) {
+    @include error("Shape or subshape `#{$parent}` does not exist");
   }
   $components: ();
   $groups_map: empty_map();
@@ -177,27 +177,27 @@ $FRAMEWORK_SPACE_PLACE: ();
       ), comma);
     }
   }
-  $subspace: map-merge((_parent: $parent), map-merge($groups_map, (_components: $components)));
-  $FRAMEWORK_SPACE_PLACE: map-merge($FRAMEWORK_SPACE_PLACE, ($name: $subspace)) !global;
+  $subshape: map-merge((_parent: $parent), map-merge($groups_map, (_components: $components)));
+  $FRAMEWORK_SPACE_PLACE: map-merge($FRAMEWORK_SPACE_PLACE, ($name: $subshape)) !global;
 }
 
-@mixin scoped_create_subspace($name, $parent, $changes) {
-  @include create_subspace($name, $parent, $changes);
+@mixin scoped_create_subshape($name, $parent, $changes) {
+  @include create_subshape($name, $parent, $changes);
   @content;
-  @include remove_space($name);
+  @include remove_shape($name);
 }
 
-@function get_parent($space) {
-  @return map_deep_get($space, _parent);
+@function get_parent($shape) {
+  @return map_deep_get($shape, _parent);
 }
 
 @function get_lineage($name) {
   $lineage: ($name);
-  $current: get_space($name);
+  $current: get_shape($name);
   $parent: get_parent($current);
   @while $parent != enum('Object:::NONE') {
     $lineage: append($lineage, $parent, comma);
-    $current: get_space($parent);
+    $current: get_shape($parent);
     $parent: get_parent($current);
   }
   @return $lineage;
@@ -208,12 +208,12 @@ $FRAMEWORK_SPACE_PLACE: ();
 }
 
 @function get_root($name) {
-  @return get_space(get_root_name($name));
+  @return get_shape(get_root_name($name));
 }
 
 @function get_root_subselector($name, $component_name) {
-  $superspace: get_root($name);
-  $components: map-deep-get($superspace, _components);
+  $shape: get_root($name);
+  $components: map-deep-get($shape, _components);
   @each $component in $components {
     @if map-deep-get($component, _name) == $component_name {
       @return map-deep-get($component, _subselector);
@@ -222,8 +222,8 @@ $FRAMEWORK_SPACE_PLACE: ();
   @return error('Error:::INDEX_ERROR', "No root subselector found for `#{$name} -> #{$component_name}`");
 }
 
-@function get_properties($space, $component_name) {
-  $components: map-deep-get($space, _components);
+@function get_properties($shape, $component_name) {
+  $components: map-deep-get($shape, _components);
   @each $component in $components {
     @if map-deep-get($component, _name) == $component_name {
       @return map-deep-get($component, _properties);
@@ -247,9 +247,9 @@ $FRAMEWORK_SPACE_PLACE: ();
     $value_set: nth($description, 1);
     $value: nth($description, 2);
   }
-  @if $value_set == enum('ValueSet:::NULLABLE') {
+  @if $value_set == enum('ValueSet:::OPTIONAL') {
     $value: settings($key, if($value == enum('Object:::NONE'), null(), $value));
-  } @else if $value_set == enum('ValueSet:::NOT_NULL') {
+  } @else if $value_set == enum('ValueSet:::REQUIRED') {
     $value: settings-not-null($key, $value);
   } @else {
     $value: #{$value_set};
@@ -272,24 +272,24 @@ $FRAMEWORK_SPACE_PLACE: ();
 }
 
 /// @group publicapi
-@mixin use($name, $subspace_name) {
+@mixin use($name, $subshape_name) {
   @if not is_camel_case($name) {
-    @warn 'Convention for superspace instantiations is CamelCase. Given `#{$name}`.'; // coverage:disable-line
+    @warn 'Convention for shape instantiations is CamelCase. Given `#{$name}`.'; // coverage:disable-line
   }
   $context_selectors: settings("#{$name}:::_selectors");
   @if is_error($context_selectors) {
     @include error(error_message($context_selectors));
   } @else { 
     @each $selector in settings("#{$name}:::_selectors") {
-      $superspace: get_root($subspace_name);
-      @each $component in map-deep-get($superspace, _components) {
+      $shape: get_root($subshape_name);
+      @each $component in map-deep-get($shape, _components) {
         $component_name: map-deep-get($component, _name);
         $subselector: map-deep-get($component, _subselector);
-        $root_properties: get_properties($superspace, $component_name);
+        $root_properties: get_properties($shape, $component_name);
         $spent_keys: empty_map();
         #{$selector}#{$subselector} {
-          @each $ancestor_name in get_lineage($subspace_name) {
-            $ancestor: get_space($ancestor_name);
+          @each $ancestor_name in get_lineage($subshape_name) {
+            $ancestor: get_shape($ancestor_name);
             $groups: empty_map();
             @if map-has-key($ancestor, _groups) {
               $groups: map-deep-get($ancestor, _groups);
@@ -297,7 +297,7 @@ $FRAMEWORK_SPACE_PLACE: ();
             $properties: get_properties($ancestor, $component_name);
             @each $property, $description in $properties {
               @if not map-has-key($root_properties, $property) {
-                @include error("Space `#{$ancestor_name}` is not a proper subspace due to addition of property `#{$property}`.");
+                @include error("Space `#{$ancestor_name}` is not a proper subshape due to addition of property `#{$property}`.");
               }
               $key: "#{$name}:::#{$component_name}:::#{$property}";
               $resolved_description: resolve_description($description, $groups);
@@ -315,9 +315,9 @@ $FRAMEWORK_SPACE_PLACE: ();
                   }
                 } @else {
                   $old_value_set: map-deep-get($spent_keys, $key);
-                  @if $value_set != enum('ValueSet:::NULLABLE') and 
-                    ($value_set != enum('ValueSet:::NOT_NULL') or $old_value_set == enum('ValueSet:::NULLABLE')) {
-                      @include error("Space `#{$ancestor_name}` is not a proper superspace due to `#{$key}`.");
+                  @if $value_set != enum('ValueSet:::OPTIONAL') and 
+                    ($value_set != enum('ValueSet:::REQUIRED') or $old_value_set == enum('ValueSet:::OPTIONAL')) {
+                      @include error("Space `#{$ancestor_name}` is not a proper shape due to `#{$key}`.");
                   }
                 }
               }
