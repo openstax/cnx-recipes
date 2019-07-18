@@ -22,13 +22,13 @@ You can run commands in Docker:
 
 To run something like:
 
-`PLATFORM=pdf node ./styles/build/build.js ./styles/books/anatomy/book.scss`
+`./script/build-styles`
 
 just prepend with ./script/run:
 
 `./script/run ./script/build-styles`
 
-or
+or to run tests, run:
 
 `./script/run ./script/test`
 
