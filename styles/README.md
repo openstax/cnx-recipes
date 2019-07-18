@@ -40,11 +40,11 @@ Let's assume we have an html document in the following form:
 
 Suppose we would like notes of `type-one` to be given an outlined grey box and a bold title, notes of `type-two` to be given an outlined green box, notes of `type-three` to be given a blue header and dark grey background and white text, and notes of `type-four` to match notes of `type-three`. Lastly, notes of `type-five` will be given an outlined red box.
 
-Let's make a couple observations about the proposed designs above. First, it would seem that notes of `type-one` and `type-two` follow the same html schema and have a similar design, but there needs to be a customization option for the box color and font weight. `type-three` and `type-four` are identical. `type-five` would initially seem to be the same as `type-one` or `type-two`, but we can notice that the schema for `type-five` does not include a title, so using the same design space for these two notes would be overengineering for a note of `type-five` as well as decrease coverage, since a `.type-five > title` selector would miss.
+Let's make a couple observations about the proposed designs above. First, it would seem that notes of `type-one` and `type-two` follow the same HTML schema and have a similar design, but there needs to be a customization option for the box color and font weight. `type-three` and `type-four` are identical. `type-five` would initially seem to be the same as `type-one` or `type-two`, but we can notice that the schema for `type-five` does not include a title, so using the same design shape for these two notes would be over-engineering for a note of `type-five` as well as decrease coverage, since a `.type-five > title` selector would miss.
 
-Following from the above, let's plan to make three superspaces. First, one to accomodate notes `type-one` and `type-two`. Second, one to accomodate notes `type-three` and `type-four`. Last, one to accomodate only `type-five`. We will do our best to reuse common components where possible.
+Following from the above, let's plan to make three shapes. First, one to accommodate notes `type-one` and `type-two`. Second, one to accommodate notes `type-three` and `type-four`. Last, one to accommodate only `type-five`. We will do our best to reuse common components where possible.
 
-Let's get started on the desgin. Enter the cnx-recipes directory, then make an SCSS file for our design
+Let's get started on the design. Enter the cnx-recipes directory, then make an SCSS file for our design
 ```bash
 # bash
 mkdir -p ./styles/design/example && touch ./styles/design/example/_design.scss
@@ -52,9 +52,9 @@ mkdir -p ./styles/design/example && touch ./styles/design/example/_design.scss
 
 ### Schema
 
-The schema for a superspace map is as follows:
+The schema for a shape map is as follows:
 ```
-Superspace -> Map (
+shap -> Map (
   _groups(Optional) -> Map ( String -> ValueSet | String ),
   _components -> List ( ...Component )
   )
@@ -72,24 +72,24 @@ Component -> Map (
 
 ### Property Values
 
-There are four main options for the values for properties in a superspace, 3 of which are represented in the `ValueSet` enum: `NULLABLE`, `NOT_NULL`, and `GROUPED`. The last option is to set the property to a specific value. Let's explain these options:
+There are four main options for the values for properties in a shape, 3 of which are represented in the `ValueSet` enum: `OPTIONAL`, `REQUIRED`, and `GROUPED`. The last option is to set the property to a specific value. Let's explain these options:
 
 `NULLABLE` - Pick this option when it is an option for this property to not be used and you would like the value to be defined by the style author. For example, in notes `type-one` and `type-two`, the font weight can either be set to bold in `type-one` or not used (i.e. null) for `type-two`.
 
 `NOT_NULL` - Pick this option when the property must be present, but also must be determined by the style author. For example, we know that notes `type-one`, `type-two`, and `type-five` are outlined the same way, but with a different color. Thus the color property must be present, but it is up to the style author as to what the color should be.
 
-`GROUPED` - Pick this option if it is desired for properties to share the same values. The `_groups` key of the superset can define a key and value, the key of which is the name for the group, and the value of which is the shared property value. For example, if we were to define our note border colors seperately for some reason, we could group border-left|right|top|bottom-color together to `(enum('ValueSet:::GROUPED'), note-box-color)` and in `_groups` we add the entry `note-box-color: enum('ValueSet:::NOT_NULL')`
+`GROUPED` - Pick this option if it is desired for properties to share the same values. The `_groups` key of the superset can define a key and value, the key of which is the name for the group, and the value of which is the shared property value. For example, if we were to define our note border colors separately for some reason, we could group border-left|right|top|bottom-color together to `(enum('ValueSet:::GROUPED'), note-box-color)` and in `_groups` we add the entry `note-box-color: enum('ValueSet:::REQUIRED')`
 
-### Writing the superspaces
+### Writing the shapes
 
-Open the file we just created in your favorite editor to get started writing our design superspaces. We will write our components to variables so that they can be reused.
+Open the file we just created in your favorite editor to get started writing our design shapes. We will write our components to variables so that they can be reused.
 ```scss
 // _design.scss
 $boxed_note_container: (
   _name: 'container',
   _subselector: '.note',
   _properties: (
-    border-color: enum('ValueSet:::NOT_NULL'),
+    border-color: enum('ValueSet:::REQUIRED'),
     border-style: solid
   )
 );
@@ -97,28 +97,28 @@ $boxed_note_title: (
   _name: 'title',
   _subselector: ' > .title',
   _properties: (
-    font-weight: enum('ValueSet:::NULLABLE')
+    font-weight: enum('ValueSet:::OPTIONAL')
   )
 );
 $bg_note_container: (
   _name: 'container',
   _subselector: '.note',
   _properties: (
-    color: (enum('ValueSet:::NULLABLE'), white),
-    background-color: enum('ValueSet:::NOT_NULL')
+    color: (enum('ValueSet:::OPTIONAL'), white),
+    background-color: enum('ValueSet:::REQUIRED')
   )
 );
 $bg_note_title: (
   _name: 'title',
   _subselector: ' > .title',
   _properties: (
-    color: (enum('ValueSet:::NULLABLE'), white),
-    background-color: (enum('ValueSet:::NULLABLE'), blue)
+    color: (enum('ValueSet:::OPTIONAL'), white),
+    background-color: (enum('ValueSet:::OPTIONAL'), blue)
   )
 );
 ```
 
-Next, let's create superspaces from these components using the framework provided mixin `create_superspace`.
+Next, let's create shapes from these components using the framework provided mixin `create_shape`.
 
 ```scss
 // _design.scss
@@ -126,7 +126,7 @@ Next, let's create superspaces from these components using the framework provide
 // ...variables above
 
 // type-one, type-two
-@include create_superspace('BoxedNoteTitled', (
+@include create_shape('BoxedNoteTitled', (
   _components: (
     map-merge($boxed_note_container, (
       _components: (
@@ -137,7 +137,7 @@ Next, let's create superspaces from these components using the framework provide
 ));
 
 // type-three, type-four
-@include create_superspace('BgNote', (
+@include create_shape('BgNote', (
   _components: (
     map-merge($bg_note_container, (
       _components: (
@@ -148,19 +148,19 @@ Next, let's create superspaces from these components using the framework provide
 ));
 
 // type-five
-@include create_superspace('BoxedNote', (
+@include create_shape('BoxedNote', (
   _components: (
     $boxed_note_container
   )
 ));
 
-// For the page title, a simpler superspace with a default
-@include create_superspace('PageTitle', (
+// For the page title, a simpler shape with a default
+@include create_shape('PageTitle', (
   _components: (
     _name: 'container',
     _subselector: ' > .title',
     _properties: (
-      font-size: (enum('ValueSet:::NULLABLE'), 2em)
+      font-size: (enum('ValueSet:::OPTIONAL'), 2em)
     )
   )
 ));
@@ -196,7 +196,7 @@ PLATFORM=pdf node ./styles/build/build.js ./styles/books/accounting/book.scss # 
 ```
 
 Importing only the framework should have yielded an empty stylesheet.
-Let's move on to implmenting our designs in our book. We do this by calling the framework provided mixin `use`. `use` takes two arguments. The first is an identifer for the authors use (i.e. it can be anything you want), and the second is the name of a defined superspace or subspace in the a design.
+Let's move on to implementing our designs in our book. We do this by calling the framework provided mixin `use`. `use` takes two arguments. The first is an identifier for the authors use (i.e. it can be anything you want), and the second is the name of a defined shape or subshape in the a design.
 
 ```scss
 // book.scss
@@ -312,7 +312,7 @@ This is sufficient to remove the previous error, but a new one arises again. Let
 
 ### Finishing up
 
-The preceding book file will yield some CSS, but we aren't yet finished. We have to handle the values which we deemed `NULLABLE`, such as the font weight for our type-one notes. This means to finish our styles, we must add the following to our settings:
+The preceding book file will yield some CSS, but we aren't yet finished. We have to handle the values which we deemed `OPTIONAL`, such as the font weight for our type-one notes. This means to finish our styles, we must add the following to our settings:
 ```
 // somewhere in settings
 'TypeOne:::title': (font-weight: bold)
