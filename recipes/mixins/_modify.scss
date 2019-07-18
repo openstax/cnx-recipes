@@ -856,15 +856,11 @@
 @mixin modify_classOrder($classNameList) {
   @each $class in $classNameList {
     .#{$class} {
-      string-set: #{$class}Span content();
+      node-set: #{$class}Span;
       move-to: trash ;
     }
     &:deferred {
-      &::after {
-        container: span;
-        content: string(#{$class}Span);
-        class: #{$class};
-      }
+      content: content() nodes(#{$class}Span);
     }
   }
 }
