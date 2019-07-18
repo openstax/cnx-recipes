@@ -26,9 +26,9 @@ To run something like:
 
 just prepend with ./script/run:
 
-`./script/run PLATFORM=pdf node ./styles/build/build.js ./styles/books/anatomy/book.scss`
+`./script/run ./script/build-styles`
 
-This works with scripts like  `./script/test`
+or
 
 `./script/run ./script/test`
 
