@@ -228,103 +228,28 @@
           container: a;
           move-to: eoc-toc;
         }
-        @if release-flag-enabled(toc-classes) {
-          > div[data-type="page"].introduction {
-            string-set: intro-page-id-chap attr(id);
-            > [data-type='document-title'] {
-              node-set: IntroPageTitle;
-            }
-            > [data-type='metadata']
-            > [data-type='cnx-archive-shortid'] {
-              string-set: intro-page-shortid attr(data-value);
-            }
-            &::after {
-              content: nodes(IntroPageTitle);
-              attr-href: "#" string(intro-page-id-chap);
-              container: a;
-              class: toc-intro-page;
-              move-to: intro-page-link;
-            }
-            &::after {
-              content: pending(intro-page-link);
-              move-to: eoc-toc-pages;
-              attr-cnx-archive-uri: attr(id);
-              attr-cnx-archive-shortid: string(intro-page-shortid);
-              container: li;
-            }
+        > div[data-type="page"],
+        > div[data-type="composite-page"] {
+          string-set: page-id-chap attr(id);
+          > [data-type='document-title'] {
+            node-set: PageTitle;
           }
-          > div[data-type="page"]:not(.introduction) {
-            string-set: page-id-chap attr(id);
-            > [data-type='document-title'] {
-              node-set: PageTitle;
-            }
-            > [data-type='metadata']
-            > [data-type='cnx-archive-shortid'] {
-              string-set: page-shortid attr(data-value);
-            }
-            &::after {
-              content: nodes(PageTitle);
-              attr-href: "#" string(page-id-chap);
-              container: a;
-              class: toc-page;
-              move-to: page-link;
-            }
-            &::after {
-              content: pending(page-link);
-              move-to: eoc-toc-pages;
-              attr-cnx-archive-uri: attr(id);
-              attr-cnx-archive-shortid: string(page-shortid);
-              container: li;
-            }
+          > [data-type='metadata']
+          > [data-type='cnx-archive-shortid'] {
+            string-set: page-shortid attr(data-value);
           }
-          > div[data-type="composite-page"] {
-            string-set: composite-page-id-chap attr(id);
-            > [data-type='document-title'] {
-              node-set: CompositePageTitle;
-            }
-            > [data-type='metadata']
-            > [data-type='cnx-archive-shortid'] {
-              string-set: composite-page-shortid attr(data-value);
-            }
-            &::after {
-              content: nodes(CompositePageTitle);
-              attr-href: "#" string(composite-page-id-chap);
-              container: a;
-              class: toc-composite-page;
-              move-to: composite-page-link;
-            }
-            &::after {
-              content: pending(composite-page-link);
-              move-to: eoc-toc-pages;
-              attr-cnx-archive-uri: attr(id);
-              attr-cnx-archive-shortid: string(composite-page-shortid);
-              container: li;
-            }
+          &::after {
+            content: nodes(PageTitle);
+            attr-href: "#" string(page-id-chap);
+            container: a;
+            move-to: page-link;
           }
-        } @else {
-          > div[data-type="page"],
-          > div[data-type="composite-page"] {
-            string-set: page-id-chap attr(id);
-            > [data-type='document-title'] {
-              node-set: PageTitle;
-            }
-            > [data-type='metadata']
-            > [data-type='cnx-archive-shortid'] {
-              string-set: page-shortid attr(data-value);
-            }
-            &::after {
-              content: nodes(PageTitle);
-              attr-href: "#" string(page-id-chap);
-              container: a;
-              move-to: page-link;
-            }
-            &::after {
-              content: pending(page-link);
-              move-to: eoc-toc-pages;
-              attr-cnx-archive-uri: attr(id);
-              attr-cnx-archive-shortid: string(page-shortid);
-              container: li;
-            }
+          &::after {
+            content: pending(page-link);
+            move-to: eoc-toc-pages;
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(page-shortid);
+            container: li;
           }
         }        
         &::after {
