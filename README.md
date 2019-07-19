@@ -15,6 +15,23 @@
 1. Run `docker-compose run --rm mathify-book intro-business` to convert all the math to svg.
 1. Run `docker-compose run --rm build-pdf intro-business` to create the pdf.
 
+## Run scripts
+You can run commands in Docker:
+
+`docker-compose run --rm command ...`
+
+To run something like:
+
+`./script/build-styles`
+
+just prepend with ./script/run:
+
+`./script/run ./script/build-styles`
+
+or to run tests, run:
+
+`./script/run ./script/test`
+
 
 ## Add a New Book to the config
 
