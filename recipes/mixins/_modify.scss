@@ -854,39 +854,25 @@
 }
 
 @mixin modify_classOrder($classNameList) {
+  $contentList: content();
   @each $class in $classNameList {
+    $contentList: $contentList pending(#{$class}Span);
     .#{$class} {
       move-to: #{$class}Span;
     }
-    &:deferred {
-      content: content() pending(#{$class}Span);
-    }
+  }
+  &:deferred {
+    content: $contentList;
   }
 }
 
-@mixin modify_elementsOrder($orderConfig, $mainSelector: null) {
+@mixin modify_elementsOrder($orderConfig) {
   @each $order in $orderConfig {
-    $parentSelector: map-get($order, parentSelector);
-    $childSelector: map-get($order, childSelector);
     $selector: map-get($order, selector);
     $classNameOrder: map-get($order, classNameOrder);
 
-    @if $parentSelector {
-      #{$parentSelector} {
-        #{$mainSelector} {
-          @include modify_classOrder($classNameOrder);
-        }
-      }
-    } @else if $childSelector {
-      #{$mainSelector} {
-        #{$childSelector} {
-          @include modify_classOrder($classNameOrder);
-        }
-      }
-    } @else {
-      #{$selector} {
-        @include modify_classOrder($classNameOrder);
-      }
+    #{$selector} {
+      @include modify_classOrder($classNameOrder);
     }
   }
 }
