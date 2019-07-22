@@ -54,7 +54,7 @@ mkdir -p ./styles/design/example && touch ./styles/design/example/_design.scss
 
 The schema for a shape map is as follows:
 ```
-shap -> Map (
+shape -> Map (
   _groups(Optional) -> Map ( String -> ValueSet | String ),
   _components -> List ( ...Component )
   )
