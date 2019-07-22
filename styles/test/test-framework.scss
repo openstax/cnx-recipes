@@ -216,20 +216,20 @@ $test_settings_with_invalid_reference: (
 
 
 @include describe('ValueSet Enum Type') {
-  @include it('provides value NULLABLE') {
+  @include it('provides value OPTIONAL') {
     @include assert-equal(
-      enum('ValueSet:::NULLABLE'),
-      'ENUM__ValueSet:::NULLABLE'
+      enum('ValueSet:::OPTIONAL'),
+      'ENUM__ValueSet:::OPTIONAL'
     );
     @include assert-equal(
-      enum('ValueSet:::NOT_NULL'),
-      'ENUM__ValueSet:::NOT_NULL'
+      enum('ValueSet:::REQUIRED'),
+      'ENUM__ValueSet:::REQUIRED'
     );
   }
-  @include it('provides value NOT_NULL') {
+  @include it('provides value REQUIRED') {
     @include assert-equal(
-      enum('ValueSet:::NOT_NULL'),
-      'ENUM__ValueSet:::NOT_NULL'
+      enum('ValueSet:::REQUIRED'),
+      'ENUM__ValueSet:::REQUIRED'
     );
   }
   @include it('provides value GROUPED') {
@@ -507,11 +507,11 @@ $test_note_shape: (
       _name: 'container',
       _subselector: '.note',
       _properties: (
-        color: enum('ValueSet:::NOT_NULL'),
-        background: enum('ValueSet:::NULLABLE'),
-        width: enum('ValueSet:::NULLABLE'),
+        color: enum('ValueSet:::REQUIRED'),
+        background: enum('ValueSet:::OPTIONAL'),
+        width: enum('ValueSet:::OPTIONAL'),
         height: 20rem,
-        border-color: enum('ValueSet:::NULLABLE')
+        border-color: enum('ValueSet:::OPTIONAL')
       ),
     ),
     (
@@ -519,7 +519,7 @@ $test_note_shape: (
       _subselector: '.note > .title',
       _properties: (
         font-size: 2rem,
-        border-color: enum('ValueSet:::NULLABLE'),
+        border-color: enum('ValueSet:::OPTIONAL'),
       ),
     ),
   )
@@ -532,11 +532,11 @@ $test_note_shape_nested: (
       _name: 'container',
       _subselector: '.note',
       _properties: (
-        color: enum('ValueSet:::NOT_NULL'),
-        background: enum('ValueSet:::NULLABLE'),
-        width: enum('ValueSet:::NULLABLE'),
+        color: enum('ValueSet:::REQUIRED'),
+        background: enum('ValueSet:::OPTIONAL'),
+        width: enum('ValueSet:::OPTIONAL'),
         height: 20rem,
-        border-color: enum('ValueSet:::NULLABLE')
+        border-color: enum('ValueSet:::OPTIONAL')
       ),
       _components: (
         (
@@ -544,7 +544,7 @@ $test_note_shape_nested: (
           _subselector: ' > .title',
           _properties: (
             font-size: 2rem,
-            border-color: enum('ValueSet:::NULLABLE'),
+            border-color: enum('ValueSet:::OPTIONAL'),
           ),
         ),
       )
@@ -557,11 +557,11 @@ $test_note_shape_bad_schema_first: (
     (
       _subselector: '.note',
       _properties: (
-        color: enum('ValueSet:::NOT_NULL'),
-        background: enum('ValueSet:::NULLABLE'),
-        width: enum('ValueSet:::NULLABLE'),
+        color: enum('ValueSet:::REQUIRED'),
+        background: enum('ValueSet:::OPTIONAL'),
+        width: enum('ValueSet:::OPTIONAL'),
         height: 20rem,
-        border-color: enum('ValueSet:::NULLABLE')
+        border-color: enum('ValueSet:::OPTIONAL')
       ),
     ),
   )
@@ -572,11 +572,11 @@ $test_note_shape_bad_schema_second: (
     (
       _name: 'container',
       _properties: (
-        color: enum('ValueSet:::NOT_NULL'),
-        background: enum('ValueSet:::NULLABLE'),
-        width: enum('ValueSet:::NULLABLE'),
+        color: enum('ValueSet:::REQUIRED'),
+        background: enum('ValueSet:::OPTIONAL'),
+        width: enum('ValueSet:::OPTIONAL'),
         height: 20rem,
-        border-color: enum('ValueSet:::NULLABLE')
+        border-color: enum('ValueSet:::OPTIONAL')
       ),
     ),
   )
@@ -593,7 +593,7 @@ $test_note_shape_bad_schema_third: (
 
 $test_not_real_subshape_first: (
   container: (
-    color: enum('ValueSet:::NULLABLE'),
+    color: enum('ValueSet:::OPTIONAL'),
   ),
 );
 
@@ -605,27 +605,27 @@ $test_not_real_subshape_second: (
 
 $test_not_real_subshape_third: (
   container: (
-    line-height: enum('ValueSet:::NOT_NULL'),
+    line-height: enum('ValueSet:::REQUIRED'),
   ),
 );
 
 $test_subshape: (
   container: (
     color: blue,
-    background: enum('ValueSet:::NOT_NULL')
+    background: enum('ValueSet:::REQUIRED')
   )
 );
 
 $test_subshape_with_default: (
   container: (
     color: blue,
-    background: (enum('ValueSet:::NOT_NULL'), orange)
+    background: (enum('ValueSet:::REQUIRED'), orange)
   )
 );
 
 $test_subshape_with_groups: (
   _groups: (
-    note-border-color: enum('ValueSet:::NOT_NULL')
+    note-border-color: enum('ValueSet:::REQUIRED')
   ),
   container: (
     color: blue,
@@ -638,7 +638,7 @@ $test_subshape_with_groups: (
 
 $test_subshape_with_groups_twostep: (
   _groups: (
-    note-border-color-ref: enum('ValueSet:::NOT_NULL'),
+    note-border-color-ref: enum('ValueSet:::REQUIRED'),
     note-border-color: (enum('ValueSet:::GROUPED'), note-border-color-ref)
   ),
   container: (
@@ -652,7 +652,7 @@ $test_subshape_with_groups_twostep: (
 
 $test_subshape_with_groups_nonexist: (
   _groups: (
-    note-border-color: enum('ValueSet:::NOT_NULL')
+    note-border-color: enum('ValueSet:::REQUIRED')
   ),
   container: (
     color: blue,
@@ -691,7 +691,7 @@ $test_note_grouped: (
   )
 );
 
-@include describe("Design Space") {
+@include describe("Design Shape") {
   @include it('errors when get_shape errors when name does not exist') {
     @include assert-true(
       is_error(
@@ -966,7 +966,7 @@ $test_note_grouped: (
             } @include contains {
               .chapter > .note {
                 .error {
-                  ERROR: "Space `TestNote` is not a proper shape due to `ChapterNote:::container:::color`.";
+                  ERROR: "Shape `TestNote` is not a proper shape due to `ChapterNote:::container:::color`.";
                 }
               }
             }
@@ -979,7 +979,7 @@ $test_note_grouped: (
             } @include contains {
               .chapter > .note > .title {
                 .error {
-                  ERROR: "Space `TestNote` is not a proper shape due to `ChapterNote:::title:::font-size`.";
+                  ERROR: "Shape `TestNote` is not a proper shape due to `ChapterNote:::title:::font-size`.";
                 }
               }
             }
@@ -993,7 +993,7 @@ $test_note_grouped: (
               } @include contains {
                 .chapter > .note {
                   .error {
-                    ERROR: "Space `SpecificTestNote` is not a proper subshape due to addition of property `line-height`.";
+                    ERROR: "Shape `SpecificTestNote` is not a proper subshape due to addition of property `line-height`.";
                   }
                 }
               }
