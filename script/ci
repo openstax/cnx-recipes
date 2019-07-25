@@ -8,11 +8,11 @@ LOG_LEVEL=${LOG_LEVEL:-debug} ./script/setup || exit 111
 
 # Verify that the CSS files were regenerated so they never become out-of-sync
 
-has_changes=$(git diff)
+has_changes=$(git diff -- ':!/styles/output/_web-styles.json')
 
 if [[ -n "${has_changes}" ]]; then
   echo "ERROR: Running the tests caused unexpected changes in committed files."
   echo "Were the CSS files regenerated? Be sure to run ./script/test before pushing"
-  git diff
+  git diff -- ':!/styles/output/_web-styles.json'
   exit 1
 fi
