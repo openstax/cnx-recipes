@@ -96,11 +96,15 @@
 /// TODO Rename me to `count_countEOCExercisesWithoutReset` or something
 /// @arg {Text} $name - Name of the css counter that will control all exercise numbering
 /// @group count
-@mixin count_countExercisesInContentButNotInExample($name) {
+@mixin count_countExercisesInContentButNotInExample($name, $exerciseConfig) {
+  $reset: '[data-type="chapter"], .appendix';
+  @if (map-get($exerciseConfig, moveTo) == $AREA_NONE and map-get($exerciseConfig, resetAt) == $RESET_SECTION) {
+    $reset: str-insert($reset, ', section', str-length($reset) + 1)
+  }
   @include _count(
     $name,
     ':not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered)',
-    '[data-type="chapter"], .appendix'
+    $reset
   );
 }
 
