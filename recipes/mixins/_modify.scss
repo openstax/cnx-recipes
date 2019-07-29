@@ -853,30 +853,34 @@
   }
 }
 
-//by default the .os-chapter-outline is the first child of .introduction
-//moves splash image so that it is the first child of .introduction
-//intro body text and .os-chapter-outline in one div
+//select body content and chap outline in the intro and place them into one div
+@mixin modify_groupChapOutlineIntroContent() {
+  .introduction {
+    .os-chapter-outline {
+      move-to: chap-outline;
+    }
+    > p {
+      move-to: intro-text;
+    }
+    &::after {
+      content: pending(intro-text);
+      move-to: intro-body;
+    }
+    &:deferred::after {
+      content: pending(chap-outline) pending(intro-body); 
+      class: "intro-body";
+    }
+  }
+}
 
-@mixin modify_SplashFirstChild() {
+//tag os-figure that contains splash image in introduction
+@mixin modify_tagSplash() {
+  .introduction > .os-figure {
     .splash {
-      move-to: Splash;
+      string-set: hasSplash " has-splash";
     }
-    .introduction {
-      &:deferred::before {
-        content: pending(Splash);
-      }
-      > p {
-        container: div;
-        class: "intro-body-text";
-        move-to: intro-text;
-        content: content();
-      }
-      > .os-chapter-outline {
-        move-to: chap-outline;
-      }
-      &::after {
-        content: pending(intro-text) pending(chap-outline);
-        class: "intro-body";
-      }
+    &:deferred {
+      class: attr(class) string(hasSplash);
     }
+  }
 }
