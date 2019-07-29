@@ -881,6 +881,28 @@
     }
     &:deferred {
       class: attr(class) string(hasSplash);
+      
+      
+@mixin modify_classOrder($classNameList) {
+  $contentList: content();
+  @each $class in $classNameList {
+    $contentList: $contentList pending(#{$class}Span);
+    .#{$class} {
+      move-to: #{$class}Span;
+    }
+  }
+  &:deferred {
+    content: $contentList;
+  }
+}
+
+@mixin modify_elementsOrder($orderConfig) {
+  @each $order in $orderConfig {
+    $selector: map-get($order, selector);
+    $classNameOrder: map-get($order, classNameOrder);
+
+    #{$selector} {
+      @include modify_classOrder($classNameOrder);
     }
   }
 }
