@@ -859,7 +859,7 @@
     .os-chapter-outline {
       move-to: chap-outline;
     }
-    > p {
+    > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
       move-to: intro-text;
     }
     &::after {
@@ -877,12 +877,15 @@
 //tag os-figure that contains splash image in introduction
 @mixin modify_tagSplash() {
   .introduction > .os-figure {
+    string-set: hasSplash " ";
     .splash {
       string-set: hasSplash " has-splash";
     }
     &:deferred {
       class: attr(class) string(hasSplash);
-      
+    }
+  }
+}
       
 @mixin modify_classOrder($classNameList) {
   $contentList: content();
