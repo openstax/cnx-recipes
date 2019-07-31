@@ -1,0 +1,172 @@
+@import '../../locale/pl/common-stuff';
+$RECIPE_NAME: "pl-u-physics";
+
+/*==========================================================
+  POLISH UNIVERSITY PHYSICS PAGES
+==========================================================*/
+/*
+  Podsumowanie rozdziału
+
+  These should be collated at the end of a chapter.
+
+  Compound Composite that contains: contains Concept Items, Critical Thinking, Performance Task
+
+  Markup: ./styleguide/book.compoundcomposite.chapterreview.xhtml-baked.html
+
+  Style guide: book.compoundcomposite.chapterreview
+*/
+/*
+  Kluczowe pojęcia
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
+*/
+/*
+  Najważniejsze wzory
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
+
+  Style guide: book.composite.key-equations
+*/
+/*
+  Podsumowanie
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.key-concepts.xhtml-baked.html
+
+  Style guide: book.composite.key-concepts
+*/
+/*
+  Pytania
+
+  These should be collated at the end of a chapter and have answers collated at the end of the book.
+
+  Markup: ./styleguide/book.composite.conceptual-questions.xhtml-baked.html
+
+  Style guide: book.composite.conceptual-questions
+*/
+/*
+  Zadania
+
+  These should be collated at the end of a chapter and have answers collated at the end of the book.
+
+  Markup: ./styleguide/book.composite.problems.xhtml-baked.html
+
+  Style guide: book.composite.problems
+*/
+/*
+  Zadania dodatkowe
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the book.
+
+  Markup: ./styleguide/book.composite.additional-problems.xhtml-baked.html
+
+  Style guide: book.composite.additional-problems
+*/
+/*
+  Zadania trudniejsze
+
+  These should be collated at the end of a chapter
+  and have answers collated at the end of the book.
+
+  Markup: ./styleguide/book.composite.challenge-problems.xhtml-baked.html
+
+  Style guide: book.composite.challenge-problems
+*/
+
+$_chapterReviewChildPages: (
+  (className: "glossary",                     clusterBy: $CLUSTER_NONE,     specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Kluczowe pojęcia"),
+  (className: "key-equations",                clusterBy: $CLUSTER_NONE,     hasSolutions: false,  name: "Najważniejsze wzory"),
+  (className: "key-concepts",                 clusterBy: $CLUSTER_SECTION,  hasSolutions: false,  name: "Podsumowanie"),
+  (className: "review-conceptual-questions",  clusterBy: $CLUSTER_SECTION,  hasSolutions: true,   name: "Pytania"),
+  (className: "review-problems",              clusterBy: $CLUSTER_SECTION,  hasSolutions: true,   name: "Zadania"),
+  (className: "review-additional-problems",   clusterBy: $CLUSTER_NONE,     hasSolutions: true,   name: "Zadania dodatkowe"),
+  (className: "review-challenge",             clusterBy: $CLUSTER_NONE,     hasSolutions: true,   name: "Zadania trudniejsze"),
+);
+
+$Config_ChapterCompositePages: (
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions:true, name: "Podsumowanie rozdziału"),
+);
+
+// Two new properties (indexType and defaultIndex) are used by
+// @mixin _prepBookCompositeMultiple when creating split indexes.
+// See _mixins.scss for details.
+$Config_BookCompositePages: (
+  (className: "solutions",    clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Rozwiązania zadań"),
+  (className: "index-name",   clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX_PARTIAL, indexType: 'name',    name: "Skorowidz nazwisk"),
+  (className: "index-term",   clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX_PARTIAL, indexType: 'term',    name: "Skorowidz rzeczowy", defaultIndex: true),
+  (className: "index-foreign",clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX_PARTIAL, indexType: 'foreign', name: "Skorowidz terminów obcojęzycznych"),
+);
+
+/*==========================================================
+  POLISH UNIVERSITY PHYSICS TITLING CONTENT
+==========================================================*/
+
+$_exampleTitleContent        : (os-title-label: "Przykład ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Rozwiązanie ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_equationTitleContent       : (os-number: "(" counter(chapter) "." counter(equation) ")");
+$_understandingTitleContent   : (os-number: counter(chapter)"."counter(understanding), os-divider: " ", os-title-label: "Sprawdź, czy rozumiesz ");
+$_understandingSolutionContent : (os-number: counter(chapter)"."counter(understanding));
+
+/* =========================================================
+  CUSTOM NOTES
+==========================================================*/
+/*
+  Sprawdź, czy rozumiesz
+
+  Contains a title "Sprawdź, czy rozumiesz" and the content of the note.
+
+  Markup: ./styleguide/page.note.check-understanding.xhtml-baked.html
+
+  Style guide: page.note.check-understanding
+/*
+  Materiały pomocnicze
+
+  Contains a title "Materiały pomocnicze" and the content of the note.
+
+  Markup: ./styleguide/page.note.media.xhtml-baked.html
+
+  Style guide: page.note.media
+*/
+/*
+  Problem solving
+
+  Contains a default title and the content of the note.
+
+  Markup: ./styleguide/page.note.problem-solving.xhtml-baked.html
+
+  Style guide: page.note.problem-solving
+*/
+
+$Config_Notes: (
+  (className: 'check-understanding',  moveSolutionTo: $AREA_NONE, counterName: understanding, titleContent: $_understandingTitleContent, hasSolutions: true, solutionTitleContent: $_understandingSolutionContent),
+  (className: 'media-2',              moveSolutionTo: $AREA_NONE, labelText: "Materiały pomocnicze"),
+  (className: 'problem-solving',      moveSolutionTo: $AREA_NONE, useHeader: true),
+);
+
+/*==========================================================
+  POLISH UNIVERSITY PHYSICS CONFIG
+==========================================================*/
+
+$Config_UnnumberedElements: (
+  (contextSelector: '.check-understanding', childSelector: '[data-type="exercise"]'),
+);
+
+$Config_abstractTitle: "Cel dydaktyczny";
+$Config_PartType_Chapter:  (outlineTitle: 'Treść rozdziału');
+
+$Config_PartType_Example:  (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
+$Config_PartType_Equation: (moveTo: $AREA_NONE, titleContent: $_equationTitleContent, numberAt: $NUMBER_BEFORE_MOVE, numberAfterEq: true);
+$Config_PartType_Solution: (moveTo: $AREA_NONE, );
+
+$Config_hasCompositeChapter: true;
+
+$Config_TrashSelectedElements: ('[data-type="note"].check-understanding p:first-child strong:first-child');
