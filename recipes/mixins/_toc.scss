@@ -26,23 +26,23 @@
   }
 }
 
-@mixin _pageEntry($counted) {
+@mixin _pageEntry($pageClass) {
   content: pending(page-link);
   move-to: eob-toc;
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(page-shortid);
   container: li;
-  @if $counted {
-    class: os-toc-counted-page;
+  @if $pageClass {
+    class: os-toc-#{$pageClass};
   }
 }
 
 @mixin _countedPage {
-  @include _pageEntry(true);
+  @include _pageEntry("counted-page");
 }
 
 @mixin _uncountedPage {
-  @include _pageEntry(false);
+  @include _pageEntry(null);
 }
 
 @mixin compositeChapterTOC($hasCompositeChapter) {
@@ -127,7 +127,14 @@
         container: a;
         move-to: page-link;
       }
-      @if release-flag-enabled(toc-numbered-pages) {
+      @if release-flag-enabled(toc-labeled-pages) {
+        &.appendix::after {
+          @include _pageEntry("appendix")
+        }
+        &.os-index-container::after {
+          @include _pageEntry("index")
+        }
+      } @else if release-flag-enabled(toc-numbered-pages) {
         &:not(.appendix)::after {
           @include _uncountedPage();
         }
@@ -186,12 +193,30 @@
         class: os-chapter;
         move-to: eoc-toc;
       }
-      &::after {
-        content: pending(eoc-toc);
-        attr-cnx-archive-uri: attr(id);
-        attr-cnx-archive-shortid: string(chap-shortid);
-        container: li;
-        move-to: eob-toc;
+      @if release-flag-enabled(toc-labeled-pages) {
+        &:not(.os-solution-container)::after {
+          content: pending(eoc-toc);
+          attr-cnx-archive-uri: attr(id);
+          attr-cnx-archive-shortid: string(chap-shortid);
+          container: li;
+          move-to: eob-toc;
+        }
+        &.os-solution-container::after {
+          content: pending(eoc-toc);
+          attr-cnx-archive-uri: attr(id);
+          attr-cnx-archive-shortid: string(chap-shortid);
+          container: li;
+          move-to: eob-toc;
+          class: "os-toc-solutions";
+        }
+      } @else {
+        &::after {
+          content: pending(eoc-toc);
+          attr-cnx-archive-uri: attr(id);
+          attr-cnx-archive-shortid: string(chap-shortid);
+          container: li;
+          move-to: eob-toc;
+        }
       }
     }
     > div[data-type="unit"] {
