@@ -1,0 +1,80 @@
+// TODO delete these comments after coder review
+//const baseFontSize = 1 //rem
+// const lineHeightModifier = 1.5
+// const granularity = 0.1
+// const scaleMultiplier = 1.2
+
+// const baseLineHeight = baseFontSize * lineHeightModifier
+// const cellHeight = baseLineHeight * granularity
+
+// const scaleN = 2
+
+// const numCells = Math.round(baseLineHeight * Math.pow(scaleMultiplier, scaleN) / cellHeight)
+// const actualLineHeight = numCells * cellHeight
+// const actualFontSize = actualLineHeight / lineHeightModifier
+// console.log(`n=${scaleN}`)
+// console.log(`Line Height for font-scale(${scaleN}) \t${parseFloat(actualLineHeight.toFixed(2))}`)
+// console.log(`Font Size for font-scale(${scaleN}) \t${parseFloat(actualFontSize.toFixed(2))}`)
+// console.log(`rhythm(${scaleN}) \t\t\t${baseLineHeight*(scaleN+1)}`)
+
+@function pow($number, $exponent) {
+  $value: 1;
+
+  @if $exponent > 0 {
+    @for $i from 1 through $exponent {
+      $value: $value * $number;
+    }
+  } @else if $exponent < 0 {
+    @for $i from 1 through -$exponent {
+      $value: $value / $number;
+    }
+  }
+
+  @return $value;
+}
+
+//TODO DRYer functions
+
+@function font-scale($scaleN) {
+  $baseFontSize: 1; //rem
+  $lineHeightModifier: 1.5;
+  $granularity: 0.1;
+  $scaleMultiplier: 1.2;
+  $baseLineHeight: $baseFontSize * $lineHeightModifier;
+  $cellHeight: $baseLineHeight * $granularity;
+  $numCells: round($baseLineHeight * pow($scaleMultiplier, $scaleN) / $cellHeight);
+  $actualLineHeight: $numCells * $cellHeight;
+  $actualFontSize: $actualLineHeight / $lineHeightModifier;
+
+  @return $actualFontSize + "rem";
+}
+
+@function line-height($scaleN) {
+  $baseFontSize: 1; //rem
+  $lineHeightModifier: 1.5;
+  $granularity: 0.1;
+  $scaleMultiplier: 1.2;
+  $baseLineHeight: $baseFontSize * $lineHeightModifier;
+  $cellHeight: $baseLineHeight * $granularity;
+  $numCells: round($baseLineHeight * pow($scaleMultiplier, $scaleN) / $cellHeight);
+  $actualLineHeight: $numCells * $cellHeight;
+  $actualFontSize: $actualLineHeight / $lineHeightModifier;
+
+  @return $actualLineHeight + "rem";
+}
+
+@function vertical-rythm($scaleN) {
+  $baseFontSize: 1; //rem
+  $lineHeightModifier: 1.5;
+  $granularity: 0.1;
+  $scaleMultiplier: 1.2;
+  $baseLineHeight: $baseFontSize * $lineHeightModifier;
+  $cellHeight: $baseLineHeight * $granularity;
+  $numCells: round($baseLineHeight * pow($scaleMultiplier, $scaleN) / $cellHeight);
+  $actualLineHeight: $numCells * $cellHeight;
+  $actualFontSize: $actualLineHeight / $lineHeightModifier;
+  $value: $cellHeight * 5;
+  @return $value + "rem";
+}
+
+
