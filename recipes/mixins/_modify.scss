@@ -889,12 +889,13 @@
     .os-chapter-outline {
       move-to: chap-outline;
     }
-    > p {
+    > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
       move-to: intro-text;
     }
     &::after {
       content: pending(intro-text);
       move-to: intro-body;
+      class: "intro-text";
     }
     &:deferred::after {
       content: pending(chap-outline) pending(intro-body); 
@@ -906,11 +907,42 @@
 //tag os-figure that contains splash image in introduction
 @mixin modify_tagSplash() {
   .introduction > .os-figure {
+    string-set: hasSplash " ";
     .splash {
       string-set: hasSplash " has-splash";
     }
     &:deferred {
       class: attr(class) string(hasSplash);
+    }
+  }
+}
+      
+@mixin modify_footnoteTitle($footnoteConfig) {
+  [data-type="footnote-refs-title"] {
+    content: $footnoteConfig;
+  }
+}
+
+@mixin modify_classOrder($classNameList) {
+  $contentList: content();
+  @each $class in $classNameList {
+    $contentList: $contentList pending(#{$class}Span);
+    .#{$class} {
+      move-to: #{$class}Span;
+    }
+  }
+  &:deferred {
+    content: $contentList;
+  }
+}
+
+@mixin modify_elementsOrder($orderConfig) {
+  @each $order in $orderConfig {
+    $selector: map-get($order, selector);
+    $classNameOrder: map-get($order, classNameOrder);
+
+    #{$selector} {
+      @include modify_classOrder($classNameOrder);
     }
   }
 }
