@@ -854,35 +854,39 @@
 }
 
 //select body content and chap outline in the intro and place them into one div
-@mixin modify_groupChapOutlineIntroContent() {
-  .introduction {
-    .os-chapter-outline {
-      move-to: chap-outline;
-    }
-    > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
-      move-to: intro-text;
-    }
-    &::after {
-      content: pending(intro-text);
-      move-to: intro-body;
-      class: "intro-text";
-    }
-    &:deferred::after {
-      content: pending(chap-outline) pending(intro-body); 
-      class: "intro-body";
+@if release-flag-enabled(groupChapOutlineIntroContent) {
+  @mixin modify_groupChapOutlineIntroContent() {
+    .introduction {
+      .os-chapter-outline {
+        move-to: chap-outline;
+      }
+      > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
+        move-to: intro-text;
+      }
+      &::after {
+        content: pending(intro-text);
+        move-to: intro-body;
+        class: "intro-text";
+      }
+      &:deferred::after {
+        content: pending(chap-outline) pending(intro-body); 
+        class: "intro-body";
+      }
     }
   }
 }
 
 //tag os-figure that contains splash image in introduction
-@mixin modify_tagSplash() {
-  .introduction > .os-figure {
-    string-set: hasSplash " ";
-    .splash {
-      string-set: hasSplash " has-splash";
-    }
-    &:deferred {
-      class: attr(class) string(hasSplash);
+@if release-flag-enabled(tagSplash) {
+  @mixin modify_tagSplash() {
+    .introduction > .os-figure {
+      string-set: hasSplash " ";
+      .splash {
+        string-set: hasSplash " has-splash";
+      }
+      &:deferred {
+        class: attr(class) string(hasSplash);
+      }
     }
   }
 }
