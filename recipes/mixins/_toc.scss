@@ -223,30 +223,33 @@
         class: os-chapter;
         move-to: eoc-toc;
       }
-      @if release-flag-enabled(toc-labeled-pages) {
-        &:not(.os-solution-container)::after {
-          content: pending(eoc-toc);
-          attr-cnx-archive-uri: attr(id);
-          attr-cnx-archive-shortid: string(chap-shortid);
-          container: li;
-          move-to: eob-toc;
-          class: "os-toc-chapter";
-        }
-        &.os-solution-container::after {
-          content: pending(eoc-toc);
-          attr-cnx-archive-uri: attr(id);
-          attr-cnx-archive-shortid: string(chap-shortid);
-          container: li;
-          move-to: eob-toc;
-          class: "os-toc-solutions";
-        }
-      } @else {
+      @if not release-flag-enabled(toc-labeled-pages) {
         &::after {
           content: pending(eoc-toc);
           attr-cnx-archive-uri: attr(id);
           attr-cnx-archive-shortid: string(chap-shortid);
           container: li;
           move-to: eob-toc;
+        }
+      }
+    }
+    @if release-flag-enabled(toc-labeled-pages) {
+      > div[data-type="chapter"]#{if($hasCompositeChapter, ':not([data-type="composite-chapter"])','')}::after {
+        content: pending(eoc-toc);
+        attr-cnx-archive-uri: attr(id);
+        attr-cnx-archive-shortid: string(chap-shortid);
+        container: li;
+        move-to: eob-toc;
+        class: "os-toc-chapter";
+      }
+      @if $hasCompositeChapter {
+        > div[data-type="composite-chapter"]::after {
+          content: pending(eoc-toc);
+          attr-cnx-archive-uri: attr(id);
+          attr-cnx-archive-shortid: string(chap-shortid);
+          container: li;
+          move-to: eob-toc;
+          class: "os-toc-composite-chapter";
         }
       }
     }
