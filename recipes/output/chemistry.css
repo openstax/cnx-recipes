@@ -2125,6 +2125,13 @@
     content: pending(eob-toc);
     container: ol; }
 
+:pass(12) .introduction > .os-figure {
+  string-set: hasSplash " "; }
+  :pass(12) .introduction > .os-figure .splash {
+    string-set: hasSplash " has-splash"; }
+  :pass(12) .introduction > .os-figure:deferred {
+    class: attr(class) string(hasSplash); }
+
 :pass(13) nav#toc li > a > h1 > span,
 :pass(13) nav#toc li > a > h2 > span,
 :pass(13) nav#toc li > a > h3 > span,
@@ -2133,6 +2140,21 @@
 
 :pass(13) nav#toc li > a:deferred {
   content: pending(title-spans); }
+
+:pass(13) .introduction .os-chapter-outline {
+  move-to: chap-outline; }
+
+:pass(13) .introduction > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
+  move-to: intro-text; }
+
+:pass(13) .introduction::after {
+  content: pending(intro-text);
+  move-to: intro-body;
+  class: "intro-text"; }
+
+:pass(13) .introduction:deferred::after {
+  content: pending(chap-outline) pending(intro-body);
+  class: "intro-body"; }
 
 :pass(100) div.delete-me {
   move-to: trash; }
