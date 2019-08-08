@@ -26,23 +26,23 @@
   }
 }
 
-@mixin _pageEntry($counted) {
+@mixin _pageEntry($pageClass) {
   content: pending(page-link);
   move-to: eob-toc;
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(page-shortid);
   container: li;
-  @if $counted {
-    class: os-toc-counted-page;
+  @if $pageClass {
+    class: os-toc-#{$pageClass};
   }
 }
 
 @mixin _countedPage {
-  @include _pageEntry(true);
+  @include _pageEntry("counted-page");
 }
 
 @mixin _uncountedPage {
-  @include _pageEntry(false);
+  @include _pageEntry(null);
 }
 
 @mixin compositeChapterTOC($hasCompositeChapter) {
@@ -127,7 +127,20 @@
         container: a;
         move-to: page-link;
       }
-      @if release-flag-enabled(toc-numbered-pages) {
+      @if release-flag-enabled(toc-labeled-pages) {
+        &.appendix::after {
+          @include _pageEntry("appendix")
+        }
+        &.os-index-container::after {
+          @include _pageEntry("index")
+        }
+        &.preface::after {
+          @include _pageEntry("preface")
+        }
+        &:not(.preface):not(.appendix):not(.os-index-container)::after {
+          @include _pageEntry(null)
+        }
+      } @else if release-flag-enabled(toc-numbered-pages) {
         &:not(.appendix)::after {
           @include _uncountedPage();
         }
@@ -172,12 +185,36 @@
           container: a;
           move-to: page-link;
         }
-        &::after {
-          content: pending(page-link);
-          move-to: eoc-toc-pages;
-          attr-cnx-archive-uri: attr(id);
-          attr-cnx-archive-shortid: string(page-shortid);
-          container: li;
+        @if not release-flag-enabled(toc-labeled-pages) {
+          &::after {
+            content: pending(page-link);
+            move-to: eoc-toc-pages;
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(page-shortid);
+            container: li;
+          }
+        }
+      }
+      @if release-flag-enabled(toc-labeled-pages) {
+        > div[data-type="page"] {
+          &::after {
+            content: pending(page-link);
+            move-to: eoc-toc-pages;
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(page-shortid);
+            container: li;
+            class: os-toc-chapter-page;
+          }
+        }
+        > div[data-type="composite-page"] {
+          &::after {
+            content: pending(page-link);
+            move-to: eoc-toc-pages;
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(page-shortid);
+            container: li;
+            class: os-toc-chapter-composite-page;
+          }
         }
       }
       &::after {
@@ -186,12 +223,34 @@
         class: os-chapter;
         move-to: eoc-toc;
       }
-      &::after {
+      @if not release-flag-enabled(toc-labeled-pages) {
+        &::after {
+          content: pending(eoc-toc);
+          attr-cnx-archive-uri: attr(id);
+          attr-cnx-archive-shortid: string(chap-shortid);
+          container: li;
+          move-to: eob-toc;
+        }
+      }
+    }
+    @if release-flag-enabled(toc-labeled-pages) {
+      > div[data-type="chapter"]#{if($hasCompositeChapter, ':not([data-type="composite-chapter"])','')}::after {
         content: pending(eoc-toc);
         attr-cnx-archive-uri: attr(id);
         attr-cnx-archive-shortid: string(chap-shortid);
         container: li;
         move-to: eob-toc;
+        class: "os-toc-chapter";
+      }
+      @if $hasCompositeChapter {
+        > div[data-type="composite-chapter"]::after {
+          content: pending(eoc-toc);
+          attr-cnx-archive-uri: attr(id);
+          attr-cnx-archive-shortid: string(chap-shortid);
+          container: li;
+          move-to: eob-toc;
+          class: "os-toc-composite-chapter";
+        }
       }
     }
     > div[data-type="unit"] {
