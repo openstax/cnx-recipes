@@ -1,0 +1,11 @@
+- Troubleshooting components/shapes created by someone else is very time consuming, especially when not all targets have been set. One must spend quite a bit of time studying the components before being able to add/modify. Sometimes, the naming convention do not reflect the selector, making the process of finding and fixing bugs difficult. 
+
+- This might be a good thing but it's impossible to create a set of components/spaces without solid planning for all the pieces that will be needed. 
+
+- Not having a common base for similar components creates a lot of copy and pastes. It also doesn't encourages consistency between different components or reusability. 
+
+- Troubleshooting the CSS output is not easy, one must rely on reading the CSS output to verify the results
+
+- If a _component is mispelled in the shapes, the framework fails silently. 
+
+- Generally, implementing styles feels more complicated than needed. A flat CSS must be created first, if not, the process for creating one selector/set of properties pairing is time consuming. Additionally, there isn't a way to create temporary values for testing purposes. A component and a shape must be created just to target one selector. 
