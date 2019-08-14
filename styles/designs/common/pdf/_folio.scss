@@ -1,102 +1,136 @@
+//this whole file is a mess, will clean later
+
 div.book > div.preface {
     counter-reset: page 1;
   } 
   
-  [data-type="chapter"] > h1[data-type="document-title"] {
+[data-type="chapter"] > h1[data-type="document-title"] {
     .os-number {
-      string-set: chapter-number content();
+        string-set: chapter-number content();
+}
+    .os-text {
+        string-set: chapter-title content();
+    }
+}
+  
+[data-type="chapter"] > [data-type="page"] > h2[data-type="document-title"] {
+    .os-number {
+        string-set: module-number content();
     }
     .os-text {
-      string-set: chapter-title content();
+        string-set: module-title content();
     }
-  }
+}
   
-  [data-type="chapter"] > [data-type="page"] > h2[data-type="document-title"] {
-    .os-number {
-      string-set: module-number content();
-    }
-    .os-text {
-      string-set: module-title content();
-    }
-  }
-  
-  nav#toc {
+nav#toc {
     page: table-of-contents;
-  }
+}
   
-  div[data-type="page"].preface {
+div[data-type="page"].preface {
     page: preface;
-  }
+}
   
-  .chapter {
+.chapter {
     page: chapter;
     prince-page-group: start;
-  }
-  @page chapter:nth(1) {
+}
+
+@page chapter:nth(1) {
     @top-left-corner {
-      content: none;
+        content: none;
     }
     @top-right-corner {
-      content: none;
+        content: none;
     }
     @top-left {
-      content: none;
+        content: none;
     }
     @top-center {
-      content: none;
+        content: none;
     }
     @top-right {
-      content: none;
+        content: none;
     }
-  }
+}
   
-  @page table-of-contents {
+@page table-of-contents {
     @top-left-corner {
-      content: none;
+        content: none;
     }
     @top-left {
-      content: none;
+        content: none;
     }
     @top-right-corner {
-      content: none;
+        content: none;
     }
     @top-right {
-      content: none;
+        content: none;
     }
-  }
+}
   
-  @page preface:left {
+@page preface:left {
+    @top-left-corner {
+        content: counter(page);
+    }
     @top-left {
-      content: counter(page);
+        content: none;
     }
-    @top-right {
-      content: "Preface";
+    @top-right-corner {
+        content: "Preface";
+        font-size: font-scale(1);
+        //for some reason this isn't working. will clean up later
+        //font-family: (_ref: "typography:::titleFont"); 
+        font-family: "Muli";
+        font-weight: 700;
     }
-  }
+}
   
-  @page preface:right {
+@page preface:right {
+    @top-left-corner {
+        content: "Preface";
+        font-size: font-scale(1);
+        // font-family: (_ref: "typography:::titleFont");
+        font-family: "Muli";
+        font-weight: 700;
+    }
+    @top-right-corner {
+        content: counter(page);
+    }
+}
+  
+@page :left {
     @top-left {
-      content: "Preface";
+        content: " " "Chapter " string(chapter-number) " • " string(chapter-title);
+        font-size: font-scale(1);
+        // font-family: (_ref: "typography:::titleFont");
+        font-family: "Muli";
+        font-weight: 700;
     }
-    @top-right {
-      content: counter(page);
+    @top-left-corner {
+        content: counter(page);
+        font-size: font-scale(1);
+        // font-family: (_ref: "typography:::titleFont");
+        font-family: "Muli";
+        font-weight: 700;
+        margin-right: h-grid(1);
     }
-  }
+}
   
-  @page :left {
-    @top-left {
-      content: counter(page) " " "Chapter " string(chapter-number) " • " string(chapter-title);
-      font-size: font-scale(1);
-      font-family: "Muli";
-      font-weight: 700;
-    }
-  }
-  
-  @page :right {
+@page :right {
     @top-right {
-      content: string(module-number) " " string(module-title) " "counter(page);
-      font-size: font-scale(1);
-      font-family: "Muli";
-      font-weight: 700;
+        content: string(module-number) " " string(module-title) " ";
+        font-size: font-scale(1);
+        // font-family: (_ref: "typography:::titleFont");
+        font-family: "Muli";
+        font-weight: 700;
     }
-  }
+    @top-right-corner {
+        content: counter(page);
+        margin-left: h-grid(1);
+        content: counter(page);
+        font-size: font-scale(1);
+        // font-family: (_ref: "typography:::titleFont");
+        font-family: "Muli";
+        font-weight: 700;
+    }
+}
