@@ -1,3 +1,6 @@
+- Generating the CSS takes a long time, even when running `PLATFORM=pdf node ./styles/build/build.js ./styles/books/chemistry/book.scss ./styles/output/chemistry-pdf.css`
+When running ./script/run ./script/build-styles, one has time to go do the dishes, read a book and finish it. It's not very efficient, especially when it needs to be done several times in a row. 
+
 - Troubleshooting components/shapes created by someone else is very time consuming, especially when not all targets have been set. One must spend quite a bit of time studying the components before being able to add/modify. Sometimes, the naming convention do not reflect the selector, making the process of finding and fixing bugs difficult. 
 
 - This might be a good thing but it's impossible to create a set of components/spaces without solid planning for all the pieces that will be needed. 
