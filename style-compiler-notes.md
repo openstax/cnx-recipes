@@ -9,3 +9,7 @@
 - If a _component is mispelled in the shapes, the framework fails silently. 
 
 - Generally, implementing styles feels more complicated than needed. A flat CSS must be created first, if not, the process for creating one selector/set of properties pairing is time consuming. Additionally, there isn't a way to create temporary values for testing purposes. A component and a shape must be created just to target one selector. 
+
+- We don't support closures or access to variables in spaces, so trying to get reusability within a DESIGN is extremely difficult
+
+- If two spaces are nearly identical and we want to exchange a component deep in the tree, you have to repeat everything up to the point where you exchange the component which seems unecessary
