@@ -16,7 +16,7 @@
 @include use('EverydayLife', 'carnival:::BorderFeatureShape');
 @include use('Portrait', 'carnival:::BorderFeatureShape');
 @include use('LinkToLearning', 'carnival:::LinkToLearningShape');
-@include use('LearningObjective', 'LearningObjectiveShape');
+@include use('LearningObjective', 'carnival:::LearningObjectiveShape');
 @include use('Interconnect', 'carnival:::IconFeatureShape');
 @include use('Example', 'carnival:::IconFeatureShape');
 @include use('Appendix', 'carnival:::AppendixShape');
@@ -25,12 +25,94 @@
 @include use('ChapterIntro', 'carnival:::ChapterIntroShape');
 @include use('Chapter', 'carnival:::Chapter');
 @include use('TOC', 'carnival:::NoUnitToc');
+@include use('Module', 'carnival:::ModuleShape');
+@include use('Footnotes', 'carnival:::FootnotesShape');
+@include use('FootnoteCall', 'carnival:::FootnotesCallShape');
+
+@include use('BasicTable', 'carnival:::BasicTableShape');
+@include use('TopTitledTable', 'carnival:::TopTitledTableShape');
 
 
 // We need to relocate this, but don't have to infrastructure or time right now
 [data-type="chapter"] {
   page: chapter;
   prince-page-group: start;
+  page-break-before: right;
+}
+
+.os-eoc.os-glossary-container {
+  page: eoc;
+  prince-page-group: start;
+}
+.os-eoc {
+  page: eoc;
+}
+
+$bandColor: settings('scheme:::B2');
+$bandSize: 2.5rem;
+$fullBleedWidth: 0.125rem;
+$bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
+
+@mixin band($side) {
+  content: " ";
+  border-#{$side}: $bandBorder;
+  padding-#{$side}: $fullBleedWidth;
+  margin-#{$side}: -1 * $fullBleedWidth;
+}
+
+@mixin setEocPageBorder($type, $side) {
+  @page eoc:#{$type} {
+    @if $side == "left" {
+      @left-middle {
+        @content;
+      }
+      @top-left-corner {
+        @content;
+      }
+      @bottom-left-corner {
+        @content;
+      }
+      @left-bottom {
+        @content;
+      }
+      @left-top {
+        @content;
+      }
+    } @else if $side == "right" {
+      @right-middle {
+        @content;
+      }
+      @top-right-corner {
+        @content;
+      }
+      @bottom-right-corner {
+        @content;
+      }
+      @right-bottom {
+        @content;
+      }
+      @right-top {
+        @content;
+      }
+    }
+  }
+}
+
+@include setEocPageBorder("left", "left") {
+  @include band("left");
+}
+
+@include setEocPageBorder("right", "right") {
+  @include band("right");
+}
+
+@include setEocPageBorder("blank", "left") {
+  content: none;
+  border: none;
+}
+@include setEocPageBorder("blank", "right") {
+  content: none;
+  border: none;
 }
 
 @page {
