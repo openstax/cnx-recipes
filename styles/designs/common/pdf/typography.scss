@@ -1,0 +1,56 @@
+@function pow($number, $exponent) {
+  $value: 1;
+
+  @if $exponent > 0 {
+    @for $i from 1 through $exponent {
+      $value: $value * $number;
+    }
+  } @else if $exponent < 0 {
+    @for $i from 1 through -$exponent {
+      $value: $value / $number;
+    }
+  }
+
+  @return $value;
+}
+
+//TODO DRYer functions
+
+@function font-scale($scaleN) {
+  $baseFontSize: 1; //rem
+  $lineHeightModifier: 1.5;
+  $granularity: 0.1;
+  $scaleMultiplier: 1.2;
+  $baseLineHeight: $baseFontSize * $lineHeightModifier;
+  $cellHeight: $baseLineHeight * $granularity;
+  $numCells: round($baseLineHeight * pow($scaleMultiplier, $scaleN) / $cellHeight);
+  $actualLineHeight: $numCells * $cellHeight;
+  $actualFontSize: $actualLineHeight / $lineHeightModifier;
+  @return $actualFontSize * 1rem;
+}
+
+@function line-height($scaleN) {
+  $baseFontSize: 1; //rem
+  $lineHeightModifier: 1.5;
+  $granularity: 0.1;
+  $scaleMultiplier: 1.2;
+  $baseLineHeight: $baseFontSize * $lineHeightModifier;
+  $cellHeight: $baseLineHeight * $granularity;
+  $numCells: round($baseLineHeight * pow($scaleMultiplier, $scaleN) / $cellHeight);
+  $actualLineHeight: $numCells * $cellHeight;
+
+  @return $actualLineHeight * 1rem;
+}
+
+@function v-grid($scaleN) {
+  $baseFontSize: 1; //rem
+  $lineHeightModifier: 1.5;
+  $granularity: 0.1;
+  $baseLineHeight: $baseFontSize * $lineHeightModifier;
+  $cellHeight: $baseLineHeight * $granularity;
+  $value: $cellHeight * 5;
+  $result: $value * $scaleN;
+  @return $result * 1rem;
+}
+
+

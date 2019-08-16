@@ -1,0 +1,182 @@
+$ChapterIntroBody: (
+    _name: "IntroBody",
+    _subselector: ' > .intro-body',
+    _properties: (
+        display: flex, 
+        flex-direction: row-reverse,
+        position: relative
+    )
+);
+
+$ChapterOutline: (
+    _name: "Outline",
+    _subselector: ' > .os-chapter-outline',
+    _properties: (
+        position: absolute,
+        width: 1.8in,
+        right: -2in,
+        background-color: enum('ValueSet:::OPTIONAL'),
+        color: enum('ValueSet:::OPTIONAL'),
+        min-width: enum('ValueSet:::OPTIONAL'),
+        margin: enum('ValueSet:::OPTIONAL'),
+        padding: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::OPTIONAL'),
+        font-size: enum('ValueSet:::OPTIONAL'),
+        line-height: enum('ValueSet:::OPTIONAL'),
+        font-weight: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+$ChapterOutlineTitle: (
+    _name: "OutlineTitle",
+    _subselector: ' > .os-title',
+    _properties: (
+        overflow: visible,
+        border-bottom: enum('ValueSet:::OPTIONAL'),
+        padding: enum('ValueSet:::OPTIONAL'),
+        margin: enum('ValueSet:::OPTIONAL'),
+        font-size: enum('ValueSet:::OPTIONAL'),
+        line-height: enum('ValueSet:::OPTIONAL'),
+        font-weight: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+$ChapterOutlineObjective: (
+    _name: "ChapterOutlineObjective", 
+    _subselector: ' > div.os-chapter-objective', 
+    _properties: (
+        margin-bottom: enum('ValueSet:::OPTIONAL'),
+        padding-right: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+$ChapterOutlineObjectiveLink: (
+    _name: "OutlineObjectiveLink",
+    _subselector: ' > a.os-chapter-objective',
+    _properties: (
+        display: flex,
+        text-decoration: enum('ValueSet:::OPTIONAL'),
+        color: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+$ChapterOutlineObjectiveText: (
+    _name: "ChapterOutlineObjectiveText",
+    _subselector: ' > .os-text', 
+    _properties: (
+        display: inline-block, 
+        margin-left: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+$ChapterIntroContent: (
+    _name: "IntroContent",
+    _subselector: ' > .intro-text',
+    _properties: (
+    )
+);
+
+$ChapterIntroContentHeader: (
+    _name: "IntroContentHeader",
+    _subselector: ' > h2[data-type="document-title"]:first-of-type', 
+    _properties: (
+        display: inline,
+        font-size: enum('ValueSet:::OPTIONAL'), 
+        text-transform: enum('ValueSet:::OPTIONAL'), 
+        margin: enum('ValueSet:::OPTIONAL'),
+        font-weight: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+$ChapterIntroFirstPara: (
+    _name: "IntroFirstPara",
+    _subselector: ' > p:first-of-type',
+    _properties: (
+        display: inline,
+    )
+);
+
+$ChapterSplashImg: (
+    _name: "SplashImg",
+    _subselector: '> img',
+    _properties: (
+        width: 8in, /* stylelint-disable-line meowtec/no-px */
+    )
+);
+
+$ChapterSplashMedia: (
+    _name: "SplashImgMedia",
+    _subselector: ' > span[data-type="media"]',
+    _properties: (
+        line-height: 0,
+        height: 100%,
+        display: flex,
+        width: 7.5in, /* stylelint-disable-line meowtec/no-px */
+        justify-content: flex-end
+    ),
+    _components: (
+        $ChapterSplashImg,
+    )
+);
+
+@function fullWidthBg($kind, $color, $extraProps: empty_map()) {
+    @return (
+        _name: "#{$kind}Bg",
+        _subselector: '::before',
+        _properties: map-merge((
+            content: "''",
+            background-color: $color,
+            position: absolute,
+            height: 100%,
+            width: 8.5in, /* stylelint-disable-line meowtec/no-px */
+            margin-left: -1in, /* stylelint-disable-line meowtec/no-px */
+            z-index: -1,
+            box-sizing: border-box,
+            padding: inherit,
+            top: 0,
+        ), $extraProps),
+    );
+}
+
+$ChapterSplashFigure: (
+    _name: "SplashFigure",
+    _subselector: ' > figure.splash',
+    _properties: (
+        position: relative,
+        margin: 0,
+    ),
+    _components: (
+        fullWidthBg("SplashFigure", enum('ValueSet:::REQUIRED')),
+        $ChapterSplashMedia,
+    )
+);
+
+$SplashCaption: (
+    _name: "SplashCaption",
+    _subselector: ' > .os-caption-container',
+    _properties: (
+        position: relative,
+        padding-top: 1rem,
+        padding-bottom: 2rem,
+    ),
+    _components: (
+        fullWidthBg("SplashCaption", enum('ValueSet:::REQUIRED')),
+        $FigureNum,
+        $FigureTitleLabel,
+        $Caption
+    )
+);
+
+
+$ChapterSplashFigureWrapper: (
+    _name: "SplashFigureWrapper",
+    _subselector: ' > .os-figure.has-splash',
+    _properties: (
+        margin-bottom: 2rem,
+    ),
+    _components: (
+        $ChapterSplashFigure,
+        $SplashCaption,
+    )
+);
