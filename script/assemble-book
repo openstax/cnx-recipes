@@ -78,15 +78,15 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   # Allow user to override the hostname
   host_name=${HOST:-${host_name}}
 
-  book_dir="${OUTPUT_DIR:-./data}/${book_name}"
+  book_dir="${OUTPUT_DIR:-./}/data/${book_name}"
   raw_dir="${book_dir}/raw"
   raw_file="${book_dir}/collection.assembled.xhtml"
 
-  rm -rf "${raw_file/$OUTPUT_DIR/.\/data}"
+  rm -rf "${raw_file/$OUTPUT_DIR/.\/}"
 
   do_progress "Creating HTML file for ${book_name}" \
     docker-compose run --rm neb /bin/bash -c "pip install -U -r requirements/main.txt && neb assemble \"${raw_dir}\" \"${book_dir}\" && chown -R $(stat -c '%u:%g' ./data) \"${book_dir}\""
 
-  _say "${c_green}Assemble is Done.${c_none} File is available at ${raw_file/$OUTPUT_DIR/$HOST_PWD\/data}"
+  _say "${c_green}Assemble is Done.${c_none} File is available at ${raw_file/$OUTPUT_DIR/$HOST_PWD}"
 
 done
