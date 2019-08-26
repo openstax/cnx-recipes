@@ -40,17 +40,11 @@ fi
 for book_config in "${BOOK_CONFIGS[@]}"; do
   read -r book_name _ _ _ _ _ style_name <<< "${book_config}"
 
-  book_dir="${OUTPUT_DIR:-./data}/${book_name}"
+  book_dir="${OUTPUT_DIR:-./}/data/${book_name}"
   mathified_file="${book_dir}/collection.mathified.xhtml"
   baked_file="${book_dir}/collection.baked.xhtml"
   style_file="${STYLE:-./styles/output/${style_name}-pdf.css}"
   output_file="${book_dir}/collection.pdf"
-
-  local_book_dir="./data/${book_name}"
-  style_path="${local_book_dir}/$(basename "${style_file}")"
-  style_file_cp="${local_book_dir}/${book_name}.css"
-  style_path_for_prince="${book_dir}/${book_name}.css"
-  readarray -d '' icon_files < <(find ./styles/designs/*/resources -type f -print0)
 
   if [ -f "${mathified_file}" ]; then
     input_file="${mathified_file}"
@@ -60,24 +54,12 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
 
   style_flag=()
   if [ -f "${style_file}" ]; then
-    if [ -h "${style_path}" ]; then : ; else
-      ln -sfr "${style_file}" "${style_path}"
-    fi
-    # Symlink will not persist in the container, so we will copy it
-    cp -f "${style_path}" "${style_file_cp}"
-    style_flag=('--style' "${style_path_for_prince}")
+    style_flag=('--style' "${OUTPUT_DIR:-./}/${style_file}")
   elif [ -n "${STYLE}" ] || [ -n "${style_name}" ]; then
     _say "${c_red}WARNING${c_none} style not found: ${style_file}"
   else
     _say "${c_red}WARNING${c_none} style name missing in books.txt"
   fi
-
-  mkdir -p "${local_book_dir}/icons"
-  for icon_file in "${icon_files[@]}"; do
-    cp --remove-destination "${icon_file}" "${local_book_dir}/icons"
-  done
-  sed -Ei 's|../../styles/designs/.*/resources|icons|g' "${style_file_cp}"
-
 
   # Run princexml as root to bypass permission issues:
   # The data directory belongs to root, the default user on the princexml image
@@ -88,5 +70,5 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
 
   docker-compose run --rm -u root pdf chown -R "$(stat -c '%u:%g' ./data)" "${book_dir}"
 
-  _say "Output in ${output_file/$OUTPUT_DIR/$HOST_PWD\/data}"
+  _say "Output in ${output_file/$OUTPUT_DIR/$HOST_PWD}"
 done
