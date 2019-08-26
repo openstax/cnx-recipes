@@ -82,11 +82,11 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   # Allow user to override the hostname
   host_name=${HOST:-${host_name}}
 
-  book_dir="${OUTPUT_DIR:-./data}/${book_name}"
+  book_dir="${OUTPUT_DIR:-./}/data/${book_name}"
   raw_dir="${book_dir}/raw"
 
-  mkdir -p "${book_dir/$OUTPUT_DIR/.\/data}"
-  rm -rf "${raw_dir/$OUTPUT_DIR/.\/data}"
+  mkdir -p "${book_dir/$OUTPUT_DIR/.\/}"
+  rm -rf "${raw_dir/$OUTPUT_DIR/.\/}"
 
   neb_get_flag=''
   if $with_resources; then
@@ -96,6 +96,6 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   do_progress "Fetching ${book_name} from ${host_name}" \
     docker-compose run --rm neb /bin/bash -c "neb get ${neb_get_flag} -d \"${raw_dir}\" \"${host_name}\" \"${colid}\" '' && chown -R $(stat -c '%u:%g' ./data) \"${book_dir}\""
 
-  _say "${c_green}Fetch is Done.${c_none} The book is in ${raw_dir/$OUTPUT_DIR/$HOST_PWD\/data}"
+  _say "${c_green}Fetch is Done.${c_none} The book is in ${raw_dir/$OUTPUT_DIR/$HOST_PWD}"
 
 done
