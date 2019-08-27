@@ -1,3 +1,35 @@
+//This function is created generally for exercises. 
+//Value of $part could be 'solution' or 'problem'.
+//Can be apply also in Key Equations.
+
+@function exerciseElementStyle($part, $name, $selector) {
+  @return (
+    _name: "Exercise#{$name}",
+    _subselector: #{$selector},
+    _properties: (
+      display: enum('ValueSet:::OPTIONAL'),
+      text-decoration: enum('ValueSet:::OPTIONAL'),
+      color: enum('ValueSet:::OPTIONAL'),
+      font-weight: enum('ValueSet:::OPTIONAL'),
+      padding-right: enum('ValueSet:::OPTIONAL'),
+    )
+  )
+}
+
+@function exerciseStyle($part) {
+  @return map-merge(exerciseElementStyle($part, Component, '> [data-type="#{$part}"]'), (
+    _components: (
+      exerciseElementStyle($part, Number, '> .os-number'),
+      exerciseElementStyle($part, Divider, '> .os-divider'),
+      map-merge(exerciseElementStyle($part, Container, '> .os-#{$part}-container'), (
+        _components: (
+          exerciseElementStyle($part, Text, '> p')
+        )
+      ))
+    )
+  ))
+}
+
 $AnswerKeyContainerComponent: (
   _name: "Container",
   _subselector: '',
@@ -24,14 +56,6 @@ $AnswerKeyTitleComponent: (
   )
 );
 
-$AnswerKeyChapterContainerComponent: (
-  _name: "ChapterContainer",
-  _subselector: ' > [data-type="composite-page"]',
-  _properties: (
-    padding-bottom: enum('ValueSet:::OPTIONAL'),
-  )
-);
-
 $AnswerKeyTitleTextComponent: (
   _name: "Title",
   _subselector: ' > h2',
@@ -44,35 +68,14 @@ $AnswerKeyTitleTextComponent: (
   )
 );
 
-$AnswerKeySolutionComponent: (
-  _name: "Inline",
-  _subselector: ' > [data-type="solution"]',
+$AnswerKeyChapterContainerComponent: (
+  _name: "ChapterContainer",
+  _subselector: ' > [data-type="composite-page"]',
   _properties: (
-    display: inline,
-  )
-);
-
-$AnswerKeyNumberComponent: (
-  _name: "Number",
-  _subselector: ' > .os-number',
-  _properties: (
-    text-decoration: none,
-    color: enum('ValueSet:::OPTIONAL'),
-  )
-);
-
-$AnswerKeyTextContainerComponent: (
-  _name: "Inline",
-  _subselector: ' > .os-solution-container',
-  _properties: (
-    display: inline,
-  )
-);
-
-$AnswerKeyTextComponent: (
-  _name: "Inline",
-  _subselector: ' > p',
-  _properties: (
-    display: inline,
+    padding-bottom: enum('ValueSet:::OPTIONAL'),
+  ),
+  _components: (
+    $AnswerKeyTitleTextComponent,
+    exerciseStyle(solution)
   )
 );
