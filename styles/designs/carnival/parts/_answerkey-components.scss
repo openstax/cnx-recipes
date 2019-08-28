@@ -2,7 +2,7 @@
 //Value of $part could be 'solution' or 'problem'.
 //Can be apply also in Key Equations.
 
-@function exerciseElementStyle($part, $name, $selector) {
+@function exerciseElementStyle($name, $selector) {
   @return (
     _name: "Exercise#{$name}",
     _subselector: #{$selector},
@@ -13,21 +13,21 @@
       font-weight: enum('ValueSet:::OPTIONAL'),
       padding-right: enum('ValueSet:::OPTIONAL'),
     )
-  )
+  );
 }
 
 @function exerciseStyle($part) {
-  @return map-merge(exerciseElementStyle($part, Component, '> [data-type="#{$part}"]'), (
+  @return map-merge(exerciseElementStyle(Component, '> [data-type="#{$part}"]'), (
     _components: (
-      exerciseElementStyle($part, Number, '> .os-number'),
-      exerciseElementStyle($part, Divider, '> .os-divider'),
-      map-merge(exerciseElementStyle($part, Container, '> .os-#{$part}-container'), (
+      exerciseElementStyle(Number, '> .os-number'),
+      exerciseElementStyle(Divider, '> .os-divider'),
+      map-merge(exerciseElementStyle(Container, '> .os-#{$part}-container'), (
         _components: (
-          exerciseElementStyle($part, Text, '> p')
+          exerciseElementStyle(Text, '> p')
         )
       ))
     )
-  ))
+  ));
 }
 
 $AnswerKeyContainerComponent: (
