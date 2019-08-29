@@ -24,7 +24,7 @@
       font-size: enum('ValueSet:::REQUIRED'),
       line-height: enum('ValueSet:::REQUIRED'),
       font-weight: enum('ValueSet:::OPTIONAL'),
-      color: (enum('ValueSet:::OPTIONAL'), #333333),
+      color: (enum('ValueSet:::OPTIONAL'), #333333), //Why this color is used? Shouldn't be black? I can't find any document with info about it
       text-decoration: none
     ), $extraProps),
     _components: (
@@ -37,7 +37,7 @@ $TocChapterCompositePage: (
   _name: 'TocChapterCompositePage',
   _subselector: ' > .os-toc-chapter-composite-page',
   _properties: (
-    display: block
+    display: block //common for all books
   ),
   _components: (
     tocLink('TocChapterCompositePage')
@@ -48,7 +48,7 @@ $TocChapterPage: (
   _name: 'TocChapterPage',
   _subselector: ' > .os-toc-chapter-page',
   _properties: (
-    display: block
+    display: block //common for all books
   ),
   _components: (
     tocLink('TocChapterPage')
@@ -59,10 +59,10 @@ $TocChapterList: (
   _name: 'TocChapterList',
   _subselector: ' > ol',
   _properties: (
-    list-style: none,
-    padding-left: 0,
-    margin-left: 0,
-    display: block
+    list-style: none, //common for all books
+    padding-left: 0, //common for all books
+    margin-left: 0, //common for all books
+    display: block //common for all books
   ),
   _components: (
     $TocChapterPage,
@@ -74,9 +74,9 @@ $TocChapterNumberWord: (
   _name: 'TocChapterNumberWord',
   _subselector: '::before',
   _properties: (
-    content: "'Chapter '",
-    text-transform: uppercase,
-    letter-spacing: 0.1rem
+    content: "'Chapter '", //common for all books
+    text-transform: uppercase, //common for all books
+    letter-spacing: 0.1rem //??? There is no info about this property. is it common for all books? Should I add this to Theme Design Specs document?
   )
 );
 
@@ -84,14 +84,14 @@ $TocChapterNumber: (
   _name: 'TocChapterNumber',
   _subselector: ' > a > .os-number',
   _properties: (
-    display: block,
-    text-decoration: none,
-    pointer-events: none,
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-weight: bolder,
-    font-size: font-scale(1),
-    line-height: line-height(1)
+    display: block, //common for all books
+    text-decoration: none, //common for all books
+    pointer-events: none, //common for all books
+    color: enum('ValueSet:::REQUIRED'), //??? At this moment is black; in Theme Design Specs document is info it should be book specific; on screenshots in https://github.com/openstax/cnx-recipes/issues/1070 once it's black, other time is blue.
+    font-family: enum('ValueSet:::REQUIRED'), //it could be changed to hard coded; based on Theme Design Specs document in all books it should be Muli Black
+    font-weight: bolder, //common for all books
+    font-size: font-scale(1), //common for all books
+    line-height: line-height(1) //common for all books
   ),
   _components: (
     $TocChapterNumberWord,
@@ -102,8 +102,8 @@ $TocChapter: (
   _name: 'TocChapter',
   _subselector: ' > .os-toc-chapter',
   _properties: (
-    display: block,
-    margin-bottom: v-grid(2)
+    display: block, //common for all books
+    margin-bottom: v-grid(2) //common for all books
   ),
   _components: (
     $TocChapterNumber,
@@ -116,8 +116,8 @@ $TocPreface: (
   _name: 'TocPreface',
   _subselector: '> .os-toc-preface',
   _properties: (
-    display: block,
-    margin-bottom: v-grid(2)
+    display: block, //common for all books
+    margin-bottom: v-grid(2) //common for all books
   ),
   _components: (
     tocLink('TocPreface'),
@@ -128,8 +128,8 @@ $TocAppendixNumberWord: (
   _name: 'TocAppendixNumberWord',
   _subselector: '::before',
   _properties: (
-    content: "'Appendix '",
-    text-transform: uppercase,
+    content: "'Appendix '", //common for all books
+    text-transform: uppercase, //??? I can't find info it should all caps. Is it ok? Should I add this to Theme Design Specs?
   ),
 );
 
@@ -137,13 +137,13 @@ $TocAppendixNumber: (
   _name: 'TocAppendixNumber',
   _subselector: ' > a > .os-number',
   _properties: (
-    text-decoration: none,
-    pointer-events: none,
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-weight: bolder,
-    font-size: font-scale(1),
-    line-height: line-height(1),
+    text-decoration: none, //common for all books
+    pointer-events: none, //common for all books
+    color: enum('ValueSet:::REQUIRED'), //It depends on color property in function tocLink. If there color be changed to black, I think this can be removed, because then it will be inherited from '.os-toc-appendix > a'
+    font-family: enum('ValueSet:::REQUIRED'),// Now is set to Muli, but there is no info that 'APPENDIX #' has different font family than appendix title. If value should be IBM Plex Sans, I think this can be removed, because it could be inherited from '.os-toc-appendix > a'
+    font-weight: bolder,//??? Based on Theme Design Specs it should be just bold
+    font-size: font-scale(1), //It could be inherited from '.os-toc-appendix > a'. Can I remove this property?
+    line-height: line-height(1), //It could be inherited from '.os-toc-appendix > a'. Can I remove this property?
   ),
   _components: (
     $TocAppendixNumberWord,
@@ -154,7 +154,7 @@ $TocAppendixDivider: (
   _name: 'TocAppendixDivider',
   _subselector: '> a > .os-divider',
   _properties: (
-    content: "' '",
+    content: "' '", //common for all books
   ),
 );
 
@@ -162,7 +162,7 @@ $TocAppendix: (
   _name: 'TocAppendix',
   _subselector: '> .os-toc-appendix',
   _properties: (
-    margin-bottom: v-grid(1),
+    margin-bottom: v-grid(1), // I can't find any info about this property. Is it common for all books? Should I add it to Theme Design Specs document? 
   ),
   _components: (
     $TocAppendixNumber,
@@ -175,8 +175,8 @@ $TocIndex: (
   _name: 'TocIndex',
   _subselector: '> .os-toc-index',
   _properties: (
-    display: block,
-    margin-bottom: v-grid(2),
+    display: block, //common for all books
+    margin-bottom: v-grid(2), //common for all books
   ),
   _components: (
     tocLink('TocIndex'),
@@ -187,7 +187,7 @@ $TocCompositeChapterCompositePage: (
   _name: 'TocChapterCompositePage',
   _subselector: ' > .os-toc-chapter-composite-page',
   _properties: (
-    display: block,
+    display: block, //common for all books
   ),
   _components: (
     tocLink('TocCompositeChapterCompositePage')
@@ -198,10 +198,10 @@ $TocCompositeChapterList: (
   _name: 'TocCompositeChapterList',
   _subselector: ' > ol',
   _properties: (
-    list-style: none,
-    padding-left: 0,
-    margin-left: 0,
-    display: block
+    list-style: none, //common for all books
+    padding-left: 0, //common for all books
+    margin-left: 0, //common for all books
+    display: block //common for all books
   ),
   _components: (
     $TocCompositeChapterCompositePage,
@@ -212,8 +212,8 @@ $TocCompositeChapter: (
   _name: 'TocCompositeChapter',
   _subselector: '> .os-toc-composite-chapter',
   _properties: (
-    display: block,
-    margin-bottom: v-grid(2),
+    display: block, //common for all books
+    margin-bottom: v-grid(2), //common for all books
   ),
   _components: (
     $TocCompositeChapterList,
@@ -225,10 +225,10 @@ $TocTopLevelList: (
   _name: 'TopLevelList',
   _subselector: ' > ol',
   _properties: (
-    list-style: none,
-    padding-left: 0,
-    margin-left: 0,
-    margin-right: 2in
+    list-style: none, //common for all books
+    padding-left: 0, //common for all books
+    margin-left: 0, //common for all books
+    margin-right: 2in //common for all books
   )
 );
 
@@ -236,15 +236,15 @@ $TocContentsTitleWord: (
   _name: 'TocTitleWord',
   _subselector: '::before',
   _properties: (
-    content: "'Contents'",
-    font-size: font-scale(8),
-    line-height: line-height(8),
-    color: enum('ValueSet:::REQUIRED'),
-    display: block,
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-weight: lighter,
-    border-bottom: "5px solid #3172B6",
-    margin-bottom: v-grid(4),
+    content: "'Contents'", //common for all books
+    font-size: font-scale(8), //common for all books
+    line-height: line-height(8), //common for all books
+    color: enum('ValueSet:::REQUIRED'), //book specific (based only on second screenshot in https://github.com/openstax/cnx-recipes/issues/1070 , I didn't find any other document with info about it)
+    display: block, //common for all books
+    font-family: enum('ValueSet:::REQUIRED'), //it could be changed to hard coded; based on Theme Design Specs document it should be IBM Plex Sans Light in all books
+    font-weight: lighter, //common for all books
+    border-bottom: "5px solid #3172B6", //??? There is no document with info about this property. Is it common for all books?
+    margin-bottom: v-grid(4), //common for all books
   )
 );
 
@@ -252,6 +252,6 @@ $TocContainer: (
   _name: 'Container',
   _subselector: '',
   _properties: (
-    page-break-after: always,
+    page-break-after: always, //common for all books
   )
 );
