@@ -4,23 +4,29 @@ source ./script/bootstrap || exit 111
 
 arg1=$1
 
-# Pull in the BOOK_CONFIGS and RECIPE_NAMES
+# Pull in the BOOK_CONFIGS
 source ./books.txt || exit 1
 
 if [ ! "${arg1}" == "" ]; then
-  RECIPE_NAMES=("${arg1}")
+  BOOK_NAMES=("${arg1}")
 fi
 
-
 output_dir="./recipes/output/"
+already_built=()
 
-for recipe_name in "${RECIPE_NAMES[@]}"; do
+for __book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name recipe_name _ _ _ _ template_name <<< "${__book_config}"
+
+  containsElement "${book_name}" "${BOOK_NAMES[@]}" || continue
+  containsElement "${recipe_name}" "${already_built[@]}" && continue
 
   sass_file="./recipes/books/${recipe_name}/book.scss"
   css_file="${output_dir}/${recipe_name}.css"
 
-  TEMPLATE=template1 do_progress "Building ${css_file}" \
+  TEMPLATE=${template_name} do_progress "Building ${css_file}" \
     node ./recipes/build/build.js "${sass_file}" "${css_file}"
+
+  already_built+=("${recipe_name}")
 done
 
 do_progress_quiet "Building CSS manifest" \
