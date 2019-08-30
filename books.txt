@@ -42,7 +42,7 @@ declare -x -r RECIPE_DESC=(
 # - uuid : The uuid to use for ./script/fetch-book
 # - host_name : The host_name to use when running ./script/fetch-book and ./script/bake-book-remote
 # - additionalStyleguideDirs : These specify which additional directories should be included when building the styleguide
-# - style_name : the name of the CSS styling to apply to the book
+# - template_name : the name of the CSS styling to apply to the book
 
 BOOK_CONFIGS=(
 # "_example                   _example                           example-uuid                           col12345   tea.cnx.org         mixins/                   example"
@@ -57,7 +57,7 @@ BOOK_CONFIGS=(
   "history                    history                            a7ba2fb8-8925-4987-b182-5f4429d48daa   col11740   easyvm5.cnx.org    mixins/"
   "aphistory                  ap-history                         0a621f27-abe1-4c17-8f1c-d80d07958977   col10034   content05.cnx.org  mixins/"
   "psychology                 psychology                         4abf04bf-93a0-45c3-9cbc-2cefd46e68cc   col11629   easyvm5.cnx.org    mixins/"
-  "chemistry                  chemistry                          7fccc9cf-9b71-44f6-800b-f9457fd64335   col26069   easyvm5.cnx.org    mixins/  chemistry"
+  "chemistry                  chemistry                          7fccc9cf-9b71-44f6-800b-f9457fd64335   col26069   easyvm5.cnx.org    mixins/  template1"
   "astronomy                  astronomy                          2e737be8-ea65-48c3-aa0a-9f35b4c6a966   col11992   easyvm5.cnx.org    mixins/"
   "principles-management      principles-management              62710222-02f1-4972-ab05-4060032e71f4                                 mixins/"
   "entrepreneurship           entrepreneurship                   ea5ef07f-f732-4a42-9351-4f0126dbe7a0                                 mixins/"
@@ -86,7 +86,7 @@ BOOK_CONFIGS=(
 
 BOOK_NAMES=()
 RECIPE_NAMES=()
-STYLE_NAMES=()
+TEMPLATE_NAMES=()
 
 export PLATFORMS=(pdf rex-web)
 
@@ -101,12 +101,12 @@ containsElement () {
 # since this is loaded using 'source ./books.txt'
 for __book_config in "${BOOK_CONFIGS[@]}"
 do
-  read -r __book_name __recipe_name _ _ _ _ __style_name <<< "${__book_config}"
+  read -r __book_name __recipe_name _ _ _ _ __template_name <<< "${__book_config}"
   # Add to the list of BOOK_NAMES and RECIPE_NAMES
   containsElement "${__book_name}" "${BOOK_NAMES[@]}" || BOOK_NAMES+=("${__book_name}")
   containsElement "${__recipe_name}" "${RECIPE_NAMES[@]}" || RECIPE_NAMES+=("${__recipe_name}")
 
-  if [[ ${__style_name} ]]; then
-    containsElement "${__style_name} ${__book_name}" "${STYLE_NAMES[@]}" || STYLE_NAMES+=("${__style_name} ${__book_name}")
+  if [[ ${__template_name} ]]; then
+    containsElement "${__template_name} ${__book_name}" "${TEMPLATE_NAMES[@]}" || TEMPLATE_NAMES+=("${__template_name} ${__book_name}")
   fi
 done
