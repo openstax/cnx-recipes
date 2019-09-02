@@ -23,7 +23,8 @@ WORKDIR /code
 RUN apt-get update
 RUN apt-get install \
     libxml2-utils \
-    xsltproc
+    xsltproc \
+    shellcheck
 
 # Install docker
 RUN apt-get install -y curl && \
