@@ -21,18 +21,6 @@
   );
 }
 
-@function exercise($exercisePart) {
-  @return map-merge(exerciseComponentsDisplay($exercisePart, Component, '> [data-type="#{$exercisePart}"]'), (
-    _components: (
-      map-merge(exerciseComponentsDisplay($exercisePart, Container, '> .os-#{$exercisePart}-container'), (
-        _components: (
-          exerciseComponentsDisplay($exercisePart, Text, '> p')
-        )
-      ))
-    )
-  ));
-}
-
 $AnswerKeyContainerComponent: (
   _name: "Container",
   _subselector: '',
@@ -73,7 +61,7 @@ $AnswerKeyTitleTextComponent: (
 
 $AnswerKeyNumberComponent: (
   _name: "Number",
-  _subselector: '> [data-type="solution"] > .os-number',
+  _subselector: '> .os-number',
   _properties: (
     text-decoration: none,
     color: enum('ValueSet:::REQUIRED'),
@@ -88,7 +76,15 @@ $AnswerKeyChapterContainerComponent: (
   ),
   _components: (
     $AnswerKeyTitleTextComponent,
-    exercise(solution),
-    $AnswerKeyNumberComponent
+    map-merge(exerciseComponentsDisplay(solution, Component, '> [data-type="solution"]'), (
+      _components: (
+        $AnswerKeyNumberComponent,
+        map-merge(exerciseComponentsDisplay(solution, Container, '> .os-solution-container'), (
+          _components: (
+            exerciseComponentsDisplay(solution, Text, '> p')
+          )
+        ))
+      )
+    ))
   )
 );
