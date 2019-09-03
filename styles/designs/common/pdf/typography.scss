@@ -14,30 +14,22 @@
   @return $value;
 }
 
-//TODO DRYer functions
-
 @function font-scale($scaleN) {
-  $baseFontSize: 1; //rem
-  $lineHeightModifier: 1.5;
-  $granularity: 0.1;
-  $scaleMultiplier: 1.2;
-  $baseLineHeight: $baseFontSize * $lineHeightModifier;
-  $cellHeight: $baseLineHeight * $granularity;
-  $numCells: round($baseLineHeight * pow($scaleMultiplier, $scaleN) / $cellHeight);
-  $actualLineHeight: $numCells * $cellHeight;
-  $actualFontSize: $actualLineHeight / $lineHeightModifier;
-  @return $actualFontSize * 1rem;
+  $font-size: 1 * pow(1.2, $scaleN) * 1rem;
+
+  @return $font-size
 }
 
-@function line-height($scaleN) {
-  $baseFontSize: 1; //rem
-  $lineHeightModifier: 1.5;
-  $granularity: 0.1;
-  $scaleMultiplier: 1.2;
-  $baseLineHeight: $baseFontSize * $lineHeightModifier;
-  $cellHeight: $baseLineHeight * $granularity;
-  $numCells: round($baseLineHeight * pow($scaleMultiplier, $scaleN) / $cellHeight);
-  $actualLineHeight: $numCells * $cellHeight;
+@function line-height($scale) {
+  $baseLineHeight: 1.5;
+  $scaleModifier: 1.2;
+  $baseFontSize: 1; //1rem
 
-  @return $actualLineHeight * 1rem;
+  $font-size: $baseFontSize * pow($scaleModifier, $scale);
+  $line-height:  (ceil($font-size / $baseLineHeight)) * $baseLineHeight;
+
+  @return $line-height * 1rem;
 }
+
+
+
