@@ -38,12 +38,12 @@ if [ ! "${book_name}" == "--all" ]; then
 fi
 
 for book_config in "${BOOK_CONFIGS[@]}"; do
-  read -r book_name _ _ _ _ _ style_name <<< "${book_config}"
+  read -r book_name _ _ _ _ _ _ <<< "${book_config}"
 
   book_dir="${OUTPUT_DIR:-./}/data/${book_name}"
   mathified_file="${book_dir}/collection.mathified.xhtml"
   baked_file="${book_dir}/collection.baked.xhtml"
-  style_file="${STYLE:-./styles/output/${style_name}-pdf.css}"
+  style_file="${STYLE:-./styles/output/${book_name}-pdf.css}"
   output_file="${book_dir}/collection.pdf"
 
   if [ -f "${mathified_file}" ]; then
@@ -55,10 +55,8 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   style_flag=()
   if [ -f "${style_file}" ]; then
     style_flag=('--style' "${OUTPUT_DIR:-./}/${style_file}")
-  elif [ -n "${STYLE}" ] || [ -n "${style_name}" ]; then
-    _say "${c_red}WARNING${c_none} style not found: ${style_file}"
   else
-    _say "${c_red}WARNING${c_none} style name missing in books.txt"
+    _say "${c_red}WARNING${c_none} style not found: ${style_file}"
   fi
 
   # Run princexml as root to bypass permission issues:
