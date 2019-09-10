@@ -1,4 +1,11 @@
-//header
+$EocContainer: (
+    _name: "Container",
+    _subselector: "",
+    _properties: (
+        margin-bottom: v-grid(4)
+    )
+);
+
 $Eoc_Header:(
     _name: "EocHeader",
     _subselector: " > h2",
@@ -9,32 +16,14 @@ $Eoc_Header:(
         font-size: enum('ValueSet:::REQUIRED'),
         line-height: enum('ValueSet:::REQUIRED'),
         text-transform: enum('ValueSet:::REQUIRED'),
-        padding-bottom: v-grid(1)
+        margin-bottom: v-grid(1)
     )
 );
 
-//key terms
-$Keyterm_Container:(
-    _name: "KeytermContainer",
-    _subselector: "",
-    _properties:(
-        margin-bottom: enum('ValueSet:::REQUIRED')
-    )
-);
 
-$Terms_DL:(
-    _name: "TermDL",
-    _subselector: " > dl",
-    _properties:(
-        text-indent: enum('ValueSet:::REQUIRED'),
-        margin-left: enum('ValueSet:::REQUIRED'),
-    )
-);
-
-//TODO rename this, this is the term itself
-$Terms_Container:(
+$Term_DT:(
     _name: "Term",
-    _subselector: " > dl > dt ",
+    _subselector: " > dt ",
     _properties:(
         font-weight: enum('ValueSet:::REQUIRED'),
         margin-right: enum('ValueSet:::REQUIRED'),
@@ -42,30 +31,33 @@ $Terms_Container:(
     )
 );
 
-$Terms_DD:(
+$Term_DD:(
     _name: "TermDD",
-    _subselector: " > dl > dd ",
+    _subselector: " > dd ",
     _properties:(
         margin-left: enum('ValueSet:::REQUIRED'),
         display: enum('ValueSet:::REQUIRED')
     )
 );
 
-//key equation
-$Equation_Container:(
-    _name: "EquationContainer",
-    _subselector: "",
+$Term_DL:(
+    _name: "TermDL",
+    _subselector: " > dl",
     _properties:(
-        margin-bottom: enum('ValueSet:::REQUIRED')
+        text-indent: enum('ValueSet:::REQUIRED'),
+        margin-left: enum('ValueSet:::REQUIRED'),
+    ),
+    _components: (
+        $Term_DT,
+        $Term_DD
     )
 );
 
-//this isn't the "table", TODO: rename
 $Equations_Table:(
     _name: "EquationsTable",
     _subselector: " > .key-equations",
     _properties:(
-        padding-bottom: enum('ValueSet:::REQUIRED')
+        padding: 0
     )
 );
 
@@ -73,53 +65,27 @@ $Equations_List:(
     _name: "EquationsList",
     _subselector: " > .key-equations ul",
     _properties:(
-        list-style: enum('ValueSet:::REQUIRED'),
-        padding-left: enum('ValueSet:::REQUIRED'),
-        padding-bottom: enum('ValueSet:::REQUIRED'),
+        list-style: none,
+        padding: 0
     )
 );
 
-//summary
-$Summary_Container:(
-    _name: "SummaryContainer",
-    _subselector: "",
-    _properties:(
-        margin-bottom: enum('ValueSet:::REQUIRED')
-    )
-);
+@function eocSectionTitleH3($section_selector) {
+    @return (
+        _name: "SectionTitle",
+        _subselector: " #{$section_selector} > h3",
+        _properties:(
+            font-family: enum('ValueSet:::REQUIRED'),
+            font-weight: enum('ValueSet:::REQUIRED'),
+            font-size: enum('ValueSet:::REQUIRED'),
+            line-height: enum('ValueSet:::REQUIRED'),
+            margin-bottom: enum('ValueSet:::REQUIRED'),
+        )
+    );
+}
 
-$Summarytitle_Container:(
-    _name: "SummaryTitle",
-    _subselector: "> .summary > h3",
-    _properties:(
-        font-family: enum('ValueSet:::REQUIRED'),
-        font-weight: enum('ValueSet:::REQUIRED'),
-        font-size: enum('ValueSet:::REQUIRED'),
-        line-height: enum('ValueSet:::REQUIRED'),
-        margin-bottom: enum('ValueSet:::REQUIRED'),
-    )
-);
-
-//exercises
-$Exercise_Container:(
-    _name: "ExerciseContainer",
-    _subselector: "",
-    _properties:(
-        margin-bottom: enum('ValueSet:::REQUIRED')
-    )
-);
-
-$Exercisetitle_Container:(
-    _name: "ExerciseTitle",
-    _subselector: "> .exercises > h3",
-    _properties:(
-        font-family: enum('ValueSet:::REQUIRED'),
-        font-weight: enum('ValueSet:::REQUIRED'),
-        font-size: enum('ValueSet:::REQUIRED'),
-        line-height: enum('ValueSet:::REQUIRED'),
-        margin-bottom: enum('ValueSet:::REQUIRED'),
-    )
-);
+$Summarytitle_Container: eocSectionTitleH3(".summary");
+$Exercisetitle_Container: eocSectionTitleH3(".exercises");
 
 $Problem_container:(
     _name: "ProbelemContainer",
@@ -143,7 +109,7 @@ $Problem_Divider: (
     _name: "ProblemDivider",
     _subselector: " .os-divider",
     _properties:(
-        padding-right: enum('ValueSet:::REQUIRED')
+        margin-right: enum('ValueSet:::REQUIRED')
     )
 );
 
