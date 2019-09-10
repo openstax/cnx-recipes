@@ -166,6 +166,33 @@ Next, let's create shapes from these components using the framework provided mix
 ));
 ```
 
+An alternative way to create shapes from components would be to inline the nesting instead of using `map-merge`. For example, we could write our boxed_note_container component and BoxedNoteTitled like so:
+```scss
+// _design.scss
+$boxed_note_container_with_title: (
+  _name: 'container',
+  _subselector: '.note',
+  _properties: (
+    border-color: enum('ValueSet:::REQUIRED'),
+    border-style: solid
+  ),
+  _components: (
+    _name: 'title',
+    _subselector: ' > .title',
+    _properties: (
+      font-weight: enum('ValueSet:::OPTIONAL')
+    )
+  )
+);
+
+@include create_shape('BoxedNoteTitled', (
+  _components: (
+    $boxed_note_container_with_title
+  )
+));
+```
+The tradeoff here is that we have sacrificed some flexibility and reusability for clarity and brevity(in some cases). In general, if a component has an inner component which is essential to its function and that inner component is not reused very often, go with the alternative "inline" nesting. If you are reusing a component in many places and ways, go with nesting the components within the `create_shape` mixin.
+
 That's it! We've now created a basic design to style the given HTML markup!
 
 ## Writing a style
@@ -321,3 +348,10 @@ The preceding book file will yield some CSS, but we aren't yet finished. We have
 After we add this, we have successfully completed our design-driven book style! Link the compiled CSS to the markup and view the result!
 
 ![image of completed style in the browser](framework-tutorial.png)
+
+
+## REQUIRED/OPTIONAL/VALUE
+When deciding whether or not to make a property required, optional, or directly coded to a value. We can follow these rules generally:
+- Required: Use this when the property is necessary to display the element as desired, but the design creator cannot make this decision for the template creator. Most common for properties that do not define the layout of the design such as fonts and colors.
+- Optional: Use this when the property is NOT necessary to display the element as desired or when a function that returns a component needs to be able to not include the property.
+- Value: Use this when the property and value for the property must be a certain way to maintain the integrity of the design. Most common for properties that define design layout, such as `display`, `position`, etc.
