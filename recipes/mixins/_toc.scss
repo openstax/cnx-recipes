@@ -16,9 +16,16 @@
   }
 }
 
-@mixin toc_putTOCElements() {
+@mixin toc_putTOCElements($Config_TocTitleWord) {
   nav#toc {
     content: '';
+    @if release-flag-enabled(toc-title-word) {
+      &::after {
+        content: $Config_TocTitleWord;
+        container: h1;
+        class: os-toc-title;
+      }
+    }
     &::after {
       content: pending(eob-toc);
       container: ol;
