@@ -1,3 +1,26 @@
+@function exerciseComponentsDisplay($exercisePart, $componentName, $selector) {
+  $value: null;
+  $partComponentName: null;
+
+  @if $exercisePart == problem {
+    $value: flex;
+    $partComponentName: "Problem#{$componentName}";
+  } @else if $exercisePart == solution {
+    $value: inline;
+    $partComponentName: "Solution#{$componentName}";
+  } @else {
+    @error "There is no such part in exercise"
+  }
+
+  @return (
+    _name: "#{$partComponentName}",
+    _subselector: #{$selector},
+    _properties: (
+      display: $value,
+    )
+  );
+}
+
 $AnswerKeyContainerComponent: (
   _name: "Container",
   _subselector: '',
@@ -21,6 +44,28 @@ $AnswerKeyTitleComponent: (
     line-height: enum('ValueSet:::REQUIRED'),
     font-weight: bold,
     text-transform: uppercase,
+    margin-bottom: enum('ValueSet:::REQUIRED')
+  )
+);
+
+$AnswerKeyTitleTextComponent: (
+  _name: "Title",
+  _subselector: ' > h2',
+  _properties: (
+    color: enum('ValueSet:::REQUIRED'),
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(4),
+    line-height: line-height(4),
+    font-weight: bold,
+  )
+);
+
+$AnswerKeyNumberComponent: (
+  _name: "Number",
+  _subselector: '> .os-number',
+  _properties: (
+    text-decoration: none,
+    color: enum('ValueSet:::REQUIRED'),
   )
 );
 
@@ -29,50 +74,18 @@ $AnswerKeyChapterContainerComponent: (
   _subselector: ' > [data-type="composite-page"]',
   _properties: (
     padding-bottom: enum('ValueSet:::OPTIONAL'),
-  )
-);
-
-$AnswerKeyTitleTextComponent: (
-  _name: "Title",
-  _subselector: ' > h2',
-  _properties: (
-    color: enum('ValueSet:::OPTIONAL'),
-    font-family: enum('ValueSet:::OPTIONAL'),
-    font-size: enum('ValueSet:::REQUIRED'),
-    line-height: enum('ValueSet:::REQUIRED'),
-    font-weight: normal,
-  )
-);
-
-$AnswerKeySolutionComponent: (
-  _name: "Inline",
-  _subselector: ' > [data-type="solution"]',
-  _properties: (
-    display: inline,
-  )
-);
-
-$AnswerKeyNumberComponent: (
-  _name: "Number",
-  _subselector: ' > .os-number',
-  _properties: (
-    text-decoration: none,
-    color: enum('ValueSet:::OPTIONAL'),
-  )
-);
-
-$AnswerKeyTextContainerComponent: (
-  _name: "Inline",
-  _subselector: ' > .os-solution-container',
-  _properties: (
-    display: inline,
-  )
-);
-
-$AnswerKeyTextComponent: (
-  _name: "Inline",
-  _subselector: ' > p',
-  _properties: (
-    display: inline,
+  ),
+  _components: (
+    $AnswerKeyTitleTextComponent,
+    map-merge(exerciseComponentsDisplay(solution, Component, '> [data-type="solution"]'), (
+      _components: (
+        $AnswerKeyNumberComponent,
+        map-merge(exerciseComponentsDisplay(solution, Container, '> .os-solution-container'), (
+          _components: (
+            exerciseComponentsDisplay(solution, Text, '> p')
+          )
+        ))
+      )
+    ))
   )
 );
