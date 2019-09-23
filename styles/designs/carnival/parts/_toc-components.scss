@@ -30,7 +30,14 @@
     _components: (
       tocLinkPage($kind, $leader)
     )
-  )
+  );
+}
+
+@function topLevelPageNotAppendixProps() {
+  @return (
+    display: block,
+    margin-bottom: v-grid(2)
+  );
 }
 
 $TocChapterCompositePage: (
@@ -76,7 +83,6 @@ $TocChapterNumber: (
   _properties: (
     display: block,
     text-decoration: none,
-    pointer-events: none,
     color: enum('ValueSet:::REQUIRED'),
     font-family: enum('ValueSet:::REQUIRED'),
     font-weight: bolder,
@@ -90,10 +96,7 @@ $TocChapterNumber: (
 $TocChapter: (
   _name: 'TocChapter',
   _subselector: ' > .os-toc-chapter',
-  _properties: (
-    display: block,
-    margin-bottom: v-grid(2)
-  ),
+  _properties: topLevelPageNotAppendixProps(),
   _components: (
     $TocChapterNumber,
     tocLink('TocChapter', true),
@@ -104,10 +107,7 @@ $TocChapter: (
 $TocPreface: (
   _name: 'TocPreface',
   _subselector: '> .os-toc-preface',
-  _properties: (
-    display: block,
-    margin-bottom: v-grid(2)
-  ),
+  _properties: topLevelPageNotAppendixProps(),
   _components: (
     tocLink('TocPreface'),
   )
@@ -118,7 +118,6 @@ $TocAppendixNumber: (
   _subselector: ' > a > .os-number',
   _properties: (
     text-decoration: none,
-    pointer-events: none,
     font-family: enum('ValueSet:::REQUIRED'),
     font-weight: bolder,
   ),
@@ -148,23 +147,9 @@ $TocAppendix: (
 $TocIndex: (
   _name: 'TocIndex',
   _subselector: '> .os-toc-index',
-  _properties: (
-    display: block,
-    margin-bottom: v-grid(2),
-  ),
+  _properties: topLevelPageNotAppendixProps(),
   _components: (
     tocLink('TocIndex'),
-  )
-);
-
-$TocCompositeChapterCompositePage: (
-  _name: 'TocChapterCompositePage',
-  _subselector: ' > .os-toc-chapter-composite-page',
-  _properties: (
-    display: block,
-  ),
-  _components: (
-    tocLink('TocCompositeChapterCompositePage')
   )
 );
 
@@ -172,23 +157,14 @@ $TocCompositeChapterList: (
   _name: 'TocCompositeChapterList',
   _subselector: ' > ol',
   _properties: (
-    list-style: none,
-    padding-left: 0,
-    margin-left: 0,
-    display: block
-  ),
-  _components: (
-    $TocCompositeChapterCompositePage,
+    display: none
   )
 );
 
 $TocCompositeChapter: (
   _name: 'TocCompositeChapter',
   _subselector: '> .os-toc-composite-chapter',
-  _properties: (
-    display: block,
-    margin-bottom: v-grid(2),
-  ),
+  _properties: topLevelPageNotAppendixProps(),
   _components: (
     $TocCompositeChapterList,
     tocLink('TocCompositeChapter'),
@@ -216,7 +192,8 @@ $TocContentsTitleWord: (
     display: block,
     font-family: enum('ValueSet:::REQUIRED'),
     font-weight: lighter,
-    border-bottom: "5px solid #3172B6",
+    border-bottom: "0.5rem solid",
+    border-bottom-color: enum('ValueSet:::REQUIRED'),
     margin-bottom: v-grid(4),
   )
 );
