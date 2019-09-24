@@ -16,3 +16,9 @@ if [[ -n "${has_changes}" ]]; then
   git diff -- ':!/styles/output/_web-styles.json'
   exit 1
 fi
+
+if [[ "${CI}" == "true" ]]; then
+  pip install twine
+  python setup.py bdist_wheel --universal
+  twine check dist/*
+fi
