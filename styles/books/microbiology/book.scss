@@ -2,40 +2,63 @@
 @import '../../templates/template1/design.scss';
 @import '../../templates/template1/settings.scss';
 
+//change color of headers, splash bar, CO, and LO
 @include add_settings((
-    Chapter:(
-        _selectors: ('[data-type="chapter"]'),
+    LearningObjective: (
         Title: (
-            color: (_ref:"colorMap:::microbioHeaderColor"),
+            color: (_ref: 'colorMap:::microbioLearningObjColor'),
+        ),
+        ListDot: (
+            color: (_ref: 'colorMap:::microbioLearningObjColor'),
         ),
     ),
-    Page:(
-        _selectors: ('[data-type="page"]'),
-        Title: (
-            color: (_ref:"colorMap:::microbioHeaderColor"), 
-        ),
-        TitleNumber: (
-            color: (_ref:"colorMap:::microbioHeaderColor"),
-            font-size: initial,
-            line-height: initial,
-            font-family: initial,
-        ),
-        TitleText: (
-            font-size: initial,
-            line-height: initial,
-            font-family: initial,
-        ),
+    ChapterIntro: (
+      SplashFigureBg: (
+        background-color: (_ref: "colorMap:::microbioIntroColor")
+      ),
+      Outline: (
+        background-color: (_ref: "colorMap:::microbioIntroColor")
+      ),
+    ),
+    Module: (
+      Title: (color: (_ref: 'colorMap:::microbioHeaderColor')),
+      Subtitle: (color: (_ref: 'colorMap:::microbioHeaderColor')),
+      SubSubtitle: (color: (_ref: 'colorMap:::microbioHeaderColor'))     
     )
 ));
 
 @include use('BookRoot', "common:::BookRoot");
+@include use('Link', "carnival:::Link");
+
 @include use('Preface','carnival:::Preface');
 @include use('TOC', 'carnival:::NoUnitToc');
 @include use('ChapterIntro', 'carnival:::ChapterIntroShape');
 @include use('Chapter', 'carnival:::Chapter');
-@include use('Page', 'carnival:::Page');
+// @include use('Page', 'carnival:::Page');
+@include use('Footnotes', 'carnival:::FootnotesShape');
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('BasicTable', 'carnival:::BasicTableShape');
 @include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
 @include use('SectionSummary','carnival:::EocSummary');
 @include use('ReviewQuestions','carnival:::EocReviewQuestions');
+@include use('Module', 'carnival:::ModuleShape');
+@include use('Index', 'carnival:::IndexShape');
+@include use('AnswerKey', 'carnival:::AnswerKeyShape');
+@include use('LearningObjective', 'carnival:::LearningObjectiveShape');
+
+[data-type="chapter"] {
+    page: chapter;
+    prince-page-group: start;
+    page-break-before: right;
+  }
+
+@page {
+    margin-left: 1in;
+    margin-right: 1in;
+    margin-bottom: 0.8in;
+    margin-top: 0.8in;
+  }
+  
+  @page chapter:first {
+    margin-right: 2in;
+  }
