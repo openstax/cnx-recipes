@@ -2,10 +2,113 @@
 @import '../../templates/template1/design.scss';
 @import '../../templates/template1/settings.scss';
 
+@include add_settings((
+  Preface: (
+    _selectors: (".preface"),
+    'Header:::color': (_ref: 'colorMap:::pagetitleColor'),
+    'Header:::font-family': (_ref: 'typography:::sansFont'),
+    'Header:::border-bottom-color': (_ref: 'colorMap:::pagetitleColor'),
+    'BodyH3:::font-family': (_ref: 'typography:::titleFont'),
+    'BodyH3:::color': (_ref: "colorMap:::prefaceTitleColor"),
+    'BodyH4:::font-family': (_ref: 'typography:::titleFont'),
+    'BodyH4:::color': (_ref: "colorMap:::prefaceTitleColor"),
+  ),
+  LearningObjective: (
+    Title: (
+      color: (_ref: 'colorMap:::microbioLearningObjColor'),
+    ),
+    ListDot: (
+      color: (_ref: 'colorMap:::microbioLearningObjColor'),
+    ),
+  ),
+  ChapterIntro: (
+    SplashFigureBg: (
+      background-color: (_ref: "colorMap:::microbioIntroColor")
+    ),
+    Outline: (
+      background-color: (_ref: "colorMap:::microbioIntroColor")
+    ),
+  ),
+  Module: (
+    Title: (color: (_ref: 'colorMap:::microbioHeaderColor')),
+    Subtitle: (color: (_ref: 'colorMap:::microbioHeaderColor')),
+    SubSubtitle: (color: (_ref: 'colorMap:::microbioHeaderColor'))
+  ),
+  ClinicalFocusNote:(
+    _selectors:(".clinical-focus"),
+    group-border-color: (_ref: 'colorMap:::microbioClinicalFocusColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Title:::color': (_ref: 'colorMap:::microbioClinicalFocusColor')
+  ),
+  EyeOnEthicsNote:(
+    _selectors:(".eye-on-ethics"),
+    group-border-color: (_ref: 'colorMap:::microbioEyeOnEthics'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Title:::color': (_ref: 'colorMap:::microbioEyeOnEthics'),
+    'PartnerIcon:::background': url("../../styles/designs/carnival/resources/sigmaxi-logo.svg") no-repeat right bottom,
+  ),
+  DiseaseProfileNote:(
+    _selectors:(".disease-profile"),
+    group-border-color: (_ref: 'colorMap:::microbioDiseaseProfile'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Title:::color': (_ref: 'colorMap:::microbioDiseaseProfile'),
+  ),
+  LinkToLearningNote:(
+    _selectors: (".link-to-learning"),
+    'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Icon:::background': url("../../styles/designs/carnival/resources/carnival-linktolearning.svg") no-repeat top left,
+  ),
+  CheckYourUnderstandingNote:(
+    _selectors: (".check-your-understanding"),
+    'Body:::border-bottom-color': (_ref: 'colorMap:::scienceColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Icon:::background': url("../../styles/designs/carnival/resources/carnival-scientific.svg") no-repeat top left,
+  ),
+  MicroConnectionsNote:(
+    _selectors: (".micro-connection"),
+    'Body:::border-bottom-color': (_ref: 'colorMap:::microConnectionColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Icon:::background': url("../../styles/designs/carnival/resources/carnival-microconnections.svg") no-repeat top left,
+  ),
+));
+
 @include use('BookRoot', "common:::BookRoot");
+@include use('Link', "carnival:::Link");
 @include use('Preface','carnival:::Preface');
 @include use('TOC', 'carnival:::NoUnitToc');
+@include use('ChapterIntro', 'carnival:::ChapterIntroShape');
 @include use('Chapter', 'carnival:::Chapter');
+@include use('Footnotes', 'carnival:::FootnotesShape');
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('BasicTable', 'carnival:::BasicTableShape');
 @include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
+@include use('SectionSummary','carnival:::EocSummary');
+@include use('ReviewQuestions','carnival:::EocReviewQuestions');
+@include use('Module', 'carnival:::ModuleShape');
+@include use('Index', 'carnival:::IndexShape');
+@include use('AnswerKey', 'carnival:::AnswerKeyShape');
+@include use('LearningObjective', 'carnival:::LearningObjectiveShape');
+@include use('ClinicalFocusNote', 'carnival:::BoxedNoteShape');
+@include use('EyeOnEthicsNote', 'carnival:::PartnerNoteShape');
+@include use('DiseaseProfileNote', 'carnival:::BoxedNoteShape');
+@include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
+@include use('CheckYourUnderstandingNote', 'carnival:::IconCondensedShape');
+@include use('MicroConnectionsNote', 'carnival:::IconCondensedShape');
+
+[data-type="chapter"] {
+    page: chapter;
+    prince-page-group: start;
+    page-break-before: right;
+  }
+
+@page {
+    margin-left: 1in;
+    margin-right: 1in;
+    margin-bottom: 0.8in;
+    margin-top: 0.8in;
+  }
+
+  @page chapter:first {
+    margin-right: 2in;
+  }
