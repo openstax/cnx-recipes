@@ -310,12 +310,36 @@
             container: a;
             move-to: page-link;
           }
-          &::after {
-            content: pending(page-link);
-            move-to: eoc-toc-pages;
-            attr-cnx-archive-uri: attr(id);
-            attr-cnx-archive-shortid: string(page-shortid);
-            container: li;
+          @if not release-flag-enabled(toc-labeled-pages) {
+            &::after {
+              content: pending(page-link);
+              move-to: eoc-toc-pages;
+              attr-cnx-archive-uri: attr(id);
+              attr-cnx-archive-shortid: string(page-shortid);
+              container: li;
+            }
+          }
+        }
+        @if release-flag-enabled(toc-labeled-pages) {
+          > div[data-type="page"] {
+            &::after {
+              content: pending(page-link);
+              move-to: eoc-toc-pages;
+              attr-cnx-archive-uri: attr(id);
+              attr-cnx-archive-shortid: string(page-shortid);
+              container: li;
+              class: os-toc-chapter-page;
+            }
+          }
+          > div[data-type="composite-page"] {
+            &::after {
+              content: pending(page-link);
+              move-to: eoc-toc-pages;
+              attr-cnx-archive-uri: attr(id);
+              attr-cnx-archive-shortid: string(page-shortid);
+              container: li;
+              class: os-toc-chapter-composite-page;
+            }
           }
         }
         &::after {
@@ -324,12 +348,34 @@
           class: os-chapter;
           move-to: eoc-toc;
         }
-        &::after {
+        @if not release-flag-enabled(toc-labeled-pages) {
+          &::after {
+            content: pending(eoc-toc);
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(chap-shortid);
+            container: li;
+            move-to: eou-toc-chapters;
+          }
+        }
+      }
+      @if release-flag-enabled(toc-labeled-pages) {
+        > div[data-type="chapter"]#{if($hasCompositeChapter, ':not([data-type="composite-chapter"])','')}::after {
           content: pending(eoc-toc);
           attr-cnx-archive-uri: attr(id);
           attr-cnx-archive-shortid: string(chap-shortid);
           container: li;
           move-to: eou-toc-chapters;
+          class: "os-toc-chapter";
+        }
+        @if $hasCompositeChapter {
+          > div[data-type="composite-chapter"]::after {
+            content: pending(eoc-toc);
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(chap-shortid);
+            container: li;
+            move-to: eou-toc-chapters;
+            class: "os-toc-composite-chapter";
+          }
         }
       }
       &::after {
@@ -343,6 +389,9 @@
         attr-cnx-archive-uri: attr(id);
         attr-cnx-archive-shortid: string(unit-shortid);
         container: li;
+        @if release-flag-enabled(toc-labeled-pages) {
+          class: os-toc-unit;
+        }
         move-to: eob-toc;
       }
     }
