@@ -856,11 +856,20 @@
 //select body content and chap outline in the intro and place them into one div
 @mixin modify_groupChapOutlineIntroContent() {
   @if release-flag-enabled(groupChapOutlineIntroContent) {
+    $element: null;
+    $selector: null;
+    @if $Config_PartType_Chapter != () {
+      $element: outline;
+      $selector: '.os-chapter-outline';
+    } @else {
+      $element: objectives;
+      $selector: '.chapter-objectives';
+    }
     .introduction {
-      .os-chapter-outline {
-        move-to: chap-outline;
+      #{$selector} {
+        move-to: chap-#{$element};
       }
-      > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
+      > :not(#{$selector}):not([data-type="metadata"]):not(.has-splash) {
         move-to: intro-text;
       }
       &::after {
@@ -869,7 +878,7 @@
         class: "intro-text";
       }
       &:deferred::after {
-        content: pending(chap-outline) pending(intro-body); 
+        content: pending(chap-#{$element}) pending(intro-body);
         class: "intro-body";
       }
     }
