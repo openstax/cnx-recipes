@@ -113,9 +113,28 @@
   page: eoc;
   prince-page-group: start;
 }
+
+.appendix {
+  page: appendix;
+  prince-page-group: start;
+}
+
+.os-eob[data-type="composite-chapter"] {
+  page: eob;
+  prince-page-group: start;
+}
 .os-eoc {
   page: eoc;
 }
+
+.appendix {
+  page: appendix;
+}
+
+.os-eob {
+  page: eob;
+}
+
 
 $bandColor: settings('scheme:::B2');
 $bandSize: 2.5rem;
@@ -167,6 +186,83 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   }
 }
 
+@mixin setAppendixPageBorder($type, $side) {
+  @page appendix:#{$type} {
+    @if $side == "left" {
+      @left-middle {
+        @content;
+      }
+      @top-left-corner {
+        @content;
+      }
+      @bottom-left-corner {
+        @content;
+      }
+      @left-bottom {
+        @content;
+      }
+      @left-top {
+        @content;
+      }
+    } @else if $side == "right" {
+      @right-middle {
+        @content;
+      }
+      @top-right-corner {
+        @content;
+      }
+      @bottom-right-corner {
+        @content;
+      }
+      @right-bottom {
+        @content;
+      }
+      @right-top {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin setEobPageBorder($type, $side) {
+  @page eob:#{$type} {
+    @if $side == "left" {
+      @left-middle {
+        @content;
+      }
+      @top-left-corner {
+        @content;
+      }
+      @bottom-left-corner {
+        @content;
+      }
+      @left-bottom {
+        @content;
+      }
+      @left-top {
+        @content;
+      }
+    } @else if $side == "right" {
+      @right-middle {
+        @content;
+      }
+      @top-right-corner {
+        @content;
+      }
+      @bottom-right-corner {
+        @content;
+      }
+      @right-bottom {
+        @content;
+      }
+      @right-top {
+        @content;
+      }
+    }
+  }
+}
+
+
 @include setEocPageBorder("left", "left") {
   @include band("left");
 }
@@ -180,6 +276,40 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   border: none;
 }
 @include setEocPageBorder("blank", "right") {
+  content: none;
+  border: none;
+}
+
+@include setAppendixPageBorder("left", "left") {
+  @include band("left");
+}
+
+@include setAppendixPageBorder("right", "right") {
+  @include band("right");
+}
+
+@include setAppendixPageBorder("blank", "left") {
+  content: none;
+  border: none;
+}
+@include setAppendixPageBorder("blank", "right") {
+  content: none;
+  border: none;
+}
+
+@include setEobPageBorder("left", "left") {
+  @include band("left");
+}
+
+@include setEobPageBorder("right", "right") {
+  @include band("right");
+}
+
+@include setEobPageBorder("blank", "left") {
+  content: none;
+  border: none;
+}
+@include setEobPageBorder("blank", "right") {
   content: none;
   border: none;
 }
