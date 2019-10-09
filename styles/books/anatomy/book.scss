@@ -27,6 +27,15 @@
 ));
 
 @include add_settings((
+  ChapterIntroWithObjectives: (
+    _selectors: ('.introduction'),
+    'ObjectivesPara:::color': (_ref: "colorMap:::anatomyIntroColor"),
+    'ObjectivesListDot:::color': (_ref: "colorMap:::anatomyIntroColor"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::anatomyIntroColor"),
+  ),
+));
+
+@include add_settings((
   Module: (
     _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
     'Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
@@ -95,6 +104,7 @@
 @include use('BookRoot', "common:::BookRoot");
 @include use('Preface','carnival:::UnitPreface');
 @include use('Chapter', 'carnival:::Chapter');
+@include use('ChapterIntroWithObjectives', 'carnival:::ChapterIntroWithObjectivesShape');
 @include use('Module', 'carnival:::ModuleShape');
 @include use('LearningObjectiveAbstract', 'carnival:::LearningObjectiveAbstractShape');
 @include use('Appendix', 'carnival:::AppendixShape');
@@ -108,3 +118,20 @@
 @include use('HomeostaticNote', 'carnival:::IconNoteShape');
 @include use('InteractiveLinkNote', 'carnival:::IconCondensedShape');
 @include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
+
+[data-type="chapter"] {
+  page: chapter;
+  prince-page-group: start;
+  page-break-before: right;
+}
+
+@page {
+  margin-left: 1in;
+  margin-right: 1in;
+  margin-bottom: 0.8in;
+  margin-top: 0.8in;
+}
+
+@page chapter:first {
+  margin-right: 2in;
+}
