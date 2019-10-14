@@ -124,17 +124,16 @@
   prince-page-group: start;
 }
 .os-eoc {
-  page: eoc;
+  $page-type: eoc;
 }
 
 .appendix {
-  page: appendix;
+  $page-type: appendix;
 }
 
 .os-eob {
-  page: eob;
+  $page-type: eob;
 }
-
 
 $bandColor: settings('scheme:::B2');
 $bandSize: 2.5rem;
@@ -148,8 +147,8 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   margin-#{$side}: -1 * $fullBleedWidth;
 }
 
-@mixin setEocPageBorder($type, $side) {
-  @page eoc:#{$type} {
+@mixin setPageBorder($type, $side) {
+  @page #{$page-type}:#{$type} {
     @if $side == "left" {
       @left-middle {
         @content;
@@ -186,130 +185,19 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   }
 }
 
-@mixin setAppendixPageBorder($type, $side) {
-  @page appendix:#{$type} {
-    @if $side == "left" {
-      @left-middle {
-        @content;
-      }
-      @top-left-corner {
-        @content;
-      }
-      @bottom-left-corner {
-        @content;
-      }
-      @left-bottom {
-        @content;
-      }
-      @left-top {
-        @content;
-      }
-    } @else if $side == "right" {
-      @right-middle {
-        @content;
-      }
-      @top-right-corner {
-        @content;
-      }
-      @bottom-right-corner {
-        @content;
-      }
-      @right-bottom {
-        @content;
-      }
-      @right-top {
-        @content;
-      }
-    }
-  }
-}
-
-@mixin setEobPageBorder($type, $side) {
-  @page eob:#{$type} {
-    @if $side == "left" {
-      @left-middle {
-        @content;
-      }
-      @top-left-corner {
-        @content;
-      }
-      @bottom-left-corner {
-        @content;
-      }
-      @left-bottom {
-        @content;
-      }
-      @left-top {
-        @content;
-      }
-    } @else if $side == "right" {
-      @right-middle {
-        @content;
-      }
-      @top-right-corner {
-        @content;
-      }
-      @bottom-right-corner {
-        @content;
-      }
-      @right-bottom {
-        @content;
-      }
-      @right-top {
-        @content;
-      }
-    }
-  }
-}
-
-
-@include setEocPageBorder("left", "left") {
+@include setPageBorder("left", "left") {
   @include band("left");
 }
 
-@include setEocPageBorder("right", "right") {
+@include setPageBorder("right", "right") {
   @include band("right");
 }
 
-@include setEocPageBorder("blank", "left") {
+@include setPageBorder("blank", "left") {
   content: none;
   border: none;
 }
-@include setEocPageBorder("blank", "right") {
-  content: none;
-  border: none;
-}
-
-@include setAppendixPageBorder("left", "left") {
-  @include band("left");
-}
-
-@include setAppendixPageBorder("right", "right") {
-  @include band("right");
-}
-
-@include setAppendixPageBorder("blank", "left") {
-  content: none;
-  border: none;
-}
-@include setAppendixPageBorder("blank", "right") {
-  content: none;
-  border: none;
-}
-
-@include setEobPageBorder("left", "left") {
-  @include band("left");
-}
-
-@include setEobPageBorder("right", "right") {
-  @include band("right");
-}
-
-@include setEobPageBorder("blank", "left") {
-  content: none;
-  border: none;
-}
-@include setEobPageBorder("blank", "right") {
+@include setPageBorder("blank", "right") {
   content: none;
   border: none;
 }
