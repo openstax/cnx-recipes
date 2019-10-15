@@ -103,11 +103,19 @@
 @mixin modify_syncTitlesFromCollection() {
   div[data-type="page"] {
     > div[data-type="metadata"] > [data-type="document-title"] {
-      string-set: page-title content();
+      @if release-flag-enabled("use-title-nodes") {
+        node-set: page-title;
+      } @else {
+        string-set: page-title content();
+      }
     }
 
     > [data-type="document-title"] {
-      content: string(page-title);
+      @if release-flag-enabled("use-title-nodes") {
+        content: nodes(page-title);
+      } @else {
+        content: string(page-title);
+      }
     }
   }
 }
@@ -116,12 +124,21 @@
 /// Wraps all `[data-type="document-title"]` (excluding in the metadata) in a span with the class `os-text`. This is done before numbering.
 /// @group modify
 @mixin modify_spanWrapTitles() {
-  :not([data-type="metadata"]) > [data-type="document-title"] {
-    content: '';
-    &::after {
-      content: content();
+  @if release-flag-enabled("use-title-nodes") {
+    :not([data-type="metadata"]) > [data-type="document-title"] > [data-type="document-title"] {
       container: span;
       class: "os-text";
+      data-type: '';
+      attr-item-prop: '';
+    }
+  } @else {
+    :not([data-type="metadata"]) > [data-type="document-title"] {
+      content: '';
+      &::after {
+        content: content();
+        container: span;
+        class: "os-text";
+      }
     }
   }
 }
