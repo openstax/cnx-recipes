@@ -101,19 +101,19 @@
 
 // Replace module titles with the ones set by collection.
 @mixin modify_syncTitlesFromCollection() {
-  div[data-type="page"] {
-    > div[data-type="metadata"] > [data-type="document-title"] {
-      @if release-flag-enabled("use-title-nodes") {
-        node-set: page-title;
-      } @else {
+  @if release-flag-enabled("use-title-nodes") {
+    div[data-type="metadata"] > [data-type="document-title"] {
+      node-set: page-title;
+    }
+    :not([data-type="metadata"]) > [data-type="document-title"] {
+      content: nodes(page-title);
+    }
+  } @else {
+    div[data-type="page"] {
+      > div[data-type="metadata"] > [data-type="document-title"] {
         string-set: page-title content();
       }
-    }
-
-    > [data-type="document-title"] {
-      @if release-flag-enabled("use-title-nodes") {
-        content: nodes(page-title);
-      } @else {
+      > [data-type="document-title"] {
         content: string(page-title);
       }
     }
@@ -129,7 +129,7 @@
       container: span;
       class: "os-text";
       data-type: '';
-      attr-item-prop: '';
+      attr-itemprop: '';
     }
   } @else {
     :not([data-type="metadata"]) > [data-type="document-title"] {
