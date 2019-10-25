@@ -101,13 +101,21 @@
 
 // Replace module titles with the ones set by collection.
 @mixin modify_syncTitlesFromCollection() {
-  div[data-type="page"] {
-    > div[data-type="metadata"] > [data-type="document-title"] {
-      string-set: page-title content();
+  @if release-flag-enabled("use-title-nodes") {
+    div[data-type="metadata"] > [data-type="document-title"] {
+      node-set: page-title;
     }
-
-    > [data-type="document-title"] {
-      content: string(page-title);
+    :not([data-type="metadata"]) > [data-type="document-title"] {
+      content: nodes(page-title);
+    }
+  } @else {
+    div[data-type="page"] {
+      > div[data-type="metadata"] > [data-type="document-title"] {
+        string-set: page-title content();
+      }
+      > [data-type="document-title"] {
+        content: string(page-title);
+      }
     }
   }
 }
@@ -116,12 +124,21 @@
 /// Wraps all `[data-type="document-title"]` (excluding in the metadata) in a span with the class `os-text`. This is done before numbering.
 /// @group modify
 @mixin modify_spanWrapTitles() {
-  :not([data-type="metadata"]) > [data-type="document-title"] {
-    content: '';
-    &::after {
-      content: content();
+  @if release-flag-enabled("use-title-nodes") {
+    :not([data-type="metadata"]) > [data-type="document-title"] > [data-type="document-title"] {
       container: span;
       class: "os-text";
+      data-type: '';
+      attr-itemprop: '';
+    }
+  } @else {
+    :not([data-type="metadata"]) > [data-type="document-title"] {
+      content: '';
+      &::after {
+        content: content();
+        container: span;
+        class: "os-text";
+      }
     }
   }
 }
@@ -856,11 +873,17 @@
 //select body content and chap outline in the intro and place them into one div
 @mixin modify_groupChapOutlineIntroContent() {
   @if release-flag-enabled(groupChapOutlineIntroContent) {
+    $element: outline;
+    $selector: '.os-chapter-outline';
+    @if $Config_PartType_Chapter == () {
+      $element: objectives;
+      $selector: '.chapter-objectives';
+    }
     .introduction {
-      .os-chapter-outline {
-        move-to: chap-outline;
+      #{$selector} {
+        move-to: chap-#{$element};
       }
-      > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
+      > :not(#{$selector}):not([data-type="metadata"]):not(.has-splash) {
         move-to: intro-text;
       }
       &::after {
@@ -869,7 +892,7 @@
         class: "intro-text";
       }
       &:deferred::after {
-        content: pending(chap-outline) pending(intro-body); 
+        content: pending(chap-#{$element}) pending(intro-body);
         class: "intro-body";
       }
     }
