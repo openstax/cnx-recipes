@@ -101,19 +101,19 @@
 
 // Replace module titles with the ones set by collection.
 @mixin modify_syncTitlesFromCollection() {
-  @if release-flag-enabled("use-title-nodes") {
-    div[data-type="metadata"] > [data-type="document-title"] {
-      node-set: page-title;
-    }
-    :not([data-type="metadata"]) > [data-type="document-title"] {
-      content: nodes(page-title);
-    }
-  } @else {
-    div[data-type="page"] {
-      > div[data-type="metadata"] > [data-type="document-title"] {
+  div[data-type="page"] {
+    > div[data-type="metadata"] > [data-type="document-title"] {
+      @if release-flag-enabled("use-title-nodes") {
+        node-set: page-title;
+      } @else {
         string-set: page-title content();
       }
-      > [data-type="document-title"] {
+    }
+
+    > [data-type="document-title"] {
+      @if release-flag-enabled("use-title-nodes") {
+        content: nodes(page-title);
+      } @else {
         content: string(page-title);
       }
     }
@@ -129,7 +129,7 @@
       container: span;
       class: "os-text";
       data-type: '';
-      attr-itemprop: '';
+      attr-item-prop: '';
     }
   } @else {
     :not([data-type="metadata"]) > [data-type="document-title"] {
@@ -801,8 +801,7 @@
       string-set: missing " missing-exercise";
     }
     &::deferred {
-      $addedClass: if(release-flag-enabled(goodbye-warnings), string(missing, ''), string(missing));
-      class: attr(class) $addedClass;
+      class: attr(class) string(missing);
     }
   }
 }
@@ -874,17 +873,11 @@
 //select body content and chap outline in the intro and place them into one div
 @mixin modify_groupChapOutlineIntroContent() {
   @if release-flag-enabled(groupChapOutlineIntroContent) {
-    $element: outline;
-    $selector: '.os-chapter-outline';
-    @if $Config_PartType_Chapter == () {
-      $element: objectives;
-      $selector: '.chapter-objectives';
-    }
     .introduction {
-      #{$selector} {
-        move-to: chap-#{$element};
+      .os-chapter-outline {
+        move-to: chap-outline;
       }
-      > :not(#{$selector}):not([data-type="metadata"]):not(.has-splash) {
+      > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
         move-to: intro-text;
       }
       &::after {
@@ -893,7 +886,7 @@
         class: "intro-text";
       }
       &:deferred::after {
-        content: pending(chap-#{$element}) pending(intro-body);
+        content: pending(chap-outline) pending(intro-body); 
         class: "intro-body";
       }
     }
