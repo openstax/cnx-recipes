@@ -5,13 +5,9 @@
 @include add_settings((
   Preface: (
     _selectors: (".preface"),
-    'Header:::color': (_ref: 'colorMap:::pagetitleColor'),
-    'Header:::font-family': (_ref: 'typography:::sansFont'),
-    'Header:::border-bottom-color': (_ref: 'colorMap:::pagetitleColor'),
-    'BodyH3:::font-family': (_ref: 'typography:::titleFont'),
     'BodyH3:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'BodyH4:::font-family': (_ref: 'typography:::titleFont'),
     'BodyH4:::color': (_ref: "colorMap:::chemistryHeaderColor"),
+    'BodyH5:::color': (_ref: "colorMap:::chemistryHeaderColor"),
   ),
 ));
 
@@ -36,7 +32,60 @@
     'SubSubtitle:::font-family': (_ref: 'typography:::titleFont'),
   ),
 ));
+@include add_settings((
+  KeyTerm:(
+      _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
+      'EocHeader:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    ),
+  KeyEquation:(
+      _selectors: (".os-eoc.os-key-equations-container"),
+      'EocHeader:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    ),
+  SectionSummary:(
+      _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
+      'EocHeader:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    ),
+  Exercise:(
+      _selectors: ("[data-type = 'chapter'] > .os-exercises-container"),
+      'EocHeader:::color': (_ref: 'colorMap:::chemistryHeaderColor')
+    ),
+));
 
+@include add_settings((
+  LearningObjectiveAbstract: (
+    _selectors: ('[data-type="page"] > [data-type="abstract"]'),
+    'AbstractTitle:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'ListDot:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    ),
+));
+@include add_settings((
+    Appendix: (
+    _selectors: (".appendix"),
+    'MainText:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    ),
+));
+@include add_settings((
+    ChapterIntro: (
+    _selectors: (".introduction"),
+    'Outline:::background-color': (_ref: "colorMap:::chemistryHeaderColor"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::chemistryHeaderColor")
+    ),
+));
+@include add_settings((
+    TOC: (
+    _selectors: ('nav#toc'),
+    'TocTitleWord:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'TocTitleWord:::border-bottom-color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'TocChapterNumber:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    ),
+));
+@include add_settings((
+    TopTitledTable: (
+    _selectors: (".os-table"),
+    'TableHeadTitle:::color': (_ref:"colorMap:::chemistryHeaderColor"),
+    'LastTableRow:::border-bottom-color': (_ref:"colorMap:::chemistryHeaderColor"),
+    ),
+));
 //notes settings
 @include add_settings((
   EverydayLifeNote:(
@@ -70,6 +119,7 @@
     'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url("../../styles/designs/carnival/resources/carnival-linktolearning.svg") no-repeat top left,
+    'TitleText:::max-width': h-grid(10),
   ),
 ));
 
@@ -113,11 +163,29 @@
   page: eoc;
   prince-page-group: start;
 }
+
+.appendix {
+  page: appendix;
+  prince-page-group: start;
+}
+
+.os-eob[data-type="composite-chapter"] {
+  page: eob;
+  prince-page-group: start;
+}
 .os-eoc {
   page: eoc;
 }
 
-$bandColor: settings('scheme:::B2');
+.appendix {
+  page: appendix;
+}
+
+.os-eob {
+  page: eob;
+}
+
+$bandColor: settings('scheme:::B4');
 $bandSize: 2.5rem;
 $fullBleedWidth: 0.125rem;
 $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
@@ -129,8 +197,8 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   margin-#{$side}: -1 * $fullBleedWidth;
 }
 
-@mixin setEocPageBorder($type, $side) {
-  @page eoc:#{$type} {
+@mixin setPageBorder($page-type, $type, $side) {
+  @page #{$page-type}:#{$type} {
     @if $side == "left" {
       @left-middle {
         @content;
@@ -167,19 +235,51 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   }
 }
 
-@include setEocPageBorder("left", "left") {
+@include setPageBorder("eoc", "left", "left") {
   @include band("left");
 }
 
-@include setEocPageBorder("right", "right") {
+@include setPageBorder("eoc", "right", "right") {
   @include band("right");
 }
 
-@include setEocPageBorder("blank", "left") {
+@include setPageBorder("eoc", "blank", "left") {
   content: none;
   border: none;
 }
-@include setEocPageBorder("blank", "right") {
+@include setPageBorder("eoc", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("appendix", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("appendix", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eob", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eob", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "blank", "right") {
   content: none;
   border: none;
 }

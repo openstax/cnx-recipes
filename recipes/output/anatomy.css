@@ -433,22 +433,24 @@
     attr-class: "-os-inline-list-separator";
     content: string(listItemSep); }
 
-:pass(0) div[data-type="page"] > div[data-type="metadata"] > [data-type="document-title"] {
-  string-set: page-title content(); }
+:pass(0) div[data-type="metadata"] > [data-type="document-title"] {
+  node-set: page-title; }
 
-:pass(0) div[data-type="page"] > [data-type="document-title"] {
-  content: string(page-title); }
+:pass(0) :not([data-type="metadata"]) > [data-type="document-title"] {
+  content: nodes(page-title); }
+
+:pass(1) [data-type="chapter"] > [data-type="page"]:not(.introduction) {
+  class: "chapter-content-module"; }
 
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
 
-:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] {
-  content: ''; }
-  :pass(1) :not([data-type="metadata"]) > [data-type="document-title"]::after {
-    content: content();
-    container: span;
-    class: "os-text"; }
+:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] > [data-type="document-title"] {
+  container: span;
+  class: "os-text";
+  data-type: '';
+  attr-itemprop: ''; }
 
 :pass(1) a.os-interactive-link {
   attr-target: "_blank"; }
@@ -539,7 +541,7 @@
   :pass(1) [data-type="exercise"] div.missing-exercise {
     string-set: missing " missing-exercise"; }
   :pass(1) [data-type="exercise"]::deferred {
-    class: attr(class) string(missing); }
+    class: attr(class) string(missing, ""); }
 
 :pass(1) ol[data-number-style="lower-alpha"] {
   attr-type: "a"; }
@@ -1144,13 +1146,17 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.summary {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: summary-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.summary::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(summary-TOCOMPOSITE);
@@ -1330,6 +1336,12 @@
 
 :pass(9) div.appendix {
   counter-increment: appendix; }
+
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: exercise; }
@@ -1643,6 +1655,11 @@
   container: div;
   content: pending(tableTopTitle) content() pending(bCaptionContainer); }
 
+:pass(9) .appendix :not(table) > table:not(.unnumbered).top-titled thead tr:first-child,
+:pass(9) .appendix > table:not(.unnumbered).top-titled thead tr:first-child {
+  string-set: TopTitleContent content();
+  move-to: trash; }
+
 :pass(9) .appendix > table.unnumbered caption {
   move-to: trash; }
 
@@ -1851,6 +1868,9 @@
 :pass(9) .preface > figure.unnumbered figcaption {
   move-to: trash; }
 
+:pass(9) .preface [data-type="abstract"] {
+  move-to: trash; }
+
 :pass(9) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -1861,7 +1881,16 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="problem"] .os-problem-container > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] [data-type="solution-title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
@@ -2146,6 +2175,13 @@
     content: pending(eob-toc);
     container: ol; }
 
+:pass(12) .introduction > .os-figure {
+  string-set: hasSplash " "; }
+  :pass(12) .introduction > .os-figure .splash {
+    string-set: hasSplash " has-splash"; }
+  :pass(12) .introduction > .os-figure:deferred {
+    class: attr(class) string(hasSplash); }
+
 :pass(13) nav#toc li > a > h1 > span,
 :pass(13) nav#toc li > a > h2 > span,
 :pass(13) nav#toc li > a > h3 > span,
@@ -2154,6 +2190,21 @@
 
 :pass(13) nav#toc li > a:deferred {
   content: pending(title-spans); }
+
+:pass(13) .introduction .chapter-objectives {
+  move-to: chap-objectives; }
+
+:pass(13) .introduction > :not(.chapter-objectives):not([data-type="metadata"]):not(.has-splash) {
+  move-to: intro-text; }
+
+:pass(13) .introduction::after {
+  content: pending(intro-text);
+  move-to: intro-body;
+  class: "intro-text"; }
+
+:pass(13) .introduction:deferred::after {
+  content: pending(chap-objectives) pending(intro-body);
+  class: "intro-body"; }
 
 :pass(100) div.delete-me {
   move-to: trash; }
