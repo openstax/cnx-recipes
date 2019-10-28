@@ -433,21 +433,22 @@
     attr-class: "-os-inline-list-separator";
     content: string(listItemSep); }
 
-:pass(0) div[data-type="metadata"] > [data-type="document-title"] {
-  node-set: page-title; }
+:pass(0) div[data-type="page"] > div[data-type="metadata"] > [data-type="document-title"] {
+  string-set: page-title content(); }
 
-:pass(0) :not([data-type="metadata"]) > [data-type="document-title"] {
-  content: nodes(page-title); }
+:pass(0) div[data-type="page"] > [data-type="document-title"] {
+  content: string(page-title); }
 
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
 
-:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] > [data-type="document-title"] {
-  container: span;
-  class: "os-text";
-  data-type: '';
-  attr-itemprop: ''; }
+:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] {
+  content: ''; }
+  :pass(1) :not([data-type="metadata"]) > [data-type="document-title"]::after {
+    content: content();
+    container: span;
+    class: "os-text"; }
 
 :pass(1) a.os-interactive-link {
   attr-target: "_blank"; }
@@ -1907,14 +1908,6 @@
   container: div;
   class: os-table; }
 
-:pass(10) [data-type="composite-chapter"] > h1[data-type="document-title"] {
-  counter-increment: composite-chapter;
-  attr-id: "composite-chapter-" counter(composite-chapter); }
-
-:pass(10) [data-type="composite-page"] {
-  counter-increment: composite-page;
-  attr-id: "composite-page-" counter(composite-page); }
-
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
   move-to: trash; }
@@ -2145,13 +2138,6 @@
     content: pending(eob-toc);
     container: ol; }
 
-:pass(12) .introduction > .os-figure {
-  string-set: hasSplash " "; }
-  :pass(12) .introduction > .os-figure .splash {
-    string-set: hasSplash " has-splash"; }
-  :pass(12) .introduction > .os-figure:deferred {
-    class: attr(class) string(hasSplash); }
-
 :pass(13) nav#toc li > a > h1 > span,
 :pass(13) nav#toc li > a > h2 > span,
 :pass(13) nav#toc li > a > h3 > span,
@@ -2160,21 +2146,6 @@
 
 :pass(13) nav#toc li > a:deferred {
   content: pending(title-spans); }
-
-:pass(13) .introduction .chapter-objectives {
-  move-to: chap-objectives; }
-
-:pass(13) .introduction > :not(.chapter-objectives):not([data-type="metadata"]):not(.has-splash) {
-  move-to: intro-text; }
-
-:pass(13) .introduction::after {
-  content: pending(intro-text);
-  move-to: intro-body;
-  class: "intro-text"; }
-
-:pass(13) .introduction:deferred::after {
-  content: pending(chap-objectives) pending(intro-body);
-  class: "intro-body"; }
 
 :pass(100) div.delete-me {
   move-to: trash; }
