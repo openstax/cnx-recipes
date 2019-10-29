@@ -15,8 +15,6 @@
   Chapter: (
     _selectors: ('[data-type="chapter"]'),
     'TitleNumber:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'TitleNumber:::font-family': (_ref: 'typography:::titleFont'),
-    'TitleText:::font-family': (_ref: 'typography:::sansFont'),
   ),
 ));
 
@@ -24,12 +22,8 @@
   Module: (
     _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
     'Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'Title:::font-family': (_ref: 'typography:::titleFont'),
-    'Title:::border-bottom-color': (_ref: 'colorMap:::fontBodyColor'),
     'Subtitle:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'Subtitle:::font-family': (_ref: 'typography:::titleFont'),
     'SubSubtitle:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'SubSubtitle:::font-family': (_ref: 'typography:::titleFont'),
   ),
 ));
 @include add_settings((
@@ -163,8 +157,26 @@
   page: eoc;
   prince-page-group: start;
 }
+
+.appendix {
+  page: appendix;
+  prince-page-group: start;
+}
+
+.os-eob[data-type="composite-chapter"] {
+  page: eob;
+  prince-page-group: start;
+}
 .os-eoc {
   page: eoc;
+}
+
+.appendix {
+  page: appendix;
+}
+
+.os-eob {
+  page: eob;
 }
 
 $bandColor: settings('scheme:::B4');
@@ -179,8 +191,8 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   margin-#{$side}: -1 * $fullBleedWidth;
 }
 
-@mixin setEocPageBorder($type, $side) {
-  @page eoc:#{$type} {
+@mixin setPageBorder($page-type, $type, $side) {
+  @page #{$page-type}:#{$type} {
     @if $side == "left" {
       @left-middle {
         @content;
@@ -217,19 +229,51 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   }
 }
 
-@include setEocPageBorder("left", "left") {
+@include setPageBorder("eoc", "left", "left") {
   @include band("left");
 }
 
-@include setEocPageBorder("right", "right") {
+@include setPageBorder("eoc", "right", "right") {
   @include band("right");
 }
 
-@include setEocPageBorder("blank", "left") {
+@include setPageBorder("eoc", "blank", "left") {
   content: none;
   border: none;
 }
-@include setEocPageBorder("blank", "right") {
+@include setPageBorder("eoc", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("appendix", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("appendix", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eob", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eob", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "blank", "right") {
   content: none;
   border: none;
 }
