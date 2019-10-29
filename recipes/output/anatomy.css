@@ -439,6 +439,9 @@
 :pass(0) :not([data-type="metadata"]) > [data-type="document-title"] {
   content: nodes(page-title); }
 
+:pass(1) [data-type="chapter"] > [data-type="page"]:not(.introduction) {
+  class: "chapter-content-module"; }
+
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
@@ -538,7 +541,7 @@
   :pass(1) [data-type="exercise"] div.missing-exercise {
     string-set: missing " missing-exercise"; }
   :pass(1) [data-type="exercise"]::deferred {
-    class: attr(class) string(missing); }
+    class: attr(class) string(missing, ""); }
 
 :pass(1) ol[data-number-style="lower-alpha"] {
   attr-type: "a"; }
@@ -1143,13 +1146,17 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.summary {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: summary-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.summary::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(summary-TOCOMPOSITE);
@@ -1329,6 +1336,12 @@
 
 :pass(9) div.appendix {
   counter-increment: appendix; }
+
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: exercise; }
@@ -1642,6 +1655,11 @@
   container: div;
   content: pending(tableTopTitle) content() pending(bCaptionContainer); }
 
+:pass(9) .appendix :not(table) > table:not(.unnumbered).top-titled thead tr:first-child,
+:pass(9) .appendix > table:not(.unnumbered).top-titled thead tr:first-child {
+  string-set: TopTitleContent content();
+  move-to: trash; }
+
 :pass(9) .appendix > table.unnumbered caption {
   move-to: trash; }
 
@@ -1850,6 +1868,9 @@
 :pass(9) .preface > figure.unnumbered figcaption {
   move-to: trash; }
 
+:pass(9) .preface [data-type="abstract"] {
+  move-to: trash; }
+
 :pass(9) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -1860,7 +1881,16 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="problem"] .os-problem-container > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] [data-type="solution-title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
@@ -1906,14 +1936,6 @@
 :pass(10) :not(.os-table) > table::outside {
   container: div;
   class: os-table; }
-
-:pass(10) [data-type="composite-chapter"] > h1[data-type="document-title"] {
-  counter-increment: composite-chapter;
-  attr-id: "composite-chapter-" counter(composite-chapter); }
-
-:pass(10) [data-type="composite-page"] {
-  counter-increment: composite-page;
-  attr-id: "composite-page-" counter(composite-page); }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
