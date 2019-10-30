@@ -40,16 +40,17 @@ fi
 for book_config in "${BOOK_CONFIGS[@]}"; do
   read -r book_name _ _ _ _ _ _ <<< "${book_config}"
 
-  book_dir="./data/${book_name}"
+  book_dir="data/${book_name}"
   mathified_file="${book_dir}/collection.mathified.xhtml"
   baked_file="${book_dir}/collection.baked.xhtml"
   style_file="${STYLE:-./styles/output/${book_name}-pdf.css}"
-  output_file="${OUTPUT_DIR:-.}/${book_dir}/collection.pdf"
 
   if [ -f "${mathified_file}" ]; then
     input_file="${OUTPUT_DIR:-.}/${mathified_file}"
+    output_file="${OUTPUT_DIR:-.}/${book_dir}/collection.with-math.pdf"
   else
     input_file="${OUTPUT_DIR:-.}/${baked_file}"
+    output_file="${OUTPUT_DIR:-.}/${book_dir}/collection.no-math.pdf"
   fi
 
   style_flag=()
