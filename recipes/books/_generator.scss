@@ -187,15 +187,22 @@
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
     $resetAt: map-get($Config_PartType_Example, resetAt);
 
-    @if $resetAt == moduleReset {
-      @include count_countSectionExamples(exampleInSection);
-    } @else {
-      @include count_countExamples(example);
-    }
-    @if release-flag-enabled(appendix-has-numbered-examples) {
+    @if map-has-key($Config_PartType_Example, apTitleContent) and release-flag-enabled(appendix-has-numbered-examples) {
+      @if $resetAt == moduleReset {
+        @include count_countSectionExamples(exampleInSection);
+      } @else {
+        @include count_countChapterAppendixExamples(example);
+      }
+
       $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
-      @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
+      @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);   
     } @else {
+      @if $resetAt == moduleReset {
+        @include count_countSectionExamples(exampleInSection);
+      } @else {
+        @include count_countExamples(example);
+      }
+
       @include _numberExamples($titleContent, $solutionTitleContent);
     }
   }
@@ -463,7 +470,11 @@
   @if $resetAt == moduleReset {
     @include count_countSectionExamples(exampleInSection);
   } @else {
-    @include count_countExamples(example);
+    @if map-has-key($Config_PartType_Example, apTitleContent) and release-flag-enabled(appendix-has-numbered-examples) {
+      @include count_countChapterAppendixExamples(example);
+    } @else {
+      @include count_countExamples(example);
+    }
   }
 
   @include count_countEquations(equation);
