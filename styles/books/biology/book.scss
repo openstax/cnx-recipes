@@ -3,15 +3,29 @@
 @import '../../templates/template1/settings.scss';
 
 @include add_settings((
+  UnitToc:(
+    _selectors: ('nav#toc'),
+    'TocTitleWord:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'TocTitleWord:::border-bottom-color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'TocUnitLink:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'TocChapterNumber:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+  ),
+));
+
+@include add_settings((
   Preface: (
     _selectors: (".preface"),
-    'Header:::color': (_ref: 'colorMap:::pagetitleColor'),
-    'Header:::font-family': (_ref: 'typography:::sansFont'),
-    'Header:::border-bottom-color': (_ref: 'colorMap:::pagetitleColor'),
-    'BodyH3:::font-family': (_ref: 'typography:::titleFont'),
-    'BodyH3:::color': (_ref: "colorMap:::prefaceTitleColor"),
-    'BodyH4:::font-family': (_ref: 'typography:::titleFont'),
-    'BodyH4:::color': (_ref: "colorMap:::prefaceTitleColor"),
+    'BodyH3:::color': (_ref: "colorMap:::biologyHeaderColor"),
+    'BodyH4:::color': (_ref: "colorMap:::biologyHeaderColor"),
+    'BodyH5:::color': (_ref: "colorMap:::biologyHeaderColor"),
+  ),
+));
+@include add_settings((
+  Module: (
+    _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
+    'Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'Subtitle:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'SubSubtitle:::color': (_ref: 'colorMap:::biologyHeaderColor'),
   ),
   ChapterIntro: (
     SplashFigureBg: (
@@ -73,6 +87,7 @@
     'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url("../../styles/designs/carnival/resources/carnival-linktolearning.svg") no-repeat top left,
+    'TitleText:::max-width': h-grid(10),
   ),
 ));
 
@@ -89,6 +104,7 @@
 @include use('Index', 'carnival:::IndexShape');
 @include use('ChapterIntro', 'carnival:::ChapterIntroShape');
 @include use('UnitTitle', 'common:::Hidden');
+@include use('Module', 'carnival:::ModuleShape');
 
 //notes
 @include use('EverydayConnectionNote','carnival:::BoxedNoteShape');
