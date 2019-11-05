@@ -199,9 +199,17 @@
         @if ($hasTopTitle) {
           &.top-titled {
             //this will have to be rewritten after all the content has been updated to contain the title within the title instead of the hacky first header in the table.
-            thead tr:first-child {
-              string-set: TopTitleContent content();
-              move-to: trash;
+            @if release-flag-enabled(table-move-fake-title) {
+              thead tr:first-child th {
+                container: div;
+                class: "os-table-title";
+                move-to: tableTopTitle;
+              }
+            } @else {
+              thead tr:first-child {
+                string-set: TopTitleContent content();
+                move-to: trash;
+              }
             }
           }
         }
@@ -218,9 +226,17 @@
       @if ($hasTopTitle and release-flag-enabled(appendix-top-title-copy)) {
         &.top-titled {
           //this will have to be rewritten after all the content has been updated to contain the title within the title instead of the hacky first header in the table.
-          thead tr:first-child {
-            string-set: TopTitleContent content();
-            move-to: trash;
+          @if release-flag-enabled(table-move-fake-title) {
+            thead tr:first-child th {
+              container: div;
+              class: "os-table-title";
+              move-to: tableTopTitle;
+            }
+          } @else {
+            thead tr:first-child {
+              string-set: TopTitleContent content();
+              move-to: trash;
+            }
           }
         }
       }
@@ -355,7 +371,7 @@
     move-to: bCaptionContainer;
   }
   @if $captionType == $CAPTION_TABLE {
-    @if $hasTopTitle {
+    @if ($hasTopTitle and not release-flag-enabled(table-move-fake-title)) {
       &.top-titled {
         &::after {
           class: "os-table-title";
