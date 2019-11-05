@@ -476,22 +476,24 @@
     attr-class: "-os-inline-list-separator";
     content: string(listItemSep); }
 
-:pass(0) div[data-type="page"] > div[data-type="metadata"] > [data-type="document-title"] {
-  string-set: page-title content(); }
+:pass(0) div[data-type="metadata"] > [data-type="document-title"] {
+  node-set: page-title; }
 
-:pass(0) div[data-type="page"] > [data-type="document-title"] {
-  content: string(page-title); }
+:pass(0) :not([data-type="metadata"]) > [data-type="document-title"] {
+  content: nodes(page-title); }
+
+:pass(1) [data-type="chapter"] > [data-type="page"]:not(.introduction) {
+  class: "chapter-content-module"; }
 
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
 
-:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] {
-  content: ''; }
-  :pass(1) :not([data-type="metadata"]) > [data-type="document-title"]::after {
-    content: content();
-    container: span;
-    class: "os-text"; }
+:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] > [data-type="document-title"] {
+  container: span;
+  class: "os-text";
+  data-type: '';
+  attr-itemprop: ''; }
 
 :pass(1) a.os-interactive-link {
   attr-target: "_blank"; }
@@ -1120,13 +1122,17 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.summary {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: summary-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.summary::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(summary-TOCOMPOSITE);
@@ -1461,6 +1467,12 @@
   counter-increment: appendix; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: exercise; }
 
 :pass(9) .os-eoc [data-type="exercise"] {
@@ -1469,7 +1481,7 @@
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: example; }
 
-:pass(9) div[data-type="chapter"] [data-type="example"] {
+:pass(9) div[data-type="chapter"] [data-type="example"], :pass(9) .appendix [data-type="example"] {
   counter-increment: example; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
@@ -2001,6 +2013,9 @@
 :pass(9) .preface > figure.unnumbered figcaption {
   move-to: trash; }
 
+:pass(9) .preface [data-type="abstract"] {
+  move-to: trash; }
+
 :pass(9) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -2011,7 +2026,16 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="problem"] .os-problem-container > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] [data-type="solution-title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
@@ -2089,14 +2113,6 @@
 :pass(10) :not(.os-table) > table::outside {
   container: div;
   class: os-table; }
-
-:pass(10) [data-type="composite-chapter"] > h1[data-type="document-title"] {
-  counter-increment: composite-chapter;
-  attr-id: "composite-chapter-" counter(composite-chapter); }
-
-:pass(10) [data-type="composite-page"] {
-  counter-increment: composite-page;
-  attr-id: "composite-page-" counter(composite-page); }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {

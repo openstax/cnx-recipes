@@ -407,22 +407,24 @@
     attr-class: "-os-inline-list-separator";
     content: string(listItemSep); }
 
-:pass(0) div[data-type="page"] > div[data-type="metadata"] > [data-type="document-title"] {
-  string-set: page-title content(); }
+:pass(0) div[data-type="metadata"] > [data-type="document-title"] {
+  node-set: page-title; }
 
-:pass(0) div[data-type="page"] > [data-type="document-title"] {
-  content: string(page-title); }
+:pass(0) :not([data-type="metadata"]) > [data-type="document-title"] {
+  content: nodes(page-title); }
+
+:pass(1) [data-type="chapter"] > [data-type="page"]:not(.introduction) {
+  class: "chapter-content-module"; }
 
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
 
-:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] {
-  content: ''; }
-  :pass(1) :not([data-type="metadata"]) > [data-type="document-title"]::after {
-    content: content();
-    container: span;
-    class: "os-text"; }
+:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] > [data-type="document-title"] {
+  container: span;
+  class: "os-text";
+  data-type: '';
+  attr-itemprop: ''; }
 
 :pass(1) a.os-interactive-link {
   attr-target: "_blank"; }
@@ -1005,13 +1007,17 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.summary {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: summary-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.summary::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(summary-TOCOMPOSITE);
@@ -1021,13 +1027,17 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.exercises {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
     move-to: exercises-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.exercises > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.exercises::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode); }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
     content: pending(exercises-TOCOMPOSITE);
@@ -1229,6 +1239,12 @@
 
 :pass(9) div.appendix {
   counter-increment: appendix; }
+
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
 
 :pass(9) [data-type="chapter"], :pass(9) .appendix {
   counter-reset: exercise; }
@@ -1738,6 +1754,9 @@
 :pass(9) .preface > figure.unnumbered figcaption {
   move-to: trash; }
 
+:pass(9) .preface [data-type="abstract"] {
+  move-to: trash; }
+
 :pass(9) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
@@ -1748,7 +1767,16 @@
 :pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
   container: h4; }
 
-:pass(9) [data-type="composite-page"].os-eoc > section > [data-type="document-title"] {
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="problem"] .os-problem-container > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] [data-type="solution-title"] {
+  container: h4; }
+
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"] {
+  container: h4; }
+
+:pass(9) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
   container: h3; }
 
 :pass(9) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
@@ -1798,6 +1826,21 @@
 :pass(9) .appendix > section > section > [data-type="title"], :pass(9) .appendix > section > section [data-type="document-title"] {
   container: h3; }
 
+:pass(9) .stepwise {
+  counter-reset: stepwise-COUNTER;
+  class: os-stepwise; }
+  :pass(9) .stepwise > li::inside {
+    container: span;
+    class: "os-stepwise-content"; }
+  :pass(9) .stepwise > li::before {
+    container: span;
+    class: "os-stepwise-token";
+    counter-increment: stepwise-COUNTER;
+    content: "Step " counter(stepwise-COUNTER) ". ";
+    move-to: listBucket; }
+  :pass(9) .stepwise > li:deferred {
+    content: pending(listBucket) content(); }
+
 :pass(10) .os-index-link-separator:last-child {
   move-to: trash; }
 
@@ -1826,29 +1869,6 @@
 :pass(10) :not(.os-table) > table::outside {
   container: div;
   class: os-table; }
-
-:pass(10) [data-type="composite-chapter"] > h1[data-type="document-title"] {
-  counter-increment: composite-chapter;
-  attr-id: "composite-chapter-" counter(composite-chapter); }
-
-:pass(10) [data-type="composite-page"] {
-  counter-increment: composite-page;
-  attr-id: "composite-page-" counter(composite-page); }
-
-:pass(10) .stepwise {
-  counter-reset: stepwise-COUNTER;
-  class: os-stepwise; }
-  :pass(10) .stepwise > li::inside {
-    container: span;
-    class: "os-stepwise-content"; }
-  :pass(10) .stepwise > li::before {
-    container: span;
-    class: "os-stepwise-token";
-    counter-increment: stepwise-COUNTER;
-    content: "Step " counter(stepwise-COUNTER) ". ";
-    move-to: listBucket; }
-  :pass(10) .stepwise > li:deferred {
-    content: pending(listBucket) content(); }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {
