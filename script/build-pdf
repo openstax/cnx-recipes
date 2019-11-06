@@ -40,21 +40,22 @@ fi
 for book_config in "${BOOK_CONFIGS[@]}"; do
   read -r book_name _ _ _ _ _ _ <<< "${book_config}"
 
-  book_dir="${OUTPUT_DIR:-./}/data/${book_name}"
+  book_dir="data/${book_name}"
   mathified_file="${book_dir}/collection.mathified.xhtml"
   baked_file="${book_dir}/collection.baked.xhtml"
   style_file="${STYLE:-./styles/output/${book_name}-pdf.css}"
-  output_file="${book_dir}/collection.pdf"
 
   if [ -f "${mathified_file}" ]; then
-    input_file="${mathified_file}"
+    input_file="${OUTPUT_DIR:-.}/${mathified_file}"
+    output_file="${OUTPUT_DIR:-.}/${book_dir}/collection.with-math.pdf"
   else
-    input_file="${baked_file}"
+    input_file="${OUTPUT_DIR:-.}/${baked_file}"
+    output_file="${OUTPUT_DIR:-.}/${book_dir}/collection.no-math.pdf"
   fi
 
   style_flag=()
   if [ -f "${style_file}" ]; then
-    style_flag=('--style' "${OUTPUT_DIR:-./}/${style_file}")
+    style_flag=('--style' "${OUTPUT_DIR:-.}/${style_file}")
   else
     _say "${c_red}WARNING${c_none} style not found: ${style_file}"
   fi
@@ -66,7 +67,7 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   do_progress "Generating pdf using princexml" \
     docker-compose run --rm -u root pdf prince -v --output="${output_file}" "${style_flag[@]}" "${input_file}"
 
-  docker-compose run --rm -u root pdf chown -R "$(stat -c '%u:%g' ./data)" "${book_dir}"
+  docker-compose run --rm -u root pdf chown -R "$(stat -c '%u:%g' ./data)" "${OUTPUT_DIR:-.}/${book_dir}"
 
   _say "Output in ${output_file/$OUTPUT_DIR/$HOST_PWD}"
 done
