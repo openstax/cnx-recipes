@@ -511,7 +511,7 @@
             container: h4;
           }
         }
-      }  
+      }
       [data-type="example"] {
         @if release-flag-enabled(titles-in-examples) {
           [data-type="problem"] {
@@ -529,7 +529,7 @@
               container: h4;
             }
           }
-        } 
+        }
       }
     }
   }
@@ -793,6 +793,19 @@
     }
   }
 }
+//this will move exercise-stimulus to the exercise
+@mixin modify_tagStimulusExercises() {
+  [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) {
+    [data-type="problem"] {
+      .exercise-stimulus {
+        string-set: hasStimulus "has-stimulus";
+      }
+    }
+    &::deferred {
+      class: attr(class) string(hasStimulus);
+    };
+  }
+}
 
 @mixin modify_tagMissingExercises() {
   [data-type="exercise"] {
@@ -914,7 +927,7 @@
     }
   }
 }
-      
+
 @mixin modify_footnoteTitle($footnoteConfig) {
   [data-type="footnote-refs-title"] {
     content: $footnoteConfig;
