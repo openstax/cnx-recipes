@@ -42,8 +42,9 @@
 
 /// This has to run before number_numberEOCExercises because its selector is more general
 /// @group number
+
 @mixin number_numberContentExercises($exerciseTitleContent, $solutionTitleContent, $exerciseTitleContentAp, $solutionTitleContentAp) {
-  [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) {
+  [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.has-stimulus) {
     @if $exerciseTitleContent {
       [data-type="problem"] {
         @include utils_title($exerciseTitleContent);
@@ -67,8 +68,13 @@
       }
     }
   }
-}
 
+}
+@mixin number_numberStimulusExercises($exerciseTitleContent) {
+  [data-type="chapter"] [data-type="page"] [data-type="exercise"].has-stimulus [data-type="problem"] .os-problem-container > div:not(.exercise-stimulus) {
+        @include utils_title($exerciseTitleContent);
+  }
+}
 //EOS composite pages must be created before this runs
 @mixin number_numberEOSExercises($exerciseTitleContent, $solutionTitleContent) {
   .os-eos [data-type="exercise"] {
@@ -93,7 +99,7 @@
   }
 }
 
-@mixin _numberExamples($exampleTitleContent, $solutionTitleContent) {
+@mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent) {
   [data-type="example"] {
     @include utils_title($exampleTitleContent, bExampleLabel);
     > [data-type="title"] {
@@ -119,12 +125,12 @@
   }
 }
 
-@mixin number_numberExamples($exampleTitleContent, $solutionTitleContent, $appendixTitleContent) {
+@mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent, $appendixTitleContent) {
   [data-type="chapter"] {
-    @include _numberExamples($exampleTitleContent, $solutionTitleContent);
+    @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent);
   }
   .appendix {
-    @include _numberExamples($appendixTitleContent, $solutionTitleContent);
+    @include number_numberContentExamples($appendixTitleContent, $solutionTitleContent);
   }
 }
 
@@ -191,7 +197,7 @@
 
     }
   }
-  
+
   [data-type="chapter"] {
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
       @include utils_title($labeling, bCaption);

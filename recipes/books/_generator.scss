@@ -65,7 +65,9 @@
 :pass(0) {
   //Some modifications to be done to the book before any collation
   @include misc_webview_styling();
-
+  @if $Config_hasStimuli {
+    @include modify_tagStimulusExercises();
+  }
   @include modify_syncTitlesFromCollection();
 }
 
@@ -193,10 +195,14 @@
       @include count_countExamples(example);
     }
     @if release-flag-enabled(appendix-has-numbered-examples) {
-      $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
-      @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
+      @if map-has-key($Config_PartType_Example, apTitleContent) {
+        $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
+        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $apTitleContent);
+      } @else {
+        @include number_numberContentExamples($titleContent, $solutionTitleContent);
+      }      
     } @else {
-      @include _numberExamples($titleContent, $solutionTitleContent);
+      @include number_numberContentExamples($titleContent, $solutionTitleContent);
     }
   }
 
@@ -345,6 +351,12 @@
 }
 :pass(7) {
   @include modify_ExercisePrefix($Config_ChapterCompositePages); //if solutions are being moved on this pass then they will not be prefixed
+  @if $Config_hasStimuli {
+    @include count_countStimulusExercises(stimuli, $Config_stimuliSectionClass);
+    @include number_numberStimulusExercises($Config_ContentStimuliExercise_TitleContent);
+  }
+
+
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
   // Only link up problems and solutions if they will not be discarded (optimization)
@@ -408,7 +420,7 @@
   }
   //After: prepBookComposites
   @include compose_createBookComposites($Config_BookCompositePages);
-  
+
   @each $subtitle in $Config_SubtitleLabels {
     $selector: map-get($subtitle, selector);
     $subtitleSelector: map-get($subtitle, subtitleSelector);
@@ -462,7 +474,7 @@
   $resetAt: map-get($Config_PartType_Example, resetAt);
   @if $resetAt == moduleReset {
     @include count_countSectionExamples(exampleInSection);
-  } @else {
+  } @else {  
     @include count_countExamples(example);
   }
 
@@ -470,7 +482,7 @@
   @include link_setTargetLabels($Config_SubtitleLabels);
   @include link_setTargetLabels($Config_TargetLabels);
   @include link_setLinkLabels();
-  
+
   // Number equations if they have a titleContent
   // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
   $titleContent               : map-get($Config_PartType_Equation, titleContent);
@@ -518,7 +530,7 @@
   }
 
   @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
-  
+
   @if release-flag-enabled(custom-lists) {
     @include modify_lists($Config_CustomList);
   }
@@ -530,6 +542,7 @@
   }
 }
 :pass(10) {
+
   //No Answer Key, make sure that solutions that are still present in the content are discarded
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
     @if map-get($Config_PartType_Solution, HACKRemoveAllSolutionsNotJustEoC) == true {
@@ -547,7 +560,7 @@
   @if release-flag-enabled(give-composites-ids) {
     @include modify_addCompositeIDsForToc();
   }
-  
+
   @if not release-flag-enabled(custom-lists) {
     @include modify_lists($Config_CustomList);
   }
