@@ -315,12 +315,6 @@
     attr-class: "-os-inline-list-separator";
     content: string(listItemSep); }
 
-:pass(0) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) [data-type="problem"] .exercise-stimulus {
-  string-set: hasStimulus "has-stimulus"; }
-
-:pass(0) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered)::deferred {
-  class: attr(class) string(hasStimulus); }
-
 :pass(0) div[data-type="metadata"] > [data-type="document-title"] {
   node-set: page-title; }
 
@@ -394,6 +388,13 @@
     string-set: isSolution " os-hasSolution "; }
   :pass(1) :not([data-type="example"]) > [data-type="exercise"]::deferred {
     class: attr(class) string(isSolution, " "); }
+
+:pass(1) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) {
+  string-set: isStimulus ""; }
+  :pass(1) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered) .exercise-stimulus {
+    string-set: isStimulus " has-stimulus"; }
+  :pass(1) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered)::deferred {
+    class: attr(class) string(isStimulus); }
 
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
