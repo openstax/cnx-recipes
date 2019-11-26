@@ -428,14 +428,28 @@
   @if $depth > 0 {
     $minorLevel: 'depth#{$depth}';
   }
-  @if $replaceHeader {
-    //Delete original title for note
-    > div[data-type="title"] {
-      move-to: trash;
-    }
-    //Handle subtitle
-    > p:first-of-type {
-      > span[data-type="title"] {
+  @if release-flag-enabled(note-use-header) {
+    @if $replaceHeader == true {
+      //Delete original title for note
+      > div[data-type="title"] {
+        move-to: trash;
+      }
+      //Handle subtitle
+      > p:first-of-type {
+        > span[data-type="title"] {
+          &::deferred {
+            container: h#{$headingLevel + 1};
+            class: "os-subtitle";
+            move-to: noteSubtitle#{$minorLevel};
+          }
+          &::inside {
+            container: span;
+            class: "os-subtitle-label";
+          }
+        }
+      }
+    } @else if $replaceHeader == false {
+      > div[data-type="title"] {
         &::deferred {
           container: h#{$headingLevel + 1};
           class: "os-subtitle";
@@ -448,15 +462,36 @@
       }
     }
   } @else {
-    > div[data-type="title"] {
-      &::deferred {
-        container: h#{$headingLevel + 1};
-        class: "os-subtitle";
-        move-to: noteSubtitle#{$minorLevel};
+    @if $replaceHeader {
+      //Delete original title for note
+      > div[data-type="title"] {
+        move-to: trash;
       }
-      &::inside {
-        container: span;
-        class: "os-subtitle-label";
+      //Handle subtitle
+      > p:first-of-type {
+        > span[data-type="title"] {
+          &::deferred {
+            container: h#{$headingLevel + 1};
+            class: "os-subtitle";
+            move-to: noteSubtitle#{$minorLevel};
+          }
+          &::inside {
+            container: span;
+            class: "os-subtitle-label";
+          }
+        }
+      }
+    } @else {
+      > div[data-type="title"] {
+        &::deferred {
+          container: h#{$headingLevel + 1};
+          class: "os-subtitle";
+          move-to: noteSubtitle#{$minorLevel};
+        }
+        &::inside {
+          container: span;
+          class: "os-subtitle-label";
+        }
       }
     }
   }
