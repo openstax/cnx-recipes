@@ -37,6 +37,14 @@
 ));
 
 @include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'Outline:::background-color': (_ref: "colorMap:::physicsIntroColor"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::physicsIntroColor")
+  ),
+));
+
+@include add_settings((
   DefaultNoClassNote:(
     _selectors:('[data-type="note"]:not([class])'),
     group-border-color: (_ref: 'colorMap:::physicsDefaultNoteColor'),
@@ -83,7 +91,29 @@
 @include use('Preface','carnival:::Preface');
 @include use('Chapter', 'carnival:::Chapter');
 @include use('Module', 'carnival:::ModuleShape');
+@include use('NumberedEquation', 'carnival:::NumberedEquationShape');
+@include use('ChapterIntro', 'carnival:::ChapterIntroWithAbstractShape');
+@include use('FigureContainer','carnival:::Figure');
+@include use('Link', "carnival:::Link");
+@include use('Term', 'carnival:::Term');
 @include use('DefaultNoClassNote', 'carnival:::BoxedNoteShape');
 @include use('Example', 'carnival:::IconNoteShape');
 @include use('CheckUnderstandingExerciseNote', 'carnival:::CheckUnderstandingShape');
 @include use('PhetExplorationNote', 'carnival:::IconLogoNoteShape');
+
+[data-type="chapter"] {
+  page: chapter;
+  prince-page-group: start;
+  page-break-before: right;
+}
+
+@page {
+  margin-left: 1in;
+  margin-right: 1in;
+  margin-bottom: 0.8in;
+  margin-top: 0.8in;
+}
+
+@page chapter:first {
+  margin-right: 2in;
+}
