@@ -18,7 +18,7 @@ glob(`${parentDir}/*.css`, null, function (err, files) {
 
     csstree.walk(ast, function (node) {
       if (node.type === 'Url') {
-        console.log(`Checking ${node.info.source}#${node.info.line}:${node.info.column}`)
+        console.log(`Checking ${node.loc.source} #${node.loc.start.line}:${node.loc.start.column}`)
 
         let url
         if (node.value.type === 'String') {
@@ -36,7 +36,7 @@ glob(`${parentDir}/*.css`, null, function (err, files) {
         } else if (/^data:/.test(url)) {
           // data-uri encoded, OK
         } else {
-          console.error(`Error: ${node.info.source}#${node.info.line}:${node.info.column} contains a url(...) that points to a relative file. In order to be able to reuse the CSS file all images need to be encoded into the CSS file`)
+          console.error(`Error: ${node.loc.source} #${node.loc.start.line}:${node.loc.start.column} contains a url(...) that points to a relative file. In order to be able to reuse the CSS file all images need to be encoded into the CSS file`)
           process.exit(110)
         }
       }
