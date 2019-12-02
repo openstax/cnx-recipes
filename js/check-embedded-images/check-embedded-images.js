@@ -3,7 +3,7 @@ const path = require('path')
 const glob = require('glob')
 const csstree = require('css-tree')
 
-const parentDir = path.join(__dirname, '..', `styles/output`)
+const parentDir = path.join(__dirname, '../..', `styles/output`)
 
 glob(`${parentDir}/*.css`, null, function (err, files) {
   if (err) { throw err }
