@@ -195,10 +195,14 @@
       @include count_countExamples(example);
     }
     @if release-flag-enabled(appendix-has-numbered-examples) {
-      $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
-      @include number_numberExamples($titleContent, $solutionTitleContent, $apTitleContent);
+      @if map-has-key($Config_PartType_Example, apTitleContent) {
+        $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
+        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $apTitleContent);
+      } @else {
+        @include number_numberContentExamples($titleContent, $solutionTitleContent);
+      }      
     } @else {
-      @include _numberExamples($titleContent, $solutionTitleContent);
+      @include number_numberContentExamples($titleContent, $solutionTitleContent);
     }
   }
 
@@ -470,7 +474,7 @@
   $resetAt: map-get($Config_PartType_Example, resetAt);
   @if $resetAt == moduleReset {
     @include count_countSectionExamples(exampleInSection);
-  } @else {
+  } @else {  
     @include count_countExamples(example);
   }
 

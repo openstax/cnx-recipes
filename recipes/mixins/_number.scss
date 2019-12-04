@@ -44,7 +44,7 @@
 /// @group number
 
 @mixin number_numberContentExercises($exerciseTitleContent, $solutionTitleContent, $exerciseTitleContentAp, $solutionTitleContentAp) {
-  [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.has-stimulus) {
+  [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus) {
     @if $exerciseTitleContent {
       [data-type="problem"] {
         @include utils_title($exerciseTitleContent);
@@ -71,7 +71,7 @@
 
 }
 @mixin number_numberStimulusExercises($exerciseTitleContent) {
-  [data-type="chapter"] [data-type="page"] [data-type="exercise"].has-stimulus [data-type="problem"] .os-problem-container > div:not(.exercise-stimulus) {
+  [data-type="chapter"] [data-type="page"] [data-type="exercise"].os-hasStimulus [data-type="problem"] .os-problem-container > div:not(.exercise-stimulus) {
         @include utils_title($exerciseTitleContent);
   }
 }
@@ -99,7 +99,7 @@
   }
 }
 
-@mixin _numberExamples($exampleTitleContent, $solutionTitleContent) {
+@mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent) {
   [data-type="example"] {
     @include utils_title($exampleTitleContent, bExampleLabel);
     > [data-type="title"] {
@@ -125,12 +125,12 @@
   }
 }
 
-@mixin number_numberExamples($exampleTitleContent, $solutionTitleContent, $appendixTitleContent) {
+@mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent, $appendixTitleContent) {
   [data-type="chapter"] {
-    @include _numberExamples($exampleTitleContent, $solutionTitleContent);
+    @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent);
   }
   .appendix {
-    @include _numberExamples($appendixTitleContent, $solutionTitleContent);
+    @include number_numberContentExamples($appendixTitleContent, $solutionTitleContent);
   }
 }
 
@@ -229,7 +229,7 @@
     > #{$elementName}:not(.unnumbered) {
       @include utils_title($labelingAp, bCaption);
       @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
-      @if ($hasTopTitle and release-flag-enabled(appendix-top-title-copy)) {
+      @if ($hasTopTitle) {
         &.top-titled {
           //this will have to be rewritten after all the content has been updated to contain the title within the title instead of the hacky first header in the table.
           @if release-flag-enabled(table-move-fake-title) {
