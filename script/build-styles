@@ -20,12 +20,11 @@ if [[ ${#TEMPLATE_NAMES[@]} == 0 ]]; then
 fi
 
 for style_config in "${TEMPLATE_NAMES[@]}"; do
-  read -r _ book_name <<< "${style_config}"
+  read -r _ _ recipe_name <<< "${style_config}"
 
-  sass_file="${styles_root}/${book_name}/book.scss"
-
+  sass_file="${styles_root}/${recipe_name}/book.scss"
   for platform in "${PLATFORMS[@]}"; do
-    css_file="${output_dir}/${book_name}-${platform}.css"
+    css_file="${output_dir}/${recipe_name}-${platform}.css"
 
     PLATFORM="${platform}" do_progress "Generating ${css_file}" \
       node styles/build/build.js "${sass_file}" "${css_file}"
