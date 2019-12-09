@@ -47,7 +47,7 @@ Following from the above, let's plan to make three shapes. First, one to accommo
 Let's get started on the design. Enter the cnx-recipes directory, then make an SCSS file for our design
 ```bash
 # bash
-mkdir -p ./styles/design/example && touch ./styles/design/example/_design.scss
+mkdir -p ./styles/designs/example && touch ./styles/designs/example/_design.scss
 ```
 
 ### Schema
