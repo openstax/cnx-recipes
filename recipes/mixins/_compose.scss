@@ -361,17 +361,35 @@
     @include validate_enumOptional($specialPageType, $PAGE__PREFIX__);
 
     $keyName: if($specialPageType == $PAGE_GLOSSARY, 'glossary', '.#{$className}');
-    @each $childPage in $childPages {
-      $childclassName: map-get($childPage, className);
+
+    @if release-flag-enabled(several-composite-chapters) {
       [data-type="chapter"] {
-        .os-#{$childclassName}-container {
-          move-to: composite-DESTINATION;
+        @each $childPage in $childPages {
+          $childclassName: map-get($childPage, className);
+          .os-#{$childclassName}-container {
+            move-to: composite-#{$className}-DESTINATION;
+          }
         }
-         &::after {
-          class: "os-eoc os-#{$className}-container";
-          data-type: composite-chapter;
-          data-uuid-key: "#{$keyName}";
-          content: pending(composite-DESTINATION);
+        &::after {
+            class: "os-eoc os-#{$className}-container";
+            data-type: composite-chapter;
+            data-uuid-key: "#{$keyName}";
+            content: pending(composite-#{$className}-DESTINATION);
+          }
+      }
+    } @else {
+      @each $childPage in $childPages {
+        $childclassName: map-get($childPage, className);
+        [data-type="chapter"] {
+          .os-#{$childclassName}-container {
+            move-to: composite-DESTINATION;
+          }
+          &::after {
+            class: "os-eoc os-#{$className}-container";
+            data-type: composite-chapter;
+            data-uuid-key: "#{$keyName}";
+            content: pending(composite-DESTINATION);
+          }
         }
       }
     }
