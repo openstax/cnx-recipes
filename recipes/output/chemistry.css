@@ -1407,12 +1407,12 @@
 :pass(9) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
   counter-increment: exerciseMaybeInContent; }
 
-:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.has-stimulus) [data-type="problem"]::before {
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus) [data-type="problem"]::before {
   container: span;
   content: counter(exerciseMaybeInContent);
   class: os-number; }
 
-:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.has-stimulus) [data-type="problem"]::before {
+:pass(9) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus) [data-type="problem"]::before {
   container: span;
   content: "Exercise ";
   class: os-title-label; }
@@ -1457,6 +1457,11 @@
   class: os-divider;
   move-to: bCaption; }
 
+:pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered).top-titled thead tr:first-child th {
+  container: div;
+  class: "os-temporary-table-title";
+  move-to: tableTopTitle; }
+
 :pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption {
   container: span;
   class: "os-caption";
@@ -1482,7 +1487,7 @@
 :pass(9) [data-type="chapter"] :not(table) > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopTitle) content() pending(bCaptionContainer); }
 
 :pass(9) [data-type="chapter"] > table.unnumbered caption {
   move-to: trash; }
@@ -1538,7 +1543,13 @@
 :pass(9) .appendix > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopTitle) content() pending(bCaptionContainer); }
+
+:pass(9) .appendix :not(table) > table:not(.unnumbered).top-titled thead tr:first-child th,
+:pass(9) .appendix > table:not(.unnumbered).top-titled thead tr:first-child th {
+  container: div;
+  class: "os-temporary-table-title";
+  move-to: tableTopTitle; }
 
 :pass(9) .appendix > table.unnumbered caption {
   move-to: trash; }
@@ -1586,7 +1597,7 @@
 :pass(9) .preface :not(table) > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopTitle) content() pending(bCaptionContainer); }
 
 :pass(9) .preface > table.unnumbered caption {
   move-to: trash; }
@@ -1830,6 +1841,12 @@
   :pass(9) .stepwise > li:deferred {
     content: pending(listBucket) content(); }
 
+:pass(10) .os-table .top-titled thead tr:first-child {
+  move-to: trash; }
+
+:pass(10) .os-table .os-temporary-table-title::inside {
+  class: "os-table-title"; }
+
 :pass(10) .os-index-link-separator:last-child {
   move-to: trash; }
 
@@ -1858,6 +1875,15 @@
 :pass(10) :not(.os-table) > table::outside {
   container: div;
   class: os-table; }
+
+:pass(11) .os-table .os-table-title {
+  move-to: tableFinalTitle; }
+
+:pass(11) .os-table .os-temporary-table-title {
+  move-to: trash; }
+
+:pass(11) .os-table::deferred {
+  content: pending(tableFinalTitle) content(); }
 
 :pass(11) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(11) div.os-eob [data-type="cnx-archive-uri"] {

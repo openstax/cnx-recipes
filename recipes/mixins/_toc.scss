@@ -53,57 +53,118 @@
 }
 
 @mixin compositeChapterTOC($hasCompositeChapter) {
-  @if $hasCompositeChapter {
-    > [data-type="composite-chapter"] {
-      > [data-type='document-title'] {
-        node-set: CchapterTitle;
-        string-set: CchapTitle-id attr(id);
-        //copy-to: eoc-toc;
-      }
-      > [data-type='metadata']
-      > [data-type='cnx-archive-shortid'] {
-        string-set: Cchap-shortid attr(data-value);
-      }
-      &::after {
-        content: nodes(CchapterTitle);
-        attr-href: "#" string(CchapTitle-id);
-        container: a;
-        move-to: cc-link;
-      }
-      > div[data-type="composite-page"] {
-        string-set: Cpage-id-chap attr(id);
-        > [data-type='title'] {
-          node-set: CPageTitle;
+  @if release-flag-enabled(toc-eoc-composite-chapter){
+    @if $hasCompositeChapter {
+      > [data-type="chapter"] {
+        > [data-type="composite-chapter"] {
+          > [data-type='document-title'] {
+            node-set: CchapterTitle;
+            string-set: CchapTitle-id attr(id);
+          }
+          > [data-type='metadata']
+          > [data-type='cnx-archive-shortid'] {
+            string-set: Cchap-shortid attr(data-value);
+          }
+          &::after {
+            content: nodes(CchapterTitle);
+            attr-href: "#" string(CchapTitle-id);
+            container: a;
+            move-to: cc-link;
+          }
+          > div[data-type="composite-page"] {
+            string-set: Cpage-id-chap attr(id);
+            > [data-type='title'] {
+              node-set: CPageTitle;
+            }
+            > [data-type='metadata']
+            > [data-type='cnx-archive-shortid'] {
+              string-set: Cpage-shortid attr(data-value);
+            }
+            &::after {
+              content: nodes(CPageTitle);
+              attr-href: "#" string(Cpage-id-chap);
+              container: a;
+              move-to: CpageLink;
+            }
+            &::after {
+              content: pending(CpageLink);
+              attr-cnx-archive-uri: attr(id);
+              attr-cnx-archive-shortid: string(Cpage-shortid);
+              container: li;
+              class: "os-toc-chapter-composite-page";
+              move-to: Cpage-list;
+            }
+          }
+          &::after {
+            content: pending(Cpage-list);
+            container: ol;
+            class: "os-chapter";
+            move-to: cc-li;
+          }
+          &::after {
+            content: pending(cc-link) pending(cc-li);
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(Cchap-shortid);
+            container: li;
+            class: "os-toc-composite-chapter";
+            move-to: eoc-toc-pages;
+          }
         }
-        > [data-type='metadata']
-        > [data-type='cnx-archive-shortid'] {
-          string-set: Cpage-shortid attr(data-value);
-        }
-        &::after {
-          content: nodes(CPageTitle);
-          attr-href: "#" string(Cpage-shortid);
-          container: a;
-          move-to: CpageLink;
-        }
-        &::after {
-          content: pending(CpageLink);
-          attr-cnx-archive-uri: attr(id);
-          attr-cnx-archive-shortid: string(page-shortid);
-          container: li;
-          move-to: Cpage-list;
-        }
       }
-      &::after {
-        content: pending(Cpage-list);
-        attr-cnx-archive-uri: attr(id);
-        attr-cnx-archive-shortid: string(page-shortid);
-        container: ol;
-        move-to: cc-li;
-      }
-      &::after {
-        content: pending(cc-link) pending(cc-li);
-        container: li;
-        move-to: eoc-toc-pages;
+    }
+  } @else if not release-flag-enabled(toc-eoc-composite-chapter) {
+      @if $hasCompositeChapter {
+        > [data-type="composite-chapter"] {
+          > [data-type='document-title'] {
+            node-set: CchapterTitle;
+            string-set: CchapTitle-id attr(id);
+            //copy-to: eoc-toc;
+          }
+          > [data-type='metadata']
+          > [data-type='cnx-archive-shortid'] {
+            string-set: Cchap-shortid attr(data-value);
+          }
+          &::after {
+            content: nodes(CchapterTitle);
+            attr-href: "#" string(CchapTitle-id);
+            container: a;
+            move-to: cc-link;
+          }
+          > div[data-type="composite-page"] {
+            string-set: Cpage-id-chap attr(id);
+            > [data-type='title'] {
+              node-set: CPageTitle;
+            }
+            > [data-type='metadata']
+            > [data-type='cnx-archive-shortid'] {
+              string-set: Cpage-shortid attr(data-value);
+            }
+            &::after {
+              content: nodes(CPageTitle);
+              attr-href: "#" string(Cpage-shortid);
+              container: a;
+              move-to: CpageLink;
+            }
+            &::after {
+              content: pending(CpageLink);
+              attr-cnx-archive-uri: attr(id);
+              attr-cnx-archive-shortid: string(page-shortid);
+              container: li;
+              move-to: Cpage-list;
+            }
+          }
+          &::after {
+            content: pending(Cpage-list);
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(page-shortid);
+            container: ol;
+            move-to: cc-li;
+          }
+          &::after {
+            content: pending(cc-link) pending(cc-li);
+            container: li;
+            move-to: eoc-toc-pages;
+        }
       }
     }
   }
@@ -163,8 +224,13 @@
         }
       }
     }
-    #{$chapterAndCompositeChapterSel} {
+    @if release-flag-enabled(toc-eoc-composite-chapter){
       @include compositeChapterTOC($hasCompositeChapter);
+    }
+    #{$chapterAndCompositeChapterSel} {
+      @if not release-flag-enabled(toc-eoc-composite-chapter) {
+        @include compositeChapterTOC($hasCompositeChapter);
+      }
       > [data-type='document-title'] {
         node-set: chapterTitle;
         string-set: chapTitle-id attr(id);
@@ -279,9 +345,12 @@
         container: a;
         move-to: eou-toc;
       }
-
-      #{$chapterAndCompositeChapterSel} {
+      @if release-flag-enabled(toc-eoc-composite-chapter) {
         @include compositeChapterTOC($hasCompositeChapter);
+      }
+      #{$chapterAndCompositeChapterSel} { @if not release-flag-enabled(toc-eoc-composite-chapter) {
+        @include compositeChapterTOC($hasCompositeChapter);
+      }
         > [data-type='document-title'] {
           node-set: chapterTitle;
           string-set: chapTitle-id attr(id);
