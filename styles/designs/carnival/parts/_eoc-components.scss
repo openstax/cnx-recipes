@@ -156,46 +156,24 @@ $Exercise_Ordered_List: (
         display:  enum('ValueSet:::OPTIONAL'),
     )
 );
-$ConceptualQuestions:(
-    _name: "ConceptualQuestions",
-    _subselector: " > .os-review-conceptual-questions-container",
-    _properties:(
-        column-count: 2,
-        column-gap: 2.4rem,
-        column-width: auto,
-        margin-bottom: v-grid(4),
-    )
-);
-$Problems:(
-    _name: "ConceptualQuestions",
-    _subselector: " > .os-review-problems-container",
-    _properties:(
-        column-count: 2,
-        column-gap: 2.4rem,
-        column-width: auto,
-        margin-bottom: v-grid(4),
-    )
-);
-$AdditionalProblems:(
-    _name: "AdditionalProblems",
-    _subselector: " > .os-review-additional-problems-container",
-    _properties:(
-        column-count: 2,
-        column-gap: 2.4rem,
-        column-width: auto,
-        margin-bottom: v-grid(4),
-    )
-);
-$ChallengeProblems:(
-    _name: "ChallengeProblems",
-    _subselector: " > .os-review-challenge-container",
-    _properties:(
-        column-count: 2,
-        column-gap: 2.4rem,
-        column-width: auto,
-        margin-bottom: v-grid(4),
-    )
-);
+
+@function eocSplitColumns($class_selector) {
+    @return (
+        _name: "ColumnsContainer",
+        _subselector: " > #{$class_selector}",
+        _properties:(
+            column-count: enum('ValueSet:::REQUIRED'),
+            column-gap: enum('ValueSet:::REQUIRED'),
+            column-width: enum('ValueSet:::REQUIRED'),
+            margin-bottom: enum('ValueSet:::REQUIRED'),
+        )
+    );
+}
+$ConceptualQuestions: eocSplitColumns(".os-review-conceptual-questions-container");
+$Problems: eocSplitColumns(".os-review-problems-container"); 
+$AdditionalProblems: eocSplitColumns( ".os-review-additional-problems-container"); 
+$ChallengeProblems: eocSplitColumns( ".os-review-challenge-container"); 
+
 $ProblemContentContainer: (
     _name: "ProblemContentContainer",
     _subselector: " > .os-problem-container",
