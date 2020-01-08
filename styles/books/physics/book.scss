@@ -37,11 +37,53 @@
 ));
 
 @include add_settings((
-    ChapterIntro: (
+  ChapterIntro: (
     _selectors: (".introduction"),
     'Outline:::background-color': (_ref: "colorMap:::physicsIntroColor"),
     'SplashFigureBg:::background-color': (_ref: "colorMap:::physicsIntroColor")
-    ),
+  ),
+));
+
+@include add_settings((
+  DefaultNoClassNote:(
+    _selectors:('[data-type="note"]:not([class])'),
+    group-border-color: (_ref: 'colorMap:::physicsDefaultNoteColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Title:::color': (_ref: 'colorMap:::physicsDefaultNoteColor'),
+  ),
+  Example:(
+    _selectors: ("[data-type='example']"),
+    group-border-color: (_ref: 'colorMap:::exampleColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Title:::color': (_ref: 'colorMap:::exampleColor'),
+    'TitleIcon:::background': url("../../styles/designs/carnival/resources/carnival-example.svg") no-repeat top left,
+    'TitleText:::display': inline-block,
+    'TitleText:::word-wrap': normal,
+    'TitleText:::margin-bottom': .2rem,
+    'TitleText:::margin-left': h-grid(1),
+    'ParagraphSubtitle:::font-family': (_ref: "typography:::sansFont"),
+    'ParagraphSubtitle:::font-size': font-scale(1),
+    'ParagraphSubtitle:::line-height': line-height(1),
+    'ParagraphSubtitle:::font-weight': bold,
+    'ParagraphSubtitle:::text-transform': uppercase,
+  ),
+  CheckUnderstandingExerciseNote:(
+    _selectors: ('[data-element-type="check-understanding"]'),
+    'Solution:::border-bottom-color': (_ref: 'colorMap:::checkYourUnderstanding'),
+    'SolutionTitle:::font-family': (_ref: "typography:::sansFont"),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Icon:::background': url("../../styles/designs/carnival/resources/carnival-check.svg") no-repeat top left,
+    'TitleText:::max-width': h-grid(15),
+  ),
+  PhetExplorationNote:(
+    _selectors: (".interactive"),
+    group-border-color: (_ref: 'colorMap:::phetColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Title:::color': (_ref: 'colorMap:::phetColor'),
+    'TitleIcon:::background': url("../../styles/designs/carnival/resources/carnival-phet.svg") no-repeat top left,
+    'LogoIcon:::background': url("../../styles/designs/carnival/resources/phet-logo.svg") no-repeat right bottom,
+    'LogoIcon:::margin-bottom': .2rem,
+  ),
 ));
 
 @include use('BookRoot', "common:::BookRoot");
@@ -57,6 +99,11 @@
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('Link', "carnival:::Link");
 @include use('Term', 'carnival:::Term');
+@include use('DefaultNoClassNote', 'carnival:::BoxedNoteShape');
+@include use('Example', 'carnival:::IconNoteShape');
+@include use('CheckUnderstandingExerciseNote', 'carnival:::IconCondensedExerciseShape');
+@include use('PhetExplorationNote', 'carnival:::LogoNoteIconShape');
+@include use('IFrame', 'common:::Hidden');
 
 [data-type="chapter"] {
   page: chapter;
