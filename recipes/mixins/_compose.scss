@@ -302,12 +302,29 @@
           move-to: trash;
         }
       }
+      @if release-flag-enabled(EOCsection-links) {
+        @if ($clusterBy == $CLUSTER_SECTION) {
+          [data-type="page"] {
+            > [data-type="document-title"] {
+              string-set: moduleTitleId attr(id);
+            }
+          }
+        }
+      }
       #{$sourceSelector} {
         > [data-type="title"] {
           move-to: trash;
         }
         @if ($clusterBy == $CLUSTER_SECTION) {
-          content: nodes(CompoundSectionHeaderNode) content();
+          @if release-flag-enabled(EOCsection-links) {
+            &::before {
+              container: a;
+              attr-href: "#" string(moduleTitleId);
+              content: nodes(CompoundSectionHeaderNode);
+            }
+          } @else {
+            content: nodes(CompoundSectionHeaderNode) content();
+          }
           move-to: #{$className}-separated;
         } @else {
           move-to: #{$className}-DESTINATION;
