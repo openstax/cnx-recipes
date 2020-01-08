@@ -1,6 +1,29 @@
 @import 'notes-components';
 
-@include create_shape('carnival:::IconNoteShape', (
+@include create_shape('carnival:::LogoNoteBoxedShape', (
+  _groups: (
+    group-border-style: solid,
+    group-border-width: 0.2rem,
+    group-border-color: enum('ValueSet:::REQUIRED'),
+    group-title-font: enum('ValueSet:::REQUIRED'),
+    group-title-color: enum('ValueSet:::REQUIRED'),
+  ),
+  _components: (
+    map-merge($BoxedNoteContainerComponent, (
+      _components: (
+        $BoxedNoteTitleComponent,
+        map-merge($NoteBodyComponent, (
+          _components: (
+            $NoteSubtitleComponent,
+            $LogoNoteLogoIconComponent
+          ),
+        ))
+      ),
+    ))
+  ),
+));
+
+@include create_shape('carnival:::LogoNoteIconShape', (
   _groups: (
     group-border-color: enum('ValueSet:::REQUIRED'),
   ),
@@ -19,6 +42,7 @@
         map-merge($NoteBodyComponent, (
           _components: (
             $NoteSubtitleComponent,
+            $LogoNoteLogoIconComponent,
           ),
         )),
         $IconNoteParagraphTitleComponent,
