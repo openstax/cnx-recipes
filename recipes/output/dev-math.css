@@ -561,6 +561,54 @@
 :pass(2) [data-type="exercise"].missing-exercise {
   move-to: trash; }
 
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].be-prepared > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].be-prepared > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].be-prepared::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].be-prepared:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].be-prepared:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].be-prepared > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].be-prepared > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].be-prepared::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].be-prepared:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].be-prepared:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
 :pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::deferred {
   container: h4;
   class: "os-subtitle";
@@ -1005,6 +1053,52 @@
   content: pending(div-TITLECONTAINER); }
 
 :pass(3) [data-type="chapter"], :pass(3) .appendix {
+  counter-reset: prepared; }
+
+:pass(3) [data-type="note"].be-prepared {
+  counter-increment: prepared; }
+
+:pass(3) [data-type="note"].be-prepared::before {
+  container: span;
+  content: "Be Prepared ";
+  class: os-title-label;
+  move-to: bNoteLabel-be-prepared; }
+
+:pass(3) [data-type="note"].be-prepared::before {
+  container: span;
+  content: counter(chapter) "." counter(prepared);
+  class: os-number;
+  move-to: bNoteLabel-be-prepared; }
+
+:pass(3) [data-type="note"].be-prepared::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bNoteLabel-be-prepared; }
+
+:pass(3) [data-type="note"].be-prepared > [data-type="title"] {
+  move-to: trash; }
+
+:pass(3) [data-type="note"].be-prepared [data-type="solution"]::before {
+  container: span;
+  content: counter(chapter) "." counter(prepared);
+  class: os-number; }
+
+:pass(3) [data-type="note"].be-prepared [data-type="solution"]::before {
+  container: span;
+  content: " ";
+  class: os-divider; }
+
+:pass(3) [data-type="note"].be-prepared::after {
+  container: div;
+  content: pending(bNoteLabel-be-prepared);
+  class: "os-title";
+  move-to: bNoteHeader; }
+
+:pass(3) [data-type="note"].be-prepared:deferred {
+  content: pending(bNoteHeader) content(); }
+
+:pass(3) [data-type="chapter"], :pass(3) .appendix {
   counter-reset: try; }
 
 :pass(3) [data-type="note"].try {
@@ -1138,6 +1232,9 @@
     class: "os-eoc os-exercises-container";
     data-type: "composite-page";
     data-uuid-key: ".exercises"; }
+
+:pass(3) .be-prepared [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
 
 :pass(3) .try [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1362,6 +1459,26 @@
 :pass(8) div[data-type="page"] > [data-type="document-title"],
 :pass(8) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
+
+:pass(8) [data-type="chapter"] [data-type="note"].be-prepared [data-type="solution"] {
+  move-to: note-be-prepared-solutions-GETSECTION; }
+
+:pass(8) [data-type="chapter"]::before {
+  container: span;
+  class: "os-title-label";
+  content: "Be Prepared ";
+  move-to: note-be-prepared-title; }
+
+:pass(8) [data-type="chapter"]::before {
+  container: h3;
+  content: pending(note-be-prepared-title);
+  move-to: note-be-prepared-header; }
+
+:pass(8) [data-type="chapter"]::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(note-be-prepared-header) pending(note-be-prepared-solutions-GETSECTION);
+  move-to: note-solutions-GETCHAPTER; }
 
 :pass(8) [data-type="chapter"] [data-type="note"].try [data-type="solution"] {
   move-to: note-try-solutions-GETSECTION; }
