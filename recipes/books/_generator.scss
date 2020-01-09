@@ -542,6 +542,23 @@
   }
 }
 :pass(10) {
+  @if release-flag-enabled(table-move-fake-title) {
+    @if map-get($Config_SetTableCaption, hasTopTitle) == true {
+      .os-table {
+        .top-titled {
+          thead tr:first-child {
+            move-to: trash;
+          }
+        }
+
+        .os-temporary-table-title {
+          &::inside {
+            class: "os-table-title";
+          }
+        }
+      }
+    }
+  }
 
   //No Answer Key, make sure that solutions that are still present in the content are discarded
   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
@@ -578,6 +595,21 @@
   @include modify_elementsOrder($Config_Order_FigTableCaption);
 }
 :pass(11) {
+  @if release-flag-enabled(table-move-fake-title) {
+    @if map-get($Config_SetTableCaption, hasTopTitle) == true {
+      .os-table {
+        .os-table-title {
+          move-to: tableFinalTitle;
+        }
+        .os-temporary-table-title {
+          move-to: trash;
+        }
+        &::deferred {
+          content: pending(tableFinalTitle) content();
+        }
+      }
+    }
+  }
   //After: All metadata tasks are completed
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
