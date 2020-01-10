@@ -1675,6 +1675,33 @@
 :pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
   string-set: moduleTitleId attr(id); }
 
+:pass(3) [data-type="chapter"] section.problems {
+  move-to: problems-separated; }
+  :pass(3) [data-type="chapter"] section.problems > [data-type="title"] {
+    move-to: trash; }
+  :pass(3) [data-type="chapter"] section.problems::before {
+    container: a;
+    attr-href: "#" string(moduleTitleId);
+    content: nodes(CompoundSectionHeaderNode); }
+
+:pass(3) [data-type="chapter"] [data-type="page"]::after {
+  class: "os-section-area";
+  content: pending(problems-separated);
+  move-to: problems-sectionSeparatedContainer; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: os-problems;
+  content: pending(problems-sectionSeparatedContainer);
+  move-to: problems-DESTINATION; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-eoc os-problems-container";
+  content: pending(problems-DESTINATION);
+  data-type: composite-page; }
+
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  string-set: moduleTitleId attr(id); }
+
 :pass(3) [data-type="chapter"] section.performance {
   move-to: performance-separated; }
   :pass(3) [data-type="chapter"] section.performance > [data-type="title"] {
@@ -1787,6 +1814,9 @@
   move-to: composite-chapter-review-DESTINATION; }
 
 :pass(4) [data-type="chapter"] .os-critical-thinking-container {
+  move-to: composite-chapter-review-DESTINATION; }
+
+:pass(4) [data-type="chapter"] .os-problems-container {
   move-to: composite-chapter-review-DESTINATION; }
 
 :pass(4) [data-type="chapter"] .os-performance-container {
@@ -2108,6 +2138,17 @@
   move-to: h3-TITLECONTAINER; }
 
 :pass(9) [data-type="composite-page"].os-eoc.os-critical-thinking-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(9) [data-type="composite-page"].os-eoc.os-problems-container::before {
+  container: span;
+  content: "Problems";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(9) [data-type="composite-page"].os-eoc.os-problems-container::before {
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }
