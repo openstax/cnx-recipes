@@ -3,30 +3,14 @@
 @import 'templates/template1/settings';
 
 @include add_settings((
-    TOC: (
-        _selectors: ('nav#toc'),
-        'TocTitleWord:::color': (_ref: 'colorMap:::physicsTocColor'),
-        'TocTitleWord:::border-bottom-color': (_ref: 'colorMap:::physicsTocColor'),
-        'TocChapterNumber:::color': (_ref: 'colorMap:::physicsTocColor'),
-    ),
-));
-
-@include add_settings((
-  Preface: (
-    _selectors: (".preface"),
-    'BodyH3:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'BodyH4:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'BodyH5:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  UnitToc:(
+    _selectors: ('nav#toc'),
+    'TocTitleWord:::color': (_ref: 'colorMap:::physicsTocColor'),
+    'TocTitleWord:::border-bottom-color': (_ref: 'colorMap:::physicsTocColor'),
+    'TocUnitLink:::color': (_ref: 'colorMap:::physicsTocColor'),
+    'TocChapterNumber:::color': (_ref: 'colorMap:::physicsTocColor'),
   ),
 ));
-
-@include add_settings((
-  Chapter: (
-    _selectors: ('[data-type="chapter"]'),
-    'TitleNumber:::color': (_ref: "colorMap:::physicsHeaderColor"),
-  ),
-));
-
 @include add_settings((
   Module: (
     _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
@@ -35,16 +19,51 @@
     'SubSubtitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
 ));
-
 @include add_settings((
+  Chapter: (
+    _selectors: ('[data-type="chapter"]'),
+    'TitleNumber:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
+  Preface: (
+    _selectors: (".preface"),
+    'BodyH3:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'BodyH4:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'BodyH5:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
   ChapterIntro: (
     _selectors: (".introduction"),
-    'Outline:::background-color': (_ref: "colorMap:::physicsIntroColor"),
-    'SplashFigureBg:::background-color': (_ref: "colorMap:::physicsIntroColor")
+    'Outline:::background-color': (_ref: "colorMap:::physicsHeaderColor"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
 ));
-
 @include add_settings((
+  CheckYourUnderstandingNote:(
+    _selectors: (".check-understanding"),
+    'Body:::border-bottom-color': (_ref: 'colorMap:::checkYourUnderstanding'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Icon:::background': url("../../styles/designs/carnival/resources/carnival-check.svg") no-repeat top left,
+    'TitleText:::max-width': h-grid(15),
+    'NoteNumber:::margin-left':h-grid(3),
+  ),
+  LinkToLearningNote:(
+    _selectors: (".media-2"),
+    'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Icon:::background': url("../../styles/designs/carnival/resources/carnival-linktolearning.svg") no-repeat top left,
+    'TitleText:::max-width': h-grid(10),
+  ),
+  LearningObjectiveAbstract: (
+    _selectors: ('[data-type="page"] > [data-type="abstract"]'),
+    'AbstractTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'ListDot:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ProblemSolving:(
+    _selectors: (".problem-solving"),
+    group-border-color: (_ref: 'colorMap:::problemSolvingColor'),
+    'Title:::font-family': (_ref: 'typography:::titleFont'),
+    'Title:::color': (_ref: 'colorMap:::problemSolvingColor'),
+    'TitleIcon:::background': url("../../styles/designs/carnival/resources/carnival-problemsolving.svg") no-repeat top left,
+  ),
   DefaultNoClassNote:(
     _selectors:('[data-type="note"]:not([class])'),
     group-border-color: (_ref: 'colorMap:::physicsDefaultNoteColor'),
@@ -57,103 +76,61 @@
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Title:::color': (_ref: 'colorMap:::exampleColor'),
     'TitleIcon:::background': url("../../styles/designs/carnival/resources/carnival-example.svg") no-repeat top left,
-    'TitleText:::display': inline-block,
-    'TitleText:::word-wrap': normal,
-    'TitleText:::margin-bottom': .2rem,
-    'TitleText:::margin-left': h-grid(1),
     'ParagraphSubtitle:::font-family': (_ref: "typography:::sansFont"),
     'ParagraphSubtitle:::font-size': font-scale(1),
     'ParagraphSubtitle:::line-height': line-height(1),
     'ParagraphSubtitle:::font-weight': bold,
     'ParagraphSubtitle:::text-transform': uppercase,
+    'ParagraphSubtitle:::display': inline-block,
+    'ParagraphSubtitle:::padding-right': h-grid(1),
+    'FirstTitle:::font-family':(_ref: "typography:::sansFont"),
+    'FirstTitle:::font-size': font-scale(1),
+    'FirstTitle:::line-height': line-height(1),
+    'FirstTitle:::font-weight': bold,
+    'FirstTitle:::display': block,
+    'FirstTitle:::margin-bottom': .2rem,
+    'FirstTitle:::text-transform': capitalize,
   ),
-  CheckUnderstandingExerciseNote:(
-    _selectors: ('[data-element-type="check-understanding"]'),
-    'Solution:::border-bottom-color': (_ref: 'colorMap:::checkYourUnderstanding'),
-    'SolutionTitle:::font-family': (_ref: "typography:::sansFont"),
-    'Title:::font-family': (_ref: 'typography:::titleFont'),
-    'Icon:::background': url("../../styles/designs/carnival/resources/carnival-check.svg") no-repeat top left,
-    'TitleText:::max-width': h-grid(15),
+  AnswerKey: (
+    _selectors: ('[data-type="composite-chapter"]'),
+    'Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'ExerciseTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
-  PhetExplorationNote:(
-    _selectors: (".interactive"),
-    group-border-color: (_ref: 'colorMap:::phetColor'),
-    'Title:::font-family': (_ref: 'typography:::titleFont'),
-    'Title:::color': (_ref: 'colorMap:::phetColor'),
-    'TitleIcon:::background': url("../../styles/designs/carnival/resources/carnival-phet.svg") no-repeat top left,
-    'LogoIcon:::background': url("../../styles/designs/carnival/resources/phet-logo.svg") no-repeat right bottom,
-    'LogoIcon:::margin-bottom': .2rem,
-  ),
-));
-
-@include add_settings((
-  KeyTerm:(
-    _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-  ),
-  SectionSummary: (
-    _selectors: ("[data-type = 'chapter'] > .os-section-summary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-  ),
-  ConceptualQuestions: (
-    _selectors: ("[data-type = 'chapter'] > .os-conceptual-questions-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-  ),
-  ProblemsExercises: (
-    _selectors: ("[data-type = 'chapter'] > .os-problems-exercises-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-  ),
-));
-
-@include add_settings((
   Appendix: (
     _selectors: (".appendix"),
-    'MainText:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'SubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'SubSubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
 ));
 
+//@use
 @include use('BookRoot', "common:::BookRoot");
-@include use('TOC', 'carnival:::NoUnitToc');
-@include use('Preface','carnival:::Preface');
+@include use('UnitToc', 'carnival:::UnitToc');
+@include use('UnitTitle', 'common:::Hidden');
 @include use('Chapter', 'carnival:::Chapter');
 @include use('Module', 'carnival:::ModuleShape');
-@include use('BasicTable', 'carnival:::BasicTableShape');
-@include use('NumberedEquation', 'carnival:::NumberedEquationShape');
-@include use('ChapterIntro', 'carnival:::ChapterIntroWithAbstractShape');
-@include use('FigureContainer','carnival:::Figure');
 @include use('Footnotes', 'carnival:::FootnotesShape');
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
-@include use('Link', "carnival:::Link");
-@include use('Term', 'carnival:::Term');
-@include use('KeyTerm', 'carnival:::EocKeyTerm');
-@include use('SectionSummary', 'carnival:::EocSectionSummary');
-@include use('ConceptualQuestions','carnival:::EocConceptualQuestions');
-@include use('ProblemsExercises','carnival:::EocProblemsExercises');
-@include use('Appendix', 'carnival:::AppendixShape');
 @include use('Index', 'carnival:::IndexShape');
+@include use('Term', 'carnival:::Term');
+@include use('Link', 'carnival:::Link');
+@include use('Preface','carnival:::Preface');
+@include use('ChapterIntro', 'carnival:::ChapterIntroShape');
+@include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
+@include use('FigureContainer','carnival:::Figure');
+@include use('LearningObjectiveAbstract', 'carnival:::LearningObjectiveAbstractShape');
+@include use('CheckYourUnderstandingNote', 'carnival:::IconCondensedShape');
 @include use('DefaultNoClassNote', 'carnival:::BoxedNoteShape');
 @include use('Example', 'carnival:::IconNoteShape');
-@include use('CheckUnderstandingExerciseNote', 'carnival:::IconCondensedExerciseShape');
-@include use('PhetExplorationNote', 'carnival:::LogoNoteIconShape');
-@include use('IFrame', 'common:::Hidden');
+@include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
+@include use('Appendix', 'carnival:::AppendixShape');
+@include use('AnswerKey', 'carnival:::AnswerKeyShape');
+@include use('BasicTable', 'carnival:::BasicTableShape');
 
 [data-type="chapter"] {
   page: chapter;
   prince-page-group: start;
   page-break-before: right;
-}
-
-@page {
-  margin-left: 1in;
-  margin-right: 1in;
-  margin-bottom: 0.8in;
-  margin-top: 0.8in;
-}
-
-@page chapter:first {
-  margin-right: 2in;
 }
 
 .os-eoc.os-glossary-container {
@@ -182,7 +159,7 @@
   page: eob;
 }
 
-$bandColor: settings('scheme:::B5');
+$bandColor: settings('scheme:::B7');
 $bandSize: 2.5rem;
 $fullBleedWidth: 0.125rem;
 $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
@@ -279,4 +256,15 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
 @include setPageBorder("eob", "blank", "right") {
   content: none;
   border: none;
+}
+
+@page {
+  margin-left: 1in;
+  margin-right: 1in;
+  margin-bottom: 0.8in;
+  margin-top: 0.8in;
+}
+
+@page chapter:first {
+  margin-right: 2in;
 }
