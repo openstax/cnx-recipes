@@ -15,9 +15,14 @@ source ./script/bootstrap || exit 111
 set -e
 
 with_resources=false
+request_limit_arg=""
 while [[ $# -ge 1 ]]
 do
   case $1 in
+    --request-limit)
+      shift
+      request_limit_arg="-l $1"
+      ;;
     --with-resources)
       with_resources=true
       ;;
@@ -36,7 +41,7 @@ source ./books.txt || exit 1
 
 
 usage() {
-    echo -e "Usage: $0 [--with-resources] {--all|<book-name>}\\n"
+    echo -e "Usage: $0 [--with-resources] [--request-limit x] {--all|<book-name>}\\n"
 }
 
 
@@ -91,6 +96,9 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   neb_get_flag=''
   if $with_resources; then
     neb_get_flag="-r"
+  fi
+  if [[ -n "$request_limit_arg" ]]; then
+    neb_get_flag="${neb_get_flag} ${request_limit_arg}"
   fi
 
   do_progress "Fetching ${book_name} from ${host_name}" \
