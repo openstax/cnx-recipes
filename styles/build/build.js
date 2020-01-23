@@ -26,6 +26,15 @@ const getPlatform = () => {
   return SassString(toConstantCase(platform))
 }
 
+const toDataUri = (type, path) => {
+  const pathString = path.getValue()
+  const typeString = type.getValue()
+  const fileData = fs.readFileSync(stylesRoot + pathString)
+  const encoded = fileData.toString('base64')
+  const dataUri = `data:image/${typeString};base64,${encoded}`
+  return SassString(dataUri)
+}
+
 let scssResult
 try {
   scssResult = sass.renderSync({
@@ -33,7 +42,8 @@ try {
     includePaths: [stylesRoot, platformIncludesPath],
     importer: [importOnce()],
     functions: {
-      'PLATFORM()': getPlatform
+      'PLATFORM()': getPlatform,
+      'toDataUri($type, $path)': toDataUri
     },
     sourceMap: true,
     outputStyle: 'nested',
