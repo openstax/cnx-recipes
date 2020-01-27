@@ -22,3 +22,6 @@ out_dir.mkdir()
 for doc in flatten_to(binder, lambda d: isinstance(d, Document)):
     with open(f"{sys.argv[2]}/{doc.ident_hash}.xhtml", "wb") as out:
         out.write(bytes(DocumentContentFormatter(doc)))
+
+# don't forget to amend_tree_with_slugs(tree)
+# https://github.com/openstax/cnx-publishing/blob/master/cnxpublishing/bake.py#L92
