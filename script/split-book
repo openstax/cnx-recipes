@@ -64,28 +64,5 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   do_progress_quiet "Splitting ${baked_file}" \
     python ./script/split_book.py "${baked_file}"
 
-  # shellcheck disable=SC2086
-  do_progress_quiet "Baking ${raw_file} using ${recipe_name} (~1min)" \
-    cnx-easybake --coverage-file "${lcov_file}" ${debug_flag1} ${debug_flag2} ${debug_flag3} ${debug_flag4} "${css_file}" "${raw_file}" "${baked_file}"
 
-  # Generate an HTML report (if genhtml is installed)
-  if [[ -n "$(command -v genhtml)" ]]; then
-    do_progress_quiet "Generating HTML coverage report at ./coverage/" \
-      genhtml --quiet --output ./coverage/ "${lcov_file}"
-  fi
-
-  if [ -f "${style_file}" ]; then
-    do_progress_quiet "Adding style file ${style_file}" \
-      sed -i "s%<\\/head>%<link rel=\"stylesheet\" type=\"text/css\" href=\"../../${style_file}\" />&%" "${baked_file}"
-  else
-    _say "${c_red}WARNING${c_none} style not found: ${style_file}"
-  fi
-
-  if [ -f /.dockerenv ]; then
-    chown -R "$(stat -c '%u:%g' ./data)" ./data
-  fi
-
-  # Validate the cooked file
-  do_progress_quiet "Validating ${baked_file}" \
-    cnx-epub-validate-collated "${baked_file}"
 done
