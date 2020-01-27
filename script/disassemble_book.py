@@ -12,6 +12,7 @@ if len(sys.argv) != 3:
 with open(sys.argv[1], "rb") as file:
     binder = reconstitute(file)
 
+
 out_dir = Path(sys.argv[2]).resolve()
 try:
     rmtree(out_dir)
