@@ -11,17 +11,46 @@
 ));
 
 @include add_settings((
-    TOC: (
-        _selectors: ('nav#toc'),
-        'TocTitleWord:::color': (_ref: 'colorMap:::physicsTocColor'),
-        'TocTitleWord:::border-bottom-color': (_ref: 'colorMap:::physicsTocColor'),
-        'TocChapterNumber:::color': (_ref: 'colorMap:::physicsTocColor'),
-    ),
+  TOC: (
+    _selectors: ('nav#toc'),
+    'TocTitleWord:::color': (_ref: 'colorMap:::physicsTocColor'),
+    'TocTitleWord:::border-bottom-color': (_ref: 'colorMap:::physicsTocColor'),
+    'TocChapterNumber:::color': (_ref: 'colorMap:::physicsTocColor'),
+  ),
+));
+
+@include add_settings((
+  Chapter: (
+    _selectors: ('[data-type="chapter"]'),
+    'TitleNumber:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
+));
+
+@include add_settings((
+  Module: (
+    _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
+    'Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'Subtitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'SubSubtitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
+));
+
+@include add_settings((
+  Preface: (
+    _selectors: (".preface"),
+    'BodyH3:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'BodyH4:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'BodyH5:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
 ));
 
 @include use('BookRoot', "common:::BookRoot");
 @include use('ChapterIntro', 'carnival:::ChapterIntroShape');
 @include use('TOC', 'carnival:::NoUnitToc');
+@include use('TeacherMaterial', 'common:::Hidden');
+@include use('Chapter', 'carnival:::Chapter');
+@include use('Module', 'carnival:::ModuleShape');
+@include use('Preface','carnival:::Preface');
 
 [data-type="chapter"] {
   page: chapter;
