@@ -1,0 +1,91 @@
+#!/bin/bash
+
+if [ -f /.dockerenv ]; then
+  ./script/setup
+  if [ "${1:0:1}" == "/" ]; then
+    exec "$@"
+    exit
+  fi
+fi
+
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+arg1=$1
+debug_flag1=$2
+debug_flag2=$3
+debug_flag3=$4
+debug_flag4=$5
+
+# Check command line args
+
+if [ -z "${arg1}" ]; then
+  _say 'ERROR: Argument Missing. You must specify the name of the book as the 1st argument (or --all). For example: physics'
+  _say "You can specify additional commandline arguments like -d to this script if you want more debugging"
+  die "Stopping because no commandline args were passed in"
+fi
+
+
+# Pull in the BOOK_CONFIGS
+source ./books.txt || exit 1
+
+if [ ! "${arg1}" == "--all" ]; then
+  # Filter BOOK_CONFIGS to only contain the book you want to fetch
+  for book_config in "${BOOK_CONFIGS[@]}"; do
+    read -r book_config_name _ <<< "${book_config}"
+
+    if [[ "${arg1}" = "${book_config_name}" ]]; then
+      BOOK_CONFIGS=("${book_config}")
+      found_config=1
+      break
+    fi
+  done
+
+  if [[ ! 1 -eq "${found_config}" ]]; then
+    _say "Valid books are (from ./books.txt):"
+    for book_config in "${BOOK_CONFIGS[@]}"; do
+      read -r book_name _ <<< "${book_config}"
+      _say "${book_name}"
+    done
+    die "Could not find Book info for book named ${arg1}"
+  fi
+fi
+
+
+for book_config in "${BOOK_CONFIGS[@]}"; do
+  read -r book_name recipe_name _ _ _ _ _ <<< "${book_config}"
+
+  do_progress_quiet "Compiling CSS file" \
+    ./script/build-recipes "${book_name}"
+
+  baked_file="./data/${book_name}/collection.baked.xhtml"
+
+  # shellcheck disable=SC2086
+  do_progress_quiet "Splitting ${baked_file}" \
+    python ./script/split_book.py "${baked_file}"
+
+  # shellcheck disable=SC2086
+  do_progress_quiet "Baking ${raw_file} using ${recipe_name} (~1min)" \
+    cnx-easybake --coverage-file "${lcov_file}" ${debug_flag1} ${debug_flag2} ${debug_flag3} ${debug_flag4} "${css_file}" "${raw_file}" "${baked_file}"
+
+  # Generate an HTML report (if genhtml is installed)
+  if [[ -n "$(command -v genhtml)" ]]; then
+    do_progress_quiet "Generating HTML coverage report at ./coverage/" \
+      genhtml --quiet --output ./coverage/ "${lcov_file}"
+  fi
+
+  if [ -f "${style_file}" ]; then
+    do_progress_quiet "Adding style file ${style_file}" \
+      sed -i "s%<\\/head>%<link rel=\"stylesheet\" type=\"text/css\" href=\"../../${style_file}\" />&%" "${baked_file}"
+  else
+    _say "${c_red}WARNING${c_none} style not found: ${style_file}"
+  fi
+
+  if [ -f /.dockerenv ]; then
+    chown -R "$(stat -c '%u:%g' ./data)" ./data
+  fi
+
+  # Validate the cooked file
+  do_progress_quiet "Validating ${baked_file}" \
+    cnx-epub-validate-collated "${baked_file}"
+done
