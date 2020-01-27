@@ -21,6 +21,7 @@ for doc in flatten_to(binder, lambda d: isinstance(d, Document)):
 # Publishing calls these and these are needed to generate json,
 # but they are harder to reach (cnx-publishing -> cnx-common)
 # 
+# https://github.com/openstax/cnx-publishing/blob/master/cnxpublishing/bake.py#L92
 # tree = model_to_tree(binder)
 # amend_tree_with_slugs(tree)
 
