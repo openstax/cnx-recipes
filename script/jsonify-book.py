@@ -1,4 +1,3 @@
-# data/book-name/foobar.html -> data/book-name/foobar.json
 import sys
 from glob import glob
 from os.path import basename
