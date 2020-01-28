@@ -859,19 +859,17 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.section-summary {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
-    move-to: section-summary-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.section-summary > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.summary {
+    move-to: summary-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(section-summary-TOCOMPOSITE);
-    class: "os-eoc os-section-summary-container";
+    content: pending(summary-TOCOMPOSITE);
+    class: "os-eoc os-summary-container";
     data-type: "composite-page";
-    data-uuid-key: ".section-summary"; }
+    data-uuid-key: ".summary"; }
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
@@ -1050,13 +1048,13 @@
 :pass(9) [data-type="composite-page"] {
   content: nodes(bookMetadata) content(); }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-summary-container::before {
   container: span;
-  content: "Section Summary";
+  content: "Summary";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(9) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
+:pass(9) [data-type="composite-page"].os-eoc.os-summary-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
