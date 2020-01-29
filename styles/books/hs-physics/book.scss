@@ -104,6 +104,15 @@
   ),
 ));
 
+@include add_settings((
+  Appendix: (
+    _selectors: (".appendix"),
+    'MainText:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'SubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'SubSubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
+));
+
 @include use('BookRoot', "common:::BookRoot");
 @include use('ChapterIntro', 'carnival:::ChapterIntroShape');
 @include use('TOC', 'carnival:::NoUnitToc');
@@ -128,6 +137,8 @@
 @include use('MultipleChoiceCompChapPage','carnival:::EocCompChapExercises');
 @include use('ShortAnswerCompChapPage','carnival:::EocCompChapExercises');
 @include use('ExtendedResponseCompChapPage','carnival:::EocCompChapExercises');
+@include use('Appendix', 'carnival:::AppendixShape');
+@include use('Index', 'carnival:::IndexShape');
 
 [data-type="chapter"] {
   page: chapter;
@@ -144,4 +155,129 @@
 
 @page chapter:first {
   margin-right: 2in;
+}
+
+.os-eoc.os-glossary-container {
+  page: eoc;
+  prince-page-group: start;
+}
+
+.appendix {
+  page: appendix;
+  prince-page-group: start;
+}
+
+.os-eob.os-index-container {
+  page: eob;
+  prince-page-group: start;
+}
+.os-eoc {
+  page: eoc;
+}
+
+.appendix {
+  page: appendix;
+}
+
+.os-eob {
+  page: eob;
+}
+
+$bandColor: settings('scheme:::B5');
+$bandSize: 2.5rem;
+$fullBleedWidth: 0.125rem;
+$bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
+
+@mixin band($side) {
+  content: " ";
+  border-#{$side}: $bandBorder;
+  padding-#{$side}: $fullBleedWidth;
+  margin-#{$side}: -1 * $fullBleedWidth;
+}
+
+@mixin setPageBorder($page-type, $type, $side) {
+  @page #{$page-type}:#{$type} {
+    @if $side == "left" {
+      @left-middle {
+        @content;
+      }
+      @top-left-corner {
+        @content;
+      }
+      @bottom-left-corner {
+        @content;
+      }
+      @left-bottom {
+        @content;
+      }
+      @left-top {
+        @content;
+      }
+    } @else if $side == "right" {
+      @right-middle {
+        @content;
+      }
+      @top-right-corner {
+        @content;
+      }
+      @bottom-right-corner {
+        @content;
+      }
+      @right-bottom {
+        @content;
+      }
+      @right-top {
+        @content;
+      }
+    }
+  }
+}
+
+@include setPageBorder("eoc", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eoc", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eoc", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eoc", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("appendix", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("appendix", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eob", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eob", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "blank", "right") {
+  content: none;
+  border: none;
 }
