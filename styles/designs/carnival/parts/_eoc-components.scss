@@ -84,11 +84,34 @@ $Exercisetitle_Container: eocSectionTitleH3(".exercises");
 $ReviewQuestionsTitle_Container: eocSectionTitleH3(".os-review-questions-container");
 // $FillInTheBlankTitle_Container: eocSectionTitleH3(".os-fill-in-the-blank-container");
 
-$Problem_container:(
-    _name: "ProbelemContainer",
+
+@function eocSectionTitleLink($section_selector) {
+    @return (
+        _name: "SectionTitleLink",
+        _subselector: " #{$section_selector} > a > h3, #{$section_selector} >[data-type="composite-page"] > a > h3",
+        _properties:(
+            font-family: enum('ValueSet:::REQUIRED'),
+        )
+    );
+}
+
+$SectionSummaryTitleLink: eocSectionTitleLink(".section-summary");
+$ConceptualQuestionsTitleLink: eocSectionTitleLink(".conceptual-questions");
+$ProblemsExercisesTitleLink: eocSectionTitleLink(".problems-exercises");
+
+$Problem_Wrapper:(
+    _name: "ProblemWrapper",
     _subselector: " [data-type='problem']",
     _properties:(
+        display: table,
+    )
+);
 
+$Problem_Container:(
+    _name: "ProblemContainer",
+    _subselector: " .os-problem-container",
+    _properties:(
+        display: table-cell,
     )
 );
 
@@ -99,6 +122,7 @@ $Problem_Number:(
         color:  enum('ValueSet:::REQUIRED'),
         font-weight:  enum('ValueSet:::REQUIRED'),
         text-decoration:  enum('ValueSet:::REQUIRED'),
+        display: table-cell,
     )
 );
 
@@ -119,4 +143,26 @@ $Multiple_Choice:(
         column-width: auto,
     )
 );
-
+$Exercise_Figure: (
+    _name: "ExerciseFigure",
+    _subselector: " .os-problem-container img",
+    _properties:(
+        max-width: enum('ValueSet:::OPTIONAL'),
+    )
+);
+$Exercise_Table: (
+    _name: "ExerciseTable",
+    _subselector: " .os-problem-container table",
+    _properties:(
+        width: enum('ValueSet:::OPTIONAL'),
+        table-layout: enum('ValueSet:::OPTIONAL'),
+    )
+);
+$Exercise_Table_Row: (
+    _name: "ExerciseTableRow",
+    _subselector: " > tbody > tr > td",
+    _properties:(
+        text-align:  enum('ValueSet:::OPTIONAL'),
+        padding: enum('ValueSet:::OPTIONAL'),
+    )
+);
