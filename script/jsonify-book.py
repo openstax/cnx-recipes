@@ -16,7 +16,7 @@ with open("./script/tag_filter.yml", "r") as meta_filter:
     filters = yaml.load(meta_filter, Loader=yaml.FullLoader)
 
 for path in files:
-    with open(f"{book_dir}/{path}.xhtml", "rb") as book_part:
+    with open(f"{book_dir}/{path}.xhtml", "r") as book_part:
         content = book_part.read()
         json_data = { "content": str(content) }
 
