@@ -10,22 +10,11 @@ fi
 cd "$(dirname "$0")/.." || exit 111
 source ./script/bootstrap || exit 111
 
-# This fetches the raw HTML for a book (or all books if using the --all argument) from ${host_name}
-
 set -e
 
-with_resources=false
-request_limit_arg=""
 while [[ $# -ge 1 ]]
 do
   case $1 in
-    --request-limit)
-      shift
-      request_limit_arg="-l $1"
-      ;;
-    --with-resources)
-      with_resources=true
-      ;;
     --all)
       all_books=true
       ;;
@@ -41,7 +30,7 @@ source ./books.txt || exit 1
 
 
 usage() {
-    echo -e "Usage: $0 [--with-resources] [--request-limit x] {--all|<book-name>}\\n"
+    echo -e "Usage: $0 [--with-resources] {--all|<book-name>}\\n"
 }
 
 
@@ -67,6 +56,8 @@ if [ -n "${book}" ]; then
       host_name=${HOST:-${host_name}}
 
       found_config=1
+
+# This fetches the raw HTML for a book (or all books if using the --all argument) from ${host_name}
       break
     fi
   done
@@ -84,30 +75,20 @@ fi
 
 for book_config in "${BOOK_CONFIGS[@]}"; do
   read -r book_name recipe_name uuid colid host_name _ <<< "${book_config}"
-  # Allow user to override the hostname
-  host_name=${HOST:-${host_name}}
 
-  book_dir="${OUTPUT_DIR:-./}/data/${book_name}"
+  book_dir="./data/${book_name}"
   raw_dir="${book_dir}/raw"
+  out_dir="${book_dir}/disassembled"
 
-  mkdir -p "${book_dir/$OUTPUT_DIR/.\/}"
-  rm -rf "${raw_dir/$OUTPUT_DIR/.\/}"
+  rm -rf "${out_dir/$OUTPUT_DIR/.\/}"
+  mkdir "${out_dir/$OUTPUT_DIR/.\/}"
 
-  neb_get_flag=''
-  if $with_resources; then
-    neb_get_flag="-r"
-  fi
-  if [[ -n "$request_limit_arg" ]]; then
-    if [[ -n "$neb_get_flag" ]]; then
-      neb_get_flag="${neb_get_flag} ${request_limit_arg}"
-    else
-      neb_get_flag="$request_limit_arg"
-    fi
-  fi
-
-  do_progress "Fetching ${book_name} from ${host_name} with options '${neb_get_flag}'" \
-    docker-compose run --rm neb /bin/bash -c "neb get ${neb_get_flag} -d \"${raw_dir}\" \"${host_name}\" \"${colid}\" '' && chown -R $(stat -c '%u:%g' ./data) \"${book_dir}\""
-
-  _say "${c_green}Fetch is Done.${c_none} The book is in ${raw_dir/$OUTPUT_DIR/$HOST_PWD}"
+  # TODO: Ensure environment adequate for this python script call
+  do_progress "Disassembling baked HTML for ${book_name}" \
+    python ./script/disassemble.py "${book_dir}"
+  
+  do_progress "Copying module image subdirectories" \
+    cp -R "${raw_dir}"/* "${out_dir}"
+  _say "${c_green}Disassemble is done.${c_none} Files are available at ${out_dir/$OUTPUT_DIR/$HOST_PWD}"
 
 done
