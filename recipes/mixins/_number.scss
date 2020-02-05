@@ -100,27 +100,45 @@
 }
 
 @mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent) {
-  [data-type="example"] {
-    @include utils_title($exampleTitleContent, bExampleLabel);
-    > [data-type="title"] {
-      //BAD: there should not be titling content creation outside the book level. This should get moved
-      $exampleTitle: (
-        os-text: content()
-      );
-      @include utils_title($exampleTitle, bExampleLabel);
-      move-to: trash;
+  @if release-flag-enabled(subtitled-examples) {
+    [data-type="example"] {
+      @include utils_title($exampleTitleContent, bExampleLabel);
+      &::after {
+        container: div;
+        content: pending(bExampleLabel);
+        class: "os-title";
+        move-to: bExampleHeader;
+      }
+      &:deferred {
+        content: pending(bExampleHeader) content();
+      }
+      [data-type="solution"] {
+        @include utils_title($solutionTitleContent, null, div, "solution-title");
+      }
     }
-    &::after {
-      container: div;
-      content: pending(bExampleLabel);
-      class: "os-title";
-      move-to: bExampleHeader;
-    }
-    &:deferred {
-      content: pending(bExampleHeader) content();
-    }
-    [data-type="solution"] {
-      @include utils_title($solutionTitleContent, null, div, "solution-title");
+  } @else {
+    [data-type="example"] {
+      @include utils_title($exampleTitleContent, bExampleLabel);
+      > [data-type="title"] {
+        //BAD: there should not be titling content creation outside the book level. This should get moved
+        $exampleTitle: (
+          os-text: content()
+        );
+        @include utils_title($exampleTitle, bExampleLabel);
+        move-to: trash;
+      }
+      &::after {
+        container: div;
+        content: pending(bExampleLabel);
+        class: "os-title";
+        move-to: bExampleHeader;
+      }
+      &:deferred {
+        content: pending(bExampleHeader) content();
+      }
+      [data-type="solution"] {
+        @include utils_title($solutionTitleContent, null, div, "solution-title");
+      }
     }
   }
 }
