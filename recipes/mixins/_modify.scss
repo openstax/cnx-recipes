@@ -423,6 +423,21 @@
   }
 }
 
+@mixin modify_exampleTitle() {
+  [data-type="example"] {
+    .body > [data-type="title"] {
+      container: h4
+    }
+  }
+}
+@mixin modify_examples() {
+  [data-type="example"] {
+    &::inside {
+      class: "body"
+    }
+  }
+}
+
 @mixin _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel, $useHeader) {
   $minorLevel: '';
   @if $depth > 0 {
@@ -896,18 +911,35 @@
       #{$selector} {
         move-to: chap-#{$element};
       }
-      > :not(#{$selector}):not([data-type="metadata"]):not(.has-splash) {
-        move-to: intro-text;
-      }
-      &::after {
-        content: pending(intro-text);
-        move-to: intro-body;
-        class: "intro-text";
-      }
-      &:deferred::after {
-        content: pending(chap-#{$element}) pending(intro-body);
-        class: "intro-body";
-      }
+      @if $Config_hasSectionOpener == true {
+        > .section-opener > :not(.has-splash), > [data-type="document-title"] {
+          move-to: intro-text;
+        }
+        > .section-opener {
+          &::after {
+            content: pending(intro-text);
+            move-to: intro-body;
+            class: "intro-text";
+          }
+          &:deferred::after {
+            content: pending(chap-#{$element}) pending(intro-body);
+            class: "intro-body";
+          }
+        }
+      } @else {
+        > :not(#{$selector}):not([data-type="metadata"]):not(.has-splash) {
+          move-to: intro-text;
+        }
+        &::after {
+          content: pending(intro-text);
+          move-to: intro-body;
+          class: "intro-text";
+        }
+        &:deferred::after {
+          content: pending(chap-#{$element}) pending(intro-body);
+          class: "intro-body";
+        }
+      }  
     }
   }
 }
@@ -915,7 +947,11 @@
 //tag os-figure that contains splash image in introduction
 @mixin modify_tagSplash() {
   @if release-flag-enabled(tagSplash) {
-    .introduction > .os-figure {
+    $selector: '.introduction > .os-figure';
+    @if $Config_hasSectionOpener == true {
+      $selector: '.introduction > section.section-opener > .os-figure';
+    }
+    #{$selector} {
       string-set: hasSplash " ";
       .splash {
         string-set: hasSplash " has-splash";
