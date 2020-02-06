@@ -16,6 +16,14 @@
 1. Run `docker-compose run --rm mathify-book intro-business` to convert all the math to svg.
 1. Run `docker-compose run --rm build-pdf intro-business` to create the pdf.
 
+# Create JSON files for a book
+
+Follow the first few steps above, up to and including the `bake-book` step. Then do the following:
+
+1. Run `docker-compose run --rm disassemble-book intro-business` to split the baked HTML file into mutiple files.
+1. Run `docker-compose run --rm jsonify-book intro-business` to create JSON files for each Baked Page.
+
+
 ## Run scripts
 You can run commands in Docker:
 
