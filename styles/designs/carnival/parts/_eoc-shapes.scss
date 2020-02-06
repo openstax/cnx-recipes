@@ -114,7 +114,9 @@
         map-merge($EocContainer,(
             _components:(
                 $Eoc_Header,
-                $Summarytitle_Container
+                $Summarytitle_Container,
+                $SummaryUnorderedList,
+                $SummaryOrderedList
             ),
         )),
     ))
@@ -126,6 +128,8 @@
             _components:(
                 $Eoc_Header,
                 $SectionSummaryTitleLink,
+                $SectionSummaryUnorderedList,
+                $SectionSummaryOrderedList
             ),
         )), 
     ))
@@ -158,11 +162,22 @@
                   _components: (
                     $Problem_Number,
                     $Problem_Divider,
-                    $Problem_Container,
-                    $Exercise_Figure,
-                    map-merge($Exercise_Table, (
+                    map-merge($Problem_Container,(
                         _components: (
-                            $Exercise_Table_Row,
+                            $Exercise_Figure,
+                            $Exercise_Table,
+                            $Exercise_Container_Ordered_List,
+                            map-merge($Exercise_Ordered_List,(
+                                _components: (
+                                $Exercise_Nested_Ordered_List,
+                                ))
+                            ),
+                            $Exercise_Unordered_List,
+                            map-merge($Exercise_Table,(
+                                _components: (
+                                $Exercise_Table_Row,
+                                )
+                            )),
                         )
                     ))
                   )
@@ -194,7 +209,11 @@
                   _components: (
                     $Problem_Number,
                     $Problem_Divider,
-                    $Problem_Container,
+                    map-merge($Problem_Container, (
+                        _components:(
+                            $Exercise_Unordered_List
+                        ),
+                    )),
                   )
                 ))
             ),
@@ -212,13 +231,18 @@
                   _components: (
                     $Problem_Number,
                     $Problem_Divider,
-                    $Problem_Container,
-                  )
+                    map-merge($Problem_Container, (
+                        _components:(
+                            $Exercise_Figure,
+                            $Exercise_Table,
+                            $Exercise_Ordered_List
+                        ),
+                    )),
                 ))
             ),
         )),
     ))
-);
+));
 
 @include create_shape('carnival:::EocCompositeChapter',(
     _components:(
