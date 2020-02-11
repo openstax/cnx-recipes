@@ -181,19 +181,18 @@
 }
 
 $bandColor: settings('scheme:::B4');
-$bandSize: 2.5rem;
-$fullBleedWidth: 0.15rem;
-$bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
+$bandBorder: half-fullWidth(2.5, rem) solid $bandColor;
 
 @mixin band($side) {
   content: " ";
   border-#{$side}: $bandBorder;
-  padding-#{$side}: $fullBleedWidth;
-  padding-top: $fullBleedWidth;
-  padding-bottom: $fullBleedWidth;
-  margin-#{$side}: -1 * $fullBleedWidth;
-  margin-top: -1 * $fullBleedWidth;
-  margin-bottom: -1 * $fullBleedWidth;
+  @if $side == "right" {
+    padding: fullPadding(0, rem) fullPadding(0, rem) fullPadding(0, rem) 0;
+    margin: fullMargin(0, rem) fullMargin(0, rem) fullMargin(0, rem) 0;
+  } @else if $side == "left" {
+    padding: fullPadding(0, rem) 0 fullPadding(0, rem) fullPadding(0, rem);
+    margin: fullMargin(0, rem) 0 fullMargin(0, rem) fullMargin(0, rem);
+  }
 }
 
 @mixin setPageBorder($page-type, $type, $side) {
