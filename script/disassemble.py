@@ -7,7 +7,6 @@ from cnxepub.models import flatten_to, Document
 
 in_dir = Path(sys.argv[1]).resolve(strict=True)
 out_dir = (in_dir / "disassembled").resolve(strict=True)
-# raw_dir = (in_dir / "raw").resolve(strict=True)
 baked_file = (in_dir / "collection.baked.xhtml").resolve(strict=True)
 
 with open(baked_file, "rb") as file:
