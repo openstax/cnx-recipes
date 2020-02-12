@@ -76,9 +76,6 @@ sup {
 sub {
   bottom: -0.25em; }
 
-div.book > div.preface {
-  counter-reset: page 1; }
-
 [data-type="chapter"] > h1[data-type="document-title"] .os-number {
   string-set: chapter-number content(); }
 
@@ -95,7 +92,8 @@ nav#toc {
   page: table-of-contents; }
 
 div[data-type="page"].preface {
-  page: preface; }
+  page: preface;
+  counter-reset: page 1; }
 
 .chapter {
   page: chapter;
@@ -284,14 +282,11 @@ div[data-type="page"].preface {
   margin-left: 0.5rem; }
 
 .introduction > .section-opener > .intro-body > .intro-text > h2[data-type="document-title"]:first-of-type {
-  display: inline;
+  float: left;
   font-size: 12px;
   text-transform: uppercase;
   margin: 0 0.5rem 0 0;
   font-weight: 700; }
-
-.introduction > .section-opener > .intro-body > .intro-text > p:first-of-type {
-  display: inline; }
 
 nav#toc {
   page-break-after: always; }
@@ -554,6 +549,9 @@ nav#toc > .os-toc-title {
   line-height: 3rem;
   font-weight: bold; }
 
+[data-type="chapter"] > [data-type="page"]:not(.introduction) span[data-type="title"] {
+  margin-right: 8px; }
+
 [data-type="chapter"] > [data-type="page"]:not(.introduction) > section > ul {
   margin-left: 24px; }
 
@@ -575,8 +573,7 @@ nav#toc > .os-toc-title {
 [data-type="chapter"] > [data-type="page"]:not(.introduction) > section > section > h4 {
   font-family: Muli;
   color: #00819A;
-  font-weight: 800;
-  text-transform: uppercase;
+  font-weight: bold;
   font-size: 1.44rem;
   line-height: 1.5rem; }
 
@@ -608,16 +605,14 @@ nav#toc > .os-toc-title {
 
 .preface > section > section > h4 {
   font-family: Muli;
-  font-weight: 800;
-  text-transform: uppercase;
+  font-weight: bold;
   font-size: 1.44rem;
   line-height: 1.5rem;
   color: #00819A; }
 
 .preface > section > section > section > h5 {
   font-family: Muli;
-  font-weight: 800;
-  text-transform: uppercase;
+  font-weight: bold;
   font-size: 1.2rem;
   line-height: 1.5rem;
   color: #00819A; }
@@ -635,9 +630,13 @@ nav#toc > .os-toc-title {
   margin-left: 24px; }
 
 [data-type='chapter'] > [data-type='page'] .os-figure:not(.has-splash) {
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.5rem;
-  margin-bottom: 16px; }
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; }
 
 [data-type='chapter'] > [data-type='page'] .os-figure:not(.has-splash) > .os-caption-container > .os-title-label {
   font-family: Muli;
@@ -657,7 +656,7 @@ nav#toc > .os-toc-title {
   font-family: IBM Plex Sans, sans-serif; }
 
 .os-table {
-  margin-bottom: 3rem; }
+  margin-bottom: 1.5rem; }
 
 .os-table > table:not(.unstyled) {
   border-collapse: collapse; }
@@ -666,16 +665,19 @@ nav#toc > .os-toc-title {
   border-bottom: 0.1rem solid black;
   font-family: Muli;
   font-weight: 700;
-  padding: 1.5rem 8px; }
+  padding: 0.75rem 0.75rem; }
 
 .os-table > table:not(.unstyled) > tbody > tr > td {
   border-bottom: 0.025rem solid black;
   font-family: Alegreya;
   border-left: 0.025rem solid black;
-  padding: 1.5rem 8px; }
+  padding: 0.75rem 0.75rem; }
 
 .os-table > table:not(.unstyled) > tbody > tr > td > ul {
-  margin-left: 1.5rem; }
+  margin-left: 0.75rem; }
+
+.os-table > table:not(.unstyled) > tbody > tr > td > ul[data-bullet-style='none'] {
+  list-style-type: none; }
 
 .os-table > table:not(.unstyled) > tbody > tr > td:first-of-type {
   border-left: none;
@@ -683,6 +685,55 @@ nav#toc > .os-toc-title {
 
 .os-table > table:not(.unstyled) > tbody > tr:last-of-type > td:only-of-type {
   border-right: none; }
+
+.os-table .os-caption-container > .os-title-label {
+  font-weight: bold; }
+
+.os-table .os-caption-container > .os-number {
+  font-weight: bold; }
+
+.os-table {
+  margin-bottom: 1.5rem;
+  display: table;
+  margin-left: auto;
+  margin-right: auto; }
+
+.os-table > .os-table-title {
+  color: #00819A;
+  padding: 0.75rem 0.75rem;
+  text-align: center;
+  page-break-after: avoid; }
+
+.os-table > table.top-titled:not(.unstyled) {
+  border-collapse: collapse;
+  width: 100%; }
+
+.os-table > table.top-titled:not(.unstyled) > thead > tr > th {
+  border-bottom: 0.1rem solid black;
+  border-top: 0.1rem solid black;
+  font-family: Muli;
+  font-weight: 700;
+  padding: 0.75rem 0.75rem; }
+
+.os-table > table.top-titled:not(.unstyled) > tbody > tr > td {
+  border-bottom: 0.025rem solid black;
+  font-family: Alegreya;
+  border-left: 0.025rem solid black;
+  padding: 0.75rem 0.75rem; }
+
+.os-table > table.top-titled:not(.unstyled) > tbody > tr > td:first-of-type {
+  border-left: none;
+  border-right: 0.025rem solid black; }
+
+.os-table > table.top-titled:not(.unstyled) > tbody > tr:last-of-type > td {
+  border-bottom-color: #00819A;
+  border-bottom-width: 0.1rem;
+  border-bottom-style: solid; }
+
+.os-table .os-caption-container {
+  display: table-caption;
+  caption-side: bottom;
+  prince-caption-page: all; }
 
 .os-table .os-caption-container > .os-title-label {
   font-weight: bold; }
@@ -707,7 +758,6 @@ nav#toc > .os-toc-title {
   margin-bottom: 0; }
 
 [data-type="note"].learning-objectives .os-note-body > ul {
-  margin-bottom: 3rem;
   margin-left: 16px;
   padding-left: 0;
   font-size: 1rem;
@@ -797,15 +847,15 @@ iframe {
   padding-right: 8px;
   padding-bottom: 0.75rem;
   padding-top: 0.75rem;
-  margin-bottom: 4.5rem;
+  margin-bottom: 3rem;
   position: relative; }
 
 .virtual-physics > .os-title {
   color: #1E9575;
   font-family: Muli;
   font-weight: bold;
-  font-size: 1.728rem;
-  line-height: 3rem;
+  font-size: 1.44rem;
+  line-height: 1.5rem;
   margin-top: 0;
   margin-bottom: 1.5rem;
   border-bottom-style: dotted;
@@ -833,15 +883,15 @@ iframe {
   padding-right: 8px;
   padding-bottom: 0.75rem;
   padding-top: 0.75rem;
-  margin-bottom: 4.5rem;
+  margin-bottom: 3rem;
   position: relative; }
 
 .snap-lab > .os-title {
   color: #0074BC;
   font-family: Muli;
   font-weight: bold;
-  font-size: 1.728rem;
-  line-height: 3rem;
+  font-size: 1.44rem;
+  line-height: 1.5rem;
   margin-top: 0;
   margin-bottom: 1.5rem;
   border-bottom-style: dotted;
@@ -1332,7 +1382,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 [data-type='chapter'] > .os-summary-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-eoc.os-key-equations-container {
   margin-bottom: 6rem; }
@@ -1347,7 +1398,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 .os-eoc.os-key-equations-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-eoc.os-key-equations-container > .key-equations {
   padding: 0; }
@@ -1386,7 +1438,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 .os-concept-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-concept-container [data-type='problem'] {
   display: table; }
@@ -1416,7 +1469,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 .os-critical-thinking-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-critical-thinking-container [data-type='problem'] {
   display: table; }
@@ -1446,7 +1500,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 .os-problems-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-problems-container [data-type='problem'] {
   display: table; }
@@ -1476,7 +1531,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 .os-performance-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-performance-container [data-type='problem'] {
   display: table; }
@@ -1518,7 +1574,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 .os-multiple-choice-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-multiple-choice-container [data-type='problem'] {
   display: table; }
@@ -1548,7 +1605,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 .os-short-answer-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-short-answer-container [data-type='problem'] {
   display: table; }
@@ -1578,7 +1636,8 @@ iframe {
   margin-bottom: 1.5rem; }
 
 .os-extended-response-container a:first-of-type > h3 {
-  font-family: Muli; }
+  font-family: Muli;
+  font-size: 1.728rem; }
 
 .os-extended-response-container [data-type='problem'] {
   display: table; }

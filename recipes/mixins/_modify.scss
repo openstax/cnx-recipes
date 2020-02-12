@@ -1003,3 +1003,24 @@
     attr-id: "composite-page-" counter(composite-page);
   }
 }
+
+@mixin modify_exerciseNoteTitle($exerciseNoteConfig) {
+  @each $exercise in $exerciseNoteConfig {
+    $className: map-get($exercise, className);
+    $labelText: map-get($exercise, labelText);
+
+    @include validate_type($className, string);
+    @include validate_type($labelText, string);
+
+    [data-type="exercise"].#{$className} {
+      $exerciseNoteTitleContent: (os-title-label: $labelText);
+      @include utils_title($exerciseNoteTitleContent, bExerciseHeader);
+      &::before {
+        content: pending(bExerciseHeader);
+        data-type: "title";
+        class: "os-title";
+        container: h3;
+      }
+    }
+  }
+}
