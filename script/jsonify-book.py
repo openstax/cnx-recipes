@@ -10,9 +10,12 @@ files = [basename(x).rstrip(".xhtml") for x in glob(f"{book_dir}/*.xhtml")]
 json_data = {}
 
 for path in files:
+    with open(f"{book_dir}/{path}.json", "r") as meta_part:
+        json_data = json.load(meta_part)
+
     with open(f"{book_dir}/{path}.xhtml", "r") as book_part:
         content = book_part.read()
-        json_data = { "content": str(content) }
+        json_data["content"] = str(content)
 
     with open(f"{out_dir}/{path}.json", 'w') as outfile:
         json.dump(json_data, outfile)
