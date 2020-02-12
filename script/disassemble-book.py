@@ -1,7 +1,6 @@
 import sys
 import json
 from pathlib import Path
-from shutil import rmtree
 from cnxepub.collation import reconstitute
 from cnxepub.formatters import DocumentContentFormatter
 from cnxepub.models import flatten_to, Document, model_to_tree
