@@ -155,6 +155,13 @@
     attr-target: "_blank";
   }
 }
+@mixin modify_interactiveNoteLinks() {
+    .interactive a, .link-to-learning a {
+    string-set: LinkText content();
+    content: string(LinkText) " " attr(href);
+  }
+}
+
 
 /// Prepares index terms for grouping by the glossary. Modifies the `id` attribute of the term to include the `$pageIDString` and `$termCounter`
 /// @arg {Text} $termCounter - The name of counter for terms
@@ -749,7 +756,7 @@
         class: "os-is-link";
         attr-target: "_window";
         attr-href: attr(src);
-        content: $Config_IFrameActivationLink;
+        content: $Config_IFrameActivationLink " (" attr(src) ")";
         move-to: bIframeLink;
       }
       &::outside {
