@@ -53,6 +53,66 @@
   ),
 ));
 
+@include add_settings((
+  KeyTerm:(
+    _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
+    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  SummaryWithSectionLinks:(
+    _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
+    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  KeyEquationWithSectionLinks:(
+    _selectors: (".os-eoc.os-key-equations-container"),
+    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ChapterReviewCompositeChapter:(
+    _selectors: (".os-chapter-review-container"),
+    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ConceptCompChapPage:(
+    _selectors: (".os-concept-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  CriticalThinkingCompChapPage:(
+    _selectors: (".os-critical-thinking-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ProblemsCompChapPage:(
+    _selectors: (".os-problems-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  PerformanceCompChapPage:(
+    _selectors: (".os-performance-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  TestPrepCompositeChapter:(
+    _selectors: (".os-test-prep-container"),
+    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  MultipleChoiceCompChapPage:(
+    _selectors: (".os-multiple-choice-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ShortAnswerCompChapPage:(
+    _selectors: (".os-short-answer-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ExtendedResponseCompChapPage:(
+    _selectors: (".os-extended-response-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+));
+
+@include add_settings((
+  Appendix: (
+    _selectors: (".appendix"),
+    'MainText:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'SubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'SubSubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
+));
+
 @include use('BookRoot', "common:::BookRoot");
 @include use('ChapterIntro', 'carnival:::ChapterIntroShape');
 @include use('TOC', 'carnival:::NoUnitToc');
@@ -65,6 +125,24 @@
 @include use('LearningObjectiveNote', 'carnival:::LearningObjectiveNoteShape');
 @include use('NumberedEquation', 'carnival:::NumberedEquationShape');
 @include use('Equation', 'carnival:::EquationShape');
+@include use('KeyTerm','carnival:::EocKeyTerm');
+@include use('SummaryWithSectionLinks','carnival:::EocSummaryWithSectionLink');
+@include use('KeyEquationWithSectionLinks','carnival:::EocKeyEquWithSectionLink');
+@include use('ChapterReviewCompositeChapter','carnival:::EocCompositeChapter');
+@include use('ConceptCompChapPage','carnival:::EocCompChapExercises');
+@include use('CriticalThinkingCompChapPage','carnival:::EocCompChapExercises');
+@include use('ProblemsCompChapPage','carnival:::EocCompChapExercises');
+@include use('PerformanceCompChapPage','carnival:::EocCompChapExercises');
+@include use('TestPrepCompositeChapter','carnival:::EocCompositeChapter');
+@include use('MultipleChoiceCompChapPage','carnival:::EocCompChapExercises');
+@include use('ShortAnswerCompChapPage','carnival:::EocCompChapExercises');
+@include use('ExtendedResponseCompChapPage','carnival:::EocCompChapExercises');
+@include use('Appendix', 'carnival:::AppendixShape');
+@include use('Index', 'carnival:::IndexShape');
+@include use('Footnotes', 'carnival:::FootnotesShape');
+@include use('FootnoteCall', 'carnival:::FootnotesCallShape');
+@include use('Link', "carnival:::Link");
+@include use('Term', 'carnival:::Term');
 
 [data-type="chapter"] {
   page: chapter;
@@ -81,4 +159,129 @@
 
 @page chapter:first {
   margin-right: 2in;
+}
+
+.os-eoc.os-glossary-container {
+  page: eoc;
+  prince-page-group: start;
+}
+
+.appendix {
+  page: appendix;
+  prince-page-group: start;
+}
+
+.os-eob.os-index-container {
+  page: eob;
+  prince-page-group: start;
+}
+.os-eoc {
+  page: eoc;
+}
+
+.appendix {
+  page: appendix;
+}
+
+.os-eob {
+  page: eob;
+}
+
+$bandColor: settings('scheme:::B5');
+$bandSize: 2.5rem;
+$fullBleedWidth: 0.125rem;
+$bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
+
+@mixin band($side) {
+  content: " ";
+  border-#{$side}: $bandBorder;
+  padding-#{$side}: $fullBleedWidth;
+  margin-#{$side}: -1 * $fullBleedWidth;
+}
+
+@mixin setPageBorder($page-type, $type, $side) {
+  @page #{$page-type}:#{$type} {
+    @if $side == "left" {
+      @left-middle {
+        @content;
+      }
+      @top-left-corner {
+        @content;
+      }
+      @bottom-left-corner {
+        @content;
+      }
+      @left-bottom {
+        @content;
+      }
+      @left-top {
+        @content;
+      }
+    } @else if $side == "right" {
+      @right-middle {
+        @content;
+      }
+      @top-right-corner {
+        @content;
+      }
+      @bottom-right-corner {
+        @content;
+      }
+      @right-bottom {
+        @content;
+      }
+      @right-top {
+        @content;
+      }
+    }
+  }
+}
+
+@include setPageBorder("eoc", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eoc", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eoc", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eoc", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("appendix", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("appendix", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eob", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eob", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "blank", "right") {
+  content: none;
+  border: none;
 }
