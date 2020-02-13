@@ -44,7 +44,7 @@ in_dir = Path(sys.argv[1]).resolve(strict=True)
 out_dir = (in_dir / "disassembled").resolve(strict=True)
 # raw_dir = (in_dir / "raw").resolve(strict=True)
 baked_file = (in_dir / "collection.baked.xhtml").resolve(strict=True)
-baked_metdata_file = (in_dir / "collection.baked.json").resolve(strict=True)
+baked_metdata_file = (in_dir / "collection.baked-metadata.json").resolve(strict=True)
 
 with open(baked_file, "rb") as file:
     binder = reconstitute(file)
@@ -62,7 +62,7 @@ for doc in flatten_to(binder, lambda d: isinstance(d, Document)):
     with open(f"{out_dir / doc.ident_hash}.xhtml", "wb") as out:
         # TODO: Copy resources from module to here (from raw_dir?)
         out.write(bytes(DocumentContentFormatter(doc)))
-    with open(f"{out_dir / doc.ident_hash}.json", "w") as json_out:
+    with open(f"{out_dir / doc.ident_hash}-metadata.json", "w") as json_out:
         # Incorporate metadata from disassemble step
         json_metadata = {
             "slug": slugs.get(doc.ident_hash),
