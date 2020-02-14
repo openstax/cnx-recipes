@@ -90,10 +90,46 @@ def test_disassemble_book(tmp_path):
         "Introduction to Science and the Realm of Physics, Physical Quantities, and Units"
     assert m42119_data.get("slug") == \
         "1-introduction-to-science-and-the-realm-of-physics-physical-quantities-and-units"
-    assert m42119_data.get("abstract") is None
+    assert m42119_data["abstract"] is None
     assert m42092_data.get("title") == "Physics: An Introduction"
     assert m42092_data.get("slug") == "1-1-physics-an-introduction"
     assert m42092_data.get("abstract") == "Explain the difference between a model and a theory"
+
+def test_disassemble_book_empy_baked_metadata(tmp_path):
+    """Test case for disassemble where there may not be associated metadata
+    from previous steps in collection.baked-metadata.json
+    """
+    disassemble_book_script = os.path.join(SCRIPT_DIR, "disassemble-book.py")
+    input_baked_xhtml = os.path.join(TEST_DATA_DIR, "collection.baked.xhtml")
+
+    input_dir = tmp_path / "book"
+    input_dir.mkdir()
+
+    input_baked_xhtml_file = input_dir / "collection.baked.xhtml"
+    input_baked_xhtml_file.write_bytes(open(input_baked_xhtml, "rb").read())
+    input_baked_metadata_file = input_dir / "collection.baked-metadata.json"
+    input_baked_metadata_file.write_text(json.dumps({}))
+
+    disassembled_output = input_dir / "disassembled"
+    disassembled_output.mkdir()
+
+    subprocess.run(
+        [
+            "python",
+            disassemble_book_script,
+            input_dir
+        ],
+        cwd=HERE,
+        check=True
+    )
+
+    # Check for expected files and metadata that should be generated in this step
+    json_output_m42119 = disassembled_output / "m42119@1.6-metadata.json"
+    json_output_m42092 = disassembled_output / "m42092@1.10-metadata.json"
+    m42119_data = json.load(open(json_output_m42119, "r"))
+    m42092_data = json.load(open(json_output_m42092, "r"))
+    assert m42119_data["abstract"] is None
+    assert m42092_data["abstract"] is None
 
 def test_bake_book(tmp_path):
     """Test basic input / output for bake-book script"""

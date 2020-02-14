@@ -73,13 +73,16 @@ def main():
             out.write(bytes(DocumentContentFormatter(doc)))
 
         with open(f"{out_dir / doc.ident_hash}-metadata.json", "w") as json_out:
-            # Incorporate metadata from disassemble step
+            # Incorporate metadata from disassemble step while setting defaults
+            # for cases like composite pages which may not have metadata from
+            # previous stages
             json_metadata = {
                 "slug": slugs.get(doc.ident_hash),
-                "title": doc.metadata.get("title")
+                "title": doc.metadata.get("title"),
+                "abstract": None
             }
 
-            # Add additional metadata from baking if available
+            # Add / override metadata from baking if available
             json_metadata.update(baked_metadata.get(doc.ident_hash, {}))
 
             json.dump(
