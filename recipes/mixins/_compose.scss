@@ -295,6 +295,7 @@
       $specialPageType: map-get($page, specialPageType);
       $sortBy: map-get($page, sortBy);
       @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
+      $keyName: if($specialPageType == $PAGE_GLOSSARY, 'glossary', '.#{$className}');
       $sourceSelector: if($specialPageType == $PAGE_GLOSSARY, 'div[data-type="#{$className}"] dl', 'section.#{$className}');
       @if ($specialPageType == $PAGE_GLOSSARY) {
         div[data-type="#{$className}"] {
@@ -348,6 +349,7 @@
         class: "os-eoc os-#{$className}-container";
         content: pending(#{$className}-DESTINATION);
         data-type: composite-page;
+        data-uuid-key: "#{$keyName}";
         @if ($sortBy != null) {
           sort-by: #{$sortBy}, nocase;
         }
