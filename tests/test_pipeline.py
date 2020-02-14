@@ -76,7 +76,7 @@ def test_disassemble_book(tmp_path):
         check=True
     )
 
-    xhtml_output_files = glob(f"{disassembled_output}/*.xhtml")
+    xhtml_output_files = glob(f"{disassembled_output}/m42*.xhtml")
     assert len(xhtml_output_files) == 2
     json_output_files = glob(f"{disassembled_output}/*-metadata.json")
     assert len(json_output_files) == 2
