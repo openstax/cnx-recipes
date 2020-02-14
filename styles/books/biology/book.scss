@@ -16,7 +16,7 @@
       _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
       'EocHeader:::color': (_ref: 'colorMap:::biologyHeaderColor'),
     ),
-  Summary:(
+    SummaryWithSectionLinks:(
       _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
       'EocHeader:::color': (_ref: 'colorMap:::biologyHeaderColor'),
     ),
@@ -65,6 +65,11 @@
         'AbstractTitle:::color': (_ref: 'colorMap:::biologyHeaderColor'),
         'ListDot:::color': (_ref: 'colorMap:::biologyHeaderColor'),
         ),
+    AnswerKey: (
+    _selectors: ('[data-type="composite-chapter"]'),
+    'Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
+    'ExerciseTitle:::color': (_ref: "colorMap:::biologyHeaderColor"),
+  ),
 ));
 @include add_settings((
   EverydayConnectionNote:(
@@ -119,13 +124,20 @@
     'TitleText:::max-width': h-grid(10),
   ),
 ));
+@include add_settings((
+  FakeTitleTable: (
+    _selectors: ('.os-table'),
+    'TableTitle:::color': (_ref: "colorMap:::biologyTableColor"),
+    'LastTableRowData:::border-bottom-color': (_ref: "colorMap:::biologyTableColor"),
+  ),
+));
 
 //@use
 @include use('BookRoot', "common:::BookRoot");
 @include use('UnitToc', 'carnival:::UnitToc');
 @include use('Preface','carnival:::Preface');
 @include use('KeyTerm','carnival:::EocKeyTerm');
-@include use('Summary','carnival:::EocSummary');
+@include use('SummaryWithSectionLinks','carnival:::EocSummaryWithSectionLink');
 @include use('VisualExercise', 'carnival:::EocExerciseWithoutSubtitle');
 @include use('MultipleChoice', 'carnival:::EocExerciseWithoutSubtitle');
 @include use('CriticalThinking', 'carnival:::EocExerciseWithoutSubtitle');
@@ -139,12 +151,14 @@
 @include use('UnitTitle', 'common:::Hidden');
 @include use('Module', 'carnival:::ModuleShape');
 @include use('BasicTable', 'carnival:::BasicTableShape');
+@include use('FakeTitleTable', 'carnival:::FakeTitleTableShape');
 @include use('FigureContainer','carnival:::Figure');
 @include use('Footnotes', 'carnival:::FootnotesShape');
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('Term', 'carnival:::Term');
 @include use('Equation', 'carnival:::EquationShape');
 @include use('IFrame', 'common:::Hidden');
+@include use('AnswerKey', 'carnival:::AnswerKeyShape');
 
 //notes
 @include use('EverydayConnectionNote','carnival:::BoxedNoteShape');

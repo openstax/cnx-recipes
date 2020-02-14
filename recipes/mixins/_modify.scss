@@ -423,6 +423,21 @@
   }
 }
 
+@mixin modify_exampleTitle() {
+  [data-type="example"] {
+    .body > [data-type="title"] {
+      container: h4
+    }
+  }
+}
+@mixin modify_examples() {
+  [data-type="example"] {
+    &::inside {
+      class: "body"
+    }
+  }
+}
+
 @mixin _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel, $useHeader) {
   $minorLevel: '';
   @if $depth > 0 {
@@ -986,5 +1001,26 @@
   [data-type="composite-page"] {
     counter-increment: composite-page;
     attr-id: "composite-page-" counter(composite-page);
+  }
+}
+
+@mixin modify_exerciseNoteTitle($exerciseNoteConfig) {
+  @each $exercise in $exerciseNoteConfig {
+    $className: map-get($exercise, className);
+    $labelText: map-get($exercise, labelText);
+
+    @include validate_type($className, string);
+    @include validate_type($labelText, string);
+
+    [data-type="exercise"].#{$className} {
+      $exerciseNoteTitleContent: (os-title-label: $labelText);
+      @include utils_title($exerciseNoteTitleContent, bExerciseHeader);
+      &::before {
+        content: pending(bExerciseHeader);
+        data-type: "title";
+        class: "os-title";
+        container: h3;
+      }
+    }
   }
 }
