@@ -3,6 +3,9 @@ import subprocess
 import os
 import json
 from glob import glob
+from lxml import etree
+
+from cnxepub.html_parsers import HTML_DOCUMENT_NAMESPACES
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 TEST_DATA_DIR = os.path.join(HERE, "data")
@@ -13,6 +16,7 @@ def test_jsonify_book(tmp_path):
     jsonify_book_script = os.path.join(SCRIPT_DIR, "jsonify-book.py")
 
     html_content = "<html><body>test body</body></html>"
+    toc_content = "<nav>TOC</nav>"
     json_metadata_content = {
         "title": "subsection title",
         "abstract": "subsection abstract",
@@ -24,6 +28,8 @@ def test_jsonify_book(tmp_path):
 
     xhtml_input = disassembled_input_dir / "m00001@1.1.xhtml"
     xhtml_input.write_text(html_content)
+    toc_input = disassembled_input_dir / "collection.toc.xhtml"
+    toc_input.write_text(toc_content)
     json_metadata_input = disassembled_input_dir / "m00001@1.1-metadata.json"
     json_metadata_input.write_text(json.dumps(json_metadata_content))
 
@@ -43,11 +49,14 @@ def test_jsonify_book(tmp_path):
 
     jsonified_output = jsonified_output_dir / "m00001@1.1.json"
     jsonified_output_data = json.loads(jsonified_output.read_text())
+    jsonified_toc_output = jsonified_output_dir / "collection.toc.json"
+    jsonified_toc_data = json.loads(jsonified_toc_output.read_text())
 
     assert jsonified_output_data.get("title") == json_metadata_content["title"]
     assert jsonified_output_data.get("abstract") == json_metadata_content["abstract"]
     assert jsonified_output_data.get("slug") == json_metadata_content["slug"]
     assert jsonified_output_data.get("content") == html_content
+    assert jsonified_toc_data.get("content") == toc_content
 
 def test_disassemble_book(tmp_path):
     """Test basic input / output for disassemble-book script"""
@@ -94,6 +103,12 @@ def test_disassemble_book(tmp_path):
     assert m42092_data.get("title") == "Physics: An Introduction"
     assert m42092_data.get("slug") == "1-1-physics-an-introduction"
     assert m42092_data.get("abstract") == "Explain the difference between a model and a theory"
+
+    toc_output = disassembled_output / "collection.toc.xhtml"
+    assert toc_output.exists()
+    toc_output_tree = etree.parse(open(toc_output))
+    nav = toc_output_tree.xpath("//xhtml:nav", namespaces=HTML_DOCUMENT_NAMESPACES)
+    assert len(nav) == 1
 
 def test_disassemble_book_empy_baked_metadata(tmp_path):
     """Test case for disassemble where there may not be associated metadata

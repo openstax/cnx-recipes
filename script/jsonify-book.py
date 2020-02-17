@@ -10,8 +10,11 @@ files = [basename(x).rstrip(".xhtml") for x in glob(f"{book_dir}/*.xhtml")]
 json_data = {}
 
 for path in files:
-    with open(f"{book_dir}/{path}-metadata.json", "r") as meta_part:
-        json_data = json.load(meta_part)
+    try:
+        with open(f"{book_dir}/{path}-metadata.json", "r") as meta_part:
+            json_data = json.load(meta_part)
+    except FileNotFoundError:
+        json_data = {}
 
     with open(f"{book_dir}/{path}.xhtml", "r") as book_part:
         content = book_part.read()
