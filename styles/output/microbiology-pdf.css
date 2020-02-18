@@ -5,6 +5,61 @@
 @import url("https://fonts.googleapis.com/css?family=Alegreya:400,700&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Muli:400,700,900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=IBM+Plex+Sans:200,400,500,700&display=swap");
+nav#toc > ol > .os-toc-unit > ol > .os-toc-chapter > a > .os-number,
+nav#toc > ol > .os-toc-chapter > a > .os-number {
+  page-break-after: avoid; }
+
+h1, h2, h3, h4, h5, h6,
+[data-type="document-title"],
+[data-type="title"] {
+  break-after: avoid;
+  break-inside: avoid; }
+
+.learning-objectives {
+  page-break-inside: avoid;
+  page-break-before: avoid; }
+
+.chapter .table,
+.table {
+  page-break-inside: auto; }
+  .chapter .table thead,
+  .table thead {
+    page-break-after: avoid; }
+  .chapter .table tr,
+  .table tr {
+    page-break-inside: avoid; }
+
+.footnote {
+  page-break-inside: avoid; }
+
+.index {
+  page-break-before: right;
+  page-break-after: left;
+  page-break-inside: auto; }
+  .index .group-label {
+    page-break-after: avoid; }
+  .index .index-term, .index .os-term {
+    page-break-inside: avoid; }
+  .index .os-term-section-link {
+    page-break-after: avoid; }
+
+.os-eoc {
+  page-break-inside: auto; }
+  .os-eoc > section > [data-type="exercise"] {
+    page-break-inside: avoid; }
+
+div.preface,
+div[data-type="chapter"],
+div.appendix {
+  page-break-before: right;
+  page-break-after: left; }
+
+.os-caption-container {
+  page-break-before: avoid; }
+
+[data-type="equation"] {
+  page-break-inside: avoid; }
+
 * {
   box-sizing: border-box; }
 
@@ -88,6 +143,18 @@ sub {
 [data-type="chapter"] > [data-type="page"] > h2[data-type="document-title"] .os-text {
   string-set: module-title content(); }
 
+div[data-type="composite-page"].os-eoc > h2[data-type="document-title"] .os-text {
+  string-set: eoc-title content(); }
+
+.appendix > h1[data-type="document-title"] .os-number {
+  string-set: appendix-number content(); }
+
+.appendix > h1[data-type="document-title"] .os-text {
+  string-set: appendix-title content(); }
+
+div[data-type="composite-page"].os-eob > h1[data-type="document-title"] .os-text {
+  string-set: eob-title content(); }
+
 nav#toc {
   page: table-of-contents; }
 
@@ -95,9 +162,18 @@ div[data-type="page"].preface {
   page: preface;
   counter-reset: page 1; }
 
+div[data-type="composite-page"].os-eoc {
+  page: eoc; }
+
 .chapter {
   page: chapter;
   prince-page-group: start; }
+
+div[data-type="page"].appendix {
+  page: appendix; }
+
+div[data-type="composite-page"].os-eob {
+  page: eob; }
 
 @page chapter:nth(1) {
   @top-left-corner {
@@ -121,52 +197,113 @@ div[data-type="page"].preface {
   @top-right {
     content: none; } }
 
-@page preface:left {
-  @top-left-corner {
-    content: counter(page); }
-  @top-left {
-    content: none; }
-  @top-right-corner {
-    content: "Preface";
-    font-size: 1.2rem;
-    font-family: "Muli";
-    font-weight: 700; } }
-
-@page preface:right {
-  @top-left-corner {
-    content: "Preface";
-    font-size: 1.2rem;
-    font-family: "Muli";
-    font-weight: 700; }
-  @top-right-corner {
-    content: counter(page); } }
-
 @page :left {
   @top-left {
-    content: " " string(chapter-number) " • " string(chapter-title);
-    font-size: 1.2rem;
+    font-size: 0.83333rem;
     font-family: "Muli";
-    font-weight: 700; }
-  @top-left-corner {
-    content: counter(page);
-    font-size: 1.2rem;
-    font-family: "Muli";
+    color: #A5A5A5;
     font-weight: 700;
-    margin-right: 8px; } }
+    content: string(chapter-number) " • " string(chapter-title); }
+  @top-left-corner {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: counter(page);
+    margin-right: 40px; } }
 
 @page :right {
   @top-right {
-    content: string(module-number) " " string(module-title) " ";
-    font-size: 1.2rem;
+    font-size: 0.83333rem;
     font-family: "Muli";
-    font-weight: 700; }
+    color: #A5A5A5;
+    font-weight: 700;
+    content: string(module-number) " • " string(module-title); }
   @top-right-corner {
-    content: counter(page);
-    margin-left: 8px;
-    content: counter(page);
-    font-size: 1.2rem;
+    font-size: 0.83333rem;
     font-family: "Muli";
-    font-weight: 700; } }
+    color: #A5A5A5;
+    font-weight: 700;
+    content: counter(page);
+    margin-left: 40px; } }
+
+@page preface:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: "Preface"; }
+  @top-left-corner {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: counter(page);
+    margin-right: 40px; } }
+
+@page preface:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: "Preface"; }
+  @top-right-corner {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: counter(page);
+    margin-left: 40px; } }
+
+@page eoc:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: counter(page) "     " string(chapter-number) " • " string(eoc-title); } }
+
+@page eoc:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: string(chapter-number) " • " string(eoc-title) "     " counter(page); } }
+
+@page appendix:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: counter(page) "     " string(appendix-number) " • " string(appendix-title); } }
+
+@page appendix:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: string(appendix-number) " • " string(appendix-title) "     " counter(page); } }
+
+@page eob:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: counter(page) "     " string(eob-title); } }
+
+@page eob:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "Muli";
+    color: #A5A5A5;
+    font-weight: 700;
+    content: string(eob-title) "     " counter(page); } }
 
 /* stylelint-disable-next-line meowtec/no-px */
 /* stylelint-disable-next-line meowtec/no-px */
@@ -253,7 +390,7 @@ nav#toc > ol > .os-toc-chapter > a > .os-number {
 
 nav#toc > ol > .os-toc-chapter > a {
   font-family: IBM Plex Sans, sans-serif;
-  font-size: 2.0736rem;
+  font-size: 1.728rem;
   line-height: 3rem;
   font-weight: bolder;
   color: #000000;
@@ -576,7 +713,7 @@ nav#toc > .os-toc-title {
   color: #000000;
   line-height: 1.5rem;
   font-family: Alegreya;
-  font-size: 1.2rem; }
+  font-size: 1rem; }
 
 [data-type="footnote-refs"]::before {
   border-top-color: #000000;
@@ -609,7 +746,7 @@ nav#toc > .os-toc-title {
   color: #000000;
   line-height: 1.5rem;
   font-family: Alegreya;
-  font-size: 1.2rem; }
+  font-size: 1rem; }
 
 [data-type="footnote-number"] [data-type="footnote-link"] {
   text-decoration: none;
@@ -635,6 +772,9 @@ nav#toc > .os-toc-title {
 
 .os-table > table:not(.unstyled) > tbody > tr > td > ul {
   margin-left: 0.75rem; }
+
+.os-table > table:not(.unstyled) > tbody > tr > td > ul[data-bullet-style='none'] {
+  list-style-type: none; }
 
 .os-table > table:not(.unstyled) > tbody > tr > td:first-of-type {
   border-left: none;
@@ -712,14 +852,9 @@ nav#toc > .os-toc-title {
   font-family: Muli;
   font-size: 2.0736rem;
   line-height: 3rem;
-  font-weight: bold;
-  border-bottom-color: #000000;
-  border-bottom-width: 0.05rem;
-  border-bottom-style: solid;
-  padding-bottom: 1.5rem;
-  margin-bottom: 1.5rem; }
+  font-weight: bold; }
 
-[data-type="chapter"] > [data-type="page"]:not(.introduction) ul {
+[data-type="chapter"] > [data-type="page"]:not(.introduction) :not([data-type="footnote-refs"]) ul {
   margin-left: 24px; }
 
 [data-type="chapter"] > [data-type="page"]:not(.introduction) ol {
@@ -731,6 +866,9 @@ nav#toc > .os-toc-title {
   font-size: 1.728rem;
   line-height: 3rem;
   font-weight: bold; }
+
+[data-type="chapter"] > [data-type="page"]:not(.introduction) span[data-type="title"] {
+  margin-right: 8px; }
 
 [data-type="chapter"] > [data-type="page"]:not(.introduction) > section > ul {
   margin-left: 24px; }
