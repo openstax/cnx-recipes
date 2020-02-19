@@ -194,15 +194,18 @@
 }
 
 $bandColor: settings('scheme:::B5');
-$bandSize: 2.5rem;
-$fullBleedWidth: 0.125rem;
-$bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
+$bandBorder: half-fullBleedsSize(2.5, rem) solid $bandColor;
 
 @mixin band($side) {
   content: " ";
   border-#{$side}: $bandBorder;
-  padding-#{$side}: $fullBleedWidth;
-  margin-#{$side}: -1 * $fullBleedWidth;
+  @if $side == "right" {
+    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
+    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
+  } @else if $side == "left" {
+    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
+    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
+  }
 }
 
 @mixin setPageBorder($page-type, $type, $side) {
