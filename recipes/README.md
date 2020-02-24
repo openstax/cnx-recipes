@@ -62,6 +62,7 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Equation`: A [CustomPart](#custompart)
   - `$Config_PartType_Solution`: A [CustomPart](#custompart)
   - `$Config_PartType_Chapter_TitleContent`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Unit_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Appendix_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Section_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Table_CaptionContent`: A [TitleContent](#titlecontent)
