@@ -79,8 +79,8 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   do_progress_quiet "Baking ${raw_book} using ${recipe_name} (~1min)" \
     cnx-easybake --coverage-file "${lcov_file}" ${debug_flag1} ${debug_flag2} ${debug_flag3} ${debug_flag4} "${css_file}" "${raw_book}" "${baked_book}"
 
-  do_progress_quiet "Extracting metadata from ${baked_book}" \
-    python ./script/bake-book.py "${raw_meta}" "${baked_meta}" "${baked_book}"
+  do_progress_quiet "Copying metadata from ${raw_meta} to ${baked_meta}" \
+    cp "${raw_meta}" "${baked_meta}"
 
   # Generate an HTML report (if genhtml is installed)
   if [[ -n "$(command -v genhtml)" ]]; then

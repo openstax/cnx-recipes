@@ -146,34 +146,6 @@ def test_disassemble_book_empy_baked_metadata(tmp_path):
     assert m42119_data["abstract"] is None
     assert m42092_data["abstract"] is None
 
-def test_bake_book(tmp_path):
-    """Test basic input / output for bake-book script"""
-    bake_book_script = os.path.join(SCRIPT_DIR, "bake-book.py")
-    input_baked_xhtml = os.path.join(TEST_DATA_DIR, "collection.baked.xhtml")
-    input_assembled_metadata = os.path.join(
-        TEST_DATA_DIR,
-        "collection.assembled-metadata.json"
-    )
-
-    baked_metadata_output = tmp_path / "collection.baked-metadata.json"
-
-    subprocess.run(
-        [
-            "python",
-            bake_book_script,
-            input_assembled_metadata,
-            baked_metadata_output,
-            input_baked_xhtml
-        ],
-        cwd=HERE,
-        check=True
-    )
-
-    baked_metadata = json.loads(baked_metadata_output.read_text())
-    assert baked_metadata["m42119@1.6"]["abstract"] is None
-    assert baked_metadata["m42092@1.10"]["abstract"] == \
-        "Explain the difference between a model and a theory"
-
 def test_assemble_book(tmp_path):
     """Test basic input / output for assemble-book script"""
     assemble_book_script = os.path.join(SCRIPT_DIR, "assemble-book.py")
