@@ -36,15 +36,6 @@ def extract_slugs_from_binder(binder):
     """Given a binder return a dictionary that allows caller to retrieve
     computed slugs using ident_hash values"""
 
-    # Publishing calls these and these are needed to generate json,
-    # but they are harder to reach (cnx-publishing -> cnx-common)
-    #
-    # https://github.com/openstax/cnx-publishing/blob/master/cnxpublishing/bake.py#L92
-    # tree = model_to_tree(binder)
-    # amend_tree_with_slugs(tree)
-    #
-    # Using a similar approach here
-
     # NOTE: The returned tree has 'id' values which are based upon ident_hash
     # fields in the provided model
     tree = model_to_tree(binder)
