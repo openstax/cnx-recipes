@@ -63,7 +63,7 @@
                 $Eoc_SectionTitleLink,
                 map-merge($Key_Equations, (
                     _components: (
-                        map-merge($TableContainer, (
+                        map-merge($Key_Equations_Table_Container, (
                             _components: (
                                 map-merge($UnnumberedUnstyledTable, (
                                     _components: (
@@ -104,6 +104,7 @@
             _components:(
                 $Eoc_Header,
                 $Eoc_SectionTitleLink,
+                $SummaryUnorderedList,
             ),
         )),
     ))
@@ -145,8 +146,12 @@
                     _components:(
                         $Problem_Number,
                         $Problem_Divider,
-                        $Problem_Container
-                    )
+                        map-merge($Problem_Container, (
+                            _components: (
+                                $Problem_Paragraph,
+                            )
+                        )),
+                    ),
                 )),
             ),
         )),
@@ -164,6 +169,7 @@
                     $Problem_Divider,
                     map-merge($Problem_Container,(
                         _components: (
+                            $Problem_Paragraph,
                             $Exercise_Figure,
                             $Exercise_Table,
                             $Exercise_Container_Ordered_List,
@@ -211,6 +217,7 @@
                     $Problem_Divider,
                     map-merge($Problem_Container, (
                         _components:(
+                            $Problem_Paragraph,
                             $Exercise_Unordered_List
                         ),
                     )),
@@ -227,12 +234,13 @@
             _components:(
                 $Eoc_Header,
                 $ProblemsExercisesTitleLink,
-                map-merge( $Problem_Wrapper,(
+                map-merge($Problem_Wrapper,(
                   _components: (
                     $Problem_Number,
                     $Problem_Divider,
                     map-merge($Problem_Container, (
                         _components:(
+                            $Problem_Paragraph,
                             $Exercise_Figure,
                             $Exercise_Table,
                             $Exercise_Ordered_List
@@ -264,9 +272,36 @@
                     _components:(
                         $Problem_Number,
                         $Problem_Divider,
-                        $Problem_Container
+                        map-merge($Problem_Container, (
+                            _components:(
+                                $Problem_Paragraph,
+                                map-merge($Exercise_Ordered_List, (
+                                    _components:(
+                                        map-merge($Exercise_Nested_Ordered_List, (
+                                            _components:(
+                                                $Exercise_Nested_Ordered_List
+                                            )),
+                                        )),
+                                    )),
+                                $Exercise_Unordered_List,
+                                map-merge($Exercise_Container_Ordered_List, (
+                                    _components:(
+                                        $Exercise_Nested_Ordered_List
+                                        ),
+                                )),
+                                $Exercise_Figure,
+                                $Exercise_Container_Unordered_List
+                            ),
+                        )),
                     )
                 )),
+                $Exercise_Section_Unordered_List,
+                map-merge($Exercise_Container_Ordered_List, (
+                    _components:(
+                        $Exercise_Nested_Ordered_List
+                    ),
+                )),
+                $Exercise_Section_Ordered_List,
             ),
         )),
     ))
