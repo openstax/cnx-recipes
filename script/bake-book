@@ -58,23 +58,29 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   do_progress_quiet "Compiling CSS file" \
     ./script/build-recipes "${book_name}"
 
-  raw_file="./data/${book_name}/collection.assembled.xhtml"
-  baked_file="./data/${book_name}/collection.baked.xhtml"
+  base_dir="./data/${book_name}/"
+  raw_book="${base_dir}/collection.assembled.xhtml"
+  raw_meta="${base_dir}/collection.assembled-metadata.json"
+  baked_book="${base_dir}/collection.baked.xhtml"
+  baked_meta="${base_dir}/collection.baked-metadata.json"
   sass_file="./recipes/books/${recipe_name}/book.scss"
   css_file="${RECIPE:-./recipes/output/${recipe_name}.css}"
-  lcov_file="${baked_file}.lcov"
+  lcov_file="${baked_book}.lcov"
   style_file="${STYLE:-./styles/output/${recipe_name}-pdf.css}"
 
-  [[ -f "${raw_file}" ]] || die "Could not find the raw HTML file. Have you run fetch-book and assemble-book yet?"
+  [[ -f "${raw_book}" ]] || die "Could not find the raw HTML file. Have you run fetch-book and assemble-book yet?"
 
   [[ -f "${sass_file}" ]] || die "Could not find the raw SCSS file at ${sass_file}"
 
   # Remove the baked file if it exists
-  [[ ! -f "${baked_file}" ]] || rm "${baked_file}"
+  [[ ! -f "${baked_book}" ]] || rm "${baked_book}"
 
   # shellcheck disable=SC2086
-  do_progress_quiet "Baking ${raw_file} using ${recipe_name} (~1min)" \
-    cnx-easybake --coverage-file "${lcov_file}" ${debug_flag1} ${debug_flag2} ${debug_flag3} ${debug_flag4} "${css_file}" "${raw_file}" "${baked_file}"
+  do_progress_quiet "Baking ${raw_book} using ${recipe_name} (~1min)" \
+    cnx-easybake --coverage-file "${lcov_file}" ${debug_flag1} ${debug_flag2} ${debug_flag3} ${debug_flag4} "${css_file}" "${raw_book}" "${baked_book}"
+
+  do_progress_quiet "Copying metadata from ${raw_meta} to ${baked_meta}" \
+    cp "${raw_meta}" "${baked_meta}"
 
   # Generate an HTML report (if genhtml is installed)
   if [[ -n "$(command -v genhtml)" ]]; then
@@ -84,7 +90,7 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
 
   if [ -f "${style_file}" ]; then
     do_progress_quiet "Adding style file ${style_file}" \
-      sed -i "s%<\\/head>%<link rel=\"stylesheet\" type=\"text/css\" href=\"../../${style_file}\" />&%" "${baked_file}"
+      sed -i "s%<\\/head>%<link rel=\"stylesheet\" type=\"text/css\" href=\"../../${style_file}\" />&%" "${baked_book}"
   else
     _say "${c_red}WARNING${c_none} style not found: ${style_file}"
   fi
@@ -94,6 +100,6 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   fi
 
   # Validate the cooked file
-  do_progress_quiet "Validating ${baked_file}" \
-    cnx-epub-validate-collated "${baked_file}"
+  do_progress_quiet "Validating ${baked_book}" \
+    cnx-epub-validate-collated "${baked_book}"
 done
