@@ -1,6 +1,7 @@
 #!/bin/bash
 
 if [ -f /.dockerenv ]; then
+  ./script/setup
   if [ "${1:0:1}" == "/" ]; then
     exec "$@"
     exit
@@ -81,12 +82,16 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   book_dir="${OUTPUT_DIR:-./}/data/${book_name}"
   raw_dir="${book_dir}/raw"
   raw_file="${book_dir}/collection.assembled.xhtml"
+  metadata_file="./data/${book_name}/collection.assembled-metadata.json"
 
   rm -rf "${raw_file/$OUTPUT_DIR/.\/}"
 
   do_progress "Creating HTML file for ${book_name}" \
     docker-compose run --rm neb /bin/bash -c "pip install -U -r requirements/main.txt && neb assemble \"${raw_dir}\" \"${book_dir}\" && chown -R $(stat -c '%u:%g' ./data) \"${book_dir}\""
 
+  # Generate JSON metadata using venv python assumed to be available via Docker
+  # setup and previous bootstrap
+  python ./script/assemble-book.py "${raw_file/$OUTPUT_DIR/.}" "${metadata_file}"
   _say "${c_green}Assemble is Done.${c_none} File is available at ${raw_file/$OUTPUT_DIR/$HOST_PWD}"
 
 done
