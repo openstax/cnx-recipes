@@ -1,9 +1,22 @@
-//notes should be able to break but take the first element with them
+//Titles in TOC shouldn't be orphaned
+nav#toc > ol > .os-toc-unit > a > .os-text,
 nav#toc > ol > .os-toc-unit > ol > .os-toc-chapter > a > .os-number,
-nav#toc > ol > .os-toc-chapter > a > .os-number {
+nav#toc > ol > .os-toc-unit > ol > .os-toc-chapter > a > .os-text,
+nav#toc > ol > .os-toc-chapter > a > .os-number,
+nav#toc > ol > .os-toc-chapter > a > .os-text,
+ {
   page-break-after: avoid;
 }
 
+//The ol of module titles should not break before so that at least one will remain with the chapter title
+nav#toc > ol > .os-toc-unit > ol > .os-toc-chapter > ol,
+nav#toc > ol > .os-toc-unit > ol > .os-toc-chapter > a > .os-chapter, {
+  page-break-before: avoid;
+}
+
+os-unit.os-toc-chapter > .os-chapter
+
+//Headers should not be orphaned or break inside themselves
 h1, h2, h3, h4, h5, h6,
 [data-type="document-title"],
 [data-type="title"] {
@@ -11,13 +24,17 @@ h1, h2, h3, h4, h5, h6,
   break-inside: avoid;
 }
 
-.learning-objectives {
+//Unfortunately the singular and pluaral form of these classes exists
+//LO's shouldn't be orphaned from their title 
+.learning-objectives,
+.learning-objective {
   page-break-inside: avoid;
   page-break-before: avoid;
 }
 
-.chapter .table,
-.table {
+//table heads should not be orphaned and table rows should not break inside
+[data-type="chapter"] .os-table,
+.os-table {
   page-break-inside: auto;
   thead {
     page-break-after: avoid;
@@ -27,14 +44,16 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
+//a footnote should avoid breaking accross pages
 .footnote {
   page-break-inside: avoid;
 }
 
-.index {
+//Index starts on the right page
+//The content after the index should start on the left page
+.os-index-container {
   page-break-before: right;
   page-break-after: left;
-  page-break-inside: auto;
 
   .group-label {
     page-break-after: avoid;
@@ -47,13 +66,15 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
+//An exercise should avoid breaking across pages
 .os-eoc {
-  page-break-inside: auto;
   > section > [data-type="exercise"] {
     page-break-inside: avoid;
   }
 }
 
+//These elements should start on the right page 
+//Content after these elements should start on the left page
 div.preface,
 div[data-type="chapter"], 
 div.appendix {
@@ -61,11 +82,25 @@ div.appendix {
   page-break-after: left;
   }
 
-
+//Captions should not break from their figure, table, etc.
 .os-caption-container {
   page-break-before: avoid;
 }
 
+//An equation shouldn't break across pages
 [data-type="equation"] {
   page-break-inside: avoid;
 }
+
+//Module titles in chapter objective 
+.introduction > .intro-body > .os-chapter-outline > div.os-chapter-objective > a.os-chapter-objective {
+  page-break-after: avoid;
+  > .os-number,
+  > .os-text, {
+     page-break-after: avoid;
+  }
+}
+
+
+//TODO:
+  //notes should be able to break but take the first element with them
