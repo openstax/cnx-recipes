@@ -133,14 +133,6 @@
   ),
 ));
 
-@include add_settings((
-  AnswerKey: (
-    _selectors: ('[data-type="composite-chapter"]'),
-    'Title:::color': (_ref: "colorMap:::anatomyHeaderColor"),
-    'ExerciseTitle:::color': (_ref: "colorMap:::anatomyHeaderColor"),
-  ),
-));
-
 @include use('BookRoot', "common:::BookRoot");
 @include use('Link', "carnival:::Link");
 @include use('UnitToc', 'carnival:::UnitToc');
@@ -155,7 +147,6 @@
 @include use('FakeTitleTable', 'carnival:::FakeTitleTableShape');
 @include use('Appendix', 'carnival:::AppendixShape');
 @include use('Index', 'carnival:::IndexShape');
-@include use('AnswerKey', 'carnival:::AnswerKeyShape');
 @include use('References', 'carnival:::ReferencesShape');
 @include use('AgingNote', 'carnival:::BoxedNoteShape');
 @include use('DiseasesNote', 'carnival:::BoxedNoteShape');
@@ -182,15 +173,18 @@
 }
 
 $bandColor: settings('scheme:::B5'); //changed to color specific for Anatomy
-$bandSize: 2.5rem;
-$fullBleedWidth: 0.125rem;
-$bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
+$bandBorder: half-fullBleedsSize(2.5, rem) solid $bandColor;
 
 @mixin band($side) {
   content: " ";
   border-#{$side}: $bandBorder;
-  padding-#{$side}: $fullBleedWidth;
-  margin-#{$side}: -1 * $fullBleedWidth;
+  @if $side == "right" {
+    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
+    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
+  } @else if $side == "left" {
+    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
+    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
+  }
 }
 
 @mixin setEocPageBorder($type, $side) {

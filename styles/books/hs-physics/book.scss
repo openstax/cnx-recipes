@@ -4,7 +4,7 @@
 
 @include add_settings((
   ChapterIntro: (
-    _selectors: (".introduction > .section-opener"),
+    _selectors: (".introduction"),
     'Outline:::background-color': (_ref: "colorMap:::physicsIntroColor"),
     'SplashFigureBg:::background-color': (_ref: "colorMap:::physicsIntroColor")
   ),
@@ -203,7 +203,7 @@
 
 @include add_settings((
   FakeTitleTable: (
-    _selectors: ('.os-table'),
+    _selectors: (".os-table"),
     'TableTitle:::color': (_ref: "colorMap:::hsphysicsTableColor"),
     'LastTableRowData:::border-bottom-color': (_ref: "colorMap:::hsphysicsTableColor"),
   ),
@@ -272,6 +272,10 @@
   margin-right: 2in;
 }
 
+@page chapter:nth(2) {
+  margin-right: 2in;
+}
+
 .os-eoc.os-glossary-container {
   page: eoc;
   prince-page-group: start;
@@ -299,15 +303,18 @@
 }
 
 $bandColor: settings('scheme:::B5');
-$bandSize: 2.5rem;
-$fullBleedWidth: 0.125rem;
-$bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
+$bandBorder: half-fullBleedsSize(2.5, rem) solid $bandColor;
 
 @mixin band($side) {
   content: " ";
   border-#{$side}: $bandBorder;
-  padding-#{$side}: $fullBleedWidth;
-  margin-#{$side}: -1 * $fullBleedWidth;
+  @if $side == "right" {
+    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
+    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
+  } @else if $side == "left" {
+    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
+    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
+  }
 }
 
 @mixin setPageBorder($page-type, $type, $side) {

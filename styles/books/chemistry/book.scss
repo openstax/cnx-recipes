@@ -59,11 +59,13 @@
     ),
 ));
 @include add_settings((
-    ChapterIntro: (
+  FullWidthChapterIntro: (
     _selectors: (".introduction"),
-    'Outline:::background-color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'SplashFigureBg:::background-color': (_ref: "colorMap:::chemistryHeaderColor")
-    ),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::chemistryIntroColor"),
+    'OutlineTitle:::color': (_ref: "colorMap:::chemistryIntroColor"),
+    'Outline:::border-bottom-color': (_ref: "colorMap:::chemistryIntroColor"),
+    'OutlineTitleBottomBorder:::border-bottom-color': (_ref: "colorMap:::chemistryIntroColor"),
+  ),
 ));
 @include add_settings((
     TOC: (
@@ -131,7 +133,7 @@
 @include use('Appendix', 'carnival:::AppendixShape');
 @include use('Index', 'carnival:::IndexShape');
 @include use('AnswerKey', 'carnival:::AnswerKeyShape');
-@include use('ChapterIntro', 'carnival:::ChapterIntroShape');
+@include use('FullWidthChapterIntro', 'carnival:::FullWidthChapterIntroShape');
 @include use('Chapter', 'carnival:::Chapter');
 @include use('TOC', 'carnival:::NoUnitToc');
 @include use('Module', 'carnival:::ModuleShape');
@@ -181,15 +183,18 @@
 }
 
 $bandColor: settings('scheme:::B4');
-$bandSize: 2.5rem;
-$fullBleedWidth: 0.125rem;
-$bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
+$bandBorder: half-fullBleedsSize(2.5, rem) solid $bandColor;
 
 @mixin band($side) {
   content: " ";
   border-#{$side}: $bandBorder;
-  padding-#{$side}: $fullBleedWidth;
-  margin-#{$side}: -1 * $fullBleedWidth;
+  @if $side == "right" {
+    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
+    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
+  } @else if $side == "left" {
+    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
+    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
+  }
 }
 
 @mixin setPageBorder($page-type, $type, $side) {
@@ -284,8 +289,4 @@ $bandBorder: #{$bandSize + $fullBleedWidth} solid $bandColor;
   margin-right: 1in;
   margin-bottom: 0.8in;
   margin-top: 0.8in;
-}
-
-@page chapter:first {
-  margin-right: 2in;
 }

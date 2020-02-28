@@ -1000,6 +1000,28 @@
   attr-data-type: "title"; }
 
 :pass(3) body {
+  counter-reset: unit; }
+
+:pass(3) div[data-type="unit"] {
+  counter-increment: unit; }
+
+:pass(3) div[data-type="unit"]::before {
+  container: span;
+  content: "Unit " counter(unit);
+  class: os-number;
+  move-to: bUnitLabel; }
+
+:pass(3) div[data-type="unit"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bUnitLabel; }
+
+:pass(3) div[data-type="unit"] > [data-type="document-title"] {
+  container: h1;
+  content: pending(bUnitLabel) content(); }
+
+:pass(3) body {
   counter-reset: chapter; }
 
 :pass(3) div[data-type="chapter"] {
@@ -1007,7 +1029,7 @@
 
 :pass(3) div[data-type="chapter"]::before {
   container: span;
-  content: counter(chapter);
+  content: "Chapter " counter(chapter);
   class: os-number;
   move-to: bChapterLabel; }
 
@@ -1029,13 +1051,13 @@
 
 :pass(3) div.appendix::before {
   container: span;
-  content: counter(appendix, upper-alpha);
+  content: "Appendix " counter(appendix, upper-alpha);
   class: os-number;
   move-to: bAppendixLabel; }
 
 :pass(3) div.appendix::before {
   container: span;
-  content: " | ";
+  content: " ";
   class: os-divider;
   move-to: bAppendixLabel; }
 
@@ -2120,7 +2142,7 @@
   container: div;
   class: os-table; }
 
-:pass(10) [data-type="composite-chapter"] > h1[data-type="document-title"] {
+:pass(10) [data-type="composite-chapter"] > [data-type="document-title"] {
   counter-increment: composite-chapter;
   attr-id: "composite-chapter-" counter(composite-chapter); }
 

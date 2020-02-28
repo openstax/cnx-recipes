@@ -66,7 +66,6 @@ div[data-type="composite-page"].os-eob {
 }
 
 
-
 //unnumbered pages
 @page chapter:nth(1) {
   @top-left-corner {
@@ -120,6 +119,10 @@ div[data-type="composite-page"].os-eob {
       content: counter(page);
       margin-right: h-grid(5);
     }
+    @bottom-left {
+        @include folioStyles();
+        content: "Access for free at openstax.org.";
+    }
   }
 
   @page #{$page}:right {
@@ -141,6 +144,10 @@ div[data-type="composite-page"].os-eob {
         @include folioStyles();
         content: counter(page) "\00a0\00a0\00a0\00a0\00a0" $leftContent;
       }
+      @bottom-left {
+        @include folioStyles();
+        content: "Access for free at openstax.org.";
+    }
     }
   
     @page #{$page}:right {
@@ -158,8 +165,7 @@ $prefaceContent: "Preface";
 $eocContent: string(chapter-number) " • " string(eoc-title);
 $appendixContent: string(appendix-number) " • " string(appendix-title);
 $eobContent: string(eob-title);
-
-@include folio($defaultLeftContent, $defaultRightContent);
+@include folio($defaultLeftContent, $defaultRightContent,);
 @include folio($prefaceContent, $prefaceContent, preface );
 @include folioWithBand($eocContent, $eocContent, eoc);
 @include folioWithBand($appendixContent, $appendixContent, appendix);
