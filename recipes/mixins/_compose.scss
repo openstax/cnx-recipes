@@ -316,34 +316,7 @@
         > [data-type="title"] {
           move-to: trash;
         }
-        @if ($clusterBy == $CLUSTER_SECTION) {
-          @if release-flag-enabled(EOCsection-links) {
-            &::before {
-              container: a;
-              attr-href: "#" string(moduleTitleId);
-              content: nodes(CompoundSectionHeaderNode);
-            }
-          } @else {
-            content: nodes(CompoundSectionHeaderNode) content();
-          }
-          move-to: #{$className}-separated;
-        } @else {
-          move-to: #{$className}-DESTINATION;
-        }
-      }
-      @if ($clusterBy == $CLUSTER_SECTION) {
-        [data-type="page"] {
-          &::after {
-            class: "os-section-area";
-            content: pending(#{$className}-separated);
-            move-to: #{$className}-sectionSeparatedContainer;
-          }
-        }
-        &::after {
-          class: os-#{$className};
-          content: pending(#{$className}-sectionSeparatedContainer);
-          move-to: #{$className}-DESTINATION;
-        }
+        move-to: #{$className}-DESTINATION;
       }
       &::after {
         class: "os-eoc os-#{$className}-container";
@@ -357,6 +330,43 @@
     }
   }
 }
+
+@mixin compose_moveSectionSeparted($allCompoundCompositePages) {
+  @each $page in $allCompoundCompositePages {
+    $name: map-get($page, name);
+    $childPages: map-get($page, childPages);
+    @each $page in $childPages {
+      $className: map-get($page, className);
+      $clusterBy: map-get($page, clusterBy);
+      $specialPageType: map-get($page, specialPageType);
+      $sourceSelector: if($specialPageType == $PAGE_GLOSSARY, 'div[data-type="#{$className}"] dl', 'section.#{$className}');
+      @if ($clusterBy == $CLUSTER_SECTION) {
+        .os-eoc.os-#{$className}-container  {
+          #{$sourceSelector} {
+            move-to: #{$className}-separated;
+            @if release-flag-enabled(EOCsection-links) {
+              &::before {
+                container: a;
+                attr-href: "#" string(moduleTitleId);
+                content: nodes(CompoundSectionHeaderNode);
+                move-to: #{$className}-title-separated;
+              }
+            } @else {
+              content: nodes(CompoundSectionHeaderNode) content();
+            }
+            &:deferred::after {
+              class: "os-section-area";
+              content: pending(#{$className}-title-separated) pending(#{$className}-separated);
+              move-to: destination;
+            }
+          }
+          content: pending(destination);
+        }
+      }
+    }
+  }
+}
+
 @mixin compose_prepEOCcompoundCompositesPages ($prepAllComposites) {
   @each $page in $prepAllComposites {
     $name: map-get($page, name);
