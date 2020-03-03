@@ -107,11 +107,19 @@
                 $Eoc_Header,
                 $Eoc_CompChapPageHeader,
                 $Eoc_SectionTitleLink,
-                $SummaryUnorderedList,
-                map-merge($SummarySectionUnorderedList, (
+                map-merge($Summary, (
                     _components:(
-                        $SummaryNestedUnorderedList
-                    )
+                        $EoC_Unordered_List,
+                    ),
+                )),
+                map-merge($Section_Summary, (
+                    _components:(
+                        map-merge($EoC_Unordered_List, (
+                        _components:(
+                             $EoC_Nested_Unordered_List
+                            ),
+                        )),                    
+                    ),
                 )
             ),
         )),
@@ -124,8 +132,12 @@
             _components:(
                 $Eoc_Header,
                 $Summarytitle_Container,
-                $SummaryUnorderedList,
-                $SummaryOrderedList
+                map-merge($Summary, (
+                    _components:(
+                        $EoC_Unordered_List,
+                        $EoC_Ordered_List
+                    ),
+                )),
             ),
         )),
     ))
@@ -137,8 +149,12 @@
             _components:(
                 $Eoc_Header,
                 $SectionSummaryTitleLink,
-                $SectionSummaryUnorderedList,
-                $SectionSummaryOrderedList
+                map-merge($Section_Summary, (
+                    _components:(
+                    $EoC_Unordered_List,
+                    $EoC_Ordered_List
+                    ),
+                )),
             ),
         )), 
     ))
@@ -180,13 +196,17 @@
                             $Problem_Paragraph,
                             $Exercise_Figure,
                             $Exercise_Table,
-                            $Exercise_Container_Ordered_List,
-                            map-merge($Exercise_Ordered_List,(
+                            map-merge($Exercise_Container, (
                                 _components: (
-                                $Exercise_Nested_Ordered_List,
+                                $EoC_Ordered_List,
+                                ),
+                            )),
+                            map-merge($EoC_Ordered_List,(
+                                _components: (
+                                $EoC_Nested_Ordered_List,
                                 ))
                             ),
-                            $Exercise_Unordered_List,
+                            $EoC_Unordered_List,
                             map-merge($Exercise_Table,(
                                 _components: (
                                 $Exercise_Table_Row,
@@ -198,18 +218,6 @@
                 ))
             ),
         )),
-    ))
-);
-
-@include create_shape('carnival:::EocReviewQuestions' ,(
-    _components:(
-        map-merge($EocContainer, (
-            _components:(
-                $Eoc_Header,
-                $ReviewQuestionsTitle_Container,
-                $Multiple_Choice,
-            )
-        ))
     ))
 );
 
@@ -226,7 +234,7 @@
                     map-merge($Problem_Container, (
                         _components:(
                             $Problem_Paragraph,
-                            $Exercise_Unordered_List
+                            $EoC_Unordered_List
                         ),
                     )),
                   )
@@ -251,7 +259,7 @@
                             $Problem_Paragraph,
                             $Exercise_Figure,
                             $Exercise_Table,
-                            $Exercise_Ordered_List
+                            $EoC_Ordered_List
                         ),
                     )),
                 ))
@@ -283,33 +291,46 @@
                         map-merge($Problem_Container, (
                             _components:(
                                 $Problem_Paragraph,
-                                map-merge($Exercise_Ordered_List, (
+                                map-merge($EoC_Ordered_List, (
                                     _components:(
-                                        map-merge($Exercise_Nested_Ordered_List, (
+                                        map-merge($EoC_Nested_Ordered_List, (
                                             _components:(
-                                                $Exercise_Nested_Ordered_List
+                                                $EoC_Nested_Ordered_List
                                             )),
                                         )),
                                     )),
-                                $Exercise_Unordered_List,
-                                map-merge($Exercise_Container_Ordered_List, (
-                                    _components:(
-                                        $Exercise_Nested_Ordered_List
-                                        ),
+                                $EoC_Unordered_List,
+                                map-merge($Exercise_Container, (
+                                    _components: (
+                                    map-merge($EoC_Ordered_List, (
+                                        _components:(
+                                            $EoC_Nested_Ordered_List
+                                            ),
+                                        )),
+                                    $EoC_Unordered_List
+                                    ),
                                 )),
                                 $Exercise_Figure,
-                                $Exercise_Container_Unordered_List
                             ),
                         )),
                     )
                 )),
-                $Exercise_Section_Unordered_List,
-                map-merge($Exercise_Container_Ordered_List, (
-                    _components:(
-                        $Exercise_Nested_Ordered_List
+                map-merge($Exercise_Section, (
+                _components: (
+                    $EoC_Unordered_List,
+                    $EoC_Ordered_List,
                     ),
                 )),
-                $Exercise_Section_Ordered_List,
+                map-merge($Exercise_Container, (
+                    _components:(
+                        map-merge($EoC_Ordered_List, (
+                            _components:(
+                                $EoC_Nested_Ordered_List
+                            ),
+                        ))
+                    ),
+                )),
+                
             ),
         )),
     ))
