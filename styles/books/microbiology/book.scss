@@ -103,6 +103,14 @@
     _selectors: (".os-fill-in-the-blank-container"),
     'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
   ),
+  Matching:(
+    _selectors: (".os-matching-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+  TrueFalse:(
+    _selectors: (".os-true-false-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
 ));
 
 @include use('BookRoot', "common:::BookRoot");
@@ -132,6 +140,8 @@
 @include use('CriticalThinkingCompChapPage','carnival:::EocCompChapExercises');
 @include use('ShortAnswerCompChapPage','carnival:::EocCompChapExercises');
 @include use('FillInTheBlank','carnival:::EocCompChapExercises');
+@include use('Matching','carnival:::EocCompChapExercises');
+@include use('TrueFalse','carnival:::EocCompChapExercises');
 
 
 [data-type="chapter"] {
@@ -139,6 +149,133 @@
     prince-page-group: start;
     page-break-before: right;
   }
+
+.os-eoc.os-review-questions-container {
+  page: eoc;
+  prince-page-group: start;
+}
+  
+.appendix {
+  page: appendix;
+  prince-page-group: start;
+}
+  
+.os-eob[data-type="composite-chapter"] {
+  page: eob;
+  prince-page-group: start;
+}
+.os-eoc {
+  page: eoc;
+}
+  
+.appendix {
+  page: appendix;
+}
+  
+.os-eob {
+  page: eob;
+}
+$bandColor: settings('scheme:::B7');
+$bandBorder: half-fullBleedsSize(2.5, rem) solid $bandColor;
+
+@mixin band($side) {
+  content: " ";
+  border-#{$side}: $bandBorder;
+  @if $side == "right" {
+    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
+    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
+  } @else if $side == "left" {
+    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
+    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
+  }
+}
+
+@mixin setPageBorder($page-type, $type, $side) {
+  @page #{$page-type}:#{$type} {
+    @if $side == "left" {
+      @left-middle {
+        @content;
+      }
+      @top-left-corner {
+        @content;
+      }
+      @bottom-left-corner {
+        @content;
+      }
+      @left-bottom {
+        @content;
+      }
+      @left-top {
+        @content;
+      }
+    } @else if $side == "right" {
+      @right-middle {
+        @content;
+      }
+      @top-right-corner {
+        @content;
+      }
+      @bottom-right-corner {
+        @content;
+      }
+      @right-bottom {
+        @content;
+      }
+      @right-top {
+        @content;
+      }
+    }
+  }
+}
+
+@include setPageBorder("eoc", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eoc", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eoc", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eoc", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("appendix", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("appendix", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eob", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eob", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "blank", "right") {
+  content: none;
+  border: none;
+}
 
 @page {
     margin-left: 1in;
