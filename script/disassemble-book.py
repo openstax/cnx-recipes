@@ -74,6 +74,10 @@ def main():
     with open(baked_metdata_file, "r") as baked_json:
         baked_metadata = json.load(baked_json)
 
+    with open(f"{out_dir}/collection.toc-metadata.json", "w") as toc:
+        # dump toc baked_metadata_file by book uui 
+        # baked_metadata[book_uuid]
+
     for doc in flatten_to(binder, lambda d: isinstance(d, Document)):
         with open(f"{out_dir / doc.ident_hash}.xhtml", "wb") as out:
             out.write(bytes(DocumentContentFormatter(doc)))

@@ -99,7 +99,13 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
     chown -R "$(stat -c '%u:%g' ./data)" ./data
   fi
 
+  # Generate JSON metadata using venv python assumed to be available via Docker
+  # setup and previous bootstrap
+  python ./script/bake-book.py "${baked_book}" "${baked_meta}"
+
   # Validate the cooked file
   do_progress_quiet "Validating ${baked_book}" \
     cnx-epub-validate-collated "${baked_book}"
+  
+  _say "${c_green}Baking is Done.${c_none} File is available at ${raw_file/$OUTPUT_DIR/$HOST_PWD}"
 done
