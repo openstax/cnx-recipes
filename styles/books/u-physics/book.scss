@@ -32,7 +32,7 @@
     'SplashFigureBg:::background-color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
   AnswerKey: (
-    _selectors: ('[data-type="composite-chapter"]'),
+    _selectors: ('[data-type="composite-chapter"]:not(.os-eoc)'),
     'Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'ExerciseTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
@@ -40,6 +40,40 @@
     _selectors: (".appendix"),
     'SubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'SubSubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
+));
+@include add_settings((
+  KeyTerm:(
+    _selectors: ("[data-type = 'composite-chapter'] > .os-glossary-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  SummaryWithSectionLinks: (
+    _selectors: ("[data-type = 'composite-chapter'] > .os-key-concepts-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  KeyEquation:(
+      _selectors: ("[data-type = 'composite-chapter'] > .os-key-equations-container"),
+      'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ChapterReviewCompositeChapter:(
+    _selectors: (".os-chapter-review-container"),
+    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ConceptualQuestionsCompChapPage:(
+    _selectors: (".os-review-conceptual-questions-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ProblemsCompChapPageWithTwoColumns:(
+    _selectors: (".os-review-problems-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  AdditionalProblems:(
+    _selectors: (".os-review-additional-problems-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  ChallengeProblems:(
+    _selectors: (".os-review-challenge-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
   ),
 ));
 //notes
@@ -132,6 +166,15 @@
 @include use('Appendix', 'carnival:::AppendixShape');
 @include use('AnswerKey', 'carnival:::AnswerKeyShape');
 @include use('BasicTable', 'carnival:::BasicTableShape');
+@include use('KeyTerm','carnival:::EocKeyTerm');
+@include use('SummaryWithSectionLinks','carnival:::EocSummaryWithSectionLink');
+@include use('KeyEquation','carnival:::EocKeyEqu');
+@include use('ChapterReviewCompositeChapter','carnival:::EocCompositeChapter');
+@include use('ConceptualQuestionsCompChapPage','carnival:::EocCompChapExercises');
+@include use('ProblemsCompChapPageWithTwoColumns','carnival:::EocCompChapExercises');
+@include use('AdditionalProblems','carnival:::EocCompChapExercises');
+@include use('ChallengeProblems','carnival:::EocCompChapExercises');
+
 
 [data-type="chapter"] {
   page: chapter;
@@ -139,7 +182,7 @@
   page-break-before: right;
 }
 
-.os-eoc.os-glossary-container {
+.os-chapter-review-container {
   page: eoc;
   prince-page-group: start;
 }
@@ -166,7 +209,7 @@
 }
 
 $bandColor: settings('scheme:::B7');
-$bandBorder: half-fullBleedsSize(2.5, rem) solid $bandColor;
+$bandBorder: half-fullBleedsSize(.5, in) solid $bandColor;
 
 @mixin band($side) {
   content: " ";

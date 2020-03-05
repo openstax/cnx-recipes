@@ -111,6 +111,14 @@ $ChapterOutlineAbstract: (
     )
 );
 
+$ChapterOutlineList: (
+    _name: "OutlineList",
+    _subselector: ' > ul',
+    _properties: (
+        margin-bottom: half-v-grid(1),
+    )
+);
+
 $ChapterObjectives: (
     _name: "Objectives",
     _subselector: ' > .chapter-objectives',
@@ -277,18 +285,28 @@ $ChapterSplashFigureWrapper: (
     )
 );
 
-$ChapterOutlineTitleBottomBorder: (
-    _name: "OutlineTitleBottomBorder",
-    _subselector: '::after',
-    _properties: (
+// This function counts width and margins for bottom border of the title
+// depends on width of the title in px rounded to one decimal place
+@function titleBottomBorder($name, $titleWidth) {
+    $fullTitleWidth: $titleWidth + 8 ; // Width of title with 8px white space
+    $borderMargin: ($fullTitleWidth / 12) * 1rem; // 12 - default px size
+    $borderWidth: (6.5 - $fullTitleWidth / 96) * 1in; // 1in = 96px
+
+    @return (
+      _name: "#{$name}TitleBottomBorder",
+      _subselector: '::after',
+      _properties: (
         content: "''",
-        width: 5in, //The width has been calculated to be equal to width of the bottom-border line of the Outline Container, when the margin-left property of this component contains the exact width of the Chapter Outline tile text node + 8px space is added
+        width: $borderWidth,
         border-bottom-width: 0.2rem,
         border-bottom-color: enum('ValueSet:::REQUIRED'),
         border-bottom-style: solid,
-        margin-left: 11.5rem, // This value has been calculated to contain Chapater Outline title text node width + 8px space required in the design specs
+        margin-left: $borderMargin,
         position: absolute, 
         bottom: 0,
         display: inline-block,
-    )
-);
+      )
+    );
+}
+
+$ChapterOutlineTitleBottomBorder: titleBottomBorder("Outline", 116.7);
