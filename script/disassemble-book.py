@@ -47,6 +47,7 @@ def extract_slugs_from_binder(binder):
 def main():
     """Main function"""
     in_dir = Path(sys.argv[1]).resolve(strict=True)
+    book_uuid = sys.argv[2]
     out_dir = (in_dir / "disassembled").resolve(strict=True)
     baked_file = (in_dir / "collection.baked.xhtml").resolve(strict=True)
     baked_metdata_file = (in_dir / "collection.baked-metadata.json").resolve(strict=True)
@@ -73,10 +74,11 @@ def main():
 
     with open(baked_metdata_file, "r") as baked_json:
         baked_metadata = json.load(baked_json)
+        book_toc_metadata = baked_metadata[book_uuid]
 
-    with open(f"{out_dir}/collection.toc-metadata.json", "w") as toc:
-        # dump toc baked_metadata_file by book uui 
-        # baked_metadata[book_uuid]
+    with open(f"{out_dir}/collection.toc-metadata.json", "w") as toc_json:
+        json.dump(book_toc_metadata, toc_json)
+        toc_json.close()
 
     for doc in flatten_to(binder, lambda d: isinstance(d, Document)):
         with open(f"{out_dir / doc.ident_hash}.xhtml", "wb") as out:
