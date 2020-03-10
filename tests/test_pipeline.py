@@ -174,3 +174,30 @@ def test_assemble_book(tmp_path):
     assert assembled_metadata["m42119@1.6"]["abstract"] is None
     assert "Explain the difference between a model and a theory" in \
         assembled_metadata["m42092@1.10"]["abstract"]
+
+def test_bake_book(tmp_path):
+    """Test basic input / output for bake-book script"""
+    bake_book_script = os.path.join(SCRIPT_DIR, "bake-book.py")
+    input_raw_metadata = os.path.join(TEST_DATA_DIR, "collection.assembled-metadata.json")
+    input_baked_xhtml = os.path.join(TEST_DATA_DIR, "collection.baked.xhtml")
+    output_baked_book_metadata = tmp_path / "collection.toc-metadata.json"
+    input_baked_book_uuid = os.path.join(TEST_DATA_DIR, "book_uuid")
+    book_uuid = open(input_baked_book_uuid, "r").read()
+
+    subprocess.run(
+        [
+            "python",
+            bake_book_script,
+            input_raw_metadata,
+            input_baked_xhtml,
+            output_baked_book_metadata,
+            book_uuid
+        ],
+        cwd=HERE,
+        check=True
+    )
+
+    baked_metadata = json.loads(output_baked_book_metadata.read_text())
+    assert baked_metadata[book_uuid]["legacy_id"] is not None
+    assert "College Physics" in \
+        baked_metadata[book_uuid]["title"]
