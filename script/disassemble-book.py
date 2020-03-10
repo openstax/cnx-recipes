@@ -74,7 +74,7 @@ def main():
 
     with open(baked_metdata_file, "r") as baked_json:
         baked_metadata = json.load(baked_json)
-        book_toc_metadata = baked_metadata[book_uuid]
+        book_toc_metadata = baked_metadata.get(book_uuid)
 
     with open(f"{out_dir}/collection.toc-metadata.json", "w") as toc_json:
         json.dump(book_toc_metadata, toc_json)

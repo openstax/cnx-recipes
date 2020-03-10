@@ -63,6 +63,7 @@ def test_disassemble_book(tmp_path):
     disassemble_book_script = os.path.join(SCRIPT_DIR, "disassemble-book.py")
     input_baked_xhtml = os.path.join(TEST_DATA_DIR, "collection.baked.xhtml")
     input_baked_metadata = os.path.join(TEST_DATA_DIR, "collection.baked-metadata.json")
+    input_baked_book_uuid = os.path.join(TEST_DATA_DIR, "book_uuid")
 
     input_dir = tmp_path / "book"
     input_dir.mkdir()
@@ -71,6 +72,7 @@ def test_disassemble_book(tmp_path):
     input_baked_xhtml_file.write_bytes(open(input_baked_xhtml, "rb").read())
     input_baked_metadata_file = input_dir / "collection.baked-metadata.json"
     input_baked_metadata_file.write_text(open(input_baked_metadata, "r").read())
+    book_uuid = open(input_baked_book_uuid, "r").read()
 
     disassembled_output = input_dir / "disassembled"
     disassembled_output.mkdir()
@@ -79,16 +81,17 @@ def test_disassemble_book(tmp_path):
         [
             "python",
             disassemble_book_script,
-            input_dir
+            input_dir,
+            book_uuid
         ],
         cwd=HERE,
         check=True
     )
 
-    xhtml_output_files = glob(f"{disassembled_output}/m42*.xhtml")
-    assert len(xhtml_output_files) == 2
+    xhtml_output_files = glob(f"{disassembled_output}/*.xhtml")
+    assert len(xhtml_output_files) == 3
     json_output_files = glob(f"{disassembled_output}/*-metadata.json")
-    assert len(json_output_files) == 2
+    assert len(json_output_files) == 3
 
     # Check for expected files and metadata that should be generated in this step
     json_output_m42119 = disassembled_output / "m42119@1.6-metadata.json"
@@ -116,6 +119,7 @@ def test_disassemble_book_empy_baked_metadata(tmp_path):
     """
     disassemble_book_script = os.path.join(SCRIPT_DIR, "disassemble-book.py")
     input_baked_xhtml = os.path.join(TEST_DATA_DIR, "collection.baked.xhtml")
+    input_baked_book_uuid = os.path.join(TEST_DATA_DIR, "book_uuid")
 
     input_dir = tmp_path / "book"
     input_dir.mkdir()
@@ -123,6 +127,7 @@ def test_disassemble_book_empy_baked_metadata(tmp_path):
     input_baked_xhtml_file = input_dir / "collection.baked.xhtml"
     input_baked_xhtml_file.write_bytes(open(input_baked_xhtml, "rb").read())
     input_baked_metadata_file = input_dir / "collection.baked-metadata.json"
+    book_uuid = open(input_baked_book_uuid, "r").read()
     input_baked_metadata_file.write_text(json.dumps({}))
 
     disassembled_output = input_dir / "disassembled"
@@ -132,7 +137,8 @@ def test_disassemble_book_empy_baked_metadata(tmp_path):
         [
             "python",
             disassemble_book_script,
-            input_dir
+            input_dir,
+            book_uuid
         ],
         cwd=HERE,
         check=True
