@@ -4,7 +4,7 @@ import json
 from lxml import etree
 from cnxepub.html_parsers import DocumentMetadataParser
 
-baked_xhtml_file, baked_metdata_file, book_uuid = sys.argv[1:4]
+raw_metadata_file, baked_xhtml_file, baked_metdata_file, book_uuid = sys.argv[1:5]
 
 def get_legacy_id_from_uri(uri):
     if not uri.startswith('col', 0, 3): return None
@@ -13,8 +13,8 @@ def get_legacy_id_from_uri(uri):
 
 def capture_book_metadata():
 
-    with open(baked_metdata_file, "r") as baked_json:
-        baked_metadata = json.load(baked_json)
+    with open(raw_metadata_file, "r") as raw_json :
+        baked_metadata = json.load(raw_json)
     
     with open(baked_xhtml_file, "r") as baked_xhtml:
         html = etree.parse(baked_xhtml)

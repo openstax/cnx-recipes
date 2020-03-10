@@ -47,8 +47,8 @@ def extract_slugs_from_binder(binder):
 def main():
     """Main function"""
     in_dir = Path(sys.argv[1]).resolve(strict=True)
-    book_uuid = sys.argv[2]
     out_dir = (in_dir / "disassembled").resolve(strict=True)
+    book_uuid = sys.argv[2]
     baked_file = (in_dir / "collection.baked.xhtml").resolve(strict=True)
     baked_metdata_file = (in_dir / "collection.baked-metadata.json").resolve(strict=True)
 
@@ -104,3 +104,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
