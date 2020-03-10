@@ -51,9 +51,8 @@ if [ ! "${arg1}" == "--all" ]; then
   fi
 fi
 
-
 for book_config in "${BOOK_CONFIGS[@]}"; do
-  read -r book_name recipe_name _ _ _ _ _ <<< "${book_config}"
+  read -r book_name recipe_name book_uuid _ _ _ _ <<< "${book_config}"
 
   do_progress_quiet "Compiling CSS file" \
     ./script/build-recipes "${book_name}"
@@ -79,8 +78,10 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   do_progress_quiet "Baking ${raw_book} using ${recipe_name} (~1min)" \
     cnx-easybake --coverage-file "${lcov_file}" ${debug_flag1} ${debug_flag2} ${debug_flag3} ${debug_flag4} "${css_file}" "${raw_book}" "${baked_book}"
 
-  do_progress_quiet "Copying metadata from ${raw_meta} to ${baked_meta}" \
-    cp "${raw_meta}" "${baked_meta}"
+  # Generate JSON metadata using venv python assumed to be available via Docker
+  # setup and previous bootstrap
+  do_progress_quiet "Extracting metadata from ${baked_book}" \	  
+    python ./script/bake-book.py "${raw_meta}" "${baked_meta}" "${baked_book}" "${book_uuid}"
 
   # Generate an HTML report (if genhtml is installed)
   if [[ -n "$(command -v genhtml)" ]]; then
@@ -102,4 +103,6 @@ for book_config in "${BOOK_CONFIGS[@]}"; do
   # Validate the cooked file
   do_progress_quiet "Validating ${baked_book}" \
     cnx-epub-validate-collated "${baked_book}"
+  
+  _say "${c_green}Baking is Done.${c_none} File is available at ${baked_book}"
 done
