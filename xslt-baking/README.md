@@ -7,3 +7,6 @@ Goals:
 - [ ] Number exercise at end of chapter
 - [ ] Create an Index
 - [ ] Inject the Page into the ToC
+- [x] Add code coverage (using https://github.com/xspec/xspec)
+  - [x] Generate an HTML report
+  - [ ] Transform the coverage.xml to a format that codecov recognizes

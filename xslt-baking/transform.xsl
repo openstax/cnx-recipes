@@ -28,9 +28,9 @@
 
   <!-- B. Number Figures in a Chapter -->
   <xsl:template match="*[@data-type='chapter']//h:figure">
-    <xslvariable name="thomas">
+    <xsl:variable name="thomas">
       <xsl:number count="*[@data-type='chapter']"/>
-    </xslvariable>
+    </xsl:variable>
     <xsl:message>Found figure <xsl:number count="*[@data-type='chapter']"/>.<xsl:number count="h:figure" from="*[@data-type='chapter']" level="any"/></xsl:message>
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
