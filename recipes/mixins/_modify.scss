@@ -927,6 +927,28 @@
   }
 }
 
+@mixin modify_exerciseFigureClass() {
+  @if release-flag-enabled(exercise-first-element) {
+    .os-problem-container .os-figure:first-child {
+      class: attr(class) " first-element";
+    }
+  }
+}
+
+@mixin modify_tagExerciseFirstElement() {
+  @if release-flag-enabled(exercise-first-element) {
+    .os-problem-container {
+      string-set: hasFirstElement " ";
+      .first-element {
+        string-set: hasFirstElement " has-first-element";
+      }
+      &:deferred {
+        class: attr(class) string(hasFirstElement);
+      }
+    }
+  }
+}
+
 //tag os-figure that contains splash image in introduction
 @mixin modify_tagSplash() {
   @if release-flag-enabled(tagSplash) {
