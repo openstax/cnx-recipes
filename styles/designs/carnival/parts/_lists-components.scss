@@ -1,130 +1,79 @@
-//General Prefece Modules
-$List_Component--Unordered: (
-    _name: "ListUnordered",
-    _subselector: ' > ul',
-    _properties: (
-        margin-left: h-grid(3),
-    ),
-  );
-$List_Component--Ordered: (
-    _name: "ListOrdered",
-    _subselector: ' > ol',
-    _properties: (
-        margin-left: h-grid(3),
-    ),
-  );
-$Section__List_Component--Unordered: (
-    _name:"SectionListUnordered",
-    _subselector:' > section > ul',
-    _properties: (
-        margin-left: h-grid(3),
-    )
-);
-$Section__List_Component--Ordered: (
-    _name:"SectionListOrdered",
-    _subselector:' > section > ol',
-    _properties: (
-        margin-left: h-grid(3),
-    )
-);
-$Sub_Section__List_Component--Unordered: (
-    _name:"SubSectionListUnordered",
-    _subselector:' > section > section > ul',
-    _properties: (
-        margin-left: h-grid(3),
-    )
-);
+@function styleList($element_type, $sub_selector,) {
+    $name: null;
+    $margin_left_value: null;
+    $margin_bottom_value: null;
 
-$Sub_Section__List_Component--Ordered: (
-    _name:"SubSectionListOrdered",
-    _subselector:' > section > section > ol',
-    _properties: (
-        margin-left: h-grid(3),
-    )
-);
-$Sub_Sub_Section__List_Component--Ordered: (
-    _name:"SubSubSectionListOrdered",
-    _subselector:' > section > section > section > ol',
-    _properties: (
-        margin-left: h-grid(3),
-    )
-);
-$Sub_Sub_Section__List_Component--Unordered: (
-    _name:"SubSectionListOrdered",
-    _subselector:' > section > section > section > ul',
-    _properties: (
-        margin-left: h-grid(3),
-    )
-);
-$Nested__List_Component--Unordered: (
-    _name:"NestedListUnordered",
-    _subselector:' > li > ul',
-    _properties: (
-        margin-left: h-grid(2),
-    )
-);
-$Nested__List_Component--Ordered: (
-    _name:"NestedListOrdered",
-    _subselector:' > li > ol',
-    _properties: (
-        margin-left: h-grid(2),
-    )
-);
+    @if $element_type == main {
+        $name: "ListMarginLeft";
+        $margin_left_value: h-grid(3);
+      } @else if $element_type == nested {
+        $name: "ListNestedMarginLeft";
+        $margin_left_value: h-grid(2);
+      } @else if $element_type == exercise {
+        $name: "ExerciseListMarginLeftBottom";
+        $margin_left_value: enum('ValueSet:::OPTIONAL');
+        $margin_bottom_value: enum('ValueSet:::OPTIONAL');
+        } @else if $element_type == exercise-nested {
+        $name: "ExerciseNestedListMarginLeftBottom";
+        $margin_left_value: enum('ValueSet:::OPTIONAL');
+        $margin_bottom_value: enum('ValueSet:::OPTIONAL');
+      } @else if $element_type == exercise-with-increased-margin {
+        $name: "ExerciseListMarginLeftBottomIcreased";
+        $margin_left_value: enum('ValueSet:::OPTIONAL');
+        $margin_bottom_value: enum('ValueSet:::OPTIONAL');
+      } @else if $element_type == note {
+        $name: "NoteList";
+        $margin_left_value: h-grid(3);
+        $margin_bottom_value:  half-v-grid(1);
+      }
+   
+   
+    @return (
+        _name: "#{$name}",
+        _subselector: "#{$sub_selector}",
+        _properties:(
+            margin-left: $margin_left_value,
+            margin-bottom: $margin_bottom_value,
+        )
+    );
+}
 
-//Exercises
-$EoC_Exercise__List--Ordered: (
-    _name: "EoCExerciseListOrdered",
-    _subselector: " > ol",
-    _properties:(
-        margin-left: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
-    )
-);
-$EoC_Exercise__List--Unordered: (
-    _name: "EoCExerciseListUnordered",
-    _subselector: " > ul",
-    _properties:(
-        margin-left: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
-    )
-);
-$EoC_Exercise__Section__List--Unordered: (
-    _name: "EoCExerciseSectionListUnordered",
-    _subselector: " section > ul",
-    _properties:(
-        margin-left: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
-    )
-);
-$EoC_Exercise__Section__List--Ordered: (
-    _name: "EoCExerciseSectionListOrdered",
-    _subselector: " section > ol",
-    _properties:(
-        margin-left: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
-    )
-);
-$EoC_Exercise_Container__List--Ordered: (
-    _name: "EoCExerciseContainerListOrdered",
-    _subselector: " > div > ol",
-    _properties:(
-        margin-left: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
-    )
-);
-$EoC_Exercise_Container__List--Unordered: (
-    _name: "EoCExerciseContainerListUnordered",
-    _subselector: " > div > ul",
-    _properties:(
-        margin-left: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
-    )
-);
-$EoC_Exercise__Nested__List--Ordered: (
-    _name: "EoCExerciseNestedListOrdered",
-    _subselector: " > li > ol",
-    _properties:(
-        margin-left: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
-    )
-);
+
+// General Prefece Modules Summary
+
+$List_Component--Unordered: styleList(main, " > ul");
+$List_Component--Ordered: styleList(main, " > ol");
+$Section__List_Component--Unordered: styleList(main, " > section > ul");
+$Section__List_Component--Ordered: styleList(main, " > section > ol");
+$Sub_Section__List_Component--Unordered: styleList(main, " > section > section > ul");
+$Sub_Section__List_Component--Ordered: styleList(main, " > section > section > ol");
+$Sub_Sub_Section__List_Component--Ordered: styleList(main, " > section > section > section > ol");
+$Sub_Sub_Section__List_Component--Unordered: styleList(main, " > section > section > section > ul");
+$Nested__List_Component--Unordered: styleList(nested, " > li > ul");
+$Nested__List_Component--Ordered: styleList(nested, " > li > ol");
+$SectionSummary__List_Component--Unordered: styleList(main, " .section-summary > ul");
+$SectionSummary__List_Component--Ordered: styleList(main, " .section-summary > ol");
+$Summary__List_Component--Unordered: styleList(main, " .summary > ul");
+$Summary__List_Component--Ordered: styleList(main, " .summary > ol");
+$Summary__Section__List--Unordered: styleList(main, " section > ul");
+
+// Exercices
+
+$Exercise__List--Ordered: styleList(exercise, " > ol");
+$Exercise__List--Unordered: styleList(exercise, " > ul");
+$Exercise__Section__List--Unordered: styleList(exercise-with-increased-margin, " section > ul");
+$Exercise__Section__List--Ordered: styleList(exercise-with-increased-margin, " section > ol");
+$Exercise_Container__List--Ordered: styleList(exercise, " > div > ol");
+$Exercise_Container__List--Unordered: styleList(exercise, " > div > ul");
+$Exercise__Nested__List--Ordered: styleList(exercise-nested, " > li > ol");
+
+// Notes
+
+$Note__List--Unordered: styleList(note, " ul");
+$Note__List--Ordered: styleList(note, " ol");
+
+// Appendices
+
+$Appendix__List--Unordered: styleList(main, " > ul");
+$Appendix__List--Ordered: styleList(main, " > ol");
+$Appendix__Section__List--Ordered: styleList(main, " > section > ol");
