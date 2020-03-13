@@ -8,16 +8,25 @@
   }
 }
 
-[data-type="chapter"] > [data-type="page"] > h2[data-type="document-title"] {
-  .os-number {
-    string-set: module-number content();
+[data-type="chapter"] > {
+  [data-type="page"].introduction .intro-text > h2[data-type="document-title"] {
+    string-set: module-number string(chapter-number);
+    
+    .os-text {
+      string-set: module-title "Introduction";
+    }
   }
-  .os-text {
-    string-set: module-title content();
+  [data-type="page"]:not(.introduction) > h2[data-type="document-title"] {
+    .os-number {
+      string-set: module-number content();
+    }
+    .os-text {
+      string-set: module-title content();
+    }
   }
 }
 
-div[data-type="composite-page"].os-eoc > h2[data-type="document-title"] {
+.os-eoc > h2[data-type="document-title"] {
   .os-text {
     string-set: eoc-title content();
   }
@@ -48,7 +57,7 @@ div[data-type="page"].preface {
   counter-reset: page 1;
 }
 
-div[data-type="composite-page"].os-eoc {
+.os-eoc {
   page: eoc;
 }
 

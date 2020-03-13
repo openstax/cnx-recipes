@@ -28,7 +28,7 @@ $Eoc_CompChapPageHeader:(
     _name: "CompChapPageHeader",
     _subselector: " > h3",
     _properties:(
-        color: enum('ValueSet:::REQUIRED'),
+        color: enum('ValueSet:::OPTIONAL'),
         font-family: enum('ValueSet:::REQUIRED'),
         font-weight: bold,
         font-size: font-scale(3),
@@ -99,22 +99,6 @@ $Exercisetitle_Container: eocSectionTitleH3(".exercises");
 $ReviewQuestionsTitle_Container: eocSectionTitleH3(".os-review-questions-container");
 // $FillInTheBlankTitle_Container: eocSectionTitleH3(".os-fill-in-the-blank-container");
 
-
-@function eocSectionTitleLink($section_selector) {
-    @return (
-        _name: "SectionTitleLink",
-        _subselector: " #{$section_selector} > a > h3, #{$section_selector} >[data-type="composite-page"] > a > h3",
-        _properties:(
-            font-family: enum('ValueSet:::REQUIRED'),
-            font-size: font-scale(3)
-        )
-    );
-}
-
-$SectionSummaryTitleLink: eocSectionTitleLink(".section-summary");
-$ConceptualQuestionsTitleLink: eocSectionTitleLink(".conceptual-questions");
-$ProblemsExercisesTitleLink: eocSectionTitleLink(".problems-exercises");
-
 $SectionSummaryUnorderedList:(
     _name: "UnorderedSectionSummaryList",
     _subselector: " .section-summary > ul",
@@ -143,6 +127,20 @@ $SummaryOrderedList:(
     margin-left: h-grid(3),
   )
 );
+$SummarySectionUnorderedList:(
+    _name: "SummarySectionUnorderedList",
+    _subselector: " section > ul",
+    _properties: (
+    margin-left: h-grid(3),
+  )
+);
+$SummaryNestedUnorderedList:(
+    _name: "UnorderedNestedList",
+    _subselector: " > li > ul",
+    _properties: (
+    margin-left: h-grid(2),
+  )
+);
 
 // During cleaning up Carnival Theme we can remove functions from above 
 // and aply this general link component to other shapes
@@ -151,7 +149,8 @@ $Eoc_SectionTitleLink:(
     _subselector: " a:first-of-type > h3",
     _properties:(
         font-family: enum('ValueSet:::REQUIRED'),
-        font-size: font-scale(3),
+        font-size: font-scale(2),
+        line-height: line-height(2),
     )
 );
 
@@ -211,6 +210,14 @@ $Exercise_Figure: (
     _subselector: " img",
     _properties:(
         max-width: enum('ValueSet:::OPTIONAL'),
+    )
+);
+$EoC_Figure_Under_Section_Title_Link: (
+    _name: "FigureUnderSectionTitleLink",
+    _subselector: " a:first-of-type + .os-figure",
+    _properties:(
+        max-width: 100%,
+        padding-top: half-v-grid(1),
     )
 );
 $Exercise_Table: (
