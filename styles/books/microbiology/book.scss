@@ -83,9 +83,33 @@
     _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
     'EocHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
   ),
-  ReviewQuestions: (
-    _selectors: ("[data-type = 'chapter'] > .os-review-questions-container"),
+  ChapterReviewCompositeChapter:(
+    _selectors: (".os-review-questions-container"),
     'EocHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+  MultipleChoiceCompChapPageWithTwoColumns:(
+    _selectors: (".os-multiple-choice-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+  CriticalThinkingCompChapPage:(
+    _selectors: (".os-critical-thinking-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+  ShortAnswerCompChapPage:(
+    _selectors: (".os-short-answer-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+  FillInTheBlank:(
+    _selectors: (".os-fill-in-the-blank-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+  Matching:(
+    _selectors: (".os-matching-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+  TrueFalse:(
+    _selectors: (".os-true-false-container"),
+    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
   ),
 ));
 
@@ -100,7 +124,6 @@
 @include use('BasicTable', 'carnival:::BasicTableShape');
 @include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
 @include use('Summary','carnival:::EocSummary');
-@include use('ReviewQuestions','carnival:::EocReviewQuestions');
 @include use('Module', 'carnival:::ModuleShape');
 @include use('Index', 'carnival:::IndexShape');
 @include use('AnswerKey', 'carnival:::AnswerKeyShape');
@@ -112,12 +135,147 @@
 @include use('CheckYourUnderstandingNote', 'carnival:::IconCondensedShape');
 @include use('MicroConnectionsNote', 'carnival:::IconCondensedShape');
 @include use('Appendix', 'carnival:::AppendixShape');
+@include use('ChapterReviewCompositeChapter','carnival:::EocCompositeChapter');
+@include use('MultipleChoiceCompChapPageWithTwoColumns','carnival:::EocCompChapExercises');
+@include use('CriticalThinkingCompChapPage','carnival:::EocCompChapExercises');
+@include use('ShortAnswerCompChapPage','carnival:::EocCompChapExercises');
+@include use('FillInTheBlank','carnival:::EocCompChapExercises');
+@include use('Matching','carnival:::EocCompChapExercises');
+@include use('TrueFalse','carnival:::EocCompChapExercises');
+
 
 [data-type="chapter"] {
     page: chapter;
     prince-page-group: start;
     page-break-before: right;
   }
+
+.os-eoc.os-review-questions-container {
+  page: eoc;
+  prince-page-group: start;
+}
+  
+.appendix {
+  page: appendix;
+  prince-page-group: start;
+}
+  
+.os-eob[data-type="composite-chapter"] {
+  page: eob;
+  prince-page-group: start;
+}
+.os-eoc {
+  page: eoc;
+}
+  
+.appendix {
+  page: appendix;
+}
+  
+.os-eob {
+  page: eob;
+}
+$bandColor: settings('scheme:::B7');
+$bandBorder: half-fullBleedsSize(2.5, rem) solid $bandColor;
+
+@mixin band($side) {
+  content: " ";
+  border-#{$side}: $bandBorder;
+  @if $side == "right" {
+    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
+    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
+  } @else if $side == "left" {
+    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
+    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
+  }
+}
+
+@mixin setPageBorder($page-type, $type, $side) {
+  @page #{$page-type}:#{$type} {
+    @if $side == "left" {
+      @left-middle {
+        @content;
+      }
+      @top-left-corner {
+        @content;
+      }
+      @bottom-left-corner {
+        @content;
+      }
+      @left-bottom {
+        @content;
+      }
+      @left-top {
+        @content;
+      }
+    } @else if $side == "right" {
+      @right-middle {
+        @content;
+      }
+      @top-right-corner {
+        @content;
+      }
+      @bottom-right-corner {
+        @content;
+      }
+      @right-bottom {
+        @content;
+      }
+      @right-top {
+        @content;
+      }
+    }
+  }
+}
+
+@include setPageBorder("eoc", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eoc", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eoc", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eoc", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("appendix", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("appendix", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("appendix", "blank", "right") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "left", "left") {
+  @include band("left");
+}
+
+@include setPageBorder("eob", "right", "right") {
+  @include band("right");
+}
+
+@include setPageBorder("eob", "blank", "left") {
+  content: none;
+  border: none;
+}
+@include setPageBorder("eob", "blank", "right") {
+  content: none;
+  border: none;
+}
 
 @page {
     margin-left: 1in;
