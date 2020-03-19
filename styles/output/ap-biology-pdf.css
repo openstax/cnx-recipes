@@ -36,6 +36,9 @@ h1, h2, h3, h4, h5, h6,
 .footnote {
   page-break-inside: avoid; }
 
+[data-type="footnote-refs"]::before {
+  page-break-after: avoid; }
+
 .os-index-container {
   page-break-before: right;
   page-break-after: left; }
@@ -144,10 +147,15 @@ sub {
 [data-type="chapter"] > h1[data-type="document-title"] .os-text {
   string-set: chapter-title content(); }
 
-[data-type="chapter"] > [data-type="page"] > h2[data-type="document-title"] .os-number {
+[data-type="chapter"] > [data-type="page"].introduction .intro-text > h2[data-type="document-title"] {
+  string-set: module-number string(chapter-number); }
+  [data-type="chapter"] > [data-type="page"].introduction .intro-text > h2[data-type="document-title"] .os-text {
+    string-set: module-title "Introduction"; }
+
+[data-type="chapter"] > [data-type="page"]:not(.introduction) > h2[data-type="document-title"] .os-number {
   string-set: module-number content(); }
 
-[data-type="chapter"] > [data-type="page"] > h2[data-type="document-title"] .os-text {
+[data-type="chapter"] > [data-type="page"]:not(.introduction) > h2[data-type="document-title"] .os-text {
   string-set: module-title content(); }
 
 .os-eoc > h2[data-type="document-title"] .os-text {
@@ -1423,6 +1431,7 @@ iframe {
   margin-bottom: 1.5rem;
   border-bottom-style: dotted;
   border-bottom-width: 0.2rem;
+  box-decoration-break: slice;
   border-bottom-color: #B10069;
   padding-bottom: 0.75rem; }
 
@@ -2200,6 +2209,7 @@ iframe {
   margin-bottom: 1.5rem;
   border-bottom-style: dotted;
   border-bottom-width: 0.2rem;
+  box-decoration-break: slice;
   border-bottom-color: #B05E36;
   padding-bottom: 0.75rem; }
 
