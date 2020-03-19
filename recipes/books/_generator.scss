@@ -623,16 +623,46 @@
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
   @include modify_tableSummaryToSibling();
+
+  aside[role="doc-footnote"] {
+  //   string-set: ftnote-id attr(id);
+    &::inside {
+      class: "footnote-content";
+      container: p;
+  //     data-type: "#" string(ftnote-id);
+      // node-set: testThis;
+    }
+    // &::outside {
+      // content: nodes(testThis);
+  //     class: footnote-container;
+    // }
+  }
 }
 :pass(12) {
   @include toc_putTOCElements($Config_TocTitleWord);
   @include modify_tagSplash();
+  
+  // .footnote-content {
+  //   string-set: footnoteTest attr(data-type);
+  //   data-type: "footnote";
+  // }
+  // .footnote-container::deferred {
+  //   attr-id: string(footnoteTest);
+  // }
+ 
 }
 :pass(13) {
   @include toc_navTOCUnwrap();
   @if TEMPLATE() == "TEMPLATE1" {
     @include modify_groupChapOutlineIntroContent();
   }
+  // aside[role="doc-footnote"] {
+  //   move-to: trash;
+  // }
+  // aside[role="doc-footnote"] {
+  //   class: "footnote-content";
+  //   container: p;
+  // }
 }
 :pass(100) {
   // Get rid of delete-me objects that easybake misses
