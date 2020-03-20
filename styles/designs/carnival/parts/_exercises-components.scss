@@ -1,3 +1,5 @@
+@import 'lists-components';
+
 $Exercise__Container:(
     _name: "Container",
     _subselector: " ",
@@ -29,15 +31,6 @@ $Exercise__Problem--Paragraph:(
     )
 );
 
-$Exercise_Ordered_List: (
-    _name: "ExerciseOrderedList",
-    _subselector: " > ol",
-    _properties:(
-        margin-left: h-grid(4),
-        margin-bottom: v-grid(1),
-    )
-);
-
 @function problemContainer($selector, $name) {
     @return (
         _name: "ProblemContainer#{$name}",
@@ -51,7 +44,22 @@ $Exercise_Ordered_List: (
         _components: (
             $Exercise__Problem--Paragraph,
             $Exercise__Image,
-            $Exercise_Ordered_List,
+            map-merge($ListComponent--MarginLeftBottomOrdered, (
+                _components:(
+                    map-merge($Nested__ListComponent--MarginLeftBottomOrdered, (
+                        _components:(
+                            $Nested__ListComponent--MarginLeftBottomOrdered,
+                        ),
+                    )),
+                ),
+            )),
+            $ListComponent--MarginLeftBottomUnordered,
+            map-merge($Container__ListComponent--MarginLeftBottomOrdered, (
+                _components:(
+                    $Nested__ListComponent--MarginLeftBottomOrdered,
+                ),
+            )),
+            $Container__ListComponent--MarginLeftBottomUnordered,
         ),
     );
 }
