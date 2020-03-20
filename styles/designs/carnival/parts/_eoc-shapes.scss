@@ -1,5 +1,6 @@
 @import '_eoc-components';
 @import '_table-components';
+@import 'lists-components';
 
 @include create_shape('carnival:::EocKeyTerm',(
     _components:(
@@ -107,15 +108,19 @@
                 $Eoc_Header,
                 $Eoc_CompChapPageHeader,
                 $Eoc_SectionTitleLink,
-                $SummaryUnorderedList,
-                map-merge($SummarySectionUnorderedList, (
+                map-merge($Summary__Section__ListComponent--MarginLeftUnordered, (
+                    _components: (
+                        $Nested__ListComponent--MarginLeftOrdered,
+                    ),
+                )),
+                map-merge($Summary__Section__ListComponent--MarginLeftUnordered, (
                     _components:(
-                        $SummaryNestedUnorderedList
-                    )
-                )
+                        $Nested__ListComponent--MarginLeftUnordered,
+                    ),
+                )),
             ),
         )),
-    ))
+    ),
 ));
 
 @include create_shape('carnival:::EocSummary',(
@@ -124,12 +129,12 @@
             _components:(
                 $Eoc_Header,
                 $Summarytitle_Container,
-                $SummaryUnorderedList,
-                $SummaryOrderedList
+                $Section__ListComponent--MarginLeftUnordered,
+                $Section__ListComponent--MarginLeftOrdered,
             ),
         )),
-    ))
-);
+    ),
+));
 
 @include create_shape('carnival:::EocSectionSummary',(
     _components:(
@@ -137,12 +142,16 @@
             _components:(
                 $Eoc_Header,
                 $Eoc_SectionTitleLink,
-                $SectionSummaryUnorderedList,
-                $SectionSummaryOrderedList
+                map-merge($Section__ListComponent--MarginLeftUnordered, (
+                    _components: (
+                        $Nested__ListComponent--MarginLeftOrdered,
+                    ),
+                )),
+                $Section__ListComponent--MarginLeftOrdered,
             ),
         )), 
-    ))
-);
+    ),
+));
 
 @include create_shape('carnival:::EocExercise',(
     _components:(
@@ -157,14 +166,14 @@
                         map-merge($Problem_Container, (
                             _components: (
                                 $Problem_Paragraph,
-                            )
+                            ),
                         )),
                     ),
                 )),
             ),
         )),
-    ))
-);
+    ),
+));
 
 @include create_shape('carnival:::EocExerciseWithoutSubtitle',(
     _components:(
@@ -180,26 +189,26 @@
                             $Problem_Paragraph,
                             $Exercise_Figure,
                             $Exercise_Table,
-                            $Exercise_Container_Ordered_List,
-                            map-merge($Exercise_Ordered_List,(
+                            $Container__ListComponent--MarginLeftBottomOrdered,
+                            map-merge($ListComponent--MarginLeftBottomOrdered,(
                                 _components: (
-                                $Exercise_Nested_Ordered_List,
-                                ))
-                            ),
-                            $Exercise_Unordered_List,
+                                    $Nested__ListComponent--MarginLeftBottomOrdered,
+                                ),
+                            )),
+                            $ListComponent--MarginLeftBottomUnordered,
                             map-merge($Exercise_Table,(
                                 _components: (
-                                $Exercise_Table_Row,
-                                )
-                            )),
-                        )
-                    ))
-                  )
+                                    $Exercise_Table_Row,
+                                    ),
+                                )),
+                            ),
+                        )),
+                    ),
                 ))
             ),
         )),
-    ))
-);
+    ),
+));
 
 @include create_shape('carnival:::EocReviewQuestions' ,(
     _components:(
@@ -208,10 +217,10 @@
                 $Eoc_Header,
                 $ReviewQuestionsTitle_Container,
                 $Multiple_Choice,
-            )
-        ))
-    ))
-);
+            ),
+        )),
+    ),
+));
 
 @include create_shape('carnival:::EocConceptualQuestions',(
     _components:(
@@ -226,15 +235,15 @@
                     map-merge($Problem_Container, (
                         _components:(
                             $Problem_Paragraph,
-                            $Exercise_Unordered_List
-                        ),
-                    )),
-                  )
+                            $ListComponent--MarginLeftBottomUnordered,
+                            ),
+                        )),
+                    ),
                 ))
             ),
         )),
-    ))
-);
+    ),
+));
 
 @include create_shape('carnival:::EocProblemsExercises',(
     _components:(
@@ -252,13 +261,14 @@
                             $Problem_Paragraph,
                             $Exercise_Figure,
                             $Exercise_Table,
-                            $Exercise_Ordered_List
-                        ),
-                    )),
-                ))
+                            $ListComponent--MarginLeftBottomOrdered,
+                            ),
+                        )),
+                    ),
+                )),
             ),
         )),
-    ))
+    ),
 ));
 
 @include create_shape('carnival:::EocCompositeChapter',(
@@ -268,8 +278,8 @@
                 $Eoc_Header,
             ),
         )),
-    ))
-);
+    ),
+));
 
 @include create_shape('carnival:::EocCompChapExercises',(
     _components:(
@@ -284,34 +294,35 @@
                         map-merge($Problem_Container, (
                             _components:(
                                 $Problem_Paragraph,
-                                map-merge($Exercise_Ordered_List, (
+                                map-merge($ListComponent--MarginLeftBottomOrdered, (
                                     _components:(
-                                        map-merge($Exercise_Nested_Ordered_List, (
+                                        map-merge($Nested__ListComponent--MarginLeftBottomOrdered, (
                                             _components:(
-                                                $Exercise_Nested_Ordered_List
+                                                $Nested__ListComponent--MarginLeftBottomOrdered,
+                                                ),
                                             )),
-                                        )),
-                                    )),
-                                $Exercise_Unordered_List,
-                                map-merge($Exercise_Container_Ordered_List, (
-                                    _components:(
-                                        $Exercise_Nested_Ordered_List
                                         ),
-                                )),
+                                    )),
+                                    $ListComponent--MarginLeftBottomUnordered,
+                                map-merge($Container__ListComponent--MarginLeftBottomOrdered, (
+                                     _components:(
+                                        $Nested__ListComponent--MarginLeftBottomOrdered,
+                                        ),
+                                    )),
                                 $Exercise_Figure,
-                                $Exercise_Container_Unordered_List
+                                $Container__ListComponent--MarginLeftBottomUnordered,
                             ),
                         )),
-                    )
-                )),
-                $Exercise_Section_Unordered_List,
-                map-merge($Exercise_Container_Ordered_List, (
-                    _components:(
-                        $Exercise_Nested_Ordered_List
                     ),
                 )),
-                $Exercise_Section_Ordered_List,
+                $Section__ListComponent--MarginLeftBottomUnordered,
+                map-merge($Container__ListComponent--MarginLeftBottomOrdered, (
+                    _components:(
+                        $Nested__ListComponent--MarginLeftBottomOrdered,
+                    ),
+                )),
+                $Section__ListComponent--MarginLeftBottomOrdered,
             ),
         )),
-    ))
-);
+    ),
+));
