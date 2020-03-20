@@ -623,10 +623,17 @@
   @include modify_suppressURI($Config_hasCompositeChapter);
   @include toc_prepTOCElements($Config_hasCompositeChapter);
   @include modify_tableSummaryToSibling();
+
+  @each $firstElement in $Config_FirstElements {
+    $selector: map-get($firstElement, selector);
+    @include validate_type($selector, string);
+    @include modify_addFirstElement($selector);
+  }
 }
 :pass(12) {
   @include toc_putTOCElements($Config_TocTitleWord);
   @include modify_tagSplash();
+  @include modify_tagExerciseWithFirstElement();
 }
 :pass(13) {
   @include toc_navTOCUnwrap();
