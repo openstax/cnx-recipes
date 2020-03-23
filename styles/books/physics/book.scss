@@ -30,9 +30,17 @@
 @include add_settings((
   Module: (
     _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
-    'H2Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H4Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H2Title:::column-span': all,
+    'H2Title:::text-transform': uppercase,
+    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'SolutionTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'SolutionTitle:::font-family': (_ref: 'typography:::sansFont'),
   ),
 ));
 
@@ -84,64 +92,43 @@
 ));
 
 @include add_settings((
-  KeyTerm:(
-    _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
-    'Container:::column-count': 2,
-    'Container:::column-gap': 2.4rem,
-    'Container:::column-width': auto,
+  GenericEOC:(
+    _selectors: (".os-eoc"),
     'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
     'H2Title:::font-family': (_ref: 'typography:::serifFont'),
     'H2Title:::column-span': all,
     'H2Title:::text-transform': uppercase,
     'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
     'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4LinkTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  KeyTerm:(
+    _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
   ),
   EocSummary: (
     _selectors: ("[data-type = 'chapter'] > .os-section-summary-container"),
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
-    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H2Title:::column-span': all,
-    'H2Title:::text-transform': uppercase,
-    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H3LinkTitle:::font-family': (_ref: 'typography:::sansFont'),
   ),
   ConceptualQuestions: (
     _selectors: ("[data-type = 'chapter'] > .os-conceptual-questions-container"),
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
-    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H2Title:::column-span': all,
-    'H2Title:::text-transform': uppercase,
-    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H3LinkTitle:::font-family': (_ref: 'typography:::sansFont'),
-    'H4Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'SolutionTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'SolutionTitle:::font-family': (_ref: 'typography:::sansFont'),
   ),
   ProblemsExercises: (
     _selectors: ("[data-type = 'chapter'] > .os-problems-exercises-container"),
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
-    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H2Title:::column-span': all,
-    'H2Title:::text-transform': uppercase,
-    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H3LinkTitle:::font-family': (_ref: 'typography:::sansFont'),
-    'H4Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'SolutionTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'SolutionTitle:::font-family': (_ref: 'typography:::sansFont'),
   ),
 ));
 
@@ -176,13 +163,14 @@
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('Link', "carnival:::Link");
 @include use('Term', 'carnival:::Term');
-
+@include use('ContentExercises','carnival:::ExerciseShape');
 //EOC
+@include use('GenericEOC','carnival:::GenericEOCShape');
 @include use('KeyTerm', 'carnival:::EocKeyTerm');
 @include use('EocSummary', 'carnival:::EocSummary');
-@include use('ConceptualQuestions','carnival:::ExerciseShape');
-@include use('ProblemsExercises','carnival:::ExerciseShape');
-//@include use('RegularExercise','carnival:::ExerciseShape');
+@include use('ConceptualQuestions','carnival:::EOCAssesmentsShape');
+@include use('ProblemsExercises','carnival:::EOCAssesmentsShape');
+
 
 
 @include use('Appendix', 'carnival:::AppendixShape');

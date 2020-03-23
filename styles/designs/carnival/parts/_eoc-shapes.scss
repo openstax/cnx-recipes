@@ -7,7 +7,21 @@
 //We 
 
 
-//all we need is to set the columns to 1 and define an h2. The inner sections are handled individually. There are a few problems with the titles which will need to be fixed later.
+//all the headers are the same in the EOC, set them on .os-eoc via a generic shape then set columns on the specific assessments if needed
+
+@include create_shape('carnival:::GenericEOCShape',(
+    _components:(
+        map-merge($EocContainer,(
+            _components:(
+                $H2Component,
+                $H3Component,
+                $H3LinkComponent,
+                $H4Component,
+                $H4LinkComponent,
+            ),
+        )),
+    ))
+);
 @include create_shape('carnival:::EOCDefaultCompoundComposite',(
     _components:(
         map-merge($EocContainer,(
@@ -25,8 +39,6 @@
     _components:(
         map-merge($EocContainer,(
             _components:(
-                $H2Component,
-                $H3Component,
                 $Term_DL
             ),
         )),
@@ -35,9 +47,6 @@
 
 @include create_shape('carnival:::EocKeyEquations',(
     _components:(
-        $H2Component,
-        $H3Component,
-        $H3LinkComponent,
         map-merge($EocContainer,(
             _components:(
                 map-merge($Key_Equations, (
@@ -80,19 +89,8 @@
     _components:(
         map-merge($EocContainer,(
             _components:(
-                $H2Component,
-                $H3Component,
-                $H3LinkComponent,
-                map-merge($Summary__Section__ListComponent--MarginLeftUnordered, (
-                    _components: (
-                        $Nested__ListComponent--MarginLeftOrdered,
-                    ),
-                )),
-                map-merge($Summary__Section__ListComponent--MarginLeftUnordered, (
-                    _components:(
-                        $Nested__ListComponent--MarginLeftUnordered,
-                    ),
-                )),
+                $Section__ListComponent--MarginLeftUnordered,
+                $Section__ListComponent--MarginLeftOrdered,
             ),
         )),
     ),
