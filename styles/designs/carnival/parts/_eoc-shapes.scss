@@ -2,6 +2,25 @@
 @import '_table-components';
 @import 'lists-components';
 
+
+//4 main shapes are used for the EOC. Key Terms, SUmmary, Key equations and exerises (from the exercise shapes) This contains all options for headers. It  would be cleaner for the settings (avoid repetition) to separate those in two (composite chapters vs base eoc) but in practice, it's hard to remember which section is using what. We can fine tune it later if needed. 
+//We 
+
+
+//all we need is to set the columns to 1 and define an h2. The inner sections are handled individually. There are a few problems with the titles which will need to be fixed later.
+@include create_shape('carnival:::EOCDefaultCompoundComposite',(
+    _components:(
+        map-merge($EocContainer,(
+            _components:(
+                $H2Component,
+                $H3Component,
+                $H4LinkComponent,
+            ),
+        )),
+    ))
+);
+
+
 @include create_shape('carnival:::EocKeyTerm',(
     _components:(
         map-merge($EocContainer,(
@@ -14,56 +33,13 @@
     ))
 );
 
-
-@include create_shape('carnival:::EocKeyEqu',(
+@include create_shape('carnival:::EocKeyEquations',(
     _components:(
+        $H2Component,
+        $H3Component,
+        $H3LinkComponent,
         map-merge($EocContainer,(
             _components:(
-                $H2Component,
-                $H3Component,
-                map-merge($Key_Equations, (
-                    _components: (
-                        map-merge($TableContainer, (
-                            _components: (
-                                map-merge($UnnumberedUnstyledTable, (
-                                    _components: (
-                                        map-merge($TableHead, (
-                                            _components: (
-                                                map-merge($TableRow, (
-                                                    _components: (
-                                                        $TableHeadCell,
-                                                    )
-                                                )),
-                                            )
-                                        )),
-                                        map-merge($TableBody, (
-                                            _components: (
-                                                map-merge($TableRow, (
-                                                    _components: (
-                                                        $TableData,
-                                                    )
-                                                )),
-                                            )
-                                        )),
-                                    )
-                                ))
-                            )
-                        ))
-                    )
-                ))
-            ),
-        )),
-    ))
-);
-
-// This is temporary solution to avoid changes in other books.
-// During cleaning up Carnival Theme will be created one shape for Key Equation 
-@include create_shape('carnival:::EocKeyEquWithSectionLink',(
-    _components:(
-        map-merge($EocContainer,(
-            _components:(
-                $H2Component,
-                $H3LinkComponent,
                 map-merge($Key_Equations, (
                     _components: (
                         map-merge($Key_Equations_Table_Container, (
@@ -99,9 +75,8 @@
     ))
 );
 
-// This is temporary solution to avoid changes in other books.
-// During cleaning up Carnival Theme will be created one shape for Summary
-@include create_shape('carnival:::EocSummaryWithSectionLink',(
+//can we clean this up?
+@include create_shape('carnival:::EocSummary',(
     _components:(
         map-merge($EocContainer,(
             _components:(
@@ -123,42 +98,13 @@
     ),
 ));
 
-@include create_shape('carnival:::EocSummary',(
-    _components:(
-        map-merge($EocContainer,(
-            _components:(
-                $H2Component,
-                $H3Component,
-                $Section__ListComponent--MarginLeftUnordered,
-                $Section__ListComponent--MarginLeftOrdered,
-            ),
-        )),
-    ),
-));
 
-@include create_shape('carnival:::EocSectionSummary',(
-    _components:(
-        map-merge($EocContainer,(
-            _components:(
-                $H2Component,
-                $H3LinkComponent,
-                map-merge($Section__ListComponent--MarginLeftUnordered, (
-                    _components: (
-                        $Nested__ListComponent--MarginLeftOrdered,
-                    ),
-                )),
-                $Section__ListComponent--MarginLeftOrdered,
-            ),
-        )), 
-    ),
-));
 
+//TODO used in anatomy only
 @include create_shape('carnival:::EocExercise',(
     _components:(
         map-merge($EocContainer,(
             _components:(
-                $H2Component,
-                $H3Component,
                 map-merge($Problem_Wrapper,(
                     _components:(
                         $Problem_Number,
@@ -175,11 +121,15 @@
     ),
 ));
 
+//we really want to consolidate this as one shape
+//I think we should create generic shapes based on columns as Natalia did in the EOC2 but I don't have time to figure out everything that needs to go in there for now, so keeping those to be
+
+
+//TODO: not used in anatomy only
 @include create_shape('carnival:::EocExerciseWithoutSubtitle',(
     _components:(
         map-merge($EocContainer,(
             _components:(
-                $H2Component,
                 map-merge( $Problem_Wrapper,(
                   _components: (
                     $Problem_Number,
@@ -210,83 +160,73 @@
     ),
 ));
 
+
+//TODO: used in microbiology
 @include create_shape('carnival:::EocReviewQuestions' ,(
     _components:(
         map-merge($EocContainer, (
             _components:(
-                $H2Component,
-                $H3Component,
-                $Multiple_Choice,
             ),
         )),
     ),
 ));
 
-@include create_shape('carnival:::EocConceptualQuestions',(
-    _components:(
-        map-merge($EocContainer,(
-            _components:(
-                $H2Component,
-                $H3LinkComponent,
-                map-merge( $Problem_Wrapper,(
-                  _components: (
-                    $Problem_Number,
-                    $Problem_Divider,
-                    map-merge($Problem_Container, (
-                        _components:(
-                            $Problem_Paragraph,
-                            $ListComponent--MarginLeftBottomUnordered,
-                            ),
-                        )),
-                    ),
-                ))
-            ),
-        )),
-    ),
-));
 
-@include create_shape('carnival:::EocProblemsExercises',(
-    _components:(
-        map-merge($EocContainer,(
-            _components:(
-                $H2Component,
-                $H3LinkComponent,
-                $EoC_Figure_Under_Section_Title_Link,
-                map-merge($Problem_Wrapper,(
-                  _components: (
-                    $Problem_Number,
-                    $Problem_Divider,
-                    map-merge($Problem_Container, (
-                        _components:(
-                            $Problem_Paragraph,
-                            $Exercise_Figure,
-                            $Exercise_Table,
-                            $ListComponent--MarginLeftBottomOrdered,
-                            ),
-                        )),
-                    ),
-                )),
-            ),
-        )),
-    ),
-));
+//used in physics
+// @include create_shape('carnival:::EocConceptualQuestions',(
+//     _components:(
+//         map-merge($EocContainer,(
+//             _components:(
+//                 map-merge( $Problem_Wrapper,(
+//                   _components: (
+//                     $Problem_Number,
+//                     $Problem_Divider,
+//                     map-merge($Problem_Container, (
+//                         _components:(
+//                             $Problem_Paragraph,
+//                             $ListComponent--MarginLeftBottomUnordered,
+//                             ),
+//                         )),
+//                     ),
+//                 ))
+//             ),
+//         )),
+//     ),
+// ));
 
-@include create_shape('carnival:::EocCompositeChapter',(
-    _components:(
-        map-merge($EocContainer,(
-            _components:(
-                $H2Component,
-            ),
-        )),
-    ),
-));
 
+//not used anymore
+// @include create_shape('carnival:::EocProblemsExercises',(
+//     _components:(
+//         map-merge($EocContainer,(
+//             _components:(
+//                 $EoC_Figure_Under_Section_Title_Link,
+//                 map-merge($Problem_Wrapper,(
+//                   _components: (
+//                     $Problem_Number,
+//                     $Problem_Divider,
+//                     map-merge($Problem_Container, (
+//                         _components:(
+//                             $Problem_Paragraph,
+//                             $Exercise_Figure,
+//                             $Exercise_Table,
+//                             $ListComponent--MarginLeftBottomOrdered,
+//                             ),
+//                         )),
+//                     ),
+//                 )),
+//             ),
+//         )),
+//     ),
+// ));
+
+
+
+//TODO: used in U-physics, do we need to apply all those extra options for eoc content somewhere else?
 @include create_shape('carnival:::EocCompChapExercises',(
     _components:(
         map-merge($EocContainer,(
             _components:(
-                $H3Component,
-                $H3LinkComponent,
                 map-merge($Problem_Wrapper,(
                     _components:(
                         $Problem_Number,
