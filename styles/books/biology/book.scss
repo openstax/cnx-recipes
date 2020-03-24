@@ -12,41 +12,14 @@
   ),
 ));
 
-@include add_settings((
-  KeyTerm:(
-    _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-  ),
-  SummaryWithSectionLinks:(
-    _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-  ),
-  VisualExercise: (
-    _selectors: ("[data-type = 'chapter'] > .os-visual-exercise-container"),
-    'CompositeHeader:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'CompositeHeader:::font-family': (_ref: 'typography:::sansFont'),
-    'CompositeHeader:::column-span': all,
-  ),
-  MultipleChoice: (
-    _selectors: ("[data-type = 'chapter'] > .os-multiple-choice-container"),
-    'CompositeHeader:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'CompositeHeader:::font-family': (_ref: 'typography:::sansFont'),
-    'CompositeHeader:::column-span': all,
-  ),
-  CriticalThinking: (
-    _selectors: ("[data-type = 'chapter'] > .os-critical-thinking-container"),
-    'CompositeHeader:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'CompositeHeader:::font-family': (_ref: 'typography:::sansFont'),
-    'CompositeHeader:::column-span': all,
-  ),
-));
+
 
 @include add_settings((
   Preface: (
     _selectors: (".preface"),
-    'BodyH3:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'BodyH4:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'BodyH5:::color': (_ref: "colorMap:::biologyHeaderColor"),
+    'H3Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
+    'H4Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
+    'H5Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
   ),
 ));
 
@@ -57,9 +30,15 @@
   ),
   Module: (
     _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
-    'Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'Subtitle:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'SubSubtitle:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'H2Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H3Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'SolutionTitle:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'SolutionTitle:::font-family': (_ref: 'typography:::sansFont'),
   ),
   ChapterIntro: (
     _selectors: (".introduction"),
@@ -88,7 +67,6 @@
     group-border-color: (_ref: 'colorMap:::careerColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Title:::color': (_ref: 'colorMap:::careerColor'),
-    'TitleLabel:::max-width': 9rem,
     'TitleIcon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-career.svg")) no-repeat top left,
   ),
   EvolutionNote:(
@@ -96,7 +74,6 @@
     group-border-color: (_ref: 'colorMap:::evolutionColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Title:::color': (_ref: 'colorMap:::evolutionColor'),
-    'TitleLabel:::max-width': 9rem,
     'TitleIcon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-evolution.svg")) no-repeat top left,
   ),
   ScientificMethodNote:(
@@ -111,7 +88,6 @@
     group-border-color: (_ref: 'colorMap:::visualColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Title:::color': (_ref: 'colorMap:::visualColor'),
-    'TitleLabel:::max-width': 9rem,
     'TitleIcon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-visualconnection.svg")) no-repeat top left,
   ),
   InterconnectNote:(
@@ -126,7 +102,6 @@
     'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-linktolearning.svg")) no-repeat top left,
-    'TitleText:::max-width': h-grid(10),
   ),
 ));
 
@@ -138,25 +113,83 @@
   ),
 ));
 
+//EOC, define colors and column layout for all eoc sections here.This should be treated exactly like notes, where we use generic components and book specfic setting for each one of them. There is quite a bit of repetion but this keeps everything cleanly in here and follows the same principles as the notes. 
+
+//Can we convert those into group settings? A mixin? Something to DRY it.
+@include add_settings((
+  GenericEOC:(
+    _selectors: (".os-eoc"),
+    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H2Title:::column-span': all,
+    'H2Title:::text-transform': uppercase,
+    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4LinkTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  KeyTerm:(
+    _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+  ),
+  EocSummary:(
+    _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+  ),
+  VisualExercise: (
+    _selectors: ("[data-type = 'chapter'] > .os-visual-exercise-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+
+  ),
+  MultipleChoice: (
+    _selectors: ("[data-type = 'chapter'] > .os-multiple-choice-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+
+  ),
+  CriticalThinking: (
+    _selectors: ("[data-type = 'chapter'] > .os-critical-thinking-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+  ),
+));
+
+
 @include add_settings((
   Appendix: (
     _selectors: (".appendix"),
     'MainText:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'SubTitle:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'SubSubTitle:::color': (_ref: "colorMap:::biologyHeaderColor"),
+    'H2Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
+    'H3Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
   ),
 ));
+
+
 
 //@use
 @include use('BookRoot', "common:::BookRoot");
 @include use('UnitToc', 'carnival:::UnitToc');
 @include use('Preface','carnival:::Preface');
+@include use('ContentExercises','carnival:::ExerciseShape');
+//EOC
+@include use('GenericEOC','carnival:::GenericEOCShape');
 @include use('KeyTerm','carnival:::EocKeyTerm');
-@include use('SummaryWithSectionLinks','carnival:::EocSummaryWithSectionLink');
-@include use('VisualExercise', 'carnival:::EocTwoColumnsUnclustered');
-@include use('MultipleChoice', 'carnival:::EocTwoColumnsUnclustered');
-@include use('CriticalThinking', 'carnival:::EocTwoColumnsUnclustered');
-@include use('RegularExercise','carnival:::ExerciseShape');
+@include use('EocSummary','carnival:::EocSummary');
+@include use('VisualExercise', 'carnival:::EOCAssesmentsShape');
+@include use('MultipleChoice', 'carnival:::EOCAssesmentsShape');
+@include use('CriticalThinking', 'carnival:::EOCAssesmentsShape');
+
 @include use('LearningObjectiveAbstract', 'carnival:::LearningObjectiveAbstractShape');
 @include use('Appendix', 'carnival:::AppendixShape');
 @include use('Index', 'carnival:::IndexShape');

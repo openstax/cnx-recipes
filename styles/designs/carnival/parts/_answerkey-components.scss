@@ -1,3 +1,5 @@
+@import 'titles-components';
+
 @function exerciseComponentsDisplay($exercisePart, $componentName, $selector) {
   $value: null;
   $partComponentName: null;
@@ -29,53 +31,26 @@ $AnswerKeyContainerComponent: (
   )
 );
 
-$AnswerKeyTitleComponent: (
-  _name: "TitleContainer",
-  _subselector: ' > h1',
-  _properties: (
-    border-bottom-color: enum('ValueSet:::REQUIRED'),
-    border-bottom-width: enum('ValueSet:::REQUIRED'),
-    border-bottom-style: enum('ValueSet:::REQUIRED'),
-    column-span: all,
-    padding-bottom: enum('ValueSet:::OPTIONAL'),
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::OPTIONAL'),
-    font-size: enum('ValueSet:::REQUIRED'),
-    line-height: enum('ValueSet:::REQUIRED'),
-    font-weight: bold,
-    text-transform: uppercase,
-    margin-bottom: enum('ValueSet:::REQUIRED')
-  )
-);
 
-$AnswerKeyTitleTextComponent: (
-  _name: "Title",
-  _subselector: ' > h2',
-  _properties: (
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-size: font-scale(4),
-    line-height: line-height(4),
-    font-weight: bold,
-  )
-);
-$AnswerKeyExerciseTitleTextComponent: (
-  _name: "ExerciseTitle",
-  _subselector: ' > .os-solution-area > h3',
-  _properties: (
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-size: font-scale(3),
-    line-height: line-height(3),
-    font-weight: bold,
-  )
-);
+
+
+// $AnswerKeyExerciseTitleTextComponent: (
+//   _name: "ExerciseTitle",
+//   _subselector: ' > .os-solution-area > h3',
+//   _properties: (
+//     color: enum('ValueSet:::REQUIRED'),
+//     font-family: enum('ValueSet:::REQUIRED'),
+//     font-size: font-scale(3),
+//     line-height: line-height(3),
+//     font-weight: bold,
+//   )
+// );
 $AnswerKeyImageComponent: (
   _name: "Image",
   _subselector: ' img',
   _properties: (
     display: block,
-    margin: v-grid(1) h-grid(1),
+    margin: column-v-spacing(1) h-spacing(1),
   )
 );
 $AnswerKeyNumberComponent: (
@@ -87,6 +62,7 @@ $AnswerKeyNumberComponent: (
   )
 );
 
+//probably want to move that to shapes for consistency
 $AnswerKeyChapterContainerComponent: (
   _name: "ChapterContainer",
   _subselector: ' > [data-type="composite-page"]',
@@ -94,8 +70,8 @@ $AnswerKeyChapterContainerComponent: (
     padding-bottom: enum('ValueSet:::OPTIONAL'),
   ),
   _components: (
-    $AnswerKeyTitleTextComponent,
-    $AnswerKeyExerciseTitleTextComponent,
+    $H2Component,
+    $H3Component, //is this selector working? was.os-solution-area
     map-merge(exerciseComponentsDisplay(solution, Component, ' [data-type="solution"]'), (
       _components: (
         $AnswerKeyNumberComponent,
