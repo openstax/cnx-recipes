@@ -16,7 +16,7 @@
     _name: "#{$partComponentName}",
     _subselector: #{$selector},
     _properties: (
-      display: $value,
+      
     )
   );
 }
@@ -26,6 +26,25 @@ $AnswerKeyContainerComponent: (
   _subselector: '',
   _properties: (
 
+  )
+);
+
+$AnswerKeySolutionWrapper: (
+  _name: "SolutionWrapper",
+  _subselector: ' [data-type="solution"]',
+  _properties: (
+    display: table,
+  )
+);
+
+$AnswerKeySolutionContainer: (
+  _name: "SolutionContainer",
+  _subselector: ' > .os-solution-container',
+  _properties:(
+    display: table-cell,
+    vertical-align: enum('ValueSet:::OPTIONAL'),
+    padding-top: enum('ValueSet:::OPTIONAL'),
+    width: 100%,
   )
 );
 
@@ -82,6 +101,7 @@ $AnswerKeyNumberComponent: (
   _name: "Number",
   _subselector: ' > .os-number',
   _properties: (
+    display: table-cell,
     text-decoration: none,
     color: enum('ValueSet:::REQUIRED'),
   )
@@ -112,12 +132,12 @@ $AnswerKeyChapterContainerComponent: (
   _components: (
     $AnswerKeyTitleTextComponent,
     $AnswerKeyExerciseTitleTextComponent,
-    map-merge(exerciseComponentsDisplay(solution, Component, ' [data-type="solution"]'), (
+    map-merge($AnswerKeySolutionWrapper, (
       _components: (
         $AnswerKeyNumberComponent,
-        map-merge(exerciseComponentsDisplay(solution, Container, '> .os-solution-container'), (
+        map-merge($AnswerKeySolutionContainer, (
           _components: (
-            exerciseComponentsDisplay(solution, Text, '> p'),
+            //exerciseComponentsDisplay(solution, Text, '> p'),
             $AnswerKeyImageComponent,
             $AnswerKeyOrderedListComponent,
             $AnswerKeyUnorderedListComponent
