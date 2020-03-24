@@ -19,7 +19,9 @@
     <xsl:variable name="labelText" select="j:string[@key='labelText']/text()"/>
     
     <axsl:template match="h:*[@data-type='note'][@class][phil:hasClass(@class, '{$className}')]">
-      <axsl:message>We found a "{$className}"! Adding labeltext to <axsl:value-of select="@id"/></axsl:message>
+      <axsl:if test="$logOutput">
+        <axsl:message>We found a "{$className}"! Adding labeltext to <axsl:value-of select="@id"/></axsl:message>
+      </axsl:if>
       <axsl:copy>
         <axsl:apply-templates select="@*"/>
         <h:h2>{$labelText}</h:h2>
@@ -46,7 +48,9 @@
     <xsl:variable name="clusterBy" select="j:string[@key='clusterBy']/text()"/>
     <xsl:variable name="name" select="j:string[@key='name']/text()"/>
     
-    <axsl:message>Building end-of-chapter section "{$className}"</axsl:message>
+    <axsl:if test="$logOutput">
+      <axsl:message>Building end-of-chapter section "{$className}"</axsl:message>
+    </axsl:if>
     <h:div data-type="composite-page" class="os-eoc os-{$className}-container" data-uuid-key="{$className}">
       <h:h2>{$name}</h:h2>
       <!-- from _createChapterComposite -->
@@ -75,6 +79,9 @@
       version="3.0">
 
       <axsl:output method="xhtml" indent="yes" html-version="5.0"/>
+
+      <axsl:param name="logOutput" select="false()"/>
+      
       <xsl:apply-templates/>
 
 
