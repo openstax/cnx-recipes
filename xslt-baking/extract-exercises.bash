@@ -2,8 +2,8 @@
 
 function die() {
   msg=$1
-  echo "********" &1>2
-  echo "* ${msg}" &1>2
+  echo "********"
+  echo "* ${msg}"
   exit 110
 }
 
@@ -11,18 +11,18 @@ function do_extract() {
   book=$1
 
   echo "Extracting ${book}"
-  ./xsltproc3.bash ./extract-exercises.xsl "../data/${book}/collection.baked.xhtml" "./exercises/${book}.json" || die "Failed to extract ${book}"
+  ./xsltproc3.bash ./extract-exercises.xsl "../data/${book}/collection.baked.xhtml" "./exercises/${book}.json" "bookName=${book}" || die "Failed to extract ${book}"
 }
 
 [[ -d "./exercises" ]] || mkdir "./exercises"
 
 
-do_extract apphysics
-do_extract apbiology
 do_extract accounting-vol-1
 do_extract accounting-vol-2
 do_extract american-government-2e
 do_extract anatomy
+do_extract apphysics
+do_extract apbiology
 do_extract astronomy
 do_extract biology-2e
 do_extract biology

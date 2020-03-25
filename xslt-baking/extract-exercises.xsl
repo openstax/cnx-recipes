@@ -10,43 +10,46 @@
   
   <xsl:output method="text" indent="yes"/>
 
-  <xsl:key name="identified-element" match="*[@id]" use="@id"/>
+  <xsl:param name="bookName"/>
 
-  <xsl:template match="/">
-    <xsl:variable name="json">
-      <j:array>
-        <xsl:apply-templates select="node()"/>
-      </j:array>
-    </xsl:variable>
-    <xsl:value-of select="xml-to-json($json, map{'indent':true()})"/>
-  </xsl:template>
+  <xsl:key name="identified-element" match="*[@id]" use="@id"/>
 
   <xsl:template match="*[@data-type='chapter']">
     <xsl:variable name="chapterNumber" select="h:h1[@data-type='document-title']/*[@class='os-number'][1]/text()" />
-    <j:map>
-      <j:number key="chapter"><xsl:value-of select="$chapterNumber"/></j:number>
-      <j:array key="exercises">
-        <xsl:apply-templates select="node()"/>
-      </j:array>
-    </j:map>
+    <xsl:variable name="json">
+      <j:map>
+        <j:number key="chapter"><xsl:value-of select="$chapterNumber"/></j:number>
+        <j:array key="exercises">
+          <xsl:apply-templates select="node()">
+            <xsl:with-param tunnel="yes" name="chapterNumber" select="$chapterNumber"/>
+          </xsl:apply-templates>
+        </j:array>
+      </j:map>
+    </xsl:variable>
+    <xsl:result-document href="{$bookName}-ch{$chapterNumber}.json">
+      <xsl:value-of select="xml-to-json($json, map{'indent':true()})"/>
+    </xsl:result-document>
   </xsl:template>
 
   <xsl:template match="*[@data-type='composite-page']//*[@data-type='exercise']">
     <xsl:variable name="exerciseNumber" select="*[@data-type='problem']/*[@class='os-number']/text()"/>
     <xsl:variable name="answerHref" select="*[@data-type='problem']/h:a[@class='os-number']/@href"/>
     <xsl:variable name="problem" select="*[@data-type='problem']/*[@class='os-problem-container']"/>
-    <xsl:variable name="options" select="$problem/h:ol[@type='a']"/>
-    <xsl:variable name="stimulusRoot" select="if (count($options/*) > 1) then ($problem/*[1]) else ($problem)"/>
+    <xsl:variable name="options" select="$problem/h:ol[@type='a' or @type='A']"/>
+    <xsl:variable name="stimulusRoot" select="$problem/node()[not(self::h:ol[@type='a' or @type='A'])]"/>
+    <xsl:variable name="isActuallyMultipleChoice" select="$problem/h:ol[@data-number-style='lower-alpha' or @type='A']"/>
 
     <!-- <xsl:variable name="stimulus" select="$problem/*[1]"/> -->
     <xsl:variable name="stimulusText">
-      <xsl:apply-templates mode="stringify" select="$stimulusRoot/node()"/>
+      <xsl:apply-templates mode="stringify" select="$stimulusRoot"/>
     </xsl:variable>
 
     <xsl:variable name="stimulusImages" select="$stimulusRoot//h:img/@src"/>
     
     <j:map>
       <j:number key="number"><xsl:value-of select="$exerciseNumber"/></j:number>
+
+      <j:boolean key="isMaybeFakeMultipleChoice"><xsl:value-of select="not($isActuallyMultipleChoice)"/></j:boolean>
       
       <xsl:call-template name="stringifyOrReportWhyNot">
         <xsl:with-param name="key">stimulus</xsl:with-param>
@@ -56,6 +59,7 @@
       <xsl:call-template name="constructImage">
         <xsl:with-param name="key">stimulus</xsl:with-param>
         <xsl:with-param name="hrefs" select="$stimulusImages"/>
+        <xsl:with-param name="exerciseNumber" select="$exerciseNumber"/>
       </xsl:call-template>
 
       <!-- Decide whether to convert the options or skip them -->
@@ -76,6 +80,7 @@
               <xsl:call-template name="constructImage">
                 <xsl:with-param name="key">option</xsl:with-param>
                 <xsl:with-param name="hrefs" select="$optionImages"/>
+                <xsl:with-param name="exerciseNumber" select="$exerciseNumber"/>
               </xsl:call-template>
 
             </j:map>
@@ -86,7 +91,7 @@
       <xsl:if test="$answerHref">
         <xsl:variable name="answerElement" select="key('identified-element', substring-after($answerHref, '#'))"/>
         <xsl:variable name="answer">
-          <xsl:apply-templates mode="stringify" select="$answerElement/node()"/>
+          <xsl:apply-templates mode="stringify" select="$answerElement/*[@class='os-solution-container']/node()"/>
         </xsl:variable>
 
         <xsl:call-template name="stringifyOrReportWhyNot">
@@ -126,38 +131,44 @@
   <xsl:template name="constructImage">
     <xsl:param name="key"/>
     <xsl:param name="hrefs"/>
+    <xsl:param name="chapterNumber" tunnel="yes"/>
+    <xsl:param name="exerciseNumber"/>
 
     <xsl:if test="count($hrefs) > 1">
-      <xsl:message>Multiple Images found. Only using the first one: <xsl:value-of select="$hrefs"/></xsl:message>
+      <xsl:message>{$bookName} {$chapterNumber}.{$exerciseNumber}: Found {count($hrefs)} images</xsl:message>
     </xsl:if>
 
     <xsl:if test="$hrefs">
-      <xsl:variable name="href" select="$hrefs[1]"/>
-      <j:string>
+      <j:array>
         <xsl:attribute name="key">
           <xsl:value-of select="$key"/>
-          <xsl:text>_image</xsl:text>
+          <xsl:text>_images</xsl:text>
         </xsl:attribute>
-        <xsl:choose>
-          <xsl:when test="starts-with($href, 'http')">
-            <xsl:value-of select="normalize-space($href)"/>
-          </xsl:when>
-          <xsl:when test="starts-with($href, 'm')">
-            <xsl:variable name="module" select="substring-before($href, '/')"/>
-            <xsl:variable name="filename" select="substring-after($href, '/')"/>
-            <xsl:text>https://legacy.cnx.org/content/</xsl:text>
-            <xsl:value-of select="$module"/>
-            <xsl:text>/latest/</xsl:text>
-            <xsl:value-of select="$filename"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:message>Unknown image ref: "<xsl:value-of select="$href"/>"</xsl:message>
-            <xsl:text>[Unknown image ref: "</xsl:text>
-            <xsl:value-of select="$href"/>
-            <xsl:text>"]</xsl:text>
-          </xsl:otherwise>
-        </xsl:choose>
-      </j:string>
+        <xsl:for-each select="$hrefs">
+          <xsl:variable name="href" select="."/>
+          <j:string>
+            <xsl:choose>
+              <xsl:when test="starts-with($href, 'http')">
+                <xsl:value-of select="normalize-space($href)"/>
+              </xsl:when>
+              <xsl:when test="starts-with($href, 'm')">
+                <xsl:variable name="module" select="substring-before($href, '/')"/>
+                <xsl:variable name="filename" select="substring-after($href, '/')"/>
+                <xsl:text>https://legacy.cnx.org/content/</xsl:text>
+                <xsl:value-of select="$module"/>
+                <xsl:text>/latest/</xsl:text>
+                <xsl:value-of select="$filename"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:message>{$bookName} {$chapterNumber}.{$exerciseNumber}: Unknown image ref: "{$href}"</xsl:message>
+                <xsl:text>[Unknown image ref: "</xsl:text>
+                <xsl:value-of select="$href"/>
+                <xsl:text>"]</xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+          </j:string>
+        </xsl:for-each>
+      </j:array>
     </xsl:if>
   </xsl:template>
 
@@ -180,11 +191,14 @@
     <xsl:text>**</xsl:text>
   </xsl:template>
 
-  <xsl:template mode="stringify" match="h:a[starts-with(@href, '#')]">
+  <xsl:template mode="stringify" match="h:a[starts-with(@href, '#')][not(starts-with(text(), 'LO '))]">
     <xsl:text>[</xsl:text>
     <xsl:apply-templates mode="stringify" select="node()"/>
     <xsl:text>]</xsl:text>
   </xsl:template>
+
+  <!-- Discard the LO link at the beginning of every exercise in accounting -->
+  <xsl:template mode="stringify" match="h:a[starts-with(@href, '#')][starts-with(text(), 'LO ')]"/>
 
   <xsl:template mode="stringify" match="h:sub">
     <xsl:text>_</xsl:text>
