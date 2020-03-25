@@ -652,7 +652,7 @@
 @mixin compose_createEOBSolutions($compositeSections, $compositePages, $notes, $solutionPage, $sectionHeaderNode) {
   $solutionClassName: map-get($solutionPage, className);
   $clusterBy: map-get($solutionPage, clusterBy);
-
+  
   // Validate
   @include validate_type($solutionClassName, string);
   @include validate_enum($clusterBy, $CLUSTER__PREFIX__);
@@ -660,6 +660,7 @@
   @each $note in $notes {
     $hasSolutions: map-get($note, hasSolutions);
     $resetAt: map-get($note, resetAt);
+
 
     @include validate_typeOptional($hasSolutions, bool);
 
@@ -681,7 +682,7 @@
 
 
       [data-type="chapter"] {
-        @if ($clusterBy == $CLUSTER_SECTION) and release-flag-enabled(module-titled-notes) {
+        @if ($resetAt == moduleReset) and release-flag-enabled(module-titled-notes) {
           [data-type="page"]:not(.introduction) {
             //do we want to set only the number and reconstruct "section + secion number or should we just string-set the whole title for the module?
             // [data-type="document-title"] .os-number {
@@ -690,7 +691,7 @@
             [data-type="note"].#{$className} [data-type="solution"] {
               move-to: note-#{$className}-#{$solutionClassName}-GETSECTION;
             }
-            @if $resetAt == moduleReset {
+            
             &::after {
               content: nodes($sectionHeaderNode);
               move-to: moduleTitleName;
@@ -700,14 +701,6 @@
               class: "os-solution-area";
               content: pending(moduleTitleName) pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
               move-to: note-#{$solutionClassName}-SECTIONS;
-            }
-            } @else {
-              &::after {
-                container: div;
-                class: "os-solution-area";
-                content: pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
-                move-to: note-#{$solutionClassName}-SECTIONS;
-              }
             }
           }
           &::before {
