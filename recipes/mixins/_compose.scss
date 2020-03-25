@@ -659,6 +659,7 @@
 
   @each $note in $notes {
     $hasSolutions: map-get($note, hasSolutions);
+    $resetAt: map-get($note, resetAt);
 
     @include validate_typeOptional($hasSolutions, bool);
 
@@ -689,16 +690,24 @@
             [data-type="note"].#{$className} [data-type="solution"] {
               move-to: note-#{$className}-#{$solutionClassName}-GETSECTION;
             }
-            //Left commented just in case the section headers will be needed in the future
-            // &::after {
-            //   content: nodes($sectionHeaderNode);
-            //   move-to: moduleTitleName;
-            // }
+            @if $resetAt == moduleReset {
+            &::after {
+              content: nodes($sectionHeaderNode);
+              move-to: moduleTitleName;
+            }
             &::after {
               container: div;
               class: "os-solution-area";
-              content: pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
+              content: pending(moduleTitleName) pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
               move-to: note-#{$solutionClassName}-SECTIONS;
+            }
+            } @else {
+              &::after {
+                container: div;
+                class: "os-solution-area";
+                content: pending(note-#{$className}-#{$solutionClassName}-GETSECTION);
+                move-to: note-#{$solutionClassName}-SECTIONS;
+              }
             }
           }
           &::before {
