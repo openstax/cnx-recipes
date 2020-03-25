@@ -11,8 +11,10 @@ function do_extract() {
   book=$1
 
   echo "Extracting ${book}"
-  ./xsltproc3.bash ./extract-exercises.xsl "../data/${book}/collection.baked.xhtml" | ./xsltproc3.bash ./to-json.xsl - > "${book}.json" || die "Failed to extract ${book}"
+  ./xsltproc3.bash ./extract-exercises.xsl "../data/${book}/collection.baked.xhtml" "./exercises/${book}.json" || die "Failed to extract ${book}"
 }
+
+[[ -d "./exercises" ]] || mkdir "./exercises"
 
 
 do_extract apphysics

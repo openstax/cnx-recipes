@@ -5,17 +5,20 @@
   xmlns:j="http://www.w3.org/2005/xpath-functions"
   xmlns:h="http://www.w3.org/1999/xhtml"
   xmlns:m="http://www.w3.org/1998/Math/MathML"
-  xmlns:phil="https://philschatz.com"
-  version="1.0">
+  expand-text="yes"
+  version="3.0">
   
-  <xsl:output method="xml" indent="yes"/>
+  <xsl:output method="text" indent="yes"/>
 
   <xsl:key name="identified-element" match="*[@id]" use="@id"/>
 
   <xsl:template match="/">
-    <j:array>
-      <xsl:apply-templates select="node()"/>
-    </j:array>
+    <xsl:variable name="json">
+      <j:array>
+        <xsl:apply-templates select="node()"/>
+      </j:array>
+    </xsl:variable>
+    <xsl:value-of select="xml-to-json($json, map{'indent':true()})"/>
   </xsl:template>
 
   <xsl:template match="*[@data-type='chapter']">
@@ -40,7 +43,7 @@
       <xsl:apply-templates mode="stringify" select="$stimulusRoot/node()"/>
     </xsl:variable>
 
-    <xsl:variable name="stimulusImage" select="$stimulusRoot//h:img[1]/@src"/>
+    <xsl:variable name="stimulusImages" select="$stimulusRoot//h:img/@src"/>
     
     <j:map>
       <j:number key="number"><xsl:value-of select="$exerciseNumber"/></j:number>
@@ -52,7 +55,7 @@
 
       <xsl:call-template name="constructImage">
         <xsl:with-param name="key">stimulus</xsl:with-param>
-        <xsl:with-param name="href" select="$stimulusImage"/>
+        <xsl:with-param name="hrefs" select="$stimulusImages"/>
       </xsl:call-template>
 
       <!-- Decide whether to convert the options or skip them -->
@@ -62,7 +65,7 @@
             <xsl:variable name="option">
               <xsl:apply-templates mode="stringify" select="node()"/>
             </xsl:variable>
-            <xsl:variable name="optionImage" select=".//h:img[1]/@src"/>
+            <xsl:variable name="optionImages" select=".//h:img/@src"/>
 
             <j:map>
               <xsl:call-template name="stringifyOrReportWhyNot">
@@ -72,7 +75,7 @@
 
               <xsl:call-template name="constructImage">
                 <xsl:with-param name="key">option</xsl:with-param>
-                <xsl:with-param name="href" select="$optionImage"/>
+                <xsl:with-param name="hrefs" select="$optionImages"/>
               </xsl:call-template>
 
             </j:map>
@@ -122,9 +125,14 @@
 
   <xsl:template name="constructImage">
     <xsl:param name="key"/>
-    <xsl:param name="href"/>
+    <xsl:param name="hrefs"/>
 
-    <xsl:if test="$href">
+    <xsl:if test="count($hrefs) > 1">
+      <xsl:message>Multiple Images found. Only using the first one: <xsl:value-of select="$hrefs"/></xsl:message>
+    </xsl:if>
+
+    <xsl:if test="$hrefs">
+      <xsl:variable name="href" select="$hrefs[1]"/>
       <j:string>
         <xsl:attribute name="key">
           <xsl:value-of select="$key"/>
