@@ -53,7 +53,6 @@
     <xsl:variable name="problem" select="*[@data-type='problem']/*[@class='os-problem-container']"/>
     <xsl:variable name="options" select="$problem/h:ol[@type='a' or @type='A']"/>
     <xsl:variable name="stemRoot" select="$problem/node()[not(self::h:ol[@type='a' or @type='A'])]"/>
-    <xsl:variable name="isActuallyMultipleChoice" select="$problem/h:ol[@data-number-style='lower-alpha' or @type='A']"/>
 
     <!-- <xsl:variable name="stem" select="$problem/*[1]"/> -->
     <xsl:variable name="stemText">
@@ -64,10 +63,6 @@
     
     <j:map>
       <j:number key="number"><xsl:value-of select="$exerciseNumber"/></j:number>
-      <j:string key="whack_a_mole_type">{$problem/h:ol/@type}</j:string>
-      <j:string key="whack_a_mole_number_style">{$problem/h:ol/@data-number-style}</j:string>
-      <j:string key="whack_a_mole_data_uuid_key">{$dataUuidKey}</j:string>
-      <j:boolean key="is_maybe_fake_multiple_choice"><xsl:value-of select="not($isActuallyMultipleChoice)"/></j:boolean>
       
       <xsl:call-template name="stringifyOrReportWhyNot">
         <xsl:with-param name="key">stem</xsl:with-param>
@@ -138,13 +133,14 @@
             <xsl:value-of select="$key"/>
           </xsl:attribute>
           <xsl:value-of select="normalize-space($context)"/>
+          <xsl:message>"{$bookName}", "{$dataUuidKey}", {$chapterNumber},{$exerciseNumber}, "converted_{$key}"</xsl:message>
         </xsl:when>
         <xsl:otherwise>
           <xsl:attribute name="key">
             <xsl:text>unconverted_</xsl:text>
             <xsl:value-of select="$key"/>
           </xsl:attribute>
-          <xsl:message>{$bookName} {$dataUuidKey} {$chapterNumber}.{$exerciseNumber}: Unconverted {$key} because of "{$context/*[1]/local-name()}" element. </xsl:message>
+          <xsl:message>"{$bookName}", "{$dataUuidKey}", {$chapterNumber},{$exerciseNumber}, "FIX:UNCONVERTED_{$key}", "{$context/*[1]/local-name()}"</xsl:message>
           <xsl:text>Unconverted element: </xsl:text>
           <xsl:value-of select="$context/*[1]/local-name()"/>
         </xsl:otherwise>
@@ -161,7 +157,7 @@
     <xsl:param name="exerciseNumber"/>
 
     <xsl:if test="count($hrefs) > 1">
-      <xsl:message>{$bookName} {$dataUuidKey} {$chapterNumber}.{$exerciseNumber}: Found {count($hrefs)} images</xsl:message>
+      <xsl:message>"{$bookName}", "{$dataUuidKey}", {$chapterNumber},{$exerciseNumber}, "FIX:MULTIPLE_IMAGES", {count($hrefs)}</xsl:message>
     </xsl:if>
 
     <xsl:if test="$hrefs">
@@ -186,7 +182,7 @@
                 <xsl:value-of select="$filename"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:message>{$bookName} {$chapterNumber}.{$exerciseNumber}: Unknown image ref: "{$href}"</xsl:message>
+                <xsl:message>"{$bookName}", "{$dataUuidKey}", {$chapterNumber},{$exerciseNumber}, "FIX:BAD_IMAGE_LINK", {$href}</xsl:message>
                 <xsl:text>[Unknown image ref: "</xsl:text>
                 <xsl:value-of select="$href"/>
                 <xsl:text>"]</xsl:text>
@@ -215,6 +211,12 @@
     <xsl:text>**</xsl:text>
     <xsl:apply-templates mode="stringify" select="node()"/>
     <xsl:text>**</xsl:text>
+  </xsl:template>
+
+  <xsl:template mode="stringify" match="h:a[starts-with(@href, 'http')]">
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="@href"/>
+    <xsl:text> </xsl:text>
   </xsl:template>
 
   <xsl:template mode="stringify" match="h:a[starts-with(@href, '#')][not(starts-with(text(), 'LO '))]">
