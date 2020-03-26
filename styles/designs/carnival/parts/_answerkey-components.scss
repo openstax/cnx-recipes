@@ -1,35 +1,10 @@
-@function exerciseComponentsDisplay($exercisePart, $componentName, $selector) {
-  $value: null;
-  $partComponentName: null;
-
-  @if $exercisePart == problem {
-    $value: flex;
-    $partComponentName: "Problem#{$componentName}";
-  } @else if $exercisePart == solution {
-    $value: inline;
-    $partComponentName: "Solution#{$componentName}";
-  } @else {
-    @error "There is no such part in exercise"
-  }
-
-  @return (
-    _name: "#{$partComponentName}",
-    _subselector: #{$selector},
-    _properties: (
-      
-    )
-  );
-}
-
-$AnswerKeyContainerComponent: (
+$AnswerKey__Container: (
   _name: "Container",
   _subselector: '',
-  _properties: (
-
-  )
+  _properties: (),
 );
 
-$AnswerKeySolutionWrapper: (
+$AnswerKey__Solution--Wrapper: (
   _name: "SolutionWrapper",
   _subselector: ' [data-type="solution"]',
   _properties: (
@@ -37,16 +12,28 @@ $AnswerKeySolutionWrapper: (
   )
 );
 
-$AnswerKeySolutionContainer: (
+// TODO after merge code from g.g branch add SolutionContainerSpecific component
+// for solutions started with figure or image. See _exercises-components.scss file
+
+$AnswerKey__Solution--Container: (
   _name: "SolutionContainer",
   _subselector: ' > .os-solution-container',
   _properties:(
     display: table-cell,
-    vertical-align: enum('ValueSet:::OPTIONAL'),
-    padding-top: enum('ValueSet:::OPTIONAL'),
     width: 100%,
   )
 );
+
+$AnswerKey__Solution--Paragraph:(
+  _name: "SolutionParagraph",
+  _subselector: " > p",
+  _properties:(
+    margin-bottom: 0,
+  )
+);
+
+// Titles components are reworked in another PR
+// Remove this comment after merge all changes together
 
 $AnswerKeyTitleComponent: (
   _name: "TitleContainer",
@@ -89,23 +76,37 @@ $AnswerKeyExerciseTitleTextComponent: (
     font-weight: bold,
   )
 );
-$AnswerKeyImageComponent: (
+
+$AnswerKey__Image: (
   _name: "Image",
   _subselector: ' img',
   _properties: (
-    display: block,
-    margin: v-grid(1) h-grid(1),
+    max-width: 100%,
   )
 );
-$AnswerKeyNumberComponent: (
+
+$AnswerKey__Solution--Number: (
   _name: "Number",
   _subselector: ' > .os-number',
   _properties: (
     display: table-cell,
     text-decoration: none,
     color: enum('ValueSet:::REQUIRED'),
+    font-weight: bold,
   )
 );
+
+$AnswerKey__Solution--Divider:(
+  _name: "SolutionDivider",
+  _subselector: " > .os-divider",
+  _properties:(
+    margin-right: h-grid(1),
+  )
+);
+
+// Lists components are reworked in another PR
+// Remove this comment after merge all changes together
+
 $AnswerKeyOrderedListComponent: (
   _name: "OrderedList",
   _subselector: ' > ol',
@@ -123,27 +124,10 @@ $AnswerKeyUnorderedListComponent: (
   )
 );
 
-$AnswerKeyChapterContainerComponent: (
-  _name: "ChapterContainer",
+$AnswerKey__CompositePage: (
+  _name: "CompositePage",
   _subselector: ' > [data-type="composite-page"]',
   _properties: (
-    padding-bottom: enum('ValueSet:::OPTIONAL'),
+    margin-bottom: v-grid(2), // TODO change to v-spacing after merge code from g.g branch
   ),
-  _components: (
-    $AnswerKeyTitleTextComponent,
-    $AnswerKeyExerciseTitleTextComponent,
-    map-merge($AnswerKeySolutionWrapper, (
-      _components: (
-        $AnswerKeyNumberComponent,
-        map-merge($AnswerKeySolutionContainer, (
-          _components: (
-            //exerciseComponentsDisplay(solution, Text, '> p'),
-            $AnswerKeyImageComponent,
-            $AnswerKeyOrderedListComponent,
-            $AnswerKeyUnorderedListComponent
-          )
-        ))
-      )
-    ))
-  )
 );
