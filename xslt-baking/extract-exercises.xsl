@@ -19,7 +19,18 @@
     <xsl:variable name="chapterTitle">
       <xsl:value-of select="h:h1[@data-type='document-title']/node()[not(self::*[@class='os-number'])]//text()"/>
     </xsl:variable>
-    <xsl:variable name="chapterTitle2" select="replace(replace(replace($chapterTitle, ':', ''),'\s+$',''),'^\s+','')"/>
+    <xsl:variable name="chapterTitle2" select="
+      replace(
+        replace(
+          replace(
+            replace(
+              replace(
+                $chapterTitle
+              , ':', '')
+            ,'\s+$','')
+          ,'^\s+','')
+        , '/', ' ')
+      , '\?', ' ')"/>
     <xsl:variable name="filename">{$bookName} - Chapter {$chapterNumber} - {$chapterTitle2}.json</xsl:variable>
     <xsl:variable name="json">
       <j:map>
