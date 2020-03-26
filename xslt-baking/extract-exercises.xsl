@@ -16,6 +16,11 @@
 
   <xsl:template match="*[@data-type='chapter']">
     <xsl:variable name="chapterNumber" select="h:h1[@data-type='document-title']/*[@class='os-number'][1]/text()" />
+    <xsl:variable name="chapterTitle">
+      <xsl:value-of select="h:h1[@data-type='document-title']/node()[not(self::*[@class='os-number'])]//text()"/>
+    </xsl:variable>
+    <xsl:variable name="chapterTitle2" select="replace(replace(replace($chapterTitle, ':', ''),'\s+$',''),'^\s+','')"/>
+    <xsl:variable name="filename">{$bookName} - Chapter {$chapterNumber} - {$chapterTitle2}.json</xsl:variable>
     <xsl:variable name="json">
       <j:map>
         <j:number key="chapter"><xsl:value-of select="$chapterNumber"/></j:number>
@@ -26,7 +31,8 @@
         </j:array>
       </j:map>
     </xsl:variable>
-    <xsl:result-document href="{$bookName}-ch{$chapterNumber}.json">
+    <xsl:message>Generating {$filename}</xsl:message>
+    <xsl:result-document href="{$filename}">
       <xsl:value-of select="xml-to-json($json, map{'indent':true()})"/>
     </xsl:result-document>
   </xsl:template>
@@ -202,15 +208,11 @@
   </xsl:template>
   
   <xsl:template mode="stringify" match="h:em">
-    <xsl:text>*</xsl:text>
     <xsl:apply-templates mode="stringify" select="node()"/>
-    <xsl:text>*</xsl:text>
   </xsl:template>
 
   <xsl:template mode="stringify" match="h:strong">
-    <xsl:text>**</xsl:text>
     <xsl:apply-templates mode="stringify" select="node()"/>
-    <xsl:text>**</xsl:text>
   </xsl:template>
 
   <xsl:template mode="stringify" match="h:a[starts-with(@href, 'http')]">
