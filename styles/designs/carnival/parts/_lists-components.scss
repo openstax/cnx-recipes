@@ -1,0 +1,93 @@
+@function list--marginLeft($element_type, $sub_selector,) {
+    $name: null;
+    $margin_left_value: null;
+
+    @if $element_type == main {
+        $name: "List--MarginLeft";
+        $margin_left_value: h-spacing(3);
+    } @else if $element_type == nested {
+        $name: "Nested__List--MarginLeft";
+        $margin_left_value: h-spacing(2);
+    }
+
+    @return (
+        _name: "#{$name}",
+        _subselector: "#{$sub_selector}",
+        _properties:(
+            margin-left: $margin_left_value,
+        )
+    );
+
+}
+
+@function list--marginLeftBottom($element_type, $sub_selector,) {
+    $name: null;
+    $margin_left_value: null;
+    $margin_bottom_value: null;
+
+    @if $element_type == main {
+        $name: "List--MarginLeftBottom";
+        $margin_left_value: h-spacing(3);
+        $margin_bottom_value: v-spacing(1);
+    } @else if $element_type == nested {
+        $name: "Nested__List--MarginLeftBottom";
+        $margin_left_value: h-spacing(2);
+        $margin_bottom_value: v-spacing(1);
+    } @else if $element_type == margin-left-increased {
+        $name: "List--MarginLeftBottomIncreased";
+        $margin_left_value: h-spacing(4);
+        $margin_bottom_value: v-spacing(1);
+    } @else if $element_type == margin-bottom-removed {
+        $name: "AnswerKey__List--MarginBottomLeft";
+        $margin_left_value: h-spacing(3);
+        $margin_bottom_value: 0;
+
+    }
+
+    @return (
+        _name: "#{$name}",
+        _subselector: "#{$sub_selector}",
+        _properties:(
+            margin-left: $margin_left_value,
+            margin-bottom: $margin_bottom_value,
+        )
+    );
+
+}
+
+// General, Prefece, Modules, Summary, Appendices, Summary
+
+$ListComponent--MarginLeftUnordered: list--marginLeft(main, " > ul");
+$ListComponent--MarginLeftOrdered: list--marginLeft(main, " > ol");
+$Section__ListComponent--MarginLeftUnordered: list--marginLeft(main, " > section > ul");
+$Section__ListComponent--MarginLeftOrdered: list--marginLeft(main, " > section > ol");
+$SubSection__ListComponent--MarginLeftUnordered: list--marginLeft(main, " > section > section > ul");
+$SubSection__ListComponent--MarginLeftOrdered: list--marginLeft(main, " > section > section > ol");
+$SubSubSection__ListComponent--MarginLeftOrdered: list--marginLeft(main, " > section > section > section > ol");
+$SubSubSection__ListComponent--MarginLeftUnordered: list--marginLeft(main, " > section > section > section > ul");
+$Nested__ListComponent--MarginLeftUnordered: list--marginLeft(nested, " > li > ul");
+$Nested__ListComponent--MarginLeftOrdered: list--marginLeft(nested, " > li > ol");
+$Summary__Section__ListComponent--MarginLeftUnordered: list--marginLeft(main, " section > ul");
+$Summary__Section__ListComponent--MarginLeftOrdered: list--marginLeft(main, " section > ol");
+
+// Exercices notes need to have bottom margin under lists
+
+//Exercises
+
+$ListComponent--MarginLeftBottomOrdered: list--marginLeftBottom(main, " > ol");
+$ListComponent--MarginLeftBottomUnordered: list--marginLeftBottom(main, " > ul");
+$Section__ListComponent--MarginLeftBottomUnordered: list--marginLeftBottom(margin-left-increased, " section > ul");
+$Section__ListComponent--MarginLeftBottomOrdered: list--marginLeftBottom(margin-left-increased, " section > ol");
+$Container__ListComponent--MarginLeftBottomOrdered: list--marginLeftBottom(main, " > div > ol");
+$Container__ListComponent--MarginLeftBottomUnordered: list--marginLeftBottom(main, " > div > ul");
+$Nested__ListComponent--MarginLeftBottomOrdered: list--marginLeftBottom(nested, " > li > ol");
+
+// Notes
+
+$Note__ListComponent--MarginLeftBottomUnordered:list--marginLeftBottom(main, " ul");
+$Note__ListComponent--MarginLeftBottomOrdered: list--marginLeftBottom(main, " ol");
+
+//AnswerKey
+
+$AnswerKey__ListComponent--MarginBottomLeftOrdered: list--marginLeftBottom(margin-bottom-removed, " > ol");
+$AnswerKey__ListComponent--MarginBottomLeftUnordered: list--marginLeftBottom(margin-bottom-removed, " > ul" );

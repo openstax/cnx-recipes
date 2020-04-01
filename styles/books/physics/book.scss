@@ -14,9 +14,9 @@
 @include add_settings((
   Preface: (
     _selectors: (".preface"),
-    'BodyH3:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'BodyH4:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'BodyH5:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H4Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H5Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
 ));
 
@@ -30,9 +30,15 @@
 @include add_settings((
   Module: (
     _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
-    'Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'Subtitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'SubSubtitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'SolutionTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'SolutionTitle:::font-family': (_ref: 'typography:::sansFont'),
   ),
 ));
 
@@ -62,12 +68,9 @@
     'TitleText:::display': inline-block,
     'TitleText:::word-wrap': normal,
     'TitleText:::margin-bottom': .2rem,
-    'TitleText:::margin-left': h-grid(1),
-    'ParagraphSubtitle:::font-family': (_ref: "typography:::sansFont"),
-    'ParagraphSubtitle:::font-size': font-scale(1),
-    'ParagraphSubtitle:::line-height': line-height(1),
+    'TitleText:::margin-left': h-spacing(1),
     'ParagraphSubtitle:::font-weight': bold,
-    'ParagraphSubtitle:::text-transform': uppercase,
+    'ParagraphSubtitle:::font-family': (_ref: "typography:::sansFont"),
   ),
   CheckUnderstandingExerciseNote:(
     _selectors: ('[data-element-type="check-understanding"]'),
@@ -75,7 +78,6 @@
     'SolutionTitle:::font-family': (_ref: "typography:::sansFont"),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-check.svg")) no-repeat top left,
-    'TitleText:::max-width': h-grid(15),
   ),
   PhetExplorationNote:(
     _selectors: (".interactive"),
@@ -89,21 +91,43 @@
 ));
 
 @include add_settings((
+  GenericEOC:(
+    _selectors: (".os-eoc"),
+    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H2Title:::column-span': all,
+    'H2Title:::text-transform': uppercase,
+    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4LinkTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
   KeyTerm:(
     _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
   ),
-  SectionSummary: (
+  EocSummary: (
     _selectors: ("[data-type = 'chapter'] > .os-section-summary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
   ),
   ConceptualQuestions: (
     _selectors: ("[data-type = 'chapter'] > .os-conceptual-questions-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
   ),
   ProblemsExercises: (
     _selectors: ("[data-type = 'chapter'] > .os-problems-exercises-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
   ),
 ));
 
@@ -111,8 +135,8 @@
   Appendix: (
     _selectors: (".appendix"),
     'MainText:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'SubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'SubSubTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H2Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
 ));
 
@@ -138,10 +162,16 @@
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('Link', "carnival:::Link");
 @include use('Term', 'carnival:::Term');
+@include use('ContentExercises','carnival:::ExerciseShape');
+//EOC
+@include use('GenericEOC','carnival:::GenericEOCShape');
 @include use('KeyTerm', 'carnival:::EocKeyTerm');
-@include use('SectionSummary', 'carnival:::EocSectionSummary');
-@include use('ConceptualQuestions','carnival:::EocConceptualQuestions');
-@include use('ProblemsExercises','carnival:::EocProblemsExercises');
+@include use('EocSummary', 'carnival:::EocSummary');
+@include use('ConceptualQuestions','carnival:::EOCAssesmentsShape');
+@include use('ProblemsExercises','carnival:::EOCAssesmentsShape');
+
+
+
 @include use('Appendix', 'carnival:::AppendixShape');
 @include use('Index', 'carnival:::IndexShape');
 @include use('DefaultNoClassNote', 'carnival:::BoxedNoteShape');
