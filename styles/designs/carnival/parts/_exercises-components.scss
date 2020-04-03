@@ -1,27 +1,33 @@
-$ExerciseContainer:(
+@import 'lists-components';
+//offer ability to turn any exercises into a column (this is almost the same as the EOC container). We may want to extract this component to a more global columnContainer compnoent or something. 
+$Exercise__Container:(
     _name: "Container",
     _subselector: " ",
     _properties:(
+        margin-bottom: enum('ValueSet:::OPTIONAL'),
+        column-count: enum('ValueSet:::OPTIONAL'),
+        column-gap: enum('ValueSet:::OPTIONAL'),
+        column-width: enum('ValueSet:::OPTIONAL'),
     )
 );
 
-$ExerciseProblemWrapper:(
+$Exercise__Problem--Wrapper:(
     _name: "ProblemWrapper",
     _subselector: " [data-type='problem']",
     _properties:(
-        display: flex,
-        flex-direction: row,
+        display: table,
     )
 );
 
-$ExerciseProblemContainer:(
-    _name: "ProblemContainer",
-    _subselector: " .os-problem-container",
+$Exercise__Image: (
+    _name: "ExerciseImage",
+    _subselector: " img",
     _properties:(
+        max-width: 100%,
     )
 );
 
-$ExerciseProblemParagraph:(
+$Exercise__Problem--Paragraph:(
     _name: "ProblemParagraph",
     _subselector: " > p",
     _properties:(
@@ -29,46 +35,73 @@ $ExerciseProblemParagraph:(
     )
 );
 
-$ExerciseProblemNumber:(
+@function problemContainer($selector, $name) {
+    @return (
+        _name: "ProblemContainer#{$name}",
+        _subselector: #{$selector},
+        _properties:(
+            display: table-cell,
+            vertical-align: enum('ValueSet:::OPTIONAL'),
+            padding-top: enum('ValueSet:::OPTIONAL'),
+            width: 100%,
+        ),
+        _components: (
+            $Exercise__Problem--Paragraph,
+            $Exercise__Image,
+            map-merge($ListComponent--MarginLeftBottomOrdered, (
+                _components:(
+                    map-merge($Nested__ListComponent--MarginLeftBottomOrdered, (
+                        _components:(
+                            $Nested__ListComponent--MarginLeftBottomOrdered,
+                        ),
+                    )),
+                ),
+            )),
+            $ListComponent--MarginLeftBottomUnordered,
+            map-merge($Container__ListComponent--MarginLeftBottomOrdered, (
+                _components:(
+                    $Nested__ListComponent--MarginLeftBottomOrdered,
+                ),
+            )),
+            $Container__ListComponent--MarginLeftBottomUnordered,
+        ),
+    );
+}
+
+$Exercise__Problem--Container: problemContainer(' .os-problem-container', null);
+$Exercise__Problem--Container_Specific: problemContainer(' .os-problem-container.has-first-element', "Specific");
+
+$Exercise__Problem--Number:(
     _name: "ProblemNumber",
-    _subselector: " .os-number",
+    _subselector: " > .os-number",
     _properties:(
+        display: table-cell,
+        color:  enum('ValueSet:::REQUIRED'),
         font-weight: bold,
         text-decoration: none,
     )
 );
 
-$ExerciseProblemDivider:(
+$Exercise__Problem--Divider:(
     _name: "ProblemDivider",
     _subselector: " .os-divider",
     _properties:(
-        margin-right: enum('ValueSet:::REQUIRED'),
+        margin-right: h-spacing(1),
     )
 );
 
-$ExerciseSolutionWrapper:(
+$Exercise__Solution--Wrapper:(
     _name: "SolutionWrapper",
-    _subselector: " [data-type="solution"]",
+    _subselector: " [data-type='solution']",
     _properties:(
     )
 );
 
-$ExerciseSolutionTitle:(
+$Exercise__Solution--Title:(
     _name: "SolutionTitle",
     _subselector: " > .solution-title",
     _properties:(
         font-family: enum('ValueSet:::REQUIRED'),
         font-weight: bold,
-        font-size: font-scale(1),
-        line-height: line-height(1),
-    )
-);
-
-$Exercise_Ordered_List: (
-    _name: "ExerciseOrderedList",
-    _subselector: " > ol",
-    _properties:(
-        margin-left: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
     )
 );
