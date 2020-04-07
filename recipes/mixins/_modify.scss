@@ -934,6 +934,18 @@
         class: attr(class) " first-element";
       }
     }
+
+    @each $page in $Config_BookCompositePages {
+      $name: map-get($page, name);
+
+      @if $name == "Answer Key" {
+        .os-eob [data-type="solution"] .os-solution-container {
+          #{$element} {
+            class: attr(class) " first-element";
+          }
+        }
+      }
+    }
   }
 }
 
@@ -946,6 +958,22 @@
       }
       &:deferred {
         class: attr(class) string(hasFirstElement);
+      }
+    }
+
+    @each $page in $Config_BookCompositePages {
+      $name: map-get($page, name);
+
+      @if $name == "Answer Key" {
+        .os-solution-container {
+          string-set: hasFirstElement " ";
+          .first-element {
+            string-set: hasFirstElement " has-first-element";
+          }
+          &:deferred {
+            class: attr(class) string(hasFirstElement);
+          }
+        }
       }
     }
   }
