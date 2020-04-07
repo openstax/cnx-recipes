@@ -5,25 +5,21 @@
 @include add_settings((
   Preface: (
     _selectors: (".preface"),
-    'BodyH3:::color': (_ref: "colorMap:::prefaceTitleColor"),
-    'BodyH4:::color': (_ref: "colorMap:::prefaceTitleColor"),
-    'BodyH5:::color': (_ref: "colorMap:::prefaceTitleColor"),
+    'H3Title:::color': (_ref: "colorMap:::prefaceTitleColor"),
+    'H4Title:::color': (_ref: "colorMap:::prefaceTitleColor"),
+    'H5Title:::color': (_ref: "colorMap:::prefaceTitleColor"),
   ),
   LearningObjective: (
-    Title: (
-      color: (_ref: 'colorMap:::microbioLearningObjColor'),
-    ),
-    ListDot: (
-      color: (_ref: 'colorMap:::microbioLearningObjColor'),
-    ),
+    _selectors: ('[data-type="chapter"] > [data-type="page"] > section.learning-objectives'),
+    'Title:::color': (_ref: 'colorMap:::microbioLearningObjColor'),
+    'ListDot:::color': (_ref: 'colorMap:::microbioLearningObjColor'),
   ),
-  ChapterIntro: (
-    SplashFigureBg: (
-      background-color: (_ref: "colorMap:::microbioIntroColor")
-    ),
-    Outline: (
-      background-color: (_ref: "colorMap:::microbioIntroColor")
-    ),
+  FullWidthChapterIntro: (
+    _selectors: (".introduction"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::microbioIntroColor"),
+    'OutlineTitle:::color': (_ref: "colorMap:::microbioIntroColor"),
+    'Outline:::border-bottom-color': (_ref: "colorMap:::microbioIntroColor"),
+    'OutlineTitleBottomBorder:::border-bottom-color': (_ref: "colorMap:::microbioIntroColor"),
   ),
   Chapter: (
     _selectors: ('[data-type="chapter"]'),
@@ -31,9 +27,9 @@
   ),  
   Module: (
     _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
-    'Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
-    'Subtitle:::color': (_ref: 'colorMap:::microbioHeaderColor'),
-    'SubSubtitle:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H2Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H4Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
   ),
   ClinicalFocusNote:(
     _selectors:(".clinical-focus"),
@@ -61,55 +57,99 @@
     'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-linktolearning.svg")) no-repeat top left,
-    'TitleText:::max-width': h-grid(10),
   ),
   CheckYourUnderstandingNote:(
     _selectors: (".check-your-understanding"),
     'Body:::border-bottom-color': (_ref: 'colorMap:::checkYourUnderstanding'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-check.svg")) no-repeat top left,
-    'TitleText:::max-width': h-grid(15),
   ),
   MicroConnectionsNote:(
     _selectors: (".micro-connection"),
     'Body:::border-bottom-color': (_ref: 'colorMap:::microConnectionColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-microconnections.svg")) no-repeat top left,
-    'TitleText:::max-width': h-grid(10),
   ),
 ));
+
 @include add_settings((
-  Summary: (
+  FakeTitleTable: (
+    _selectors: ('.os-table'),
+    'TableTitle:::color': (_ref: "colorMap:::biologyTableColor"),
+    'LastTableRowData:::border-bottom-color': (_ref: "colorMap:::biologyTableColor"),
+  ),
+));
+
+@include add_settings((
+  GenericEOC:(
+    _selectors: (".os-eoc"),
+    'H2Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H2Title:::column-span': all,
+    'H2Title:::text-transform': uppercase,
+    'H3Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4LinkTitle:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+  EocSummary: (
     _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
   ),
   ChapterReviewCompositeChapter:(
     _selectors: (".os-review-questions-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H2Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H3Title:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
   ),
-  MultipleChoiceCompChapPageWithTwoColumns:(
+  MultipleChoiceCompChapPage:(
     _selectors: (".os-multiple-choice-container"),
-    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
   CriticalThinkingCompChapPage:(
     _selectors: (".os-critical-thinking-container"),
-    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
   ShortAnswerCompChapPage:(
     _selectors: (".os-short-answer-container"),
-    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
-  FillInTheBlank:(
+  FillInTheBlankCompChapPage:(
     _selectors: (".os-fill-in-the-blank-container"),
-    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
-  Matching:(
+  MatchingCompChapPage:(
     _selectors: (".os-matching-container"),
-    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
-  TrueFalse:(
+  TrueFalseCompChapPage:(
     _selectors: (".os-true-false-container"),
-    'CompChapPageHeader:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
 ));
 
@@ -117,8 +157,8 @@
   Appendix: (
     _selectors: (".appendix"),
     'MainText:::color': (_ref: "colorMap:::microbioHeaderColor"),
-    'SubTitle:::color': (_ref: "colorMap:::microbioHeaderColor"),
-    'SubSubTitle:::color': (_ref: "colorMap:::microbioHeaderColor"),
+    'H2Title:::color': (_ref: "colorMap:::microbioHeaderColor"),
+    'H3Title:::color': (_ref: "colorMap:::microbioHeaderColor"),
   ),
 ));
 
@@ -126,33 +166,39 @@
 @include use('Link', "carnival:::Link");
 @include use('Preface','carnival:::Preface');
 @include use('TOC', 'carnival:::NoUnitToc');
-@include use('ChapterIntro', 'carnival:::ChapterIntroShape');
+@include use('FullWidthChapterIntro', 'carnival:::FullWidthChapterIntroShape');
 @include use('Chapter', 'carnival:::Chapter');
 @include use('Footnotes', 'carnival:::FootnotesShape');
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('BasicTable', 'carnival:::BasicTableShape');
 @include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
-@include use('Summary', 'carnival:::EocSummary');
 @include use('Module', 'carnival:::ModuleShape');
 @include use('Index', 'carnival:::IndexShape');
 @include use('AnswerKey', 'carnival:::AnswerKeyShape');
 @include use('LearningObjective', 'carnival:::LearningObjectiveShape');
+@include use('Appendix', 'carnival:::AppendixShape');
+@include use('Term', 'carnival:::Term');
+@include use('ContentExercises','carnival:::ExerciseShape');
+
+//EOC
+@include use('GenericEOC','carnival:::GenericEOCShape');
+@include use('EocSummary', 'carnival:::EocSummary');
+@include use('ChapterReviewCompositeChapter','carnival:::EOCDefaultCompoundComposite');
+@include use('MultipleChoiceCompChapPage','carnival:::EOCAssesmentsShape');
+@include use('CriticalThinkingCompChapPage','carnival:::EOCAssesmentsShape');
+@include use('ShortAnswerCompChapPage','carnival:::EOCAssesmentsShape');
+@include use('FillInTheBlankCompChapPage','carnival:::EOCAssesmentsShape');
+@include use('MatchingCompChapPage','carnival:::EOCAssesmentsShape');
+@include use('TrueFalseCompChapPage','carnival:::EOCAssesmentsShape');
+
+//notes
 @include use('ClinicalFocusNote', 'carnival:::BoxedNoteShape');
 @include use('EyeOnEthicsNote', 'carnival:::LogoNoteBoxedShape');
 @include use('DiseaseProfileNote', 'carnival:::BoxedNoteShape');
 @include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
 @include use('CheckYourUnderstandingNote', 'carnival:::IconCondensedShape');
 @include use('MicroConnectionsNote', 'carnival:::IconCondensedShape');
-@include use('Appendix', 'carnival:::AppendixShape');
-@include use('ChapterReviewCompositeChapter','carnival:::EocCompositeChapter');
-@include use('MultipleChoiceCompChapPageWithTwoColumns','carnival:::EocCompChapExercises');
-@include use('CriticalThinkingCompChapPage','carnival:::EocCompChapExercises');
-@include use('ShortAnswerCompChapPage','carnival:::EocCompChapExercises');
-@include use('FillInTheBlank','carnival:::EocCompChapExercises');
-@include use('Matching','carnival:::EocCompChapExercises');
-@include use('TrueFalse','carnival:::EocCompChapExercises');
-@include use('Term', 'carnival:::Term');
-
+@include use('FakeTitleTable', 'carnival:::FakeTitleTableShape');
 
 [data-type="chapter"] {
     page: chapter;
@@ -292,12 +338,4 @@ $bandBorder: half-fullBleedsSize(2.5, rem) solid $bandColor;
     margin-right: 1in;
     margin-bottom: 0.8in;
     margin-top: 0.8in;
-  }
-
-  @page chapter:first {
-    margin-right: 2in;
-  }
-
-  @page chapter:nth(2) {
-    margin-right: 2in;
   }

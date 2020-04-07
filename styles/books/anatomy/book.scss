@@ -15,9 +15,9 @@
 @include add_settings((
   Preface: (
     _selectors: (".preface"),
-    'BodyH3:::color': (_ref: "colorMap:::anatomyHeaderColor"),
-    'BodyH4:::color': (_ref: "colorMap:::anatomyHeaderColor"),
-    'BodyH5:::color': (_ref: "colorMap:::anatomyHeaderColor"),
+    'H3Title:::color': (_ref: "colorMap:::anatomyHeaderColor"),
+    'H4Title:::color': (_ref: "colorMap:::anatomyHeaderColor"),
+    'H5Title:::color': (_ref: "colorMap:::anatomyHeaderColor"),
   ),
 ));
 
@@ -41,9 +41,9 @@
 @include add_settings((
   Module: (
     _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
-    'Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
-    'Subtitle:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
-    'SubSubtitle:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'H2Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'H4Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
   ),
 ));
 
@@ -99,37 +99,62 @@
     'Body:::border-bottom-color': (_ref: 'colorMap:::interactiveLinkColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-linktolearning.svg")) no-repeat top left,
-    'TitleText:::max-width': h-grid(10),
   ),
   LinkToLearningNote:(
     _selectors: (".link-to-learning"),
     'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningColor'),
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-linktolearning.svg")) no-repeat top left,
-    'TitleText:::max-width': h-grid(10),
   ),
 ));
 
 @include add_settings((
+  GenericEOC:(
+    _selectors: (".os-eoc"),
+    'H2Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H2Title:::column-span': all,
+    'H2Title:::text-transform': uppercase,
+    'H3Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4LinkTitle:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+  ),
   KeyTerm:(
     _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
   ),
-  Summary: (
+  EocSummary: (
     _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
   ),
   InteractiveExercise: (
     _selectors: ("[data-type = 'chapter'] > .os-interactive-exercise-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
   MultipleChoice: (
     _selectors: ("[data-type = 'chapter'] > .os-multiple-choice-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
   FreeResponse: (
     _selectors: ("[data-type = 'chapter'] > .os-free-response-container"),
-    'EocHeader:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
   ),
 ));
 
@@ -156,11 +181,14 @@
 @include use('HomeostaticNote', 'carnival:::IconNoteShape');
 @include use('InteractiveLinkNote', 'carnival:::IconCondensedShape');
 @include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
+@include use('ContentExercises','carnival:::ExerciseShape');
+//EOC
+@include use('GenericEOC','carnival:::GenericEOCShape');
 @include use('KeyTerm', 'carnival:::EocKeyTerm');
-@include use('Summary', 'carnival:::EocSummary');
-@include use('InteractiveExercise', 'carnival:::EocExerciseWithoutSubtitle');
-@include use('MultipleChoice', 'carnival:::EocExerciseWithoutSubtitle');
-@include use('FreeResponse', 'carnival:::EocExerciseWithoutSubtitle');
+@include use('EocSummary', 'carnival:::EocSummary');
+@include use('InteractiveExercise', 'carnival:::EOCAssesmentsShape');
+@include use('MultipleChoice', 'carnival:::EOCAssesmentsShape');
+@include use('FreeResponse', 'carnival:::EOCAssesmentsShape');
 
 //Copied from Chemistry book.scss file. Will be relocate in the future.
 

@@ -1,3 +1,5 @@
+@import 'titles-components';
+
 $AnswerKey__Container: (
   _name: "Container",
   _subselector: '',
@@ -12,68 +14,11 @@ $AnswerKey__Solution--Wrapper: (
   )
 );
 
-// TODO after merge code from g.g branch add SolutionContainerSpecific component
-// for solutions started with figure or image. See _exercises-components.scss file
-
-$AnswerKey__Solution--Container: (
-  _name: "SolutionContainer",
-  _subselector: ' > .os-solution-container',
-  _properties:(
-    display: table-cell,
-    width: 100%,
-  )
-);
-
 $AnswerKey__Solution--Paragraph:(
   _name: "SolutionParagraph",
   _subselector: " > p",
   _properties:(
     margin-bottom: 0,
-  )
-);
-
-// Titles components are reworked in another PR
-// Remove this comment after merge all changes together
-
-$AnswerKeyTitleComponent: (
-  _name: "TitleContainer",
-  _subselector: ' > h1',
-  _properties: (
-    border-bottom-color: enum('ValueSet:::REQUIRED'),
-    border-bottom-width: enum('ValueSet:::REQUIRED'),
-    border-bottom-style: enum('ValueSet:::REQUIRED'),
-    column-span: all,
-    padding-bottom: enum('ValueSet:::OPTIONAL'),
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::OPTIONAL'),
-    font-size: enum('ValueSet:::REQUIRED'),
-    line-height: enum('ValueSet:::REQUIRED'),
-    font-weight: bold,
-    text-transform: uppercase,
-    margin-bottom: enum('ValueSet:::REQUIRED')
-  )
-);
-
-$AnswerKeyTitleTextComponent: (
-  _name: "Title",
-  _subselector: ' > h2',
-  _properties: (
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-size: font-scale(4),
-    line-height: line-height(4),
-    font-weight: bold,
-  )
-);
-$AnswerKeyExerciseTitleTextComponent: (
-  _name: "ExerciseTitle",
-  _subselector: ' > .os-solution-area > h3',
-  _properties: (
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-size: font-scale(3),
-    line-height: line-height(3),
-    font-weight: bold,
   )
 );
 
@@ -84,6 +29,28 @@ $AnswerKey__Image: (
     max-width: 100%,
   )
 );
+
+@function solutionContainer($selector, $name) {
+  @return (
+      _name: "SolutionContainer#{$name}",
+      _subselector: #{$selector},
+      _properties:(
+          display: table-cell,
+          vertical-align: enum('ValueSet:::OPTIONAL'),
+          padding-top: enum('ValueSet:::OPTIONAL'),
+          width: 100%,
+      ),
+      _components: (
+          $AnswerKey__Solution--Paragraph,
+          $AnswerKey__Image,
+          $AnswerKey__ListComponent--MarginBottomLeftOrdered,
+          $AnswerKey__ListComponent--MarginBottomLeftUnordered,
+      ),
+  );
+}
+
+$AnswerKey__Solution--Container: solutionContainer(' .os-solution-container', null);
+$AnswerKey__Solution--ContainerSpecific: solutionContainer(' .os-solution-container.has-first-element', "Specific");
 
 $AnswerKey__Solution--Number: (
   _name: "Number",
@@ -100,27 +67,7 @@ $AnswerKey__Solution--Divider:(
   _name: "SolutionDivider",
   _subselector: " > .os-divider",
   _properties:(
-    margin-right: h-grid(1),
-  )
-);
-
-// Lists components are reworked in another PR
-// Remove this comment after merge all changes together
-
-$AnswerKeyOrderedListComponent: (
-  _name: "OrderedList",
-  _subselector: ' > ol',
-  _properties: (
-    margin-left: h-grid(3),
-    margin-bottom: 0,
-  )
-);
-$AnswerKeyUnorderedListComponent: (
-  _name: "UnorderedList",
-  _subselector: ' > ul',
-  _properties: (
-    margin-left: h-grid(3),
-    margin-bottom: 0,
+    margin-right: h-spacing(1),
   )
 );
 
@@ -128,6 +75,6 @@ $AnswerKey__CompositePage: (
   _name: "CompositePage",
   _subselector: ' > [data-type="composite-page"]',
   _properties: (
-    margin-bottom: v-grid(2), // TODO change to v-spacing after merge code from g.g branch
+    margin-bottom: v-spacing(2),
   ),
 );
