@@ -27,26 +27,47 @@
   ),
 ));
 @include add_settings((
+  GenericEOC:(
+    _selectors: (".os-eoc"),
+    'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H2Title:::column-span': all,
+    'H2Title:::text-transform': uppercase,
+    'H3Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H3LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
+    'H4Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    'H4LinkTitle:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+  ),
   KeyTerm:(
-      _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
-      'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    ),
-  KeyEquation:(
-      _selectors: (".os-eoc.os-key-equations-container"),
-      'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    ),
-  Summary:(
-      _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
-      'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    ),
+    _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+  ),
+  EocKeyEquations:(
+    _selectors: (".os-eoc.os-key-equations-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'TableData:::padding': table-v-spacing(1) table-h-spacing(1),
+    'TableHeadCell:::padding': table-v-spacing(1) table-h-spacing(1),
+  ),
+  EocSummary:(
+    _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+  ),
   Exercises:(
-      _selectors: ("[data-type = 'chapter'] > .os-exercises-container"),
-      'CompositeHeader:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-      'CompositeHeader:::font-family': (_ref: 'typography:::sansFont'),
-      'CompoundCompositeHeader:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-      'CompoundCompositeHeader:::font-family': (_ref: 'typography:::sansFont'),
-      'SectionLink:::font-family': (_ref:'typography:::titleFont'),
-    ),
+    _selectors: ("[data-type = 'chapter'] > .os-exercises-container"),
+    'Container:::column-count': 2,
+    'Container:::column-gap': 2.4rem,
+    'Container:::column-width': auto,
+    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+  ),
 ));
 
 @include add_settings((
@@ -60,6 +81,8 @@
     Appendix: (
     _selectors: (".appendix"),
     'MainText:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H2Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
+    'H3Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
     ),
 ));
 @include add_settings((
@@ -113,6 +136,14 @@
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Title:::color': (_ref: 'colorMap:::exampleColor'),
     'TitleIcon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-example.svg")) no-repeat top left,
+    'ParagraphSubtitle:::font-family': (_ref: "typography:::sansFont"),
+    'ParagraphSubtitle:::font-size': font-scale(1),
+    'ParagraphSubtitle:::line-height': line-height(1),
+    'ParagraphSubtitle:::font-weight': bold,
+    'AnswerTitle:::font-family': (_ref: "typography:::sansFont"),
+    'AnswerTitle:::font-size': font-scale(1),
+    'AnswerTitle:::line-height': line-height(1),
+    'AnswerTitle:::font-weight': bold,
   ),
   LinkToLearningNote:(
     _selectors: (".link-to-learning"),
@@ -128,11 +159,13 @@
 
 //book specific styles
 @include use('Preface','carnival:::Preface');
-@include use('KeyTerm','carnival:::EocKeyTerm');
-@include use('KeyEquation','carnival:::EocKeyEquations');
-@include use('Summary','carnival:::EocSummary');
-@include use('Exercises','carnival:::EocOneColumnClustered');
 @include use('ContentExercises','carnival:::ExerciseShape');
+//EOC
+@include use('GenericEOC','carnival:::GenericEOCShape');
+@include use('KeyTerm','carnival:::EocKeyTerm');
+@include use('EocKeyEquations','carnival:::EocKeyEquations');
+@include use('EocSummary','carnival:::EocSummary');
+@include use('Exercises','carnival:::EOCAssesmentsShape');
 @include use('LearningObjectiveAbstract', 'carnival:::LearningObjectiveAbstractShape');
 @include use('Appendix', 'carnival:::AppendixShape');
 @include use('Index', 'carnival:::IndexShape');
