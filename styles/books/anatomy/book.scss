@@ -109,54 +109,25 @@
 ));
 
 @include add_settings((
-  GenericEOC:(
-    _selectors: (".os-eoc"),
-    'H2Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
-    'H2Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H2Title:::column-span': all,
-    'H2Title:::text-transform': uppercase,
-    'H3Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
-    'H3Title:::font-family': (_ref: 'typography:::serifFont'),
-    'H3LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
-    'H3ListTitle:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'H3ListTitle:::font-family': (_ref: "typography:::baseFont"),
-    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
-    'H4Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
-    'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
-    'H4LinkTitle:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
-  ),
   KeyTerm:(
     _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
-    'Container:::column-count': 2,
-    'Container:::column-gap': 2.4rem,
-    'Container:::column-width': auto,
+    'H2Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
   ),
-  EocSummary: (
+  Summary: (
     _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
-    'Container:::column-count': 2,
-    'Container:::column-gap': 2.4rem,
-    'Container:::column-width': auto,
+    'H2Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
   ),
   InteractiveExercise: (
     _selectors: ("[data-type = 'chapter'] > .os-interactive-exercise-container"),
-    'Container:::column-count': 2,
-    'Container:::column-gap': 2.4rem,
-    'Container:::column-width': auto,
-    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'H2Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
   ),
   MultipleChoice: (
     _selectors: ("[data-type = 'chapter'] > .os-multiple-choice-container"),
-    'Container:::column-count': 2,
-    'Container:::column-gap': 2.4rem,
-    'Container:::column-width': auto,
-    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'H2Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
   ),
   FreeResponse: (
     _selectors: ("[data-type = 'chapter'] > .os-free-response-container"),
-    'Container:::column-count': 2,
-    'Container:::column-gap': 2.4rem,
-    'Container:::column-width': auto,
-    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'H2Title:::color': (_ref: 'colorMap:::anatomyHeaderColor'),
   ),
 ));
 
@@ -183,14 +154,11 @@
 @include use('HomeostaticNote', 'carnival:::IconNoteShape');
 @include use('InteractiveLinkNote', 'carnival:::IconCondensedShape');
 @include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
-@include use('ContentExercises','carnival:::ExerciseShape');
-//EOC
-@include use('GenericEOC','carnival:::GenericEOCShape');
 @include use('KeyTerm', 'carnival:::EocKeyTerm');
-@include use('EocSummary', 'carnival:::EocSummary');
-@include use('InteractiveExercise', 'carnival:::EOCAssesmentsShape');
-@include use('MultipleChoice', 'carnival:::EOCAssesmentsShape');
-@include use('FreeResponse', 'carnival:::EOCAssesmentsShape');
+@include use('Summary', 'carnival:::EocSummary');
+@include use('InteractiveExercise', 'carnival:::EocExerciseWithoutSubtitle');
+@include use('MultipleChoice', 'carnival:::EocExerciseWithoutSubtitle');
+@include use('FreeResponse', 'carnival:::EocExerciseWithoutSubtitle');
 
 //Copied from Chemistry book.scss file. Will be relocate in the future.
 
@@ -200,14 +168,6 @@
 }
 .os-eoc {
   page: eoc;
-}
-
-.os-eob.os-references-container {
-  page: eob;
-  prince-page-group: start;
-}
-.os-eob {
-  page: eob;
 }
 
 $bandColor: settings('scheme:::B5'); //changed to color specific for Anatomy
@@ -225,8 +185,8 @@ $bandBorder: half-fullBleedsSize(.5, in) solid $bandColor;
   }
 }
 
-@mixin setPageBorder($page-type, $type, $side) {
-  @page #{$page-type}:#{$type} {
+@mixin setEocPageBorder($type, $side) {
+  @page eoc:#{$type} {
     @if $side == "left" {
       @left-middle {
         @content;
@@ -263,36 +223,19 @@ $bandBorder: half-fullBleedsSize(.5, in) solid $bandColor;
   }
 }
 
-@include setPageBorder("eoc", "left", "left") {
+@include setEocPageBorder("left", "left") {
   @include band("left");
 }
 
-@include setPageBorder("eoc", "right", "right") {
+@include setEocPageBorder("right", "right") {
   @include band("right");
 }
 
-@include setPageBorder("eoc", "blank", "left") {
+@include setEocPageBorder("blank", "left") {
   content: none;
   border: none;
 }
-@include setPageBorder("eoc", "blank", "right") {
-  content: none;
-  border: none;
-}
-
-@include setPageBorder("eob", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("eob", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("eob", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eob", "blank", "right") {
+@include setEocPageBorder("blank", "right") {
   content: none;
   border: none;
 }
@@ -308,4 +251,8 @@ $bandBorder: half-fullBleedsSize(.5, in) solid $bandColor;
   margin-right: 1in;
   margin-bottom: 0.8in;
   margin-top: 0.8in;
+}
+
+@page chapter:first {
+  margin-right: 2in;
 }
