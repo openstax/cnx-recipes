@@ -717,7 +717,7 @@
 
 :pass(3) div[data-type="unit"]::before {
   container: span;
-  content: counter(unit);
+  content: "Część " counter(unit);
   class: os-number;
   move-to: bUnitLabel; }
 
@@ -739,7 +739,7 @@
 
 :pass(3) div[data-type="chapter"]::before {
   container: span;
-  content: counter(chapter);
+  content: "Rozdział " counter(chapter);
   class: os-number;
   move-to: bChapterLabel; }
 
@@ -761,13 +761,13 @@
 
 :pass(3) div.appendix::before {
   container: span;
-  content: counter(appendix, upper-alpha);
+  content: "Dodatek " counter(appendix, upper-alpha);
   class: os-number;
   move-to: bAppendixLabel; }
 
 :pass(3) div.appendix::before {
   container: span;
-  content: " | ";
+  content: " ";
   class: os-divider;
   move-to: bAppendixLabel; }
 
@@ -891,7 +891,7 @@
 
 :pass(3) [data-type="chapter"] [data-type="equation"]:not(.unnumbered)::before, :pass(3) .appendix [data-type="equation"]:not(.unnumbered)::before {
   container: span;
-  content: "(" counter(chapter) "." counter(equation) ")";
+  content: counter(chapter) "." counter(equation);
   class: os-number;
   move-to: equationNum; }
 
@@ -908,8 +908,8 @@
 
 :pass(3) [data-type="note"].check-understanding::before {
   container: span;
-  content: counter(chapter) "." counter(understanding);
-  class: os-number;
+  content: "Sprawdź, czy rozumiesz";
+  class: os-title-label;
   move-to: bNoteLabel-check-understanding; }
 
 :pass(3) [data-type="note"].check-understanding::before {
@@ -920,8 +920,8 @@
 
 :pass(3) [data-type="note"].check-understanding::before {
   container: span;
-  content: "Sprawdź, czy rozumiesz ";
-  class: os-title-label;
+  content: counter(chapter) "." counter(understanding);
+  class: os-number;
   move-to: bNoteLabel-check-understanding; }
 
 :pass(3) [data-type="note"].check-understanding > [data-type="title"] {
@@ -1390,7 +1390,7 @@
 :pass(8) [data-type="chapter"]::before {
   container: span;
   class: "os-title-label";
-  content: "Sprawdź, czy rozumiesz ";
+  content: "Sprawdź, czy rozumiesz";
   move-to: note-check-understanding-title; }
 
 :pass(8) [data-type="chapter"]::before {
@@ -2366,6 +2366,30 @@
     attr-cnx-archive-shortid: string(page-shortid);
     container: li;
     class: os-toc-index; }
+  :pass(11) body > div[data-type="page"].os-index-name-container::after,
+  :pass(11) body > div[data-type="composite-page"].os-index-name-container::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-index; }
+  :pass(11) body > div[data-type="page"].os-index-term-container::after,
+  :pass(11) body > div[data-type="composite-page"].os-index-term-container::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-index; }
+  :pass(11) body > div[data-type="page"].os-index-foreign-container::after,
+  :pass(11) body > div[data-type="composite-page"].os-index-foreign-container::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-index; }
   :pass(11) body > div[data-type="page"].preface::after,
   :pass(11) body > div[data-type="composite-page"].preface::after {
     content: pending(page-link);
@@ -2374,8 +2398,8 @@
     attr-cnx-archive-shortid: string(page-shortid);
     container: li;
     class: os-toc-preface; }
-  :pass(11) body > div[data-type="page"]:not(.preface):not(.appendix):not(.os-index-container):not(.os-references-container)::after,
-  :pass(11) body > div[data-type="composite-page"]:not(.preface):not(.appendix):not(.os-index-container):not(.os-references-container)::after {
+  :pass(11) body > div[data-type="page"]:not(.preface):not(.appendix):not(.os-index-container):not(.os-index-name-container):not(.os-index-term-container):not(.os-index-foreign-container):not(.os-references-container)::after,
+  :pass(11) body > div[data-type="composite-page"]:not(.preface):not(.appendix):not(.os-index-container):not(.os-index-name-container):not(.os-index-term-container):not(.os-index-foreign-container):not(.os-references-container)::after {
     content: pending(page-link);
     move-to: eob-toc;
     attr-cnx-archive-uri: attr(id);
@@ -2692,6 +2716,21 @@
 
 :pass(13) nav#toc li > a:deferred {
   content: pending(title-spans); }
+
+:pass(13) .introduction .os-chapter-outline {
+  move-to: chap-outline; }
+
+:pass(13) .introduction > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
+  move-to: intro-text; }
+
+:pass(13) .introduction::after {
+  content: pending(intro-text);
+  move-to: intro-body;
+  class: "intro-text"; }
+
+:pass(13) .introduction:deferred::after {
+  content: pending(chap-outline) pending(intro-body);
+  class: "intro-body"; }
 
 :pass(100) div.delete-me {
   move-to: trash; }
