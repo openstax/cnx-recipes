@@ -1,11 +1,11 @@
-@function tocLinkPage($kind) {
+@function tocLinkPage($kind, $leader) {
   @return (
     _name: "#{$kind}LinkPage",
     _subselector: '::after',
     _properties: (
-      content: "target-counter(attr(href), page)",
-      display: inline-block,
-      margin-left: 3rem,
+      content: "#{if($leader, "leader('.') " , "")}target-counter(attr(href), page)",
+      display: if($leader, null, inline-block),
+      margin-left: (enum('ValueSet:::OPTIONAL'), if($leader, null, 3rem)),
       font-family: enum('ValueSet:::REQUIRED'),
       font-size: enum('ValueSet:::REQUIRED'),
       line-height: enum('ValueSet:::REQUIRED'),
@@ -15,7 +15,7 @@
   );
 }
 
-@function tocLink($kind, $extraProps: empty_map()) {
+@function tocLink($kind, $leader: false, $extraProps: empty_map()) {
   @return (
     _name: "#{$kind}Link",
     _subselector: '> a',
@@ -28,7 +28,7 @@
       text-decoration: none
     ), $extraProps),
     _components: (
-      tocLinkPage($kind)
+      tocLinkPage($kind, $leader)
     )
   );
 }
@@ -118,7 +118,7 @@ $TocChapter: (
   _properties: topLevelPageNotAppendixProps(),
   _components: (
     $TocChapterNumber,
-    tocLink('TocChapter'),
+    tocLink('TocChapter', true),
     $TocChapterList
   )
 );
