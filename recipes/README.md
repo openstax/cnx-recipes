@@ -51,6 +51,7 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_ChapterCompositePages`: A list of [Pages](#page)
 - `$Config_BookCompositePages`: A list of [Pages](#page)
 - `$Config_SetTableCaption`: A [Caption](#caption)
+  - additionally, there is a `hasTopTitle` which moves the title above the table instead of below it
 - `$Config_SetFigureCaption`: A [Caption](#caption)
 - `$Config_TargetLabels`: A list of [TargetLabels](#targetlabel)
 - `$Config_Notes`: A list of [Notes](#note)
