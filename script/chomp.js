@@ -1,7 +1,7 @@
 const fs = require('fs');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const s = new XMLSerializer();
+var xmlserializer = require('xmlserializer');
 
 const bookName = process.argv[2];
 const chapterNum = process.argv[3];

@@ -16,7 +16,10 @@ assembled_book="./data/${book_name}/collection.assembled.xhtml"
 
 touch ${temp_recipe}
 
-echo "[data-type="chapter"] { move-to: trash }" >> ${temp_recipe}
+echo "[data-type=\"chapter\"]:not(:nth-of-type(${chapter_number})) { move-to: trash } 
+body:deferred::after { 
+    content: clear(trash);
+  }" > ${temp_recipe}
 
-cnx-easybake ${temp_recipe} ${assembled_book} ${chomped_baked_book}
+cnx-easybake -d ${temp_recipe} ${assembled_book} ${chomped_baked_book}
 
