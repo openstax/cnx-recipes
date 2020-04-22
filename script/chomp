@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#recipe
+
+# get book name and chapter number from user
+# create a temp file with the line of recipe instructions and chapter number inserted
+#delete the temp file
+#bake using the new file and the assembled 
+
+
+book_name=$1
+chapter_number=$2
+temp_recipe="./recipes/temp-${book_name}.css"
+chomped_baked_book="./data/${book_name}/collection.baked.chomped.xhtml"
+assembled_book="./data/${book_name}/collection.assembled.xhtml"
+
+touch ${temp_recipe}
+
+echo "[data-type="chapter"] { move-to: trash }" >> ${temp_recipe}
+
+cnx-easybake ${temp_recipe} ${assembled_book} ${chomped_baked_book}
+
