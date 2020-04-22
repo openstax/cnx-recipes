@@ -56,7 +56,9 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_Notes`: A list of [Notes](#note)
 - `$Config_UnnumberedElements`: A list of [UnnumberedElements](#unnumberedelements)
 - `$Config_PartType_*`
+  - FOR_STYLING_ONLY: gets a class on it when it has a FirstElement
   - `$Config_PartType_Exercise`: A [CustomPart](#custompart)
+    - gets a class on it when it has a FirstElement FOR_STYLING_ONLY
   - `$Config_PartType_Example`: A [CustomPart](#custompart)
   - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
   - `$Config_PartType_Equation`: A [CustomPart](#custompart)
@@ -65,8 +67,13 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Unit_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Appendix_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Section_TitleContent`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Table*`
+    - autogenerate a summary attribute on the table from the table's caption
+
   - `$Config_PartType_Table_CaptionContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Table_CaptionContentAp`: A [TitleContent](#titlecontent)
+  - `$Config_PartType_Figure`
+    - FOR_STYLING_ONLY: gets a class on it when it contains a splash image
   - `$Config_PartType_Figure_CaptionContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Figure_CaptionContentAp`: A [TitleContent](#titlecontent)
   - `$Config_Index_SymbolRegexp`: A regular expression (in a string)
@@ -78,6 +85,12 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
 - `$Config_hasCompositeAppendixes`: a boolean (used for some TEA books)
 - `$Config_hasCitation`: a boolean used for References.
+
+- `$Config_Toc*`
+  - a flag to unwrap the span elements in the ToC (for the carnival theme)
+  - `$Config_TocTitleWord` : Add the word "Contents" to the ToC
+
+
 
 ## TitleContent
 
