@@ -55,7 +55,11 @@ The config settings are variables that start with `$Config_` and have the follow
 
 - `$Config_ChapterCompositePages`: A list of [Pages](#page)
   - composite pages are given an id attribute when they are linked to from the ToC
+- `$Config_SectionCompositePages`: A list of [Pages](#page)
+  - Each one has a `h1[data-type="document-title"]` added to it 
 - `$Config_BookCompositePages`: A list of [Pages](#page)
+  - Each one has a `h1[data-type="document-title"]` added to it
+
 - `$Config_SetTableCaption`: A [Caption](#caption)
   - additionally, there is a `hasTopTitle` which moves the title above the table instead of below it
 - `$Config_SetFigureCaption`: A [Caption](#caption)
@@ -71,6 +75,7 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Equation`: A [CustomPart](#custompart)
   - `$Config_PartType_Solution`: A [CustomPart](#custompart)
   - `$Config_PartType_Chapter_TitleContent`: A [TitleContent](#titlecontent)
+    - The title of a chapter (`[data-type="document-title"]`) gets an id attribute (assuming so that we can link to it but not sure)
   - `$Config_PartType_Unit_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Appendix_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Section_TitleContent`: A [TitleContent](#titlecontent)
