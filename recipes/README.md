@@ -84,10 +84,13 @@ The config settings are variables that start with `$Config_` and have the follow
     - wrap the title in a `.os-table-title` FOR_STYLING_ONLY
 
   - `$Config_PartType_Table_CaptionContent`: A [TitleContent](#titlecontent)
+    - create a below the Table inside a chapter and label it according to an array of classname, value pairs. The Value can be literal text or a counter and generates something like: `<.os-text>Table </.os-text><.os-number>4.3</.os-number><.os-divider>: </.os-divider>`. The elements (& class names) are FOR_STYLING_ONLY. Actually, they're also used for building the slugs & some are discarded during the slug generation
   - `$Config_PartType_Table_CaptionContentAp`: A [TitleContent](#titlecontent)
+    - same as above but this applies to tables in the Appendix. Usually just the counter changes (e.g. `A3` instead of `4.3`)
   - `$Config_PartType_Figure`
     - FOR_STYLING_ONLY: gets a class on it when it contains a splash image
   - `$Config_PartType_Figure_CaptionContent`: A [TitleContent](#titlecontent)
+    - same as the `$Config_PartType_Table_CaptionContent`
   - `$Config_PartType_Figure_CaptionContentAp`: A [TitleContent](#titlecontent)
   - `$Config_Index_SymbolRegexp`: A regular expression (in a string)
   - `$Config_Index_NotSymbolRegexp`: A regular expression (in a string)
