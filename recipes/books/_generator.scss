@@ -534,74 +534,74 @@
   @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr);
   @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr);
 
-  @if release-flag-enabled(trash-abstract-in-preface) {
-    @include modify_trash('.preface [data-type="abstract"]');
-  }
+  // @if release-flag-enabled(trash-abstract-in-preface) {
+  //   @include modify_trash('.preface [data-type="abstract"]');
+  // }
 
-  @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
+  //DONE @include modify_retitleHeaders($Config_hasCompositeChapter); // Update the h2 h3 ... levels to make sense
 
-  @if release-flag-enabled(custom-lists) {
-    @include modify_lists($Config_CustomList);
-  }
+  // @if release-flag-enabled(custom-lists) {
+  //   @include modify_lists($Config_CustomList);
+  // }
 
-  @if $Config_TrashSelectedElements {
-    @each $trash in $Config_TrashSelectedElements {
-      @include modify_trash($trash);
-    }
-  }
+  // @if $Config_TrashSelectedElements {
+  //   @each $trash in $Config_TrashSelectedElements {
+  //     @include modify_trash($trash);
+  //   }
+  // }
 }
 :pass(10) {
-  @if release-flag-enabled(table-move-fake-title) {
-    @if map-get($Config_SetTableCaption, hasTopTitle) == true {
-      .os-table {
-        .top-titled {
-          thead tr:first-child {
-            move-to: trash;
-          }
-        }
+  //DONE @if release-flag-enabled(table-move-fake-title) {
+  //   @if map-get($Config_SetTableCaption, hasTopTitle) == true {
+  //     .os-table {
+  //       .top-titled {
+  //         thead tr:first-child {
+  //           move-to: trash;
+  //         }
+  //       }
 
-        .os-temporary-table-title {
-          &::inside {
-            class: "os-table-title";
-          }
-        }
-      }
-    }
-  }
+  //       .os-temporary-table-title {
+  //         &::inside {
+  //           class: "os-table-title";
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   //No Answer Key, make sure that solutions that are still present in the content are discarded
-  @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
-    @if map-get($Config_PartType_Solution, HACKRemoveAllSolutionsNotJustEoC) == true {
-      @include modify_trash('[data-type="solution"]');
-    } @else {
-      @include modify_trash('.os-eoc [data-type="solution"]');
-    }
-  }
-  @include modify_trash('.os-index-link-separator:last-child');
-  @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
-  @include modify_tableSummaryToParent();
-  @include trashEmptyElement ('table > caption');
-  @include modify_addTableClass();
+  // @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
+  //   @if map-get($Config_PartType_Solution, HACKRemoveAllSolutionsNotJustEoC) == true {
+  //     @include modify_trash('[data-type="solution"]');
+  //   } @else {
+  //     @include modify_trash('.os-eoc [data-type="solution"]');
+  //   }
+  // }
+  // @include modify_trash('.os-index-link-separator:last-child');
+  //DONE @include modify_retitleCompositeMetadata($Config_hasCompositeChapter);
+  // @include modify_tableSummaryToParent();
+  // @include trashEmptyElement ('table > caption');
+  //DONE @include modify_addTableClass();
 
-  @if release-flag-enabled(give-composites-ids) {
-    @include modify_addCompositeIDsForToc();
-  }
+  //DONE @if release-flag-enabled(give-composites-ids) {
+  //   @include modify_addCompositeIDsForToc();
+  // }
 
-  @if not release-flag-enabled(custom-lists) {
-    @include modify_lists($Config_CustomList);
-  }
+  // @if not release-flag-enabled(custom-lists) {
+  //   @include modify_lists($Config_CustomList);
+  // }
 
-  @each $subtitle in $Config_SubtitleLabels {
-    $selector: map-get($subtitle, selector);
+  // @each $subtitle in $Config_SubtitleLabels {
+  //   $selector: map-get($subtitle, selector);
 
-    #{$selector} {
-      attr-use-subtitle: "true";
-    }
-  }
-  @include modify_elementsOrder($Config_Order_DocumentTitle);
-  @include modify_elementsOrder($Config_Order_ChapterObjective);
-  @include modify_elementsOrder($Config_Order_CompositePages);
-  @include modify_elementsOrder($Config_Order_FigTableCaption);
+  //   #{$selector} {
+  //     attr-use-subtitle: "true";
+  //   }
+  // }
+  // @include modify_elementsOrder($Config_Order_DocumentTitle);
+  // @include modify_elementsOrder($Config_Order_ChapterObjective);
+  // @include modify_elementsOrder($Config_Order_CompositePages);
+  // @include modify_elementsOrder($Config_Order_FigTableCaption);
 }
 :pass(11) {
   //DONE  @if release-flag-enabled(table-move-fake-title) {

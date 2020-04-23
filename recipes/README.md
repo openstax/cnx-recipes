@@ -48,7 +48,13 @@ There are 4 different types of variables used in the SASS files:
 
 The config settings are variables that start with `$Config_` and have the following structure:
 
+- `$Config_hasCompositeChapter`
+  - not sure if this is the same thing as a ChapterCompositePages
+  - add an h1 for each one (e.g. "Key Terms", "Index")
+  - heading levels are "sane" meaning they are nested properly in the baked file (composite chapter title is like h2 and the compositepage inside it is h3 for accessibility)
+
 - `$Config_ChapterCompositePages`: A list of [Pages](#page)
+  - composite pages are given an id attribute when they are linked to from the ToC
 - `$Config_BookCompositePages`: A list of [Pages](#page)
 - `$Config_SetTableCaption`: A [Caption](#caption)
   - additionally, there is a `hasTopTitle` which moves the title above the table instead of below it
@@ -69,7 +75,13 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Appendix_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Section_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Table*`
+    - move the summary element from inside the caption into the `div.os-table`
     - autogenerate a summary attribute on the table from the table's caption
+    - wrap table inside a `div.os-table` (for styling and REX depends on this)
+    - when `hasTopTitle` is set do both of the following:
+      1. move the title above the table instead of below it
+      1. delete the `thead` when the FEATURE_FLAG table-move-fake-title is set
+    - wrap the title in a `.os-table-title` FOR_STYLING_ONLY
 
   - `$Config_PartType_Table_CaptionContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Table_CaptionContentAp`: A [TitleContent](#titlecontent)
