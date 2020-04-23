@@ -62,8 +62,23 @@ The config settings are variables that start with `$Config_` and have the follow
   - composite pages are given an id attribute when they are linked to from the ToC
 - `$Config_SectionCompositePages`: A list of [Pages](#page)
   - Each one has a `h1[data-type="document-title"]` added to it 
+  - the line Phil commented just moves the solutions but this area does all this: Creates a Page, moves exercises to it, groups the exercises by section, and adds the section title to the group (with a link back to the section). At this point the exercises & solutions seem to be numbered
 - `$Config_BookCompositePages`: A list of [Pages](#page)
   - Each one has a `h1[data-type="document-title"]` added to it
+  - One of them is an Index (instructions will likely come later)
+    - create the following:
+        ```
+        <div.group-by>
+          <span.group-label>A</>
+          <span.os-index-item>
+            <span.os-term group-by="A">Accessibility Improvements</>
+            <a.os-term-section-link href="..." >
+              <span.os-term-section>Preface</>
+            </>
+            <span.os-index-link-separator>,</>
+          </>
+        </>
+        ```
 
 - `$Config_SetTableCaption`: A [Caption](#caption)
   - additionally, there is a `hasTopTitle` which moves the title above the table instead of below it
@@ -117,7 +132,8 @@ The config settings are variables that start with `$Config_` and have the follow
   - a flag to unwrap the span elements in the ToC (for the carnival theme)
   - `$Config_TocTitleWord` : Add the word "Contents" to the ToC
 
-
+- `$Config_addSolutionHeader`
+  - seems to define whether solutions are discarded or kept
 
 ## TitleContent
 

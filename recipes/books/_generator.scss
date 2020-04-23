@@ -380,53 +380,53 @@
   }
 }
 :pass(8) {
-  @if $Config_SectionCompositePages != () {
-    @include count_countChapters(chapter);
-    @include count_countSections(section);
-  }
+  // @if $Config_SectionCompositePages != () {
+  //   @include count_countChapters(chapter);
+  //   @include count_countSections(section);
+  // }
   //Only move solutions after exercises/solutions are numbered
-  @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
-  @each $page in $Config_SectionCompositePages {
-    $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
-     @if $moveSolutionsTo == $AREA_EOC {
-      @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
-    } @else if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
-    }
-  }
-  @each $page in $Config_ChapterCompositePages {
-    $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
-    @if $moveSolutionsTo == $AREA_EOC {
-      @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
-    } @else if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
-    }
-  }
+  // @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
+  // @each $page in $Config_SectionCompositePages {
+  //   $moveSolutionsTo: map-get($page, moveSolutionsTo);
+  //   @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+  //    @if $moveSolutionsTo == $AREA_EOC {
+  //     @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
+  //   } @else if $moveSolutionsTo == $AREA_EOB {
+  //     @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
+  //   }
+  // }
+  // @each $page in $Config_ChapterCompositePages {
+  //   $moveSolutionsTo: map-get($page, moveSolutionsTo);
+  //   @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+  //   @if $moveSolutionsTo == $AREA_EOC {
+  //     @include compose_createEOCSolutions($Config_ChapterCompositePages, $page, sectionHeaderNode);
+  //   } @else if $moveSolutionsTo == $AREA_EOB {
+  //     @include compose_createEOBSolutions($Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
+  //   }
+  // }
 
   // After: Solution trashing
-  @if $Config_addSolutionHeader {
-    @each $header in $Config_addSolutionHeader {
-      $solutionSelector                : map-get($header, selector);
-      $solutionTitle                   : map-get($header, title);
-      @include modify_addSolutionHeader($solutionSelector, $solutionTitle);
-    }
-  }
+  // @if $Config_addSolutionHeader {
+  //   @each $header in $Config_addSolutionHeader {
+  //     $solutionSelector                : map-get($header, selector);
+  //     $solutionTitle                   : map-get($header, title);
+  //     @include modify_addSolutionHeader($solutionSelector, $solutionTitle);
+  //   }
+  // }
 
   // Copy/pasta from above
   // TODO: Combine bookCompositePages and chapterCompositePages in the config and then split them out in this file
-  @each $page in $Config_BookCompositePages {
-    $moveSolutionsTo: map-get($page, moveSolutionsTo);
-    @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
-    @if $moveSolutionsTo == $AREA_EOB {
-      @include compose_createEOBSolutions($Config_SectionCompositePages, $Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
-    } @else if $moveSolutionsTo == $AREA_EOC {
-      @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
-    }
-  }
+  //DONE @each $page in $Config_BookCompositePages {
+  //   $moveSolutionsTo: map-get($page, moveSolutionsTo);
+  //   @include validate_enumOptional($moveSolutionsTo, $AREA__PREFIX__);
+  //   @if $moveSolutionsTo == $AREA_EOB {
+  //     @include compose_createEOBSolutions($Config_SectionCompositePages, $Config_ChapterCompositePages, $Config_Notes, $page, sectionHeaderNode);
+  //   } @else if $moveSolutionsTo == $AREA_EOC {
+  //     @error "BUG: For now this item should have been in chapterCompositePages but it was in bookCompositePages";
+  //   }
+  // }
   //After: prepBookComposites
-  @include compose_createBookComposites($Config_BookCompositePages);
+  // @include compose_createBookComposites($Config_BookCompositePages);
 
   // @each $subtitle in $Config_SubtitleLabels {
   //   $selector: map-get($subtitle, selector);
