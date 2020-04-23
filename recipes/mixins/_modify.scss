@@ -927,17 +927,29 @@
   }
 }
 
-@mixin modify_addFirstElement($element) {
+@mixin modify_addFirstElementClass($element) {
   @if release-flag-enabled(exercise-first-element) {
     [data-type="exercise"]:not(.unnumbered) .os-problem-container {
       #{$element} {
         class: attr(class) " first-element";
       }
     }
+
+    @each $page in $Config_BookCompositePages {
+      $name: map-get($page, name);
+
+      @if $name == "Answer Key" {
+        .os-eob [data-type="solution"] .os-solution-container {
+          #{$element} {
+            class: attr(class) " first-element";
+          }
+        }
+      }
+    }
   }
 }
 
-@mixin modify_tagExerciseWithFirstElement() {
+@mixin modify_tagExerciseWithFirstElementClass() {
   @if release-flag-enabled(exercise-first-element) {
     .os-problem-container {
       string-set: hasFirstElement " ";
@@ -946,6 +958,22 @@
       }
       &:deferred {
         class: attr(class) string(hasFirstElement);
+      }
+    }
+
+    @each $page in $Config_BookCompositePages {
+      $name: map-get($page, name);
+
+      @if $name == "Answer Key" {
+        .os-solution-container {
+          string-set: hasFirstElement " ";
+          .first-element {
+            string-set: hasFirstElement " has-first-element";
+          }
+          &:deferred {
+            class: attr(class) string(hasFirstElement);
+          }
+        }
       }
     }
   }
@@ -1023,6 +1051,18 @@
         data-type: "title";
         class: "os-title";
         container: h3;
+      }
+    }
+  }
+}
+
+//math in paragraphs need to be wrapped in a span so that if it occurs at the end of a line and is followed by punctuation, the line does not break before the punctuation
+@mixin modify_wrapMathInPara() {
+  p {
+    math {
+      &::outside {
+        container: span;
+        class: "os-math-in-para";
       }
     }
   }
