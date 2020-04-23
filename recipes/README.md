@@ -156,6 +156,7 @@ A `Caption` contains the following fields:
 - `defaultContainer`: An element that is created to contain the caption
 - `hasCaption`: a boolean
 - `hasTitle`: a boolean
+- `resetAt`: en enum. The numbering either resets at the chapter (empty) or at the section (`moduleReset`)
 
 ## TargetLabel
 
