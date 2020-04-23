@@ -324,60 +324,60 @@
   // Count exercises that were marked as moveTo: $AREA_EOC
   @include validate_enum(map-get($Config_PartType_Exercise, moveTo), $AREA__PREFIX__);
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC {
-    $resetAt:       map-get($Config_PartType_Exercise, resetAt);
-    $numberAt:      map-get($Config_PartType_Exercise, numberAt);
-    $titleContent:  map-get($Config_PartType_Exercise, titleContent);
-    @include validate_enum($resetAt, $RESET__PREFIX__);
-    @include validate_enum($numberAt, $NUMBER__PREFIX__);
-    @include validate_exists($titleContent);
+    // $resetAt:       map-get($Config_PartType_Exercise, resetAt);
+    // $numberAt:      map-get($Config_PartType_Exercise, numberAt);
+    // $titleContent:  map-get($Config_PartType_Exercise, titleContent);
+    // @include validate_enum($resetAt, $RESET__PREFIX__);
+    // @include validate_enum($numberAt, $NUMBER__PREFIX__);
+    // @include validate_exists($titleContent);
 
-    $resetSel: null;
-    @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos', '[data-type="composite-page"]'; }
-    @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
-    @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
-    @else { @error 'BUG: Invalid enum'; }
+    // $resetSel: null;
+    // @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos', '[data-type="composite-page"]'; }
+    // @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+    // @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
+    // @else { @error 'BUG: Invalid enum'; }
 
-    @if $numberAt == $NUMBER_BEFORE_MOVE {
-      @if $Config_SectionCompositePages != () {
-        @include count_countEOSExercises(exerciseMaybeInContent, $resetSel);
-        @include number_numberEOSExercises($titleContent, $titleContent);
-        @include count_countEOCExercises(exerciseMaybeInContent, $resetSel);
-        @include number_numberEOCExercises($titleContent, $titleContent);
-      } @else {
-        @include count_countEOCExercises(exercise, $resetSel);
-        @include number_numberEOCExercises($titleContent, $titleContent);
-      }
+    // @if $numberAt == $NUMBER_BEFORE_MOVE {
+    //   @if $Config_SectionCompositePages != () {
+        // @include count_countEOSExercises(exerciseMaybeInContent, $resetSel);
+        // @include number_numberEOSExercises($titleContent, $titleContent);
+        // @include count_countEOCExercises(exerciseMaybeInContent, $resetSel);
+        // @include number_numberEOCExercises($titleContent, $titleContent);
+      // } @else {
+        //DONE @include count_countEOCExercises(exercise, $resetSel);
+        //DONE @include number_numberEOCExercises($titleContent, $titleContent);
+      // }
 
 
-      @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
-        @include modify_tagRemovedSolutions();
-      }
-    } @else if $numberAt == $NUMBER_AFTER_MOVE {
-    } @else { @error 'BUG: Invalid enum'; }
+      // @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
+      //   @include modify_tagRemovedSolutions();
+      // }
+    // } @else if $numberAt == $NUMBER_AFTER_MOVE {
+    // } @else { @error 'BUG: Invalid enum'; }
   }
 }
 :pass(7) {
-  @include modify_ExercisePrefix($Config_ChapterCompositePages); //if solutions are being moved on this pass then they will not be prefixed
-  @if $Config_hasStimuli {
-    @include count_countStimulusExercises(stimuli, $Config_stimuliSectionClass);
-    @include number_numberStimulusExercises($Config_ContentStimuliExercise_TitleContent);
-  }
+  // @include modify_ExercisePrefix($Config_ChapterCompositePages); //if solutions are being moved on this pass then they will not be prefixed
+  // @if $Config_hasStimuli {
+  //   @include count_countStimulusExercises(stimuli, $Config_stimuliSectionClass);
+  //   @include number_numberStimulusExercises($Config_ContentStimuliExercise_TitleContent);
+  // }
 
 
   //After: createChapterComposites, numberEOCExercises
-  @include count_countExercises(exerciseAll);
+  // @include count_countExercises(exerciseAll);
   // Only link up problems and solutions if they will not be discarded (optimization)
-  @if map-get($Config_PartType_Exercise, numberAt) == $NUMBER_BEFORE_MOVE {
-    @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
-      @include modify_trashTaggedSolutions();
-    }
-  }
-  @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
-  } @else if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
-    @include link_linkToProblemsFromSolutionsEOC($trashHalf: true)
-  } @else {
-    @include link_linkToProblemsFromSolutionsEOC($trashHalf: false);
-  }
+  // @if map-get($Config_PartType_Exercise, numberAt) == $NUMBER_BEFORE_MOVE {
+  //   @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
+  //     @include modify_trashTaggedSolutions();
+  //   }
+  // }
+  // @if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH {
+  // } @else if map-get($Config_PartType_Solution, moveTo) == $AREA_TRASH_HALF {
+  //DONE   @include link_linkToProblemsFromSolutionsEOC($trashHalf: true)
+  // } @else {
+  //   @include link_linkToProblemsFromSolutionsEOC($trashHalf: false);
+  // }
 }
 :pass(8) {
   // @if $Config_SectionCompositePages != () {

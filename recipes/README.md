@@ -63,6 +63,7 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_SectionCompositePages`: A list of [Pages](#page)
   - Each one has a `h1[data-type="document-title"]` added to it 
   - the line Phil commented just moves the solutions but this area does all this: Creates a Page, moves exercises to it, groups the exercises by section, and adds the section title to the group (with a link back to the section). At this point the exercises & solutions seem to be numbered
+  - exercises within them need to be numbered
 - `$Config_BookCompositePages`: A list of [Pages](#page)
   - Each one has a `h1[data-type="document-title"]` added to it
   - One of them is an Index (instructions will likely come later)
@@ -95,6 +96,7 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
   - `$Config_PartType_Equation`: A [CustomPart](#custompart)
   - `$Config_PartType_Solution`: A [CustomPart](#custompart)
+    - change the solutions exercise number (`<span.os-number>12</>`) into a link back to the exercise
   - `$Config_PartType_Chapter_TitleContent`: A [TitleContent](#titlecontent)
     - The title of a chapter (`[data-type="document-title"]`) gets an id attribute (assuming so that we can link to it but not sure)
   - `$Config_PartType_Unit_TitleContent`: A [TitleContent](#titlecontent)
@@ -134,6 +136,7 @@ The config settings are variables that start with `$Config_` and have the follow
 
 - `$Config_addSolutionHeader`
   - seems to define whether solutions are discarded or kept
+- `$Config_hasStimuli`
 
 ## TitleContent
 
