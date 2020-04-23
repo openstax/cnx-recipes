@@ -428,66 +428,66 @@
   //After: prepBookComposites
   @include compose_createBookComposites($Config_BookCompositePages);
 
-  @each $subtitle in $Config_SubtitleLabels {
-    $selector: map-get($subtitle, selector);
-    $subtitleSelector: map-get($subtitle, subtitleSelector);
-    $stringName: map-get($subtitle, stringName);
+  // @each $subtitle in $Config_SubtitleLabels {
+  //   $selector: map-get($subtitle, selector);
+  //   $subtitleSelector: map-get($subtitle, subtitleSelector);
+  //   $stringName: map-get($subtitle, stringName);
 
-    #{$selector} #{$subtitleSelector} {
-      @include _refStringAs(#{$stringName}, content());
-    }
+  //   #{$selector} #{$subtitleSelector} {
+  //     @include _refStringAs(#{$stringName}, content());
+  //   }
 
-    #{$selector} {
-      &:deferred {
-        attr-use-subtitle: string(#{$stringName});
-      }
-    }
-  }
+  //   #{$selector} {
+  //     &:deferred {
+  //       attr-use-subtitle: string(#{$stringName});
+  //     }
+  //   }
+  // }
 
-  @include modify_exerciseNoteTitle($Config_ExerciseNoteTitle);
+  // @include modify_exerciseNoteTitle($Config_ExerciseNoteTitle);
 }
 :pass(9) {
   //After: prepIndexTerms, createBookComposites
-  @include modify_addIndexSymbolGroup("index", $Config_Index_SymbolsSectionTitle);
+  // @include modify_addIndexSymbolGroup("index", $Config_Index_SymbolsSectionTitle);
 
   //After: composite page creation
-  @include count_countChapters(chapter);
-  @if $Config_SectionCompositePages != () { @include count_countSections(section); }
-  @include count_countAppendices(appendix);
-  @if release-flag-enabled(increment-section-counter-for-lo) {
-    @include count_countSections(section);
-  };
+  // @include count_countChapters(chapter);
+  // @if $Config_SectionCompositePages != () { @include count_countSections(section); }
+  // @include count_countAppendices(appendix);
+  // @if release-flag-enabled(increment-section-counter-for-lo) {
+  //   @include count_countSections(section);
+  // };
 
-  @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC { //check to see if this code is redundent,   same block above
-    $resetAt:       map-get($Config_PartType_Exercise, resetAt);
-    $numberAt:      map-get($Config_PartType_Exercise, numberAt);
-    $titleContent:  map-get($Config_PartType_Exercise, titleContent);
+  // @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC { //check to see if this code is redundent,   same block above
+  //   $resetAt:       map-get($Config_PartType_Exercise, resetAt);
+  //   $numberAt:      map-get($Config_PartType_Exercise, numberAt);
+  //   $titleContent:  map-get($Config_PartType_Exercise, titleContent);
 
-    @include validate_enum($resetAt, $RESET__PREFIX__);
-    @include validate_enum($numberAt, $NUMBER__PREFIX__);
-    @include validate_type($titleContent, map);
+  //   @include validate_enum($resetAt, $RESET__PREFIX__);
+  //   @include validate_enum($numberAt, $NUMBER__PREFIX__);
+  //   @include validate_type($titleContent, map);
 
-    $resetSel: null;
-    @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos'; }
-    @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
-    @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
-    @else { @error 'BUG: Invalid enum'; }
-    @include count_countEOCExercises(exercise, $resetSel);
+  //   $resetSel: null;
+  //   @if       $resetAt == $RESET_SECTION        { $resetSel: '.os-eos'; }
+  //   @else if  $resetAt == $RESET_CHAPTER        { $resetSel: '[data-type="chapter"]'; }
+  //   @else if  $resetAt == $RESET_COMPOSITE_PAGE { $resetSel: '[data-type="composite-page"]'; }
+  //   @else { @error 'BUG: Invalid enum'; }
+  //   @include count_countEOCExercises(exercise, $resetSel);
 
-    @if $numberAt == $NUMBER_AFTER_MOVE {
-       @include number_numberEOCExercises($titleContent, $titleContent);
-    } @else if $numberAt == $NUMBER_BEFORE_MOVE {
-    } @else { @error 'BUG: Invalid enum'; }
-  }
+  //   @if $numberAt == $NUMBER_AFTER_MOVE {
+  //      @include number_numberEOCExercises($titleContent, $titleContent);
+  //   } @else if $numberAt == $NUMBER_BEFORE_MOVE {
+  //   } @else { @error 'BUG: Invalid enum'; }
+  // }
 
-  $resetAt: map-get($Config_PartType_Example, resetAt);
-  @if $resetAt == moduleReset {
-    @include count_countSectionExamples(exampleInSection);
-  } @else {  
-    @include count_countExamples(example);
-  }
+  // $resetAt: map-get($Config_PartType_Example, resetAt);
+  // @if $resetAt == moduleReset {
+  //   @include count_countSectionExamples(exampleInSection);
+  // } @else {  
+  //   @include count_countExamples(example);
+  // }
 
-  @include count_countEquations(equation);
+  // @include count_countEquations(equation);
   //DONE @include link_setTargetLabels($Config_SubtitleLabels);
   //DONE @include link_setTargetLabels($Config_TargetLabels);
   //DONE @include link_setLinkLabels();
