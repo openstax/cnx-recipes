@@ -936,9 +936,9 @@
     }
 
     @each $page in $Config_BookCompositePages {
-      $name: map-get($page, name);
+      $type: map-get($page, type);
 
-      @if $name == "Answer Key" {
+      @if $type == "Answer Key" { // see config.scss file for u-physics for details
         .os-eob [data-type="solution"] .os-solution-container {
           #{$element} {
             class: attr(class) " first-element";
@@ -962,9 +962,9 @@
     }
 
     @each $page in $Config_BookCompositePages {
-      $name: map-get($page, name);
+      $type: map-get($page, type);
 
-      @if $name == "Answer Key" {
+      @if $type == "Answer Key" {
         .os-solution-container {
           string-set: hasFirstElement " ";
           .first-element {
@@ -1051,6 +1051,18 @@
         data-type: "title";
         class: "os-title";
         container: h3;
+      }
+    }
+  }
+}
+
+//math in paragraphs need to be wrapped in a span so that if it occurs at the end of a line and is followed by punctuation, the line does not break before the punctuation
+@mixin modify_wrapMathInPara() {
+  p {
+    math {
+      &::outside {
+        container: span;
+        class: "os-math-in-para";
       }
     }
   }
