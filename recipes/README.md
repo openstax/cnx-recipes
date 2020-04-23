@@ -48,10 +48,15 @@ There are 4 different types of variables used in the SASS files:
 
 The config settings are variables that start with `$Config_` and have the following structure:
 
+- `$GRAMMATICAL_CASES`
+  - This describes the different ways to say "Figure". The content has an attribute that belongs to the katalyst namespace that describes the different cases.
+  - The attribute is `cmlnle:case` and has namespace "http://katalysteducation.org/cmlnle/1.0"
+  - These are used when building links. See `$Config_TargetLabels` for more information
 - `$Config_hasCompositeChapter`
   - not sure if this is the same thing as a ChapterCompositePages
   - add an h1 for each one (e.g. "Key Terms", "Index")
   - heading levels are "sane" meaning they are nested properly in the baked file (composite chapter title is like h2 and the compositepage inside it is h3 for accessibility)
+  - copy the book metadata into each composite pages (assuming to make importing back into the DB easier)
 
 - `$Config_ChapterCompositePages`: A list of [Pages](#page)
   - composite pages are given an id attribute when they are linked to from the ToC
@@ -64,6 +69,7 @@ The config settings are variables that start with `$Config_` and have the follow
   - additionally, there is a `hasTopTitle` which moves the title above the table instead of below it
 - `$Config_SetFigureCaption`: A [Caption](#caption)
 - `$Config_TargetLabels`: A list of [TargetLabels](#targetlabel)
+  - Replace link text from `[link]` to text specific to the target (e.g. `Figure 4.3` or `9.1 Kinematics`)
 - `$Config_Notes`: A list of [Notes](#note)
 - `$Config_UnnumberedElements`: A list of [UnnumberedElements](#unnumberedelements)
 - `$Config_PartType_*`
