@@ -1,6 +1,29 @@
 @import '../u-physics/book';
 
 @include add_settings((
+    ChapterReviewCompositeChapter:(
+        _selectors: (".os-chapter-review-container"),
+        'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+        'H2Title:::font-family': (_ref: 'typography:::serifFont'),
+        'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+        'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+        'H3Title:::overflow': hidden,
+        'H3TitleBottomBorder:::content': "''",
+        'H3TitleBottomBorder:::width': 100%,
+        'H3TitleBottomBorder:::height': 0.2rem,
+        'H3TitleBottomBorder:::border-bottom-width': 0.2rem,
+        'H3TitleBottomBorder:::border-bottom-color': (_ref: 'colorMap:::physicsHeaderColor'),
+        'H3TitleBottomBorder:::border-bottom-style': solid,
+        'H3TitleBottomBorder:::display': inline-block,
+        'H3TitleBottomBorder:::position': relative,
+        'H3TitleBottomBorder:::bottom': 0.3rem,
+        'H3TitleBottomBorder:::margin-left': h-spacing(1),
+        'H3TitleBottomBorder:::margin-right': -100%,
+        'H4LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
+    ),
+));
+
+@include add_settings((
     IndexName: (
         _selectors: (".os-index-name-container"),
         'H1Title:::border-bottom-color': (_ref: 'colorMap:::pagetitleColor'),
@@ -46,8 +69,63 @@
         'TermText:::font-family': (_ref: 'typography:::baseFont'),
         'PageNumber:::content': target-counter(attr(href, url), page),
     ),
+    EocKeyEquations: (
+        _selectors: ("[data-type = 'composite-chapter'] > .os-key-equations-container"),
+        'Container:::column-count': 1,
+        'Container:::column-gap': normal,
+        'Container:::column-width': auto,
+        'Section--MarginBottom:::margin-bottom': 0,
+        'UnnumberedUnstyledTable:::margin-bottom': 0,
+        'TableData:::padding': table-v-spacing(1) table-h-spacing(1),
+        'TableHeadCell:::padding': table-v-spacing(1) table-h-spacing(1),
+  ),
+    UnitToc: (
+    _selectors: ('nav#toc'),
+        'TocUnitLink:::border-bottom': none,
+        'TocPrefaceLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocPrefaceLinkPage:::display': inline,
+        'TocPrefaceLinkPage:::margin-left': 0,
+        'TocPrefaceLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+        'TocAppendixLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocAppendixLinkPage:::display': inline,
+        'TocAppendixLinkPage:::margin-left': 0,
+        'TocAppendixLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+        'TocChapterLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocChapterLinkPage:::display': inline,
+        'TocChapterLinkPage:::margin-left': 0,
+        'TocChapterLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+        'TocChapterPageLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocChapterPageLinkPage:::display': inline,
+        'TocChapterPageLinkPage:::margin-left': 0,
+        'TocChapterPageLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+        'TocChapterCompositePageLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocChapterCompositePageLinkPage:::display': inline,
+        'TocChapterCompositePageLinkPage:::margin-left': 0,
+        'TocChapterCompositePageLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+        'TocEocCompositeChapterLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocEocCompositeChapterLinkPage:::display': inline,
+        'TocEocCompositeChapterLinkPage:::margin-left': 0,
+        'TocEocCompositeChapterLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+        'TocCompositeChapterLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocCompositeChapterLinkPage:::display': inline,
+        'TocCompositeChapterLinkPage:::margin-left': 0,
+        'TocCompositeChapterLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+        'TocReferencesLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocReferencesLinkPage:::display': inline,
+        'TocReferencesLinkPage:::margin-left': 0,
+        'TocReferencesLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+        'TocIndexLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+        'TocIndexLinkPage:::display': inline,
+        'TocIndexLinkPage:::margin-left': 0,
+        'TocIndexLinkPage:::color': (_ref: 'colorMap:::physicsTocColor'),
+    ),
+
 ));
 
+@include use('ChapterReviewCompositeChapter','carnival:::EOCDefaultCompoundComposite');
+@include use('Indent', 'carnival:::IndentShape');
 @include use('IndexName', 'carnival:::IndexShape');
 @include use('IndexTerm', 'carnival:::IndexShape');
 @include use('IndexForeign', 'carnival:::IndexShape');
+@include use('EocKeyEquations','carnival:::EocKeyEquations');
+@include use('UnitToc', 'carnival:::UnitToc');
