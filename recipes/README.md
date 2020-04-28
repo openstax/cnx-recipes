@@ -94,6 +94,7 @@ The config settings are variables that start with `$Config_` and have the follow
     - gets a class on it when it has a FirstElement FOR_STYLING_ONLY
   - `$Config_PartType_Example`: A [CustomPart](#custompart)
   - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
+    - if `outlineTitle` is truthy, it causes the `.os-chapter-outline` to move **into** the top of the `.introduction` Page
   - `$Config_PartType_Equation`: A [CustomPart](#custompart)
   - `$Config_PartType_Solution`: A [CustomPart](#custompart)
     - change the solutions exercise number (`<span.os-number>12</>`) into a link back to the exercise
