@@ -641,6 +641,26 @@
     @include modify_groupChapOutlineIntroContent();
   }
 }
+:pass(14) {
+  nav#toc > ol > .os-toc-chapter > a {
+    > .os-chapter-text {
+        move-to: chapterString;
+    }
+    > .os-number {
+        move-to: chapterNumber;
+    }
+    > .os-divider {
+        move-to: chapterNumber;
+    }
+  }
+  nav#toc > ol > .os-toc-chapter > a {
+    &:deferred::before {
+      container: span;
+      class: "os-chapter-title";
+      content: pending(chapterString) pending(chapterNumber);
+    }
+  }
+}
 :pass(100) {
   // Get rid of delete-me objects that easybake misses
   @include utils_cleanUp();
