@@ -95,6 +95,7 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Example`: A [CustomPart](#custompart)
   - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
     - if `outlineTitle` is truthy, it causes the `.os-chapter-outline` to move **into** the top of the `.introduction` Page
+    - Autogenerate a chapter outline (older books use this) and remove it for newer books (Note: We should only generate an outline if the book is configured for that. Not this build-for-every-book-and-discard-for-some). older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
   - `$Config_PartType_Equation`: A [CustomPart](#custompart)
   - `$Config_PartType_Solution`: A [CustomPart](#custompart)
     - change the solutions exercise number (`<span.os-number>12</>`) into a link back to the exercise
@@ -121,6 +122,8 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Figure_CaptionContent`: A [TitleContent](#titlecontent)
     - same as the `$Config_PartType_Table_CaptionContent`
   - `$Config_PartType_Figure_CaptionContentAp`: A [TitleContent](#titlecontent)
+  - `$Config_Index*`
+    - remove the temporarily-added `group-by="{letter}"` attribute
   - `$Config_Index_SymbolRegexp`: A regular expression (in a string)
   - `$Config_Index_NotSymbolRegexp`: A regular expression (in a string)
 - `$Config_Coverage_*`
