@@ -60,6 +60,7 @@ The config settings are variables that start with `$Config_` and have the follow
 
 - `$Config_ChapterCompositePages`: A list of [Pages](#page)
   - composite pages are given an id attribute when they are linked to from the ToC
+  - create a Page (contains a data-uuid-key, title, metadata, etc) whose contents is collected from items that match `className` from each entry in the list
 - `$Config_SectionCompositePages`: A list of [Pages](#page)
   - Each one has a `h1[data-type="document-title"]` added to it 
   - the line Phil commented just moves the solutions but this area does all this: Creates a Page, moves exercises to it, groups the exercises by section, and adds the section title to the group (with a link back to the section). At this point the exercises & solutions seem to be numbered
