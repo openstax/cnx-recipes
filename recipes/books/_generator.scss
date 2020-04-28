@@ -215,48 +215,45 @@
 
   // Number equations if they have a titleContent
   // @include validate_enum(map-get($Config_PartType_Equation, moveTo), $AREA__PREFIX__);
-  $titleContent               : map-get($Config_PartType_Equation, titleContent);
-  $numberAt                   : map-get($Config_PartType_Equation, numberAt);
-  $numberAfterEq              : map-get($Config_PartType_Equation, numberAfterEq);
-  @if $titleContent {
-    @include validate_typeOptional($numberAfterEq, bool);
-    @include validate_enum($numberAt, $NUMBER__PREFIX__);
-    @include count_countEquations(equation);
-    @if $numberAt == $NUMBER_BEFORE_MOVE {
-      @include number_equations($titleContent, $numberAfterEq);
-    }
-  }
-
-  // @include count_countExamples(example);
-  // @include number_numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
+  // $titleContent               : map-get($Config_PartType_Equation, titleContent);
+  // $numberAt                   : map-get($Config_PartType_Equation, numberAt);
+  // $numberAfterEq              : map-get($Config_PartType_Equation, numberAfterEq);
+  // @if $titleContent {
+  //   @include validate_typeOptional($numberAfterEq, bool);
+  //   @include validate_enum($numberAt, $NUMBER__PREFIX__);
+  //   @include count_countEquations(equation);
+  //   @if $numberAt == $NUMBER_BEFORE_MOVE {
+  //     @include number_equations($titleContent, $numberAfterEq);
+  //   }
+  // }
 
   // Count and number any Notes that need it
-  @each $note in $Config_Notes {
-    $className: map-get($note, className);
-    $titleContent: map-get($note, titleContent);
-    $counterName: map-get($note, counterName);
-    $resetAt: map-get($note, resetAt);
-    $hasSolutions: map-get($note, hasSolutions);
-    $solutionTitleContent: map-get($note, solutionTitleContent);
-    @include validate_type($className, string);
-    @include validate_typeOptional($titleContent, map);
-    @include validate_typeOptional($counterName, string);
+  // @each $note in $Config_Notes {
+  //   $className: map-get($note, className);
+  //   $titleContent: map-get($note, titleContent);
+  //   $counterName: map-get($note, counterName);
+  //   $resetAt: map-get($note, resetAt);
+  //   $hasSolutions: map-get($note, hasSolutions);
+  //   $solutionTitleContent: map-get($note, solutionTitleContent);
+  //   @include validate_type($className, string);
+  //   @include validate_typeOptional($titleContent, map);
+  //   @include validate_typeOptional($counterName, string);
 
-    @if $titleContent {
-      @if $counterName {
-        @if $resetAt == moduleReset {
-          @include count_countSectionNote($counterName, $className);
-        } @else {
-          @include count_countNote($counterName, $className);
-        }
-      }
-      @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
-    }
-  }
+  //   @if $titleContent {
+  //     @if $counterName {
+  //       @if $resetAt == moduleReset {
+  //         @include count_countSectionNote($counterName, $className);
+  //       } @else {
+  //         @include count_countNote($counterName, $className);
+  //       }
+  //     }
+  //     @include number_numberNote($className, $titleContent, $hasSolutions, $solutionTitleContent);
+  //   }
+  // }
 
-  @include count_countTerms(term);
-  @include reference_refPageIDStringAs(pageID);
-  @include modify_prepIndexTerms(term, pageID);
+  // @include count_countTerms(term);
+  // @include reference_refPageIDStringAs(pageID);
+  //DONE @include modify_prepIndexTerms(term, pageID);
 
   // @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
   // @include compose_createSectionComposites($Config_SectionCompositePages, sectionHeaderNode);
