@@ -979,6 +979,48 @@
   }
 }
 
+@mixin modify_tagTableParentContainer() {
+  @if release-flag-enabled(tag-table-parent-container) {
+    .os-table {
+      string-set: hasTable " ";
+        table:not(.unstyled) {
+        string-set: hasTable " has-basic-table";
+        }
+      &:deferred {
+        class: attr(class) string(hasTable);
+      }
+    }
+    .os-table {
+      string-set: hasTable" ";
+        table.unnumbered.unstyled {
+        string-set: hasTable " has-unnumbered-unstyled-table";
+        }
+      &:deferred {
+        class: attr(class) string(hasTable);
+      }
+    }
+    .os-table {
+      string-set: hasTable " ";
+        table.top-titled:not(.unstyled) {
+        string-set: hasTable " has-fake-title-table";
+      }
+      &:deferred {
+        class: attr(class) string(hasTable);
+      }
+    }
+    .os-table {
+      string-set: hasTable " ";
+        table.column-header {
+        string-set: hasTable " has-column-header-table";
+      }
+      &:deferred {
+        class: attr(class) string(hasTable);
+      }
+    }
+  
+  }
+}
+
 //tag os-figure that contains splash image in introduction
 @mixin modify_tagSplash() {
   @if release-flag-enabled(tagSplash) {
