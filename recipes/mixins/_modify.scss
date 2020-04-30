@@ -992,16 +992,18 @@
     }
     .os-table {
       string-set: hasTable " ";
-        table:not([class]) {
+        table:not(.unstyled):not(.top-titled):not(.column-header) { // :not(.unnumbered) selector isn't used here to prevent unstyle tables that don't have both unnumbered and unstyled class (just unnumbered) 
         string-set: hasTable " basic-table";
         }
       &:deferred {
         class: attr(class) string(hasTable);
       }
     }
+    //Left commented just in case we want to use this to overwrite os-table class for somethig like os-top-titled-table-container f.ex.
+
     // .os-table {
     //   string-set: hasTable " ";
-    //     table:not(.unstyled) {
+    //     table:not(.unstyled):not(.top-titled):not(.column-header) {
     //     string-set: hasTable " has-basic-table";
     //     }
     //   &:deferred {
@@ -1038,15 +1040,6 @@
   
   }
 }
-
-// @mixin modify_tagTableWithoutClassParentContainer() {
-//   @if release-flag-enabled(tag-table-parent-container) {
-//     .os-table:not([class]) > table {
-//       &::outside {
-//         class: os-table has-basic-table;
-//       }
-//   }
-// }
 
 //tag os-figure that contains splash image in introduction
 @mixin modify_tagSplash() {
