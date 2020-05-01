@@ -94,6 +94,8 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Exercise`: A [CustomPart](#custompart)
     - gets a class on it when it has a FirstElement FOR_STYLING_ONLY
   - `$Config_PartType_Example`: A [CustomPart](#custompart)
+    - Examples are Numbered. The numbering can be set to reset at the section or not (`resetAt`)
+    - Feature flags define whether Examples in an Appendix are numbered or not (`appendix-has-numbered-examples`) and if the subtitle is numbered (`subtitled-examples`)
   - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
     - if `outlineTitle` is truthy, it causes the `.os-chapter-outline` to move **into** the top of the `.introduction` Page
     - Autogenerate a chapter outline (older books use this) and remove it for newer books (Note: We should only generate an outline if the book is configured for that. Not this build-for-every-book-and-discard-for-some). older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
