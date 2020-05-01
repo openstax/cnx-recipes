@@ -95,7 +95,9 @@ The config settings are variables that start with `$Config_` and have the follow
     - gets a class on it when it has a FirstElement FOR_STYLING_ONLY
   - `$Config_PartType_Example`: A [CustomPart](#custompart)
     - Examples are Numbered. The numbering can be set to reset at the section or not (`resetAt`)
+      - `<.os-title><.os-title-label>Example </><.os-number>B12</><.os-divider> </.os-divider></>`
     - Feature flags define whether Examples in an Appendix are numbered or not (`appendix-has-numbered-examples`) and if the subtitle is numbered (`subtitled-examples`)
+    - Change the subtitle from a span to an `<h#>` (flag: `subtitled-examples`)
   - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
     - if `outlineTitle` is truthy, it causes the `.os-chapter-outline` to move **into** the top of the `.introduction` Page
     - Autogenerate a chapter outline (older books use this) and remove it for newer books (Note: We should only generate an outline if the book is configured for that. Not this build-for-every-book-and-discard-for-some). older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
@@ -107,6 +109,9 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Unit_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Appendix_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Section_TitleContent`: A [TitleContent](#titlecontent)
+    - Sections are numbered. By adding `<.os-number>1.6</><.os-divider> </>` to `[data-type="document-title"]`
+    - Section titles are converted from an `<h2>` to a `<div>`
+    
   - `$Config_PartType_Table*`
     - move the summary element from inside the caption into the `div.os-table`
     - autogenerate a summary attribute on the table from the table's caption
