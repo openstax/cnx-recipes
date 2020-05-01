@@ -106,12 +106,14 @@ The config settings are variables that start with `$Config_` and have the follow
     - change the solutions exercise number (`<span.os-number>12</>`) into a link back to the exercise
   - `$Config_PartType_Chapter_TitleContent`: A [TitleContent](#titlecontent)
     - The title of a chapter (`[data-type="document-title"]`) gets an id attribute (assuming so that we can link to it but not sure)
+    - add `<span class="os-number">Chapter 1</span><span class="os-divider"> </span>` to the chapter title (`[data-type="chapter"] > [data-type="document-title"]`)
   - `$Config_PartType_Unit_TitleContent`: A [TitleContent](#titlecontent)
   - `$Config_PartType_Appendix_TitleContent`: A [TitleContent](#titlecontent)
+    - Appendixes are numbered (just like `$Config_PartType_Section_TitleContent`). By adding `<.os-number>Appendix M</><.os-divider> </>` to `[data-type="document-title"]`
+    - Section titles are converted from an `<h1 data-type="document-title">` to a `<div data-type=...>`
   - `$Config_PartType_Section_TitleContent`: A [TitleContent](#titlecontent)
     - Sections are numbered. By adding `<.os-number>1.6</><.os-divider> </>` to `[data-type="document-title"]`
-    - Section titles are converted from an `<h2>` to a `<div>`
-    
+    - Section titles are converted from an `<h2 data-type="document-title">` to a `<div data-type=...>`
   - `$Config_PartType_Table*`
     - move the summary element from inside the caption into the `div.os-table`
     - autogenerate a summary attribute on the table from the table's caption
