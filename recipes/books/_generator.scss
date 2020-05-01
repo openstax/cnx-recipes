@@ -119,47 +119,47 @@
   }
 }
 :pass(2) {
-  @if $Config_Coverage_MayHaveMissingExercises {
-    @include modify_trash('[data-type="exercise"].missing-exercise');
-  }
+  // @if $Config_Coverage_MayHaveMissingExercises {
+  //   @include modify_trash('[data-type="exercise"].missing-exercise');
+  // }
 
-  // Any notes that need to trash the solution
-  @each $note in $Config_Notes {
-    $className: map-get($note, className);
-    $moveSolutionTo: map-get($note, moveSolutionTo);
-    @include validate_type($className, string);
-    @include validate_enumOptional($moveSolutionTo, $AREA__PREFIX__);
+  // // Any notes that need to trash the solution
+  // @each $note in $Config_Notes {
+  //   $className: map-get($note, className);
+  //   $moveSolutionTo: map-get($note, moveSolutionTo);
+  //   @include validate_type($className, string);
+  //   @include validate_enumOptional($moveSolutionTo, $AREA__PREFIX__);
 
-    @if $moveSolutionTo == $AREA_TRASH {
-      @include modify_trash('.#{$className} [data-type="solution"]');
-      @include utils_clearTrash();
-    } @else {
-      // TODO Skip reconstructing a new object for modify_note
-      $labelText: map-get($note, labelText);
-      $titleContent: map-get($note, titleContent);
-      $replaceHeader: map-get($note, replaceHeader);
-      $useHeader: map-get($note, useHeader);
-      @include validate_typeOptional($useHeader, bool);
-      @include validate_typeOptional($labelText, string);
-      @include validate_typeOptional($titleContent, map);
+  //   @if $moveSolutionTo == $AREA_TRASH {
+  //     @include modify_trash('.#{$className} [data-type="solution"]');
+  //     @include utils_clearTrash();
+  //   } @else {
+  //     // TODO Skip reconstructing a new object for modify_note
+  //     $labelText: map-get($note, labelText);
+  //     $titleContent: map-get($note, titleContent);
+  //     $replaceHeader: map-get($note, replaceHeader);
+  //     $useHeader: map-get($note, useHeader);
+  //     @include validate_typeOptional($useHeader, bool);
+  //     @include validate_typeOptional($labelText, string);
+  //     @include validate_typeOptional($titleContent, map);
 
-      // Check that there is not both a label AND a titleContent
-      @if $labelText and $titleContent {
-        @error "BUG: Specified both a label and a titleContent";
-      }
+  //     // Check that there is not both a label AND a titleContent
+  //     @if $labelText and $titleContent {
+  //       @error "BUG: Specified both a label and a titleContent";
+  //     }
 
-       @else if $useHeader {
-            @include modify_note((className: $className, useHeader: $useHeader));
-        }
-        @else if $labelText {
-          @include modify_note((className: $className, labelText: $labelText, replaceHeader: $replaceHeader));
-        } @else {
-          @if $titleContent {
-            @include modify_note((className: $className, titleContent: $titleContent, replaceHeader: $replaceHeader));
-          }
-        }
-      }
-  }
+  //      @else if $useHeader {
+  //           // @include modify_note((className: $className, useHeader: $useHeader));
+  //       }
+  //       @else if $labelText {
+  //         //DONE @include modify_note((className: $className, labelText: $labelText, replaceHeader: $replaceHeader));
+  //       } @else {
+  //         @if $titleContent {
+  //           // @include modify_note((className: $className, titleContent: $titleContent, replaceHeader: $replaceHeader));
+  //         }
+  //       }
+  //     }
+  // }
 }
 :pass(3) {
 
