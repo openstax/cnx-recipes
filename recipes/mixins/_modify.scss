@@ -1029,23 +1029,15 @@
 }
 
 //takes the string "Chapter" and the chapter number elements in the TOC and wraps them in a span
-@mixin modify_groupTocChapterStringAndNumber() {
-  nav#toc > ol > .os-toc-chapter > a {
+@mixin modify_groupTocTitleTextAndNumber($element) {
+  nav#toc > ol #{$element} > a {
     > .os-part-text {
-        move-to: chapterString;
-    }
-    > .os-number {
-        move-to: chapterNumber;
-    }
-    > .os-divider {
-        move-to: chapterNumber;
-    }
-  }
-  nav#toc > ol > .os-toc-chapter > a {
-    &:deferred::before {
+        move-to: chapterPartString;
+      }
+    > .os-number:deferred::before {
       container: span;
-      class: "os-chapter-number";
-      content: pending(chapterString) pending(chapterNumber);
+      class: "os-part-number";
+      content: pending(chapterPartString) pending(divider);  
     }
   }
 }
