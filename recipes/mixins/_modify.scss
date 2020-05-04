@@ -979,27 +979,31 @@
   }
 }
 
-@mixin modify_tagTableParentContainer() {
-  @if release-flag-enabled(tag-table-parent-container) {
-    .os-table {
-      string-set: hasTable " ";
-        table[class] {
-        string-set: hasTable " " attr(class);
-        }
-      &:deferred {
-        class: attr(class) string(hasTable);
-      }
-    }
-    .os-table {
-      string-set: hasTable " ";
-        table:not(.unstyled):not(.top-titled):not(.column-header) { // :not(.unnumbered) selector isn't used here to prevent unstyle tables that don't have both unnumbered and unstyled class (just unnumbered) 
-        string-set: hasTable " basic-table";
-        }
-      &:deferred {
-        class: attr(class) string(hasTable);
-      }
-    }
-    //Left commented just in case we want to use this to overwrite os-table class for somethig like os-top-titled-table-container f.ex.
+//Left commented in case we want to use this solution instead
+
+// @mixin modify_tagTableParentContainer() {
+//   @if release-flag-enabled(tag-table-parent-container) {
+//     .os-table {
+//       string-set: hasTable " ";
+//         table[class] {
+//         string-set: hasTable " " attr(class);
+//         }
+//       &:deferred {
+//         class: attr(class) string(hasTable);
+//       }
+//     }
+//     .os-table {
+//       string-set: hasTable " ";
+      // :not(.unnumbered) selector isn't used here to prevent unstyle tables that don't have both unnumbered and unstyled class (just unnumbered) 
+    //     table:not(.unstyled):not(.top-titled):not(.column-header) { 
+    //     string-set: hasTable " basic-table";
+    //     }
+    //   &:deferred {
+    //     class: attr(class) string(hasTable);
+    //   }
+    // }
+
+    //Left commented just in case we want to use this solution to create tables containers classes without copying actual tabes classes
 
     // .os-table {
     //   string-set: hasTable " ";
@@ -1038,6 +1042,33 @@
     //   }
     // }
   
+//   }
+// }
+
+// Tag table parent container which table and create it's class based on the existing table class   
+@mixin modify_tagTableParentContainer() {
+    @if release-flag-enabled(tag-table-parent-container) {
+      .os-table {
+        string-set: hasTable " ";
+          table:not(.unstyled):not(.top-titled):not(.column-header) {
+            string-set: hasTable " os-basic-table-container";
+              }
+        &:deferred {
+          class: attr(class) string(hasTable);
+        }
+      }
+      @each $tableClassSelector in $Config_Table_Classes {
+      $tableClass: map-get($tableClassSelector , className); 
+        .os-table {
+            string-set: hasTable " ";
+              table.#{$tableClass} {
+                string-set: hasTable " os-#{$tableClass}-container";
+              }
+              &:deferred {
+                class: attr(class) string(hasTable);
+              }
+            }
+      }
   }
 }
 
