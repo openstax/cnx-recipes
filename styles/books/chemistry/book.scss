@@ -5,6 +5,7 @@
 @include add_settings((
   Preface: (
     _selectors: (".preface"),
+    'H2Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
     'H3Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
     'H4Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
     'H5Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
@@ -35,6 +36,7 @@
     'H2Title:::text-transform': uppercase,
     'H3Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
     'H3Title:::font-family': (_ref: 'typography:::serifFont'),
+    'H3Title:::column-span': all,
     'H3LinkTitle:::font-family': (_ref: 'typography:::serifFont'),
     'H3ListTitle:::color': (_ref: 'colorMap:::fontBodyColor'),
     'H3ListTitle:::font-family': (_ref: "typography:::baseFont"),
@@ -54,6 +56,8 @@
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
+    'Section--MarginBottom:::margin-bottom': 0,
+    'UnnumberedUnstyledTable:::margin-bottom': 0,
     'TableData:::padding': table-v-spacing(1) table-h-spacing(1),
     'TableHeadCell:::padding': table-v-spacing(1) table-h-spacing(1),
   ),
@@ -88,6 +92,15 @@
     'H3Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
     ),
 ));
+
+@include add_settings((
+  AnswerKey: (
+    _selectors: ('[data-type="composite-chapter"]:not(.os-eoc)'),
+    'H2Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
+    'H3Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
+  ),
+));
+
 @include add_settings((
   FullWidthChapterIntro: (
     _selectors: (".introduction"),
@@ -109,7 +122,6 @@
   FakeTitleTable: (
     _selectors: ('.os-table'),
     'TableTitle:::color': (_ref: "colorMap:::chemistryTableColor"),
-    'LastTableRowData:::border-bottom-color': (_ref: "colorMap:::chemistryTableColor"),
   ),
 ));
 //notes settings
@@ -140,13 +152,9 @@
     'Title:::color': (_ref: 'colorMap:::exampleColor'),
     'TitleIcon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-example.svg")) no-repeat top left,
     'ParagraphSubtitle:::font-family': (_ref: "typography:::sansFont"),
-    'ParagraphSubtitle:::font-size': font-scale(1),
-    'ParagraphSubtitle:::line-height': line-height(1),
     'ParagraphSubtitle:::font-weight': bold,
     'ParagraphSubtitle:::margin-bottom': .2rem,
     'AnswerTitle:::font-family': (_ref: "typography:::sansFont"),
-    'AnswerTitle:::font-size': font-scale(1),
-    'AnswerTitle:::line-height': line-height(1),
     'AnswerTitle:::font-weight': bold,
     'AnswerTitle:::margin-bottom': .2rem,
     'FirstParagraphTitle:::margin-bottom': .2rem,
@@ -225,7 +233,7 @@
   page: eob;
 }
 
-$bandColor: settings('scheme:::B4');
+$bandColor: settings('colorMap:::chemistryBandColor');
 $bandBorder: half-fullBleedsSize(.5, in) solid $bandColor;
 
 @mixin band($side) {
