@@ -1,11 +1,3 @@
-@function no_properties($name, $selector) {
-    @return (
-      _name: "NoProp#{$name}",
-      _subselector: $selector,
-      _properties: ()
-    );
-  }
-
 $ChapterIntroBody: (
     _name: "IntroBody",
     _subselector: ' > .intro-body',
@@ -19,7 +11,7 @@ $ChapterIntroBody: (
     )
 );
 
-$ChapterIntroBodyWithoutProperties: no_properties(IntroBody, ' > .intro-body');
+$ChapterIntroBodyWithoutProperties: empty_wrapper(IntroBody, ' > .intro-body');
 
 $ChapterOutline: (
     _name: "Outline",
@@ -119,13 +111,7 @@ $ChapterOutlineList: (
     )
 );
 
-$ChapterObjectives: (
-    _name: "Objectives",
-    _subselector: ' > .chapter-objectives',
-    _properties: (
-
-    )
-);
+$ChapterObjectives: empty_wrapper(Objectives, ' > .chapter-objectives');
 
 $ChapterObjectivesTitle: (
     _name: "ObjectivesTitle",
@@ -182,12 +168,7 @@ $ChapterObjectivesListDot: (
     )
 );
 
-$ChapterIntroContent: (
-    _name: "IntroContent",
-    _subselector: ' > .intro-text',
-    _properties: (
-    )
-);
+$ChapterIntroContent: empty_wrapper(IntroContent, ' > .intro-text');
 
 $ChapterIntroContentHeader: (
     _name: "IntroContentHeader",
@@ -284,29 +265,5 @@ $ChapterSplashFigureWrapper: (
         $SplashCaption,
     )
 );
-
-// This function counts width and margins for bottom border of the title
-// depends on width of the title in px rounded to one decimal place
-@function titleBottomBorder($name, $titleWidth) {
-    $fullTitleWidth: $titleWidth + 8 ; // Width of title with 8px white space
-    $borderMargin: ($fullTitleWidth / 12) * 1rem; // 12 - default px size
-    $borderWidth: (6.5 - $fullTitleWidth / 96) * 1in; // 1in = 96px
-
-    @return (
-      _name: "#{$name}TitleBottomBorder",
-      _subselector: '::after',
-      _properties: (
-        content: "''",
-        width: $borderWidth,
-        border-bottom-width: 0.2rem,
-        border-bottom-color: enum('ValueSet:::REQUIRED'),
-        border-bottom-style: solid,
-        margin-left: $borderMargin,
-        position: absolute, 
-        bottom: 0,
-        display: inline-block,
-      )
-    );
-}
 
 $ChapterOutlineTitleBottomBorder: titleBottomBorder("Outline", 116.7);
