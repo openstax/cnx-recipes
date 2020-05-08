@@ -51,7 +51,7 @@ try {
   })
 } catch (error) {
   console.log(error.formatted)
-  process.exit()
+  process.exit(1)
 }
 
 if (outputFile) {

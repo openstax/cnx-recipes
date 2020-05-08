@@ -1,3 +1,13 @@
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-chapter-review-container', generalSelector: '.os-eoc'),
+  (pageName: eob, firstSelector: '.os-eob[data-type="composite-chapter"]', generalSelector: '.os-eob'),
+  (pageName: appendix, firstSelector: '.appendix', generalSelector: '.appendix'),
+);
+
+$bandColor: #00819A;
+
+$ChapterIntroType: fullWidth;
+
 @import 'framework/framework';
 @import 'templates/template1/design';
 @import 'templates/template1/settings';
@@ -168,11 +178,11 @@
     'TitleIcon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-example.svg")) no-repeat top left,
     'ParagraphSubtitle:::font-family': (_ref: "typography:::sansFont"),
     'ParagraphSubtitle:::font-weight': bold,
-    'ParagraphSubtitle:::display': inline-block,
     'ParagraphSubtitle:::padding-right': h-spacing(1),
-    'FirstTitle:::font-family':(_ref: "typography:::sansFont"),
-    'FirstTitle:::display': block,
-    'FirstTitle:::margin-bottom': .2rem,
+    'ParagraphSubtitle:::margin-bottom': 0.2rem,
+    'FirstParagraphTitle:::font-family':(_ref: "typography:::sansFont"),
+    'FirstParagraphTitle:::display': block,
+    'FirstParagraphTitle:::margin-bottom': .2rem,
   ),
   EquationCallOutNote:(
     _selectors: ('[data-type="note"].equation-callout'),
@@ -229,144 +239,3 @@
 @include use('AdditionalProblemsCompChapPage','carnival:::EOCAssesmentsShape');
 @include use('ChallengeProblemsCompChapPage','carnival:::EOCAssesmentsShape');
 @include use('FakeTitleTable', 'carnival:::FakeTitleTableShape'); 
-
-[data-type="chapter"] {
-  page: chapter;
-  prince-page-group: start;
-  page-break-before: right;
-}
-
-.os-eoc.os-chapter-review-container {
-  page: eoc;
-  prince-page-group: start;
-}
-
-.appendix {
-  page: appendix;
-  prince-page-group: start;
-}
-
-.os-eob.os-index-container {
-  page: eob;
-  prince-page-group: start;
-}
-.os-eoc {
-  page: eoc;
-}
-
-.appendix {
-  page: appendix;
-}
-
-.os-eob {
-  page: eob;
-}
-
-$bandColor: settings('colorMap:::physicsBandColor');
-$bandBorder: half-fullBleedsSize(.5, in) solid $bandColor;
-
-@mixin band($side) {
-  content: " ";
-  border-#{$side}: $bandBorder;
-  @if $side == "right" {
-    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
-    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
-  } @else if $side == "left" {
-    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
-    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
-  }
-}
-
-@mixin setPageBorder($page-type, $type, $side) {
-  @page #{$page-type}:#{$type} {
-    @if $side == "left" {
-      @left-middle {
-        @content;
-      }
-      @top-left-corner {
-        @content;
-      }
-      @bottom-left-corner {
-        @content;
-      }
-      @left-bottom {
-        @content;
-      }
-      @left-top {
-        @content;
-      }
-    } @else if $side == "right" {
-      @right-middle {
-        @content;
-      }
-      @top-right-corner {
-        @content;
-      }
-      @bottom-right-corner {
-        @content;
-      }
-      @right-bottom {
-        @content;
-      }
-      @right-top {
-        @content;
-      }
-    }
-  }
-}
-
-@include setPageBorder("eoc", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("eoc", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("eoc", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eoc", "blank", "right") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("appendix", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("appendix", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("appendix", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("appendix", "blank", "right") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eob", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("eob", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("eob", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eob", "blank", "right") {
-  content: none;
-  border: none;
-}
-
-@page {
-  margin-left: 1in;
-  margin-right: 1in;
-  margin-bottom: 0.8in;
-  margin-top: 0.8in;
-}
