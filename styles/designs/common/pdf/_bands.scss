@@ -1,0 +1,97 @@
+//Mixins
+
+@mixin definePages($listedPages) {
+    @each $page in $listedPages {
+        $pageName:  map-get($page, pageName);
+        $firstSelector:  map-get($page, firstSelector);
+        $generalSelector:  map-get($page, generalSelector);
+
+        #{$firstSelector} {
+            page: #{$pageName};
+            prince-page-group: start;
+        }
+
+        #{$generalSelector} {
+            page: #{$pageName};
+        }
+    }
+}
+
+@mixin band($side) {
+  content: " ";
+  border-#{$side}: half-fullBleedsSize(.5, in) solid $bandColor;
+  @if $side == "right" {
+    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
+    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
+  } @else if $side == "left" {
+    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
+    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
+  }
+}
+
+@mixin setPageBorder($page-type, $type, $side) {
+    @page #{$page-type}:#{$type} {
+        @if $side == "left" {
+            @left-middle {
+                @content;
+            }
+            @top-left-corner {
+                @content;
+            }
+            @bottom-left-corner {
+                @content;
+            }
+            @left-bottom {
+                @content;
+            }
+            @left-top {
+                @content;
+            }
+        } @else if $side == "right" {
+            @right-middle {
+                @content;
+            }
+            @top-right-corner {
+                @content;
+            }
+            @bottom-right-corner {
+                @content;
+            }
+            @right-bottom {
+                @content;
+            }
+            @right-top {
+                @content;
+            }
+        }
+    }
+}
+
+@mixin stylePages($listedPages) {
+    @each $page in $listedPages {
+        $pageName:  map-get($page, pageName);
+
+        @include setPageBorder(#{$pageName}, "left", "left") {
+            @include band("left");
+        }
+        
+        @include setPageBorder(#{$pageName}, "right", "right") {
+            @include band("right");
+        }
+          
+        @include setPageBorder(#{$pageName}, "blank", "left") {
+            content: none;
+            border: none;
+        }
+        
+        @include setPageBorder(#{$pageName}, "blank", "right") {
+            content: none;
+            border: none;
+        }
+    }
+}
+
+//Includes
+
+@include definePages($PagesWithBands);
+@include stylePages($PagesWithBands);
