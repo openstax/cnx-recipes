@@ -1,3 +1,12 @@
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: eob, firstSelector: '.os-eob.os-references-container', generalSelector: '.os-eob'),
+);
+
+$bandColor: #00819A;
+
+$ChapterIntroType: fullWidth;
+
 @import 'framework/framework';
 @import 'templates/template1/design';
 @import 'templates/template1/settings';
@@ -144,6 +153,8 @@
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemContainerSpecific:::vertical-align': bottom,
+    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': 0,
   ),
   MultipleChoice: (
@@ -152,6 +163,8 @@
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemContainerSpecific:::vertical-align': bottom,
+    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': 0,
   ),
   FreeResponse: (
@@ -160,6 +173,8 @@
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemContainerSpecific:::vertical-align': bottom,
+    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': 0,
   ),
 ));
@@ -195,121 +210,3 @@
 @include use('InteractiveExercise', 'carnival:::EOCAssesmentsShape');
 @include use('MultipleChoice', 'carnival:::EOCAssesmentsShape');
 @include use('FreeResponse', 'carnival:::EOCAssesmentsShape');
-
-//Copied from Chemistry book.scss file. Will be relocate in the future.
-
-.os-eoc.os-glossary-container {
-  page: eoc;
-  prince-page-group: start;
-}
-.os-eoc {
-  page: eoc;
-}
-
-.os-eob.os-references-container {
-  page: eob;
-  prince-page-group: start;
-}
-.os-eob {
-  page: eob;
-}
-
-$bandColor: settings('colorMap:::anatomyBandColor'); //changed to color specific for Anatomy
-$bandBorder: half-fullBleedsSize(.5, in) solid $bandColor;
-
-@mixin band($side) {
-  content: " ";
-  border-#{$side}: $bandBorder;
-  @if $side == "right" {
-    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
-    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
-  } @else if $side == "left" {
-    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
-    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
-  }
-}
-
-@mixin setPageBorder($page-type, $type, $side) {
-  @page #{$page-type}:#{$type} {
-    @if $side == "left" {
-      @left-middle {
-        @content;
-      }
-      @top-left-corner {
-        @content;
-      }
-      @bottom-left-corner {
-        @content;
-      }
-      @left-bottom {
-        @content;
-      }
-      @left-top {
-        @content;
-      }
-    } @else if $side == "right" {
-      @right-middle {
-        @content;
-      }
-      @top-right-corner {
-        @content;
-      }
-      @bottom-right-corner {
-        @content;
-      }
-      @right-bottom {
-        @content;
-      }
-      @right-top {
-        @content;
-      }
-    }
-  }
-}
-
-@include setPageBorder("eoc", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("eoc", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("eoc", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eoc", "blank", "right") {
-  content: none;
-  border: none;
-}
-
-@include setPageBorder("eob", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("eob", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("eob", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eob", "blank", "right") {
-  content: none;
-  border: none;
-}
-
-[data-type="chapter"] {
-  page: chapter;
-  prince-page-group: start;
-  page-break-before: right;
-}
-
-@page {
-  margin-left: 1in;
-  margin-right: 1in;
-  margin-bottom: 0.8in;
-  margin-top: 0.8in;
-}
