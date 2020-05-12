@@ -88,6 +88,7 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_TargetLabels`: A list of [TargetLabels](#targetlabel)
   - Replace link text from `[link]` to text specific to the target (e.g. `Figure 4.3` or `9.1 Kinematics`)
 - `$Config_Notes`: A list of [Notes](#note)
+  - Every note changes from `<data-type="note"><data-type="title" id>X</>Y</>` to `<data-type="note"><h#.os-title data-type="title"><span.os-title-label id>X</></><div.os-note-body>Y</></>`
 - `$Config_UnnumberedElements`: A list of [UnnumberedElements](#unnumberedelements)
 - `$Config_PartType_*`
   - FOR_STYLING_ONLY: gets a class on it when it has a FirstElement
