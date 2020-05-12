@@ -94,17 +94,21 @@ The config settings are variables that start with `$Config_` and have the follow
   - FOR_STYLING_ONLY: gets a class on it when it has a FirstElement
   - `$Config_PartType_Exercise`: A [CustomPart](#custompart)
     - gets a class on it when it has a FirstElement FOR_STYLING_ONLY
+    - gets a `.os-hasStimulus` class on in the exercise when it `:has(.exercise-stimulus)`
   - `$Config_PartType_Example`: A [CustomPart](#custompart)
     - Examples are Numbered. The numbering can be set to reset at the section or not (`resetAt`)
       - `<.os-title><.os-title-label>Example </><.os-number>B12</><.os-divider> </.os-divider></>`
     - Feature flags define whether Examples in an Appendix are numbered or not (`appendix-has-numbered-examples`) and if the subtitle is numbered (`subtitled-examples`)
     - Change the subtitle from a span to an `<h#>` (flag: `subtitled-examples`)
+    - Wrap the contents of an example with `<div.body>`
   - `$Config_PartType_Chapter`: A [CustomPart](#custompart)
     - if `outlineTitle` is truthy, it causes the `.os-chapter-outline` to move **into** the top of the `.introduction` Page
     - Autogenerate a chapter outline (older books use this) and remove it for newer books (Note: We should only generate an outline if the book is configured for that. Not this build-for-every-book-and-discard-for-some). older books use the metadata to build a chapter outline section in the intro module. It must be created at the chapter level then moved.
   - `$Config_PartType_Equation`: A [CustomPart](#custompart)
   - `$Config_PartType_Solution`: A [CustomPart](#custompart)
     - change the solutions exercise number (`<span.os-number>12</>`) into a link back to the exercise
+    - add `.os-has-solution` to the exercise if it contains a solution and if the recipe is not discarding all solutions
+    - wrap the solution content in an element (e.g. from `<data-type="solution">...</>` to `<data-type="solution"><div.os-solution-container>...</></>`)
   - `$Config_PartType_Chapter_TitleContent`: A [TitleContent](#titlecontent)
     - The title of a chapter (`[data-type="document-title"]`) gets an id attribute (assuming so that we can link to it but not sure)
     - add `<span class="os-number">Chapter 1</span><span class="os-divider"> </span>` to the chapter title (`[data-type="chapter"] > [data-type="document-title"]`)
@@ -112,9 +116,13 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_PartType_Appendix_TitleContent`: A [TitleContent](#titlecontent)
     - Appendixes are numbered (just like `$Config_PartType_Section_TitleContent`). By adding `<.os-number>Appendix M</><.os-divider> </>` to `[data-type="document-title"]`
     - Section titles are converted from an `<h1 data-type="document-title">` to a `<div data-type=...>`
+    - Section titles are converted from a `<h1 data-type="document-title" itemprop="name">` to a `<span.os-text data-type="" itemprop="">`
   - `$Config_PartType_Section_TitleContent`: A [TitleContent](#titlecontent)
     - Sections are numbered. By adding `<.os-number>1.6</><.os-divider> </>` to `[data-type="document-title"]`
     - Section titles are converted from an `<h2 data-type="document-title">` to a `<div data-type=...>`
+    - Sections have a `.chapter-content-module` added to them (feature flag)
+    - Replace the section title with the title from the ToC and wrap it in an `<h#>`
+      - e.g. from `<div data-type="document-title" id="auto_m68867_87869">Introduction: Ionization Constants of Weak Bases</div>` to ` <div data-type="document-title" id="auto_m68867_87869"><h1 data-type="document-title" itemprop="name">Ionization Constants of Weak Bases</h1></div>`
   - `$Config_PartType_Table*`
     - move the summary element from inside the caption into the `div.os-table`
     - autogenerate a summary attribute on the table from the table's caption
@@ -140,7 +148,10 @@ The config settings are variables that start with `$Config_` and have the follow
   - `$Config_Index_NotSymbolRegexp`: A regular expression (in a string)
 - `$Config_Coverage_*`
   - `$Config_Coverage_MayHaveSimlinks`: a boolean
+    - change `<a.os-interactive-link/>` to `<a.os-interactive-link target="_blank"/>`
   - `$Config_Coverage_MayHaveIframes`: a boolean
+    - add attributes on the iframe parent so that CSS can choose which alternative to show from several different options without relying on `:has(...)`
+      - change `<iframe/>` to `<data-type="alternatives" .os-has-iframe.os-has-link.os-has-image><iframe.os-is-iframe/><a.os-is-link/><img.os-is-image/></>` 
   - `$Config_Coverage_MayHaveMissingExercises`: a boolean
 - `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
 - `$Config_hasCompositeAppendixes`: a boolean (used for some TEA books)
@@ -153,6 +164,8 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_addSolutionHeader`
   - seems to define whether solutions are discarded or kept
 - `$Config_hasStimuli`
+- The Book Preface
+  - change the `<.preface><data-type="document-title">` to a `<.preface><h1 data-type="document-title">`
 
 ## TitleContent
 
