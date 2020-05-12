@@ -1,11 +1,3 @@
-@function no_properties($name, $selector) {
-    @return (
-      _name: "NoProp#{$name}",
-      _subselector: $selector,
-      _properties: ()
-    );
-  }
-
 $ChapterIntroBody: (
     _name: "IntroBody",
     _subselector: ' > .intro-body',
@@ -19,24 +11,21 @@ $ChapterIntroBody: (
     )
 );
 
-$ChapterIntroBodyWithoutProperties: no_properties(IntroBody, ' > .intro-body');
+$ChapterIntroBodyWithoutProperties: empty_wrapper(IntroBody, ' > .intro-body');
 
-$ChapterOutline: (
-    _name: "Outline",
+$ChapterOutline--Margin: (
+    _name: "OutlineMargin",
     _subselector: ' > .os-chapter-outline',
     _properties: (
-        position: enum('ValueSet:::OPTIONAL'),
-        width: enum('ValueSet:::REQUIRED'),
-        right: enum('ValueSet:::OPTIONAL'),
-        background-color: enum('ValueSet:::OPTIONAL'),
-        color: enum('ValueSet:::OPTIONAL'),
-        min-width: enum('ValueSet:::OPTIONAL'),
-        margin: enum('ValueSet:::OPTIONAL'),
-        padding: enum('ValueSet:::OPTIONAL'),
         font-family: enum('ValueSet:::REQUIRED'),
         font-size: enum('ValueSet:::REQUIRED'),
-        line-height: enum('ValueSet:::REQUIRED'),
         font-weight: enum('ValueSet:::REQUIRED'),
+        line-height: enum('ValueSet:::REQUIRED'),
+        width: enum('ValueSet:::REQUIRED'),
+        background-color: enum('ValueSet:::OPTIONAL'),
+        color: enum('ValueSet:::OPTIONAL'),
+        margin: enum('ValueSet:::OPTIONAL'),
+        padding: enum('ValueSet:::OPTIONAL'),
         border-bottom-color: enum('ValueSet:::OPTIONAL'),
         border-bottom-width: enum('ValueSet:::OPTIONAL'),
         border-bottom-style: enum('ValueSet:::OPTIONAL'),
@@ -44,7 +33,26 @@ $ChapterOutline: (
     )
 );
 
-$ChapterOutlineTitle: (
+$ChapterOutline--FullWidth: (
+    _name: "OutlineFullWidth",
+    _subselector: ' > .os-chapter-outline',
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: enum('ValueSet:::REQUIRED'),
+        font-weight: enum('ValueSet:::REQUIRED'),
+        line-height: enum('ValueSet:::REQUIRED'),
+        width: enum('ValueSet:::REQUIRED'),
+        color: enum('ValueSet:::OPTIONAL'),
+        margin: enum('ValueSet:::OPTIONAL'),
+        padding: enum('ValueSet:::OPTIONAL'),
+        border-bottom-color: enum('ValueSet:::OPTIONAL'),
+        border-bottom-width: enum('ValueSet:::OPTIONAL'),
+        border-bottom-style: enum('ValueSet:::OPTIONAL'),
+        box-decoration-break: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+$ChapterOutline__Title: (
     _name: "OutlineTitle",
     _subselector: ' > .os-title',
     _properties: (
@@ -63,7 +71,7 @@ $ChapterOutlineTitle: (
     )
 );
 
-$ChapterOutlineObjective: (
+$ChapterOutline__Objective: (
     _name: "ChapterOutlineObjective", 
     _subselector: ' > div.os-chapter-objective', 
     _properties: (
@@ -72,7 +80,7 @@ $ChapterOutlineObjective: (
     )
 );
 
-$ChapterOutlineObjectiveLink: (
+$ChapterOutline__Objective--Link: (
     _name: "OutlineObjectiveLink",
     _subselector: ' > a.os-chapter-objective',
     _properties: (
@@ -86,7 +94,7 @@ $ChapterOutlineObjectiveLink: (
     )
 );
 
-$ChapterOutlineObjectiveText: (
+$ChapterOutline__Objective--Text: (
     _name: "ChapterOutlineObjectiveText",
     _subselector: ' > .os-text', 
     _properties: (
@@ -95,14 +103,14 @@ $ChapterOutlineObjectiveText: (
     )
 );
 
-$ChapterOutlineObjectiveLearning: (
+$ChapterOutline__Objective--Learning: (
     _name: "OutlineObjectiveLearning",
     _subselector: ' > .learning-objective',
     _properties: (
         margin-left: enum('ValueSet:::OPTIONAL'),
     )
 );
-$ChapterOutlineAbstract: (
+$ChapterOutline__Abstract: (
     _name: "OutlineAbstract",
     _subselector: ' > [data-type="abstract"]',
     _properties: (
@@ -111,7 +119,7 @@ $ChapterOutlineAbstract: (
     )
 );
 
-$ChapterOutlineList: (
+$ChapterOutline__List: (
     _name: "OutlineList",
     _subselector: ' > ul',
     _properties: (
@@ -119,13 +127,7 @@ $ChapterOutlineList: (
     )
 );
 
-$ChapterObjectives: (
-    _name: "Objectives",
-    _subselector: ' > .chapter-objectives',
-    _properties: (
-
-    )
-);
+$ChapterObjectives: empty_wrapper(Objectives, ' > .chapter-objectives');
 
 $ChapterObjectivesTitle: (
     _name: "ObjectivesTitle",
@@ -182,12 +184,7 @@ $ChapterObjectivesListDot: (
     )
 );
 
-$ChapterIntroContent: (
-    _name: "IntroContent",
-    _subselector: ' > .intro-text',
-    _properties: (
-    )
-);
+$ChapterIntroContent: empty_wrapper(IntroContent, ' > .intro-text');
 
 $ChapterIntroContentHeader: (
     _name: "IntroContentHeader",
@@ -285,28 +282,4 @@ $ChapterSplashFigureWrapper: (
     )
 );
 
-// This function counts width and margins for bottom border of the title
-// depends on width of the title in px rounded to one decimal place
-@function titleBottomBorder($name, $titleWidth) {
-    $fullTitleWidth: $titleWidth + 8 ; // Width of title with 8px white space
-    $borderMargin: ($fullTitleWidth / 12) * 1rem; // 12 - default px size
-    $borderWidth: (6.5 - $fullTitleWidth / 96) * 1in; // 1in = 96px
-
-    @return (
-      _name: "#{$name}TitleBottomBorder",
-      _subselector: '::after',
-      _properties: (
-        content: "''",
-        width: $borderWidth,
-        border-bottom-width: 0.2rem,
-        border-bottom-color: enum('ValueSet:::REQUIRED'),
-        border-bottom-style: solid,
-        margin-left: $borderMargin,
-        position: absolute, 
-        bottom: 0,
-        display: inline-block,
-      )
-    );
-}
-
-$ChapterOutlineTitleBottomBorder: titleBottomBorder("Outline", 116.7);
+$ChapterOutline__Title--BottomBorder: titleBottomBorder("Outline", 116.7);

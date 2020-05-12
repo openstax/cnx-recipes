@@ -1,3 +1,13 @@
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: eob, firstSelector: '.os-eob.os-index-container', generalSelector: '.os-eob'),
+  (pageName: appendix, firstSelector: '.appendix', generalSelector: '.appendix'),
+);
+
+$bandColor: #0074BC;
+
+$ChapterIntroType: side;
+
 @import 'framework/framework';
 @import '../../templates/template1/design.scss';
 @import '../../templates/template1/settings.scss';
@@ -43,7 +53,6 @@
   ),
   ChapterIntro: (
     _selectors: (".introduction"),
-    'Outline:::background-color': (_ref: "colorMap:::biologyHeaderColor"),
     'SplashFigureBg:::background-color': (_ref: "colorMap:::biologyHeaderColor")
   ),
 ));
@@ -118,7 +127,7 @@
 
 @include add_settings((
   FakeTitleTable: (
-    _selectors: ('.os-table'),
+    _selectors: ('.os-table.os-top-titled-container'),
     'TableTitle:::color': (_ref: "colorMap:::biologyTableColor"),
   ),
 ));
@@ -162,6 +171,8 @@
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemContainerSpecific:::vertical-align': bottom,
+    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': 0,
   ),
   MultipleChoice: (
@@ -170,6 +181,8 @@
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemContainerSpecific:::vertical-align': bottom,
+    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': 0,
   ),
   CriticalThinking: (
@@ -178,6 +191,8 @@
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemContainerSpecific:::vertical-align': bottom,
+    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': 0,
   ),
 ));
@@ -213,7 +228,7 @@
 @include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
 @include use('Link', 'carnival:::Link');
 @include use('Chapter', 'carnival:::Chapter');
-@include use('ChapterIntro', 'carnival:::ChapterIntroShape');
+@include use('ChapterIntro', 'carnival:::MarginChapterIntroShape');
 @include use('UnitTitle', 'common:::Hidden');
 @include use('Module', 'carnival:::ModuleShape');
 @include use('BasicTable', 'carnival:::BasicTableShape');
@@ -234,152 +249,3 @@
 @include use('InterconnectNote', 'carnival:::IconNoteShape'); //?
 @include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
 @include use('ConceptsInActionNote', 'carnival:::IconCondensedShape');
-
-[data-type="chapter"] {
-  page: chapter;
-  prince-page-group: start;
-  page-break-before: right;
-}
-
-.os-eoc.os-glossary-container {
-  page: eoc;
-  prince-page-group: start;
-}
-
-.appendix {
-  page: appendix;
-  prince-page-group: start;
-}
-
-.os-eob[data-type="composite-chapter"] {
-  page: eob;
-  prince-page-group: start;
-}
-.os-eoc {
-  page: eoc;
-}
-
-.appendix {
-  page: appendix;
-}
-
-.os-eob {
-  page: eob;
-}
-
-$bandColor: settings('colorMap:::biologyBandColor');
-$bandBorder: half-fullBleedsSize(.5, in) solid $bandColor;
-
-@mixin band($side) {
-  content: " ";
-  border-#{$side}: $bandBorder;
-  @if $side == "right" {
-    padding: fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) fullBleedsPadding(0, rem) 0;
-    margin: fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) fullBleedsMargin(0, rem) 0;
-  } @else if $side == "left" {
-    padding: fullBleedsPadding(0, rem) 0 fullBleedsPadding(0, rem) fullBleedsPadding(0, rem);
-    margin: fullBleedsMargin(0, rem) 0 fullBleedsMargin(0, rem) fullBleedsMargin(0, rem);
-  }
-}
-
-@mixin setPageBorder($page-type, $type, $side) {
-  @page #{$page-type}:#{$type} {
-    @if $side == "left" {
-      @left-middle {
-        @content;
-      }
-      @top-left-corner {
-        @content;
-      }
-      @bottom-left-corner {
-        @content;
-      }
-      @left-bottom {
-        @content;
-      }
-      @left-top {
-        @content;
-      }
-    } @else if $side == "right" {
-      @right-middle {
-        @content;
-      }
-      @top-right-corner {
-        @content;
-      }
-      @bottom-right-corner {
-        @content;
-      }
-      @right-bottom {
-        @content;
-      }
-      @right-top {
-        @content;
-      }
-    }
-  }
-}
-
-@include setPageBorder("eoc", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("eoc", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("eoc", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eoc", "blank", "right") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("appendix", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("appendix", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("appendix", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("appendix", "blank", "right") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eob", "left", "left") {
-  @include band("left");
-}
-
-@include setPageBorder("eob", "right", "right") {
-  @include band("right");
-}
-
-@include setPageBorder("eob", "blank", "left") {
-  content: none;
-  border: none;
-}
-@include setPageBorder("eob", "blank", "right") {
-  content: none;
-  border: none;
-}
-
-@page {
-  margin-left: 1in;
-  margin-right: 1in;
-  margin-bottom: 0.8in;
-  margin-top: 0.8in;
-}
-
-@page chapter:first {
-  margin-right: 2in;
-}
-
-@page chapter:nth(2) {
-  margin-right: 2in;
-}
