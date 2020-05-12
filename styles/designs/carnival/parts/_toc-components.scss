@@ -1,55 +1,13 @@
-@function tocLinkPage($kind) {
-  @return (
-    _name: "#{$kind}LinkPage",
-    _subselector: '::after',
-    _properties: (
-      content: enum('ValueSet:::REQUIRED'), // This property value has been changed to REQUIRED and set in toc-settings.scss file, so it can be overwrite in pl-u-physics book.scss file to implement changes in the toc design just for this book
-      display: enum('ValueSet:::REQUIRED'), // This property valuee has been changed to REQUIRED and set in toc-settings.scss file, so it can be overwrite in pl-u-physics book.scss file to implement changes in the toc design just for this book
-      margin-left: enum('ValueSet:::REQUIRED'),  // This property value has been changed to REQUIRED and set in toc-settings.scss file, so it can be overwrite in pl-u-physics book.scss file to implement changes in the toc design just for this book
-      font-family: enum('ValueSet:::REQUIRED'),
-      font-size: enum('ValueSet:::REQUIRED'),
-      line-height: enum('ValueSet:::REQUIRED'),
-      font-weight: enum('ValueSet:::OPTIONAL'),
-      color: enum('ValueSet:::OPTIONAL')
-    )
-  );
-}
-
-@function tocLink($kind, $extraProps: empty_map()) {
-  @return (
-    _name: "#{$kind}Link",
-    _subselector: '> a',
-    _properties: map-merge((
-      font-family: enum('ValueSet:::REQUIRED'),
-      font-size: enum('ValueSet:::REQUIRED'),
-      line-height: enum('ValueSet:::REQUIRED'),
-      font-weight: enum('ValueSet:::OPTIONAL'),
-      color: (enum('ValueSet:::OPTIONAL'), #000000),
-      text-decoration: none
-    ), $extraProps),
-    _components: (
-      tocLinkPage($kind)
-    )
-  );
-}
-
-@function topLevelPageNotAppendixProps() {
-  @return (
-    display: block,
-    margin-bottom: v-spacing(2)
-  );
-}
-
 $TocChapterCompositePage: (
   _name: 'TocChapterCompositePage',
   _subselector: ' > .os-toc-chapter-composite-page',
   _properties: (
     display: block
   ),
-  _components: (
-    tocLink('TocChapterCompositePage')
-  )
 );
+
+$TocChapterCompositePageLink: tocLink('TocChapterCompositePage');
+$TocChapterCompositePageLinkPage: tocLinkPage('TocChapterCompositePage');
 
 $TocChapterPage: (
   _name: 'TocChapterPage',
@@ -57,10 +15,10 @@ $TocChapterPage: (
   _properties: (
     display: block
   ),
-  _components: (
-    tocLink('TocChapterPage')
-  )
 );
+
+$TocChapterPageLink: tocLink('TocChapterPage');
+$TocChapterPageLinkPage: tocLinkPage('TocChapterPage');
 
 $TocEocCompositeChapterList: (
   _name: 'TocEocCompositeChapterList',
@@ -70,15 +28,18 @@ $TocEocCompositeChapterList: (
   ),
 );
 
-$TocEocCompositeChapter: (            //ToDo: apply empty_wrapper function
+$TocEocCompositeChapter: empty_wrapper(TocEocCompositeChapter, '> .os-toc-composite-chapter');
+
+$TocEocCompositeChapter: (
   _name: 'TocEocCompositeChapter',
   _subselector: '> .os-toc-composite-chapter',
   _properties: (),
-  _components: (
-    $TocEocCompositeChapterList,
-    tocLink('TocEocCompositeChapter'),
-  )
 );
+
+$TocEocCompositeChapterLink: tocLink('TocEocCompositeChapter');
+$TocEocCompositeChapterLinkPage: tocLinkPage('TocEocCompositeChapter');
+
+
 
 $TocChapterList: (
   _name: 'TocChapterList',
@@ -89,11 +50,6 @@ $TocChapterList: (
     margin-left: 0,
     display: block,
   ),
-  _components: (
-    $TocChapterPage,
-    $TocChapterCompositePage,
-    $TocEocCompositeChapter,
-  )
 );
 
 $TocChapterNumber: (
@@ -116,21 +72,19 @@ $TocChapter: (
   _name: 'TocChapter',
   _subselector: ' > .os-toc-chapter',
   _properties: topLevelPageNotAppendixProps(),
-  _components: (
-    $TocChapterNumber,
-    tocLink('TocChapter'),
-    $TocChapterList
-  )
 );
+
+$TocChapterLink: tocLink('TocChapter');
+$TocChapterLinkPage: tocLinkPage('TocChapter');
 
 $TocPreface: (
   _name: 'TocPreface',
   _subselector: '> .os-toc-preface',
   _properties: topLevelPageNotAppendixProps(),
-  _components: (
-    tocLink('TocPreface'),
-  )
 );
+
+$TocPrefaceLink:  tocLink('TocPreface');
+$TocPrefaceLinkPage:  tocLinkPage('TocPreface');
 
 $TocAppendixNumber: (
   _name: 'TocAppendixNumber',
@@ -156,30 +110,28 @@ $TocAppendix: (
   _properties: (
     margin-bottom: v-spacing(1),
   ),
-  _components: (
-    $TocAppendixNumber,
-    $TocAppendixDivider,
-    tocLink('TocAppendix')
-  ),
 );
+
+$TocAppendixLink: tocLink('TocAppendix');
+$TocAppendixLinkPage: tocLinkPage('TocAppendix');
 
 $TocReferences: (
   _name: 'TocReferences',
   _subselector: '> .os-toc-references',
   _properties: topLevelPageNotAppendixProps(),
-  _components: (
-    tocLink('TocReferences'),
-  )
 );
+
+$TocReferencesLink: tocLink('TocReferences');
+$TocReferencesLinkPage: tocLinkPage('TocReferences');
 
 $TocIndex: (
   _name: 'TocIndex',
   _subselector: '> .os-toc-index',
   _properties: topLevelPageNotAppendixProps(),
-  _components: (
-    tocLink('TocIndex'),
-  )
 );
+
+$TocIndexLink: tocLink('TocIndex');
+$TocIndexLinkpage: tocLinkPage('TocIndex');
 
 $TocCompositeChapterList: (
   _name: 'TocCompositeChapterList',
@@ -193,11 +145,10 @@ $TocCompositeChapter: (
   _name: 'TocCompositeChapter',
   _subselector: '> .os-toc-composite-chapter',
   _properties: topLevelPageNotAppendixProps(),
-  _components: (
-    $TocCompositeChapterList,
-    tocLink('TocCompositeChapter'),
-  )
 );
+
+$TocCompositeChapterLink: tocLink('TocCompositeChapter');
+$TocCompositeChapterLinkPage: tocLinkPage('TocCompositeChapter');
 
 $TocTopLevelList: (
   _name: 'TopLevelList',

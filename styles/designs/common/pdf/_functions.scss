@@ -29,3 +29,46 @@
       )
     );
 }
+
+//ToC functions
+@function tocLinkPage($kind) {
+  @return (
+    _name: "#{$kind}LinkPage",
+    _subselector: '::after',
+    _properties: (
+      content: enum('ValueSet:::REQUIRED'), // This property value has been changed to REQUIRED and set in toc-settings.scss file, so it can be overwrite in pl-u-physics book.scss file to implement changes in the toc design just for this book
+      display: enum('ValueSet:::REQUIRED'), // This property valuee has been changed to REQUIRED and set in toc-settings.scss file, so it can be overwrite in pl-u-physics book.scss file to implement changes in the toc design just for this book
+      margin-left: enum('ValueSet:::REQUIRED'),  // This property value has been changed to REQUIRED and set in toc-settings.scss file, so it can be overwrite in pl-u-physics book.scss file to implement changes in the toc design just for this book
+      font-family: enum('ValueSet:::REQUIRED'),
+      font-size: enum('ValueSet:::REQUIRED'),
+      line-height: enum('ValueSet:::REQUIRED'),
+      font-weight: enum('ValueSet:::OPTIONAL'),
+      color: enum('ValueSet:::OPTIONAL')
+    )
+  );
+}
+
+@function tocLink($kind, $extraProps: empty_map()) {
+  @return (
+    _name: "#{$kind}Link",
+    _subselector: '> a',
+    _properties: map-merge((
+      font-family: enum('ValueSet:::REQUIRED'),
+      font-size: enum('ValueSet:::REQUIRED'),
+      line-height: enum('ValueSet:::REQUIRED'),
+      font-weight: enum('ValueSet:::OPTIONAL'),
+      color: (enum('ValueSet:::OPTIONAL'), #000000),
+      text-decoration: none
+    ), $extraProps),
+    // _components: (
+    //   tocLinkPage($kind)
+    // )
+  );
+}
+
+@function topLevelPageNotAppendixProps() {
+  @return (
+    display: block,
+    margin-bottom: v-spacing(2)
+  );
+}
