@@ -279,15 +279,7 @@
   @include compose_prepEOCcompoundCompositesPages($_chapterPrepCompoundCompositePages);
 }
 :pass(4) {
-  $_chapterPrepCompoundCompositePages: ();
-  @each $page in $Config_ChapterCompositePages {
-    @if map-get($page, childPages) != null {
-      $_chapterPrepCompoundCompositePages: append($_chapterPrepCompoundCompositePages, $page);
-    }
-  }
-  @include compose_moveSectionSeparted($_chapterPrepCompoundCompositePages);
-}
-:pass(5) {
+
   //After: createChapterComposites
   // Construct the set of CompoundComposite pages by looping through the Config_ChapterCompositePages
   // and finding all that have a `childPages:` field
@@ -311,13 +303,13 @@
   @include modify_customFootnotes($Config_CustomFootnotes);
 }
 
-:pass(6) {
+:pass(5) {
 
   // After: modify_prepIndexTerms
   @include modify_finishPreppingIndexTerms($Config_Index_NotSymbolRegexp, $Config_Index_SymbolRegexp);
   @include modify_footnoteTitle($Config_FootnoteTitle);
 }
-:pass(7) {
+:pass(6) {
 
   //After: ???
   @include reference_refSectionHeaderNodeAs(sectionHeaderNode);
@@ -364,7 +356,7 @@
     } @else { @error 'BUG: Invalid enum'; }
   }
 }
-:pass(8) {
+:pass(7) {
   @include modify_ExercisePrefix($Config_ChapterCompositePages); //if solutions are being moved on this pass then they will not be prefixed
   @if $Config_hasStimuli {
     @include count_countStimulusExercises(stimuli, $Config_stimuliSectionClass);
@@ -387,7 +379,7 @@
     @include link_linkToProblemsFromSolutionsEOC($trashHalf: false);
   }
 }
-:pass(9) {
+:pass(8) {
   @if $Config_SectionCompositePages != () {
     @include count_countChapters(chapter);
     @include count_countSections(section);
@@ -454,7 +446,7 @@
 
   @include modify_exerciseNoteTitle($Config_ExerciseNoteTitle);
 }
-:pass(10) {
+:pass(9) {
   //After: prepIndexTerms, createBookComposites
   @include modify_addIndexSymbolGroup("index", $Config_Index_SymbolsSectionTitle);
 
@@ -558,7 +550,7 @@
     }
   }
 }
-:pass(11) {
+:pass(10) {
   @if release-flag-enabled(table-move-fake-title) {
     @if map-get($Config_SetTableCaption, hasTopTitle) == true {
       .os-table {
@@ -611,7 +603,7 @@
   @include modify_elementsOrder($Config_Order_CompositePages);
   @include modify_elementsOrder($Config_Order_FigTableCaption);
 }
-:pass(12) {
+:pass(11) {
   @if release-flag-enabled(table-move-fake-title) {
     @if map-get($Config_SetTableCaption, hasTopTitle) == true {
       .os-table {
@@ -638,20 +630,20 @@
     @include modify_addFirstElementClass($selector);
   }
 }
-:pass(13) {
+:pass(12) {
   @include toc_putTOCElements($Config_TocTitleWord);
   @include modify_tagSplash();
   @include modify_wrapMathInPara();
   @include modify_tagExerciseWithFirstElementClass();
-  @include modify_tagTableParentContainer();
+
 }
-:pass(14) {
+:pass(13) {
   @include toc_navTOCUnwrap();
   @if TEMPLATE() == "TEMPLATE1" {
     @include modify_groupChapOutlineIntroContent();
   }
 }
-:pass(15) {
+:pass(14) {
   @include modify_groupTocTitleTextAndNumber('.os-toc-chapter');
   @include modify_groupTocTitleTextAndNumber('.os-toc-unit');
   @include modify_groupTocTitleTextAndNumber('.os-toc-appendix');

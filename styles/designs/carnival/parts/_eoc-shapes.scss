@@ -4,10 +4,11 @@
 @import 'generic-components';
 
 
-//4 main shapes are used for the EOC. Key Terms, Summary, Key Equations and Exerises (from the exercise shapes).
+//4 main shapes are used for the EOC. Key Terms, SUmmary, Key equations and exerises (from the exercise shapes) This contains all options for headers. It  would be cleaner for the settings (avoid repetition) to separate those in two (composite chapters vs base eoc) but in practice, it's hard to remember which section is using what. We can fine tune it later if needed. 
+//We 
 
 
-//All the headers are the same in the EOC, set them on .os-eoc via a generic shape then set columns on the specific assessments if needed
+//all the headers are the same in the EOC, set them on .os-eoc via a generic shape then set columns on the specific assessments if needed
 
 @include create_shape('carnival:::GenericEOCShape',(
     _components:(
@@ -23,7 +24,6 @@
         )),
     ))
 );
-
 @include create_shape('carnival:::EOCDefaultCompoundComposite',(
     _components:(
         map-merge($EocContainer,(
@@ -45,12 +45,7 @@
     _components:(
         map-merge($EocContainer,(
             _components:(
-                map-merge($Term_DL,(
-                    _components:(
-                        $Term_DT,
-                        $Term_DD,
-                    ),
-                )),
+                $Term_DL
             ),
         )),
     ))
@@ -96,6 +91,7 @@
     ))
 );
 
+//can we clean this up?
 @include create_shape('carnival:::EocSummary',(
     _components:(
         map-merge($EocContainer,(
@@ -116,6 +112,164 @@
                         $Nested__ListComponent--MarginLeftUnordered,
                     ),
                 )),
+            ),
+        )),
+    ),
+));
+
+
+
+//TODO used in anatomy only
+@include create_shape('carnival:::EocExercise',(
+    _components:(
+        map-merge($EocContainer,(
+            _components:(
+                map-merge($Problem_Wrapper,(
+                    _components:(
+                        $Problem_Number,
+                        $Problem_Divider,
+                        map-merge($Problem_Container, (
+                            _components: (
+                                $Problem_Paragraph,
+                            ),
+                        )),
+                    ),
+                )),
+            ),
+        )),
+    ),
+));
+
+//we really want to consolidate this as one shape
+//I think we should create generic shapes based on columns as Natalia did in the EOC2 but I don't have time to figure out everything that needs to go in there for now, so keeping those to be
+
+
+//TODO: not used in anatomy only
+@include create_shape('carnival:::EocExerciseWithoutSubtitle',(
+    _components:(
+        map-merge($EocContainer,(
+            _components:(
+                map-merge( $Problem_Wrapper,(
+                  _components: (
+                    $Problem_Number,
+                    $Problem_Divider,
+                    map-merge($Problem_Container,(
+                        _components: (
+                            $Problem_Paragraph,
+                            $Exercise_Figure,
+                            $Exercise_Table,
+                            $Container__ListComponent--MarginLeftBottomOrdered,
+                            map-merge($ListComponent--MarginLeftBottomOrdered,(
+                                _components: (
+                                    $Nested__ListComponent--MarginLeftBottomOrdered,
+                                ),
+                            )),
+                            $ListComponent--MarginLeftBottomUnordered,
+                            map-merge($Exercise_Table,(
+                                _components: (
+                                    $Exercise_Table_Row,
+                                    ),
+                                )),
+                            ),
+                        )),
+                    ),
+                ))
+            ),
+        )),
+    ),
+));
+
+
+//used in physics
+// @include create_shape('carnival:::EocConceptualQuestions',(
+//     _components:(
+//         map-merge($EocContainer,(
+//             _components:(
+//                 map-merge( $Problem_Wrapper,(
+//                   _components: (
+//                     $Problem_Number,
+//                     $Problem_Divider,
+//                     map-merge($Problem_Container, (
+//                         _components:(
+//                             $Problem_Paragraph,
+//                             $ListComponent--MarginLeftBottomUnordered,
+//                             ),
+//                         )),
+//                     ),
+//                 ))
+//             ),
+//         )),
+//     ),
+// ));
+
+
+//not used anymore
+// @include create_shape('carnival:::EocProblemsExercises',(
+//     _components:(
+//         map-merge($EocContainer,(
+//             _components:(
+//                 $EoC_Figure_Under_Section_Title_Link,
+//                 map-merge($Problem_Wrapper,(
+//                   _components: (
+//                     $Problem_Number,
+//                     $Problem_Divider,
+//                     map-merge($Problem_Container, (
+//                         _components:(
+//                             $Problem_Paragraph,
+//                             $Exercise_Figure,
+//                             $Exercise_Table,
+//                             $ListComponent--MarginLeftBottomOrdered,
+//                             ),
+//                         )),
+//                     ),
+//                 )),
+//             ),
+//         )),
+//     ),
+// ));
+
+
+
+//TODO: used in U-physics, do we need to apply all those extra options for eoc content somewhere else?
+@include create_shape('carnival:::EocCompChapExercises',(
+    _components:(
+        map-merge($EocContainer,(
+            _components:(
+                map-merge($Problem_Wrapper,(
+                    _components:(
+                        $Problem_Number,
+                        $Problem_Divider,
+                        map-merge($Problem_Container, (
+                            _components:(
+                                $Problem_Paragraph,
+                                map-merge($ListComponent--MarginLeftBottomOrdered, (
+                                    _components:(
+                                        map-merge($Nested__ListComponent--MarginLeftBottomOrdered, (
+                                            _components:(
+                                                $Nested__ListComponent--MarginLeftBottomOrdered,
+                                                ),
+                                            )),
+                                        ),
+                                    )),
+                                    $ListComponent--MarginLeftBottomUnordered,
+                                map-merge($Container__ListComponent--MarginLeftBottomOrdered, (
+                                     _components:(
+                                        $Nested__ListComponent--MarginLeftBottomOrdered,
+                                        ),
+                                    )),
+                                $Exercise_Figure,
+                                $Container__ListComponent--MarginLeftBottomUnordered,
+                            ),
+                        )),
+                    ),
+                )),
+                $Section__ListComponent--MarginLeftBottomUnordered,
+                map-merge($Container__ListComponent--MarginLeftBottomOrdered, (
+                    _components:(
+                        $Nested__ListComponent--MarginLeftBottomOrdered,
+                    ),
+                )),
+                $Section__ListComponent--MarginLeftBottomOrdered,
             ),
         )),
     ),
