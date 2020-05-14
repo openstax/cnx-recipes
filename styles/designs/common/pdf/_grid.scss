@@ -10,29 +10,49 @@ $haflLineHeight: 0.70;
   $baseUnit: 8;
   $result: $baseUnit * $value;
 
-  /* stylelint-disable-next-line meowtec/no-px */
- @return $result * 1px;
+  @if round($value) != $value {
+    @error 'Value of function must be an integer';
+  } @else {
+    /* stylelint-disable-next-line meowtec/no-px */
+    @return $result * 1px;
+  }
 }
 
 //use this for column layouts
 @function column-v-spacing($value) {
   $column-v-spacing: $baseLineHeight * $value;
-  @return $column-v-spacing * 1rem
+  @if round($value) != $value {
+    @error 'Value of function must be an integer';
+  } @else {
+    @return $column-v-spacing * 1rem;
+  }
 }
 
 // Half of the value of a column-v-spacing, should not be used in column layouts if text alignment is desired.
 @function v-spacing($value) {
   $v-spacing: $haflLineHeight * $value;
-  @return $v-spacing * 1rem
+  @if round($value) != $value {
+    @error 'Value of function must be an integer';
+  } @else {
+    @return $v-spacing * 1rem;
+  }
 }
 
 // Grid requested by CMs/UX to be used in fine-tuning table spacing
 @function table-h-spacing($value) {
-  @return v-spacing($value)
+  @if round($value) != $value {
+    @error 'Value of function must be an integer';
+  } @else {
+    @return v-spacing($value);
+  }
 }
 
 @function table-v-spacing($value) {
-  @return v-spacing($value)
+  @if round($value) != $value {
+    @error 'Value of function must be an integer';
+  } @else {
+    @return v-spacing($value);
+  }
 }
 
 // Used in tables from modules with column layout
