@@ -2,7 +2,7 @@ $TableContainer: (
     _name: "TableContainer",
     _subselector: "",
     _properties: (
-        margin-bottom: enum('ValueSet:::REQUIRED'),
+        margin-bottom: table-v-spacing(2),
         display: enum('ValueSet:::OPTIONAL'),
         margin-left: enum('ValueSet:::OPTIONAL'),
         margin-right: enum('ValueSet:::OPTIONAL'),
@@ -11,44 +11,25 @@ $TableContainer: (
 
 $Table: (
     _name: "Table",
-    _subselector: " > table:not(.unstyled)",
+    _subselector: " > table",
     _properties: (
-        border-collapse: collapse,
-    )
-);
-$ColumnHeaderTable: (
-    _name: "ColumnHeaderTable",
-    _subselector: " > table.column-header",
-    _properties: (
-        border-collapse: collapse,
-    )
-);
-$FakeTitleTable: (
-    _name: "FakeTitleTable",
-    _subselector: " > table.top-titled:not(.unstyled)",
-    _properties: (
-        border-collapse: collapse,
-        width: 100%,
+        border-collapse: enum('ValueSet:::OPTIONAL'),
+        width: enum('ValueSet:::OPTIONAL'),
     )
 );
 
-$UnnumberedUnstyledTable: (
+$UnnumberedUnstyledTable: ( //use in Key Equations only now, will be clean within Key Equations  cleaning
     _name: "UnnumberedUnstyledTable",
-    _subselector: " > .unnumbered.unstyled",
+    _subselector: " > .unnumbered.unstyled", 
     _properties: (
-        margin-bottom: enum('ValueSet:::OPTIONAL'), // use in Key Equations
+        margin-bottom: enum('ValueSet:::OPTIONAL'), 
     )
 );
 
-$TableTitle: (
-    _name: "TableTitle",
-    _subselector: " > .os-table-title",
-    _properties: (
-        color: enum('ValueSet:::REQUIRED'),
-        padding: enum('ValueSet:::REQUIRED'),
-        text-align: center,
-        page-break-after: avoid,
-    )   
+$TableHead: (
+    _name: "TableHead",
+    _subselector: " > thead",
+    _properties: ()
 );
 
 $TableHead: empty_wrapper(TableHead, ' > thead');
@@ -69,7 +50,7 @@ $TableHeadCell: (
         border-top: enum('ValueSet:::OPTIONAL'),
         font-family: enum('ValueSet:::OPTIONAL'),
         font-weight: enum('ValueSet:::OPTIONAL'),
-        padding: enum('ValueSet:::REQUIRED'),
+        padding: table-v-spacing(1) table-h-spacing(1), //left as a temporary solution (the values of these functions are the sema in this case), we need to investigate the second function value are not showing in the output file (it only happens when the functions are defined together for padding property value in compoents, when they are defined in settings file it works fine)
     )
 );
 
@@ -84,13 +65,11 @@ $TableData: (
         font-family: enum('ValueSet:::OPTIONAL'),
         border-left: enum('ValueSet:::OPTIONAL'),
         border-bottom: enum('ValueSet:::OPTIONAL'),
-        padding: enum('ValueSet:::REQUIRED'),
+        padding: table-v-spacing(1) table-h-spacing(1), //see somment in line 51 above
     )
 );
     
 // Added as part of the fix for cnx-recipes#1827.
-// Will need to be refactored to make a clean split between
-// tables and borders as part of a clean-up sprint.
 $TableBottomBorderData: (
     _name: "TableBottomBorderData",
     _subselector: " > td",
@@ -99,8 +78,6 @@ $TableBottomBorderData: (
     )
 );
 // Altered as part of the fix for cnx-recipes#1827.
-// Will need to be refactored to make a clean split between
-// tables and borders as part of a clean-up sprint.
 $FirstTableData: (
     _name: "FirstTableData",
     _subselector: " > td:first-of-type:not(:only-of-type)",
@@ -145,45 +122,5 @@ $LastTableMergedCellsRowData: (
     _subselector: " > tr:last-of-type > td:only-of-type",
     _properties: (
         border-right: none,
-    )
-);
-
-$CaptionContainer: (
-    _name: "CaptionContainer",
-    _subselector: " .os-caption-container",
-    _properties: (
-        display: enum('ValueSet:::OPTIONAL'),
-        caption-side: enum('ValueSet:::OPTIONAL'),
-        prince-caption-page: enum('ValueSet:::OPTIONAL'),
-    )
-);
-
-$CaptionTitle: (
-    _name: "CaptionTitle",
-    _subselector: " > .os-title-label",
-    _properties: (
-        font-weight: enum('ValueSet:::OPTIONAL'),
-    )
-);
-
-$TableNumber: (
-    _name: "TableNumber",
-    _subselector: " > .os-number",
-    _properties: (
-        font-weight: enum('ValueSet:::OPTIONAL'),
-    )
-);
-$TableDataList: (
-    _name: "TableDataList",
-    _subselector: " > ul",
-    _properties: (
-        margin-left: enum('ValueSet:::OPTIONAL'),
-    )
-);
-$TableDataUnstyledList: (
-    _name: "TableDataUnstyledList",
-    _subselector: " > ul[data-bullet-style='none']",
-    _properties: (
-        list-style-type: none,
     )
 );

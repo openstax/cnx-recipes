@@ -32,15 +32,16 @@ $TitleNumberComponent: (
     display: block,
     padding-bottom: enum('ValueSet:::OPTIONAL'),
     margin-bottom: enum('ValueSet:::OPTIONAL'),
-    font-family: enum('ValueSet:::OPTIONAL'),
+    font-family: enum('ValueSet:::REQUIRED'),
     font-size: enum('ValueSet:::REQUIRED'),
     line-height: enum('ValueSet:::REQUIRED'),
-    color: enum('ValueSet:::OPTIONAL'),
-    border-bottom-color: enum('ValueSet:::REQUIRED'),
-    border-bottom-width: 0.1rem,
-    border-bottom-style: solid,
-    font-weight: bold,
+    color: enum('ValueSet:::REQUIRED'),
+    border-bottom-color: enum('ValueSet:::OPTIONAL'), //changed to OPTIONAL (used in Appendixes not in Chapters)
+    border-bottom-width: enum('ValueSet:::OPTIONAL'),
+    border-bottom-style: enum('ValueSet:::OPTIONAL'),
+    font-weight: enum('ValueSet:::REQUIRED'),
     text-transform: uppercase,
+    letter-spacing: enum('ValueSet:::OPTIONAL'), //used in Chapters
   )
 );
 
@@ -56,14 +57,14 @@ $TitleTextComponent: (
   _name: "TitleText",
   _subselector: '> .os-text',
   _properties: (
-    color: enum('ValueSet:::OPTIONAL'),
+    display: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    color: enum('ValueSet:::OPTIONAL'), //used in Appendixes
     font-family: enum('ValueSet:::OPTIONAL'),
-    font-weight: normal,
     font-size: enum('ValueSet:::REQUIRED'),
     line-height: enum('ValueSet:::REQUIRED'),
+    font-weight: enum('ValueSet:::REQUIRED'),
   )
 );
-
 
 //h2 titles (module titles, EOC)
 $H2Component: (
@@ -169,7 +170,6 @@ $H4LinkComponent:(
 
 
 //h5 titles
-//todo, add this level to all books modules
 $H5Component: (
     _name: "H5Title",
     _subselector: ' > section > section > section > h5[data-type="title"]',
@@ -180,4 +180,35 @@ $H5Component: (
         font-size: font-scale(0),
         line-height: line-height(0),
     )
+);
+
+//used in Modules
+$TitleInParagraph: (
+    _name:"TitleInParagraph",
+    _subselector:' span[data-type="title"]',
+    _properties: (
+        margin-right: h-spacing(1),
+    )
+);
+$TitleOverFigure: (
+    _name: "TitleOverFigure",
+    _subselector: ' h4 + div.os-figure > figure',
+    _properties:(
+        padding-top: v-spacing(1),
+    )
+);
+
+//Modules and chapters empty containers
+$ModuleContainerComponent: empty_wrapper(Module, ' > [data-type="page"]:not(.introduction)');
+$ChapterContainerComponent: empty_wrapper(Chapter, '');
+
+//Tables titles
+$TableTitle: (
+    _name: "TableTitle",
+    _subselector: " > .os-table-title",
+    _properties: (
+        color: enum('ValueSet:::REQUIRED'),
+        padding: enum('ValueSet:::REQUIRED'),
+        text-align: center,
+    )   
 );
