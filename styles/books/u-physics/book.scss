@@ -20,13 +20,15 @@ $ChapterIntroType: fullWidth;
     'TocUnitLink:::color': (_ref: 'colorMap:::physicsTocColor'),
     'TocChapterNumber:::color': (_ref: 'colorMap:::physicsTocColor'),
   ),
-ChapterModuleTitles: (
-    _selectors: ('[data-type="chapter"]'),
-    'TitleNumber:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  Module: (
+    _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
     'H2Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'H4Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H5Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+  Chapter: (
+    _selectors: ('[data-type="chapter"]'),
+    'TitleNumber:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
   Preface: (
     _selectors: (".preface"),
@@ -92,6 +94,7 @@ ChapterModuleTitles: (
     'Section--MarginBottom:::margin-bottom': 0,
     'UnnumberedUnstyledTable:::margin-bottom': 0,
     'TableData:::padding': table-v-spacing(1) table-h-spacing(1),
+    'TableHeadCell:::padding': table-v-spacing(1) table-h-spacing(1),
   ),
   ChapterReviewCompositeChapter:(
     _selectors: (".os-chapter-review-container"),
@@ -107,8 +110,6 @@ ChapterModuleTitles: (
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'ProblemContainerSpecific:::vertical-align': bottom,
-    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': column-v-spacing(1),
   ),
   ProblemsCompChapPage:(
@@ -117,8 +118,6 @@ ChapterModuleTitles: (
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'ProblemContainerSpecific:::vertical-align': bottom,
-    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': column-v-spacing(1),
   ),
   AdditionalProblemsCompChapPage:(
@@ -127,8 +126,6 @@ ChapterModuleTitles: (
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'ProblemContainerSpecific:::vertical-align': bottom,
-    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': 0,
   ),
   ChallengeProblemsCompChapPage:(
@@ -137,8 +134,6 @@ ChapterModuleTitles: (
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
     'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'ProblemContainerSpecific:::vertical-align': bottom,
-    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
     'Section--MarginBottom:::margin-bottom': 0,
   ),
 ));
@@ -200,7 +195,7 @@ ChapterModuleTitles: (
 //tables
 @include add_settings((
   FakeTitleTable: (
-    _selectors: ('.os-table.top-titled'),
+    _selectors: ('.os-table'),
     'TableTitle:::color': (_ref: "colorMap:::physicsTableColor"),
   ),
 ));
@@ -208,7 +203,8 @@ ChapterModuleTitles: (
 @include use('BookRoot', "common:::BookRoot");
 @include use('UnitToc', 'carnival:::UnitToc');
 @include use('UnitTitle', 'common:::Hidden');
-@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape');
+@include use('Chapter', 'carnival:::Chapter');
+@include use('Module', 'carnival:::ModuleShape');
 @include use('Footnotes', 'carnival:::FootnotesShape');
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('Index', 'carnival:::IndexShape');
