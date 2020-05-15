@@ -1,10 +1,13 @@
 #!/bin/bash
 
+#Exit immediately if a command exits with a non-zero status (http://linuxcommand.org/lc3_man_pages/seth.html)
+set -e 
+
+
 # Run ./script/chop-book {book_name} {chapter_number} in between assemble-book and bake-book
 # The script removes all chapters except the one provided. 
-# The replacement is done in-place so if a dev wants to change chapters they will need to re-run assemble-book
+# The replacement is done in-place so if a dev wants to change chapters they will need to re-run assemble-book 
 
-#delete temp recipe 
 
 book_name=$1
 chapter_number=$2
@@ -12,18 +15,35 @@ temp_recipe="./recipes/temp-${book_name}.css"
 chopped_baked_book="./data/${book_name}/collection.baked.chopped.xhtml"
 assembled_book="./data/${book_name}/collection.assembled.xhtml"
 
+chapter_number_options='^[0-9]+$'
+
+#check if valid chapter number was given
+if ! [[ $chapter_number =~ $chapter_number_options ]]; then
+  exit "Please enter a valid chapter number"
+fi
+
+#create empty temp recipe file
 touch ${temp_recipe}
 
+# pass(0) select all chapters and their corresponding TOC entries, add a coustom attribute who's value is a counter
+# pass(1) select all chapters and their corresponding TOC entries EXCEPT the elements tagged with the counter attribute who's value matches the value passed when running the script
+# pass(2) empty the trash
+# write this string of commands to the temp recipe file
+echo "
+:pass(0) body > [data-type=\"chapter\"] { counter-increment: chapterCounter; attr-chop-chapter-number: counter(chapterCounter) }
+:pass(0) nav#toc > ol > li:not([cnx-archive-uri]) { counter-increment: tocCounter; attr-chop-chapter-number: counter(tocCounter)}
+:pass(1) body > [data-type=\"chapter\"]:not([chop-chapter-number=\"${chapter_number}\"]) { move-to: trash}
+:pass(1) nav#toc > ol > li:not([chop-chapter-number=\"${chapter_number}\"]):not([cnx-archive-uri]) { move-to: trash}
+:pass(2) body:deferred::after { content: clear(trash); }" > ${temp_recipe}
 
+#run easybake
+cnx-easybake ${temp_recipe} ${assembled_book} ${chopped_baked_book}
 
-echo "nav#toc > ol > li:not(:nth-of-type(${chapter_number})) { move-to: trash } 
-[data-type=\"chapter\"]:not(:nth-of-type(${chapter_number})) { move-to: trash } 
-body:deferred::after { 
-    content: clear(trash);
-  }" > ${temp_recipe}
+#overwrite the assembled book file with the chopped book
+mv ${chopped_baked_book} ${assembled_book}
 
-cnx-easybake -d ${temp_recipe} ${assembled_book} ${chopped_baked_book}
+echo "Output in ${assembled_book}"
 
-#mv ${chomped_baked_book} ${assembled_book}
+#delete temp recipe
 rm ${temp_recipe}
 

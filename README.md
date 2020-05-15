@@ -41,6 +41,9 @@ or to run tests, run:
 
 `./script/run ./script/test`
 
+### ./script/chop-book
+This script can be used during development to shorten baking time by removing all chapters except the one selected from the assembled file. More details can be found in ./script/chop-book
+
 ## Updating Neb
 **To pull the latest version of neb:**
 `docker-compose pull neb`
