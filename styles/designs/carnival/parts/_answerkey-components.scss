@@ -34,27 +34,8 @@ $AnswerKey__Image: (
   )
 );
 
-@function solutionContainer($selector, $name) {
-  @return (
-      _name: "SolutionContainer#{$name}",
-      _subselector: #{$selector},
-      _properties:(
-          display: table-cell,
-          vertical-align: enum('ValueSet:::OPTIONAL'),
-          padding-top: enum('ValueSet:::OPTIONAL'),
-          width: 100%,
-      ),
-      _components: (
-          $AnswerKey__Solution--Paragraph,
-          $AnswerKey__Image,
-          $AnswerKey__ListComponent--MarginBottomLeftOrdered,
-          $AnswerKey__ListComponent--MarginBottomLeftUnordered,
-      ),
-  );
-}
-
-$AnswerKey__Solution--Container: solutionContainer(' .os-solution-container', null);
-$AnswerKey__Solution--ContainerSpecific: solutionContainer(' .os-solution-container.has-first-element', "Specific");
+$AnswerKey__Solution--Container: exerciseChildContainer((child: solution, name: "SolutionContainer", hasImageOnTop: false));
+$AnswerKey__Solution--ContainerWithImageOnTop: exerciseChildContainer((child: solution, name: "SolutionContainerWithImageOnTop", hasImageOnTop: true));
 
 $AnswerKey__Solution--Number: (
   _name: "Number",
