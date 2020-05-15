@@ -14,6 +14,10 @@
   @return ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 }
 
+@function connector_chars() {
+  @return ('_', '-');
+}
+
 @function str_contains($string, $char_sequence) {
   @return not not str-index($string, $char_sequence);
 }
@@ -37,7 +41,20 @@
 
 
 @function is_camel_case($string) {
-  $allowed: join(join(upper_chars(), lower_chars()), numeric_chars());
+  $allowed: join(join(upper_chars(), lower_chars()), numeric_chars(),);
+  @for $char_index from 1 through str-length($string) {
+    @if not list_contains($allowed, char_at_index($string, $char_index)) {
+      @return false;
+    }
+  }
+  @if not str_is_upper(char_at_index($string, 1)) {
+    @return false;
+  }
+  @return true;
+}
+
+@function is_bem_camel_case($string) {
+  $allowed: join(join(join(upper_chars(), lower_chars()), numeric_chars()), connector_chars(),);
   @for $char_index from 1 through str-length($string) {
     @if not list_contains($allowed, char_at_index($string, $char_index)) {
       @return false;
