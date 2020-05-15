@@ -105,7 +105,10 @@ $Config_ChapterCompositePages: (
 $Config_BookCompositePages: (
   //This doesn't get parsed as a list without a comma at the end
   //the composite builder should account for this rather than using hacky syntax
-  (className: "solutions",    clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, name: "Answer Key"),
+
+  //Key "type" has the same value as "name", but it's needed because of internationalization.
+  // "name" has different value in books from other countries, but we need value common for all books (see mixin "modify_addFirstElementClas")
+  (className: "solutions",    clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, type: "Answer Key", name: "Answer Key"),
   (className: "index",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
 );
 /*==========================================================
@@ -115,7 +118,7 @@ $_exampleTitleContent        : (os-title-label: "Example ", os-number: counter(c
 $_exampleSolutionTitleContent: (os-title-label: "Solution ", os-number: counter(chapter) "." counter(example), os-divider: " ");
 $_equationTitleContent       : (os-number: counter(chapter) "." counter(equation));
 $_understandingTitleContent   : (os-title-label: "Check Your Understanding ", os-number: counter(chapter)"."counter(understanding), os-divider: " ");
-$_understandingSolutionContent : (os-number: counter(chapter)"."counter(understanding));
+$_understandingSolutionContent : (os-divider: " ", os-number: counter(chapter)"."counter(understanding));
 /*==========================================================
   UNIVERSITY PHYSICS CONFIG
 ==========================================================*/
@@ -170,6 +173,7 @@ $Config_UnnumberedElements: (
 $Config_FirstElements: (
   (selector: ' > .os-figure:first-child'),
   (selector: ' > div:first-child > p:first-child img:first-child'),
+  (selector: ' > [data-type="media"]:first-child'),
 );
 
 $Config_abstractTitle: "Learning Objectives";

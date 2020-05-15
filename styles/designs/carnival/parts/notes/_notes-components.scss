@@ -5,30 +5,17 @@ $NoteSubtitleComponent: (
   _properties: (
     font-size: font-scale(1),
     line-height: line-height(1),
-    font-family: "IBM Plex Sans", //too many places where it's  optional to fix now, TODO: fix later
+    font-family: "IBM Plex Sans, sans-serif", //too many places where it's  optional to fix now, TODO: fix later
     font-weight: enum('ValueSet:::OPTIONAL'),
+    margin-bottom: enum('ValueSet:::OPTIONAL'), //Set this property as OPTIONAL to be used only in Examples for consistency with FirstParagraphTitle (see l.201) - used in Examples, where the first subtitle is nested in paragraph with text and the rest of the headers nestes in p tags, where margin-bottom is inherited and hard to remove without affecting the rest of the paragraphs in icon notes.
   )
 );
 
-$NoteBodyComponent: (
-  _name: "Body",
-  _subselector: " > .os-note-body",
-  _properties: (
-  )
-);
+$NoteBodyComponent:  empty_wrapper(Body, ' > .os-note-body');
 
-$NoteProblemComponent: (
-  _name: "Problem",
-  _subselector: ' > [data-type="problem"]',
-  _properties: (
-  )
-);
-$NoteProblemContainerComponent: (
-  _name: "ProblemContainer",
-  _subselector: ' > .os-problem-container',
-  _properties: (
-  )
-);
+$NoteProblemComponent: empty_wrapper(Problem, ' > [data-type="problem"]');
+
+$NoteProblemContainerComponent: empty_wrapper(ProblemContainer, ' > .os-problem-container');
 
 //boxed note
 $BoxedNoteContainerComponent: (
@@ -102,10 +89,11 @@ $BoxedCondensedNoteEquationNumber: (
     right: 0,
     top: 50%,
     transform: translate(0, -50%),
-    border-width: 0.025rem,
-    border-style: solid,
-    line-height: normal,
-    padding: 0.5rem,
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(0),
+    line-height: line-height(0),
+    font-weight: bold,
+    color: enum('ValueSet:::REQUIRED'),
     margin-right: v-spacing(1),
   )
 );
@@ -198,16 +186,16 @@ $IconNoteMainTitleTextComponent: (
 );
 
 $IconNoteFirstParagraphTitleComponent: (
-  _name: "FirstTitle",
-  _subselector: " + p > [data-type='title']",
+  _name: "FirstParagraphTitle",
+  _subselector: " p:first-of-type > [data-type='title']",
   _properties: (
-    font-size: font-scale(0),
-    line-height: line-height(0),
+    font-size: font-scale(1),
+    line-height: line-height(1),
     font-family: enum('ValueSet:::OPTIONAL'),
     font-weight: bold,
     text-transform: enum('ValueSet:::OPTIONAL'),
     display: enum('ValueSet:::OPTIONAL'),
-   // margin-bottom: enum('ValueSet:::OPTIONAL'),
+    margin-bottom: enum('ValueSet:::OPTIONAL'),
   )
 );
 
@@ -238,12 +226,13 @@ $IconNoteParagraphTitleComponent: (
     display: enum('ValueSet:::OPTIONAL'),
     padding-right: enum('ValueSet:::OPTIONAL'),
     font-weight: bold,
+    margin-bottom: enum('ValueSet:::OPTIONAL'),
   )
 );
 
 $IconNoteDivTitleComponent: (
   _name: "DivSubtitle",
-  _subselector: " > div [data-type='title']",
+  _subselector: " div:not([class]) > [data-type='title'], div[data-type='title']",
   _properties: (
     font-family: enum('ValueSet:::OPTIONAL'),
     font-size: font-scale(0),
@@ -252,6 +241,7 @@ $IconNoteDivTitleComponent: (
     text-transform: enum('ValueSet:::OPTIONAL'),
     display: enum('ValueSet:::OPTIONAL'),
     padding-right: enum('ValueSet:::OPTIONAL'),
+    margin-bottom: enum('ValueSet:::OPTIONAL'),
   )
 );
 
@@ -266,7 +256,7 @@ $IconNoteEquationComponent: (
 
 $IconNoteAnswerTitleComponent: (
   _name: "AnswerTitle",
-  _subselector: " > [data-type='note'] > .os-title > .os-title-label",
+  _subselector: " > .body > [data-type='note'] > .os-title > .os-title-label",
   _properties: (
     font-weight: enum('ValueSet:::OPTIONAL'),
     text-transform: enum('ValueSet:::OPTIONAL'),
@@ -274,6 +264,7 @@ $IconNoteAnswerTitleComponent: (
     font-family: enum('ValueSet:::OPTIONAL'),
     font-size: font-scale(0),
     line-height: line-height(0),
+    margin-bottom: enum('ValueSet:::OPTIONAL'),
   )
 );
 
@@ -366,12 +357,7 @@ $IconCondensedExerciseSolutionComponent: (
   )
 );
 
-$IconCondensedExerciseSolutionContainerComponent: (
-  _name: "SolutionContainer",
-  _subselector: ' > .os-solution-container',
-  _properties: (
-  )
-);
+$IconCondensedExerciseSolutionContainerComponent: empty_wrapper(SolutionContainer, ' > .os-solution-container');
 
 $IconCondensedExerciseSolutionTitleComponent: (
   _name: "SolutionTitle",
