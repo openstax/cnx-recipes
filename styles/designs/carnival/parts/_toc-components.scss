@@ -66,11 +66,11 @@ $TocChapterNumber: (
   ),
 );
 
-$TocChapter: (
-  _name: 'TocChapter',
-  _subselector: ' > .os-toc-chapter',
-  _properties: topLevelPageNotAppendixProperties(),
-);
+// $TocChapter: (
+//   _name: 'TocChapter',
+//   _subselector: ' > .os-toc-chapter',
+//   _properties: topLevelPageNotAppendixProperties(),
+// );
 
 $TocChapterLink: tocLink('TocChapter');
 $TocChapterLinkPage: tocLinkPage('TocChapter');
@@ -201,4 +201,51 @@ $TocUnitLink: (
     margin-bottom: v-spacing(1)
   )
 );
+@function tocChapterComponents() {
+  @return (
+      $TocChapterNumber,
+      map-merge($TocChapterLink, (
+        _components: (
+          $TocChapterLinkPage
+          )
+      )),
+      map-merge($TocChapterList, (
+      _components: (
+        map-merge($TocChapterPage, (
+          _components: (
+            map-merge($TocChapterPageLink, (
+              _components: (
+                $TocChapterPageLinkPage,
+              )
+            )),
+          )
+        )),
+        map-merge($TocChapterCompositePage, (
+          _components: (
+            map-merge($TocChapterCompositePageLink, (
+              _components: (
+                $TocChapterCompositePageLinkPage
+              )
+            )),
+          )
+        )),
+        map-merge($TocEocCompositeChapter, (
+          _components: (
+            $TocEocCompositeChapterList,
+              map-merge($TocEocCompositeChapterLink, (
+                _components: (
+                  $TocEocCompositeChapterLinkPage,
+                  )
+              )),
+          )
+        )),
+      )
+    )),
+  )
+}
 
+$TocChapter: (
+  _name: 'TocChapter',
+  _subselector: ' > .os-toc-chapter',
+  _properties: topLevelPageNotAppendixProperties(),
+);
