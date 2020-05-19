@@ -70,7 +70,7 @@ Component -> Map (
 )
 ```
 
-### Property Values
+### Property values
 
 There are four main options for the values for properties in a shape, 3 of which are represented in the `ValueSet` enum: `OPTIONAL`, `REQUIRED`, and `GROUPED`. The last option is to set the property to a specific value. Let's explain these options:
 
@@ -90,9 +90,9 @@ Component Variable Names are written using [Block, Element, Modifier (BEM) synta
 .block--modifier {}
 ```
 
-`.Block` represents the higher level of an abstraction or component.
-`.block__element` represents a descendent of `.block` that helps form `.block` as a whole.
-`.block--modifier` represents a different state or version of `.block`.
+- `.Block` represents the higher level of an abstraction or component.
+- `.block__element` represents a descendent of `.block` that helps form `.block` as a whole.
+- `.block--modifier` represents a different state or version of `.block`.
 
 So given the example of `$note--boxed__container:` in the next section, the variable represents a container that is a piece of a "boxed" type note.
 
