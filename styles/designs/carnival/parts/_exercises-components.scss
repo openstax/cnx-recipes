@@ -1,15 +1,4 @@
-@import 'lists-components';
-//offer ability to turn any exercises into a column (this is almost the same as the EOC container). We may want to extract this component to a more global columnContainer compnoent or something. 
-$Exercise__Container:(
-    _name: "Container",
-    _subselector: " ",
-    _properties:(
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
-        column-count: enum('ValueSet:::OPTIONAL'),
-        column-gap: enum('ValueSet:::OPTIONAL'),
-        column-width: enum('ValueSet:::OPTIONAL'),
-    )
-);
+$Exercise__Container: empty_wrapper(Container, '');
 
 $Exercise__Problem--Wrapper:(
     _name: "ProblemWrapper",
@@ -17,35 +6,6 @@ $Exercise__Problem--Wrapper:(
     _properties:(
         display: table,
     )
-);
-
-$Exercise__Image: (
-    _name: "ExerciseImage",
-    _subselector: " img",
-    _properties:(
-        max-width: 100%,
-    )
-);
-
-$Exercise__TableData: (
-    _name: "TableData",
-    _subselector: " td:not(:only-of-type)",
-    _properties:(
-        text-align: center,
-        padding-top: table-v-spacing(1),
-        padding-bottom: table-v-spacing(1),
-        padding-right: h-spacing(.5), // right and left padding have to use h-spacing; in two column layout tables have to have smaller paddings
-        padding-left: h-spacing(.5),
-    )
-);
-
-$Exercise__Table: (
-    _name: "Table",
-    _subselector: " .os-table table",
-    _properties:(
-        max-width: 100%,
-        table-layout: fixed,
-    ),
 );
 
 $Exercise__Problem--Paragraph:(
@@ -56,41 +16,8 @@ $Exercise__Problem--Paragraph:(
     )
 );
 
-@function problemContainer($selector, $name) {
-    @return (
-        _name: "ProblemContainer#{$name}",
-        _subselector: #{$selector},
-        _properties:(
-            display: table-cell,
-            vertical-align: enum('ValueSet:::OPTIONAL'),
-            padding-top: enum('ValueSet:::OPTIONAL'),
-            width: 100%,
-        ),
-        _components: (
-            $Exercise__Problem--Paragraph,
-            $Exercise__Image,
-            map-merge($List--MarginLeftBottomOrdered, (
-                _components:(
-                    map-merge($List--Nested--MarginLeftBottomOrdered, (
-                        _components:(
-                            $List--Nested--MarginLeftBottomOrdered,
-                        ),
-                    )),
-                ),
-            )),
-            $List--MarginLeftBottomUnordered,
-            map-merge($Container__List--MarginLeftBottomOrdered, (
-                _components:(
-                    $List--Nested--MarginLeftBottomOrdered,
-                ),
-            )),
-            $Container__List--MarginLeftBottomUnordered,
-        ),
-    );
-}
-
-$Exercise__Problem--Container: problemContainer(' .os-problem-container', null);
-$Exercise__Problem--Container_Specific: problemContainer(' .os-problem-container.has-first-element', "Specific");
+$Exercise__Problem--Container: exerciseChildContainer((child: problem, name: "ProblemContainer", hasImageOnTop: false));
+$Exercise__Problem--ContainerWithImageOnTop: exerciseChildContainer((child: problem, name: "ProblemContainerWithImageOnTop", hasImageOnTop: true));
 
 $Exercise__Problem--Number:(
     _name: "ProblemNumber",
@@ -112,14 +39,3 @@ $Exercise__Problem--Divider:(
 );
 
 $Exercise__Solution--Wrapper: empty_wrapper(Solution, ' [data-type="solution"]');
-
-$Exercise__Solution--Title:(
-    _name: "SolutionTitle",
-    _subselector: " > .solution-title",
-    _properties:(
-        font-family: enum('ValueSet:::REQUIRED'),
-        font-weight: bold,
-        font-size: font-scale(1),
-        line-height: line-height(1),
-    )
-);
