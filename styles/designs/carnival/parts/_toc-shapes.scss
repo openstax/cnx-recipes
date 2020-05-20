@@ -1,5 +1,50 @@
 @import 'toc-components';
 
+//this function returns components tree nested in TocChapter so we don't need to repeat this block of code in the below ToC shapes  
+@function tocChapterComponents() {
+  @return (
+      $TocChapterNumber,
+      map-merge($TocChapterLink, (
+        _components: (
+          $TocChapterLinkPage
+          )
+      )),
+      map-merge($TocChapterList, (
+      _components: (
+        map-merge($TocChapterPage, (
+          _components: (
+            map-merge($TocChapterPageLink, (
+              _components: (
+                $TocChapterPageLinkPage,
+              )
+            )),
+          )
+        )),
+        map-merge($TocChapterCompositePage, (
+          _components: (
+            map-merge($TocChapterCompositePageLink, (
+              _components: (
+                $TocChapterCompositePageLinkPage
+              )
+            )),
+          )
+        )),
+        map-merge($TocEocCompositeChapter, (
+          _components: (
+            $TocEocCompositeChapterList,
+              map-merge($TocEocCompositeChapterLink, (
+                _components: (
+                  $TocEocCompositeChapterLinkPage,
+                  )
+              )),
+          )
+        )),
+      )
+    )),
+  )
+}
+
+
 @include create_shape('carnival:::NoUnitToc', (
   _components: (
     map-merge($TocContainer, (
@@ -21,48 +66,6 @@
               tocChapterComponents()
               )
             )),
-            // map-merge($TocChapter, (
-            //   _components: (
-            //     $TocChapterNumber,
-            //     map-merge($TocChapterLink, (
-            //       _components: (
-            //         $TocChapterLinkPage
-            //       )
-            //     )),
-            //     map-merge($TocChapterList, (
-            //       _components: (
-            //         map-merge($TocChapterPage, (
-            //           _components: (
-            //             map-merge($TocChapterPageLink, (
-            //               _components: (
-            //                 $TocChapterPageLinkPage,
-            //               )
-            //             )),
-            //           )
-            //          )),
-            //         map-merge($TocChapterCompositePage, (
-            //           _components: (
-            //           map-merge($TocChapterCompositePageLink, (
-            //             _components: (
-            //               $TocChapterCompositePageLinkPage
-            //             )
-            //           )),
-            //           )
-            //         )),
-            //         map-merge($TocEocCompositeChapter, (
-            //           _components: (
-            //             $TocEocCompositeChapterList,
-            //             map-merge($TocEocCompositeChapterLink, (
-            //               _components: (
-            //                 $TocEocCompositeChapterLinkPage,
-            //               )
-            //             )),
-            //           )
-            //         )),
-            //       )
-            //     )),
-            //   )
-            // )),
             map-merge($TocAppendix, (
               _components: (
                 $TocAppendixNumber,
@@ -134,48 +137,6 @@
                         tocChapterComponents()
                       )
                     )),
-                    // map-merge($TocChapter, (
-                    //   _components: (
-                    //     $TocChapterNumber,
-                    //       map-merge($TocChapterLink, (
-                    //         _components: (
-                    //           $TocChapterLinkPage
-                    //           )
-                    //       )),
-                    //       map-merge($TocChapterList, (
-                    //         _components: (
-                    //           map-merge($TocChapterPage, (
-                    //             _components: (
-                    //               map-merge($TocChapterPageLink, (
-                    //                 _components: (
-                    //                   $TocChapterPageLinkPage,
-                    //                 )
-                    //               )),
-                    //             )
-                    //           )),
-                    //           map-merge($TocChapterCompositePage, (
-                    //             _components: (
-                    //               map-merge($TocChapterCompositePageLink, (
-                    //                 _components: (
-                    //                   $TocChapterCompositePageLinkPage
-                    //                 )
-                    //               )),
-                    //             )
-                    //           )),
-                    //           map-merge($TocEocCompositeChapter, (
-                    //             _components: (
-                    //               $TocEocCompositeChapterList,
-                    //                 map-merge($TocEocCompositeChapterLink, (
-                    //                   _components: (
-                    //                     $TocEocCompositeChapterLinkPage,
-                    //                   )
-                    //                 )),
-                    //             )
-                    //           )),
-                    //         )
-                    //       )),
-                    //     )
-                    // )),
                   )
                 )),
               )
