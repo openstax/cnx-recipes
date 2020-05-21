@@ -39,7 +39,7 @@ There are 4 different types of variables used in the SASS files:
 
 - starts with `Config_`: these are defined in the config file and are the **only** ones used as input to `_generator.scss`
 - `$UPPER_CASE`: these are enums (SASS does not have native enums) and are used when you must select 1 of several options.
-  - Example: `$AREA_NONE`, `$AREA_EOC`, `$AREA_EOB`
+    - Example: `$AREA_NONE`, `$AREA_EOC`, `$AREA_EOB`
 - `$_privateVar`: these are declared and used **within** the SCSS file
 - `$PascalCase`: these are defined in one `_config.scss` file but are used in another `_config.scss` file
 
@@ -48,39 +48,203 @@ There are 4 different types of variables used in the SASS files:
 
 The config settings are variables that start with `$Config_` and have the following structure:
 
-- `$GRAMMATICAL_CASES`
-  - This describes the different ways to say "Figure". The content has an attribute that belongs to the katalyst namespace that describes the different cases.
-  - The attribute is `cmlnle:case` and has namespace "http://katalysteducation.org/cmlnle/1.0"
-  - These are used when building links. See `$Config_TargetLabels` for more information
-- `$Config_hasCompositeChapter`
-  - not sure if this is the same thing as a ChapterCompositePages
-  - add an h1 for each one (e.g. "Key Terms", "Index")
-  - heading levels are "sane" meaning they are nested properly in the baked file (composite chapter title is like h2 and the compositepage inside it is h3 for accessibility)
-  - copy the book metadata into each composite pages (assuming to make importing back into the DB easier)
+## `$GRAMMATICAL_CASES`
 
-- `$Config_ChapterCompositePages`: A list of [Pages](#page)
-  - composite pages are given an id attribute when they are linked to from the ToC
-  - create a Page (contains a data-uuid-key, title, metadata, etc) whose contents is collected from items that match `className` from each entry in the list
-- `$Config_SectionCompositePages`: A list of [Pages](#page)
-  - Each one has a `h1[data-type="document-title"]` added to it 
-  - the line Phil commented just moves the solutions but this area does all this: Creates a Page, moves exercises to it, groups the exercises by section, and adds the section title to the group (with a link back to the section). At this point the exercises & solutions seem to be numbered
-  - exercises within them need to be numbered
-- `$Config_BookCompositePages`: A list of [Pages](#page)
-  - Each one has a `h1[data-type="document-title"]` added to it
-  - One of them is an Index (instructions will likely come later)
-    - create the following:
-        ```
-        <div.group-by>
-          <span.group-label>A</>
-          <span.os-index-item>
-            <span.os-term group-by="A">Accessibility Improvements</>
-            <a.os-term-section-link href="..." >
-              <span.os-term-section>Preface</>
-            </>
-            <span.os-index-link-separator>,</>
-          </>
-        </>
-        ```
+This describes the different ways to say "Figure". The content has an attribute that belongs to the katalyst namespace that describes the different cases.
+
+The attribute is `cmlnle:case` and has namespace "http://katalysteducation.org/cmlnle/1.0"
+
+These are used when building links. See `$Config_TargetLabels` for more information
+
+Each link target (e.g. figure) has multiple options for link text depending on the `cmlnle:case="..."` attribute on the link.
+
+```
+a:target-is-a(figure) {
+    &[cmlnle|case="nominative"] { content: "Rysunek" }
+    &[cmlnle|case="genitive"] { content: "Rysunku" }
+    &[cmlnle|case="dative"] { content: "Rysunkowi" }
+    &[cmlnle|case="accusative"] { content: "Rysunek" }
+    &[cmlnle|case="instrumental"] { content: "Rysunkiem" }
+    &[cmlnle|case="locative"] { content: "Rysunku" }
+    &[cmlnle|case="vocative"] { content: "Rysunku" }
+}
+```
+
+
+## `$Config_hasCompositeChapter`
+
+- not sure if this is the same thing as a ChapterCompositePages
+- add an h1 for each one (e.g. "Key Terms", "Index")
+- heading levels are "sane" meaning they are nested properly in the baked file (composite chapter title is like h2 and the compositepage inside it is h3 for accessibility)
+- copy the book metadata into each composite pages (this is because the code that imports back into the DB requires a metadata element)
+- implicitly, a non-leaf entry is added to the ToC
+
+
+## `$Config_ChapterCompositePages`
+
+A list of Pages
+- composite pages are given an id attribute so that they can be linked to from the ToC
+- create a Page (contains a data-uuid-key, title, metadata, etc) whose contents is collected from items that match `className` from each entry in the list
+
+A `Page` contains the following fields:
+- `$page.className`: the class name (and bucket) of the page
+- `$page.name`: The title of the new page (TODO rename?)
+- `$page.hasSolutions`: `true` when this item contains exercises that contain solutions
+    - (TODO: why is this necessary?)
+- `$page.clusterBy`: `$CLUSTER_SECTION`, `$CLUSTER_CHAPTER`, or `$CLUSTER_NONE` when items on this page should be organized by Section/Chapter
+    - A header is added which contains the section number and title
+- `$page.specialPageType`: (optional) There are also a few "special" pages which contain additional configuration fields: 
+    - `$PAGE_INDEX`
+    - `$PAGE_GLOSSARY`
+    - `$PAGE_INDEX_PARTIAL` : A few books contain multiple indexes. Each term contains an attribute that defines which index it should be added to (`[cxlxt|index]`)
+        - `$page.indexType`: which type of index this is. This string should match the possible values of the `term/@cxlxt:index` attribute on each term.
+        - `$page.defaultIndex`: `true` if this index is the default. Terms that do not have a `cxlxt:index="..."` attribute on them will be added to this index (hopefully there is only one default index!) 
+    - `$PAGE_CITATIONS` : collects each note that has a class name of `$page.className`
+- `$page.childPages`: (optional) Some generated pages are just a container for other Pages. This contains the list of child Pages that need to be generated
+- ``
+
+
+### `$page.clusterBy == $CLUSTER_NONE`
+
+Example HTML that is injected:
+
+```xml
+<!-- <div data-type="chapter"> -->
+<!-- ... Normal chapter content -->
+    <div data-type="page" id="{generate-id()}" class="{$page.className}">
+        <h#>{page.name}</h#>
+
+        <!-- bucket contents -->
+        <!-- <div data-type="section"> Ex1 ...</div> -->
+        <!-- <div data-type="section"> Ex2 ...</div> -->
+        <!-- <div data-type="section"> Ex3 ...</div> -->
+
+    </div>
+<!-- </chapter> -->
+```
+
+### `$page.clusterBy == $CLUSTER_SECTION`
+
+```xml
+<!-- <div data-type="chapter"> -->
+<!-- ... Normal chapter content -->
+    <div data-type="page" id="{generate-id()}" class="{$page.className}">
+        <h1>{page.name}</h1>
+
+        <!-- bucket contents grouped by which section it came from -->
+        <h2><a href="#...">4.1 Kinematics in One Dimension</a></h2>
+        <!-- <div data-type="section"> Ex1 ...</div> -->
+        <!-- <div data-type="section"> Ex2 ...</div> -->
+        <!-- <div data-type="section"> Ex3 ...</div> -->
+
+        <h2><a href="#...">4.2 Kinematics in Two Dimensions</h2>
+        <!-- <div data-type="section"> Ex1 ...</div> -->
+        <!-- <div data-type="section"> Ex2 ...</div> -->
+        <!-- <div data-type="section"> Ex3 ...</div> -->
+
+    </div>
+<!-- </chapter> -->
+```
+
+
+## `$Config_SectionCompositePages`
+
+A list of [Pages](#page)
+- Each one has a `h1[data-type="document-title"]` added to it 
+- the line Phil commented just moves the solutions but this area does all this: Creates a Page, moves exercises to it, groups the exercises by section, and adds the section title to the group (with a link back to the section). At this point the exercises & solutions seem to be numbered
+- exercises within them need to be numbered
+
+
+## `$Config_BookCompositePages`
+
+A list of [Pages](#page)
+
+These tend to be Indexes, an Answer Key, a References Page, or a book-wide Glossary.
+
+
+### `$page.specialPageType == $PAGE_INDEX`
+
+An index links to all terms in the book. The terms are sorted alphabetically but there is a language-specific regular expression that defines what goes in the Symbols section. A book may have multiple indexes.
+
+Here is a quick "template" of an index followed by a more concrete example:
+
+```
+<h#>Index</h#>
+<div.group-by>
+    <span.group-label>A</>
+    <span.os-index-item>
+    <span.os-term group-by="A">Accessibility Improvements</>
+    <a.os-term-section-link href="..." >
+        <span.os-term-section>Preface</>
+    </>
+    <span.os-index-link-separator>,</>
+    </>
+</>
+<div.group-by>
+    <span.group-label>B</>
+    ...
+</>
+```
+
+
+```xml
+<!-- <body> -->
+<!-- ... Chapters and Appendixes -->
+<div data-type="composite-page" data-uuid-key="index" class="os-eob os-{$page.specialPageType}-container">
+    <h1 data-type="document-title">{$page.name}</h1>
+    <!-- metadata copied from the book but the title is replaced with "Index" -->
+    <div data-type="metadata" style="display: none;">...</div>
+
+    <div class="group-by">
+        <span class="group-label">Symbols</span>
+        <div class="os-index-item">
+            <span class="os-term">{$theTermName}</span>
+            <a href="#{$uniqueIdToTheTerm}" class="os-term-section-link">{$autogeneratedLinkTextToTheSection}</a>
+        </div>
+        <div class="os-index-item"><!-- 1998 Telecommunications Act --></div>
+        <div class="os-index-item"><!-- +1 Spin --></div>
+    </div>
+
+    <div class="group-by"><!-- A --></div>
+    <div class="group-by"><!-- B --></div>
+    <div class="group-by"><!-- C --></div>
+    <div class="group-by"><!-- D --></div>
+</div>
+<!-- </body> -->
+```
+
+
+### `$page.clusterBy == $CLUSTER_CHAPTER` and `$page.chapterPages == true`
+
+This is used when generating the answer key at the back of the book.
+
+```xml
+<!-- <body> -->
+<!-- ... Normal book content including Appendixes but not the Index -->
+    <div data-type="composite-page" data-uuid-key=".{$page.className}" id="{generate-id()}" class="os-{$page.className}-container">
+        <!-- metadata copied from the book but the title is replaced with "Index" -->
+        <div data-type="metadata" style="display: none;">...</div>
+
+        <h1 data-type="document-title">{page.name}</h1>
+
+        <!-- bucket contents grouped by which chapter it came from -->
+        <div data-type="page" data-uuid-key="..." id="{generate-id()}">
+            <h2><a href="#...">4 Kinematics</a></h2>
+            <!-- <div data-type="section"> 4.1 C ...</div> -->
+            <!-- <div data-type="section"> 4.2 C ...</div> -->
+            <!-- <div data-type="section"> 4.3 C ...</div> -->
+        </div>
+        
+        <div data-type="page" data-uuid-key="..." id="{generate-id()}">
+            <h2><a href="#...">5 Force</a></h2>
+            <!-- <div data-type="section"> 4.1 C ...</div> -->
+            <!-- <div data-type="section"> 4.2 C ...</div> -->
+            <!-- <div data-type="section"> 4.3 C ...</div> -->
+        </div>
+    </div>
+<!-- </body> -->
+```
+
 
 - `$Config_SetTableCaption`: A [Caption](#caption)
   - additionally, there is a `hasTopTitle` which moves the title above the table instead of below it
