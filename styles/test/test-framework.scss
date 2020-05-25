@@ -499,6 +499,45 @@ $test_settings_with_invalid_reference: (
       );
     }
   }
+
+  @include describe('The is_bem_camel_case Function') {
+    @include it('returns true if a string is CamelCase with BEM') {
+      @include assert-equal(
+        is_camel_case('CamelCase'),
+        true
+      );
+      @include assert-equal(
+        is_camel_case('Camel__Case'),
+        true
+      );
+      @include assert-equal(
+        is_camel_case('Camel--Case'),
+        true
+      );
+    }
+    @include it('returns false if a string is not CamelCase with BEM') {
+      @include assert-equal(
+        is_camel_case('lowerCamelCase'),
+        false
+      );
+      @include assert-equal(
+        is_camel_case('lowerCamel__Case'),
+        false
+      );
+      @include assert-equal(
+        is_camel_case('lowerCamel--Case'),
+        false
+      );
+      @include assert-equal(
+        is_camel_case('snake_case'),
+        false
+      );
+      @include assert-equal(
+        is_camel_case('dash-case'),
+        false
+      );
+    }
+  }
 }
 
 $test_note_shape: (
