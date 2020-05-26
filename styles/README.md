@@ -70,7 +70,7 @@ Component -> Map (
 )
 ```
 
-### Property Values
+### Property values
 
 There are four main options for the values for properties in a shape, 3 of which are represented in the `ValueSet` enum: `OPTIONAL`, `REQUIRED`, and `GROUPED`. The last option is to set the property to a specific value. Let's explain these options:
 
@@ -80,12 +80,28 @@ There are four main options for the values for properties in a shape, 3 of which
 
 `GROUPED` - Pick this option if it is desired for properties to share the same values. The `_groups` key of the superset can define a key and value, the key of which is the name for the group, and the value of which is the shared property value. For example, if we were to define our note border colors separately for some reason, we could group border-left|right|top|bottom-color together to `(enum('ValueSet:::GROUPED'), note-box-color)` and in `_groups` we add the entry `note-box-color: enum('ValueSet:::REQUIRED')`
 
+### Naming the variable
+
+Component Variable Names are written using [Block, Element, Modifier (BEM) syntax](https://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/). In BEM syntax, the variable name is constructed in the following fashion:
+
+```plaintext
+.block {}
+.block__element {}
+.block--modifier {}
+```
+
+- `.Block` represents the higher level of an abstraction or component.
+- `.block__element` represents a descendent of `.block` that helps form `.block` as a whole.
+- `.block--modifier` represents a different state or version of `.block`.
+
+So given the example of `$note--boxed__container:` in the next section, the variable represents a container that is a piece of a "boxed" type note.
+
 ### Writing the shapes
 
 Open the file we just created in your favorite editor to get started writing our design shapes. We will write our components to variables so that they can be reused.
 ```scss
 // _design.scss
-$boxed_note_container: (
+$Note--Boxed__Container: (
   _name: 'container',
   _subselector: '.note',
   _properties: (
@@ -93,14 +109,14 @@ $boxed_note_container: (
     border-style: solid
   )
 );
-$boxed_note_title: (
+$Note--Boxed__Title: (
   _name: 'title',
   _subselector: ' > .title',
   _properties: (
     font-weight: enum('ValueSet:::OPTIONAL')
   )
 );
-$bg_note_container: (
+$Note--Background__Container: (
   _name: 'container',
   _subselector: '.note',
   _properties: (
@@ -108,7 +124,7 @@ $bg_note_container: (
     background-color: enum('ValueSet:::REQUIRED')
   )
 );
-$bg_note_title: (
+$Note--Background__Title: (
   _name: 'title',
   _subselector: ' > .title',
   _properties: (
@@ -130,7 +146,7 @@ Next, let's create shapes from these components using the framework provided mix
   _components: (
     map-merge($boxed_note_container, (
       _components: (
-        $boxed_note_title
+        $Note--Boxed__Title
       )
     ))
   )
@@ -139,9 +155,9 @@ Next, let's create shapes from these components using the framework provided mix
 // type-three, type-four
 @include create_shape('BgNote', (
   _components: (
-    map-merge($bg_note_container, (
+    map-merge($Note--Background__Container, (
       _components: (
-        $bg_note_title
+        $Note--Background__Title
       )
     ))
   )
@@ -150,7 +166,7 @@ Next, let's create shapes from these components using the framework provided mix
 // type-five
 @include create_shape('BoxedNote', (
   _components: (
-    $boxed_note_container
+    $Note--Boxed__Container
   )
 ));
 
@@ -166,10 +182,10 @@ Next, let's create shapes from these components using the framework provided mix
 ));
 ```
 
-An alternative way to create shapes from components would be to inline the nesting instead of using `map-merge`. For example, we could write our boxed_note_container component and BoxedNoteTitled like so:
+An alternative way to create shapes from components would be to inline the nesting instead of using `map-merge`. For example, we could write our Note--Boxed__Container component and Note--Boxed__Titled like so:
 ```scss
 // _design.scss
-$boxed_note_container_with_title: (
+$Note--Boxed--Titled__Container: (
   _name: 'container',
   _subselector: '.note',
   _properties: (
@@ -187,7 +203,7 @@ $boxed_note_container_with_title: (
 
 @include create_shape('BoxedNoteTitled', (
   _components: (
-    $boxed_note_container_with_title
+    $Note--Boxed--Titled__Container
   )
 ));
 ```
@@ -348,7 +364,6 @@ The preceding book file will yield some CSS, but we aren't yet finished. We have
 After we add this, we have successfully completed our design-driven book style! Link the compiled CSS to the markup and view the result!
 
 ![image of completed style in the browser](framework-tutorial.png)
-
 
 ## REQUIRED/OPTIONAL/VALUE
 When deciding whether or not to make a property required, optional, or directly coded to a value. We can follow these rules generally:
