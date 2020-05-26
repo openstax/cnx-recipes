@@ -23,20 +23,16 @@ $ChapterIntroType: fullWidth;
 ));
 
 @include add_settings((
-  Chapter: (
+ChapterModuleTitles: (
     _selectors: ('[data-type="chapter"]'),
     'TitleNumber:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-  ),
-));
-
-@include add_settings((
-  Module: (
-    _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
     'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
     'H3Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
     'H4Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H5Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
   ),
 ));
+
 @include add_settings((
   GenericEOC:(
     _selectors: (".os-eoc"),
@@ -68,7 +64,8 @@ $ChapterIntroType: fullWidth;
     'Container:::column-width': auto,
     'Section--MarginBottom:::margin-bottom': 0,
     'UnnumberedUnstyledTable:::margin-bottom': 0,
-    'TableData:::padding': table-v-spacing(1) table-h-spacing(1),
+    'TableData:::padding-right': table-h-spacing(1),
+    'TableData:::padding-left': table-h-spacing(1),
   ),
   EocSummary:(
     _selectors: ("[data-type = 'chapter'] > .os-summary-container"),
@@ -81,20 +78,28 @@ $ChapterIntroType: fullWidth;
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
-    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'ProblemContainerSpecific:::vertical-align': bottom,
-    'ProblemContainerSpecific:::padding-top': half-v-grid(1),
+    'ProblemSolutionNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Table:::max-width': 100%,
+    'Table:::table-layout': fixed,
+    'TableData:::text-align': center,
+    'TableData:::padding-right': $columnTablePadding,
+    'TableData:::padding-left': $columnTablePadding,
     'Section--MarginBottom:::margin-bottom': column-v-spacing(1),
   ),
 ));
 
 @include add_settings((
-  LearningObjectiveAbstract: (
+  LearningObjectives: (
     _selectors: ('[data-type="page"] > [data-type="abstract"]'),
-    'AbstractTitle:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'Paragraph:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'Paragraph:::font-family': (_ref: 'typography:::sansFont'),
+    'H3LearningObjectivesTitle:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H3LearningObjectivesTitle:::font-family': (_ref: 'typography:::sansFont'),
+    'ListItem:::font-family': (_ref: 'typography:::serifFont'),
     'ListDot:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    ),
+  ),
 ));
+
 @include add_settings((
     Appendix: (
     _selectors: (".appendix"),
@@ -117,7 +122,7 @@ $ChapterIntroType: fullWidth;
     _selectors: (".introduction"),
     'SplashFigureBg:::background-color': (_ref: "colorMap:::chemistryIntroColor"),
     'OutlineTitle:::color': (_ref: "colorMap:::chemistryIntroColor"),
-    'Outline:::border-bottom-color': (_ref: "colorMap:::chemistryIntroColor"),
+    'OutlineFullWidth:::border-bottom-color': (_ref: "colorMap:::chemistryIntroColor"),
     'OutlineTitleBottomBorder:::border-bottom-color': (_ref: "colorMap:::chemistryIntroColor"),
   ),
 ));
@@ -180,7 +185,7 @@ $ChapterIntroType: fullWidth;
 
 @include use('BookRoot', "common:::BookRoot");
 @include use('Link', "carnival:::Link");
-@include use('FigureContainer','carnival:::Figure');
+@include use('Figure','carnival:::FigureShape');
 
 //book specific styles
 @include use('Preface','carnival:::Preface');
@@ -191,14 +196,13 @@ $ChapterIntroType: fullWidth;
 @include use('EocKeyEquations','carnival:::EocKeyEquations');
 @include use('EocSummary','carnival:::EocSummary');
 @include use('Exercises','carnival:::EOCAssesmentsShape');
-@include use('LearningObjectiveAbstract', 'carnival:::LearningObjectiveAbstractShape');
+@include use('LearningObjectives', 'carnival:::LearningObjectivesShape');
 @include use('Appendix', 'carnival:::AppendixShape');
 @include use('Index', 'carnival:::IndexShape');
 @include use('AnswerKey', 'carnival:::AnswerKeyShape');
 @include use('FullWidthChapterIntro', 'carnival:::FullWidthChapterIntroShape');
-@include use('Chapter', 'carnival:::Chapter');
+@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape');
 @include use('TOC', 'carnival:::NoUnitToc');
-@include use('Module', 'carnival:::ModuleShape');
 @include use('Footnotes', 'carnival:::FootnotesShape');
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('Term', 'carnival:::Term');

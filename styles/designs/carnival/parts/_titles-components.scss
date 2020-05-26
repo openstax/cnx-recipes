@@ -2,7 +2,7 @@
 
 
 //h1 titles without numbers (pages like preface)
-$H1Component:(
+$H1:(
     _name:"H1Title",
     _subselector: "> h1",
     _properties:(
@@ -23,28 +23,29 @@ $H1Component:(
 
 
 //h1 numbered (appendix)
-$TitleContainer: empty_wrapper(TitleContainer, ' > [data-type="document-title"]');
+$Title__Container: empty_wrapper(TitleContainer, ' > [data-type="document-title"]');
 
-$TitleNumberComponent: (
+$Title__Number: (
   _name: "TitleNumber",
   _subselector: '> .os-number',
   _properties: (
     display: block,
     padding-bottom: enum('ValueSet:::OPTIONAL'),
     margin-bottom: enum('ValueSet:::OPTIONAL'),
-    font-family: enum('ValueSet:::OPTIONAL'),
+    font-family: enum('ValueSet:::REQUIRED'),
     font-size: enum('ValueSet:::REQUIRED'),
     line-height: enum('ValueSet:::REQUIRED'),
-    color: enum('ValueSet:::OPTIONAL'),
-    border-bottom-color: enum('ValueSet:::REQUIRED'),
-    border-bottom-width: 0.1rem,
-    border-bottom-style: solid,
-    font-weight: bold,
+    color: enum('ValueSet:::REQUIRED'),
+    border-bottom-color: enum('ValueSet:::OPTIONAL'), //changed to OPTIONAL (used in Appendixes not in Chapters)
+    border-bottom-width: enum('ValueSet:::OPTIONAL'),
+    border-bottom-style: enum('ValueSet:::OPTIONAL'),
+    font-weight: enum('ValueSet:::REQUIRED'),
     text-transform: uppercase,
+    letter-spacing: enum('ValueSet:::OPTIONAL'), //used in Chapters
   )
 );
 
-$TitleDividerComponent: (
+$Title__Divider: (
   _name: "TitleDivider",
   _subselector: '> .os-divider',
   _properties: (
@@ -52,23 +53,23 @@ $TitleDividerComponent: (
   )
 );
 
-$TitleTextComponent: (
+$Title__Text: (
   _name: "TitleText",
   _subselector: '> .os-text',
   _properties: (
-    color: enum('ValueSet:::OPTIONAL'),
+    display: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    color: enum('ValueSet:::OPTIONAL'), //used in Appendixes
     font-family: enum('ValueSet:::OPTIONAL'),
-    font-weight: normal,
     font-size: enum('ValueSet:::REQUIRED'),
     line-height: enum('ValueSet:::REQUIRED'),
+    font-weight: enum('ValueSet:::REQUIRED'),
   )
 );
 
-
 //h2 titles (module titles, EOC)
-$H2Component: (
+$H2: (
     _name:"H2Title",
-    _subselector: ' h2[data-type="document-title"]',
+    _subselector: ' h2[data-type="document-title"], h2[data-type="title"]',
     _properties: (
         color: enum('ValueSet:::REQUIRED'),
         font-family: enum('ValueSet:::REQUIRED'),
@@ -83,9 +84,9 @@ $H2Component: (
 
 
 //h3 titles
-$H3Component: (
+$H3: (
     _name: "H3Title",
-    _subselector: '> section > h3[data-type="title"], [data-type="composite-page"] h3[data-type="title"]',
+    _subselector: '> section > h3[data-type="title"], [data-type="composite-page"] h3[data-type="title"], section > section > h3[data-type="title"]',
     _properties: (
         color: enum('ValueSet:::REQUIRED'),
         font-family: enum('ValueSet:::REQUIRED'),
@@ -99,7 +100,7 @@ $H3Component: (
 );
 
 // This component is used only in pl-u-physics for EOC titles. That's why all properties are OPTIONAL.
-$H3ComponentBottomBorder: (
+$H3--BottomBorder: (
     _name: "H3TitleBottomBorder",
     _subselector: '::after',
     _properties: (
@@ -117,7 +118,7 @@ $H3ComponentBottomBorder: (
     )
 );
 
-$H3LinkComponent:(
+$H3--Link:(
     _name: "H3LinkTitle",
     _subselector: " > section > a > h3[data-type="document-title"]",
     _properties:(
@@ -129,7 +130,7 @@ $H3LinkComponent:(
     )
 );
 
-$H3ListComponent:(
+$H3--List:(
     _name: "H3ListTitle",
     _subselector: " [data-type="list"] > h3[data-type="title"]",
     _properties:(
@@ -141,9 +142,21 @@ $H3ListComponent:(
     )
 );
 
+$H3--LearningObjectives: (
+  _name: "H3LearningObjectivesTitle",
+  _subselector: ' > h3[data-type="title"]',
+  _properties: (
+    color: enum('ValueSet:::REQUIRED'),
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(1),
+    line-height: line-height(1),
+    font-style: normal,
+    font-weight: bold,
+  )
+);
 
 //h4 titles
-$H4Component: (
+$H4: (
     _name: "H4Title",
     _subselector: ' > section > section > h4[data-type="title"]',
     _properties: (
@@ -155,7 +168,7 @@ $H4Component: (
     )
 );
 
-$H4LinkComponent:(
+$H4--Link:(
     _name: "H4LinkTitle",
     _subselector: " > section > a > h4[data-type="document-title"], .os-section-area > section > a > h3[data-type="document-title"]", //the second "h4" is the cluster title in composite pages, it needs to be fixed in recipes
     _properties:(
@@ -169,8 +182,7 @@ $H4LinkComponent:(
 
 
 //h5 titles
-//todo, add this level to all books modules
-$H5Component: (
+$H5: (
     _name: "H5Title",
     _subselector: ' > section > section > section > h5[data-type="title"]',
     _properties: (
@@ -182,8 +194,28 @@ $H5Component: (
     )
 );
 
+//used in Modules
+$Title--InParagraph: (
+    _name:"TitleInParagraph",
+    _subselector:' span[data-type="title"]',
+    _properties: (
+        margin-right: h-spacing(1),
+    )
+);
+$Title--OverFigure: (
+    _name: "TitleOverFigure",
+    _subselector: ' h4 + div.os-figure > figure',
+    _properties:(
+        padding-top: v-spacing(1),
+    )
+);
+
+//Modules and chapters empty containers
+$Module__Container: empty_wrapper(Module, ' > [data-type="page"]:not(.introduction)');
+$Chapter__Container: empty_wrapper(Chapter, '');
+
 //Tables titles
-$TableTitle: (
+$Table__Title: (
     _name: "TableTitle",
     _subselector: " > .os-table-title",
     _properties: (
@@ -191,4 +223,16 @@ $TableTitle: (
         padding: enum('ValueSet:::REQUIRED'),
         text-align: center,
     )   
+);
+
+//Solution title used in HS Physics for in module exercises
+$SolutionTitle:(
+    _name: "SolutionTitle",
+    _subselector: " > .solution-title",
+    _properties:(
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-weight: bold,
+        font-size: font-scale(1),
+        line-height: line-height(1),
+    )
 );
