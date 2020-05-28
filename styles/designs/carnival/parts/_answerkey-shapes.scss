@@ -1,5 +1,8 @@
 @import 'answerkey-components';
 @import 'titles-components';
+@import 'lists-components';
+@import 'exercises-components';
+@import 'figureimage-components';
 
 @include create_shape('carnival:::AnswerKeyShape', (
   _components: (
@@ -11,12 +14,26 @@
           _components: (
             $H2,
             $AnswerKey__Solution__Area,
-            map-merge($AnswerKey__Solution__Wrapper, (
+            map-merge($Exercise__Solution__Wrapper, (
               _components: (
-                $AnswerKey__Solution__Number,
-                $AnswerKey__Solution__Divider,
-                $AnswerKey__Solution__Container,
-                $AnswerKey__Solution__Container--Specific,
+                $Exercise__ProblemSolution__Number,
+                $Exercise__ProblemSolution__Divider,
+                map-merge($Exercise__Solution__Container, (
+                  _components:(
+                    $Exercise__ProblemSolution__Paragraph,
+                    $Image,
+                    $AnswerKey__OrderedList--MarginBottomLeft,
+                    $AnswerKey__UnorderedList--MarginBottomLeft,
+                  ),
+                )),
+                map-merge($Exercise__Solution__Container--WithImageOnTop, (
+                  _components:(
+                    $Exercise__ProblemSolution__Paragraph,
+                    $Image,
+                    $AnswerKey__OrderedList--MarginBottomLeft,
+                    $AnswerKey__UnorderedList--MarginBottomLeft,
+                  ),
+                )),
               )
             )),
           )
