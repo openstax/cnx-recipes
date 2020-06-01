@@ -91,12 +91,12 @@
 }
 
 @function is_bem_namespaced_camel($string) {
-  @if not has_namespace($string) {
+  @if not has_bem_namespace($string) {
     @return true;
   }
-  @if $namespace_index == str-index($string, '--') or $namespace_index == str-index($string, '__') {
+  $separators: '--', '__';
+  @each $separator in $separators {
+  $namespace_index: str-index($string, $separator);
   @return is_camel_case(str-slice($string, $namespace_index + 2));
   }
 }
-
-
