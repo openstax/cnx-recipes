@@ -14,9 +14,9 @@
   @return ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 }
 
-@function connector_chars() {
-  @return ('_', '-');
-}
+// @function connector_chars() {
+//   @return ('_', '-');
+// }
 
 @function str_contains($string, $char_sequence) {
   @return not not str-index($string, $char_sequence);
@@ -53,18 +53,18 @@
   @return true;
 }
 
-@function is_bem_camel_case($string) {
-  $allowed: join(join(join(upper_chars(), lower_chars()), numeric_chars()), connector_chars());
-  @for $char_index from 1 through str-length($string) {
-    @if not list_contains($allowed, char_at_index($string, $char_index)) {
-      @return false;
-    }
-  }
-  @if not str_is_upper(char_at_index($string, 1)) {
-    @return false;
-  }
-  @return true;
-}
+// @function is_bem_camel_case($string) {
+//   $allowed: join(join(join(upper_chars(), lower_chars()), numeric_chars()), connector_chars());
+//   @for $char_index from 1 through str-length($string) {
+//     @if not list_contains($allowed, char_at_index($string, $char_index)) {
+//       @return false;
+//     }
+//   }
+//   @if not str_is_upper(char_at_index($string, 1)) {
+//     @return false;
+//   }
+//   @return true;
+// }
 
 @function has_namespace($string) {
   $allowed: join(join(upper_chars(), lower_chars()), numeric_chars());
@@ -73,10 +73,30 @@
     and list_contains($allowed, char_at_index($string, -1));
 }
 
+@function has_bem_namespace($string) {
+  $allowed: join(join(upper_chars(), lower_chars()), numeric_chars());
+  @return list_contains($allowed, char_at_index($string, 1))
+    and str_contains($string, '--')
+    and str_contains($string, '__')
+    and list_contains($allowed, char_at_index($string, -1));
+}
+
+
 @function is_namespaced_camel($string) {
   @if not has_namespace($string) {
     @return false;
   }
   $namespace_index: str-index($string, ':::');
-  @return is_camel_case(str-slice($string, $namespace_index + 3))
+  @return is_camel_case(str-slice($string, $namespace_index + 3));
 }
+
+@function is_bem_namespaced_camel($string) {
+  @if not has_namespace($string) {
+    @return true;
+  }
+  @if $namespace_index == str-index($string, '--') or $namespace_index == str-index($string, '__') {
+  @return is_camel_case(str-slice($string, $namespace_index + 2));
+  }
+}
+
+
