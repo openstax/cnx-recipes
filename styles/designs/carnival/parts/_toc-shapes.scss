@@ -1,20 +1,110 @@
 @import 'toc-components';
 
-@include create_shape('carnival:::NoUnitToc', (
-  _components: (
-    map-merge($TocContainer, (
+//this function returns components tree nested in TocChapter so we don't need to repeat this block of code in the below ToC shapes  
+@function tocChapterComponents() {
+  @return (
+      $Toc__Chapter__Number,
+      map-merge($Toc__Chapter__Link, (
+        _components: (
+          $Toc__Chapter__Link--Page
+          )
+      )),
+      map-merge($Toc__List--Chapter, (
       _components: (
-        map-merge($TocTopLevelList, (
+        map-merge($Toc__Chapter__Page, (
           _components: (
-            $TocChapter,
-            $TocPreface,
-            $TocAppendix,
-            $TocReferences,
-            $TocIndex,
-            $TocCompositeChapter,
+            map-merge($Toc__Chapter__Page__Link, (
+              _components: (
+                $Toc__Chapter__Page__Link--Page,
+              )
+            )),
           )
         )),
-        $TocContentsTitleWord,
+        map-merge($Toc__Chapter__Page--Composite, (
+          _components: (
+            map-merge($Toc__Chapter__Page--Composite__Link, (
+              _components: (
+                $Toc__Chapter__Page--Composite__Link--Page
+              )
+            )),
+          )
+        )),
+        map-merge($Toc__Eoc__Chapter--Composite, (
+          _components: (
+            $Toc__Eoc__List--Chapter--Composite,
+              map-merge($Toc__Eoc__Chapter--Composite__Link, (
+                _components: (
+                  $Toc__Eoc__Chapter--Composite__Link--Page,
+                )
+              )),
+            )
+          )),
+        )
+      )),
+    );
+}
+
+@include create_shape('carnival:::NoUnitToc', (
+  _components: (
+    map-merge($Toc__Container, (
+      _components: (
+        $Toc__Contents__Title__Word,
+        map-merge($Toc__List--TopLevel, (
+          _components: (
+            map-merge($Toc__Preface, (
+              _components: (
+                map-merge($Toc__Preface__Link, (
+                  _components: (
+                    $Toc__Preface__Link--Page
+                  )
+                )),
+              )
+            )),
+            map-merge($Toc__Chapter, (
+              _components: (
+              tocChapterComponents()
+              )
+            )),
+            map-merge($Toc__Appendix, (
+              _components: (
+                $Toc__Appendix__Number,
+                map-merge($Toc__Appendix__Link, (
+                  _components: (
+                    $Toc__Appendix__Link--Page
+                  )
+                )),
+              )
+            )),
+            map-merge($Toc__References, (
+              _components: (
+                map-merge($Toc__References__Link, (
+                  _components: (
+                    $Toc__References__Link--Page,
+                  )
+                )),
+              )
+            )),
+            map-merge($Toc__Index, (
+              _components: (
+                map-merge($Toc__Index__Link, (
+                  _components: (
+                    $Toc__Index__Link--Page
+                  )
+                )),
+              )
+            )),
+            map-merge($Toc__Chapter--Composite, (
+              _components: (
+                $Toc__Chapter--Composite__List,
+                map-merge($Toc__Chapter--Composite__Link, (
+                  _components: (
+                    $Toc--Chapter--Composite__Link--Page
+                  )
+                )),
+              )
+            )),
+          )
+        )),
       )
     )),
   )
@@ -22,29 +112,75 @@
 
 @include create_shape('carnival:::UnitToc', (
   _components: (
-    map-merge($TocContainer, (
+    map-merge($Toc__Container, (
       _components: (
-        map-merge($TocTopLevelList, (
+        $Toc__Contents__Title__Word,
+        map-merge($Toc__List--TopLevel, (
           _components: (
-            $TocPreface,
-            $TocAppendix,
-            $TocReferences,
-            $TocIndex,
-            $TocCompositeChapter,
-            map-merge($TocUnit, (
+            map-merge($Toc__Preface, (
               _components: (
-                $TocUnitLink,
-                map-merge($TocUnitList, (
+                map-merge($Toc__Preface__Link, (
                   _components: (
-                    $TocChapter
+                    $Toc__Preface__Link--Page
                   )
-                ))
+                )),
               )
-            ))
+            )),
+            map-merge($Toc__Unit, (
+              _components: (
+                $Toc__Unit__Link,
+                map-merge($Toc__List--Unit, (
+                  _components: (
+                    map-merge($Toc__Chapter, (
+                      _components: (
+                        tocChapterComponents()
+                      )
+                    )),
+                  )
+                )),
+              )
+            )),
+            map-merge($Toc__Chapter--Composite, (
+              _components: (
+                $Toc__Chapter--Composite__List,
+                map-merge($Toc__Chapter--Composite__Link, (
+                  _components: (
+                    $Toc__Chapter--Composite__Link--Page
+                  )
+                )),
+              )
+            )),
+            map-merge($Toc__Appendix, (
+              _components: (
+                $Toc__Appendix__Number,
+                map-merge($Toc__Appendix__Link, (
+                  _components: (
+                    $Toc__Appendix__Link--Page
+                  )
+                )),
+              )
+            )),
+            map-merge($Toc__References, (
+              _components: (
+                map-merge($Toc__References__Link, (
+                  _components: (
+                    $Toc__References__Link--Page,
+                  )
+                )),
+              )
+            )),
+            map-merge($Toc__Index, (
+              _components: (
+                map-merge($Toc__Index__Link, (
+                  _components: (
+                    $Toc__Index__Link--Page
+                  )
+                )),
+              )
+            )),
           )
-        ))
-        $TocContentsTitleWord
+        )),
       )
-    ))
+    )),
   )
 ));
