@@ -25,8 +25,6 @@ $Table__Head__Cell: (
     _subselector: " > th",
     _properties: (
         color: enum('ValueSet:::REQUIRED'),
-        border-bottom: enum('ValueSet:::OPTIONAL'),
-        border-top: enum('ValueSet:::OPTIONAL'),
         font-family: enum('ValueSet:::OPTIONAL'),
         font-weight: bold,
         font-size: font-scale(0),
@@ -67,16 +65,17 @@ $Table__Data: (
         border-color: enum('ValueSet:::REQUIRED'),
         padding-top: table-v-spacing(1),
         padding-bottom: table-v-spacing(1),
-        padding-right: table-h-spacing(1),
-        padding-left: table-h-spacing(1),
+        padding-left: enum('ValueSet:::REQUIRED'),
+        padding-right: enum('ValueSet:::REQUIRED'),
         color: enum('ValueSet:::REQUIRED'),
         vertical-align: top,
+        text-align: center,
     )
 );
 
 $Table__Head__Row: empty_wrapper(TableHead, ' > tr');
 
-$Table__Row--Last: empty_wrapper(TableHead, ' > tr:last-of-type');
+$Table__Row--Last: empty_wrapper(TableLastRow, ' > tr:last-of-type');
 
 $Table__Data--Last: (
     _name: "LastTabledata",
@@ -91,5 +90,20 @@ $Table__Data--First: (
     _subselector: " > td:first-child",
     _properties: (
         border-bottom-left-radius: 0.25rem,
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-right: table-h-spacing(1),
+        padding-left: table-h-spacing(1),
     )    
+);
+
+$Table__Data--FirstType: (
+    _name: "FirstTableDataType",
+    _subselector: " > td:first-of-type:not(:only-of-type)",
+    _properties: (
+        color: enum('ValueSet:::OPTIONAL'),
+        font-weight: bold,
+        border: none,
+        background-color: enum('ValueSet:::OPTIONAL'),
+    )
 );
