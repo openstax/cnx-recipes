@@ -887,7 +887,7 @@
   content: counter(footnoteLinks); }
 
 :pass(3) aside[role="doc-footnote"]::before {
-  class: "footnote-number";
+  data-type: "footnote-number";
   content: counter(footnotes); }
 
 :pass(3) [data-type="chapter"] {
@@ -1184,10 +1184,13 @@
 :pass(9) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
   string-set: ChapNum content(); }
 
+:pass(9) [data-type="chapter"] > h1[data-type="document-title"] .os-part-text {
+  string-set: ChapText content(); }
+
 :pass(9) [data-type="chapter"]::after {
   container: span;
   class: "os-text";
-  content: string(ChapNum);
+  content: string(ChapText) string(ChapNum);
   move-to: eobCompositeTitlesContent; }
 
 :pass(9) [data-type="chapter"]::after {
@@ -1233,12 +1236,6 @@
 
 :pass(10) div.appendix {
   counter-increment: appendix; }
-
-:pass(10) [data-type="chapter"], :pass(10) .appendix {
-  counter-reset: section; }
-
-:pass(10) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
-  counter-increment: section; }
 
 :pass(10) [data-type="chapter"], :pass(10) .appendix {
   counter-reset: exercise; }
