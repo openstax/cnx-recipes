@@ -462,10 +462,9 @@
   @include count_countChapters(chapter);
   @if $Config_SectionCompositePages != () { @include count_countSections(section); }
   @include count_countAppendices(appendix);
-  @if release-flag-enabled(increment-section-counter-for-lo) {
-    @include count_countSections(section);
-  };
 
+  @if $Config_ResetSectionCounterForEOCLO == true { @include count_countSections(section); }
+  
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC { //check to see if this code is redundent,   same block above
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
     $numberAt:      map-get($Config_PartType_Exercise, numberAt);
