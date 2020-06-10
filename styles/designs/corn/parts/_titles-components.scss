@@ -1,5 +1,6 @@
 $Module__Container: empty_wrapper(Module, '');
 
+//h1 titles without numbers (pages like preface)
 $H1: (
     _name:"H1Title",
     _subselector: ' > h1',
@@ -8,8 +9,63 @@ $H1: (
         font-family: enum('ValueSet:::REQUIRED'),
         font-size: font-scale(4),
         line-height: line-height(4),
-        margin-bottom: v-spacing(1),
+        margin-bottom:  enum('ValueSet:::REQUIRED'),
+        position: enum('ValueSet:::OPTIONAL'), //used in Appendices
     )
+);
+
+//h1 numbered (appendix)
+$Title__Container: empty_wrapper(TitleContainer, ' > [data-type="document-title"]');
+
+$Title__PartText: (
+  _name: "TitlePartText",
+  _subselector: '> .os-part-text',
+  _properties: (
+    display: none,
+  )
+);
+
+$Title__Number: (
+  _name: "TitleNumber",
+  _subselector: '> .os-number',
+  _properties: (
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-size: enum('ValueSet:::REQUIRED'), 
+    line-height: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::REQUIRED'),
+    border-style: solid,
+    border-width: enum('ValueSet:::REQUIRED'),
+    border-color: enum('ValueSet:::REQUIRED'),
+    font-weight: enum('ValueSet:::REQUIRED'),
+    text-transform: uppercase,
+    padding: 0.5rem,
+    position: absolute,
+    left: 0,
+    top: 50%,
+    transform: translate(0, -50%),
+    width: v-spacing(4),
+    height: v-spacing(4),
+    display: flex,
+    justify-content: center,
+    align-items: center,
+  )
+);
+
+$Title__Text: (
+  _name: "TitleText",
+  _subselector: '> .os-text',
+  _properties: (
+    display: enum('ValueSet:::OPTIONAL'),  //used in Chapters
+    color: enum('ValueSet:::REQUIRED'), //used in Chapter and Appendixes
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-size: enum('ValueSet:::REQUIRED'),
+    line-height: enum('ValueSet:::REQUIRED'),
+    font-weight: enum('ValueSet:::REQUIRED'),
+    text-transform: uppercase,
+    position: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    margin-left: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    filter: enum('ValueSet:::OPTIONAL'), //used in Chapters
+  )
 );
 
 $H2: (
