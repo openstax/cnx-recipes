@@ -431,7 +431,7 @@ Therefore, a figure is wrapped in a `div.os-figure` and the placement of the Tit
 
 Additionally, the recipe adds an additional class to splash images.
 
-Variables:
+Variables (similar to a Table):
 
 - `$Config_SetFigureCaption`: A [Caption](#caption)
 - `$Config_PartType_Figure`
@@ -440,17 +440,62 @@ Variables:
 
 
 # Note
-- `$Config_Notes`: A list of [Notes](#note)
-- Every note changes from `<data-type="note"><data-type="title" id>X</>Y</>` to `<data-type="note"><h#.os-title data-type="title"><span.os-title-label id>X</></><div.os-note-body>Y</></>`
+
+Every note title is wrapped in a span and the container is changed to a heading.
+Additinoally, the title gets an additional `.os-note-title` class added.
+The body of every note is wrapped inside a new `.os-note-body` element.
+
+Defined in `$Config_Notes`. See [Notes](#note)
+
+
+Raw Note:
+
+```html
+<div data-type="note" class="check-understanding">
+    <div data-type="title">TITLE</div>
+    ...
+</div>
+```
+
+Baked Note:
+
+```html
+<div data-type="note" class="check-understanding">
+    <h6 data-type="title" class="os-title">
+        <span class="os-title-label">TITLE</span>
+    </h6>
+    <div class="os-note-body">
+        ...
+    </div>
+</div>
+```
+
 
 # Exercise
 
+Add a number for the exercise. It is numbered _after_ being moved.
+
+**Note:** The exercise itself is not moved. The section around the exercise is moved (e.g. `.chapter-review`).
+
+Link the exercise number to the solution.
+
+Add `.os-has-solution` to the exercise if it contains a solution and if the recipe is not discarding all solutions.
+
 
 ## Solution
-- `$Config_PartType_Solution`: A [CustomPart](#custompart)
-- change the solutions exercise number (`<span.os-number>12</>`) into a link back to the exercise
-- add `.os-has-solution` to the exercise if it contains a solution and if the recipe is not discarding all solutions
-- wrap the solution content in an element (e.g. from `<data-type="solution">...</>` to `<data-type="solution"><div.os-solution-container>...</></>`)
+
+A Solution is the answer to an [Exercise](#exercise).
+
+It is moved either to the end of the book, end of the chapter, or removed altogether.
+
+The exercise number is added to the beginning of the solution.
+
+Additionally, the exercise links to the solution (if there is one) and the solution links back to the exercise by creating an `<a>` of the number.
+
+Wrap everything in the solution with a new `.os-solution-container` element.
+
+The solution is configured via `$Config_PartType_Solution`. See [CustomPart](#custompart)
+
 
 # Equation
 - `$Config_PartType_Equation`: A [CustomPart](#custompart)
