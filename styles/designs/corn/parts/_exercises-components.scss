@@ -3,18 +3,16 @@ $Exercise__Container: (
       _subselector: ' [data-type="exercise"]',
       _properties: (
         margin-bottom: v-spacing(2),
-        width: 33%,
-        // width: enum('ValueSet:::REQUIRED'),
-        // float: left,
-        // float: enum('ValueSet:::REQUIRED'),
+        display: enum('ValueSet:::OPTIONAL'), //used in 3 column exercises
+        vertical-align: enum('ValueSet:::OPTIONAL'), //used in 3 column exercises
+        page-break-inside: avoid,
+        width: enum('ValueSet:::REQUIRED'), 
         padding-right: v-spacing(1),
-        display: inline-block,
-        // padding-right: 10px,
-        vertical-align: top,
-        // page-break-inside: avoid,
+        margin-right: enum('ValueSet:::OPTIONAL'), 
       )
 );
 
+//This component is [data-type="exercise"] with class .material-set-2 placed in the 3 column exercises but has to be displayed in 2 columns due to specs
 $Exercise__Container--MaterialSet2: (
       _name: "ExerciseContainerMaterialSet2",
       _subselector: ' .material-set-2',
@@ -23,118 +21,37 @@ $Exercise__Container--MaterialSet2: (
         width: 50%,
         float: left,
         padding-right: v-spacing(1),
-        display: inline-block,
-        // padding-right: 10px,
+        // display: inline-block,
         vertical-align: top,
-        // page-break-inside: avoid,
+        page-break-inside: avoid,
       )
 );
 
-$Exercise__Container--TwoColumn: (
-      _name: "ExerciseContainerTwoColumn",
-      _subselector: ' [data-type="exercise"]',
+//This component is used in 2 columns exercises with flexbox
+$Exercise__Container--Even: (
+      _name: "ExerciseContainerTwoColumnEven",
+      _subselector: ' [data-type="exercise"]:nth-of-type(even)',
       _properties: (
-        margin-bottom: v-spacing(2),
         width: 50%,
-        float: left,
-        padding-right: v-spacing(1),
-        display: inline-block,
-        // padding-right: 10px,
-        vertical-align: top,
-        // page-break-inside: avoid,
+        padding-right: 0,
+        margin-left: auto,
+        align-self: flex-end,
       )
 );
 
-// $Exercise__Container: (
-//       _name: "ExerciseContainer",
-//       _subselector: ' :nth-last-of-type(1n+0)',
-//       _properties: (
-//         margin-bottom: v-spacing(2),
-//         // float: outside next,
-//         break-after: column,
-//       )
-// );
 
-// $SectionExercises__Container: empty_wrapper(SectionExerciesContainer, ' ');
-$SectionExercises: empty_wrapper(SectionExercies, '.section-exercises');
+$SectionExercises__Container: empty_wrapper(SectionExerciesContainer, ' ');
 
-$SectionExercises__Container: (
-  _name: "SectionExerciesContainer",
+$SectionExercises--Specific: (
+  _name: "SectionExercisesSpecific",
   _subselector: ' ',
   _properties: (
-      // margin-bottom: v-spacing(2),
-      // column-count: enum('ValueSet:::OPTIONAL'),
-      // column-gap: enum('ValueSet:::OPTIONAL'),
-      // column-width: enum('ValueSet:::OPTIONAL'),
-      // display: inline-table,
-      // width: 100%,
-      // display: table,
-      // width: 100%,
-      // page-break-inside: auto,
-      // display: flex;
-      // flex-direction: row;
-
-  )
-);
-
-//This components is just a section tag, but takes different classes regarding of the exercise type
-$SectionExercises--Type: (
-  _name: "SectionExercisesType",
-  _subselector: ' > section',
-  _properties: (
       margin-bottom: v-spacing(2),
-      // column-count: enum('ValueSet:::OPTIONAL'),
-      // column-gap: enum('ValueSet:::OPTIONAL'),
-      // column-width: enum('ValueSet:::OPTIONAL'),
-      // display: inline-table,
-      // width: 100%,
-      // page-break-inside: auto,
-      display: table,
       width: 100%,
-  )
-);
-
-$SectionExercises--Writing: (
-  _name: "SectionExercisesWriting",
-  _subselector: ' > section.writing',
-  _properties: (
-      margin-bottom: v-spacing(2),
-      // column-count: enum('ValueSet:::OPTIONAL'),
-      // column-gap: enum('ValueSet:::OPTIONAL'),
-      // column-width: enum('ValueSet:::OPTIONAL'),
-      display: table,
-      width: 100%,
-      // page-break-inside: auto,
-  )
-);
-
-
-
-// $SectionExercises--TwoColumn: (
-//   _name: "SectionExercisesTwoColumn",
-//   _subselector: ' .writing, .everyday',
-//   _properties: (
-//       margin-bottom: v-spacing(2),
-//       // column-count: enum('ValueSet:::OPTIONAL'),
-//       // column-gap: enum('ValueSet:::OPTIONAL'),
-//       // column-width: enum('ValueSet:::OPTIONAL'),
-      // display: inline-table,
-      // width: 100%,
-//       // page-break-inside: auto,
-//   )
-// );
-
-$SectionExercises--Everyday: (
-  _name: "SectionExercisesEveryday",
-  _subselector: ' > section.everyday',
-  _properties: (
-      margin-bottom: v-spacing(2),
-      // column-count: enum('ValueSet:::OPTIONAL'),
-      // column-gap: enum('ValueSet:::OPTIONAL'),
-      // column-width: enum('ValueSet:::OPTIONAL'),
-      display: table,
-      width: 100%,
-      // page-break-inside: auto,
+      display: enum('ValueSet:::REQUIRED'), 
+      flex-direction: enum('ValueSet:::OPTIONAL'), //used in TwoColumnExercieses with flex 
+      flex-wrap: enum('ValueSet:::OPTIONAL'), //used in TwoColumnExercieses with flex 
+      justify-content: enum('ValueSet:::OPTIONAL'), //used in TwoColumnExercieses with flex 
   )
 );
 
@@ -174,6 +91,7 @@ $Exercises_Paragraph__Title: (
         margin-top: v-spacing(2),
         font-style: normal,
         display: block,
+        clear: both,
     )
 );
 
@@ -188,6 +106,8 @@ $Exercises_Paragraph__Title--Italic: (
         font-style: italic,
         column-span: all,
         margin-top: 0.7rem,
+        clear: both,
+        width: 100%,
     )
 );
 
@@ -201,8 +121,12 @@ $Exercise__Problem__Wrapper: (
     )
 );
 
+
+
 $Exercise__Problem__Container: exerciseChildContainer((child: problem, name: "ProblemContainer", hasImageOnTop: false));
 $Exercise__Problem__Container--WithImageOnTop: exerciseChildContainer((child: problem, name: "ProblemContainerWithImageOnTop", hasImageOnTop: true));
+$Section__Exercise__Problem__Container: sectionExerciseChildContainerInTable((child: problem, name: "SectionExerciseProblemContainer", hasImageOnTop: false));
+$Section__Exercise__Problem__Container--WithImageOnTop: sectionExerciseChildContainerInTable((child: problem, name: "ProblemContainerWithImageOnTop", hasImageOnTop: true));
 
 
 // General problem and solution components
@@ -233,13 +157,4 @@ $Exercise__ProblemSolution__Divider: (
     margin-right: h-spacing(1),
   )
 );
-
-// $Table: (
-//     _name: "Table",
-//     _subselector: " > table",
-//     _properties:(
-//       table-layout: fixed,
-//       max-width: 100%,
-//     )
-// );
 
