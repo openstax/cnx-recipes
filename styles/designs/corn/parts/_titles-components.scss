@@ -1,4 +1,9 @@
-$Module__Container: empty_wrapper(Module, '');
+
+//Empty containers
+$Module__Container: empty_wrapper(ModuleContainer, ':not(.introduction)');
+$Page__Container: empty_wrapper(PageContainer, '');
+$Preface__Container: empty_wrapper(PrefaceContainer, '.preface');
+$Appendix__Container: empty_wrapper(AppendixContainer, '.appendix');
 
 //h1 titles without numbers (pages like preface)
 $H1: (
@@ -10,14 +15,27 @@ $H1: (
         font-size: font-scale(4),
         line-height: line-height(4),
         margin-bottom:  enum('ValueSet:::REQUIRED'),
-        position: enum('ValueSet:::OPTIONAL'), //used in Appendices
     )
 );
 
-//h1 numbered (appendix)
-$Title__Container: empty_wrapper(TitleContainer, ' > [data-type="document-title"]');
+//h1 numbered (appendix, chapter)
 
-$Title__PartText: (
+$H1--Numbered: (
+  _name:"H1Numbered",
+  _subselector: ' > h1[data-type="document-title"]',
+  _properties: (
+    color: enum('ValueSet:::REQUIRED'),
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(4),
+    line-height: line-height(4),
+    margin-bottom:  enum('ValueSet:::REQUIRED'),
+    text-transform: uppercase,
+    position: enum('ValueSet:::OPTIONAL'), //used in Appendices
+
+  )
+);
+
+$H1--Numbered__PartText: (
   _name: "TitlePartText",
   _subselector: '> .os-part-text',
   _properties: (
@@ -25,19 +43,15 @@ $Title__PartText: (
   )
 );
 
-$Title__Number: (
+$H1--Numbered__Number: (
   _name: "TitleNumber",
   _subselector: '> .os-number',
   _properties: (
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-size: enum('ValueSet:::REQUIRED'), 
-    line-height: enum('ValueSet:::REQUIRED'),
     color: enum('ValueSet:::REQUIRED'),
     border-style: solid,
     border-width: enum('ValueSet:::REQUIRED'),
     border-color: enum('ValueSet:::REQUIRED'),
     font-weight: enum('ValueSet:::REQUIRED'),
-    text-transform: uppercase,
     padding: 0.5rem,
     position: absolute,
     left: 0,
@@ -51,17 +65,11 @@ $Title__Number: (
   )
 );
 
-$Title__Text: (
+$H1--Numbered__Text: (
   _name: "TitleText",
   _subselector: '> .os-text',
   _properties: (
-    display: enum('ValueSet:::OPTIONAL'),  //used in Chapters
-    color: enum('ValueSet:::REQUIRED'), //used in Chapter and Appendixes
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-size: enum('ValueSet:::REQUIRED'),
-    line-height: enum('ValueSet:::REQUIRED'),
     font-weight: enum('ValueSet:::REQUIRED'),
-    text-transform: uppercase,
     position: enum('ValueSet:::OPTIONAL'), //used in Chapters
     margin-left: enum('ValueSet:::OPTIONAL'), //used in Chapters
     filter: enum('ValueSet:::OPTIONAL'), //used in Chapters
