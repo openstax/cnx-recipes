@@ -1172,41 +1172,17 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
-    /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
-    move-to: trash; }
-  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
-    move-to: glossary-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+  :pass(3) div[data-type="chapter"] section.chapter-review {
+    move-to: chapter-review-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.chapter-review > [data-type="title"] {
       /* Discard this Page-specific title because a chapter title is added when collated */
       move-to: trash; }
   :pass(3) div[data-type="chapter"]::after {
     container: div;
-    content: pending(glossary-TOCOMPOSITE);
-    class: "os-eoc os-glossary-container";
+    content: pending(chapter-review-TOCOMPOSITE);
+    class: "os-eoc os-chapter-review-container";
     data-type: "composite-page";
-    data-uuid-key: "glossary";
-    sort-by: xhtml|dl > xhtml|dt, nocase; }
-
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
-    string-set: moduleTitleId attr(id); }
-  :pass(3) div[data-type="chapter"] section.key-concepts {
-    move-to: key-concepts-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.key-concepts > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-    :pass(3) div[data-type="chapter"] section.key-concepts::before {
-      container: a;
-      attr-href: "#" string(moduleTitleId);
-      content: nodes(sectionHeaderNode); }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(key-concepts-TOCOMPOSITE);
-    class: "os-eoc os-key-concepts-container";
-    data-type: "composite-page";
-    data-uuid-key: ".key-concepts"; }
+    data-uuid-key: ".chapter-review"; }
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
@@ -1234,6 +1210,43 @@
 :pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
   node-set: CompoundSectionHeaderNode; }
 
+:pass(3) [data-type="chapter"] div[data-type="glossary"] {
+  /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+  move-to: trash; }
+
+:pass(3) [data-type="chapter"] div[data-type="glossary"] dl {
+  move-to: glossary-DESTINATION; }
+  :pass(3) [data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-eoc os-glossary-container";
+  content: pending(glossary-DESTINATION);
+  data-type: composite-page;
+  data-uuid-key: "glossary";
+  sort-by: xhtml|dl > xhtml|dt, nocase; }
+
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  string-set: moduleTitleId attr(id); }
+
+:pass(3) [data-type="chapter"] section.key-concepts {
+  move-to: key-concepts-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.key-concepts > [data-type="title"] {
+    move-to: trash; }
+  :pass(3) [data-type="chapter"] section.key-concepts::before {
+    container: a;
+    attr-href: "#" string(moduleTitleId);
+    content: nodes(CompoundSectionHeaderNode); }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-eoc os-key-concepts-container";
+  content: pending(key-concepts-DESTINATION);
+  data-type: composite-page;
+  data-uuid-key: ".key-concepts"; }
+
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  node-set: CompoundSectionHeaderNode; }
+
 :pass(3) [data-type="chapter"] section.review-exercises {
   move-to: review-exercises-DESTINATION; }
   :pass(3) [data-type="chapter"] section.review-exercises > [data-type="title"] {
@@ -1255,6 +1268,29 @@
   content: pending(practice-test-DESTINATION);
   data-type: composite-page;
   data-uuid-key: ".practice-test"; }
+
+:pass(4) .os-eoc.os-key-concepts-container section.key-concepts {
+  move-to: key-concepts-separated; }
+  :pass(4) .os-eoc.os-key-concepts-container section.key-concepts:deferred::after {
+    class: "os-section-area";
+    content: pending(key-concepts-separated);
+    move-to: key-concepts-sectionSeparatedContainer; }
+
+:pass(4) .os-eoc.os-key-concepts-container::after {
+  class: os-key-concepts;
+  content: pending(key-concepts-sectionSeparatedContainer); }
+
+:pass(5) [data-type="chapter"] .os-glossary-container {
+  move-to: composite-chapter-review-DESTINATION; }
+
+:pass(5) [data-type="chapter"] .os-key-concepts-container {
+  move-to: composite-chapter-review-DESTINATION; }
+
+:pass(5) [data-type="chapter"]::after {
+  class: "os-eoc os-chapter-review-container";
+  data-type: composite-chapter;
+  data-uuid-key: ".chapter-review";
+  content: pending(composite-chapter-review-DESTINATION); }
 
 :pass(5) [data-type="chapter"] .os-review-exercises-container {
   move-to: composite-exercises-DESTINATION; }
@@ -1704,27 +1740,38 @@
   data-type: "document-title";
   content: pending(h3-TITLECONTAINER); }
 
+:pass(10) [data-type="composite-chapter"].os-eoc.os-chapter-review-container::before {
+  container: span;
+  content: "Chapter Review";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-chapter"].os-eoc.os-chapter-review-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
 :pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
   container: span;
   content: "Key Terms";
   class: os-text;
-  move-to: h2-TITLECONTAINER; }
+  move-to: h3-TITLECONTAINER; }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
   container: span;
   content: "Key Concepts";
   class: os-text;
-  move-to: h2-TITLECONTAINER; }
+  move-to: h3-TITLECONTAINER; }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
 
 :pass(10) [data-type="composite-chapter"].os-eoc.os-exercises-container::before {
   container: span;
