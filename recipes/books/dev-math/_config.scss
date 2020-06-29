@@ -69,15 +69,19 @@ $Config_SectionCompositePages: (
   (className: "section-exercises",    clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle),
 );
 
-$_chapterExercises: (
+$_chapterReviewChildPages: (
+  (className: "glossary",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+  (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
+);
+
+$_exercisesChildPages: (
   (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
   (className: "practice-test",    clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
 );
 
 $Config_ChapterCompositePages: (
-  (className: "glossary",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
-  (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
-  (className: "exercises",    clusterBy: $CLUSTER_NONE, childPages: $_chapterExercises, hasSolutions: true, name: "Exercises"),
+  (className: "chapter-review",    clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions: false, name: "Chapter Review"),
+  (className: "exercises",    clusterBy: $CLUSTER_NONE, childPages: $_exercisesChildPages, hasSolutions: true, name: "Exercises"),
 );
 
 //Key "type" has the same value as "name", but it's needed because of internationalization.
@@ -172,6 +176,10 @@ $Config_UnnumberedElements: (
   (contextSelector: '.be-prepared',          childSelector: '[data-type="exercise"]'),
   (contextSelector: '.try',                  childSelector: '[data-type="exercise"]'),
   (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+);
+
+$Config_FirstElements: (
+  (selector: ' > [data-type="media"]:first-child'),
 );
 
 $Config_CustomList: (
