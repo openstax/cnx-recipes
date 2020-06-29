@@ -6,6 +6,8 @@ $Table__Container: (
         display: enum('ValueSet:::OPTIONAL'),
         margin-left: enum('ValueSet:::OPTIONAL'),
         margin-right: enum('ValueSet:::OPTIONAL'),
+        max-width: enum('ValueSet:::OPTIONAL'),
+        table-layout: enum('ValueSet:::OPTIONAL'),
     )
 );
 
@@ -15,6 +17,8 @@ $Table: (
     _properties: (
         border-collapse: enum('ValueSet:::OPTIONAL'),
         border-spacing: enum('ValueSet:::OPTIONAL'),
+        table-layout: enum('ValueSet:::OPTIONAL'), //used in Exercises
+        max-width: enum('ValueSet:::OPTIONAL'), //used in Exercises
     )
 );
 
@@ -25,15 +29,13 @@ $Table__Head__Cell: (
     _subselector: " > th",
     _properties: (
         color: enum('ValueSet:::REQUIRED'),
-        border-bottom: enum('ValueSet:::OPTIONAL'),
-        border-top: enum('ValueSet:::OPTIONAL'),
         font-family: enum('ValueSet:::OPTIONAL'),
-        font-weight: bold,
+        font-weight: enum('ValueSet:::OPTIONAL'),
         font-size: font-scale(0),
         padding-top: table-v-spacing(1),
         padding-bottom: table-v-spacing(1),
-        padding-right: table-h-spacing(1),
-        padding-left: table-h-spacing(1),
+        padding-right: enum('ValueSet:::REQUIRED'), //used in Exercises
+        padding-left: enum('ValueSet:::REQUIRED'), //used in Exercises
         background-color: enum('ValueSet:::OPTIONAL'),
     )
 );
@@ -60,23 +62,27 @@ $Table__Data: (
     _name: "TableData",
     _subselector: " > td:not(:only-of-type)",
     _properties: (
-        font-family: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::REQUIRED'),
         font-size: font-scale(0),
-        border-width: enum('ValueSet:::REQUIRED'),
-        border-style: enum('ValueSet:::REQUIRED'),
-        border-color: enum('ValueSet:::REQUIRED'),
+        border-width: enum('ValueSet:::OPTIONAL'), //propety used in Basic and Column Header Tables
+        border-style: enum('ValueSet:::OPTIONAL'), //propety used in Basic and Column Header Tables
+        border-color: enum('ValueSet:::OPTIONAL'), //propety used in Basic and Column Header Tables
         padding-top: table-v-spacing(1),
         padding-bottom: table-v-spacing(1),
-        padding-right: table-h-spacing(1),
-        padding-left: table-h-spacing(1),
+        padding-left: enum('ValueSet:::REQUIRED'), //used in Exercises
+        padding-right: enum('ValueSet:::REQUIRED'), //used in Exercises
         color: enum('ValueSet:::REQUIRED'),
-        vertical-align: top,
+        vertical-align: enum('ValueSet:::OPTIONAL'), //propety used in Basic and Column Header Tables
+        text-align: enum('ValueSet:::OPTIONAL'), //propety used in Basic and Column Header Tables
+        border-bottom-width: enum('ValueSet:::OPTIONAL'), //propety used in Unumbered Unstyled Tables
+        border-bottom-style: enum('ValueSet:::OPTIONAL'), //propety used in Unumbered Unstyled Tables
+        border-bottom-color: enum('ValueSet:::OPTIONAL'), //propety used in Unumbered Unstyled Tables
     )
 );
 
-$Table__Head__Row: empty_wrapper(TableHead, ' > tr');
+$Table__Head__Row: empty_wrapper(TableHeadRow, ' > tr');
 
-$Table__Row--Last: empty_wrapper(TableHead, ' > tr:last-of-type');
+$Table__Row--Last: empty_wrapper(TableLastRow, ' > tr:last-of-type');
 
 $Table__Data--Last: (
     _name: "LastTabledata",
@@ -91,5 +97,30 @@ $Table__Data--First: (
     _subselector: " > td:first-child",
     _properties: (
         border-bottom-left-radius: 0.25rem,
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-right: table-h-spacing(1),
+        padding-left: table-h-spacing(1),
     )    
+);
+
+$Table__Data--FirstType: (
+    _name: "FirstTableDataType",
+    _subselector: " > td:first-of-type:not(:only-of-type)",
+    _properties: (
+        color: enum('ValueSet:::OPTIONAL'),
+        font-weight: bold,
+        border: none,
+        background-color: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+// Used in Exercises    
+$Table--Exercise__Container: (
+    _name: "ExerciseTableContainer",
+    _subselector: " > .os-table",
+    _properties: (
+        margin-left: enum('ValueSet:::REQUIRED'),
+        margin-right: enum('ValueSet:::REQUIRED'),
+    )
 );
