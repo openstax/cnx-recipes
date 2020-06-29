@@ -6,15 +6,24 @@ $PagesWithBands: (
   (pageName: appendix, firstSelector: '.appendix', generalSelector: '.appendix'),
 );
 
-$bandColor: #1E7E91;
-
-$ChapterIntroType: fullWidth;
+$bandColor: #093D4C;
 
 @import 'framework/framework';
 @import '../../templates/template2/design.scss';
 @import '../../templates/template2/settings.scss';
 
 //Settings
+
+@include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::splashFigureBgColor"),
+    'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
+    'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/corn/resources/corn-introduction.svg")) no-repeat top left,
+    'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+    'SplashMediaOverlay:::background-color': (_ref: "colorMap:::splashImageOverlayColor"),
+  ),
+));
 
 @include add_settings((
   BePrepared: (
@@ -135,10 +144,13 @@ $ChapterIntroType: fullWidth;
 @include use('Preface', 'corn:::PrefaceShape');
 @include use('Example', 'corn:::ExampleShape');
 @include use('Index', 'corn:::IndexShape');
+@include use('ChapterIntro', 'corn:::ChapterIntroShape');
+
 
 //Titles
 @include use('ModuleTitles', 'corn:::ModuleTitlesShape');
 @include use('CompositeChapterTitles', 'corn:::CompositeChapterTitlesShape');
+@include use('ChapterTitles', 'corn:::ChapterTitlesShape');
 
 //Lists
 @include use('PageLists', 'corn:::PageListsShape');
