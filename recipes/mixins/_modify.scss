@@ -898,35 +898,6 @@
   }
 }
 
-//select body content and chap outline in the intro and place them into one div
-@mixin modify_groupChapOutlineIntroContent() {
-  @if release-flag-enabled(groupChapOutlineIntroContent) {
-    $element: outline;
-    $selector: '.os-chapter-outline';
-    @if $Config_PartType_Chapter == () {
-      $element: objectives;
-      $selector: '.chapter-objectives';
-    }
-    .introduction {
-      #{$selector} {
-        move-to: chap-#{$element};
-      }
-      > :not(#{$selector}):not([data-type="metadata"]):not(.has-splash) {
-        move-to: intro-text;
-      }
-      &::after {
-        content: pending(intro-text);
-        move-to: intro-body;
-        class: "intro-text";
-      }
-      &:deferred::after {
-        content: pending(chap-#{$element}) pending(intro-body);
-        class: "intro-body";
-      } 
-    }
-  }
-}
-
 @mixin modify_addFirstElementClass($element) {
   @if release-flag-enabled(exercise-first-element) {
     [data-type="exercise"]:not(.unnumbered) .os-problem-container {
