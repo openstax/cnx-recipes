@@ -605,26 +605,14 @@
 :pass(3) [data-type="chapter"], :pass(3) .appendix {
   counter-reset: footnotes; }
 
-:pass(3) [data-type="footnote-ref"], :pass(3) aside[role="doc-footnote"] {
+:pass(3) aside[role="doc-footnote"] {
   counter-increment: footnotes; }
 
 :pass(3) [data-type="chapter"], :pass(3) .appendix {
   counter-reset: footnoteLinks; }
 
-:pass(3) [data-type="footnote-number"], :pass(3) a[role="doc-noteref"] {
+:pass(3) a[role="doc-noteref"] {
   counter-increment: footnoteLinks; }
-
-:pass(3) li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
-  content: counter(footnotes); }
-
-:pass(3) sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
-  content: counter(footnoteLinks); }
-
-:pass(3) li > a[data-type="footnote-ref"] {
-  content: counter(footnotes); }
-
-:pass(3) a[data-type="footnote-number"] > sup {
-  content: counter(footnoteLinks); }
 
 :pass(3) a[role="doc-noteref"] {
   content: counter(footnoteLinks); }
@@ -879,6 +867,20 @@
     content: content();
     attr-href: "#" string(outlinePageId);
     move-to: chapOutlineLink; }
+
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) [data-type="abstract"] {
+  move-to: outlineAbstract; }
+
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) section.learning-objectives > ul {
+  move-to: LO; }
+
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  class: "learning-objective";
+  content: pending(outlineAbstract) pending(LO);
+  move-to: outlineLO; }
+
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) section.learning-objectives:deferred {
+  move-to: trash; }
 
 :pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
   class: "os-chapter-objective";
