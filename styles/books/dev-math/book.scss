@@ -1,20 +1,29 @@
 // Books using those settings: Prealgebra 2e, Intermediate Algebra 2e & Elementary Algebra 2e
 
 $PagesWithBands: (
-  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: eoc, firstSelector: '.os-eoc.os-chapter-review-container', generalSelector: '.os-eoc'),
   (pageName: eob, firstSelector: '.os-eob[data-type="composite-chapter"]', generalSelector: '.os-eob'),
   (pageName: appendix, firstSelector: '.appendix', generalSelector: '.appendix'),
 );
 
-$bandColor: #1E7E91;
-
-$ChapterIntroType: fullWidth;
+$bandColor: #093D4C;
 
 @import 'framework/framework';
 @import '../../templates/template2/design.scss';
 @import '../../templates/template2/settings.scss';
 
 //Settings
+
+@include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::splashFigureBgColor"),
+    'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
+    'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/corn/resources/corn-introduction.svg")) no-repeat top left,
+    'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+    'SplashMediaOverlay:::background-color': (_ref: "colorMap:::splashImageOverlayColor"),
+  ),
+));
 
 @include add_settings((
   BePrepared: (
@@ -126,17 +135,26 @@ $ChapterIntroType: fullWidth;
     'Body:::font-family': (_ref: "typography:::baseFont"),
     'Body:::background-color': (_ref: "colorMap:::boxedBackgroundColor"),
   ),
-));
+)); 
 
 @include use('BookRoot', "common:::BookRoot");
 @include use('Link', 'corn:::LinkShape');
 @include use('Toc', 'corn:::NoUnitToc');
-@include use('ModuleTitles', 'corn:::ModuleTitlesShape');
 @include use('LearningObjectives', 'corn:::LearningObjectivesShape');
-@include use('Preface', 'corn:::PrefaceShape');
-@include use('Lists', 'corn:::ListsShape');
 @include use('Example', 'corn:::ExampleShape');
 @include use('Index', 'corn:::IndexShape');
+@include use('ChapterIntro', 'corn:::ChapterIntroShape');
+
+
+//Titles
+@include use('ModuleTitles', 'corn:::ModuleTitlesShape');
+@include use('CompositeChapterTitles', 'corn:::CompositeChapterTitlesShape');
+@include use('ChapterTitles', 'corn:::ChapterTitlesShape');
+@include use('PageTitles', 'corn:::PageTitlesShape');
+
+//Lists
+@include use('PageLists', 'corn:::PageListsShape');
+@include use('CompositePageLists', 'corn:::CompositePageListsShape');
 
 //Tables
 @include use('BasicTable', 'corn:::BasicTableShape');
@@ -148,6 +166,15 @@ $ChapterIntroType: fullWidth;
 @include use('TryIt', 'corn:::IconCondensedNoteShape');
 @include use('Media', 'corn:::IconCondensedNoteWithSubtitleShape');
 @include use('ManipulativeMath', 'corn:::IconBoxedNoteShape');
+@include use('NoClassNote', 'corn:::BoxedNoteShape');
 @include use('LinksToLiteracy', 'corn:::IconBoxedNoteShape');
 @include use('HowTo', 'corn:::IconBoxedNoteShape');
 @include use('NoClassNote', 'corn:::BoxedNoteShape');
+
+//Section Exercises
+@include use('ThreeColumnsModuleExercises', 'corn:::ThreeColumnsExercisesModuleShape');
+@include use('WritingExercises', 'corn:::TwoColumnsExercisesModuleShape');
+@include use('EverydayExercises', 'corn:::TwoColumnsExercisesModuleShape');
+
+//EoC
+@include use('KeyTerm','corn:::EocKeyTerm');

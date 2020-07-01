@@ -1,5 +1,13 @@
+//Empty Containers
+$Chapter__Container: empty_wrapper(Chapter, '');
 $Module__Container: empty_wrapper(Module, '');
+$Chapter--Composite__Container: empty_wrapper(CompositeChapter, '');
+$SectionExercises__Container: empty_wrapper(SectionExerciesContainer, ' > .os-eos.os-section-exercises-container');
+$Page__Container: empty_wrapper(PageContainer, '');
+$Preface__Container: empty_wrapper(PrefaceContainer, '.preface');
+$Appendix__Container: empty_wrapper(AppendixContainer, '.appendix');
 
+//h1 titles without numbers (pages like preface)
 $H1: (
     _name:"H1Title",
     _subselector: ' > h1',
@@ -9,8 +17,67 @@ $H1: (
         font-size: font-scale(4),
         line-height: line-height(4),
         margin-bottom: v-spacing(1),
-        column-span: enum('ValueSet:::OPTIONAL'), //use in Index
+        column-span: enum('ValueSet:::OPTIONAL'), //used in Index
     )
+);
+
+// Used in Chapter, Appendices
+$H1--Numbered: (
+    _name: "H1Numbered",
+  _subselector: ' > h1[data-type="document-title"]',
+  _properties: (
+      position: relative,
+      top: enum('ValueSet:::OPTIONAL'), //used in Chapters
+      z-index:enum('ValueSet:::OPTIONAL'), //used in Chapters
+      color: enum('ValueSet:::REQUIRED'),
+      font-family: enum('ValueSet:::REQUIRED'), 
+      font-size: enum('ValueSet:::REQUIRED'), 
+      line-height: enum('ValueSet:::REQUIRED'),
+      margin-bottom:  enum('ValueSet:::OPTIONAL'), //used in Appendices
+  )
+);
+
+$H1--Numbered__Text: (
+  _name: "TitleText",
+  _subselector: '> .os-text',
+  _properties: (
+    font-weight: enum('ValueSet:::REQUIRED'),
+    text-transform: uppercase,
+    position: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    margin-left: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    filter: enum('ValueSet:::OPTIONAL'), //used in Chapters
+  )
+);
+
+$H1--Numbered__PartText: (
+  _name: "TitlePartText",
+  _subselector: '> .os-part-text',
+  _properties: (
+    display: none,
+  )
+);
+
+$H1--Numbered__Number: (
+  _name: "TitleNumber",
+  _subselector: '> .os-number',
+  _properties: (
+    color: enum('ValueSet:::OPTIONAL'), //used in Appendices
+    border-style: solid,
+    border-width: enum('ValueSet:::REQUIRED'),
+    border-color: enum('ValueSet:::REQUIRED'),
+    font-weight: enum('ValueSet:::REQUIRED'),
+    text-transform: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    padding: 0.5rem,
+    position: absolute,
+    left: 0,
+    top: 50%,
+    transform: translate(0, -50%),
+    width:  enum('ValueSet:::REQUIRED'),
+    height:  enum('ValueSet:::REQUIRED'),
+    display: flex,
+    justify-content: center,
+    align-items: center,
+  )
 );
 
 $H2: (
@@ -34,6 +101,42 @@ $H3: (
         font-size: font-scale(2),
         line-height: line-height(2),
         margin-bottom: v-spacing(1),
+        )
+);
+
+// Exercises H3 Title
+$H3--SectionExercises: (
+    _name: "H3TitleSectionExercises",
+    _subselector: ' > h3[data-type="document-title"]',
+    _properties: (
+        color: enum('ValueSet:::REQUIRED'),
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(2),
+        line-height: line-height(2),
+        margin-bottom: v-spacing(1),
+        text-transform: uppercase,
+        )
+);
+
+$H3--SectionExercises__Text: (
+    _name: "H3SectionExercisesH3Text",
+    _subselector: ' > .os-text',
+    _properties: (
+        display: inline-block,
+        margin-left: v-spacing(1),
+    )
+);
+
+$H3--SectionExercises__Icon: (
+    _name: "H3SectionExercisesIcon",
+    _subselector: '::before',
+    _properties: (
+        background: enum('ValueSet:::REQUIRED'),
+        background-size: contain,
+        height: v-spacing(4),
+        width: v-spacing(4),
+        display: inline-block,
+        content: "''",
     )
 );
 
@@ -49,6 +152,17 @@ $H3--LearningObjectives: (
   )
 );
 
+$H3--Link:(
+    _name: "H3LinkTitle",
+    _subselector: " section > a > h3[data-type="document-title"]",
+    _properties:(
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(1),
+        line-height: line-height(1),
+        margin-bottom: v-spacing(1),
+    )
+);
+
 $H4: (
     _name: "H4Title",
     _subselector: ' > section > section > h4[data-type="title"]',
@@ -57,7 +171,21 @@ $H4: (
         color: enum('ValueSet:::REQUIRED'),
         font-size: font-scale(1),
         line-height: line-height(1),
-    )
+        )
+);
+
+// Exercises H4 Title
+$H4--SectionExercises: (
+  _name: "H4TitleSectionExercises",
+    _subselector: ' > section > section > h4[data-type="title"]',
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        color: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(1),
+        line-height: line-height(1),
+        margin-bottom: v-spacing(2),
+        margin-top: v-spacing(1),
+        )
 );
 
 $H5: (
