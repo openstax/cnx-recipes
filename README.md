@@ -42,6 +42,10 @@ or to run tests, run:
 `./script/run ./script/test`
 
 ## Updating Neb
+
+**Stops and removes container**
+`docker-compose down`
+
 **To pull the latest version of neb:**
 `docker-compose pull neb`
 
