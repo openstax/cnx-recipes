@@ -7,11 +7,22 @@ $PagesWithBands: (
 
 $bandColor: #093D4C;
 
-$ChapterIntroType: fullWidth;
-
 @import 'framework/framework';
 @import '../../templates/template2/design.scss';
 @import '../../templates/template2/settings.scss';
+
+//Settings
+
+@include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::splashFigureBgColor"),
+    'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
+    'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/corn/resources/corn-introduction.svg")) no-repeat top left,
+    'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+    'SplashMediaOverlay:::background-color': (_ref: "colorMap:::splashImageOverlayColor"),
+  ),
+));
 
 @include add_settings((
   LearningObjectivesCoreq:(
@@ -23,19 +34,23 @@ $ChapterIntroType: fullWidth;
     ListIcon: (
       background: url(toDataUri("svg+xml", "designs/corn/resources/corn-lolist.svg")) no-repeat top left,
     )
-  ),
+  )
 ));
 
 @include use('BookRoot', "common:::BookRoot");
 @include use('Toc', 'corn:::NoUnitToc');
-@include use('Preface', 'corn:::PrefaceShape');
 @include use('Link', 'corn:::LinkShape');
-@include use('ModuleTitles', 'corn:::ModuleTitlesShape');
 @include use('CoreqSkills', 'corn:::CoreqSkillsShape');
+@include use('Index', 'corn:::IndexShape');
+@include use('ChapterIntro', 'corn:::ChapterIntroShape');
 
 //Learning Objectives
-@include use('LearningObjectives', 'corn:::LearningObjectivesShape');
 @include use('LearningObjectivesCoreq', 'corn:::LearningObjectivesCoreqShape');
+@include use('LearningObjectives', 'corn:::LearningObjectivesShape');
+
+//Titles
+@include use('PageTitles', 'corn:::PageTitlesShape');
+@include use('ModuleTitles', 'corn:::ModuleTitlesShape');
 
 //Lists
 @include use('PageLists', 'corn:::PageListsShape');

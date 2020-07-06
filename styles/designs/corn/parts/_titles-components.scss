@@ -1,31 +1,54 @@
+//Empty Containers
 $Chapter__Container: empty_wrapper(Chapter, '');
+$Module__Container: empty_wrapper(Module, '');
+$Chapter--Composite__Container: empty_wrapper(CompositeChapter, '');
+$SectionExercises__Container: empty_wrapper(SectionExerciesContainer, ' > .os-eos.os-section-exercises-container');
+$Page__Container: empty_wrapper(PageContainer, '');
+$Preface__Container: empty_wrapper(PrefaceContainer, '.preface');
+$Appendix__Container: empty_wrapper(AppendixContainer, '.appendix');
 
+//h1 titles without numbers (pages like preface)
+$H1: (
+    _name:"H1Title",
+    _subselector: ' > h1',
+    _properties: (
+        color: enum('ValueSet:::REQUIRED'),
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(4),
+        line-height: line-height(4),
+        margin-bottom: v-spacing(1),
+        column-span: enum('ValueSet:::OPTIONAL'), //used in Index
+    )
+);
+
+// Used in Chapter, Appendices
 $H1--Numbered: (
     _name: "H1Numbered",
   _subselector: ' > h1[data-type="document-title"]',
   _properties: (
       position: relative,
-      top: 20rem,
-      z-index:2,
-)
+      top: enum('ValueSet:::OPTIONAL'), //used in Chapters
+      z-index:enum('ValueSet:::OPTIONAL'), //used in Chapters
+      color: enum('ValueSet:::REQUIRED'),
+      font-family: enum('ValueSet:::REQUIRED'), 
+      font-size: enum('ValueSet:::REQUIRED'), 
+      line-height: enum('ValueSet:::REQUIRED'),
+      margin-bottom:  enum('ValueSet:::OPTIONAL'), //used in Appendices
+  )
 );
 
 $H1--Numbered__Text: (
   _name: "TitleText",
   _subselector: '> .os-text',
   _properties: (
-    display: enum('ValueSet:::OPTIONAL'),
-    color: enum('ValueSet:::REQUIRED'),
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-size: enum('ValueSet:::REQUIRED'),
-    line-height: enum('ValueSet:::REQUIRED'),
     font-weight: enum('ValueSet:::REQUIRED'),
     text-transform: uppercase,
-    position: relative,
-    margin-left: 8rem,
-    filter: enum('ValueSet:::REQUIRED'),
+    position: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    margin-left: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    filter: enum('ValueSet:::OPTIONAL'), //used in Chapters
   )
 );
+
 $H1--Numbered__PartText: (
   _name: "TitlePartText",
   _subselector: '> .os-part-text',
@@ -38,43 +61,23 @@ $H1--Numbered__Number: (
   _name: "TitleNumber",
   _subselector: '> .os-number',
   _properties: (
-    font-family: enum('ValueSet:::REQUIRED'),
-    font-size: enum('ValueSet:::REQUIRED'),
-    line-height: enum('ValueSet:::REQUIRED'),
-    color: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::OPTIONAL'), //used in Appendices
     border-style: solid,
-    border-width: 0.07rem,
+    border-width: enum('ValueSet:::REQUIRED'),
     border-color: enum('ValueSet:::REQUIRED'),
     font-weight: enum('ValueSet:::REQUIRED'),
-    text-transform: uppercase,
+    text-transform: enum('ValueSet:::OPTIONAL'), //used in Chapters
     padding: 0.5rem,
     position: absolute,
     left: 0,
     top: 50%,
     transform: translate(0, -50%),
-    width: v-spacing(3),
-    height: v-spacing(3),
+    width:  enum('ValueSet:::REQUIRED'),
+    height:  enum('ValueSet:::REQUIRED'),
     display: flex,
     justify-content: center,
     align-items: center,
   )
-);
-
-$Module__Container: empty_wrapper(Module, ' ');
-$Chapter--Composite__Container: empty_wrapper(CompositeChapter, '');
-$SectionExercises__Container: empty_wrapper(SectionExerciesContainer, ' > .os-eos.os-section-exercises-container');
-
-$H1: (
-    _name:"H1Title",
-    _subselector: ' > h1',
-    _properties: (
-        color: enum('ValueSet:::REQUIRED'),
-        font-family: enum('ValueSet:::REQUIRED'),
-        font-size: font-scale(4),
-        line-height: line-height(4),
-        margin-bottom: v-spacing(1),
-        column-span: enum('ValueSet:::OPTIONAL'), //use in Index
-    )
 );
 
 $H2: (
