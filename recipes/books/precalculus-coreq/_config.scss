@@ -1,0 +1,179 @@
+@import '../common-stuff';
+$RECIPE_NAME: "precalculus-coreq";
+
+/*==========================================================
+  PRECALCULUS COREQ PAGES
+==========================================================*/
+/*
+  Key Terms
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Terms"
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
+*/
+/*
+  Key Equations
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Equations"
+
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
+
+  Style guide: book.composite.key-equations
+*/
+/*
+  Key Concepts
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Concepts"
+
+  Markup: ./styleguide/book.composite.key-concepts.xhtml-baked.html
+
+  Style guide: book.composite.key-concepts
+*/
+/*
+  Review Exercises
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Review Exercises"
+
+  Markup: ./styleguide/book.composite.review-exercises.xhtml-baked.html
+
+  Style guide: book.composite.review-exercises
+*/
+/*
+  Practice Test
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Practice Test"
+
+  Markup: ./styleguide/book.composite.practice-test.xhtml-baked.html
+
+  Style guide: book.composite.practice.test
+*/
+
+$_eosTitle: (os-number: counter(chapter) "." counter(section) " ", os-afterLabel: "Section Exercises");
+
+$Config_SectionCompositePages: (
+  (className: "section-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle),
+);
+
+$Config_ChapterCompositePages: (
+  (className: "glossary", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+  (className: "key-equations", clusterBy: $CLUSTER_NONE, name: "Key Equations"),
+  (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
+  (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
+  (className: "practice-test", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
+);
+
+$_tryItTitleContent: (os-title-label: "Try It ", os-number:"#" counter(try));
+$_tryItSolutionTitleContent: (os-divider: ". ", os-number: counter(try));
+
+// very improtant to keep this config file empty
+$Config_ContentExercise_TitleContent: ();
+$_eosExerciseTitleContent: (os-divider: ". ", os-number: counter(exerciseMaybeInContent));
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_SECTION, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_eosExerciseTitleContent);
+
+//Key "type" has the same value as "name", but it's needed because of internationalization.
+// "name" has different value in books from other countries (see pl-u-physics), but we need value common for all books (see mixin "modify_addFirstElementClas")
+$Config_BookCompositePages: (
+  (className: "solution", clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, type: "Answer Key", name: "Answer Key"),
+  (className: "index", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+);
+
+/* =========================================================
+  CUSTOM NOTES
+==========================================================*/
+/*
+  How To
+
+  Contains a title "How To" and the content of the note.
+
+  Markup: ./styleguide/page.note.how-to.xhtml-baked.html
+
+  Style guide: page.note.how-to
+*/
+/*
+  QA
+
+  Contains a title "QA" and the content of the note.
+
+  Markup: ./styleguide/page.note.qa.xhtml-baked.html
+
+  Style guide: page.note.qa
+*/
+/*
+  Try
+
+  Contains a title "Try" and the content of the note.
+
+  Markup: ./styleguide/page.note.try.xhtml-baked.html
+
+  Style guide: page.note.try
+*/
+/*
+  Media
+
+  Contains a title "Media" and the content of the note.
+
+  Markup: ./styleguide/page.note.media.xhtml-baked.html
+
+  Style guide: page.note.media
+*/
+
+$Config_Notes: (
+  (className: 'howto', labelText: "How To"),
+  (className: 'qa', labelText: "Q&A"),
+  (className: 'try', moveSolutionTo: $AREA_EOB, counterName: try, resetAt: moduleReset, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
+  (className: 'media', labelText: "Media"),
+);
+
+/*==========================================================
+  PRECALCULUS COREQ CONFIG
+==========================================================*/
+
+$Config_SetTableCaption: (captionType: $CAPTION_TABLE, resetAt: moduleReset, defaultContainer: caption, hasCaption: true, hasTitle: false, hasTopTitle: false);
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, resetAt: moduleReset, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
+$Config_PartType_Table_CaptionContent: (os-title-label: "Table ", os-number: counter(table), os-divider: ' ');
+$Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: counter(figure), os-divider: ' ');
+$_exampleTitleContent: (os-title-label: "Example ", os-number: counter(exampleInSection));
+$_exampleSolutionTitleContent: (os-title-label: "Solution");
+$Config_PartType_Example: (moveTo: $AREA_NONE, resetAt: moduleReset, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent);
+
+$Config_UnnumberedElements: (
+  (contextSelector: '.try', childSelector: '[data-type="exercise"]'),
+  (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+);
+
+$Config_TargetLabels: (
+  (selector: '[data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered)', labelText: "Exercise " counter(chapter) "." counter(exerciseMaybeInContent)),
+  (selector: '.os-eoc [data-type="exercise"]',                                  labelText: "Exercise " counter(chapter) "." counter(exercise)),
+  (selector: 'div[data-type="chapter"] [data-type="example"]',                  labelText: "Example " counter(exampleInSection)),
+  (selector: 'div[data-type="chapter"] [data-type="equation"]:not(.unnumbered)',labelText: "Equation " counter(chapter) "." counter(equation)),
+  (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered)',      labelText: "Table " counter(table)),
+  (selector: '.appendix :not(table) > table:not(.unnumbered)',                  labelText: "Table " counter(appendix, upper-alpha) counter(table)),
+  (selector: '.appendix > table:not(.unnumbered)',                              labelText: "Table " counter(appendix, upper-alpha) counter(table)),
+  (selector: '.preface :not(table) > table:not(.unnumbered)',                   labelText: "Table " counter(table)),
+  (selector: '.preface :not(figure) > figure:not(.unnumbered)',                 labelText: "Figure " counter(figure)),
+  (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',    labelText: "Figure " counter(figure)),
+  (selector: '.appendix :not(figure) > figure:not(.unnumbered)',                labelText: "Figure " counter(figure)),
+  (selector: '.appendix > figure:not(.unnumbered)',                             labelText: "Figure " counter(figure))
+);
+
+$Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
+$Config_abstractTitle: "Learning Objectives";
+$Config_hasCompositeChapter: true;
+
+$Config_CustomFootnotes: (
+  (incrementParentSelector: '[data-type="page"]:not(.preface)', resetSelector: 'body', counterName: notPrefaceFootnote, counterType: decimal),
+  (incrementParentSelector: '.preface', resetSelector: 'body', counterName: prefaceFootnote, counterType: lower-roman),
+);

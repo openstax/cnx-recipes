@@ -1,0 +1,2524 @@
+/*
+  Book Page
+
+  A Page is usually a section inside a chapter. It contains:
+
+  - `[data-type='metadata']` The attribution information for this Page
+  - `[data-type='document-title']` The title of the Page
+
+  Markup: ./book.page.xhtml-baked.html
+
+  Style guide: book.1-page
+*/
+/*
+  Page Title
+
+  Page titles may be overwritten in collection. In such case the collection-set
+  title should be used.
+
+  Markup: ./book.page.title.xhtml-baked.html
+
+  Style guide: book.1-page-title
+*/
+/*
+  Page Elements
+
+  Everything in here is specific to a Page in a book.
+  A Page is usually a section inside a chapter.
+
+  Style guide: page
+*/
+/*
+  Metadata
+
+  This contains attribution information and is sometimes collated to the back of the book.
+
+  Markup:
+  <div data-type="page">
+    <div data-type="metadata">...</div>
+  </div>
+
+  Style guide: page.0-metadata
+*/
+/*
+  Processing Instruction
+
+  These are an artifact of the transforms and will disappear in the future
+
+  Markup:
+  <div data-type="page">
+    <cnx-pi />
+  </div>
+
+  Style guide: page.0-processing
+*/
+/*
+  Term
+
+  A term which is used to make the Book Index. Terms used in a Glossary are defined in the Glossary, not here.
+
+  Markup: ./page.term.xhtml-baked.html
+
+  Style guide: page.term
+*/
+/*
+  Note
+
+  A note or "feature". This is usually separated visually from the rest of the
+  content in a book with a border and a separate background color.
+
+  Contains an optional title, and optionally an additional class to help style the note
+
+  Markup: ./page.note.xhtml-baked.html
+
+  Style guide: page.note
+*/
+/*
+  Figure
+
+  A `<figure>` is wrapped in a `<div data-type='figure'>` which contains:
+  - optional `[data-type='title']`
+  - `figure` element
+    - `[data-type='media']` : a wrapper element which may disappear in the future
+      - `img[src][alt]` : The image for the Figure
+
+  TODO: Maybe this should use the `<picture>` element instead of the `[data-type='media']` element:
+  http://html5rocks.com/en/tutorials/responsive/picture-element/
+
+  # TODO
+
+  - Decide on what the baked markup for a figure with a title and caption should look like.
+    - Proposals have mentioned using `<figcaption>` most of the time.
+    - Maybe what is in the Raw HTML is _good enough_?
+
+  Markup: ./page.figure.xhtml-baked.html
+
+  Style guide: page.figure
+*/
+/*
+  Paragraph
+
+  A Paragraph of text. Some of the common things it can contain are:
+
+  - `[data-type='term']` : A term that is defined elsewhere (in the glossary)
+  - `strong`
+  - `em`
+  - `[data-type='list']` : an inline list
+    - `[data-type='item']` : an item in the list
+  - `math` : MathML
+
+  TODO: Move these into a separate "inline" section in the HTML guide
+
+  Markup: ./page.para.xhtml-baked.html
+
+  Style guide: page.para
+*/
+/*
+  Section
+
+  A (sub)section of content which contains a title.
+
+  Markup: ./page.section.xhtml-baked.html
+
+  Style guide: page.section
+*/
+/*
+  Example
+
+  An example which is usually styled to not be part of the flow of normal content
+  (similar to a Note).
+
+  Markup: ./page.example.xhtml-baked.html
+
+  Style guide: page.example
+*/
+/*
+  Exercise
+
+  An exercise contains a problem, optional title, and optional solution(s).
+
+  Exercises are usually numbered and contain a link to the solution if it exists.
+  Typically, an exercise is collated at the end of chapter.
+
+  Solutions are collated (at the end of section, end of chapter or end of book), they are numbered (the number is the same as the exercise they are associated to) and link back to their exercise.
+
+  Markup: ./page.exercise.xhtml-baked.html
+
+  Style guide: page.exercise
+*/
+/*
+  Equation
+
+  An equation wraps a MathML formula and is usually numbered.
+
+  Markup: ./page.equation.xhtml-baked.html
+
+  Style guide: page.equation
+*/
+/*
+  Glossary
+
+  This element is often referred to as Key Terms in the textbook.
+  It is collated as a separate Page at the end of a Chapter or a Book.
+  Also, it is collected from individual glossary elements in each raw Page.
+
+  Markup: ./book.glossary.xhtml-baked.html
+
+  Style guide: book.glossary
+*/
+/*
+  Book Index
+
+  The book Index contains terms and links to their occurences in the book.
+
+  Markup: ./book.index.xhtml-baked.html
+
+  Style guide: book.index
+*/
+/*
+  Table
+
+  The `table` element may contain a `caption`, `tbody`, `col`, and other _usual_ elements.
+
+  If the table contains a title, there is an additional element inside `<caption>`
+
+  # TODO
+
+  - Decide on what the baked markup for a table with a title and caption should look like.
+    - Proposals have mentioned wrapping the `<table>` element with a `.os-table-container` element.
+    - Maybe what is in the Raw HTML is _good enough_?
+
+  Markup: ./page.table.xhtml-baked.html
+
+  Style guide: page.table
+*/
+/*
+  Composite Page
+
+  These are end-of-book or end-of-chapter Pages.
+
+  A Composite Page is one that is automatically generated by moving/copying content from the raw pages.
+  Examples include the end-of-chapter exercises, end-of-book solutions, end-of-chapter glossary, index.
+
+  They:
+
+  - must use data-type="composite-page".
+  - must have a unique identifier (class) for styling purposes.
+  - usually contain content separated by section(pages) or by chapter.
+  - now appear in the TOC (currently not the case in the PDF).
+  - aren't numbered in the content and in the TOC (the chapters and sections are)
+  - follow the same rules as a regular data-type="page" (header hierarchy, metadata, etc.)
+
+  Style guide: book.2-composite
+*/
+/*
+  Book Preface
+
+  A Preface is a Page at the beginning of a book that is not inside a Chapter. It contains:
+
+  - `.preface` A class to identify it as a Preface
+  - `[data-type='metadata']` The attribution information for this Page
+  - `[data-type='document-title']` The title of the Page
+
+  Markup: ./book.preface.xhtml-baked.html
+
+  Style guide: book.1-preface
+*/
+/*
+  Chapter
+
+  A Chapter contains a title and multiple Pages, one of which may be a `.introduction` Page.
+
+  The introduction page typically contains a splash image, a chapter outline and an introductory paragraph.
+
+  Markup: ./book.chapter.xhtml-baked.html
+
+  Style guide: book.0-chapter
+*/
+/*
+  Unit
+
+  A Unit contains a title and multiple Chapters.
+
+  It does not currently contain an "Introduction" Page.
+
+  Markup: ./book.unit.xhtml-baked.html
+
+  Style guide: book.0-unit
+*/
+/*
+  Unnumbered Content
+
+  Content that has been marked with the class `.unnumbered` by the content team.
+
+  Currently, the recipe supports only tables and figures but
+  this may apply to a note, a table, an equation, a figure.
+
+  Markup: ./page.unnumbered.xhtml-baked.html
+
+  Style guide: page.unnumbered
+
+*/
+/*
+  Lists
+
+  Lists can contain a label or title and can be block content or inline.
+
+  Markup: ./page.list.xhtml-baked.html
+
+  Style guide: page.list
+
+*/
+/*
+  Iframe
+
+  An iframe can show an embedded simulation or video. Some formats cannot or would
+  rather not show the iframe and present a link instead.
+
+  So we wrap the element inside a `[data-type="alternatives"]` element and add
+  enough classes to be able to select which alternative to show and which to hide.
+
+  Markup: ./page.iframe.xhtml-baked.html
+
+  Style guide: page.iframe
+*/
+/*
+  Links
+
+  Links to simulations should open in a new tab (ie `<a target="_blank">`)
+
+  Markup: ./page.link.xhtml-baked.html
+
+  Style guide: page.link
+
+*/
+/*==========================================================
+  PRECALCULUS COREQ PAGES
+==========================================================*/
+/*
+  Key Terms
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Terms"
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
+*/
+/*
+  Key Equations
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Equations"
+
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
+
+  Style guide: book.composite.key-equations
+*/
+/*
+  Key Concepts
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Concepts"
+
+  Markup: ./styleguide/book.composite.key-concepts.xhtml-baked.html
+
+  Style guide: book.composite.key-concepts
+*/
+/*
+  Review Exercises
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Review Exercises"
+
+  Markup: ./styleguide/book.composite.review-exercises.xhtml-baked.html
+
+  Style guide: book.composite.review-exercises
+*/
+/*
+  Practice Test
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Practice Test"
+
+  Markup: ./styleguide/book.composite.practice-test.xhtml-baked.html
+
+  Style guide: book.composite.practice.test
+*/
+/* =========================================================
+  CUSTOM NOTES
+==========================================================*/
+/*
+  How To
+
+  Contains a title "How To" and the content of the note.
+
+  Markup: ./styleguide/page.note.how-to.xhtml-baked.html
+
+  Style guide: page.note.how-to
+*/
+/*
+  QA
+
+  Contains a title "QA" and the content of the note.
+
+  Markup: ./styleguide/page.note.qa.xhtml-baked.html
+
+  Style guide: page.note.qa
+*/
+/*
+  Try
+
+  Contains a title "Try" and the content of the note.
+
+  Markup: ./styleguide/page.note.try.xhtml-baked.html
+
+  Style guide: page.note.try
+*/
+/*
+  Media
+
+  Contains a title "Media" and the content of the note.
+
+  Markup: ./styleguide/page.note.media.xhtml-baked.html
+
+  Style guide: page.note.media
+*/
+/*==========================================================
+  PRECALCULUS COREQ CONFIG
+==========================================================*/
+@namespace xhtml "http://www.w3.org/1999/xhtml";
+@namespace cmlnle "http://katalysteducation.org/cmlnle/1.0";
+@namespace cxlxt "http://katalysteducation.org/cxlxt/1.0";
+:pass(0) [data-type='list']:not([data-list-type]),
+:pass(0) [data-type='list'][data-list-type='bulleted'],
+:pass(0) [data-type='list'][data-list-type='enumerated'] {
+  sort-by: 'invalid-namespace-just-to-throw-an-error|element-HACK'; }
+
+:pass(0) [data-type='list'][data-list-type='labeled-item']:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after,
+:pass(0) [data-type='list'][data-list-type='bulleted']:not([data-item-sep]) > span[data-type="item"]:not(:last-child)::after {
+  container: span;
+  attr-class: "-os-inline-list-separator";
+  content: "; "; }
+
+:pass(0) [data-type='list'][data-list-type='labeled-item'][data-item-sep],
+:pass(0) [data-type='list'][data-list-type='bulleted'][data-item-sep] {
+  string-set: listItemSep attr(data-item-sep); }
+  :pass(0) [data-type='list'][data-list-type='labeled-item'][data-item-sep] > [data-type="item"]:not(:last-child)::after,
+  :pass(0) [data-type='list'][data-list-type='bulleted'][data-item-sep] > [data-type="item"]:not(:last-child)::after {
+    container: span;
+    attr-class: "-os-inline-list-separator";
+    content: string(listItemSep); }
+
+:pass(0) div[data-type="metadata"] > [data-type="document-title"] {
+  node-set: page-title; }
+
+:pass(0) :not([data-type="metadata"]) > [data-type="document-title"] {
+  content: nodes(page-title); }
+
+:pass(1) [data-type="example"]::inside {
+  class: "body"; }
+
+:pass(1) [data-type="chapter"] > [data-type="page"]:not(.introduction) {
+  class: "chapter-content-module"; }
+
+:pass(1) div.preface > [data-type="document-title"] {
+  container: h1;
+  content: content(); }
+
+:pass(1) :not([data-type="metadata"]) > [data-type="document-title"] > [data-type="document-title"] {
+  container: span;
+  class: "os-text";
+  data-type: '';
+  attr-itemprop: ''; }
+
+:pass(1) a.os-interactive-link {
+  attr-target: "_blank"; }
+
+:pass(1) [data-type="exercise"][data-label]:not([data-label=""])::after {
+  container: div;
+  class: "os-label";
+  content: attr(data-label);
+  move-to: bTitleLabel; }
+
+:pass(1) [data-type="exercise"][data-label]:not([data-label=""])::outside {
+  data-type: "exercise-container";
+  container: div;
+  content: pending(bTitleLabel) content(); }
+
+:pass(1) [data-type="exercise"] [data-type="problem"]::inside {
+  class: "os-problem-container"; }
+
+:pass(1) [data-type="exercise"] [data-type="solution"]::inside {
+  class: "os-solution-container"; }
+
+:pass(1) ol[data-label]:not([data-label=""])::after,
+:pass(1) ul[data-label]:not([data-label=""])::after {
+  container: div;
+  class: "os-label";
+  content: attr(data-label);
+  move-to: bListLabel; }
+
+:pass(1) ol[data-label]:not([data-label=""])::outside,
+:pass(1) ul[data-label]:not([data-label=""])::outside {
+  data-type: "list-container";
+  container: div;
+  content: pending(bListLabel) content(); }
+
+:pass(1) :not([data-type="alternatives"]) > iframe {
+  class: attr(class) "os-is-iframe"; }
+  :pass(1) :not([data-type="alternatives"]) > iframe::after {
+    container: a;
+    class: "os-is-link";
+    attr-target: "_window";
+    attr-href: attr(src);
+    content: "Click to view content";
+    move-to: bIframeLink; }
+  :pass(1) :not([data-type="alternatives"]) > iframe::outside {
+    container: div;
+    data-type: "alternatives";
+    class: "os-has-iframe os-has-link";
+    content: pending(bIframeLink) content(); }
+
+:pass(1) cnx-pi {
+  move-to: trash; }
+
+:pass(1) :not([data-type="example"]) > [data-type="exercise"] {
+  string-set: isSolution ""; }
+  :pass(1) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
+    string-set: isSolution " os-hasSolution "; }
+  :pass(1) :not([data-type="example"]) > [data-type="exercise"]::deferred {
+    class: attr(class) string(isSolution, " "); }
+
+:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
+  class: "os-note-body"; }
+
+:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class]) > div[data-type="title"] {
+  container: span;
+  class: "os-title-label";
+  data-type: "";
+  move-to: genericNoteLabel; }
+
+:pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class]):deferred::before {
+  container: h3;
+  content: pending(genericNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(1) [data-type="note"] [data-type="note"]:not([class])::inside {
+  class: "os-note-body"; }
+
+:pass(1) [data-type="note"] [data-type="note"]:not([class]) > div[data-type="title"] {
+  container: span;
+  class: "os-title-label";
+  data-type: "";
+  move-to: genericNoteLabeldepth1; }
+
+:pass(1) [data-type="note"] [data-type="note"]:not([class]):deferred::before {
+  container: h4;
+  content: pending(genericNoteLabeldepth1);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(1) [data-type="metadata"] > [data-type="description"] {
+  move-to: trash; }
+
+:pass(1) [data-type="exercise"] {
+  string-set: missing ""; }
+  :pass(1) [data-type="exercise"] div.missing-exercise {
+    string-set: missing " missing-exercise"; }
+  :pass(1) [data-type="exercise"]::deferred {
+    class: attr(class) string(missing, ""); }
+
+:pass(1) ol[data-number-style="lower-alpha"] {
+  attr-type: "a"; }
+
+:pass(1) [data-type="abstract"]::before {
+  container: h3;
+  data-type: "title";
+  content: "Learning Objectives"; }
+
+:pass(2) [data-type="exercise"].missing-exercise {
+  move-to: trash; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "How To";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].howto:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].howto > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].howto > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].howto::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].howto:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "How To";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].howto:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Q&A";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].qa:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].qa > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].qa > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].qa::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].qa:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Q&A";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].qa:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].try:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].try > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].try > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].try::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].try:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].try:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Media";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].media:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].media > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].media > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].media::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].media:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Media";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].media:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(3) body {
+  counter-reset: unit; }
+
+:pass(3) div[data-type="unit"] {
+  counter-increment: unit; }
+
+:pass(3) div[data-type="unit"]::before {
+  container: span;
+  content: "Unit ";
+  class: os-part-text;
+  move-to: bUnitLabel; }
+
+:pass(3) div[data-type="unit"]::before {
+  container: span;
+  content: counter(unit);
+  class: os-number;
+  move-to: bUnitLabel; }
+
+:pass(3) div[data-type="unit"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bUnitLabel; }
+
+:pass(3) div[data-type="unit"] > [data-type="document-title"] {
+  container: h1;
+  content: pending(bUnitLabel) content(); }
+
+:pass(3) body {
+  counter-reset: chapter; }
+
+:pass(3) div[data-type="chapter"] {
+  counter-increment: chapter; }
+
+:pass(3) div[data-type="chapter"]::before {
+  container: span;
+  content: "Chapter ";
+  class: os-part-text;
+  move-to: bChapterLabel; }
+
+:pass(3) div[data-type="chapter"]::before {
+  container: span;
+  content: counter(chapter);
+  class: os-number;
+  move-to: bChapterLabel; }
+
+:pass(3) div[data-type="chapter"]::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bChapterLabel; }
+
+:pass(3) div[data-type="chapter"] > [data-type="document-title"] {
+  container: h1;
+  content: pending(bChapterLabel) content(); }
+
+:pass(3) body {
+  counter-reset: appendix; }
+
+:pass(3) div.appendix {
+  counter-increment: appendix; }
+
+:pass(3) div.appendix::before {
+  container: span;
+  content: "Appendix ";
+  class: os-part-text;
+  move-to: bAppendixLabel; }
+
+:pass(3) div.appendix::before {
+  container: span;
+  content: counter(appendix, upper-alpha);
+  class: os-number;
+  move-to: bAppendixLabel; }
+
+:pass(3) div.appendix::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bAppendixLabel; }
+
+:pass(3) div.appendix > [data-type="document-title"] {
+  container: h1;
+  content: pending(bAppendixLabel) content(); }
+
+:pass(3) [data-type="chapter"], :pass(3) .appendix {
+  counter-reset: section; }
+
+:pass(3) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
+:pass(3) div[data-type="chapter"] > div[data-type="page"]:not(.introduction)::before {
+  container: span;
+  content: counter(chapter) "." counter(section);
+  class: os-number;
+  move-to: bSectionLabel; }
+
+:pass(3) div[data-type="chapter"] > div[data-type="page"]:not(.introduction)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bSectionLabel; }
+
+:pass(3) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) > [data-type="document-title"] {
+  container: h2;
+  content: pending(bSectionLabel) content(); }
+
+:pass(3) div[data-type="chapter"] > div[data-type="page"].introduction > [data-type="document-title"] {
+  container: h2; }
+
+:pass(3) [data-type="chapter"], :pass(3) .appendix {
+  counter-reset: footnotes; }
+
+:pass(3) aside[role="doc-footnote"] {
+  counter-increment: footnotes; }
+
+:pass(3) [data-type="chapter"], :pass(3) .appendix {
+  counter-reset: footnoteLinks; }
+
+:pass(3) a[role="doc-noteref"] {
+  counter-increment: footnoteLinks; }
+
+:pass(3) a[role="doc-noteref"] {
+  content: counter(footnoteLinks); }
+
+:pass(3) aside[role="doc-footnote"]::before {
+  data-type: "footnote-number";
+  content: counter(footnotes); }
+
+:pass(3) [data-type="example"] .body > [data-type="title"], :pass(3) [data-type="example"] p > [data-type="title"] {
+  container: h4; }
+
+:pass(3) div[data-type="page"], :pass(3) .appendix {
+  counter-reset: exampleInSection; }
+
+:pass(3) section > [data-type="example"] {
+  counter-increment: exampleInSection; }
+
+:pass(3) [data-type="example"]::before {
+  container: span;
+  content: "Example ";
+  class: os-title-label;
+  move-to: bExampleLabel; }
+
+:pass(3) [data-type="example"]::before {
+  container: span;
+  content: counter(exampleInSection);
+  class: os-number;
+  move-to: bExampleLabel; }
+
+:pass(3) [data-type="example"]::after {
+  container: div;
+  content: pending(bExampleLabel);
+  class: "os-title";
+  move-to: bExampleHeader; }
+
+:pass(3) [data-type="example"]:deferred {
+  content: pending(bExampleHeader) content(); }
+
+:pass(3) [data-type="example"] [data-type="solution"]::before {
+  container: span;
+  content: "Solution";
+  class: os-title-label;
+  move-to: div-TITLECONTAINER; }
+
+:pass(3) [data-type="example"] [data-type="solution"]::before {
+  container: div;
+  data-type: "solution-title";
+  content: pending(div-TITLECONTAINER); }
+
+:pass(3) [data-type="page"], :pass(3) .appendix {
+  counter-reset: try; }
+
+:pass(3) [data-type="note"].try {
+  counter-increment: try; }
+
+:pass(3) [data-type="note"].try::before {
+  container: span;
+  content: "Try It ";
+  class: os-title-label;
+  move-to: bNoteLabel-try; }
+
+:pass(3) [data-type="note"].try::before {
+  container: span;
+  content: "#" counter(try);
+  class: os-number;
+  move-to: bNoteLabel-try; }
+
+:pass(3) [data-type="note"].try > [data-type="title"] {
+  move-to: trash; }
+
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(3) [data-type="note"].try [data-type="solution"]::before {
+  container: span;
+  content: counter(try);
+  class: os-number; }
+
+:pass(3) [data-type="note"].try::after {
+  container: div;
+  content: pending(bNoteLabel-try);
+  class: "os-title";
+  move-to: bNoteHeader; }
+
+:pass(3) [data-type="note"].try:deferred {
+  content: pending(bNoteHeader) content(); }
+
+:pass(3) body {
+  counter-reset: term; }
+
+:pass(3) div[data-type="page"] span[data-type="term"], :pass(3) div[data-type="composite-page"] span[data-type="term"] {
+  counter-increment: term; }
+
+:pass(3) div[data-type="page"],
+:pass(3) div[data-type="composite-page"] {
+  string-set: pageID attr(id); }
+
+:pass(3) div[data-type="page"] span[data-type="term"],
+:pass(3) div[data-type="composite-page"] span[data-type="term"] {
+  attr-id: "auto_" string(pageID) "_term" counter(term); }
+  :pass(3) div[data-type="page"] span[data-type="term"][cmlnle|reference]::after,
+  :pass(3) div[data-type="composite-page"] span[data-type="term"][cmlnle|reference]::after {
+    container: span;
+    data-type: term-content;
+    content: attr(cmlnle|reference); }
+  :pass(3) div[data-type="page"] span[data-type="term"]:not([cmlnle|reference])::after,
+  :pass(3) div[data-type="composite-page"] span[data-type="term"]:not([cmlnle|reference])::after {
+    container: span;
+    data-type: term-content;
+    content: content(); }
+
+:pass(3) div[data-type="page"] > [data-type="document-title"],
+:pass(3) div[data-type="composite-page"] > [data-type="document-title"] {
+  node-set: sectionHeaderNode; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.section-exercises {
+    move-to: section-exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.section-exercises > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"] [data-type="page"]::after {
+    container: div;
+    content: pending(section-exercises-TOCOMPOSITE);
+    class: "os-eos os-section-exercises-container";
+    data-uuid-key: ".section-exercises"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
+    /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+    move-to: trash; }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
+    move-to: glossary-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(glossary-TOCOMPOSITE);
+    class: "os-eoc os-glossary-container";
+    data-type: "composite-page";
+    data-uuid-key: "glossary";
+    sort-by: xhtml|dl > xhtml|dt, nocase; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.key-equations {
+    move-to: key-equations-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.key-equations > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(key-equations-TOCOMPOSITE);
+    class: "os-eoc os-key-equations-container";
+    data-type: "composite-page";
+    data-uuid-key: ".key-equations"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
+  :pass(3) div[data-type="chapter"] section.key-concepts {
+    move-to: key-concepts-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.key-concepts > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.key-concepts::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode); }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(key-concepts-TOCOMPOSITE);
+    class: "os-eoc os-key-concepts-container";
+    data-type: "composite-page";
+    data-uuid-key: ".key-concepts"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.review-exercises {
+    move-to: review-exercises-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.review-exercises > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(review-exercises-TOCOMPOSITE);
+    class: "os-eoc os-review-exercises-container";
+    data-type: "composite-page";
+    data-uuid-key: ".review-exercises"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.practice-test {
+    move-to: practice-test-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.practice-test > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(practice-test-TOCOMPOSITE);
+    class: "os-eoc os-practice-test-container";
+    data-type: "composite-page";
+    data-uuid-key: ".practice-test"; }
+
+:pass(3) .try [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+
+:pass(3) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
+  class: attr(class) " unnumbered"; }
+
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
+  string-set: outlinePageId attr(id); }
+  :pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"]::after {
+    container: a;
+    class: "os-chapter-objective";
+    content: content();
+    attr-href: "#" string(outlinePageId);
+    move-to: chapOutlineLink; }
+
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  class: "os-chapter-objective";
+  content: pending(chapOutlineLink) pending(outlineLO);
+  move-to: chapOutline; }
+
+:pass(5) [data-type="chapter"]::before {
+  container: h3;
+  class: "os-title";
+  content: "Chapter Outline";
+  move-to: chapOutlineTitle; }
+
+:pass(5) [data-type="chapter"]:deferred::before {
+  class: "os-chapter-outline";
+  content: pending(chapOutlineTitle) pending(chapOutline); }
+
+:pass(5) .introduction [data-type="abstract"] {
+  move-to: trash; }
+
+:pass(5) body {
+  counter-reset: notPrefaceFootnote; }
+
+:pass(5) [data-type="page"]:not(.preface) [data-type="footnote-ref"] {
+  counter-increment: notPrefaceFootnote; }
+
+:pass(5) body {
+  counter-reset: notPrefaceFootnoteLink; }
+
+:pass(5) [data-type="page"]:not(.preface) [data-type="footnote-number"] {
+  counter-increment: notPrefaceFootnoteLink; }
+
+:pass(5) [data-type="page"]:not(.preface) li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
+  content: counter(notPrefaceFootnote, decimal); }
+
+:pass(5) [data-type="page"]:not(.preface) sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
+  content: counter(notPrefaceFootnoteLink, decimal); }
+
+:pass(5) [data-type="page"]:not(.preface) li > a[data-type="footnote-ref"] {
+  content: counter(notPrefaceFootnote, decimal); }
+
+:pass(5) [data-type="page"]:not(.preface) a[data-type="footnote-number"] > sup {
+  content: counter(notPrefaceFootnoteLink, decimal); }
+
+:pass(5) body {
+  counter-reset: prefaceFootnote; }
+
+:pass(5) .preface [data-type="footnote-ref"] {
+  counter-increment: prefaceFootnote; }
+
+:pass(5) body {
+  counter-reset: prefaceFootnoteLink; }
+
+:pass(5) .preface [data-type="footnote-number"] {
+  counter-increment: prefaceFootnoteLink; }
+
+:pass(5) .preface li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
+  content: counter(prefaceFootnote, lower-roman); }
+
+:pass(5) .preface sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
+  content: counter(prefaceFootnoteLink, lower-roman); }
+
+:pass(5) .preface li > a[data-type="footnote-ref"] {
+  content: counter(prefaceFootnote, lower-roman); }
+
+:pass(5) .preface a[data-type="footnote-number"] > sup {
+  content: counter(prefaceFootnoteLink, lower-roman); }
+
+:pass(6) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
+:pass(6) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
+  data-visited: true;
+  move-to: term-trash; }
+  :pass(6) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[a-zA-Z\]),
+  :pass(6) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[a-zA-Z\]) {
+    string-set: group-by first-letter(content());
+    data-done: true; }
+  :pass(6) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[\^a-zA-Z\]),
+  :pass(6) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"]:match(\^\[\^a-zA-Z\]) {
+    string-set: group-by " Symbols";
+    data-done: true; }
+
+:pass(6) div[data-type="page"] span[data-type="term"]:deferred,
+:pass(6) div[data-type="composite-page"] span[data-type="term"]:deferred {
+  attr-group-by: string(group-by); }
+
+:pass(6) body:deferred::after {
+  content: clear(term-trash); }
+
+:pass(7) div[data-type="page"] > [data-type="document-title"],
+:pass(7) div[data-type="composite-page"] > [data-type="document-title"] {
+  node-set: sectionHeaderNode; }
+
+:pass(7) div[data-type="page"] > [data-type="document-title"],
+:pass(7) div[data-type="composite-page"] > [data-type="document-title"] {
+  string-set: sectionHeaderString content(); }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: attr(cmlnle|reference, content());
+  attr-group-by: attr(group-by);
+  container: span;
+  class: "os-term";
+  move-to: index-term; }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: string(sectionHeaderString);
+  container: span;
+  class: "os-term-section";
+  move-to: index-section; }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  container: a;
+  content: pending(index-section);
+  attr-href: "#" attr(id);
+  class: "os-term-section-link";
+  move-to: index-section-link; }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  container: span;
+  content: ', ';
+  class: "os-index-link-separator";
+  move-to: index-section-link; }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: pending(index-term) pending(index-section-link);
+  class: os-index-item;
+  move-to: index-TOCOMPOSITE; }
+
+:pass(7) .os-chapter-outline {
+  move-to: ChapterOutline; }
+
+:pass(7) .introduction {
+  content: pending(ChapterOutline) content(); }
+
+:pass(7) .os-eos, :pass(7) [data-type="composite-page"], :pass(7) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(7) .os-eos [data-type="exercise"] {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(7) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(7) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(7) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(7) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(7) .os-eos, :pass(7) [data-type="composite-page"], :pass(7) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(7) .os-eoc [data-type="exercise"] {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(7) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(7) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(7) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(7) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(8) body {
+  counter-reset: exerciseAll; }
+
+:pass(8) .os-eoc [data-type="exercise"] {
+  counter-increment: exerciseAll; }
+
+:pass(8) [data-type="exercise"].os-hasSolution {
+  string-set: exerciseId attr(id); }
+  :pass(8) [data-type="exercise"].os-hasSolution [data-type="problem"] > .os-number {
+    container: a;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(8) [data-type="exercise"].os-hasSolution [data-type="solution"] {
+    attr-id: string(exerciseId) "-solution"; }
+    :pass(8) [data-type="exercise"].os-hasSolution [data-type="solution"] > .os-number {
+      container: a;
+      attr-href: "#" string(exerciseId); }
+
+:pass(9) body {
+  counter-reset: chapter; }
+
+:pass(9) div[data-type="chapter"] {
+  counter-increment: chapter; }
+
+:pass(9) [data-type="chapter"], :pass(9) .appendix {
+  counter-reset: section; }
+
+:pass(9) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
+:pass(9) div[data-type="page"] > [data-type="document-title"],
+:pass(9) div[data-type="composite-page"] > [data-type="document-title"] {
+  node-set: sectionHeaderNode; }
+
+:pass(9) [data-type="chapter"] [data-type="page"]:not(.introduction) [data-type="note"].try [data-type="solution"] {
+  move-to: note-try-solution-GETSECTION; }
+
+:pass(9) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  content: nodes(sectionHeaderNode);
+  move-to: moduleTitleName; }
+
+:pass(9) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(moduleTitleName) pending(note-try-solution-GETSECTION);
+  move-to: note-solution-SECTIONS; }
+
+:pass(9) [data-type="chapter"]::before {
+  container: span;
+  class: "os-title-label";
+  content: "Try It ";
+  move-to: note-try-title; }
+
+:pass(9) [data-type="chapter"]::before {
+  container: h3;
+  attr-data-type: "title";
+  content: pending(note-try-title);
+  move-to: note-try-header; }
+
+:pass(9) [data-type="chapter"]::after {
+  class: "os-try-solution-area";
+  content: pending(note-try-header) pending(note-solution-SECTIONS);
+  move-to: note-solution-GETCHAPTER; }
+
+:pass(9) [data-type="chapter"] .os-eos.os-section-exercises-container [data-type="solution"] {
+  move-to: section-exercises-solution-GETSECTION; }
+
+:pass(9) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: span;
+  content: counter(chapter) "." counter(section) " " "Section Exercises";
+  class: "os-title-label";
+  move-to: section-exercises-title; }
+
+:pass(9) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: h3;
+  attr-data-type: "title";
+  content: pending(section-exercises-title);
+  move-to: section-exercises-header; }
+
+:pass(9) [data-type="chapter"] .os-eos.os-section-exercises-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(section-exercises-header) pending(section-exercises-solution-GETSECTION);
+  move-to: solution-GETCHAPTER; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-review-exercises-container [data-type="solution"] {
+  move-to: review-exercises-solution-GETSECTION; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-review-exercises-container::after {
+  container: span;
+  content: "Review Exercises";
+  class: "os-title-label";
+  move-to: review-exercises-title; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-review-exercises-container::after {
+  container: h3;
+  attr-data-type: "title";
+  content: pending(review-exercises-title);
+  move-to: review-exercises-header; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-review-exercises-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(review-exercises-header) pending(review-exercises-solution-GETSECTION);
+  move-to: solution-GETCHAPTER; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-practice-test-container [data-type="solution"] {
+  move-to: practice-test-solution-GETSECTION; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-practice-test-container::after {
+  container: span;
+  content: "Practice Test";
+  class: "os-title-label";
+  move-to: practice-test-title; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-practice-test-container::after {
+  container: h3;
+  attr-data-type: "title";
+  content: pending(practice-test-title);
+  move-to: practice-test-header; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-practice-test-container::after {
+  container: div;
+  class: "os-solution-area";
+  content: pending(practice-test-header) pending(practice-test-solution-GETSECTION);
+  move-to: solution-GETCHAPTER; }
+
+:pass(9) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
+  string-set: ChapNum content(); }
+
+:pass(9) [data-type="chapter"] > h1[data-type="document-title"] .os-part-text {
+  string-set: ChapText content(); }
+
+:pass(9) [data-type="chapter"]::after {
+  container: span;
+  class: "os-text";
+  content: string(ChapText) string(ChapNum);
+  move-to: eobCompositeTitlesContent; }
+
+:pass(9) [data-type="chapter"]::after {
+  content: pending(eobCompositeTitlesContent) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution" string(ChapNum);
+  move-to: solution-TOCOMPOSITECHAPTER; }
+
+:pass(9) body::after {
+  content: pending(solution-TOCOMPOSITECHAPTER);
+  class: "os-eob os-solution-container";
+  data-type: "composite-chapter";
+  data-uuid-key: ".solution";
+  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
+
+:pass(9) body::after {
+  container: div;
+  content: pending(solution-TOCOMPOSITE);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution"; }
+
+:pass(9) body::after {
+  container: div;
+  content: pending(index-TOCOMPOSITE);
+  class: "os-eob os-index-container";
+  data-type: "composite-page";
+  data-uuid-key: "index";
+  group-by: span, "span::attr(group-by)", nocase; }
+
+:pass(10) .os-index-container > div.group-by:first-of-type > span.group-label:match(\^\[ \]\(Symbols\|SYMBOLS\)) {
+  content: "Symbols"; }
+
+:pass(10) body {
+  counter-reset: chapter; }
+
+:pass(10) div[data-type="chapter"] {
+  counter-increment: chapter; }
+
+:pass(10) [data-type="chapter"], :pass(10) .appendix {
+  counter-reset: section; }
+
+:pass(10) div[data-type="chapter"] > div[data-type="page"]:not(.introduction) {
+  counter-increment: section; }
+
+:pass(10) body {
+  counter-reset: appendix; }
+
+:pass(10) div.appendix {
+  counter-increment: appendix; }
+
+:pass(10) .os-eos, :pass(10) .appendix {
+  counter-reset: exercise; }
+
+:pass(10) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
+
+:pass(10) div[data-type="page"], :pass(10) .appendix {
+  counter-reset: exampleInSection; }
+
+:pass(10) section > [data-type="example"] {
+  counter-increment: exampleInSection; }
+
+:pass(10) [data-type="chapter"], :pass(10) .appendix {
+  counter-reset: equation; }
+
+:pass(10) [data-type="equation"]:not(.unnumbered) {
+  counter-increment: equation; }
+
+:pass(10) [data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
+  string-set: target-label "Exercise " counter(chapter) "." counter(exerciseMaybeInContent);
+  string-set: target-label-nominative "Exercise " counter(chapter) "." counter(exerciseMaybeInContent); }
+
+:pass(10) .os-eoc [data-type="exercise"] {
+  string-set: target-label "Exercise " counter(chapter) "." counter(exercise);
+  string-set: target-label-nominative "Exercise " counter(chapter) "." counter(exercise); }
+
+:pass(10) div[data-type="chapter"] [data-type="example"] {
+  string-set: target-label "Example " counter(exampleInSection);
+  string-set: target-label-nominative "Example " counter(exampleInSection); }
+
+:pass(10) div[data-type="chapter"] [data-type="equation"]:not(.unnumbered) {
+  string-set: target-label "Equation " counter(chapter) "." counter(equation);
+  string-set: target-label-nominative "Equation " counter(chapter) "." counter(equation); }
+
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered) {
+  string-set: target-label "Table " counter(table);
+  string-set: target-label-nominative "Table " counter(table); }
+
+:pass(10) .appendix :not(table) > table:not(.unnumbered) {
+  string-set: target-label "Table " counter(appendix, upper-alpha) counter(table);
+  string-set: target-label-nominative "Table " counter(appendix, upper-alpha) counter(table); }
+
+:pass(10) .appendix > table:not(.unnumbered) {
+  string-set: target-label "Table " counter(appendix, upper-alpha) counter(table);
+  string-set: target-label-nominative "Table " counter(appendix, upper-alpha) counter(table); }
+
+:pass(10) .preface :not(table) > table:not(.unnumbered) {
+  string-set: target-label "Table " counter(table);
+  string-set: target-label-nominative "Table " counter(table); }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
+
+:pass(10) .appendix > figure:not(.unnumbered) {
+  string-set: target-label "Figure " counter(figure);
+  string-set: target-label-nominative "Figure " counter(figure); }
+
+:pass(10) a.autogenerated-content {
+  content: target-string(attr(href), target-label); }
+  :pass(10) a.autogenerated-content[cmlnle|case="nominative"] {
+    content: target-string(attr(href), target-label-nominative); }
+
+:pass(10) body > [data-type="metadata"] {
+  node-set: bookMetadata; }
+
+:pass(10) [data-type="composite-page"], :pass(10) [data-type="composite-chapter"] {
+  content: nodes(bookMetadata) content(); }
+
+:pass(10) .os-eos.os-section-exercises-container::before {
+  container: span;
+  content: counter(chapter) "." counter(section) " " "Section Exercises";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(10) .os-eos.os-section-exercises-container::before {
+  container: h3;
+  data-type: "document-title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
+  container: span;
+  content: "Key Terms";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
+  container: span;
+  content: "Key Equations";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-key-equations-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
+  container: span;
+  content: "Key Concepts";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-review-exercises-container::before {
+  container: span;
+  content: "Review Exercises";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-review-exercises-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-practice-test-container::before {
+  container: span;
+  content: "Practice Test";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-practice-test-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-chapter"].os-eob.os-solution-container::before {
+  container: span;
+  content: "Answer Key";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-chapter"].os-eob.os-solution-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-chapter"].os-eob.os-solution-container [data-type="composite-page"] > span.os-text {
+  move-to: CCcompositePageTitles; }
+
+:pass(10) [data-type="composite-chapter"].os-eob.os-solution-container [data-type="composite-page"]:deferred::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(CCcompositePageTitles); }
+
+:pass(10) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: span;
+  content: "Index";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
+
+:pass(10) div[data-type='chapter'] > h1[data-type='document-title'] {
+  counter-increment: chapTitleNum;
+  attr-id: "chapTitle" counter(chapTitleNum); }
+
+:pass(10) [data-type="chapter"], :pass(10) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(10) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(10) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(10) .appendix [data-type="exercise"]:not(.unnumbered) [data-type="problem"]::before {
+  container: span;
+  content: "Exercise ";
+  class: os-title-label; }
+
+:pass(10) [data-type="page"], :pass(10) [data-type="composite-page"], :pass(10) .appendix, :pass(10) .preface {
+  counter-reset: table; }
+
+:pass(10) :not(table) > table:not(.unnumbered) {
+  counter-increment: table; }
+
+:pass(10) [data-type="page"], :pass(10) [data-type="composite-page"], :pass(10) .appendix, :pass(10) .preface {
+  counter-reset: figure; }
+
+:pass(10) :not(figure) > figure:not(.unnumbered) {
+  counter-increment: figure; }
+
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: "Table ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: counter(table);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(10) [data-type="chapter"] > table.unnumbered caption {
+  move-to: trash; }
+
+:pass(10) .appendix :not(table) > table:not(.unnumbered)::before,
+:pass(10) .appendix > table:not(.unnumbered)::before {
+  container: span;
+  content: "Table ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(10) .appendix :not(table) > table:not(.unnumbered)::before,
+:pass(10) .appendix > table:not(.unnumbered)::before {
+  container: span;
+  content: counter(appendix, upper-alpha) counter(table);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(10) .appendix :not(table) > table:not(.unnumbered)::before,
+:pass(10) .appendix > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(10) .appendix :not(table) > table:not(.unnumbered) caption,
+:pass(10) .appendix > table:not(.unnumbered) caption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(10) .appendix :not(table) > table:not(.unnumbered)::after,
+:pass(10) .appendix > table:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(10) .appendix :not(table) > table:not(.unnumbered)::outside,
+:pass(10) .appendix > table:not(.unnumbered)::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(10) .appendix > table.unnumbered caption {
+  move-to: trash; }
+
+:pass(10) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: "Table ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(10) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: counter(table);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(10) .preface :not(table) > table:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(10) .preface :not(table) > table:not(.unnumbered) caption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(10) .preface :not(table) > table:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(10) .preface :not(table) > table:not(.unnumbered)::outside {
+  class: os-table;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(10) .preface > table.unnumbered caption {
+  move-to: trash; }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: "Figure ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: counter(figure);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) figcaption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(10) [data-type="chapter"] :not(figure) > figure:not(.unnumbered)::outside {
+  class: os-figure;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(10) [data-type="chapter"] > figure.unnumbered figcaption {
+  move-to: trash; }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered)::before,
+:pass(10) .appendix > figure:not(.unnumbered)::before {
+  container: span;
+  content: "Figure ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered)::before,
+:pass(10) .appendix > figure:not(.unnumbered)::before {
+  container: span;
+  content: counter(appendix, upper-alpha) counter(figure);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered)::before,
+:pass(10) .appendix > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered) figcaption,
+:pass(10) .appendix > figure:not(.unnumbered) figcaption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered)::after,
+:pass(10) .appendix > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered) [data-type="title"],
+:pass(10) .appendix > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered)::after,
+:pass(10) .appendix > figure:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(10) .appendix :not(figure) > figure:not(.unnumbered)::outside,
+:pass(10) .appendix > figure:not(.unnumbered)::outside {
+  class: os-figure;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(10) .appendix > figure.unnumbered figcaption {
+  move-to: trash; }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: "Figure ";
+  class: os-title-label;
+  move-to: bCaption; }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: counter(figure);
+  class: os-number;
+  move-to: bCaption; }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bCaption; }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered) figcaption {
+  container: span;
+  class: "os-caption";
+  move-to: bCaptionContent; }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: span;
+  class: 'os-divider';
+  content: ' ';
+  move-to: bCaptionDivider; }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered) [data-type="title"] {
+  container: span;
+  class: "os-title";
+  move-to: bCaptionTitle; }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered)::after {
+  container: div;
+  class: "os-caption-container";
+  content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
+  move-to: bCaptionContainer; }
+
+:pass(10) .preface :not(figure) > figure:not(.unnumbered)::outside {
+  class: os-figure;
+  container: div;
+  content: content() pending(bCaptionContainer); }
+
+:pass(10) .preface > figure.unnumbered figcaption {
+  move-to: trash; }
+
+:pass(10) .preface [data-type="abstract"] {
+  move-to: trash; }
+
+:pass(10) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] > .os-title,
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] > .os-title,
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="exercise"] > .os-title {
+  container: h3; }
+
+:pass(10) [data-type="chapter"] [data-type="page"] :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"] [data-type="solution"] .solution-title,
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] .solution-title,
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="exercise"] [data-type="solution"] .solution-title {
+  container: h4; }
+
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="problem"] .os-problem-container > [data-type="title"] {
+  container: h4; }
+
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] [data-type="solution-title"] {
+  container: h4; }
+
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"],
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="commentary-title"] {
+  container: h4; }
+
+:pass(10) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
+  container: h3; }
+
+:pass(10) [data-type="composite-page"].os-eoc > div > div > div > section > [data-type="document-title"] {
+  container: h4; }
+
+:pass(10) [data-type="composite-page"].os-eob > .os-chapter-area > [data-type="document-title"] {
+  container: h2; }
+
+:pass(10) [data-type="composite-page"].os-eob > .os-chapter-area > section > [data-type="document-title"] {
+  container: h3; }
+
+:pass(10) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] [data-type="title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] [data-type="document-title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] [data-type="title"] {
+  container: h2; }
+
+:pass(10) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] > section [data-type="title"] {
+  container: h3;
+  data-type: title; }
+
+:pass(10) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section > section > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] > section > section [data-type="title"] {
+  container: h4; }
+
+:pass(10) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="title"] {
+  container: h3; }
+
+:pass(10) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="title"] {
+  container: h4;
+  data-type: title; }
+
+:pass(10) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section > section > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"] {
+  container: h5; }
+
+:pass(10) .appendix > section > [data-type="title"], :pass(10) .appendix > section [data-type="document-title"] {
+  container: h2; }
+
+:pass(10) .appendix > section > section > [data-type="title"], :pass(10) .appendix > section > section [data-type="document-title"] {
+  container: h3; }
+
+:pass(11) .os-index-link-separator:last-child {
+  move-to: trash; }
+
+:pass(11) [data-type="composite-page"] > [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="title"], :pass(11) [data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="title"] {
+  string-set: Cdoc-title-TOMETADATA content(); }
+
+:pass(11) [data-type="composite-page"] > [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(11) [data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
+  content: string(Cdoc-title-TOMETADATA); }
+
+:pass(11) [data-type="composite-page"] > [data-type="document-title"], :pass(11) [data-type="composite-chapter"] > [data-type="document-title"] {
+  string-set: doc-title-TOMETADATA content(); }
+
+:pass(11) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(11) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
+  content: string(doc-title-TOMETADATA); }
+
+:pass(11) div.os-table:deferred::before {
+  class: 'temp-summary';
+  content: string(tableSummary); }
+
+:pass(11) div.os-table .os-caption-container {
+  string-set: tableSummary content(); }
+
+:pass(11) table > caption:empty {
+  move-to: trash; }
+
+:pass(11) :not(.os-table) > table::outside {
+  container: div;
+  class: os-table; }
+
+:pass(11) [data-type="composite-chapter"] > [data-type="document-title"] {
+  counter-increment: composite-chapter;
+  attr-id: "composite-chapter-" counter(composite-chapter); }
+
+:pass(11) [data-type="composite-page"] {
+  counter-increment: composite-page;
+  attr-id: "composite-page-" counter(composite-page); }
+
+:pass(12) div.os-eoc [data-type="cnx-archive-uri"],
+:pass(12) div.os-eob [data-type="cnx-archive-uri"] {
+  move-to: trash; }
+
+:pass(12) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="cnx-archive-uri"] {
+  move-to: trash; }
+
+:pass(12) body > div[data-type="page"],
+:pass(12) body > div[data-type="composite-page"] {
+  string-set: page-id attr(id); }
+  :pass(12) body > div[data-type="page"] > [data-type='document-title'],
+  :pass(12) body > div[data-type="composite-page"] > [data-type='document-title'] {
+    node-set: pageTitle; }
+  :pass(12) body > div[data-type="page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(12) body > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+    string-set: page-shortid attr(data-value); }
+  :pass(12) body > div[data-type="page"]::after,
+  :pass(12) body > div[data-type="composite-page"]::after {
+    content: nodes(pageTitle);
+    attr-href: "#" string(page-id);
+    container: a;
+    move-to: page-link; }
+  :pass(12) body > div[data-type="page"].appendix::after,
+  :pass(12) body > div[data-type="composite-page"].appendix::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-appendix; }
+  :pass(12) body > div[data-type="page"].os-references-container::after,
+  :pass(12) body > div[data-type="composite-page"].os-references-container::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-references; }
+  :pass(12) body > div[data-type="page"].os-index-container::after,
+  :pass(12) body > div[data-type="composite-page"].os-index-container::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-index; }
+  :pass(12) body > div[data-type="page"].os-index-name-container::after,
+  :pass(12) body > div[data-type="composite-page"].os-index-name-container::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-index; }
+  :pass(12) body > div[data-type="page"].os-index-term-container::after,
+  :pass(12) body > div[data-type="composite-page"].os-index-term-container::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-index; }
+  :pass(12) body > div[data-type="page"].os-index-foreign-container::after,
+  :pass(12) body > div[data-type="composite-page"].os-index-foreign-container::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-index; }
+  :pass(12) body > div[data-type="page"].preface::after,
+  :pass(12) body > div[data-type="composite-page"].preface::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li;
+    class: os-toc-preface; }
+  :pass(12) body > div[data-type="page"]:not(.preface):not(.appendix):not(.os-index-container):not(.os-index-name-container):not(.os-index-term-container):not(.os-index-foreign-container):not(.os-references-container)::after,
+  :pass(12) body > div[data-type="composite-page"]:not(.preface):not(.appendix):not(.os-index-container):not(.os-index-name-container):not(.os-index-term-container):not(.os-index-foreign-container):not(.os-references-container)::after {
+    content: pending(page-link);
+    move-to: eob-toc;
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(page-shortid);
+    container: li; }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
+  node-set: CchapterTitle;
+  string-set: CchapTitle-id attr(id); }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+  string-set: Cchap-shortid attr(data-value); }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: nodes(CchapterTitle);
+  attr-href: "#" string(CchapTitle-id);
+  container: a;
+  move-to: cc-link; }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] {
+  string-set: Cpage-id-chap attr(id); }
+  :pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='title'] {
+    node-set: CPageTitle; }
+  :pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+    string-set: Cpage-shortid attr(data-value); }
+  :pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: nodes(CPageTitle);
+    attr-href: "#" string(Cpage-id-chap);
+    container: a;
+    move-to: CpageLink; }
+  :pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: pending(CpageLink);
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(Cpage-shortid);
+    container: li;
+    class: "os-toc-chapter-composite-page";
+    move-to: Cpage-list; }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(Cpage-list);
+  container: ol;
+  class: "os-chapter";
+  move-to: cc-li; }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(cc-link) pending(cc-li);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(Cchap-shortid);
+  container: li;
+  class: "os-toc-composite-chapter";
+  move-to: eoc-toc-pages; }
+
+:pass(12) body > div[data-type="chapter"] > [data-type='document-title'], :pass(12) body > div[data-type="composite-chapter"] > [data-type='document-title'] {
+  node-set: chapterTitle;
+  string-set: chapTitle-id attr(id); }
+
+:pass(12) body > div[data-type="chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(12) body > div[data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+  string-set: chap-shortid attr(data-value); }
+
+:pass(12) body > div[data-type="chapter"]::after, :pass(12) body > div[data-type="composite-chapter"]::after {
+  content: nodes(chapterTitle);
+  attr-href: "#" string(chapTitle-id);
+  container: a;
+  move-to: eoc-toc; }
+
+:pass(12) body > div[data-type="chapter"] > div[data-type="page"],
+:pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"], :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"],
+:pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"] {
+  string-set: page-id-chap attr(id); }
+  :pass(12) body > div[data-type="chapter"] > div[data-type="page"] > [data-type='document-title'],
+  :pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='document-title'], :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"] > [data-type='document-title'],
+  :pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='document-title'] {
+    node-set: PageTitle; }
+  :pass(12) body > div[data-type="chapter"] > div[data-type="page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+    string-set: page-shortid attr(data-value); }
+  :pass(12) body > div[data-type="chapter"] > div[data-type="page"]::after,
+  :pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"]::after, :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"]::after,
+  :pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: nodes(PageTitle);
+    attr-href: "#" string(page-id-chap);
+    container: a;
+    move-to: page-link; }
+
+:pass(12) body > div[data-type="chapter"] > div[data-type="page"]::after, :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"]::after {
+  content: pending(page-link);
+  move-to: eoc-toc-pages;
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(page-shortid);
+  container: li;
+  class: os-toc-chapter-page; }
+
+:pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"]::after, :pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+  content: pending(page-link);
+  move-to: eoc-toc-pages;
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(page-shortid);
+  container: li;
+  class: os-toc-chapter-composite-page; }
+
+:pass(12) body > div[data-type="chapter"]::after, :pass(12) body > div[data-type="composite-chapter"]::after {
+  content: pending(eoc-toc-pages);
+  container: ol;
+  class: os-chapter;
+  move-to: eoc-toc; }
+
+:pass(12) body > div[data-type="chapter"]:not([data-type="composite-chapter"])::after {
+  content: pending(eoc-toc);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(chap-shortid);
+  container: li;
+  move-to: eob-toc;
+  class: "os-toc-chapter"; }
+
+:pass(12) body > div[data-type="composite-chapter"]::after {
+  content: pending(eoc-toc);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(chap-shortid);
+  container: li;
+  move-to: eob-toc;
+  class: "os-toc-composite-chapter"; }
+
+:pass(12) body > div[data-type="unit"] > [data-type='document-title'] {
+  node-set: unitTitle;
+  string-set: uTitle-id attr(id); }
+
+:pass(12) body > div[data-type="unit"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+  string-set: unit-shortid attr(data-value); }
+
+:pass(12) body > div[data-type="unit"]::after {
+  content: nodes(unitTitle);
+  attr-href: "#" string(uTitle-id);
+  container: a;
+  move-to: eou-toc; }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
+  node-set: CchapterTitle;
+  string-set: CchapTitle-id attr(id); }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+  string-set: Cchap-shortid attr(data-value); }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: nodes(CchapterTitle);
+  attr-href: "#" string(CchapTitle-id);
+  container: a;
+  move-to: cc-link; }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] {
+  string-set: Cpage-id-chap attr(id); }
+  :pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='title'] {
+    node-set: CPageTitle; }
+  :pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+    string-set: Cpage-shortid attr(data-value); }
+  :pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: nodes(CPageTitle);
+    attr-href: "#" string(Cpage-id-chap);
+    container: a;
+    move-to: CpageLink; }
+  :pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: pending(CpageLink);
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(Cpage-shortid);
+    container: li;
+    class: "os-toc-chapter-composite-page";
+    move-to: Cpage-list; }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(Cpage-list);
+  container: ol;
+  class: "os-chapter";
+  move-to: cc-li; }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(cc-link) pending(cc-li);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(Cchap-shortid);
+  container: li;
+  class: "os-toc-composite-chapter";
+  move-to: eoc-toc-pages; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type='document-title'], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type='document-title'] {
+  node-set: chapterTitle;
+  string-set: chapTitle-id attr(id); }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+  string-set: chap-shortid attr(data-value); }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"]::after {
+  content: nodes(chapterTitle);
+  attr-href: "#" string(chapTitle-id);
+  container: a;
+  move-to: eoc-toc; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"],
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"],
+:pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"] {
+  string-set: page-id-chap attr(id); }
+  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"] > [data-type='document-title'],
+  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='document-title'], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"] > [data-type='document-title'],
+  :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='document-title'] {
+    node-set: PageTitle; }
+  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+    string-set: page-shortid attr(data-value); }
+  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"]::after,
+  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"]::after,
+  :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: nodes(PageTitle);
+    attr-href: "#" string(page-id-chap);
+    container: a;
+    move-to: page-link; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"]::after {
+  content: pending(page-link);
+  move-to: eoc-toc-pages;
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(page-shortid);
+  container: li;
+  class: os-toc-chapter-page; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+  content: pending(page-link);
+  move-to: eoc-toc-pages;
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(page-shortid);
+  container: li;
+  class: os-toc-chapter-composite-page; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"]::after {
+  content: pending(eoc-toc-pages);
+  container: ol;
+  class: os-chapter;
+  move-to: eoc-toc; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]:not([data-type="composite-chapter"])::after {
+  content: pending(eoc-toc);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(chap-shortid);
+  container: li;
+  move-to: eou-toc-chapters;
+  class: "os-toc-chapter"; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"]::after {
+  content: pending(eoc-toc);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(chap-shortid);
+  container: li;
+  move-to: eou-toc-chapters;
+  class: "os-toc-composite-chapter"; }
+
+:pass(12) body > div[data-type="unit"]::after {
+  content: pending(eou-toc-chapters);
+  container: ol;
+  class: os-unit;
+  move-to: eou-toc; }
+
+:pass(12) body > div[data-type="unit"]::after {
+  content: pending(eou-toc);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(unit-shortid);
+  container: li;
+  class: os-toc-unit;
+  move-to: eob-toc; }
+
+:pass(12) div.os-table table[summary] {
+  attr-summary: string(tableSummary); }
+
+:pass(12) div.temp-summary {
+  string-set: tableSummary content();
+  move-to: trash; }
+
+:pass(13) nav#toc {
+  content: ''; }
+  :pass(13) nav#toc::after {
+    content: "Contents";
+    container: h1;
+    class: os-toc-title; }
+  :pass(13) nav#toc::after {
+    content: pending(eob-toc);
+    container: ol; }
+
+:pass(13) .introduction > .os-figure {
+  string-set: hasSplash " "; }
+  :pass(13) .introduction > .os-figure .splash {
+    string-set: hasSplash " has-splash"; }
+  :pass(13) .introduction > .os-figure:deferred {
+    class: attr(class) string(hasSplash); }
+
+:pass(13) p math::outside {
+  container: span;
+  class: "os-math-in-para"; }
+
+:pass(13) .os-problem-container {
+  string-set: hasFirstElement " "; }
+  :pass(13) .os-problem-container .first-element {
+    string-set: hasFirstElement " has-first-element"; }
+  :pass(13) .os-problem-container:deferred {
+    class: attr(class) string(hasFirstElement); }
+
+:pass(13) .os-solution-container {
+  string-set: hasFirstElement " "; }
+  :pass(13) .os-solution-container .first-element {
+    string-set: hasFirstElement " has-first-element"; }
+  :pass(13) .os-solution-container:deferred {
+    class: attr(class) string(hasFirstElement); }
+
+:pass(13) .os-table {
+  string-set: hasTable " "; }
+  :pass(13) .os-table table.top-titled {
+    string-set: hasTable " os-top-titled-container"; }
+  :pass(13) .os-table:deferred {
+    class: attr(class) string(hasTable); }
+
+:pass(13) .os-table {
+  string-set: hasTable " "; }
+  :pass(13) .os-table table.unstyled {
+    string-set: hasTable " os-unstyled-container"; }
+  :pass(13) .os-table:deferred {
+    class: attr(class) string(hasTable); }
+
+:pass(13) .os-table {
+  string-set: hasTable " "; }
+  :pass(13) .os-table table.column-header {
+    string-set: hasTable " os-column-header-container"; }
+  :pass(13) .os-table:deferred {
+    class: attr(class) string(hasTable); }
+
+:pass(14) nav#toc li > a > h1 > span,
+:pass(14) nav#toc li > a > h2 > span,
+:pass(14) nav#toc li > a > h3 > span,
+:pass(14) nav#toc li > a > div > span {
+  move-to: title-spans; }
+
+:pass(14) nav#toc li > a:deferred {
+  content: pending(title-spans); }
+
+:pass(14) .introduction .os-chapter-outline {
+  move-to: chap-outline; }
+
+:pass(14) .introduction > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
+  move-to: intro-text; }
+
+:pass(14) .introduction::after {
+  content: pending(intro-text);
+  move-to: intro-body;
+  class: "intro-text"; }
+
+:pass(14) .introduction:deferred::after {
+  content: pending(chap-outline) pending(intro-body);
+  class: "intro-body"; }
+
+:pass(15) nav#toc > ol .os-toc-chapter > a > .os-part-text {
+  move-to: partString; }
+
+:pass(15) nav#toc > ol .os-toc-chapter > a > .os-number:deferred {
+  content: pending(partString) content(); }
+
+:pass(15) nav#toc > ol .os-toc-unit > a > .os-part-text {
+  move-to: partString; }
+
+:pass(15) nav#toc > ol .os-toc-unit > a > .os-number:deferred {
+  content: pending(partString) content(); }
+
+:pass(15) nav#toc > ol .os-toc-appendix > a > .os-part-text {
+  move-to: partString; }
+
+:pass(15) nav#toc > ol .os-toc-appendix > a > .os-number:deferred {
+  content: pending(partString) content(); }
+
+:pass(100) div.delete-me {
+  move-to: trash; }
+
+:pass(100) body:deferred::after {
+  content: clear(trash); }
+
+/*# sourceMappingURL=precalculus-coreq.css.map */

@@ -194,6 +194,7 @@
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
+    $commentaryTitleContent:  map-get($Config_PartType_Example, commentaryTitleContent);
     $resetAt: map-get($Config_PartType_Example, resetAt);
 
     @if $resetAt == moduleReset {
@@ -204,12 +205,12 @@
     @if release-flag-enabled(appendix-has-numbered-examples) {
       @if map-has-key($Config_PartType_Example, apTitleContent) {
         $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
-        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $apTitleContent);
+        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $commentaryTitleContent, $apTitleContent);
       } @else {
-        @include number_numberContentExamples($titleContent, $solutionTitleContent);
+        @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
       }      
     } @else {
-      @include number_numberContentExamples($titleContent, $solutionTitleContent);
+      @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
     }
   }
 
@@ -646,7 +647,7 @@
 }
 :pass(14) {
   @include toc_navTOCUnwrap();
-  @if TEMPLATE() == "TEMPLATE1" {
+  @if TEMPLATE() == "TEMPLATE1" or TEMPLATE() == "TEMPLATE2" {
     @include modify_groupChapOutlineIntroContent();
   }
 }
