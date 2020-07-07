@@ -68,6 +68,9 @@
   @if $Config_hasStimuli {
     @include modify_tagStimulusExercises();
   }
+  @if $Config_PartType_CoreqSkills != () {
+    @include modify_tagCoreqExercises();
+  }
   @include modify_syncTitlesFromCollection();
 }
 
@@ -376,7 +379,14 @@
     @include count_countStimulusExercises(stimuli, $Config_stimuliSectionClass);
     @include number_numberStimulusExercises($Config_ContentStimuliExercise_TitleContent);
   }
+  @if $Config_PartType_CoreqSkills != () {
+    $sectionClassName:  map-get($Config_PartType_CoreqSkills, sectionClassName);
+    $counterName:  map-get($Config_PartType_CoreqSkills, counterName);
+    $exerciseTitleContent: map-get($Config_PartType_CoreqSkills, exerciseTitleContent);
 
+    @include count_countCoreqExercises($counterName, $sectionClassName);
+    @include number_numberCoreqExercises($exerciseTitleContent);
+  }
 
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
