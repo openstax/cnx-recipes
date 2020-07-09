@@ -1,0 +1,118 @@
+@import '../_common-stuff';
+$RECIPE_NAME: "college-physics";
+
+/*==========================================================
+  PHYSICS PAGES
+==========================================================*/
+
+/*
+  Section Review
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.summary.xhtml-baked.html
+
+  Style guide: book.2-composite.summary
+*/
+/*
+  Conceptual Questions
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.conceptual.xhtml-baked.html
+
+  Style guide: book.2-composite.conceptual
+*/
+/*
+  Problems and Exercises
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.problems.xhtml-baked.html
+
+  Style guide: book.2-composite.problems
+*/
+$PhysicsPageKeyTerms           : (className: "glossary",              clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Glossary");
+$PhysicsPageSummary            : (className: "section-summary",       clusterBy: $CLUSTER_SECTION, name: "Section Summary");
+$PhysicsPageConceptualQuestions: (className: "conceptual-questions",  clusterBy: $CLUSTER_SECTION, name: "Conceptual Questions");
+$PhysicsPageProblems           : (className: "problems-exercises",    clusterBy: $CLUSTER_SECTION, name: "Problems & Exercises");
+
+$PhysicsPageIndex              : (className: "index",                 clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index");
+
+$Config_ChapterCompositePages: (
+  $PhysicsPageKeyTerms,
+  $PhysicsPageSummary,
+  $PhysicsPageConceptualQuestions,
+  $PhysicsPageProblems
+);
+
+$Config_BookCompositePages: (
+  $PhysicsPageIndex,
+);
+/*==========================================================
+  PHYSICS TITLING CONTENT
+==========================================================*/
+//unfortunately a base obj cannot be created for all Content because it would make the order of the keys static
+//when they need to be able to be in any order because of possible changes in titling order between books
+//Usage Note: key: class of the containing span, value: text that will go inside span
+$Config_PartType_Section_TitleContent : (os-number: counter(chapter) "." counter(section), os-divider: " ");
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true, hasTopTitle: true);
+$_exampleTitleContent        : (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleTitleContentAP      : (os-title-label: "Example ", os-number: counter(appendix, upper-alpha) counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution ", os-number: counter(chapter) "." counter(example));
+$_equationTitleContent       : (os-number: counter(chapter) "." counter(equation));
+
+/*==========================================================
+  PHYSICS CONFIG
+==========================================================*/
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: false);
+//If this method of setting the content of the label explicity becomes a problem,
+//try grabbing the numbering information from the element's header
+
+
+/*
+  Chapter Objectives
+
+  This is a Note that appears in the Introduction page of every chapter.
+
+  Markup: ./styleguide/page.note.chapter-objectives.xhtml-baked.html
+
+  Style guide: page.note.chapter-objectives
+*/
+
+
+$Config_Notes: (
+  (className: 'interactive', labelText: "PhET Explorations"),
+
+);
+
+$Config_UnnumberedElements: (
+  (contextSelector: '[data-type="exercise"][data-element-type="check-understanding"]',  childSelector: null),
+  (contextSelector: 'section.section-summary', childSelector: '[data-type="equation"]'),
+);
+
+$Config_FirstElements: (
+  (selector: ' > .os-figure:first-child'),
+);
+
+$Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline', hasLearningObjectives: true);
+// TODO: Is this a mistake; should we be numbering after the move?
+$Config_PartType_Equation: (moveTo: $AREA_NONE, titleContent: $_equationTitleContent, numberAt: $NUMBER_AFTER_MOVE, numberAfterEq: true);
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_COMPOSITE_PAGE,  numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
+$Config_PartType_Example:  (moveTo: $AREA_NONE,
+                            titleContent: $_exampleTitleContent,
+                            apTitleContent: $_exampleTitleContentAP,
+                            solutionTitleContent: $_exampleSolutionTitleContent);
+$Config_PartType_Solution: (moveTo: $AREA_TRASH);
+
+$Config_HACK_modifyAnyContainerTitleSelector: '[data-type="exercise"][data-element-type="check-understanding"]';
+$Config_addSolutionHeader: (
+  (selector: '[data-element-type="check-understanding"]', title: 'Solution'),
+);
+
+// Coverage optimizations
+$Config_Coverage_MayHaveSimlinks: true;
+$Config_Coverage_MayHaveIframes: true;
+$Config_Coverage_MayHaveMissingExercises: false;
+
+$Config_hasCompositeChapter: false;

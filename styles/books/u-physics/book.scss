@@ -20,15 +20,14 @@ $ChapterIntroType: fullWidth;
     'TocUnitLink:::color': (_ref: 'colorMap:::physicsTocColor'),
     'TocChapterNumber:::color': (_ref: 'colorMap:::physicsTocColor'),
   ),
-  Module: (
-    _selectors: ('[data-type="chapter"] > [data-type="page"]:not(.introduction)'),
+ChapterModuleTitles: (
+    _selectors: ('[data-type="chapter"]'),
+    'TitleNumberText:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'TitleNumberDigit:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'H2Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
     'H4Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-  ),
-  Chapter: (
-    _selectors: ('[data-type="chapter"]'),
-    'TitleNumber:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H5Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
   ),
   Preface: (
     _selectors: (".preface"),
@@ -93,8 +92,8 @@ $ChapterIntroType: fullWidth;
     'Container:::column-width': auto,
     'Section--MarginBottom:::margin-bottom': 0,
     'UnnumberedUnstyledTable:::margin-bottom': 0,
-    'TableData:::padding': table-v-spacing(1) table-h-spacing(1),
-    'TableHeadCell:::padding': table-v-spacing(1) table-h-spacing(1),
+    'TableData:::padding-right': table-h-spacing(1),
+    'TableData:::padding-left': table-h-spacing(1),
   ),
   ChapterReviewCompositeChapter:(
     _selectors: (".os-chapter-review-container"),
@@ -109,7 +108,12 @@ $ChapterIntroType: fullWidth;
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
-    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemSolutionNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Table:::max-width': 100%,
+    'Table:::table-layout': fixed,
+    'TableData:::text-align': center,
+    'TableData:::padding-right': $columnTablePadding,
+    'TableData:::padding-left': $columnTablePadding,
     'Section--MarginBottom:::margin-bottom': column-v-spacing(1),
   ),
   ProblemsCompChapPage:(
@@ -117,7 +121,12 @@ $ChapterIntroType: fullWidth;
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
-    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemSolutionNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Table:::max-width': 100%,
+    'Table:::table-layout': fixed,
+    'TableData:::text-align': center,
+    'TableData:::padding-right': $columnTablePadding,
+    'TableData:::padding-left': $columnTablePadding,
     'Section--MarginBottom:::margin-bottom': column-v-spacing(1),
   ),
   AdditionalProblemsCompChapPage:(
@@ -125,7 +134,12 @@ $ChapterIntroType: fullWidth;
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
-    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemSolutionNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Table:::max-width': 100%,
+    'Table:::table-layout': fixed,
+    'TableData:::text-align': center,
+    'TableData:::padding-right': $columnTablePadding,
+    'TableData:::padding-left': $columnTablePadding,
     'Section--MarginBottom:::margin-bottom': 0,
   ),
   ChallengeProblemsCompChapPage:(
@@ -133,7 +147,12 @@ $ChapterIntroType: fullWidth;
     'Container:::column-count': 2,
     'Container:::column-gap': 2.4rem,
     'Container:::column-width': auto,
-    'ProblemNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ProblemSolutionNumber:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Table:::max-width': 100%,
+    'Table:::table-layout': fixed,
+    'TableData:::text-align': center,
+    'TableData:::padding-right': $columnTablePadding,
+    'TableData:::padding-left': $columnTablePadding,
     'Section--MarginBottom:::margin-bottom': 0,
   ),
 ));
@@ -152,10 +171,14 @@ $ChapterIntroType: fullWidth;
     'Title:::font-family': (_ref: 'typography:::titleFont'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-linktolearning.svg")) no-repeat top left,
   ),
-  LearningObjectiveAbstract: (
+  LearningObjectives: (
     _selectors: ('[data-type="page"] > [data-type="abstract"]'),
-    'AbstractTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'ListDot:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'Paragraph:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'Paragraph:::font-family': (_ref: 'typography:::sansFont'),
+    'H3LearningObjectivesTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'H3LearningObjectivesTitle:::font-family': (_ref: 'typography:::sansFont'),
+    'ListItem:::font-family': (_ref: 'typography:::serifFont'),
+    'ListDot:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
   ProblemSolving:(
     _selectors: (".problem-solving"),
@@ -195,7 +218,7 @@ $ChapterIntroType: fullWidth;
 //tables
 @include add_settings((
   FakeTitleTable: (
-    _selectors: ('.os-table'),
+    _selectors: ('.os-table.top-titled'),
     'TableTitle:::color': (_ref: "colorMap:::physicsTableColor"),
   ),
 ));
@@ -203,8 +226,7 @@ $ChapterIntroType: fullWidth;
 @include use('BookRoot', "common:::BookRoot");
 @include use('UnitToc', 'carnival:::UnitToc');
 @include use('UnitTitle', 'common:::Hidden');
-@include use('Chapter', 'carnival:::Chapter');
-@include use('Module', 'carnival:::ModuleShape');
+@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape');
 @include use('Footnotes', 'carnival:::FootnotesShape');
 @include use('FootnoteCall', 'carnival:::FootnotesCallShape');
 @include use('Index', 'carnival:::IndexShape');
@@ -217,8 +239,8 @@ $ChapterIntroType: fullWidth;
 @include use('FullWidthChapterIntro', 'carnival:::FullWidthChapterIntroShape');
 @include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
 @include use('ProblemSolving', 'carnival:::IconNoteShape');
-@include use('FigureContainer', 'carnival:::Figure');
-@include use('LearningObjectiveAbstract', 'carnival:::LearningObjectiveAbstractShape');
+@include use('Figure', 'carnival:::FigureShape');
+@include use('LearningObjectives', 'carnival:::LearningObjectivesShape');
 @include use('CheckYourUnderstandingNote', 'carnival:::IconCondensedShape');
 @include use('DefaultNoClassNote', 'carnival:::BoxedNoteShape');
 @include use('Example', 'carnival:::IconNoteShape');
