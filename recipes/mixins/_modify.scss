@@ -438,6 +438,24 @@
   }
 }
 
+@mixin modify_CoreqSkillsTitle($coreqSkillsTitleContent) {
+  .coreq-skills {
+    @include utils_title($coreqSkillsTitleContent, bCoreqSkillsLabel);
+    &::after {
+      container: h3;
+      content: pending(bCoreqSkillsLabel);
+      class: "os-title";
+      move-to: bCoreqSkillsHeader;
+    }
+    &:deferred {
+      content: pending(bCoreqSkillsHeader) content();
+    }
+    > [data-type="title"] {
+      container: h4
+    }
+  }
+}
+
 @mixin _noteAtLevel($depth, $labelText, $replaceHeader, $headingLevel, $useHeader) {
   $minorLevel: '';
   @if $depth > 0 {
@@ -832,6 +850,12 @@
       $addedClass: if(release-flag-enabled(goodbye-warnings), string(missing, ''), string(missing));
       class: attr(class) $addedClass;
     }
+  }
+}
+
+@mixin modify_tagCoreqExercises() {
+  [data-type="page"] section.coreq-skills .practice-perfect [data-type="exercise"]:not(.unnumbered) {
+    class: "os-coreq-exercises" ;
   }
 }
 
