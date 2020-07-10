@@ -15,18 +15,52 @@ $FRAMEWORK_USED_SETTINGS: ();
 
 /// @group debug
 @mixin debug_settings() {
-  @debug "All available settings (last-added is on top) =>";
+  @debug "// All available settings (last-added is on top) =>";
   $already_defined: ();
   @each $settings in $FRAMEWORK_SETTINGS_MANIFEST_GLOBAL {
-    @debug "=== Clump Start ===";
+    @debug "// === Clump Start ===";
     @each $key, $value in flatten_keep_references($settings) {
       @if map-get($already_defined, $key) {
-        @debug "~~#{$key} : #{$value}~~ (overridden above)";
+        @debug "// (overridden above) ~~`#{$key}` : `#{$value}`~~ (overridden above)";
       } @else {
-        @debug "#{$key} : #{$value}";
+        @debug "stuff.things.push(['#{$key}', #{to_json($value)}])";
       }
       $already_defined: map-merge($already_defined, ($key: true));
     }
+  }
+}
+
+@function to_json($obj) {
+  $type: type-of($obj);
+  @if ($type == 'null')        { @return "null"; }
+  @else if ($type == 'bool')   { @return $obj; }
+  @else if ($type == 'string') { @return "`#{$obj}`"; }
+  @else if ($type == 'color')  { @return "`#{$obj}`"; }
+  @else if ($type == 'number') {
+    @if (unitless($obj)) { // math.is-unitless($obj)
+      @return $obj;
+    } @else {
+      $unit: unit($obj); // math.unit($obj);
+      $unit-len: str-length($unit);
+      $num: str-slice("#{$obj}", 1, -1 - $unit-len);
+      @return "[#{$num}, '#{$unit}']";
+    }
+  } @else if ($type == 'list') {
+    $ret: '[';
+    @each $item in $obj {
+      $ret: "#{$ret}, #{to_json($item)}"
+    }
+    @return "#{$ret}]";
+  
+  } @else if ($type == 'map') {
+      $ret: '{';
+      @each $key, $value in $obj {
+        $ret: "#{$ret} '#{$key}': #{to_json($value)},"
+      }
+      @return "#{$ret}}";
+  
+    } @else {
+    @error 'Unsupported type'
   }
 }
 

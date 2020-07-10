@@ -43,7 +43,7 @@ try {
     importer: [importOnce()],
     functions: {
       'PLATFORM()': getPlatform,
-      'toDataUri($type, $path)': toDataUri
+      // 'toDataUri($type, $path)': toDataUri
     },
     sourceMap: true,
     outputStyle: 'nested',
