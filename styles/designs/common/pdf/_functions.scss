@@ -76,9 +76,9 @@
 @function exerciseChildContainer($childSpecs) {
   $child: map-get($childSpecs, child);
   $name: map-get($childSpecs, name);
-  $hasImageOnTop: map-get($childSpecs, hasImageOnTop);
-
-  @if $hasImageOnTop == true {
+  $hasImageTableOnTop: map-get($childSpecs, hasImageTableOnTop);
+  
+  @if $hasImageTableOnTop == true {
     @return (
       _name: #{$name},
       _subselector: ' .os-#{$child}-container.has-first-element',
@@ -87,6 +87,7 @@
           vertical-align: bottom,
           padding-top: v-spacing(1),
           width: 100%,
+          padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
       ),
     );
   } @else {
@@ -96,6 +97,8 @@
       _properties:(
           display: table-cell,
           width: 100%,
+          padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
+          vertical-align: enum('ValueSet:::OPTIONAL'), // used in Answer Key
       ),
     );
   }
