@@ -168,6 +168,43 @@
   }
 }
 
+@mixin number_numberCustomExamples($customClass, $exampleTitleContent, $exampleCustomTitleContent, $solutionTitleContent, $commentaryTitleContent) {
+  [data-type="example"] {
+    &:not(.#{$customClass}) {
+      @include utils_title($exampleTitleContent, bExampleLabel);
+      &::after {
+        container: div;
+        content: pending(bExampleLabel);
+        class: "os-title";
+        move-to: bExampleHeader;
+      }
+      &:deferred {
+        content: pending(bExampleHeader) content();
+      }
+    }
+    &.#{$customClass} {
+      @include utils_title($exampleCustomTitleContent, bExampleLabel);
+      &::after {
+        container: div;
+        content: pending(bExampleLabel);
+        class: "os-title";
+        move-to: bExampleHeader;
+      }
+      &:deferred {
+        content: pending(bExampleHeader) content();
+      }
+    }
+    [data-type="solution"] {
+      @include utils_title($solutionTitleContent, null, div, "solution-title");
+    }
+    @if $commentaryTitleContent {
+      [data-type="commentary"] {
+        @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+      }
+    }
+  }
+}
+
 @mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent,$commentaryTitleContent, $appendixTitleContent) {
   [data-type="chapter"] {
     @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $commentaryTitleContent);

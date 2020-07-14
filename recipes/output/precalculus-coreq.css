@@ -418,6 +418,9 @@
 :pass(0) [data-type="page"] section.coreq-skills .practice-perfect [data-type="exercise"]:not(.unnumbered) {
   class: "os-coreq-exercises"; }
 
+:pass(0) [data-type="page"] section.coreq-skills [data-type="example"] {
+  class: attr(class) "os-coreq-element"; }
+
 :pass(0) div[data-type="metadata"] > [data-type="document-title"] {
   node-set: page-title; }
 
@@ -897,30 +900,57 @@
   container: h4; }
 
 :pass(3) div[data-type="page"], :pass(3) .appendix {
-  counter-reset: exampleInSection; }
+  counter-reset: exampleNotCoreq; }
 
-:pass(3) section > [data-type="example"] {
-  counter-increment: exampleInSection; }
+:pass(3) section > [data-type="example"]:not(.os-coreq-element) {
+  counter-increment: exampleNotCoreq; }
 
-:pass(3) [data-type="example"]::before {
+:pass(3) .coreq-skills {
+  counter-reset: exampleCoreq; }
+
+:pass(3) [data-type="example"].os-coreq-element {
+  counter-increment: exampleCoreq; }
+
+:pass(3) [data-type="example"]:not(.os-coreq-element)::before {
   container: span;
   content: "Example ";
   class: os-title-label;
   move-to: bExampleLabel; }
 
-:pass(3) [data-type="example"]::before {
+:pass(3) [data-type="example"]:not(.os-coreq-element)::before {
   container: span;
-  content: counter(exampleInSection);
+  content: counter(exampleNotCoreq);
   class: os-number;
   move-to: bExampleLabel; }
 
-:pass(3) [data-type="example"]::after {
+:pass(3) [data-type="example"]:not(.os-coreq-element)::after {
   container: div;
   content: pending(bExampleLabel);
   class: "os-title";
   move-to: bExampleHeader; }
 
-:pass(3) [data-type="example"]:deferred {
+:pass(3) [data-type="example"]:not(.os-coreq-element):deferred {
+  content: pending(bExampleHeader) content(); }
+
+:pass(3) [data-type="example"].os-coreq-element::before {
+  container: span;
+  content: "Example ";
+  class: os-title-label;
+  move-to: bExampleLabel; }
+
+:pass(3) [data-type="example"].os-coreq-element::before {
+  container: span;
+  content: counter(exampleCoreq);
+  class: os-number;
+  move-to: bExampleLabel; }
+
+:pass(3) [data-type="example"].os-coreq-element::after {
+  container: div;
+  content: pending(bExampleLabel);
+  class: "os-title";
+  move-to: bExampleHeader; }
+
+:pass(3) [data-type="example"].os-coreq-element:deferred {
   content: pending(bExampleHeader) content(); }
 
 :pass(3) [data-type="example"] [data-type="solution"]::before {
@@ -1562,11 +1592,11 @@
 :pass(10) .os-eoc [data-type="exercise"] {
   counter-increment: exercise; }
 
-:pass(10) div[data-type="page"], :pass(10) .appendix {
-  counter-reset: exampleInSection; }
+:pass(10) [data-type="chapter"], :pass(10) .appendix {
+  counter-reset: example; }
 
-:pass(10) section > [data-type="example"] {
-  counter-increment: exampleInSection; }
+:pass(10) div[data-type="chapter"] [data-type="example"], :pass(10) .appendix [data-type="example"] {
+  counter-increment: example; }
 
 :pass(10) [data-type="chapter"], :pass(10) .appendix {
   counter-reset: equation; }

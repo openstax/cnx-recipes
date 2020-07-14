@@ -70,6 +70,7 @@
   }
   @if $Config_PartType_CoreqSkills != () {
     @include modify_tagCoreqExercises();
+    @include modify_tagCoreqElement('[data-type="example"]');
   }
   @include modify_syncTitlesFromCollection();
 }
@@ -216,10 +217,21 @@
         @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $commentaryTitleContent, $apTitleContent);
       } @else {
         @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
-      }      
+      }
     } @else {
       @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
     }
+  }
+
+  @if $Config_CustomExample != () {
+    $customClass: map-get($Config_CustomExample, customClass);
+    $titleContent:  map-get($Config_CustomExample, titleContent);
+    $customTitleContent:  map-get($Config_CustomExample, customTitleContent);
+    $solutionTitleContent:  map-get($Config_CustomExample, solutionTitleContent);
+    $commentaryTitleContent:  map-get($Config_CustomExample, commentaryTitleContent);
+
+    @include count_countCustomExamples(exampleNotCoreq, exampleCoreq);
+    @include number_numberCustomExamples($customClass, $titleContent, $customTitleContent, $solutionTitleContent, $commentaryTitleContent)
   }
 
   // Number equations if they have a titleContent
