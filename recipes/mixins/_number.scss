@@ -239,18 +239,20 @@
   }
 }
 
-@mixin number_setCaptions($setFigTableCaptions, $labeling, $labelingAp, $labelingPr: null) {
+@mixin number_setCaptions($setFigTableCaptions, $labeling, $labelingAp, $labelingPr: null, $labelingCustom: null) {
   $captionType:         map-get($setFigTableCaptions, captionType);
   $defaultContainer:    map-get($setFigTableCaptions, defaultContainer);
   $hasCaption:          map-get($setFigTableCaptions, hasCaption);
   $hasTitle:            map-get($setFigTableCaptions, hasTitle);
   $exceptionClassNames: map-get($setFigTableCaptions, exceptionClassNames);
+  $customClass:         map-get($setFigTableCaptions, customClass);
   $hasTopTitle:         map-get($setFigTableCaptions, hasTopTitle);
 
   // $noTitleContent: (); // For the exceptions, this is the "titleContent" that will be used
 
   @include validate_enum($captionType, $CAPTION__PREFIX__);
   @include validate_typeOptional($exceptionClassNames, list);
+  @include validate_typeOptional($customClass, string);
   // These selectors are of the form:
   // `table:not(.unnumbered):not(.custom1):not(.custom2)` (everything that is not an exception)
   // `table.unnumbered, table.custom1, table.custom2`     (everything that is an exception)
@@ -280,7 +282,16 @@
 
   [data-type="chapter"] {
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
-      @include utils_title($labeling, bCaption);
+      @if $customClass {
+        &:not(.#{$customClass}) {
+          @include utils_title($labeling, bCaption);
+        }
+        &.#{$customClass} {
+          @include utils_title($labelingCustom, bCaption);
+        }
+      } @else {
+        @include utils_title($labeling, bCaption);
+      }
       @if $captionType == $CAPTION_TABLE {
         @if ($hasTopTitle) {
           &.top-titled {

@@ -212,6 +212,19 @@
   );
 }
 
+@mixin count_countCustomSectionTables($firstName, $secondName, $exceptionClass, $customResetSelector) {
+  @include _count(
+    $firstName,
+    ':not(table) > table:not(.unnumbered):not(.#{$exceptionClass})',
+    '[data-type="page"], [data-type="composite-page"], .appendix, .preface'
+  );
+  @include _count(
+    $secondName,
+    ':not(table) > table.#{$exceptionClass}',
+    '.#{$customResetSelector}'
+  );
+}
+
 /// A basic mixin for counting figures using css counters
 /// @arg {Text} $name - Name of the css counter that will control figure numbering
 /// @group count
@@ -231,6 +244,19 @@
     $name,
     ':not(figure) > figure:not(.unnumbered)',
     '[data-type="page"], [data-type="composite-page"], .appendix, .preface'
+  );
+}
+
+@mixin count_countCustomSectionFigures($firstName, $secondName, $exceptionClass, $customResetSelector) {
+  @include _count(
+    $firstName,
+    ':not(figure) > figure:not(.unnumbered):not(.#{$exceptionClass})',
+    '[data-type="page"], [data-type="composite-page"], .appendix, .preface'
+  );
+  @include _count(
+    $secondName,
+    ':not(figure) > figure.#{$exceptionClass}',
+    '.#{$customResetSelector}'
   );
 }
 
