@@ -68,6 +68,9 @@
   @if $Config_hasStimuli {
     @include modify_tagStimulusExercises();
   }
+  @if $Config_PartType_CoreqSkills != () {
+    @include modify_tagCoreqExercises();
+  }
   @include modify_syncTitlesFromCollection();
 }
 
@@ -186,6 +189,11 @@
     @include count_endNotesLinks(endNotesLinks);
     @include number_endNotes(endNotes, endNotesLinks);
   }
+  @if $Config_PartType_CoreqSkills != () {
+    $titleContent:  map-get($Config_PartType_CoreqSkills, titleContent);
+
+    @include modify_CoreqSkillsTitle($titleContent);
+  }
   @if release-flag-enabled(subtitled-examples) {
     @include modify_exampleTitle();
   }
@@ -194,6 +202,7 @@
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
+    $commentaryTitleContent:  map-get($Config_PartType_Example, commentaryTitleContent);
     $resetAt: map-get($Config_PartType_Example, resetAt);
 
     @if $resetAt == moduleReset {
@@ -204,12 +213,12 @@
     @if release-flag-enabled(appendix-has-numbered-examples) {
       @if map-has-key($Config_PartType_Example, apTitleContent) {
         $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
-        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $apTitleContent);
+        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $commentaryTitleContent, $apTitleContent);
       } @else {
-        @include number_numberContentExamples($titleContent, $solutionTitleContent);
+        @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
       }      
     } @else {
-      @include number_numberContentExamples($titleContent, $solutionTitleContent);
+      @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
     }
   }
 
@@ -370,7 +379,14 @@
     @include count_countStimulusExercises(stimuli, $Config_stimuliSectionClass);
     @include number_numberStimulusExercises($Config_ContentStimuliExercise_TitleContent);
   }
+  @if $Config_PartType_CoreqSkills != () {
+    $sectionClassName:  map-get($Config_PartType_CoreqSkills, sectionClassName);
+    $counterName:  map-get($Config_PartType_CoreqSkills, counterName);
+    $exerciseTitleContent: map-get($Config_PartType_CoreqSkills, exerciseTitleContent);
 
+    @include count_countCoreqExercises($counterName, $sectionClassName);
+    @include number_numberCoreqExercises($exerciseTitleContent);
+  }
 
   //After: createChapterComposites, numberEOCExercises
   @include count_countExercises(exerciseAll);
@@ -646,7 +662,7 @@
 }
 :pass(14) {
   @include toc_navTOCUnwrap();
-  @if TEMPLATE() == "TEMPLATE1" {
+  @if TEMPLATE() == "TEMPLATE1" or TEMPLATE() == "TEMPLATE2" {
     @include modify_groupChapOutlineIntroContent();
   }
 }

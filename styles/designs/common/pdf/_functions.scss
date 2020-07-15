@@ -76,9 +76,9 @@
 @function exerciseChildContainer($childSpecs) {
   $child: map-get($childSpecs, child);
   $name: map-get($childSpecs, name);
-  $hasImageOnTop: map-get($childSpecs, hasImageOnTop);
-
-  @if $hasImageOnTop == true {
+  $hasImageTableOnTop: map-get($childSpecs, hasImageTableOnTop);
+  
+  @if $hasImageTableOnTop == true {
     @return (
       _name: #{$name},
       _subselector: ' .os-#{$child}-container.has-first-element',
@@ -87,6 +87,7 @@
           vertical-align: bottom,
           padding-top: v-spacing(1),
           width: 100%,
+          padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
       ),
     );
   } @else {
@@ -96,7 +97,29 @@
       _properties:(
           display: table-cell,
           width: 100%,
+          padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
+          vertical-align: enum('ValueSet:::OPTIONAL'), // used in Answer Key
       ),
     );
   }
+}
+
+//Function used in Chapter Intro to create Splash Image Background Component
+@function fullWidthBg($kind, $color) {
+  @return (
+      _name: "#{$kind}Bg",
+      _subselector: '::before',
+      _properties: (
+          content: "''",
+          background-color: $color,
+          position: absolute,
+          height: 100%,
+          width: enum('ValueSet:::REQUIRED'),
+          margin-left: enum('ValueSet:::REQUIRED'),
+          z-index: -1,
+          box-sizing: border-box,
+          padding: inherit,
+          top: 0,
+      ),
+  );
 }

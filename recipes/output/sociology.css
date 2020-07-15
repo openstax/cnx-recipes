@@ -1028,10 +1028,16 @@
 :pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) [data-type="abstract"] {
   move-to: outlineAbstract; }
 
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) section.learning-objectives > ul {
+  move-to: LO; }
+
 :pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
   class: "learning-objective";
-  content: pending(outlineAbstract);
+  content: pending(outlineAbstract) pending(LO);
   move-to: outlineLO; }
+
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) section.learning-objectives:deferred {
+  move-to: trash; }
 
 :pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
   class: "os-chapter-objective";
@@ -1339,12 +1345,12 @@
 :pass(10) :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered) {
   counter-increment: exerciseMaybeInContent; }
 
-:pass(10) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus) [data-type="problem"]::before {
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus):not(.os-coreq-exercises) [data-type="problem"]::before {
   container: span;
   content: counter(exerciseMaybeInContent);
   class: os-number; }
 
-:pass(10) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus) [data-type="problem"]::before {
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus):not(.os-coreq-exercises) [data-type="problem"]::before {
   container: span;
   content: "Exercise ";
   class: os-title-label; }
@@ -1694,7 +1700,8 @@
 :pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] [data-type="solution-title"] {
   container: h4; }
 
-:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"] {
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"],
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="commentary-title"] {
   container: h4; }
 
 :pass(10) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {

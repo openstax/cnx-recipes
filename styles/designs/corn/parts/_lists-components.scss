@@ -1,8 +1,14 @@
 $ListContainer: empty_wrapper(Container, '');
 
-$ListWrapper--FirstLevel: empty_wrapper(FirstLevel, ' > section');
-$ListWrapper--SecondLevel: empty_wrapper(SecondLevel, ' > section > section');
-$ListWrapper--ThirdLevel: empty_wrapper(ThirdLevel, ' > section > section > section');
+$SectionWrapper--FirstLevel: empty_wrapper(FirstLevel, ' > section');
+$SectionWrapper--SecondLevel: empty_wrapper(SecondLevel, ' > section > section');
+$SectionWrapper--ThirdLevel: empty_wrapper(ThirdLevel, ' > section > section > section');
+
+$DivWrapper--FirstLevel: empty_wrapper(FirstLevel, ' > div');
+$DivWrapper--SecondLevel: empty_wrapper(SecondLevel, ' > div > div');
+$DivWrapper--ThirdLevel: empty_wrapper(ThirdLevel, ' > div > div > div');
+
+$ParaWrapper--FirstLevel: empty_wrapper(FirstLevel, ' > p');
 
 $UnorderedList--FirstLevel: (
     _name: "FirstLevelUnorderedList",
@@ -45,10 +51,64 @@ $UnorderedList--LearningObjectives: (
     )
 );
 
-$UnorderedList--Unstyled: ( //used in Media note
+//Circled Lists
+$CircledList__Token: (
+    _name: "CircledListToken",
+    _subselector: " > .token",
+    _properties:(
+        color: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(3),
+        margin-right: h-spacing(1),
+        line-height: line-height(3),
+        vertical-align: middle,
+    )
+);
+
+$CircledList: (
+    _name: "OrderedCircledList",
+    _subselector: " > .circled",
+    _properties:(
+        display: inline,
+        list-style-type: none,
+        padding-right: .5rem,
+    )
+);
+
+$CircledList__Item: (
+    _name: "CircledListItem",
+    _subselector: " > li",
+    _properties:(
+       padding-right: column-v-spacing(1),
+       display: inline-block,
+    )
+);
+
+// Unstyled lists
+$UnorderedList--Unstyled: ( //used in Media Note
     _name: "UnstyledUnorderedList",
     _subselector: " > ul",
     _properties:(
         list-style-type: none,
+    )
+);
+
+//Stepwise lists
+$OrderedList--Stepwise: empty_wrapper(StepwiseList, ' ol.os-stepwise');
+
+$OrderedList--Stepwise__Item: (
+    _name: "StepwiseListItem",
+    _subselector: " > li",
+    _properties:(
+        display: flex,
+        flex-direction: row,
+    )
+);
+
+$OrderedList--Stepwise__Token: (
+    _name: "StepwiseListToken",
+    _subselector: " > .os-stepwise-token",
+    _properties:(
+        flex-shrink: 0,
+        margin-right: h-spacing(1),
     )
 );

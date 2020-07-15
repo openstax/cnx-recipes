@@ -913,6 +913,17 @@
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
 
+:pass(3) [data-type="example"] [data-type="commentary"]::before {
+  container: span;
+  content: "Analysis";
+  class: os-title-label;
+  move-to: div-TITLECONTAINER; }
+
+:pass(3) [data-type="example"] [data-type="commentary"]::before {
+  container: div;
+  data-type: "commentary-title";
+  content: pending(div-TITLECONTAINER); }
+
 :pass(3) [data-type="page"], :pass(3) .appendix {
   counter-reset: try; }
 
@@ -1078,9 +1089,6 @@
   class: attr(class) " unnumbered"; }
 
 :pass(3) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
-  class: attr(class) " unnumbered"; }
-
-:pass(3) .introduction .splash:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
 
 :pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
@@ -1334,7 +1342,7 @@
   move-to: note-try-header; }
 
 :pass(9) [data-type="chapter"]::after {
-  class: "os-try-solution-area";
+  class: "os-try-solution-area os-module-reset-solution-area";
   content: pending(note-try-header) pending(note-solution-SECTIONS);
   move-to: note-solution-GETCHAPTER; }
 
@@ -1956,7 +1964,8 @@
 :pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="solution"] [data-type="solution-title"] {
   container: h4; }
 
-:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"] {
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="title"],
+:pass(10) [data-type="chapter"] [data-type="page"] [data-type="example"] [data-type="commentary"] > [data-type="commentary-title"] {
   container: h4; }
 
 :pass(10) [data-type="composite-page"].os-eoc > section > a [data-type="document-title"] {
@@ -2008,6 +2017,12 @@
 
 :pass(10) .appendix > section > section > [data-type="title"], :pass(10) .appendix > section > section [data-type="document-title"] {
   container: h3; }
+
+:pass(10) section.coreq-skills {
+  move-to: trash; }
+
+:pass(10) [data-type="example"] [data-type="commentary"] > [data-type="title"] {
+  move-to: trash; }
 
 :pass(11) .os-index-link-separator:last-child {
   move-to: trash; }
@@ -2419,6 +2434,24 @@
   string-set: tableSummary content();
   move-to: trash; }
 
+:pass(12) [data-type="exercise"]:not(.unnumbered) .os-problem-container > [data-type="media"]:first-child {
+  class: attr(class) " first-element"; }
+
+:pass(12) .os-eob [data-type="solution"] .os-solution-container > [data-type="media"]:first-child {
+  class: attr(class) " first-element"; }
+
+:pass(12) [data-type="exercise"]:not(.unnumbered) .os-problem-container > .os-table:first-child {
+  class: attr(class) " first-element"; }
+
+:pass(12) .os-eob [data-type="solution"] .os-solution-container > .os-table:first-child {
+  class: attr(class) " first-element"; }
+
+:pass(12) [data-type="exercise"]:not(.unnumbered) .os-problem-container > ol:first-child > li:first-child > [data-type="media"] {
+  class: attr(class) " first-element"; }
+
+:pass(12) .os-eob [data-type="solution"] .os-solution-container > ol:first-child > li:first-child > [data-type="media"] {
+  class: attr(class) " first-element"; }
+
 :pass(13) nav#toc {
   content: ''; }
   :pass(13) nav#toc::after {
@@ -2483,6 +2516,21 @@
 
 :pass(14) nav#toc li > a:deferred {
   content: pending(title-spans); }
+
+:pass(14) .introduction .os-chapter-outline {
+  move-to: chap-outline; }
+
+:pass(14) .introduction > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
+  move-to: intro-text; }
+
+:pass(14) .introduction::after {
+  content: pending(intro-text);
+  move-to: intro-body;
+  class: "intro-text"; }
+
+:pass(14) .introduction:deferred::after {
+  content: pending(chap-outline) pending(intro-body);
+  class: "intro-body"; }
 
 :pass(15) nav#toc > ol .os-toc-chapter > a > .os-part-text {
   move-to: partString; }

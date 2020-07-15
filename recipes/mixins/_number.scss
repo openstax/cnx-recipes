@@ -54,7 +54,7 @@
 /// @group number
 
 @mixin number_numberContentExercises($exerciseTitleContent, $solutionTitleContent, $exerciseTitleContentAp, $solutionTitleContentAp) {
-  [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus) {
+  [data-type="chapter"] [data-type="page"] [data-type="exercise"]:not(.unnumbered):not(.os-hasStimulus):not(.os-coreq-exercises) {
     @if $exerciseTitleContent {
       [data-type="problem"] {
         @include utils_title($exerciseTitleContent);
@@ -85,6 +85,11 @@
         @include utils_title($exerciseTitleContent);
   }
 }
+@mixin number_numberCoreqExercises($exerciseTitleContent) {
+  [data-type="page"] section.coreq-skills [data-type="exercise"].os-coreq-exercises [data-type="problem"] {
+    @include utils_title($exerciseTitleContent);
+  }
+}
 //EOS composite pages must be created before this runs
 @mixin number_numberEOSExercises($exerciseTitleContent, $solutionTitleContent) {
   .os-eos [data-type="exercise"] {
@@ -109,7 +114,7 @@
   }
 }
 
-@mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent) {
+@mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $commentaryTitleContent) {
   @if release-flag-enabled(subtitled-examples) {
     [data-type="example"] {
       @include utils_title($exampleTitleContent, bExampleLabel);
@@ -124,6 +129,11 @@
       }
       [data-type="solution"] {
         @include utils_title($solutionTitleContent, null, div, "solution-title");
+      }
+      @if $commentaryTitleContent {
+        [data-type="commentary"] {
+          @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+        }
       }
     }
   } @else {
@@ -149,16 +159,21 @@
       [data-type="solution"] {
         @include utils_title($solutionTitleContent, null, div, "solution-title");
       }
+      @if $commentaryTitleContent {
+        [data-type="commentary"] {
+          @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+        }
+      }
     }
   }
 }
 
-@mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent, $appendixTitleContent) {
+@mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent,$commentaryTitleContent, $appendixTitleContent) {
   [data-type="chapter"] {
-    @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent);
+    @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $commentaryTitleContent);
   }
   .appendix {
-    @include number_numberContentExamples($appendixTitleContent, $solutionTitleContent);
+    @include number_numberContentExamples($appendixTitleContent, $solutionTitleContent, $commentaryTitleContent);
   }
 }
 
