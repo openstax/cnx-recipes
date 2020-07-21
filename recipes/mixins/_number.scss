@@ -209,11 +209,13 @@
   $hasTitle:            map-get($setFigTableCaptions, hasTitle);
   $exceptionClassNames: map-get($setFigTableCaptions, exceptionClassNames);
   $hasTopTitle:         map-get($setFigTableCaptions, hasTopTitle);
+  $hasTopCaption:       map-get($setFigTableCaptions, hasTopCaption);
 
   // $noTitleContent: (); // For the exceptions, this is the "titleContent" that will be used
 
   @include validate_enum($captionType, $CAPTION__PREFIX__);
   @include validate_typeOptional($exceptionClassNames, list);
+  @include validate_typeOptional($hasTopCaption, bool);
   // These selectors are of the form:
   // `table:not(.unnumbered):not(.custom1):not(.custom2)` (everything that is not an exception)
   // `table.unnumbered, table.custom1, table.custom2`     (everything that is an exception)
@@ -261,9 +263,22 @@
               }
             }
           }
+        } 
+        @if ($hasTopCaption) {
+          &.top-captioned {
+            #{$defaultContainer} {
+              [data-type="title"] {
+                string-set: TopCaptionContent content();
+                move-to: trash;
+              }
+              &:deferred {
+                move-to: trash;
+              }
+            }
+          }
         }
       }
-      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
+      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle, $hasTopCaption);
     }
     @include trashUnnumberedCaption($elementName, $defaultContainer);
   }
@@ -271,7 +286,7 @@
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered),
     > #{$elementName}:not(.unnumbered) {
       @include utils_title($labelingAp, bCaption);
-      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
+      @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle, $hasTopCaption);
       @if ($hasTopTitle) {
         &.top-titled {
           //this will have to be rewritten after all the content has been updated to contain the title within the title instead of the hacky first header in the table.
@@ -296,7 +311,7 @@
     .preface {
       :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
         @include utils_title($labelingPr, bCaption);
-        @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle);
+        @include setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle, $hasTopCaption);
       }
       @include trashUnnumberedCaption($elementName, $defaultContainer);
     }
@@ -379,7 +394,7 @@
   }
 }
 
-@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle) {
+@mixin setCaptionsHelper($captionType, $defaultContainer, $hasCaption, $hasTitle, $hasTopTitle, $hasTopCaption) {
 
   @if ($hasCaption) {
     #{$defaultContainer} {
@@ -429,6 +444,15 @@
         }
       }
     }
+    @if ($hasTopCaption) {
+      &.top-captioned {
+        &::after {
+          class: "os-top-caption";
+          content: string(TopCaptionContent);
+          move-to: tableTopCaption;
+        }
+      }
+    }
   }
     &::outside {
     @if $captionType == $CAPTION_TABLE {
@@ -441,6 +465,8 @@
     container: div;
     @if $hasTopTitle {
       content: pending(tableTopTitle) content() pending(bCaptionContainer);
+    } @else if $hasTopCaption {
+      content: pending(tableTopCaption) content() pending(bCaptionContainer);
     } @else {
       content: content() pending(bCaptionContainer);
     }

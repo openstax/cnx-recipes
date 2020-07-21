@@ -442,6 +442,9 @@
 :pass(0) div[data-type="page"] > [data-type="document-title"] {
   content: string(page-title); }
 
+:pass(0) table {
+  class: "top-captioned"; }
+
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
   content: content(); }
@@ -1483,21 +1486,12 @@
   class: os-divider;
   move-to: bCaption; }
 
-:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption {
-  container: span;
-  class: "os-caption";
-  move-to: bCaptionContent; }
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered).top-captioned caption [data-type="title"] {
+  string-set: TopCaptionContent content();
+  move-to: trash; }
 
-:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::after {
-  container: span;
-  class: 'os-divider';
-  content: ' ';
-  move-to: bCaptionDivider; }
-
-:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption [data-type="title"] {
-  container: span;
-  class: "os-title";
-  move-to: bCaptionTitle; }
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered).top-captioned caption:deferred {
+  move-to: trash; }
 
 :pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::after {
   container: div;
@@ -1505,10 +1499,15 @@
   content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
   move-to: bCaptionContainer; }
 
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered).top-captioned::after {
+  class: "os-top-caption";
+  content: string(TopCaptionContent);
+  move-to: tableTopCaption; }
+
 :pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopCaption) content() pending(bCaptionContainer); }
 
 :pass(10) [data-type="chapter"] > table.unnumbered caption {
   move-to: trash; }
@@ -1534,25 +1533,6 @@
   class: os-divider;
   move-to: bCaption; }
 
-:pass(10) .appendix :not(table) > table:not(.unnumbered) caption,
-:pass(10) .appendix > table:not(.unnumbered) caption {
-  container: span;
-  class: "os-caption";
-  move-to: bCaptionContent; }
-
-:pass(10) .appendix :not(table) > table:not(.unnumbered)::after,
-:pass(10) .appendix > table:not(.unnumbered)::after {
-  container: span;
-  class: 'os-divider';
-  content: ' ';
-  move-to: bCaptionDivider; }
-
-:pass(10) .appendix :not(table) > table:not(.unnumbered) caption [data-type="title"],
-:pass(10) .appendix > table:not(.unnumbered) caption [data-type="title"] {
-  container: span;
-  class: "os-title";
-  move-to: bCaptionTitle; }
-
 :pass(10) .appendix :not(table) > table:not(.unnumbered)::after,
 :pass(10) .appendix > table:not(.unnumbered)::after {
   container: div;
@@ -1560,11 +1540,17 @@
   content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
   move-to: bCaptionContainer; }
 
+:pass(10) .appendix :not(table) > table:not(.unnumbered).top-captioned::after,
+:pass(10) .appendix > table:not(.unnumbered).top-captioned::after {
+  class: "os-top-caption";
+  content: string(TopCaptionContent);
+  move-to: tableTopCaption; }
+
 :pass(10) .appendix :not(table) > table:not(.unnumbered)::outside,
 :pass(10) .appendix > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopCaption) content() pending(bCaptionContainer); }
 
 :pass(10) .appendix > table.unnumbered caption {
   move-to: trash; }
@@ -1587,32 +1573,21 @@
   class: os-divider;
   move-to: bCaption; }
 
-:pass(10) .preface :not(table) > table:not(.unnumbered) caption {
-  container: span;
-  class: "os-caption";
-  move-to: bCaptionContent; }
-
-:pass(10) .preface :not(table) > table:not(.unnumbered)::after {
-  container: span;
-  class: 'os-divider';
-  content: ' ';
-  move-to: bCaptionDivider; }
-
-:pass(10) .preface :not(table) > table:not(.unnumbered) caption [data-type="title"] {
-  container: span;
-  class: "os-title";
-  move-to: bCaptionTitle; }
-
 :pass(10) .preface :not(table) > table:not(.unnumbered)::after {
   container: div;
   class: "os-caption-container";
   content: pending(bCaption) pending(bCaptionTitle) pending(bCaptionDivider) pending(bCaptionContent);
   move-to: bCaptionContainer; }
 
+:pass(10) .preface :not(table) > table:not(.unnumbered).top-captioned::after {
+  class: "os-top-caption";
+  content: string(TopCaptionContent);
+  move-to: tableTopCaption; }
+
 :pass(10) .preface :not(table) > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopCaption) content() pending(bCaptionContainer); }
 
 :pass(10) .preface > table.unnumbered caption {
   move-to: trash; }
