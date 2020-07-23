@@ -226,13 +226,16 @@
   }
 
   @if $Config_CustomExample != () {
+    $firstCounterName: map-get($Config_CustomExample, firstCounterName);
+    $secondCounterName: map-get($Config_CustomExample, secondCounterName);
     $customClass: map-get($Config_CustomExample, customClass);
+    $customResetSelector: map-get($Config_CustomExample, customResetSelector);
     $titleContent:  map-get($Config_CustomExample, titleContent);
     $customTitleContent:  map-get($Config_CustomExample, customTitleContent);
     $solutionTitleContent:  map-get($Config_CustomExample, solutionTitleContent);
     $commentaryTitleContent:  map-get($Config_CustomExample, commentaryTitleContent);
 
-    @include count_countCustomExamples(exampleNotCoreq, exampleCoreq);
+    @include count_countCustomExamples($firstCounterName, $secondCounterName, $customClass, $customResetSelector);
     @include number_numberCustomExamples($customClass, $titleContent, $customTitleContent, $solutionTitleContent, $commentaryTitleContent)
   }
 
@@ -525,7 +528,13 @@
   }
 
   @if $Config_CustomExample != () {
-    @include count_countCustomExamples(exampleNotCoreq, exampleCoreq); // it has to repeated here to be on the same pass as setTargetLabels
+    $firstCounterName: map-get($Config_CustomExample, firstCounterName);
+    $secondCounterName: map-get($Config_CustomExample, secondCounterName);
+    $customClass: map-get($Config_CustomExample, customClass);
+    $customResetSelector: map-get($Config_CustomExample, customResetSelector);
+
+    // it has to be repeated here to be on the same pass as setTargetLabels
+    @include count_countCustomExamples($firstCounterName, $secondCounterName, $customClass, $customResetSelector);
   }
 
   @include count_countEquations(equation);
