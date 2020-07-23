@@ -168,6 +168,13 @@
   }
 }
 
+/// A mixin for numbering custom examples
+/// @arg {String} $customClass - string of the selector of the custom examples you want to number
+/// @arg {Map} $exampleTitleContent - map with title parts for examples WITHOUT special class
+/// @arg {Map} $exampleCustomTitleContent - map with title parts for examples WITH special class
+/// @arg {Map} $solutionTitleContent - map with title parts for solution within example
+/// @arg {Map} $commentaryTitleContent - map with title parts for commentary within example
+/// @group number
 @mixin number_numberCustomExamples($customClass, $exampleTitleContent, $exampleCustomTitleContent, $solutionTitleContent, $commentaryTitleContent) {
   [data-type="example"] {
     &:not(.#{$customClass}) {
@@ -252,7 +259,7 @@
 
   @include validate_enum($captionType, $CAPTION__PREFIX__);
   @include validate_typeOptional($exceptionClassNames, list);
-  @include validate_typeOptional($customClass, string);
+  @include validate_typeOptional($customClass, string); // used when tables, figures are numbered in a custom way, depending on class
   // These selectors are of the form:
   // `table:not(.unnumbered):not(.custom1):not(.custom2)` (everything that is not an exception)
   // `table.unnumbered, table.custom1, table.custom2`     (everything that is an exception)
