@@ -70,6 +70,9 @@
   }
   @if $Config_PartType_CoreqSkills != () {
     @include modify_tagCoreqExercises();
+    @include modify_tagCoreqElement('[data-type="example"]');
+    @include modify_tagCoreqElement('figure');
+    @include modify_tagCoreqElement('table');
   }
   @include modify_syncTitlesFromCollection();
 }
@@ -216,10 +219,24 @@
         @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $commentaryTitleContent, $apTitleContent);
       } @else {
         @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
-      }      
+      }
     } @else {
       @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
     }
+  }
+
+  @if $Config_CustomExample != () {
+    $firstCounterName: map-get($Config_CustomExample, firstCounterName);
+    $secondCounterName: map-get($Config_CustomExample, secondCounterName);
+    $customClass: map-get($Config_CustomExample, customClass);
+    $customResetSelector: map-get($Config_CustomExample, customResetSelector);
+    $titleContent:  map-get($Config_CustomExample, titleContent);
+    $customTitleContent:  map-get($Config_CustomExample, customTitleContent);
+    $solutionTitleContent:  map-get($Config_CustomExample, solutionTitleContent);
+    $commentaryTitleContent:  map-get($Config_CustomExample, commentaryTitleContent);
+
+    @include count_countCustomExamples($firstCounterName, $secondCounterName, $customClass, $customResetSelector);
+    @include number_numberCustomExamples($customClass, $titleContent, $customTitleContent, $solutionTitleContent, $commentaryTitleContent)
   }
 
   // Number equations if they have a titleContent
@@ -510,6 +527,16 @@
     @include count_countExamples(example);
   }
 
+  @if $Config_CustomExample != () {
+    $firstCounterName: map-get($Config_CustomExample, firstCounterName);
+    $secondCounterName: map-get($Config_CustomExample, secondCounterName);
+    $customClass: map-get($Config_CustomExample, customClass);
+    $customResetSelector: map-get($Config_CustomExample, customResetSelector);
+
+    // it has to be repeated here to be on the same pass as setTargetLabels
+    @include count_countCustomExamples($firstCounterName, $secondCounterName, $customClass, $customResetSelector);
+  }
+
   @include count_countEquations(equation);
   @include link_setTargetLabels($Config_SubtitleLabels);
   @include link_setTargetLabels($Config_TargetLabels);
@@ -540,22 +567,40 @@
   @include number_numberContentExercises($Config_ContentExercise_TitleContent, $Config_ContentSolution_TitleContent,
                                          $Config_ContentExercise_TitleContentAp, $Config_ContentSolution_TitleContentAp);
 
-  $resetAt: map-get($Config_SetTableCaption, resetAt);
-  @if $resetAt == moduleReset {
-    @include count_countSectionTables(table);
-  } @else {
-    @include count_countTables(table);
-  }
+  @if $Config_CustomFigureCaption != () and $Config_CustomTableCaption != () {
+    $firstCounterName: map-get($Config_CustomFigureCaption, firstCounterName);
+    $secondCounterName: map-get($Config_CustomFigureCaption, secondCounterName);
+    $customClass: map-get($Config_CustomFigureCaption, customClass);
+    $customResetSelector: map-get($Config_CustomFigureCaption, customResetSelector);
 
-  $resetAt: map-get($Config_SetFigureCaption, resetAt);
-  @if $resetAt == moduleReset {
-    @include count_countSectionFigures(figure);
-  } @else {
-    @include count_countFigures(figure);
-  }
+    @include count_countCustomSectionFigures($firstCounterName, $secondCounterName, $customClass, $customResetSelector);
+    @include number_setCaptions($Config_CustomFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr, $Config_PartType_Figure_CustomCaptionContent);
 
-  @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr);
-  @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr);
+    $firstCounterName: map-get($Config_CustomTableCaption, firstCounterName);
+    $secondCounterName: map-get($Config_CustomTableCaption, secondCounterName);
+    $customClass: map-get($Config_CustomTableCaption, customClass);
+    $customResetSelector: map-get($Config_CustomTableCaption, customResetSelector);
+
+    @include count_countCustomSectionTables($firstCounterName, $secondCounterName, $customClass, $customResetSelector);
+    @include number_setCaptions($Config_CustomTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr, $Config_PartType_Table_CustomCaptionContent);
+  } @else {
+    $resetAt: map-get($Config_SetTableCaption, resetAt);
+    @if $resetAt == moduleReset {
+      @include count_countSectionTables(table);
+    } @else {
+      @include count_countTables(table);
+    }
+
+    $resetAt: map-get($Config_SetFigureCaption, resetAt);
+    @if $resetAt == moduleReset {
+      @include count_countSectionFigures(figure);
+    } @else {
+      @include count_countFigures(figure);
+    }
+
+    @include number_setCaptions($Config_SetTableCaption, $Config_PartType_Table_CaptionContent, $Config_PartType_Table_CaptionContentAp, $Config_PartType_Table_CaptionContentPr);
+    @include number_setCaptions($Config_SetFigureCaption, $Config_PartType_Figure_CaptionContent, $Config_PartType_Figure_CaptionContentAp, $Config_PartType_Figure_CaptionContentPr);
+  }
 
   @if release-flag-enabled(trash-abstract-in-preface) {
     @include modify_trash('.preface [data-type="abstract"]');
