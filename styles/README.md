@@ -38,13 +38,22 @@ Let's assume we have an html document in the following form:
 
 ### Process
 
-Suppose we would like notes of `type-one` to be given an outlined grey box and a bold title, notes of `type-two` to be given an outlined green box, notes of `type-three` to be given a blue header and dark grey background and white text, and notes of `type-four` to match notes of `type-three`. Lastly, notes of `type-five` will be given an outlined red box.
+Suppose we would like the notes to have the following stylings:
+- `type-one` will be given an outlined grey box and a bold title
+- `type-two` will be given an outlined green box
+- `type-three` will be given a blue header and dark grey background and white text
+- `type-four` will match `type-three`
+- `type-five` will be given an outlined red box
 
-Let's make a couple observations about the proposed designs above. First, it would seem that notes of `type-one` and `type-two` follow the same HTML schema and have a similar design, but there needs to be a customization option for the box color and font weight. `type-three` and `type-four` are identical. `type-five` would initially seem to be the same as `type-one` or `type-two`, but we can notice that the schema for `type-five` does not include a title, so using the same design shape for these two notes would be over-engineering for a note of `type-five` as well as decrease coverage, since a `.type-five > title` selector would miss.
+Let's make a couple observations about the proposed designs above:
+- First, it would seem that notes of `type-one` and `type-two` follow the same HTML schema and have a similar design, but there needs to be a customization option for the box color and font weight. 
+- Next, `type-three` and `type-four` are identical. 
+- Finally, `type-five` would initially seem to be the same as `type-one` or `type-two`, but we can notice that the schema for `type-five` does not include a title, so using the same design shape for these two notes would be over-engineering for a note of `type-five` as well as decrease coverage, since a `.type-five > title` selector would miss.
 
 Following from the above, let's plan to make three shapes. First, one to accommodate notes `type-one` and `type-two`. Second, one to accommodate notes `type-three` and `type-four`. Last, one to accommodate only `type-five`. We will do our best to reuse common components where possible.
 
-Let's get started on the design. Enter the cnx-recipes directory, then make an SCSS file for our design
+Let's get started on the design by entering the cnx-recipes directory and making an SCSS file for our design.
+
 ```bash
 # bash
 mkdir -p ./styles/designs/example && touch ./styles/designs/example/_design.scss
@@ -74,9 +83,11 @@ Component -> Map (
 
 There are four main options for the values for properties in a shape, 3 of which are represented in the `ValueSet` enum: `OPTIONAL`, `REQUIRED`, and `GROUPED`. The last option is to set the property to a specific value. Let's explain these options:
 
-`NULLABLE` - Pick this option when it is an option for this property to not be used and you would like the value to be defined by the style author. For example, in notes `type-one` and `type-two`, the font weight can either be set to bold in `type-one` or not used (i.e. null) for `type-two`.
+`OPTIONAL` - Use this when the property is NOT necessary to display the element as desired or when a function that returns a component needs to be able to not include the property. For example, in notes `type-one` and `type-two`, the font weight can either be set to bold in `type-one` or not used for `type-two`. 
 
-`NOT_NULL` - Pick this option when the property must be present, but also must be determined by the style author. For example, we know that notes `type-one`, `type-two`, and `type-five` are outlined the same way, but with a different color. Thus the color property must be present, but it is up to the style author as to what the color should be.
+`REQUIRED` - Pick this option when the property must be present, but also must be determined by the style author. For example, we know that notes `type-one`, `type-two`, and `type-five` are outlined the same way, but with a different color. Thus the color property must be present, but it is up to the style author as to what the color should be.
+
+Setting the property to a specific value - Pick this option if the property must be present, and there is no variance in the property across all of its instances. Use this when the property and value for the property must be a certain way to maintain the integrity of the design. Most common for properties that define design layout, such as `display`, `position`, etc.
 
 `GROUPED` - Pick this option if it is desired for properties to share the same values. The `_groups` key of the superset can define a key and value, the key of which is the name for the group, and the value of which is the shared property value. For example, if we were to define our note border colors separately for some reason, we could group border-left|right|top|bottom-color together to `(enum('ValueSet:::GROUPED'), note-box-color)` and in `_groups` we add the entry `note-box-color: enum('ValueSet:::REQUIRED')`
 
@@ -181,33 +192,6 @@ Next, let's create shapes from these components using the framework provided mix
   )
 ));
 ```
-
-An alternative way to create shapes from components would be to inline the nesting instead of using `map-merge`. For example, we could write our Note--Boxed__Container component and Note--Boxed__Titled like so:
-```scss
-// _design.scss
-$Note--Boxed--Titled__Container: (
-  _name: 'container',
-  _subselector: '.note',
-  _properties: (
-    border-color: enum('ValueSet:::REQUIRED'),
-    border-style: solid
-  ),
-  _components: (
-    _name: 'title',
-    _subselector: ' > .title',
-    _properties: (
-      font-weight: enum('ValueSet:::OPTIONAL')
-    )
-  )
-);
-
-@include create_shape('BoxedNoteTitled', (
-  _components: (
-    $Note--Boxed--Titled__Container
-  )
-));
-```
-The tradeoff here is that we have sacrificed some flexibility and reusability for clarity and brevity(in some cases). In general, if a component has an inner component which is essential to its function and that inner component is not reused very often, go with the alternative "inline" nesting. If you are reusing a component in many places and ways, go with nesting the components within the `create_shape` mixin.
 
 That's it! We've now created a basic design to style the given HTML markup!
 
@@ -364,9 +348,3 @@ The preceding book file will yield some CSS, but we aren't yet finished. We have
 After we add this, we have successfully completed our design-driven book style! Link the compiled CSS to the markup and view the result!
 
 ![image of completed style in the browser](framework-tutorial.png)
-
-## REQUIRED/OPTIONAL/VALUE
-When deciding whether or not to make a property required, optional, or directly coded to a value. We can follow these rules generally:
-- Required: Use this when the property is necessary to display the element as desired, but the design creator cannot make this decision for the template creator. Most common for properties that do not define the layout of the design such as fonts and colors.
-- Optional: Use this when the property is NOT necessary to display the element as desired or when a function that returns a component needs to be able to not include the property.
-- Value: Use this when the property and value for the property must be a certain way to maintain the integrity of the design. Most common for properties that define design layout, such as `display`, `position`, etc.
