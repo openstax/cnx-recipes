@@ -81,13 +81,13 @@ Component -> Map (
 
 ### Property values
 
-There are four main options for the values for properties in a shape, 3 of which are represented in the `ValueSet` enum: `OPTIONAL`, `REQUIRED`, and `GROUPED`. The last option is to `set the property to a specific value`. Let's explain these options:
+There are four main options for the values for properties in a shape, 3 of which are represented in the `ValueSet` enum: `OPTIONAL`, `REQUIRED`, and `GROUPED`. The last option is to set the property to a specific value. Let's explain these options:
 
 `OPTIONAL` - Use this when the property is NOT necessary to display the element as desired or when a function that returns a component needs to be able to not include the property. For example, in notes `type-one` and `type-two`, the font weight can either be set to bold in `type-one` or not used for `type-two`. 
 
 `REQUIRED` - Pick this option when the property must be present, but also must be determined by the style author. For example, we know that notes `type-one`, `type-two`, and `type-five` are outlined the same way, but with a different color. Thus the color property must be present, but it is up to the style author as to what the color should be.
 
-`Setting the property to a specific value` - Pick this option if the property must be present, and there is no variance in the property across all of its instances. Use this when the property and value for the property must be a certain way to maintain the integrity of the design. Most common for properties that define design layout, such as `display`, `position`, etc.
+Setting the property to a specific value - Pick this option if the property must be present, and there is no variance in the property across all of its instances. Use this when the property and value for the property must be a certain way to maintain the integrity of the design. Most common for properties that define design layout, such as `display`, `position`, etc.
 
 `GROUPED` - Pick this option if it is desired for properties to share the same values. The `_groups` key of the superset can define a key and value, the key of which is the name for the group, and the value of which is the shared property value. For example, if we were to define our note border colors separately for some reason, we could group border-left|right|top|bottom-color together to `(enum('ValueSet:::GROUPED'), note-box-color)` and in `_groups` we add the entry `note-box-color: enum('ValueSet:::REQUIRED')`
 
