@@ -149,15 +149,51 @@ $Config_Notes: (
   PRECALCULUS COREQ CONFIG
 ==========================================================*/
 
-$Config_SetTableCaption: (captionType: $CAPTION_TABLE, resetAt: moduleReset, defaultContainer: caption, hasCaption: true, hasTitle: false, hasTopTitle: false);
-$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, resetAt: moduleReset, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
-$Config_PartType_Table_CaptionContent: (os-title-label: "Table ", os-number: counter(table), os-divider: ' ');
-$Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: counter(figure), os-divider: ' ');
-$_exampleTitleContent: (os-title-label: "Example ", os-number: counter(exampleInSection));
+$Config_PartType_Table_CaptionContent: (os-title-label: "Table ", os-number: counter(tableNotCoreq), os-divider: ' ');
+$Config_PartType_Table_CustomCaptionContent: (os-title-label: "Table ", os-number: counter(tableCoreq), os-divider: ' ');
+$Config_PartType_Table_CaptionContentAp: (os-title-label: "Table ", os-number: counter(appendix, upper-alpha) counter(tableNotCoreq), os-divider: " ");
+$Config_PartType_Table_CaptionContentPr: (os-title-label: "Table ", os-number: counter(tableNotCoreq), os-divider: " ");
+$Config_CustomTableCaption: (
+  captionType: $CAPTION_TABLE,  
+  defaultContainer: caption, 
+  hasCaption: true, 
+  hasTitle: false, 
+  hasTopTitle: false,
+  firstCounterName: tableNotCoreq,
+  secondCounterName: tableCoreq,
+  customClass: 'os-coreq-element',
+  customResetSelector: 'coreq-skills',
+);
+
+$Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: counter(figureNotCoreq), os-divider: ' ');
+$Config_PartType_Figure_CustomCaptionContent: (os-title-label: "Figure ", os-number: counter(figureCoreq), os-divider: ' ');
+$Config_PartType_Figure_CaptionContentAp: (os-title-label: "Figure ", os-number: counter(appendix, upper-alpha) counter(figureNotCoreq), os-divider: " ");
+$Config_PartType_Figure_CaptionContentPr: (os-title-label: "Figure ", os-number: counter(figureNotCoreq), os-divider: " ");
+$Config_CustomFigureCaption: (
+  captionType: $CAPTION_FIGURE,  
+  defaultContainer: figcaption, 
+  hasCaption: true, 
+  hasTitle: true,
+  firstCounterName: figureNotCoreq,
+  secondCounterName: figureCoreq,
+  customClass: 'os-coreq-element',
+  customResetSelector: 'coreq-skills',
+);
+
+$_exampleTitleContent: (os-title-label: "Example ", os-number: counter(exampleNotCoreq));
+$_exampleCustomTitleContent: (os-title-label: "Example ", os-number: counter(exampleCoreq));
 $_exampleSolutionTitleContent: (os-title-label: "Solution");
 $_exampleCommentaryTitleContent: (os-title-label: "Analysis");
-$Config_PartType_Example: (moveTo: $AREA_NONE, resetAt: moduleReset, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent, commentaryTitleContent: $_exampleCommentaryTitleContent);
-
+$Config_CustomExample: (
+  firstCounterName: exampleNotCoreq,
+  secondCounterName: exampleCoreq,
+  customClass: 'os-coreq-element',
+  customResetSelector: 'coreq-skills',
+  titleContent: $_exampleTitleContent,
+  customTitleContent: $_exampleCustomTitleContent,
+  solutionTitleContent: $_exampleSolutionTitleContent,
+  commentaryTitleContent: $_exampleCommentaryTitleContent,
+);
 
 $_coreqSkillsTitleContent: (os-title-label: "Corequisite Skills");
 $_coreqExerciseTitleContent: (os-divider: ". ", os-number: counter(coreq));
@@ -175,23 +211,31 @@ $Config_FirstElements: (
 );
 
 $Config_TargetLabels: (
-  (selector: '[data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered)', labelText: "Exercise " counter(chapter) "." counter(exerciseMaybeInContent)),
+  (selector: '[data-type="page"] :not([data-type="example"]) > [data-type="exercise"]:not(.unnumbered):not(.os-coreq-exercises)', labelText: "Exercise " counter(chapter) "." counter(exerciseMaybeInContent)),
+  (selector: '[data-type="page"] :not([data-type="example"]) > [data-type="exercise"].os-coreq-exercises', labelText: "Exercise " counter(chapter) "." counter(coreq)),
   (selector: '.os-eoc [data-type="exercise"]',                                  labelText: "Exercise " counter(chapter) "." counter(exercise)),
-  (selector: 'div[data-type="chapter"] [data-type="example"]',                  labelText: "Example " counter(exampleInSection)),
+  (selector: 'div[data-type="chapter"] [data-type="example"]:not(.os-coreq-element)', labelText: "Example " counter(exampleNotCoreq)),
+  (selector: 'div[data-type="chapter"] [data-type="example"].os-coreq-element', labelText: "Example " counter(exampleCoreq)),
   (selector: 'div[data-type="chapter"] [data-type="equation"]:not(.unnumbered)',labelText: "Equation " counter(chapter) "." counter(equation)),
-  (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered)',      labelText: "Table " counter(table)),
-  (selector: '.appendix :not(table) > table:not(.unnumbered)',                  labelText: "Table " counter(appendix, upper-alpha) counter(table)),
-  (selector: '.appendix > table:not(.unnumbered)',                              labelText: "Table " counter(appendix, upper-alpha) counter(table)),
-  (selector: '.preface :not(table) > table:not(.unnumbered)',                   labelText: "Table " counter(table)),
-  (selector: '.preface :not(figure) > figure:not(.unnumbered)',                 labelText: "Figure " counter(figure)),
-  (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered)',    labelText: "Figure " counter(figure)),
-  (selector: '.appendix :not(figure) > figure:not(.unnumbered)',                labelText: "Figure " counter(figure)),
-  (selector: '.appendix > figure:not(.unnumbered)',                             labelText: "Figure " counter(figure))
+  (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered):not(.os-coreq-element)', labelText: "Table " counter(tableNotCoreq)),
+  (selector: '[data-type="chapter"] :not(table) > table:not(.unnumbered).os-coreq-element', labelText: "Table " counter(tableCoreq)),
+  (selector: '.appendix :not(table) > table:not(.unnumbered)',                  labelText: "Table " counter(appendix, upper-alpha) counter(tableNotCoreq)),
+  (selector: '.appendix > table:not(.unnumbered)',                              labelText: "Table " counter(appendix, upper-alpha) counter(tableNotCoreq)),
+  (selector: '.preface :not(table) > table:not(.unnumbered)',                   labelText: "Table " counter(tableNotCoreq)),
+  (selector: '.preface :not(figure) > figure:not(.unnumbered)',                 labelText: "Figure " counter(figureNotCoreq)),
+  (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered):not(.os-coreq-element)', labelText: "Figure " counter(figureNotCoreq)),
+  (selector: '[data-type="chapter"] :not(figure) > figure:not(.unnumbered).os-coreq-element', labelText: "Figure " counter(figureCoreq)),
+  (selector: '.appendix :not(figure) > figure:not(.unnumbered)',                labelText: "Figure " counter(figureNotCoreq)),
+  (selector: '.appendix > figure:not(.unnumbered)',                             labelText: "Figure " counter(figureNotCoreq))
 );
 
 $Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
 $Config_abstractTitle: "Learning Objectives";
 $Config_hasCompositeChapter: true;
+
+$Config_CustomList: (
+  (selector: '.stepwise', name: "stepwise", beforeLabel: "Step ", afterLabel: ". "),
+);
 
 $Config_CustomFootnotes: (
   (incrementParentSelector: '[data-type="page"]:not(.preface)', resetSelector: 'body', counterName: notPrefaceFootnote, counterType: decimal),
