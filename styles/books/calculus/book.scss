@@ -15,6 +15,31 @@ $bandColor: #093D4C;
 //Settings
 
 @include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::splashFigureBgColor"),
+    'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
+    'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/corn/resources/corn-introduction.svg")) no-repeat top left,
+    'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+    'SplashMediaOverlay:::background-color': (_ref: "colorMap:::splashImageOverlayColor"),
+  ),
+));
+
+@include add_settings((
+  Checkpoint: (
+    _selectors: (".checkpoint"),
+    'Container:::display': table,
+    'Title:::display': table-cell,
+    'Title:::padding-right': h-spacing(3),
+    'Title:::white-space': nowrap,
+    'TitleNumber:::color': (_ref: "colorMap:::iconCondensedTextColor"),
+    'TitleNumber:::font-family': (_ref: "typography:::titleFont"),
+    'Body:::color': (_ref: "colorMap:::iconCondensedTextColor"),
+    'Body:::font-family': (_ref: "typography:::baseFont"),
+    'Body:::display': table-cell,
+    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/corn/resources/corn-be-prepared.svg")) no-repeat top left,
+    'TitleIcon:::flex-shrink': 0,
+  ),
   NoClassNote: (
     _selectors: ('[data-type="note"]:not([class])'),
     'Title:::background-color': (_ref: "colorMap:::boxedBackgroundColor"),
@@ -28,6 +53,10 @@ $bandColor: #093D4C;
 ));
 
 @include use('BookRoot', "common:::BookRoot");
+@include use('ChapterIntro', 'corn:::ChapterIntroShape');
+
+//Titles
+@include use('ChapterTitles', 'corn:::ChapterTitlesShape');
 @include use('LearningObjectivesNumbered', 'corn:::LearningObjectivesNumberedShape');
 @include use('Toc', 'corn:::NoUnitToc');
 @include use('Figure','corn:::FigureShape');
@@ -45,4 +74,5 @@ $bandColor: #093D4C;
 @include use('UnnumberedUnstyledTable', 'corn:::UnnumberedUnstyledTableShape');
 
 //Notes
+@include use('Checkpoint', 'corn:::IconCondensedNoteWithHiddenLabelShape');
 @include use('NoClassNote', 'corn:::BoxedNoteShape');
