@@ -1028,3 +1028,30 @@
     content: pending(ChapterOutline) content();
   }
 }
+
+//moves .splash.unnumbered into .os-figure.has-splash
+//moves splash caption into .os-caption-container
+//curently unnumbered splashes are only found in corn/coreq styled books, but we should support in all recipes
+@mixin compose_UnnumberedSplash {
+  [data-type="page"].introduction {
+    figure.splash.unnumbered {
+      move-to: splash;
+      figcaption {
+        class: "os-caption";
+        container: span;
+        move-to: os-caption;
+      }
+      &::after {
+        content: pending(os-caption);
+        move-to: splashCaption;
+        class: "os-caption-container";
+      }
+    }
+    &:deferred {
+      &::before {
+        class: "os-figure has-splash";
+        content: pending(splash) pending(splashCaption)
+      }
+    }
+  }
+}
