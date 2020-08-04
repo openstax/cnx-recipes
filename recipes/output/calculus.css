@@ -1497,7 +1497,7 @@
 
 :pass(10) [data-type="chapter"] [data-type="equation"]:not(.unnumbered)::before, :pass(10) .appendix [data-type="equation"]:not(.unnumbered)::before {
   container: span;
-  content: counter(chapter) "." counter(equation);
+  content: "(" counter(chapter) "." counter(equation) ")";
   class: os-number;
   move-to: equationNum; }
 
@@ -2492,6 +2492,21 @@
     string-set: hasTable " os-column-header-container"; }
   :pass(13) .os-table:deferred {
     class: attr(class) string(hasTable); }
+
+:pass(13) [data-type="page"].introduction figure.splash.unnumbered {
+  move-to: splash; }
+  :pass(13) [data-type="page"].introduction figure.splash.unnumbered figcaption {
+    class: "os-caption";
+    container: span;
+    move-to: os-caption; }
+  :pass(13) [data-type="page"].introduction figure.splash.unnumbered::after {
+    content: pending(os-caption);
+    move-to: splashCaption;
+    class: "os-caption-container"; }
+
+:pass(13) [data-type="page"].introduction:deferred::before {
+  class: "os-figure has-splash";
+  content: pending(splash) pending(splashCaption); }
 
 :pass(14) nav#toc li > a > h1 > span,
 :pass(14) nav#toc li > a > h2 > span,
