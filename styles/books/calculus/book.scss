@@ -15,6 +15,31 @@ $bandColor: #093D4C;
 //Settings
 
 @include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'SplashFigureBg:::background-color': (_ref: "colorMap:::splashFigureBgColor"),
+    'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
+    'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/corn/resources/corn-introduction.svg")) no-repeat top left,
+    'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+    'SplashMediaOverlay:::background-color': (_ref: "colorMap:::splashImageOverlayColor"),
+  ),
+));
+
+@include add_settings((
+  Checkpoint: (
+    _selectors: (".checkpoint"),
+    'Container:::display': table,
+    'Title:::display': table-cell,
+    'Title:::padding-right': h-spacing(3),
+    'Title:::white-space': nowrap,
+    'TitleNumber:::color': (_ref: "colorMap:::iconCondensedTextColor"),
+    'TitleNumber:::font-family': (_ref: "typography:::titleFont"),
+    'Body:::color': (_ref: "colorMap:::iconCondensedTextColor"),
+    'Body:::font-family': (_ref: "typography:::baseFont"),
+    'Body:::display': table-cell,
+    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/corn/resources/corn-be-prepared.svg")) no-repeat top left,
+    'TitleIcon:::flex-shrink': 0,
+  ),
   NoClassNote: (
     _selectors: ('[data-type="note"]:not([class])'),
     'Title:::background-color': (_ref: "colorMap:::boxedBackgroundColor"),
@@ -37,21 +62,61 @@ $bandColor: #093D4C;
     'Subtitle:::font-family': (_ref: "typography:::titleFont"),
     'TitleIcon:::background': url(toDataUri("svg+xml", "designs/corn/resources/corn-media.svg")) no-repeat top left,
   ),
+  Theorem: (
+    _selectors: ('[data-type="note"].theorem'),
+    'Title:::background-color': (_ref: "colorMap:::boxedBackgroundColor"),
+    'Title:::border-bottom-color': (_ref: "colorMap:::boxedBorderColor"),
+    'Title:::color': (_ref: "colorMap:::boxedTitleColor"),
+    'Title:::font-family': (_ref: "typography:::titleFont"),
+    'Body:::color': (_ref: "colorMap:::boxedTextColor"),
+    'Body:::font-family': (_ref: "typography:::baseFont"),
+    'Body:::background-color': (_ref: "colorMap:::boxedBackgroundColor"),
+    'Subtitle:::color': (_ref: "colorMap:::boxedTitleColor"),
+    'Subtitle:::font-family': (_ref: "typography:::titleFont"),
+  ),
+  StudentProject: (
+    _selectors: ('[data-type="note"].project'),
+    'Container:::border-color': (_ref: "colorMap:::outlinedBoxedBorderColor"),
+    'Title:::border-bottom-color': (_ref: "colorMap:::outlinedBoxedBorderBottomColor"),
+    'Title:::color': (_ref: "colorMap:::outlinedBoxedTitleColor"),
+    'Title:::font-family': (_ref: "typography:::titleFont"),
+    'Body:::color': (_ref: "colorMap:::boxedTextColor"),
+    'Body:::font-family': (_ref: "typography:::baseFont"),
+    'Subtitle:::color': (_ref: "colorMap:::outlinedBoxedTitleColor"),
+    'Subtitle:::font-family': (_ref: "typography:::baseFont"),
+  ),
 ));
 
 @include use('BookRoot', "common:::BookRoot");
+@include use('ChapterIntro', 'corn:::ChapterIntroShape');
 @include use('LearningObjectivesNumbered', 'corn:::LearningObjectivesNumberedShape');
-@include use('ModuleTitles', 'corn:::ModuleTitlesShape');
 @include use('Toc', 'corn:::NoUnitToc');
 @include use('Figure','corn:::FigureShape');
 @include use('Link', 'corn:::LinkShape');
+
+//Titles
+@include use('ChapterTitles', 'corn:::ChapterTitlesShape');
+@include use('ModuleTitles', 'corn:::ModuleTitlesShape');
+@include use('CompositeChapterTitles', 'corn:::CompositeChapterTitlesShape');
+
+//Lists
+@include use('CompositePageLists', 'corn:::CompositePageListsShape');
+
+//Notes
+@include use('Theorem', 'corn:::BoxedNoteWithSubtitleShape');
+@include use('StudentProject', 'corn:::OutlinedBoxedNoteWithSubtitleShape');
+@include use('Checkpoint', 'corn:::IconCondensedNoteWithHiddenLabelShape');
+@include use('NoClassNote', 'corn:::BoxedNoteShape');
+@include use('Media', 'corn:::IconCondensedNoteWithSubtitleShape');
+
+//Equations
+@include use('Equation', 'corn:::EquationShape');
+@include use('NumberedEquation', 'corn:::NumberedEquationShape');
 
 //Tables
 @include use('BasicTable', 'corn:::BasicTableShape');
 @include use('ColumnHeader', 'corn:::ColumnHeaderTableShape');
 @include use('UnnumberedUnstyledTable', 'corn:::UnnumberedUnstyledTableShape');
 
-//Notes
-@include use('NoClassNote', 'corn:::BoxedNoteShape');
-@include use('Media', 'corn:::IconCondensedNoteWithSubtitleShape');
-
+//EoC
+@include use('KeyTerm','corn:::EocKeyTerm');
