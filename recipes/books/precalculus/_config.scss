@@ -66,12 +66,20 @@ $Config_SectionCompositePages: (
   (className: "section-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle),
 );
 
-$Config_ChapterCompositePages: (
-  (className: "glossary", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+$_chapterReviewChildPages: (
+  (className: "glossary",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
   (className: "key-equations", clusterBy: $CLUSTER_NONE, name: "Key Equations"),
   (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
+);
+
+$_exercisesChildPages: (
   (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
-  (className: "practice-test", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
+  (className: "practice-test",    clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Practice Test"),
+);
+
+$Config_ChapterCompositePages: (
+  (className: "chapter-review",    clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions: false, name: "Chapter Review"),
+  (className: "exercises",    clusterBy: $CLUSTER_NONE, childPages: $_exercisesChildPages, hasSolutions: true, name: "Exercises"),
 );
 
 $_tryItTitleContent: (os-title-label: "Try It ", os-number:"#" counter(try));
@@ -131,10 +139,10 @@ $Config_BookCompositePages: (
 */
 
 $Config_Notes: (
-  (className: 'howto', labelText: "How To"),
+  (className: 'how-to-notitle', labelText: "How To"),
   (className: 'qa', labelText: "Q&A"),
   (className: 'try', moveSolutionTo: $AREA_EOB, counterName: try, resetAt: moduleReset, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
-  (className: 'media', labelText: "Media"),
+  (className: 'media-notitle', labelText: "Media"),
 );
 
 /*==========================================================
@@ -179,6 +187,10 @@ $Config_TargetLabels: (
 $Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
 $Config_abstractTitle: "Learning Objectives";
 $Config_hasCompositeChapter: true;
+
+$Config_CustomList: (
+  (selector: '.stepwise', name: "stepwise", beforeLabel: "Step ", afterLabel: ". "),
+);
 
 $Config_CustomFootnotes: (
   (incrementParentSelector: '[data-type="page"]:not(.preface)', resetSelector: 'body', counterName: notPrefaceFootnote, counterType: decimal),
