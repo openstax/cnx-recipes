@@ -168,6 +168,50 @@
   }
 }
 
+/// A mixin for numbering custom examples
+/// @arg {String} $customClass - string of the selector of the custom examples you want to number
+/// @arg {Map} $exampleTitleContent - map with title parts for examples WITHOUT special class
+/// @arg {Map} $exampleCustomTitleContent - map with title parts for examples WITH special class
+/// @arg {Map} $solutionTitleContent - map with title parts for solution within example
+/// @arg {Map} $commentaryTitleContent - map with title parts for commentary within example
+/// @group number
+@mixin number_numberCustomExamples($customClass, $exampleTitleContent, $exampleCustomTitleContent, $solutionTitleContent, $commentaryTitleContent) {
+  [data-type="example"] {
+    &:not(.#{$customClass}) {
+      @include utils_title($exampleTitleContent, bExampleLabel);
+      &::after {
+        container: div;
+        content: pending(bExampleLabel);
+        class: "os-title";
+        move-to: bExampleHeader;
+      }
+      &:deferred {
+        content: pending(bExampleHeader) content();
+      }
+    }
+    &.#{$customClass} {
+      @include utils_title($exampleCustomTitleContent, bExampleLabel);
+      &::after {
+        container: div;
+        content: pending(bExampleLabel);
+        class: "os-title";
+        move-to: bExampleHeader;
+      }
+      &:deferred {
+        content: pending(bExampleHeader) content();
+      }
+    }
+    [data-type="solution"] {
+      @include utils_title($solutionTitleContent, null, div, "solution-title");
+    }
+    @if $commentaryTitleContent {
+      [data-type="commentary"] {
+        @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+      }
+    }
+  }
+}
+
 @mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent,$commentaryTitleContent, $appendixTitleContent) {
   [data-type="chapter"] {
     @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $commentaryTitleContent);
@@ -202,12 +246,13 @@
   }
 }
 
-@mixin number_setCaptions($setFigTableCaptions, $labeling, $labelingAp, $labelingPr: null) {
+@mixin number_setCaptions($setFigTableCaptions, $labeling, $labelingAp, $labelingPr: null, $labelingCustom: null) {
   $captionType:         map-get($setFigTableCaptions, captionType);
   $defaultContainer:    map-get($setFigTableCaptions, defaultContainer);
   $hasCaption:          map-get($setFigTableCaptions, hasCaption);
   $hasTitle:            map-get($setFigTableCaptions, hasTitle);
   $exceptionClassNames: map-get($setFigTableCaptions, exceptionClassNames);
+  $customClass:         map-get($setFigTableCaptions, customClass);
   $hasTopTitle:         map-get($setFigTableCaptions, hasTopTitle);
   $hasTopCaption:       map-get($setFigTableCaptions, hasTopCaption);
 
@@ -216,6 +261,7 @@
   @include validate_enum($captionType, $CAPTION__PREFIX__);
   @include validate_typeOptional($exceptionClassNames, list);
   @include validate_typeOptional($hasTopCaption, bool);
+  @include validate_typeOptional($customClass, string); // used when tables, figures are numbered in a custom way, depending on class
   // These selectors are of the form:
   // `table:not(.unnumbered):not(.custom1):not(.custom2)` (everything that is not an exception)
   // `table.unnumbered, table.custom1, table.custom2`     (everything that is an exception)
@@ -245,7 +291,16 @@
 
   [data-type="chapter"] {
     :not(#{$elementName}) > #{$elementName}:not(.unnumbered) {
-      @include utils_title($labeling, bCaption);
+      @if $customClass {
+        &:not(.#{$customClass}) {
+          @include utils_title($labeling, bCaption);
+        }
+        &.#{$customClass} {
+          @include utils_title($labelingCustom, bCaption);
+        }
+      } @else {
+        @include utils_title($labeling, bCaption);
+      }
       @if $captionType == $CAPTION_TABLE {
         @if ($hasTopTitle) {
           &.top-titled {
