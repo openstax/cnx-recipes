@@ -77,6 +77,7 @@
   $child: map-get($childSpecs, child);
   $name: map-get($childSpecs, name);
   $hasImageTableOnTop: map-get($childSpecs, hasImageTableOnTop);
+  $hasCircledListOnTop: map-get($childSpecs , hasCircledListOnTop);
   
   @if $hasImageTableOnTop == true {
     @return (
@@ -90,6 +91,17 @@
           padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
       ),
     );
+  } @else if $hasCircledListOnTop == true {
+      @return (
+        _name: #{$name},
+        _subselector: ' .os-#{$child}-container.has-first-circled-list-element',
+        _properties:(
+            display: table-cell,
+            vertical-align: bottom,
+            width: 100%,
+            padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
+        ),
+      );
   } @else {
     @return (
       _name: #{$name},
@@ -98,7 +110,6 @@
           display: table-cell,
           width: 100%,
           padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
-          vertical-align: enum('ValueSet:::OPTIONAL'), // used in Answer Key
       ),
     );
   }
