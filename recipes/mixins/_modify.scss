@@ -965,8 +965,14 @@
 @mixin modify_addFirstElementClass($element) {
   @if release-flag-enabled(exercise-first-element) {
     [data-type="exercise"]:not(.unnumbered) .os-problem-container {
+      @if $element ==  " > ol.circled:first-child" {
+        #{$element} {
+        class: attr(class) " first-circled-list-element";
+        }
+      } @else {
       #{$element} {
         class: attr(class) " first-element";
+      }
       }
     }
 
@@ -975,13 +981,19 @@
 
       @if $type == "Answer Key" { // see config.scss file for u-physics for details
         .os-eob [data-type="solution"] .os-solution-container {
-          #{$element} {
+          @if $element ==  " > ol.circled:first-child" {
+            #{$element} {
+              class: attr(class) " first-circled-list-element";
+            }
+          } @else { 
+            #{$element} {
             class: attr(class) " first-element";
           }
         }
       }
     }
   }
+}
 }
 
 @mixin modify_tagExerciseWithFirstElementClass() {
@@ -990,6 +1002,12 @@
       string-set: hasFirstElement " ";
       .first-element {
         string-set: hasFirstElement " has-first-element";
+      }
+      &:deferred {
+        class: attr(class) string(hasFirstElement);
+      }
+      .first-circled-list-element {
+        string-set: hasFirstElement " has-first-circled-list-element";
       }
       &:deferred {
         class: attr(class) string(hasFirstElement);
@@ -1004,6 +1022,12 @@
           string-set: hasFirstElement " ";
           .first-element {
             string-set: hasFirstElement " has-first-element";
+          }
+          &:deferred {
+            class: attr(class) string(hasFirstElement);
+          }
+          .first-circled-list-element {
+            string-set: hasFirstElement " has-first-circled-list-element";
           }
           &:deferred {
             class: attr(class) string(hasFirstElement);
