@@ -146,6 +146,8 @@ function escapeName(name) {
 
 const shapeComponents = new Map() // String => String[]
 
+const canWeDeduplicate = new Map()
+
 stuff.shapes.forEach(([name, config]) => {
     if (config._parent !== 'ENUM__Object:::NONE') {
         throw new Error(`BUG: Oooh, a shape with a parent! We don't handle that yet`)
@@ -196,16 +198,27 @@ stuff.shapes.forEach(([name, config]) => {
             componentArgNames.push(argName)
             componentUses.push(`${argName}: ${componentName}`)
             componentDefinitions.push(`
+            type ${componentName}_Config = {
+                ${properties.join(', ')}
+            }
             class ${componentName} extends Component {
-                constructor(config: {
-                    ${properties.join(', ')}
-                }) {
+                constructor(config: ${componentName}_Config) {
                     const defaults = {${propDefaults.join(', ')}}
                     super(defaults, config)
                 }
             }
             `)
             componentNamesUnique.add(componentName)
+
+            const phil = `PROPS: [${properties.join(', ')}] DEFAULTS: [${propDefaults.join(', ')}]`
+            if (canWeDeduplicate.has(_name) && canWeDeduplicate.get(_name) !== phil) {
+                console.warn(`We CANNOT deduplicate ${_name}`)
+                // console.warn(canWeDeduplicate.get(_name))
+                // console.warn(phil)
+            } else {
+                console.warn(`might be able to deduplicate ${_name}`)
+                canWeDeduplicate.set(_name, phil)
+            }
         }
 
     })
@@ -213,10 +226,11 @@ stuff.shapes.forEach(([name, config]) => {
     console.log(`
     // START: ${shapeName}
     ${componentDefinitions.join('\n')}
+    type ${shapeName}_Config = {
+        ${groups.join(', ')}
+    }
     class ${shapeName} extends Shape {
-        constructor(config: {
-            ${groups.join(', ')}
-        }, ${componentUses.join(', ')}) {
+        constructor(config: ${shapeName}_Config, ${componentUses.join(', ')}) {
             const defaults = {${groupDefaults.join(', ')}}
             super(defaults, config, [${componentArgNames.join(', ')}])
         }

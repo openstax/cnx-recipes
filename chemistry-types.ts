@@ -36,19 +36,21 @@ class Shape {
 
     // START: carnival___Link
     
+            type carnival___Link_RegularLink_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___Link_RegularLink extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___Link_RegularLink_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___Link_Config = {
+        
+    }
     class carnival___Link extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___Link_RegularLink) {
+        constructor(config: carnival___Link_Config, c0: carnival___Link_RegularLink) {
             const defaults = {}
             super(defaults, config, [c0])
         }
@@ -58,89 +60,98 @@ class Shape {
 
     // START: carnival___Figure
     
+            type carnival___Figure_FigureContainer_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___Figure_FigureContainer extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Figure_FigureContainer_Config) {
                     const defaults = {'font-size': [0.83333,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Figure_CaptionWrapper_Config = {
+                'display'?: any /* table */, 'margin-left'?: any /* auto */, 'margin-right'?: any /* auto */
+            }
             class carnival___Figure_CaptionWrapper extends Component {
-                constructor(config: {
-                    'display'?: any /* table */, 'margin-left'?: any /* auto */, 'margin-right'?: any /* auto */
-                }) {
+                constructor(config: carnival___Figure_CaptionWrapper_Config) {
                     const defaults = {'display': "table", 'margin-left': "auto", 'margin-right': "auto"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Figure_FigureLabel_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___Figure_FigureLabel extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___Figure_FigureLabel_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Figure_FigureNum_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
+            }
             class carnival___Figure_FigureNum extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Figure_FigureNum_Config) {
                     const defaults = {'font-weight': "bold", 'display': "inline-block", 'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Figure_FigureTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
+            }
             class carnival___Figure_FigureTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___Figure_FigureTitle_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Figure_Caption_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___Figure_Caption extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___Figure_Caption_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Figure_FigureCaptionDivider_Config = {
+                'margin'?: number
+            }
             class carnival___Figure_FigureCaptionDivider extends Component {
-                constructor(config: {
-                    'margin'?: number
-                }) {
+                constructor(config: carnival___Figure_FigureCaptionDivider_Config) {
                     const defaults = {'margin': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Figure_PicCaption_Config = {
+                'display'?: any /* table */, 'margin-left'?: any /* auto */, 'margin-right'?: any /* auto */
+            }
             class carnival___Figure_PicCaption extends Component {
-                constructor(config: {
-                    'display'?: any /* table */, 'margin-left'?: any /* auto */, 'margin-right'?: any /* auto */
-                }) {
+                constructor(config: carnival___Figure_PicCaption_Config) {
                     const defaults = {'display': "table", 'margin-left': "auto", 'margin-right': "auto"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___Figure_Config = {
+        
+    }
     class carnival___Figure extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___Figure_FigureContainer, c1: carnival___Figure_CaptionWrapper, c2: carnival___Figure_FigureLabel, c3: carnival___Figure_FigureNum, c4: carnival___Figure_FigureTitle, c5: carnival___Figure_Caption, c6: carnival___Figure_FigureCaptionDivider, c7: carnival___Figure_PicCaption) {
+        constructor(config: carnival___Figure_Config, c0: carnival___Figure_FigureContainer, c1: carnival___Figure_CaptionWrapper, c2: carnival___Figure_FigureLabel, c3: carnival___Figure_FigureNum, c4: carnival___Figure_FigureTitle, c5: carnival___Figure_Caption, c6: carnival___Figure_FigureCaptionDivider, c7: carnival___Figure_PicCaption) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7])
         }
@@ -150,19 +161,21 @@ class Shape {
 
     // START: common___BookRoot
     
+            type common___BookRoot_BookRoot_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'prince-image-resolution': any /* ENUM__ValueSet:::REQUIRED */, 'prince-background-image-resolution': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class common___BookRoot_BookRoot extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'prince-image-resolution': any /* ENUM__ValueSet:::REQUIRED */, 'prince-background-image-resolution': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: common___BookRoot_BookRoot_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type common___BookRoot_Config = {
+        
+    }
     class common___BookRoot extends Shape {
-        constructor(config: {
-            
-        }, c0: common___BookRoot_BookRoot) {
+        constructor(config: common___BookRoot_Config, c0: common___BookRoot_BookRoot) {
             const defaults = {}
             super(defaults, config, [c0])
         }
@@ -172,19 +185,21 @@ class Shape {
 
     // START: common___Hidden
     
+            type common___Hidden_Hidden_Config = {
+                'display'?: any /* none */
+            }
             class common___Hidden_Hidden extends Component {
-                constructor(config: {
-                    'display'?: any /* none */
-                }) {
+                constructor(config: common___Hidden_Hidden_Config) {
                     const defaults = {'display': "none"}
                     super(defaults, config)
                 }
             }
             
+    type common___Hidden_Config = {
+        
+    }
     class common___Hidden extends Shape {
-        constructor(config: {
-            
-        }, c0: common___Hidden_Hidden) {
+        constructor(config: common___Hidden_Config, c0: common___Hidden_Hidden) {
             const defaults = {}
             super(defaults, config, [c0])
         }
@@ -194,59 +209,65 @@ class Shape {
 
     // START: carnival___BoxedNoteShape
     
+            type carnival___BoxedNoteShape_Container_Config = {
+                'border'?: [SLICE_ENUM, [number, LENGTH]], 'border-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'box-decoration-break'?: SLICE_ENUM, 'padding-left'?: [number, LENGTH], 'padding-right'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-top'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'position'?: any /* relative */
+            }
             class carnival___BoxedNoteShape_Container extends Component {
-                constructor(config: {
-                    'border'?: [SLICE_ENUM, [number, LENGTH]], 'border-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'box-decoration-break'?: SLICE_ENUM, 'padding-left'?: [number, LENGTH], 'padding-right'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-top'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'position'?: any /* relative */
-                }) {
+                constructor(config: carnival___BoxedNoteShape_Container_Config) {
                     const defaults = {'border': ["solid",[0.2,"rem"]], 'border-color': ["ENUM__ValueSet:::GROUPED","group-border-color"], 'box-decoration-break': "slice", 'padding-left': [8,"px"], 'padding-right': [8,"px"], 'padding-bottom': [0.7,"rem"], 'padding-top': [0.7,"rem"], 'margin-bottom': [1.4,"rem"], 'position': "relative"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxedNoteShape_Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-top'?: number, 'margin-bottom'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___BoxedNoteShape_Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-top'?: number, 'margin-bottom'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___BoxedNoteShape_Title_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'margin-top': 0, 'margin-bottom': [0.7,"rem"], 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxedNoteShape_BodyWrapper_Config = {
+                
+            }
             class carnival___BoxedNoteShape_BodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___BoxedNoteShape_BodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxedNoteShape_Subtitle_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* IBM Plex Sans, sans-serif */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___BoxedNoteShape_Subtitle extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* IBM Plex Sans, sans-serif */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___BoxedNoteShape_Subtitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-family': "IBM Plex Sans, sans-serif"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxedNoteShape_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___BoxedNoteShape_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___BoxedNoteShape_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___BoxedNoteShape_Config = {
+        'group-border-style'?: SLICE_ENUM, 'group-border-width'?: [number, LENGTH], 'group-box-decoration-break'?: SLICE_ENUM, 'group-border-color': any /* ENUM__ValueSet:::REQUIRED */, 'group-title-font': any /* ENUM__ValueSet:::REQUIRED */, 'group-title-color': any /* ENUM__ValueSet:::REQUIRED */
+    }
     class carnival___BoxedNoteShape extends Shape {
-        constructor(config: {
-            'group-border-style'?: SLICE_ENUM, 'group-border-width'?: [number, LENGTH], 'group-box-decoration-break'?: SLICE_ENUM, 'group-border-color': any /* ENUM__ValueSet:::REQUIRED */, 'group-title-font': any /* ENUM__ValueSet:::REQUIRED */, 'group-title-color': any /* ENUM__ValueSet:::REQUIRED */
-        }, c0: carnival___BoxedNoteShape_Container, c1: carnival___BoxedNoteShape_Title, c2: carnival___BoxedNoteShape_BodyWrapper, c3: carnival___BoxedNoteShape_Subtitle, c4: carnival___BoxedNoteShape_List__MarginLeftBottom) {
+        constructor(config: carnival___BoxedNoteShape_Config, c0: carnival___BoxedNoteShape_Container, c1: carnival___BoxedNoteShape_Title, c2: carnival___BoxedNoteShape_BodyWrapper, c3: carnival___BoxedNoteShape_Subtitle, c4: carnival___BoxedNoteShape_List__MarginLeftBottom) {
             const defaults = {'group-border-style': "solid", 'group-border-width': [0.2,"rem"], 'group-box-decoration-break': "slice"}
             super(defaults, config, [c0, c1, c2, c3, c4])
         }
@@ -256,39 +277,43 @@ class Shape {
 
     // START: carnival___BoxCondensedEquationShape
     
+            type carnival___BoxCondensedEquationShape_CondensedContainer_Config = {
+                'background': any /* ENUM__ValueSet:::REQUIRED */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___BoxCondensedEquationShape_CondensedContainer extends Component {
-                constructor(config: {
-                    'background': any /* ENUM__ValueSet:::REQUIRED */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___BoxCondensedEquationShape_CondensedContainer_Config) {
                     const defaults = {'padding-top': [0.7,"rem"], 'padding-bottom': [0.7,"rem"], 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxCondensedEquationShape_CondensedEquationContainer_Config = {
+                'position'?: any /* relative */, 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* center */, 'justify-content'?: any /* center */, 'margin-bottom'?: number
+            }
             class carnival___BoxCondensedEquationShape_CondensedEquationContainer extends Component {
-                constructor(config: {
-                    'position'?: any /* relative */, 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* center */, 'justify-content'?: any /* center */, 'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___BoxCondensedEquationShape_CondensedEquationContainer_Config) {
                     const defaults = {'position': "relative", 'display': "flex", 'flex-direction': "row", 'align-items': "center", 'justify-content': "center", 'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxCondensedEquationShape_BoxedCondensedNoteEquationNumber_Config = {
+                'position'?: any /* absolute */, 'right'?: number, 'top'?: [number, LENGTH], 'transform'?: any /* translate(0, -50%) */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'margin-right'?: [number, LENGTH]
+            }
             class carnival___BoxCondensedEquationShape_BoxedCondensedNoteEquationNumber extends Component {
-                constructor(config: {
-                    'position'?: any /* absolute */, 'right'?: number, 'top'?: [number, LENGTH], 'transform'?: any /* translate(0, -50%) */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___BoxCondensedEquationShape_BoxedCondensedNoteEquationNumber_Config) {
                     const defaults = {'position': "absolute", 'right': 0, 'top': [50,"%"], 'transform': "translate(0, -50%)", 'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold", 'margin-right': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___BoxCondensedEquationShape_Config = {
+        
+    }
     class carnival___BoxCondensedEquationShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___BoxCondensedEquationShape_CondensedContainer, c1: carnival___BoxCondensedEquationShape_CondensedEquationContainer, c2: carnival___BoxCondensedEquationShape_BoxedCondensedNoteEquationNumber) {
+        constructor(config: carnival___BoxCondensedEquationShape_Config, c0: carnival___BoxCondensedEquationShape_CondensedContainer, c1: carnival___BoxCondensedEquationShape_CondensedEquationContainer, c2: carnival___BoxCondensedEquationShape_BoxedCondensedNoteEquationNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2])
         }
@@ -298,49 +323,54 @@ class Shape {
 
     // START: carnival___BoxCondensedNoteShape
     
+            type carnival___BoxCondensedNoteShape_CondensedContainer_Config = {
+                'background': any /* ENUM__ValueSet:::REQUIRED */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___BoxCondensedNoteShape_CondensedContainer extends Component {
-                constructor(config: {
-                    'background': any /* ENUM__ValueSet:::REQUIRED */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___BoxCondensedNoteShape_CondensedContainer_Config) {
                     const defaults = {'padding-top': [0.7,"rem"], 'padding-bottom': [0.7,"rem"], 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxCondensedNoteShape_Title_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform'?: any /* uppercase */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___BoxCondensedNoteShape_Title extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform'?: any /* uppercase */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___BoxCondensedNoteShape_Title_Config) {
                     const defaults = {'font-weight': "bold", 'text-transform': "uppercase", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxCondensedNoteShape_FirstParagraph_Config = {
+                'margin-bottom'?: number
+            }
             class carnival___BoxCondensedNoteShape_FirstParagraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___BoxCondensedNoteShape_FirstParagraph_Config) {
                     const defaults = {'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BoxCondensedNoteShape_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___BoxCondensedNoteShape_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___BoxCondensedNoteShape_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___BoxCondensedNoteShape_Config = {
+        
+    }
     class carnival___BoxCondensedNoteShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___BoxCondensedNoteShape_CondensedContainer, c1: carnival___BoxCondensedNoteShape_Title, c2: carnival___BoxCondensedNoteShape_FirstParagraph, c3: carnival___BoxCondensedNoteShape_List__MarginLeftBottom) {
+        constructor(config: carnival___BoxCondensedNoteShape_Config, c0: carnival___BoxCondensedNoteShape_CondensedContainer, c1: carnival___BoxCondensedNoteShape_Title, c2: carnival___BoxCondensedNoteShape_FirstParagraph, c3: carnival___BoxCondensedNoteShape_List__MarginLeftBottom) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -350,149 +380,164 @@ class Shape {
 
     // START: carnival___IconNoteShape
     
+            type carnival___IconNoteShape_Title_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: number, 'letter-spacing'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'border-bottom-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* flex-end */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___IconNoteShape_Title extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: number, 'letter-spacing'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'border-bottom-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* flex-end */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconNoteShape_Title_Config) {
                     const defaults = {'font-weight': 900, 'letter-spacing': [0.05,"rem"], 'text-transform': "uppercase", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'border-bottom-color': ["ENUM__ValueSet:::GROUPED","group-border-color"], 'border-bottom-width': [0.2,"rem"], 'border-bottom-style': "solid", 'display': "flex", 'flex-direction': "row", 'align-items': "flex-end", 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_TitleIcon_Config = {
+                'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'padding-right'?: [number, LENGTH], 'position'?: any /* relative */, 'bottom'?: [number, LENGTH], 'content'?: any /* '' */
+            }
             class carnival___IconNoteShape_TitleIcon extends Component {
-                constructor(config: {
-                    'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'padding-right'?: [number, LENGTH], 'position'?: any /* relative */, 'bottom'?: [number, LENGTH], 'content'?: any /* '' */
-                }) {
+                constructor(config: carnival___IconNoteShape_TitleIcon_Config) {
                     const defaults = {'background-size': "contain", 'height': [2.8,"rem"], 'width': [2.8,"rem"], 'display': "inline-block", 'padding-right': [0.4,"rem"], 'position': "relative", 'bottom': [-0.5,"rem"], 'content': "''"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_TitleNumber_Config = {
+                'display'?: any /* inline-block */, 'word-wrap'?: any /* normal */, 'margin-bottom'?: [number, LENGTH], 'margin-left'?: [number, LENGTH]
+            }
             class carnival___IconNoteShape_TitleNumber extends Component {
-                constructor(config: {
-                    'display'?: any /* inline-block */, 'word-wrap'?: any /* normal */, 'margin-bottom'?: [number, LENGTH], 'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconNoteShape_TitleNumber_Config) {
                     const defaults = {'display': "inline-block", 'word-wrap': "normal", 'margin-bottom': [0.2,"rem"], 'margin-left': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_TitleLabel_Config = {
+                'display'?: any /* inline-block */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* normal */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___IconNoteShape_TitleLabel extends Component {
-                constructor(config: {
-                    'display'?: any /* inline-block */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* normal */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconNoteShape_TitleLabel_Config) {
                     const defaults = {'display': "inline-block", 'word-wrap': "normal", 'margin-bottom': [0.2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_TitleText_Config = {
+                'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___IconNoteShape_TitleText extends Component {
-                constructor(config: {
-                    'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___IconNoteShape_TitleText_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'border-bottom-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___IconNoteShape_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'border-bottom-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___IconNoteShape_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"], 'border-bottom-color': ["ENUM__ValueSet:::GROUPED","group-border-color"], 'border-bottom-width': [0.2,"rem"], 'border-bottom-style': "solid", 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___IconNoteShape_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconNoteShape_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_BodyWrapper_Config = {
+                
+            }
             class carnival___IconNoteShape_BodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___IconNoteShape_BodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_Subtitle_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* IBM Plex Sans, sans-serif */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___IconNoteShape_Subtitle extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* IBM Plex Sans, sans-serif */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___IconNoteShape_Subtitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-family': "IBM Plex Sans, sans-serif"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_DivSubtitle_Config = {
+                'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___IconNoteShape_DivSubtitle extends Component {
-                constructor(config: {
-                    'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___IconNoteShape_DivSubtitle_Config) {
                     const defaults = {'font-size': [1,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_FirstParagraphTitle_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* bold */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___IconNoteShape_FirstParagraphTitle extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* bold */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___IconNoteShape_FirstParagraphTitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_ParagraphSubtitle_Config = {
+                'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* bold */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___IconNoteShape_ParagraphSubtitle extends Component {
-                constructor(config: {
-                    'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* bold */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___IconNoteShape_ParagraphSubtitle_Config) {
                     const defaults = {'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_Equation_Config = {
+                'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'line-height'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___IconNoteShape_Equation extends Component {
-                constructor(config: {
-                    'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'line-height'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___IconNoteShape_Equation_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconNoteShape_AnswerTitle_Config = {
+                'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___IconNoteShape_AnswerTitle extends Component {
-                constructor(config: {
-                    'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___IconNoteShape_AnswerTitle_Config) {
                     const defaults = {'font-size': [1,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___IconNoteShape_Config = {
+        'group-border-color': any /* ENUM__ValueSet:::REQUIRED */
+    }
     class carnival___IconNoteShape extends Shape {
-        constructor(config: {
-            'group-border-color': any /* ENUM__ValueSet:::REQUIRED */
-        }, c0: carnival___IconNoteShape_Title, c1: carnival___IconNoteShape_TitleIcon, c2: carnival___IconNoteShape_TitleNumber, c3: carnival___IconNoteShape_TitleLabel, c4: carnival___IconNoteShape_TitleText, c5: carnival___IconNoteShape_Container, c6: carnival___IconNoteShape_List__MarginLeftBottom, c7: carnival___IconNoteShape_BodyWrapper, c8: carnival___IconNoteShape_Subtitle, c9: carnival___IconNoteShape_DivSubtitle, c10: carnival___IconNoteShape_FirstParagraphTitle, c11: carnival___IconNoteShape_ParagraphSubtitle, c12: carnival___IconNoteShape_Equation, c13: carnival___IconNoteShape_AnswerTitle) {
+        constructor(config: carnival___IconNoteShape_Config, c0: carnival___IconNoteShape_Title, c1: carnival___IconNoteShape_TitleIcon, c2: carnival___IconNoteShape_TitleNumber, c3: carnival___IconNoteShape_TitleLabel, c4: carnival___IconNoteShape_TitleText, c5: carnival___IconNoteShape_Container, c6: carnival___IconNoteShape_List__MarginLeftBottom, c7: carnival___IconNoteShape_BodyWrapper, c8: carnival___IconNoteShape_Subtitle, c9: carnival___IconNoteShape_DivSubtitle, c10: carnival___IconNoteShape_FirstParagraphTitle, c11: carnival___IconNoteShape_ParagraphSubtitle, c12: carnival___IconNoteShape_Equation, c13: carnival___IconNoteShape_AnswerTitle) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13])
         }
@@ -502,89 +547,98 @@ class Shape {
 
     // START: carnival___IconCondensedShape
     
+            type carnival___IconCondensedShape_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___IconCondensedShape_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___IconCondensedShape_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"], 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedShape_Body_Config = {
+                'border-bottom-style'?: SLICE_ENUM, 'border-bottom-width'?: [number, LENGTH], 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___IconCondensedShape_Body extends Component {
-                constructor(config: {
-                    'border-bottom-style'?: SLICE_ENUM, 'border-bottom-width'?: [number, LENGTH], 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___IconCondensedShape_Body_Config) {
                     const defaults = {'border-bottom-style': "solid", 'border-bottom-width': [0.2,"rem"], 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedShape_Paragraph_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___IconCondensedShape_Paragraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconCondensedShape_Paragraph_Config) {
                     const defaults = {'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedShape_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___IconCondensedShape_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconCondensedShape_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedShape_Title_Config = {
+                'margin-bottom'?: [number, LENGTH], 'font-weight'?: number, 'letter-spacing'?: [number, LENGTH], 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* flex-end */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___IconCondensedShape_Title extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'font-weight'?: number, 'letter-spacing'?: [number, LENGTH], 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* flex-end */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___IconCondensedShape_Title_Config) {
                     const defaults = {'margin-bottom': [0.7,"rem"], 'font-weight': 900, 'letter-spacing': [0.05,"rem"], 'display': "flex", 'flex-direction': "row", 'align-items': "flex-end", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedShape_TitleText_Config = {
+                'display'?: any /* inline-block */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* normal */, 'text-transform'?: any /* uppercase */
+            }
             class carnival___IconCondensedShape_TitleText extends Component {
-                constructor(config: {
-                    'display'?: any /* inline-block */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* normal */, 'text-transform'?: any /* uppercase */
-                }) {
+                constructor(config: carnival___IconCondensedShape_TitleText_Config) {
                     const defaults = {'display': "inline-block", 'word-wrap': "normal", 'text-transform': "uppercase"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedShape_Icon_Config = {
+                'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'position'?: any /* relative */, 'content'?: any /* '' */, 'padding-right'?: [number, LENGTH]
+            }
             class carnival___IconCondensedShape_Icon extends Component {
-                constructor(config: {
-                    'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'position'?: any /* relative */, 'content'?: any /* '' */, 'padding-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconCondensedShape_Icon_Config) {
                     const defaults = {'background-size': "contain", 'height': [1.4,"rem"], 'width': [1.4,"rem"], 'display': "inline-block", 'position': "relative", 'content': "''", 'padding-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedShape_NoteNumber_Config = {
+                'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___IconCondensedShape_NoteNumber extends Component {
-                constructor(config: {
-                    'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___IconCondensedShape_NoteNumber_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___IconCondensedShape_Config = {
+        
+    }
     class carnival___IconCondensedShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___IconCondensedShape_Container, c1: carnival___IconCondensedShape_Body, c2: carnival___IconCondensedShape_Paragraph, c3: carnival___IconCondensedShape_List__MarginLeftBottom, c4: carnival___IconCondensedShape_Title, c5: carnival___IconCondensedShape_TitleText, c6: carnival___IconCondensedShape_Icon, c7: carnival___IconCondensedShape_NoteNumber) {
+        constructor(config: carnival___IconCondensedShape_Config, c0: carnival___IconCondensedShape_Container, c1: carnival___IconCondensedShape_Body, c2: carnival___IconCondensedShape_Paragraph, c3: carnival___IconCondensedShape_List__MarginLeftBottom, c4: carnival___IconCondensedShape_Title, c5: carnival___IconCondensedShape_TitleText, c6: carnival___IconCondensedShape_Icon, c7: carnival___IconCondensedShape_NoteNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7])
         }
@@ -594,119 +648,131 @@ class Shape {
 
     // START: carnival___IconCondensedExerciseShape
     
+            type carnival___IconCondensedExerciseShape_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___IconCondensedExerciseShape_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"], 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_ProblemWrapper_Config = {
+                
+            }
             class carnival___IconCondensedExerciseShape_ProblemWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_ProblemWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_ProblemContainerWrapper_Config = {
+                
+            }
             class carnival___IconCondensedExerciseShape_ProblemContainerWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_ProblemContainerWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_Paragraph_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___IconCondensedExerciseShape_Paragraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_Paragraph_Config) {
                     const defaults = {'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___IconCondensedExerciseShape_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_Solution_Config = {
+                'border-bottom-style'?: SLICE_ENUM, 'border-bottom-width'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM, 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___IconCondensedExerciseShape_Solution extends Component {
-                constructor(config: {
-                    'border-bottom-style'?: SLICE_ENUM, 'border-bottom-width'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM, 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_Solution_Config) {
                     const defaults = {'border-bottom-style': "solid", 'border-bottom-width': [0.2,"rem"], 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_SolutionTitle_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
+            }
             class carnival___IconCondensedExerciseShape_SolutionTitle extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_SolutionTitle_Config) {
                     const defaults = {'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_SolutionContainerWrapper_Config = {
+                
+            }
             class carnival___IconCondensedExerciseShape_SolutionContainerWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_SolutionContainerWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_Title_Config = {
+                'margin-bottom'?: [number, LENGTH], 'font-weight'?: number, 'letter-spacing'?: [number, LENGTH], 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* flex-end */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___IconCondensedExerciseShape_Title extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'font-weight'?: number, 'letter-spacing'?: [number, LENGTH], 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* flex-end */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_Title_Config) {
                     const defaults = {'margin-bottom': [0.7,"rem"], 'font-weight': 900, 'letter-spacing': [0.05,"rem"], 'display': "flex", 'flex-direction': "row", 'align-items': "flex-end", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_TitleText_Config = {
+                'display'?: any /* inline-block */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* normal */, 'text-transform'?: any /* uppercase */
+            }
             class carnival___IconCondensedExerciseShape_TitleText extends Component {
-                constructor(config: {
-                    'display'?: any /* inline-block */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* normal */, 'text-transform'?: any /* uppercase */
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_TitleText_Config) {
                     const defaults = {'display': "inline-block", 'word-wrap': "normal", 'text-transform': "uppercase"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IconCondensedExerciseShape_Icon_Config = {
+                'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'position'?: any /* relative */, 'content'?: any /* '' */, 'padding-right'?: [number, LENGTH]
+            }
             class carnival___IconCondensedExerciseShape_Icon extends Component {
-                constructor(config: {
-                    'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'position'?: any /* relative */, 'content'?: any /* '' */, 'padding-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IconCondensedExerciseShape_Icon_Config) {
                     const defaults = {'background-size': "contain", 'height': [1.4,"rem"], 'width': [1.4,"rem"], 'display': "inline-block", 'position': "relative", 'content': "''", 'padding-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___IconCondensedExerciseShape_Config = {
+        
+    }
     class carnival___IconCondensedExerciseShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___IconCondensedExerciseShape_Container, c1: carnival___IconCondensedExerciseShape_ProblemWrapper, c2: carnival___IconCondensedExerciseShape_ProblemContainerWrapper, c3: carnival___IconCondensedExerciseShape_Paragraph, c4: carnival___IconCondensedExerciseShape_List__MarginLeftBottom, c5: carnival___IconCondensedExerciseShape_Solution, c6: carnival___IconCondensedExerciseShape_SolutionTitle, c7: carnival___IconCondensedExerciseShape_SolutionContainerWrapper, c8: carnival___IconCondensedExerciseShape_Title, c9: carnival___IconCondensedExerciseShape_TitleText, c10: carnival___IconCondensedExerciseShape_Icon) {
+        constructor(config: carnival___IconCondensedExerciseShape_Config, c0: carnival___IconCondensedExerciseShape_Container, c1: carnival___IconCondensedExerciseShape_ProblemWrapper, c2: carnival___IconCondensedExerciseShape_ProblemContainerWrapper, c3: carnival___IconCondensedExerciseShape_Paragraph, c4: carnival___IconCondensedExerciseShape_List__MarginLeftBottom, c5: carnival___IconCondensedExerciseShape_Solution, c6: carnival___IconCondensedExerciseShape_SolutionTitle, c7: carnival___IconCondensedExerciseShape_SolutionContainerWrapper, c8: carnival___IconCondensedExerciseShape_Title, c9: carnival___IconCondensedExerciseShape_TitleText, c10: carnival___IconCondensedExerciseShape_Icon) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10])
         }
@@ -716,59 +782,65 @@ class Shape {
 
     // START: carnival___LogoNoteBoxedShape
     
+            type carnival___LogoNoteBoxedShape_Container_Config = {
+                'border'?: [SLICE_ENUM, [number, LENGTH]], 'border-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'box-decoration-break'?: SLICE_ENUM, 'padding-left'?: [number, LENGTH], 'padding-right'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-top'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'position'?: any /* relative */
+            }
             class carnival___LogoNoteBoxedShape_Container extends Component {
-                constructor(config: {
-                    'border'?: [SLICE_ENUM, [number, LENGTH]], 'border-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'box-decoration-break'?: SLICE_ENUM, 'padding-left'?: [number, LENGTH], 'padding-right'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-top'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'position'?: any /* relative */
-                }) {
+                constructor(config: carnival___LogoNoteBoxedShape_Container_Config) {
                     const defaults = {'border': ["solid",[0.2,"rem"]], 'border-color': ["ENUM__ValueSet:::GROUPED","group-border-color"], 'box-decoration-break': "slice", 'padding-left': [8,"px"], 'padding-right': [8,"px"], 'padding-bottom': [0.7,"rem"], 'padding-top': [0.7,"rem"], 'margin-bottom': [1.4,"rem"], 'position': "relative"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteBoxedShape_Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-top'?: number, 'margin-bottom'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___LogoNoteBoxedShape_Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-top'?: number, 'margin-bottom'?: [number, LENGTH], 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___LogoNoteBoxedShape_Title_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'margin-top': 0, 'margin-bottom': [0.7,"rem"], 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteBoxedShape_BodyWrapper_Config = {
+                
+            }
             class carnival___LogoNoteBoxedShape_BodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___LogoNoteBoxedShape_BodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteBoxedShape_Subtitle_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* IBM Plex Sans, sans-serif */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___LogoNoteBoxedShape_Subtitle extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* IBM Plex Sans, sans-serif */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___LogoNoteBoxedShape_Subtitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-family': "IBM Plex Sans, sans-serif"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteBoxedShape_LogoIcon_Config = {
+                'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* relative */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'content'?: any /* ' ' */
+            }
             class carnival___LogoNoteBoxedShape_LogoIcon extends Component {
-                constructor(config: {
-                    'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* relative */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'content'?: any /* ' ' */
-                }) {
+                constructor(config: carnival___LogoNoteBoxedShape_LogoIcon_Config) {
                     const defaults = {'background-size': "contain", 'height': [1.4,"rem"], 'width': [100,"%"], 'display': "inline-block", 'position': "relative", 'content': "' '"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___LogoNoteBoxedShape_Config = {
+        'group-border-style'?: SLICE_ENUM, 'group-border-width'?: [number, LENGTH], 'group-box-decoration-break'?: SLICE_ENUM, 'group-border-color': any /* ENUM__ValueSet:::REQUIRED */, 'group-title-font': any /* ENUM__ValueSet:::REQUIRED */, 'group-title-color': any /* ENUM__ValueSet:::REQUIRED */
+    }
     class carnival___LogoNoteBoxedShape extends Shape {
-        constructor(config: {
-            'group-border-style'?: SLICE_ENUM, 'group-border-width'?: [number, LENGTH], 'group-box-decoration-break'?: SLICE_ENUM, 'group-border-color': any /* ENUM__ValueSet:::REQUIRED */, 'group-title-font': any /* ENUM__ValueSet:::REQUIRED */, 'group-title-color': any /* ENUM__ValueSet:::REQUIRED */
-        }, c0: carnival___LogoNoteBoxedShape_Container, c1: carnival___LogoNoteBoxedShape_Title, c2: carnival___LogoNoteBoxedShape_BodyWrapper, c3: carnival___LogoNoteBoxedShape_Subtitle, c4: carnival___LogoNoteBoxedShape_LogoIcon) {
+        constructor(config: carnival___LogoNoteBoxedShape_Config, c0: carnival___LogoNoteBoxedShape_Container, c1: carnival___LogoNoteBoxedShape_Title, c2: carnival___LogoNoteBoxedShape_BodyWrapper, c3: carnival___LogoNoteBoxedShape_Subtitle, c4: carnival___LogoNoteBoxedShape_LogoIcon) {
             const defaults = {'group-border-style': "solid", 'group-border-width': [0.2,"rem"], 'group-box-decoration-break': "slice"}
             super(defaults, config, [c0, c1, c2, c3, c4])
         }
@@ -778,139 +850,153 @@ class Shape {
 
     // START: carnival___LogoNoteIconShape
     
+            type carnival___LogoNoteIconShape_Title_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: number, 'letter-spacing'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'border-bottom-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* flex-end */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___LogoNoteIconShape_Title extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: number, 'letter-spacing'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'border-bottom-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'display'?: any /* flex */, 'flex-direction'?: any /* row */, 'align-items'?: any /* flex-end */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_Title_Config) {
                     const defaults = {'font-weight': 900, 'letter-spacing': [0.05,"rem"], 'text-transform': "uppercase", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'border-bottom-color': ["ENUM__ValueSet:::GROUPED","group-border-color"], 'border-bottom-width': [0.2,"rem"], 'border-bottom-style': "solid", 'display': "flex", 'flex-direction': "row", 'align-items': "flex-end", 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_TitleIcon_Config = {
+                'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'padding-right'?: [number, LENGTH], 'position'?: any /* relative */, 'bottom'?: [number, LENGTH], 'content'?: any /* '' */
+            }
             class carnival___LogoNoteIconShape_TitleIcon extends Component {
-                constructor(config: {
-                    'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'padding-right'?: [number, LENGTH], 'position'?: any /* relative */, 'bottom'?: [number, LENGTH], 'content'?: any /* '' */
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_TitleIcon_Config) {
                     const defaults = {'background-size': "contain", 'height': [2.8,"rem"], 'width': [2.8,"rem"], 'display': "inline-block", 'padding-right': [0.4,"rem"], 'position': "relative", 'bottom': [-0.5,"rem"], 'content': "''"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_TitleNumber_Config = {
+                'display'?: any /* inline-block */, 'word-wrap'?: any /* normal */, 'margin-bottom'?: [number, LENGTH], 'margin-left'?: [number, LENGTH]
+            }
             class carnival___LogoNoteIconShape_TitleNumber extends Component {
-                constructor(config: {
-                    'display'?: any /* inline-block */, 'word-wrap'?: any /* normal */, 'margin-bottom'?: [number, LENGTH], 'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_TitleNumber_Config) {
                     const defaults = {'display': "inline-block", 'word-wrap': "normal", 'margin-bottom': [0.2,"rem"], 'margin-left': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_TitleLabel_Config = {
+                'display'?: any /* inline-block */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* normal */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___LogoNoteIconShape_TitleLabel extends Component {
-                constructor(config: {
-                    'display'?: any /* inline-block */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* normal */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_TitleLabel_Config) {
                     const defaults = {'display': "inline-block", 'word-wrap': "normal", 'margin-bottom': [0.2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_TitleText_Config = {
+                'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___LogoNoteIconShape_TitleText extends Component {
-                constructor(config: {
-                    'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'word-wrap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_TitleText_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_FirstParagraphTitle_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* bold */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___LogoNoteIconShape_FirstParagraphTitle extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* bold */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_FirstParagraphTitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'border-bottom-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'box-decoration-break'?: SLICE_ENUM
+            }
             class carnival___LogoNoteIconShape_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'border-bottom-color'?: [any /* ENUM__ValueSet:::GROUPED */, any /* group-border-color */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'box-decoration-break'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"], 'border-bottom-color': ["ENUM__ValueSet:::GROUPED","group-border-color"], 'border-bottom-width': [0.2,"rem"], 'border-bottom-style': "solid", 'box-decoration-break': "slice"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_BodyWrapper_Config = {
+                
+            }
             class carnival___LogoNoteIconShape_BodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_BodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_Subtitle_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* IBM Plex Sans, sans-serif */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___LogoNoteIconShape_Subtitle extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family'?: any /* IBM Plex Sans, sans-serif */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_Subtitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-family': "IBM Plex Sans, sans-serif"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_LogoIcon_Config = {
+                'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* relative */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'content'?: any /* ' ' */
+            }
             class carnival___LogoNoteIconShape_LogoIcon extends Component {
-                constructor(config: {
-                    'background': any /* ENUM__ValueSet:::REQUIRED */, 'background-size'?: any /* contain */, 'height'?: [number, LENGTH], 'width'?: [number, LENGTH], 'display'?: any /* inline-block */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* relative */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'content'?: any /* ' ' */
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_LogoIcon_Config) {
                     const defaults = {'background-size': "contain", 'height': [1.4,"rem"], 'width': [100,"%"], 'display': "inline-block", 'position': "relative", 'content': "' '"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_ParagraphSubtitle_Config = {
+                'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* bold */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___LogoNoteIconShape_ParagraphSubtitle extends Component {
-                constructor(config: {
-                    'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* bold */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_ParagraphSubtitle_Config) {
                     const defaults = {'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_Equation_Config = {
+                'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'line-height'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___LogoNoteIconShape_Equation extends Component {
-                constructor(config: {
-                    'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'line-height'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_Equation_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LogoNoteIconShape_AnswerTitle_Config = {
+                'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___LogoNoteIconShape_AnswerTitle extends Component {
-                constructor(config: {
-                    'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___LogoNoteIconShape_AnswerTitle_Config) {
                     const defaults = {'font-size': [1,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___LogoNoteIconShape_Config = {
+        'group-border-color': any /* ENUM__ValueSet:::REQUIRED */
+    }
     class carnival___LogoNoteIconShape extends Shape {
-        constructor(config: {
-            'group-border-color': any /* ENUM__ValueSet:::REQUIRED */
-        }, c0: carnival___LogoNoteIconShape_Title, c1: carnival___LogoNoteIconShape_TitleIcon, c2: carnival___LogoNoteIconShape_TitleNumber, c3: carnival___LogoNoteIconShape_TitleLabel, c4: carnival___LogoNoteIconShape_TitleText, c5: carnival___LogoNoteIconShape_FirstParagraphTitle, c6: carnival___LogoNoteIconShape_Container, c7: carnival___LogoNoteIconShape_BodyWrapper, c8: carnival___LogoNoteIconShape_Subtitle, c9: carnival___LogoNoteIconShape_LogoIcon, c10: carnival___LogoNoteIconShape_ParagraphSubtitle, c11: carnival___LogoNoteIconShape_Equation, c12: carnival___LogoNoteIconShape_AnswerTitle) {
+        constructor(config: carnival___LogoNoteIconShape_Config, c0: carnival___LogoNoteIconShape_Title, c1: carnival___LogoNoteIconShape_TitleIcon, c2: carnival___LogoNoteIconShape_TitleNumber, c3: carnival___LogoNoteIconShape_TitleLabel, c4: carnival___LogoNoteIconShape_TitleText, c5: carnival___LogoNoteIconShape_FirstParagraphTitle, c6: carnival___LogoNoteIconShape_Container, c7: carnival___LogoNoteIconShape_BodyWrapper, c8: carnival___LogoNoteIconShape_Subtitle, c9: carnival___LogoNoteIconShape_LogoIcon, c10: carnival___LogoNoteIconShape_ParagraphSubtitle, c11: carnival___LogoNoteIconShape_Equation, c12: carnival___LogoNoteIconShape_AnswerTitle) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12])
         }
@@ -920,59 +1006,65 @@ class Shape {
 
     // START: carnival___EocOneColumnClustered
     
+            type carnival___EocOneColumnClustered_OneColumnContainer_Config = {
+                'margin-bottom'?: any /* v-grid(2) */
+            }
             class carnival___EocOneColumnClustered_OneColumnContainer extends Component {
-                constructor(config: {
-                    'margin-bottom'?: any /* v-grid(2) */
-                }) {
+                constructor(config: carnival___EocOneColumnClustered_OneColumnContainer_Config) {
                     const defaults = {'margin-bottom': "v-grid(2)"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocOneColumnClustered_CompositeHeader_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
+            }
             class carnival___EocOneColumnClustered_CompositeHeader extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
-                }) {
+                constructor(config: carnival___EocOneColumnClustered_CompositeHeader_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [2.0736,"rem"], 'line-height': [1.5,"rem"], 'text-transform': "uppercase", 'margin-bottom': "v-grid(1)"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocOneColumnClustered_CompoundCompositeHeader_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
+            }
             class carnival___EocOneColumnClustered_CompoundCompositeHeader extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
-                }) {
+                constructor(config: carnival___EocOneColumnClustered_CompoundCompositeHeader_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [1.728,"rem"], 'line-height': [1.5,"rem"], 'text-transform': "uppercase", 'margin-bottom': "v-grid(1)"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocOneColumnClustered_SectionLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___EocOneColumnClustered_SectionLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocOneColumnClustered_SectionLink_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocOneColumnClustered_FigureUnderSectionLink_Config = {
+                'max-width'?: [number, LENGTH], 'padding-top'?: any /* half-v-grid(1) */
+            }
             class carnival___EocOneColumnClustered_FigureUnderSectionLink extends Component {
-                constructor(config: {
-                    'max-width'?: [number, LENGTH], 'padding-top'?: any /* half-v-grid(1) */
-                }) {
+                constructor(config: carnival___EocOneColumnClustered_FigureUnderSectionLink_Config) {
                     const defaults = {'max-width': [100,"%"], 'padding-top': "half-v-grid(1)"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocOneColumnClustered_Config = {
+        
+    }
     class carnival___EocOneColumnClustered extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocOneColumnClustered_OneColumnContainer, c1: carnival___EocOneColumnClustered_CompositeHeader, c2: carnival___EocOneColumnClustered_CompoundCompositeHeader, c3: carnival___EocOneColumnClustered_SectionLink, c4: carnival___EocOneColumnClustered_FigureUnderSectionLink) {
+        constructor(config: carnival___EocOneColumnClustered_Config, c0: carnival___EocOneColumnClustered_OneColumnContainer, c1: carnival___EocOneColumnClustered_CompositeHeader, c2: carnival___EocOneColumnClustered_CompoundCompositeHeader, c3: carnival___EocOneColumnClustered_SectionLink, c4: carnival___EocOneColumnClustered_FigureUnderSectionLink) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4])
         }
@@ -982,29 +1074,32 @@ class Shape {
 
     // START: carnival___EocOneColumnCompositeChapter
     
+            type carnival___EocOneColumnCompositeChapter_OneColumnContainer_Config = {
+                'margin-bottom'?: any /* v-grid(2) */
+            }
             class carnival___EocOneColumnCompositeChapter_OneColumnContainer extends Component {
-                constructor(config: {
-                    'margin-bottom'?: any /* v-grid(2) */
-                }) {
+                constructor(config: carnival___EocOneColumnCompositeChapter_OneColumnContainer_Config) {
                     const defaults = {'margin-bottom': "v-grid(2)"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocOneColumnCompositeChapter_CompositeHeader_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
+            }
             class carnival___EocOneColumnCompositeChapter_CompositeHeader extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
-                }) {
+                constructor(config: carnival___EocOneColumnCompositeChapter_CompositeHeader_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [2.0736,"rem"], 'line-height': [1.5,"rem"], 'text-transform': "uppercase", 'margin-bottom': "v-grid(1)"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocOneColumnCompositeChapter_Config = {
+        
+    }
     class carnival___EocOneColumnCompositeChapter extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocOneColumnCompositeChapter_OneColumnContainer, c1: carnival___EocOneColumnCompositeChapter_CompositeHeader) {
+        constructor(config: carnival___EocOneColumnCompositeChapter_Config, c0: carnival___EocOneColumnCompositeChapter_OneColumnContainer, c1: carnival___EocOneColumnCompositeChapter_CompositeHeader) {
             const defaults = {}
             super(defaults, config, [c0, c1])
         }
@@ -1014,49 +1109,54 @@ class Shape {
 
     // START: carnival___EocTwoColumnsUnclustered
     
+            type carnival___EocTwoColumnsUnclustered_TwoColumnsContainer_Config = {
+                'margin-bottom'?: any /* v-grid(2) */, 'column-count'?: number, 'column-gap'?: [number, LENGTH], 'column-width'?: any /* auto */
+            }
             class carnival___EocTwoColumnsUnclustered_TwoColumnsContainer extends Component {
-                constructor(config: {
-                    'margin-bottom'?: any /* v-grid(2) */, 'column-count'?: number, 'column-gap'?: [number, LENGTH], 'column-width'?: any /* auto */
-                }) {
+                constructor(config: carnival___EocTwoColumnsUnclustered_TwoColumnsContainer_Config) {
                     const defaults = {'margin-bottom': "v-grid(2)", 'column-count': 2, 'column-gap': [2.4,"rem"], 'column-width': "auto"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocTwoColumnsUnclustered_CompositeHeader_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
+            }
             class carnival___EocTwoColumnsUnclustered_CompositeHeader extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
-                }) {
+                constructor(config: carnival___EocTwoColumnsUnclustered_CompositeHeader_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [2.0736,"rem"], 'line-height': [1.5,"rem"], 'text-transform': "uppercase", 'margin-bottom': "v-grid(1)"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocTwoColumnsUnclustered_Table_Config = {
+                'max-width'?: [number, LENGTH], 'table-layout'?: any /* fixed */
+            }
             class carnival___EocTwoColumnsUnclustered_Table extends Component {
-                constructor(config: {
-                    'max-width'?: [number, LENGTH], 'table-layout'?: any /* fixed */
-                }) {
+                constructor(config: carnival___EocTwoColumnsUnclustered_Table_Config) {
                     const defaults = {'max-width': [100,"%"], 'table-layout': "fixed"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocTwoColumnsUnclustered_TableData_Config = {
+                'text-align'?: any /* center */, 'padding-top'?: any /* table-v-grid(1) */, 'padding-bottom'?: any /* table-v-grid(1) */, 'padding-right'?: any /* h-grid(0.5) */, 'padding-left'?: any /* h-grid(0.5) */
+            }
             class carnival___EocTwoColumnsUnclustered_TableData extends Component {
-                constructor(config: {
-                    'text-align'?: any /* center */, 'padding-top'?: any /* table-v-grid(1) */, 'padding-bottom'?: any /* table-v-grid(1) */, 'padding-right'?: any /* h-grid(0.5) */, 'padding-left'?: any /* h-grid(0.5) */
-                }) {
+                constructor(config: carnival___EocTwoColumnsUnclustered_TableData_Config) {
                     const defaults = {'text-align': "center", 'padding-top': "table-v-grid(1)", 'padding-bottom': "table-v-grid(1)", 'padding-right': "h-grid(0.5)", 'padding-left': "h-grid(0.5)"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocTwoColumnsUnclustered_Config = {
+        
+    }
     class carnival___EocTwoColumnsUnclustered extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocTwoColumnsUnclustered_TwoColumnsContainer, c1: carnival___EocTwoColumnsUnclustered_CompositeHeader, c2: carnival___EocTwoColumnsUnclustered_Table, c3: carnival___EocTwoColumnsUnclustered_TableData) {
+        constructor(config: carnival___EocTwoColumnsUnclustered_Config, c0: carnival___EocTwoColumnsUnclustered_TwoColumnsContainer, c1: carnival___EocTwoColumnsUnclustered_CompositeHeader, c2: carnival___EocTwoColumnsUnclustered_Table, c3: carnival___EocTwoColumnsUnclustered_TableData) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -1066,69 +1166,76 @@ class Shape {
 
     // START: carnival___EocTwoColumnsClustered
     
+            type carnival___EocTwoColumnsClustered_TwoColumnsContainer_Config = {
+                'margin-bottom'?: any /* v-grid(2) */, 'column-count'?: number, 'column-gap'?: [number, LENGTH], 'column-width'?: any /* auto */
+            }
             class carnival___EocTwoColumnsClustered_TwoColumnsContainer extends Component {
-                constructor(config: {
-                    'margin-bottom'?: any /* v-grid(2) */, 'column-count'?: number, 'column-gap'?: [number, LENGTH], 'column-width'?: any /* auto */
-                }) {
+                constructor(config: carnival___EocTwoColumnsClustered_TwoColumnsContainer_Config) {
                     const defaults = {'margin-bottom': "v-grid(2)", 'column-count': 2, 'column-gap': [2.4,"rem"], 'column-width': "auto"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocTwoColumnsClustered_CompositeHeader_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
+            }
             class carnival___EocTwoColumnsClustered_CompositeHeader extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* v-grid(1) */
-                }) {
+                constructor(config: carnival___EocTwoColumnsClustered_CompositeHeader_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [2.0736,"rem"], 'line-height': [1.5,"rem"], 'text-transform': "uppercase", 'margin-bottom': "v-grid(1)"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocTwoColumnsClustered_SectionLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___EocTwoColumnsClustered_SectionLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocTwoColumnsClustered_SectionLink_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocTwoColumnsClustered_FigureUnderSectionLink_Config = {
+                'max-width'?: [number, LENGTH], 'padding-top'?: any /* half-v-grid(1) */
+            }
             class carnival___EocTwoColumnsClustered_FigureUnderSectionLink extends Component {
-                constructor(config: {
-                    'max-width'?: [number, LENGTH], 'padding-top'?: any /* half-v-grid(1) */
-                }) {
+                constructor(config: carnival___EocTwoColumnsClustered_FigureUnderSectionLink_Config) {
                     const defaults = {'max-width': [100,"%"], 'padding-top': "half-v-grid(1)"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocTwoColumnsClustered_Table_Config = {
+                'max-width'?: [number, LENGTH], 'table-layout'?: any /* fixed */
+            }
             class carnival___EocTwoColumnsClustered_Table extends Component {
-                constructor(config: {
-                    'max-width'?: [number, LENGTH], 'table-layout'?: any /* fixed */
-                }) {
+                constructor(config: carnival___EocTwoColumnsClustered_Table_Config) {
                     const defaults = {'max-width': [100,"%"], 'table-layout': "fixed"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocTwoColumnsClustered_TableData_Config = {
+                'text-align'?: any /* center */, 'padding-top'?: any /* table-v-grid(1) */, 'padding-bottom'?: any /* table-v-grid(1) */, 'padding-right'?: any /* h-grid(0.5) */, 'padding-left'?: any /* h-grid(0.5) */
+            }
             class carnival___EocTwoColumnsClustered_TableData extends Component {
-                constructor(config: {
-                    'text-align'?: any /* center */, 'padding-top'?: any /* table-v-grid(1) */, 'padding-bottom'?: any /* table-v-grid(1) */, 'padding-right'?: any /* h-grid(0.5) */, 'padding-left'?: any /* h-grid(0.5) */
-                }) {
+                constructor(config: carnival___EocTwoColumnsClustered_TableData_Config) {
                     const defaults = {'text-align': "center", 'padding-top': "table-v-grid(1)", 'padding-bottom': "table-v-grid(1)", 'padding-right': "h-grid(0.5)", 'padding-left': "h-grid(0.5)"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocTwoColumnsClustered_Config = {
+        
+    }
     class carnival___EocTwoColumnsClustered extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocTwoColumnsClustered_TwoColumnsContainer, c1: carnival___EocTwoColumnsClustered_CompositeHeader, c2: carnival___EocTwoColumnsClustered_SectionLink, c3: carnival___EocTwoColumnsClustered_FigureUnderSectionLink, c4: carnival___EocTwoColumnsClustered_Table, c5: carnival___EocTwoColumnsClustered_TableData) {
+        constructor(config: carnival___EocTwoColumnsClustered_Config, c0: carnival___EocTwoColumnsClustered_TwoColumnsContainer, c1: carnival___EocTwoColumnsClustered_CompositeHeader, c2: carnival___EocTwoColumnsClustered_SectionLink, c3: carnival___EocTwoColumnsClustered_FigureUnderSectionLink, c4: carnival___EocTwoColumnsClustered_Table, c5: carnival___EocTwoColumnsClustered_TableData) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5])
         }
@@ -1138,49 +1245,54 @@ class Shape {
 
     // START: carnival___LearningObjectiveAbstractShape
     
+            type carnival___LearningObjectiveAbstractShape_AbstractTitle_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* italic */
+            }
             class carnival___LearningObjectiveAbstractShape_AbstractTitle extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* italic */
-                }) {
+                constructor(config: carnival___LearningObjectiveAbstractShape_AbstractTitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-style': "italic"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveAbstractShape_List_Config = {
+                'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* normal */
+            }
             class carnival___LearningObjectiveAbstractShape_List extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* normal */
-                }) {
+                constructor(config: carnival___LearningObjectiveAbstractShape_List_Config) {
                     const defaults = {'margin-left': [16,"px"], 'padding-left': 0, 'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-style': "normal"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveAbstractShape_ListItem_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
+            }
             class carnival___LearningObjectiveAbstractShape_ListItem extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
-                }) {
+                constructor(config: carnival___LearningObjectiveAbstractShape_ListItem_Config) {
                     const defaults = {'padding': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveAbstractShape_ListDot_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___LearningObjectiveAbstractShape_ListDot extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___LearningObjectiveAbstractShape_ListDot_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___LearningObjectiveAbstractShape_Config = {
+        
+    }
     class carnival___LearningObjectiveAbstractShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___LearningObjectiveAbstractShape_AbstractTitle, c1: carnival___LearningObjectiveAbstractShape_List, c2: carnival___LearningObjectiveAbstractShape_ListItem, c3: carnival___LearningObjectiveAbstractShape_ListDot) {
+        constructor(config: carnival___LearningObjectiveAbstractShape_Config, c0: carnival___LearningObjectiveAbstractShape_AbstractTitle, c1: carnival___LearningObjectiveAbstractShape_List, c2: carnival___LearningObjectiveAbstractShape_ListItem, c3: carnival___LearningObjectiveAbstractShape_ListDot) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -1190,49 +1302,54 @@ class Shape {
 
     // START: carnival___LearningObjectiveShape
     
+            type carnival___LearningObjectiveShape_Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___LearningObjectiveShape_Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___LearningObjectiveShape_Title_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveShape_List_Config = {
+                'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* normal */
+            }
             class carnival___LearningObjectiveShape_List extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* normal */
-                }) {
+                constructor(config: carnival___LearningObjectiveShape_List_Config) {
                     const defaults = {'margin-left': [16,"px"], 'padding-left': 0, 'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-style': "normal"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveShape_ListItem_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
+            }
             class carnival___LearningObjectiveShape_ListItem extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
-                }) {
+                constructor(config: carnival___LearningObjectiveShape_ListItem_Config) {
                     const defaults = {'padding': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveShape_ListDot_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___LearningObjectiveShape_ListDot extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___LearningObjectiveShape_ListDot_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___LearningObjectiveShape_Config = {
+        
+    }
     class carnival___LearningObjectiveShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___LearningObjectiveShape_Title, c1: carnival___LearningObjectiveShape_List, c2: carnival___LearningObjectiveShape_ListItem, c3: carnival___LearningObjectiveShape_ListDot) {
+        constructor(config: carnival___LearningObjectiveShape_Config, c0: carnival___LearningObjectiveShape_Title, c1: carnival___LearningObjectiveShape_List, c2: carnival___LearningObjectiveShape_ListItem, c3: carnival___LearningObjectiveShape_ListDot) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -1242,49 +1359,54 @@ class Shape {
 
     // START: carnival___LearningObjectiveParagraphShape
     
+            type carnival___LearningObjectiveParagraphShape_LearningObjectiveParagraph_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* italic */, 'margin-bottom'?: number
+            }
             class carnival___LearningObjectiveParagraphShape_LearningObjectiveParagraph extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* italic */, 'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___LearningObjectiveParagraphShape_LearningObjectiveParagraph_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-style': "italic", 'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveParagraphShape_List_Config = {
+                'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* normal */
+            }
             class carnival___LearningObjectiveParagraphShape_List extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* normal */
-                }) {
+                constructor(config: carnival___LearningObjectiveParagraphShape_List_Config) {
                     const defaults = {'margin-left': [16,"px"], 'padding-left': 0, 'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-style': "normal"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveParagraphShape_ListItem_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
+            }
             class carnival___LearningObjectiveParagraphShape_ListItem extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
-                }) {
+                constructor(config: carnival___LearningObjectiveParagraphShape_ListItem_Config) {
                     const defaults = {'padding': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveParagraphShape_ListDot_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___LearningObjectiveParagraphShape_ListDot extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___LearningObjectiveParagraphShape_ListDot_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___LearningObjectiveParagraphShape_Config = {
+        
+    }
     class carnival___LearningObjectiveParagraphShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___LearningObjectiveParagraphShape_LearningObjectiveParagraph, c1: carnival___LearningObjectiveParagraphShape_List, c2: carnival___LearningObjectiveParagraphShape_ListItem, c3: carnival___LearningObjectiveParagraphShape_ListDot) {
+        constructor(config: carnival___LearningObjectiveParagraphShape_Config, c0: carnival___LearningObjectiveParagraphShape_LearningObjectiveParagraph, c1: carnival___LearningObjectiveParagraphShape_List, c2: carnival___LearningObjectiveParagraphShape_ListItem, c3: carnival___LearningObjectiveParagraphShape_ListDot) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -1294,69 +1416,76 @@ class Shape {
 
     // START: carnival___LearningObjectiveNoteShape
     
+            type carnival___LearningObjectiveNoteShape_Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___LearningObjectiveNoteShape_Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___LearningObjectiveNoteShape_Title_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveNoteShape_NoteBodyWrapper_Config = {
+                
+            }
             class carnival___LearningObjectiveNoteShape_NoteBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___LearningObjectiveNoteShape_NoteBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveNoteShape_LearningObjectiveParagraph_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* italic */, 'margin-bottom'?: number
+            }
             class carnival___LearningObjectiveNoteShape_LearningObjectiveParagraph extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* italic */, 'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___LearningObjectiveNoteShape_LearningObjectiveParagraph_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-style': "italic", 'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveNoteShape_List_Config = {
+                'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* normal */
+            }
             class carnival___LearningObjectiveNoteShape_List extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* normal */
-                }) {
+                constructor(config: carnival___LearningObjectiveNoteShape_List_Config) {
                     const defaults = {'margin-left': [16,"px"], 'padding-left': 0, 'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-style': "normal"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveNoteShape_ListItem_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
+            }
             class carnival___LearningObjectiveNoteShape_ListItem extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
-                }) {
+                constructor(config: carnival___LearningObjectiveNoteShape_ListItem_Config) {
                     const defaults = {'padding': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___LearningObjectiveNoteShape_ListDot_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___LearningObjectiveNoteShape_ListDot extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___LearningObjectiveNoteShape_ListDot_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___LearningObjectiveNoteShape_Config = {
+        
+    }
     class carnival___LearningObjectiveNoteShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___LearningObjectiveNoteShape_Title, c1: carnival___LearningObjectiveNoteShape_NoteBodyWrapper, c2: carnival___LearningObjectiveNoteShape_LearningObjectiveParagraph, c3: carnival___LearningObjectiveNoteShape_List, c4: carnival___LearningObjectiveNoteShape_ListItem, c5: carnival___LearningObjectiveNoteShape_ListDot) {
+        constructor(config: carnival___LearningObjectiveNoteShape_Config, c0: carnival___LearningObjectiveNoteShape_Title, c1: carnival___LearningObjectiveNoteShape_NoteBodyWrapper, c2: carnival___LearningObjectiveNoteShape_LearningObjectiveParagraph, c3: carnival___LearningObjectiveNoteShape_List, c4: carnival___LearningObjectiveNoteShape_ListItem, c5: carnival___LearningObjectiveNoteShape_ListDot) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5])
         }
@@ -1366,99 +1495,109 @@ class Shape {
 
     // START: carnival___AppendixShape
     
+            type carnival___AppendixShape_H1Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___AppendixShape_H1Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AppendixShape_H1Title_Config) {
                     const defaults = {'font-weight': "bold", 'column-span': "all", 'font-size': [3.58318,"rem"], 'line-height': [3,"rem"], 'padding-bottom': [0.7,"rem"], 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AppendixShape_TitleDivider_Config = {
+                'display'?: any /* none */
+            }
             class carnival___AppendixShape_TitleDivider extends Component {
-                constructor(config: {
-                    'display'?: any /* none */
-                }) {
+                constructor(config: carnival___AppendixShape_TitleDivider_Config) {
                     const defaults = {'display': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AppendixShape_TitleText_Config = {
+                'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* normal */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___AppendixShape_TitleText extends Component {
-                constructor(config: {
-                    'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* normal */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___AppendixShape_TitleText_Config) {
                     const defaults = {'font-weight': "normal"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AppendixShape_TitleNumber_Config = {
+                'display'?: any /* block */, 'padding-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'font-weight'?: any /* bold */, 'text-transform'?: any /* uppercase */
+            }
             class carnival___AppendixShape_TitleNumber extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'padding-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM, 'font-weight'?: any /* bold */, 'text-transform'?: any /* uppercase */
-                }) {
+                constructor(config: carnival___AppendixShape_TitleNumber_Config) {
                     const defaults = {'display': "block", 'border-bottom-width': [0.1,"rem"], 'border-bottom-style': "solid", 'font-weight': "bold", 'text-transform': "uppercase"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AppendixShape_H2Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___AppendixShape_H2Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___AppendixShape_H2Title_Config) {
                     const defaults = {'font-size': [1.728,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AppendixShape_H3Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___AppendixShape_H3Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___AppendixShape_H3Title_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AppendixShape_AppendixGlossary_Config = {
+                'column-count'?: number, 'column-width'?: any /* auto */, 'font-size'?: [number, LENGTH]
+            }
             class carnival___AppendixShape_AppendixGlossary extends Component {
-                constructor(config: {
-                    'column-count'?: number, 'column-width'?: any /* auto */, 'font-size'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AppendixShape_AppendixGlossary_Config) {
                     const defaults = {'column-count': 3, 'column-width': "auto", 'font-size': [0.83333,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AppendixShape_GlossarySection_Config = {
+                'list-style-type'?: any /* none */
+            }
             class carnival___AppendixShape_GlossarySection extends Component {
-                constructor(config: {
-                    'list-style-type'?: any /* none */
-                }) {
+                constructor(config: carnival___AppendixShape_GlossarySection_Config) {
                     const defaults = {'list-style-type': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AppendixShape_List__MarginLeft_Config = {
+                'margin-left'?: [number, LENGTH]
+            }
             class carnival___AppendixShape_List__MarginLeft extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AppendixShape_List__MarginLeft_Config) {
                     const defaults = {'margin-left': [24,"px"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___AppendixShape_Config = {
+        
+    }
     class carnival___AppendixShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___AppendixShape_H1Title, c1: carnival___AppendixShape_TitleDivider, c2: carnival___AppendixShape_TitleText, c3: carnival___AppendixShape_TitleNumber, c4: carnival___AppendixShape_H2Title, c5: carnival___AppendixShape_H3Title, c6: carnival___AppendixShape_AppendixGlossary, c7: carnival___AppendixShape_GlossarySection, c8: carnival___AppendixShape_List__MarginLeft) {
+        constructor(config: carnival___AppendixShape_Config, c0: carnival___AppendixShape_H1Title, c1: carnival___AppendixShape_TitleDivider, c2: carnival___AppendixShape_TitleText, c3: carnival___AppendixShape_TitleNumber, c4: carnival___AppendixShape_H2Title, c5: carnival___AppendixShape_H3Title, c6: carnival___AppendixShape_AppendixGlossary, c7: carnival___AppendixShape_GlossarySection, c8: carnival___AppendixShape_List__MarginLeft) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8])
         }
@@ -1468,79 +1607,87 @@ class Shape {
 
     // START: carnival___IndexShape
     
+            type carnival___IndexShape_Container_Config = {
+                'column-count'?: number, 'column-gap'?: [number, LENGTH]
+            }
             class carnival___IndexShape_Container extends Component {
-                constructor(config: {
-                    'column-count'?: number, 'column-gap'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IndexShape_Container_Config) {
                     const defaults = {'column-count': 3, 'column-gap': [32,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IndexShape_H1Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___IndexShape_H1Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IndexShape_H1Title_Config) {
                     const defaults = {'font-weight': "bold", 'column-span': "all", 'font-size': [3.58318,"rem"], 'line-height': [3,"rem"], 'padding-bottom': [0.7,"rem"], 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IndexShape_Group_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* normal */, 'padding-bottom'?: [number, LENGTH]
+            }
             class carnival___IndexShape_Group extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* normal */, 'padding-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IndexShape_Group_Config) {
                     const defaults = {'font-weight': "normal", 'padding-bottom': [4.2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IndexShape_GroupLabel_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* bold */
+            }
             class carnival___IndexShape_GroupLabel extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___IndexShape_GroupLabel_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IndexShape_TermContainer_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___IndexShape_TermContainer extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IndexShape_TermContainer_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IndexShape_TermText_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-right'?: [number, LENGTH]
+            }
             class carnival___IndexShape_TermText extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IndexShape_TermText_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'padding-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IndexShape_PageNumber_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___IndexShape_PageNumber extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___IndexShape_PageNumber_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___IndexShape_Config = {
+        
+    }
     class carnival___IndexShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___IndexShape_Container, c1: carnival___IndexShape_H1Title, c2: carnival___IndexShape_Group, c3: carnival___IndexShape_GroupLabel, c4: carnival___IndexShape_TermContainer, c5: carnival___IndexShape_TermText, c6: carnival___IndexShape_PageNumber) {
+        constructor(config: carnival___IndexShape_Config, c0: carnival___IndexShape_Container, c1: carnival___IndexShape_H1Title, c2: carnival___IndexShape_Group, c3: carnival___IndexShape_GroupLabel, c4: carnival___IndexShape_TermContainer, c5: carnival___IndexShape_TermText, c6: carnival___IndexShape_PageNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6])
         }
@@ -1550,59 +1697,65 @@ class Shape {
 
     // START: carnival___ReferencesShape
     
+            type carnival___ReferencesShape_ContainerWrapper_Config = {
+                
+            }
             class carnival___ReferencesShape_ContainerWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___ReferencesShape_ContainerWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ReferencesShape_H1Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___ReferencesShape_H1Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ReferencesShape_H1Title_Config) {
                     const defaults = {'font-weight': "bold", 'column-span': "all", 'font-size': [3.58318,"rem"], 'line-height': [3,"rem"], 'padding-bottom': [0.7,"rem"], 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ReferencesShape_Section_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___ReferencesShape_Section extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ReferencesShape_Section_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ReferencesShape_H2Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___ReferencesShape_H2Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___ReferencesShape_H2Title_Config) {
                     const defaults = {'font-size': [1.728,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ReferencesShape_Text_Config = {
+                'text-indent'?: [number, LENGTH], 'padding-left'?: [number, LENGTH]
+            }
             class carnival___ReferencesShape_Text extends Component {
-                constructor(config: {
-                    'text-indent'?: [number, LENGTH], 'padding-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ReferencesShape_Text_Config) {
                     const defaults = {'text-indent': [-24,"px"], 'padding-left': [24,"px"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___ReferencesShape_Config = {
+        
+    }
     class carnival___ReferencesShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___ReferencesShape_ContainerWrapper, c1: carnival___ReferencesShape_H1Title, c2: carnival___ReferencesShape_Section, c3: carnival___ReferencesShape_H2Title, c4: carnival___ReferencesShape_Text) {
+        constructor(config: carnival___ReferencesShape_Config, c0: carnival___ReferencesShape_ContainerWrapper, c1: carnival___ReferencesShape_H1Title, c2: carnival___ReferencesShape_Section, c3: carnival___ReferencesShape_H2Title, c4: carnival___ReferencesShape_Text) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4])
         }
@@ -1612,49 +1765,54 @@ class Shape {
 
     // START: carnival___FootnotesShape
     
+            type carnival___FootnotesShape_Container_Config = {
+                'float'?: any /* footnote */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'text-align'?: any /* left */, 'font-weight'?: any /* normal */
+            }
             class carnival___FootnotesShape_Container extends Component {
-                constructor(config: {
-                    'float'?: any /* footnote */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'text-align'?: any /* left */, 'font-weight'?: any /* normal */
-                }) {
+                constructor(config: carnival___FootnotesShape_Container_Config) {
                     const defaults = {'float': "footnote", 'text-align': "left", 'font-weight': "normal"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FootnotesShape_FootnoteCall_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___FootnotesShape_FootnoteCall extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___FootnotesShape_FootnoteCall_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FootnotesShape_FootnoteMarker_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___FootnotesShape_FootnoteMarker extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___FootnotesShape_FootnoteMarker_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FootnotesShape_FootnoteNumber_Config = {
+                'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
+            }
             class carnival___FootnotesShape_FootnoteNumber extends Component {
-                constructor(config: {
-                    'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___FootnotesShape_FootnoteNumber_Config) {
                     const defaults = {'display': "inline-block", 'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___FootnotesShape_Config = {
+        
+    }
     class carnival___FootnotesShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___FootnotesShape_Container, c1: carnival___FootnotesShape_FootnoteCall, c2: carnival___FootnotesShape_FootnoteMarker, c3: carnival___FootnotesShape_FootnoteNumber) {
+        constructor(config: carnival___FootnotesShape_Config, c0: carnival___FootnotesShape_Container, c1: carnival___FootnotesShape_FootnoteCall, c2: carnival___FootnotesShape_FootnoteMarker, c3: carnival___FootnotesShape_FootnoteNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -1664,19 +1822,21 @@ class Shape {
 
     // START: carnival___FootnotesCallShape
     
+            type carnival___FootnotesCallShape_DefaultFootnoteCall_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: number, 'position'?: any /* relative */, 'vertical-align'?: any /* baseline */, 'top'?: [number, any /* em */]
+            }
             class carnival___FootnotesCallShape_DefaultFootnoteCall extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: number, 'position'?: any /* relative */, 'vertical-align'?: any /* baseline */, 'top'?: [number, any /* em */]
-                }) {
+                constructor(config: carnival___FootnotesCallShape_DefaultFootnoteCall_Config) {
                     const defaults = {'font-size': [75,"%"], 'line-height': 0, 'position': "relative", 'vertical-align': "baseline", 'top': [-0.7,"em"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___FootnotesCallShape_Config = {
+        
+    }
     class carnival___FootnotesCallShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___FootnotesCallShape_DefaultFootnoteCall) {
+        constructor(config: carnival___FootnotesCallShape_Config, c0: carnival___FootnotesCallShape_DefaultFootnoteCall) {
             const defaults = {}
             super(defaults, config, [c0])
         }
@@ -1686,89 +1846,98 @@ class Shape {
 
     // START: carnival___Preface
     
+            type carnival___Preface_PrefaceContainer_Config = {
+                'column-count'?: number, 'column-gap'?: [number, LENGTH], 'column-width'?: any /* auto */
+            }
             class carnival___Preface_PrefaceContainer extends Component {
-                constructor(config: {
-                    'column-count'?: number, 'column-gap'?: [number, LENGTH], 'column-width'?: any /* auto */
-                }) {
+                constructor(config: carnival___Preface_PrefaceContainer_Config) {
                     const defaults = {'column-count': 2, 'column-gap': [2.4,"rem"], 'column-width': "auto"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Preface_H1Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___Preface_H1Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Preface_H1Title_Config) {
                     const defaults = {'font-weight': "bold", 'column-span': "all", 'font-size': [3.58318,"rem"], 'line-height': [3,"rem"], 'padding-bottom': [0.7,"rem"], 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Preface_H2Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___Preface_H2Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___Preface_H2Title_Config) {
                     const defaults = {'font-size': [1.728,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Preface_H3Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___Preface_H3Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___Preface_H3Title_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Preface_H4Title_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___Preface_H4Title extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Preface_H4Title_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Preface_H5Title_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___Preface_H5Title extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Preface_H5Title_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [1,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Preface_List__MarginLeft_Config = {
+                'margin-left'?: [number, LENGTH]
+            }
             class carnival___Preface_List__MarginLeft extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Preface_List__MarginLeft_Config) {
                     const defaults = {'margin-left': [24,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Preface_Nested__List__MarginLeft_Config = {
+                'margin-left'?: [number, LENGTH]
+            }
             class carnival___Preface_Nested__List__MarginLeft extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Preface_Nested__List__MarginLeft_Config) {
                     const defaults = {'margin-left': [16,"px"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___Preface_Config = {
+        
+    }
     class carnival___Preface extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___Preface_PrefaceContainer, c1: carnival___Preface_H1Title, c2: carnival___Preface_H2Title, c3: carnival___Preface_H3Title, c4: carnival___Preface_H4Title, c5: carnival___Preface_H5Title, c6: carnival___Preface_List__MarginLeft, c7: carnival___Preface_Nested__List__MarginLeft) {
+        constructor(config: carnival___Preface_Config, c0: carnival___Preface_PrefaceContainer, c1: carnival___Preface_H1Title, c2: carnival___Preface_H2Title, c3: carnival___Preface_H3Title, c4: carnival___Preface_H4Title, c5: carnival___Preface_H5Title, c6: carnival___Preface_List__MarginLeft, c7: carnival___Preface_Nested__List__MarginLeft) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7])
         }
@@ -1778,199 +1947,219 @@ class Shape {
 
     // START: carnival___MarginChapterIntroShape
     
+            type carnival___MarginChapterIntroShape_SplashFigureWrapper_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___MarginChapterIntroShape_SplashFigureWrapper extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_SplashFigureWrapper_Config) {
                     const defaults = {'margin-bottom': [2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_SplashFigure_Config = {
+                'position'?: any /* relative */, 'margin'?: number
+            }
             class carnival___MarginChapterIntroShape_SplashFigure extends Component {
-                constructor(config: {
-                    'position'?: any /* relative */, 'margin'?: number
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_SplashFigure_Config) {
                     const defaults = {'position': "relative", 'margin': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_SplashFigureBg_Config = {
+                'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
+            }
             class carnival___MarginChapterIntroShape_SplashFigureBg extends Component {
-                constructor(config: {
-                    'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_SplashFigureBg_Config) {
                     const defaults = {'content': "''", 'position': "absolute", 'height': [100,"%"], 'z-index': -1, 'box-sizing': "border-box", 'padding': "inherit", 'top': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_SplashImgMedia_Config = {
+                'line-height'?: number, 'height'?: [number, LENGTH], 'display'?: any /* flex */, 'width'?: [number, any /* in */], 'justify-content'?: any /* flex-end */
+            }
             class carnival___MarginChapterIntroShape_SplashImgMedia extends Component {
-                constructor(config: {
-                    'line-height'?: number, 'height'?: [number, LENGTH], 'display'?: any /* flex */, 'width'?: [number, any /* in */], 'justify-content'?: any /* flex-end */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_SplashImgMedia_Config) {
                     const defaults = {'line-height': 0, 'height': [100,"%"], 'display': "flex", 'width': [7.65,"in"], 'justify-content': "flex-end"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_SplashImg_Config = {
+                'width'?: [number, any /* in */]
+            }
             class carnival___MarginChapterIntroShape_SplashImg extends Component {
-                constructor(config: {
-                    'width'?: [number, any /* in */]
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_SplashImg_Config) {
                     const defaults = {'width': [8.15,"in"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_SplashCaption_Config = {
+                'position'?: any /* relative */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
+            }
             class carnival___MarginChapterIntroShape_SplashCaption extends Component {
-                constructor(config: {
-                    'position'?: any /* relative */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_SplashCaption_Config) {
                     const defaults = {'position': "relative", 'padding-top': [1,"rem"], 'padding-bottom': [2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_SplashCaptionBg_Config = {
+                'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
+            }
             class carnival___MarginChapterIntroShape_SplashCaptionBg extends Component {
-                constructor(config: {
-                    'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_SplashCaptionBg_Config) {
                     const defaults = {'content': "''", 'position': "absolute", 'height': [100,"%"], 'z-index': -1, 'box-sizing': "border-box", 'padding': "inherit", 'top': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_FigureNum_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
+            }
             class carnival___MarginChapterIntroShape_FigureNum extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_FigureNum_Config) {
                     const defaults = {'font-weight': "bold", 'display': "inline-block", 'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_FigureLabel_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___MarginChapterIntroShape_FigureLabel extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_FigureLabel_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_FigureTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
+            }
             class carnival___MarginChapterIntroShape_FigureTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_FigureTitle_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_Caption_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___MarginChapterIntroShape_Caption extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_Caption_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_IntroBody_Config = {
+                'display'?: any /* flex */, 'flex-direction'?: any /* row-reverse */, 'justify-content'?: any /* space-between */, 'position'?: any /* relative */, 'right'?: [number, any /* in */], 'margin-left'?: [number, any /* in */]
+            }
             class carnival___MarginChapterIntroShape_IntroBody extends Component {
-                constructor(config: {
-                    'display'?: any /* flex */, 'flex-direction'?: any /* row-reverse */, 'justify-content'?: any /* space-between */, 'position'?: any /* relative */, 'right'?: [number, any /* in */], 'margin-left'?: [number, any /* in */]
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_IntroBody_Config) {
                     const defaults = {'display': "flex", 'flex-direction': "row-reverse", 'justify-content': "space-between", 'position': "relative", 'right': [-2,"in"], 'margin-left': [-2,"in"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_OutlineMargin_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'width': any /* ENUM__ValueSet:::REQUIRED */, 'background-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'box-decoration-break'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___MarginChapterIntroShape_OutlineMargin extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'width': any /* ENUM__ValueSet:::REQUIRED */, 'background-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'box-decoration-break'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_OutlineMargin_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_OutlineTitle_Config = {
+                'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'flex-direction'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___MarginChapterIntroShape_OutlineTitle extends Component {
-                constructor(config: {
-                    'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'flex-direction'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_OutlineTitle_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_ChapterOutlineObjective_Config = {
+                'margin-bottom'?: [number, LENGTH], 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___MarginChapterIntroShape_ChapterOutlineObjective extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_ChapterOutlineObjective_Config) {
                     const defaults = {'margin-bottom': [0.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_OutlineObjectiveLink_Config = {
+                'display': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___MarginChapterIntroShape_OutlineObjectiveLink extends Component {
-                constructor(config: {
-                    'display': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_OutlineObjectiveLink_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_ChapterOutlineObjectiveText_Config = {
+                'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___MarginChapterIntroShape_ChapterOutlineObjectiveText extends Component {
-                constructor(config: {
-                    'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_ChapterOutlineObjectiveText_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_IntroContentWrapper_Config = {
+                
+            }
             class carnival___MarginChapterIntroShape_IntroContentWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_IntroContentWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___MarginChapterIntroShape_IntroContentHeader_Config = {
+                'float'?: any /* left */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___MarginChapterIntroShape_IntroContentHeader extends Component {
-                constructor(config: {
-                    'float'?: any /* left */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___MarginChapterIntroShape_IntroContentHeader_Config) {
                     const defaults = {'float': "left"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___MarginChapterIntroShape_Config = {
+        
+    }
     class carnival___MarginChapterIntroShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___MarginChapterIntroShape_SplashFigureWrapper, c1: carnival___MarginChapterIntroShape_SplashFigure, c2: carnival___MarginChapterIntroShape_SplashFigureBg, c3: carnival___MarginChapterIntroShape_SplashImgMedia, c4: carnival___MarginChapterIntroShape_SplashImg, c5: carnival___MarginChapterIntroShape_SplashCaption, c6: carnival___MarginChapterIntroShape_SplashCaptionBg, c7: carnival___MarginChapterIntroShape_FigureNum, c8: carnival___MarginChapterIntroShape_FigureLabel, c9: carnival___MarginChapterIntroShape_FigureTitle, c10: carnival___MarginChapterIntroShape_Caption, c11: carnival___MarginChapterIntroShape_IntroBody, c12: carnival___MarginChapterIntroShape_OutlineMargin, c13: carnival___MarginChapterIntroShape_OutlineTitle, c14: carnival___MarginChapterIntroShape_ChapterOutlineObjective, c15: carnival___MarginChapterIntroShape_OutlineObjectiveLink, c16: carnival___MarginChapterIntroShape_ChapterOutlineObjectiveText, c17: carnival___MarginChapterIntroShape_IntroContentWrapper, c18: carnival___MarginChapterIntroShape_IntroContentHeader) {
+        constructor(config: carnival___MarginChapterIntroShape_Config, c0: carnival___MarginChapterIntroShape_SplashFigureWrapper, c1: carnival___MarginChapterIntroShape_SplashFigure, c2: carnival___MarginChapterIntroShape_SplashFigureBg, c3: carnival___MarginChapterIntroShape_SplashImgMedia, c4: carnival___MarginChapterIntroShape_SplashImg, c5: carnival___MarginChapterIntroShape_SplashCaption, c6: carnival___MarginChapterIntroShape_SplashCaptionBg, c7: carnival___MarginChapterIntroShape_FigureNum, c8: carnival___MarginChapterIntroShape_FigureLabel, c9: carnival___MarginChapterIntroShape_FigureTitle, c10: carnival___MarginChapterIntroShape_Caption, c11: carnival___MarginChapterIntroShape_IntroBody, c12: carnival___MarginChapterIntroShape_OutlineMargin, c13: carnival___MarginChapterIntroShape_OutlineTitle, c14: carnival___MarginChapterIntroShape_ChapterOutlineObjective, c15: carnival___MarginChapterIntroShape_OutlineObjectiveLink, c16: carnival___MarginChapterIntroShape_ChapterOutlineObjectiveText, c17: carnival___MarginChapterIntroShape_IntroContentWrapper, c18: carnival___MarginChapterIntroShape_IntroContentHeader) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18])
         }
@@ -1980,209 +2169,230 @@ class Shape {
 
     // START: carnival___ChapterIntroWithObjectivesShape
     
+            type carnival___ChapterIntroWithObjectivesShape_SplashFigureWrapper_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___ChapterIntroWithObjectivesShape_SplashFigureWrapper extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_SplashFigureWrapper_Config) {
                     const defaults = {'margin-bottom': [2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_SplashFigure_Config = {
+                'position'?: any /* relative */, 'margin'?: number
+            }
             class carnival___ChapterIntroWithObjectivesShape_SplashFigure extends Component {
-                constructor(config: {
-                    'position'?: any /* relative */, 'margin'?: number
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_SplashFigure_Config) {
                     const defaults = {'position': "relative", 'margin': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_SplashFigureBg_Config = {
+                'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
+            }
             class carnival___ChapterIntroWithObjectivesShape_SplashFigureBg extends Component {
-                constructor(config: {
-                    'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_SplashFigureBg_Config) {
                     const defaults = {'content': "''", 'position': "absolute", 'height': [100,"%"], 'z-index': -1, 'box-sizing': "border-box", 'padding': "inherit", 'top': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_SplashImgMedia_Config = {
+                'line-height'?: number, 'height'?: [number, LENGTH], 'display'?: any /* flex */, 'width'?: [number, any /* in */], 'justify-content'?: any /* flex-end */
+            }
             class carnival___ChapterIntroWithObjectivesShape_SplashImgMedia extends Component {
-                constructor(config: {
-                    'line-height'?: number, 'height'?: [number, LENGTH], 'display'?: any /* flex */, 'width'?: [number, any /* in */], 'justify-content'?: any /* flex-end */
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_SplashImgMedia_Config) {
                     const defaults = {'line-height': 0, 'height': [100,"%"], 'display': "flex", 'width': [7.65,"in"], 'justify-content': "flex-end"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_SplashImg_Config = {
+                'width'?: [number, any /* in */]
+            }
             class carnival___ChapterIntroWithObjectivesShape_SplashImg extends Component {
-                constructor(config: {
-                    'width'?: [number, any /* in */]
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_SplashImg_Config) {
                     const defaults = {'width': [8.15,"in"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_SplashCaption_Config = {
+                'position'?: any /* relative */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
+            }
             class carnival___ChapterIntroWithObjectivesShape_SplashCaption extends Component {
-                constructor(config: {
-                    'position'?: any /* relative */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_SplashCaption_Config) {
                     const defaults = {'position': "relative", 'padding-top': [1,"rem"], 'padding-bottom': [2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_SplashCaptionBg_Config = {
+                'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
+            }
             class carnival___ChapterIntroWithObjectivesShape_SplashCaptionBg extends Component {
-                constructor(config: {
-                    'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_SplashCaptionBg_Config) {
                     const defaults = {'content': "''", 'position': "absolute", 'height': [100,"%"], 'z-index': -1, 'box-sizing': "border-box", 'padding': "inherit", 'top': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_FigureNum_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
+            }
             class carnival___ChapterIntroWithObjectivesShape_FigureNum extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_FigureNum_Config) {
                     const defaults = {'font-weight': "bold", 'display': "inline-block", 'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_FigureLabel_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___ChapterIntroWithObjectivesShape_FigureLabel extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_FigureLabel_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_FigureTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
+            }
             class carnival___ChapterIntroWithObjectivesShape_FigureTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_FigureTitle_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_Caption_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___ChapterIntroWithObjectivesShape_Caption extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_Caption_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_IntroBodyWrapper_Config = {
+                
+            }
             class carnival___ChapterIntroWithObjectivesShape_IntroBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_IntroBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_ObjectivesWrapper_Config = {
+                
+            }
             class carnival___ChapterIntroWithObjectivesShape_ObjectivesWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_ObjectivesWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_ObjectivesTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform'?: any /* uppercase */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___ChapterIntroWithObjectivesShape_ObjectivesTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform'?: any /* uppercase */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_ObjectivesTitle_Config) {
                     const defaults = {'font-weight': "bold", 'text-transform': "uppercase", 'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_ObjectivesPara_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* italic */
+            }
             class carnival___ChapterIntroWithObjectivesShape_ObjectivesPara extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-style'?: any /* italic */
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_ObjectivesPara_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'font-style': "italic"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_ObjectivesList_Config = {
+                'margin-bottom'?: [number, LENGTH], 'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___ChapterIntroWithObjectivesShape_ObjectivesList extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'margin-left'?: [number, LENGTH], 'padding-left'?: number, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_ObjectivesList_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"], 'margin-left': [16,"px"], 'padding-left': 0, 'font-size': [1,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_ObjectivesListItem_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
+            }
             class carnival___ChapterIntroWithObjectivesShape_ObjectivesListItem extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'padding'?: number
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_ObjectivesListItem_Config) {
                     const defaults = {'padding': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_ObjectivesListDot_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___ChapterIntroWithObjectivesShape_ObjectivesListDot extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_ObjectivesListDot_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_IntroContentWrapper_Config = {
+                
+            }
             class carnival___ChapterIntroWithObjectivesShape_IntroContentWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_IntroContentWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ChapterIntroWithObjectivesShape_IntroContentHeader_Config = {
+                'float'?: any /* left */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___ChapterIntroWithObjectivesShape_IntroContentHeader extends Component {
-                constructor(config: {
-                    'float'?: any /* left */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___ChapterIntroWithObjectivesShape_IntroContentHeader_Config) {
                     const defaults = {'float': "left"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___ChapterIntroWithObjectivesShape_Config = {
+        
+    }
     class carnival___ChapterIntroWithObjectivesShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___ChapterIntroWithObjectivesShape_SplashFigureWrapper, c1: carnival___ChapterIntroWithObjectivesShape_SplashFigure, c2: carnival___ChapterIntroWithObjectivesShape_SplashFigureBg, c3: carnival___ChapterIntroWithObjectivesShape_SplashImgMedia, c4: carnival___ChapterIntroWithObjectivesShape_SplashImg, c5: carnival___ChapterIntroWithObjectivesShape_SplashCaption, c6: carnival___ChapterIntroWithObjectivesShape_SplashCaptionBg, c7: carnival___ChapterIntroWithObjectivesShape_FigureNum, c8: carnival___ChapterIntroWithObjectivesShape_FigureLabel, c9: carnival___ChapterIntroWithObjectivesShape_FigureTitle, c10: carnival___ChapterIntroWithObjectivesShape_Caption, c11: carnival___ChapterIntroWithObjectivesShape_IntroBodyWrapper, c12: carnival___ChapterIntroWithObjectivesShape_ObjectivesWrapper, c13: carnival___ChapterIntroWithObjectivesShape_ObjectivesTitle, c14: carnival___ChapterIntroWithObjectivesShape_ObjectivesPara, c15: carnival___ChapterIntroWithObjectivesShape_ObjectivesList, c16: carnival___ChapterIntroWithObjectivesShape_ObjectivesListItem, c17: carnival___ChapterIntroWithObjectivesShape_ObjectivesListDot, c18: carnival___ChapterIntroWithObjectivesShape_IntroContentWrapper, c19: carnival___ChapterIntroWithObjectivesShape_IntroContentHeader) {
+        constructor(config: carnival___ChapterIntroWithObjectivesShape_Config, c0: carnival___ChapterIntroWithObjectivesShape_SplashFigureWrapper, c1: carnival___ChapterIntroWithObjectivesShape_SplashFigure, c2: carnival___ChapterIntroWithObjectivesShape_SplashFigureBg, c3: carnival___ChapterIntroWithObjectivesShape_SplashImgMedia, c4: carnival___ChapterIntroWithObjectivesShape_SplashImg, c5: carnival___ChapterIntroWithObjectivesShape_SplashCaption, c6: carnival___ChapterIntroWithObjectivesShape_SplashCaptionBg, c7: carnival___ChapterIntroWithObjectivesShape_FigureNum, c8: carnival___ChapterIntroWithObjectivesShape_FigureLabel, c9: carnival___ChapterIntroWithObjectivesShape_FigureTitle, c10: carnival___ChapterIntroWithObjectivesShape_Caption, c11: carnival___ChapterIntroWithObjectivesShape_IntroBodyWrapper, c12: carnival___ChapterIntroWithObjectivesShape_ObjectivesWrapper, c13: carnival___ChapterIntroWithObjectivesShape_ObjectivesTitle, c14: carnival___ChapterIntroWithObjectivesShape_ObjectivesPara, c15: carnival___ChapterIntroWithObjectivesShape_ObjectivesList, c16: carnival___ChapterIntroWithObjectivesShape_ObjectivesListItem, c17: carnival___ChapterIntroWithObjectivesShape_ObjectivesListDot, c18: carnival___ChapterIntroWithObjectivesShape_IntroContentWrapper, c19: carnival___ChapterIntroWithObjectivesShape_IntroContentHeader) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19])
         }
@@ -2192,239 +2402,263 @@ class Shape {
 
     // START: carnival___FullWidthChapterIntroShape
     
+            type carnival___FullWidthChapterIntroShape_SplashFigureWrapper_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___FullWidthChapterIntroShape_SplashFigureWrapper extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_SplashFigureWrapper_Config) {
                     const defaults = {'margin-bottom': [2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_SplashFigure_Config = {
+                'position'?: any /* relative */, 'margin'?: number
+            }
             class carnival___FullWidthChapterIntroShape_SplashFigure extends Component {
-                constructor(config: {
-                    'position'?: any /* relative */, 'margin'?: number
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_SplashFigure_Config) {
                     const defaults = {'position': "relative", 'margin': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_SplashFigureBg_Config = {
+                'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
+            }
             class carnival___FullWidthChapterIntroShape_SplashFigureBg extends Component {
-                constructor(config: {
-                    'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_SplashFigureBg_Config) {
                     const defaults = {'content': "''", 'position': "absolute", 'height': [100,"%"], 'z-index': -1, 'box-sizing': "border-box", 'padding': "inherit", 'top': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_SplashImgMedia_Config = {
+                'line-height'?: number, 'height'?: [number, LENGTH], 'display'?: any /* flex */, 'width'?: [number, any /* in */], 'justify-content'?: any /* flex-end */
+            }
             class carnival___FullWidthChapterIntroShape_SplashImgMedia extends Component {
-                constructor(config: {
-                    'line-height'?: number, 'height'?: [number, LENGTH], 'display'?: any /* flex */, 'width'?: [number, any /* in */], 'justify-content'?: any /* flex-end */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_SplashImgMedia_Config) {
                     const defaults = {'line-height': 0, 'height': [100,"%"], 'display': "flex", 'width': [7.65,"in"], 'justify-content': "flex-end"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_SplashImg_Config = {
+                'width'?: [number, any /* in */]
+            }
             class carnival___FullWidthChapterIntroShape_SplashImg extends Component {
-                constructor(config: {
-                    'width'?: [number, any /* in */]
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_SplashImg_Config) {
                     const defaults = {'width': [8.15,"in"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_SplashCaption_Config = {
+                'position'?: any /* relative */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
+            }
             class carnival___FullWidthChapterIntroShape_SplashCaption extends Component {
-                constructor(config: {
-                    'position'?: any /* relative */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_SplashCaption_Config) {
                     const defaults = {'position': "relative", 'padding-top': [1,"rem"], 'padding-bottom': [2,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_SplashCaptionBg_Config = {
+                'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
+            }
             class carnival___FullWidthChapterIntroShape_SplashCaptionBg extends Component {
-                constructor(config: {
-                    'content'?: any /* '' */, 'background-color': any /* ENUM__ValueSet:::REQUIRED */, 'position'?: any /* absolute */, 'height'?: [number, LENGTH], 'width': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'z-index'?: number, 'box-sizing'?: any /* border-box */, 'padding'?: any /* inherit */, 'top'?: number
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_SplashCaptionBg_Config) {
                     const defaults = {'content': "''", 'position': "absolute", 'height': [100,"%"], 'z-index': -1, 'box-sizing': "border-box", 'padding': "inherit", 'top': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_FigureNum_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
+            }
             class carnival___FullWidthChapterIntroShape_FigureNum extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* inline-block */, 'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_FigureNum_Config) {
                     const defaults = {'font-weight': "bold", 'display': "inline-block", 'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_FigureLabel_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___FullWidthChapterIntroShape_FigureLabel extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_FigureLabel_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_FigureTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
+            }
             class carnival___FullWidthChapterIntroShape_FigureTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_FigureTitle_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_Caption_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___FullWidthChapterIntroShape_Caption extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_Caption_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_IntroBodyWrapper_Config = {
+                
+            }
             class carnival___FullWidthChapterIntroShape_IntroBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_IntroBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_OutlineFullWidth_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'width': any /* ENUM__ValueSet:::REQUIRED */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'box-decoration-break'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FullWidthChapterIntroShape_OutlineFullWidth extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'width': any /* ENUM__ValueSet:::REQUIRED */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'box-decoration-break'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_OutlineFullWidth_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_OutlineTitle_Config = {
+                'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'flex-direction'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FullWidthChapterIntroShape_OutlineTitle extends Component {
-                constructor(config: {
-                    'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'flex-direction'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_OutlineTitle_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_OutlineTitleBottomBorder_Config = {
+                'content'?: any /* '' */, 'width'?: [number, any /* in */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'border-bottom-style'?: SLICE_ENUM, 'margin-left'?: [number, LENGTH], 'position'?: any /* absolute */, 'bottom'?: number, 'display'?: any /* inline-block */
+            }
             class carnival___FullWidthChapterIntroShape_OutlineTitleBottomBorder extends Component {
-                constructor(config: {
-                    'content'?: any /* '' */, 'width'?: [number, any /* in */], 'border-bottom-width'?: [number, LENGTH], 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'border-bottom-style'?: SLICE_ENUM, 'margin-left'?: [number, LENGTH], 'position'?: any /* absolute */, 'bottom'?: number, 'display'?: any /* inline-block */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_OutlineTitleBottomBorder_Config) {
                     const defaults = {'content': "''", 'width': [5.20104,"in"], 'border-bottom-width': [0.2,"rem"], 'border-bottom-style': "solid", 'margin-left': [10.39167,"rem"], 'position': "absolute", 'bottom': 0, 'display': "inline-block"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_ChapterOutlineObjective_Config = {
+                'margin-bottom'?: [number, LENGTH], 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FullWidthChapterIntroShape_ChapterOutlineObjective extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'padding-right'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_ChapterOutlineObjective_Config) {
                     const defaults = {'margin-bottom': [0.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_OutlineObjectiveLink_Config = {
+                'display': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FullWidthChapterIntroShape_OutlineObjectiveLink extends Component {
-                constructor(config: {
-                    'display': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_OutlineObjectiveLink_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_ChapterOutlineObjectiveText_Config = {
+                'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FullWidthChapterIntroShape_ChapterOutlineObjectiveText extends Component {
-                constructor(config: {
-                    'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_ChapterOutlineObjectiveText_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_OutlineObjectiveLearning_Config = {
+                'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FullWidthChapterIntroShape_OutlineObjectiveLearning extends Component {
-                constructor(config: {
-                    'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_OutlineObjectiveLearning_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_OutlineAbstract_Config = {
+                'margin-left'?: [number, LENGTH], 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FullWidthChapterIntroShape_OutlineAbstract extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_OutlineAbstract_Config) {
                     const defaults = {'margin-left': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_OutlineList_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___FullWidthChapterIntroShape_OutlineList extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_OutlineList_Config) {
                     const defaults = {'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_IntroContentWrapper_Config = {
+                
+            }
             class carnival___FullWidthChapterIntroShape_IntroContentWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_IntroContentWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FullWidthChapterIntroShape_IntroContentHeader_Config = {
+                'float'?: any /* left */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FullWidthChapterIntroShape_IntroContentHeader extends Component {
-                constructor(config: {
-                    'float'?: any /* left */, 'font-size'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FullWidthChapterIntroShape_IntroContentHeader_Config) {
                     const defaults = {'float': "left"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___FullWidthChapterIntroShape_Config = {
+        
+    }
     class carnival___FullWidthChapterIntroShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___FullWidthChapterIntroShape_SplashFigureWrapper, c1: carnival___FullWidthChapterIntroShape_SplashFigure, c2: carnival___FullWidthChapterIntroShape_SplashFigureBg, c3: carnival___FullWidthChapterIntroShape_SplashImgMedia, c4: carnival___FullWidthChapterIntroShape_SplashImg, c5: carnival___FullWidthChapterIntroShape_SplashCaption, c6: carnival___FullWidthChapterIntroShape_SplashCaptionBg, c7: carnival___FullWidthChapterIntroShape_FigureNum, c8: carnival___FullWidthChapterIntroShape_FigureLabel, c9: carnival___FullWidthChapterIntroShape_FigureTitle, c10: carnival___FullWidthChapterIntroShape_Caption, c11: carnival___FullWidthChapterIntroShape_IntroBodyWrapper, c12: carnival___FullWidthChapterIntroShape_OutlineFullWidth, c13: carnival___FullWidthChapterIntroShape_OutlineTitle, c14: carnival___FullWidthChapterIntroShape_OutlineTitleBottomBorder, c15: carnival___FullWidthChapterIntroShape_ChapterOutlineObjective, c16: carnival___FullWidthChapterIntroShape_OutlineObjectiveLink, c17: carnival___FullWidthChapterIntroShape_ChapterOutlineObjectiveText, c18: carnival___FullWidthChapterIntroShape_OutlineObjectiveLearning, c19: carnival___FullWidthChapterIntroShape_OutlineAbstract, c20: carnival___FullWidthChapterIntroShape_OutlineList, c21: carnival___FullWidthChapterIntroShape_IntroContentWrapper, c22: carnival___FullWidthChapterIntroShape_IntroContentHeader) {
+        constructor(config: carnival___FullWidthChapterIntroShape_Config, c0: carnival___FullWidthChapterIntroShape_SplashFigureWrapper, c1: carnival___FullWidthChapterIntroShape_SplashFigure, c2: carnival___FullWidthChapterIntroShape_SplashFigureBg, c3: carnival___FullWidthChapterIntroShape_SplashImgMedia, c4: carnival___FullWidthChapterIntroShape_SplashImg, c5: carnival___FullWidthChapterIntroShape_SplashCaption, c6: carnival___FullWidthChapterIntroShape_SplashCaptionBg, c7: carnival___FullWidthChapterIntroShape_FigureNum, c8: carnival___FullWidthChapterIntroShape_FigureLabel, c9: carnival___FullWidthChapterIntroShape_FigureTitle, c10: carnival___FullWidthChapterIntroShape_Caption, c11: carnival___FullWidthChapterIntroShape_IntroBodyWrapper, c12: carnival___FullWidthChapterIntroShape_OutlineFullWidth, c13: carnival___FullWidthChapterIntroShape_OutlineTitle, c14: carnival___FullWidthChapterIntroShape_OutlineTitleBottomBorder, c15: carnival___FullWidthChapterIntroShape_ChapterOutlineObjective, c16: carnival___FullWidthChapterIntroShape_OutlineObjectiveLink, c17: carnival___FullWidthChapterIntroShape_ChapterOutlineObjectiveText, c18: carnival___FullWidthChapterIntroShape_OutlineObjectiveLearning, c19: carnival___FullWidthChapterIntroShape_OutlineAbstract, c20: carnival___FullWidthChapterIntroShape_OutlineList, c21: carnival___FullWidthChapterIntroShape_IntroContentWrapper, c22: carnival___FullWidthChapterIntroShape_IntroContentHeader) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22])
         }
@@ -2434,49 +2668,54 @@ class Shape {
 
     // START: carnival___Chapter
     
+            type carnival___Chapter_Container_Config = {
+                
+            }
             class carnival___Chapter_Container extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___Chapter_Container_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Chapter_Title_Config = {
+                'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___Chapter_Title extends Component {
-                constructor(config: {
-                    'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___Chapter_Title_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Chapter_TitleText_Config = {
+                'display'?: any /* block */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* lighter */
+            }
             class carnival___Chapter_TitleText extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* lighter */
-                }) {
+                constructor(config: carnival___Chapter_TitleText_Config) {
                     const defaults = {'display': "block", 'font-size': [3.58318,"rem"], 'line-height': [3,"rem"], 'font-weight': "lighter"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Chapter_TitleNumber_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* block */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */, 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH]
+            }
             class carnival___Chapter_TitleNumber extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* block */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */, 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Chapter_TitleNumber_Config) {
                     const defaults = {'display': "block", 'font-size': [2.0736,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bolder", 'text-transform': "uppercase", 'letter-spacing': [0.1,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___Chapter_Config = {
+        
+    }
     class carnival___Chapter extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___Chapter_Container, c1: carnival___Chapter_Title, c2: carnival___Chapter_TitleText, c3: carnival___Chapter_TitleNumber) {
+        constructor(config: carnival___Chapter_Config, c0: carnival___Chapter_Container, c1: carnival___Chapter_Title, c2: carnival___Chapter_TitleText, c3: carnival___Chapter_TitleNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -2486,49 +2725,54 @@ class Shape {
 
     // START: carnival___Page
     
+            type carnival___Page_Container_Config = {
+                
+            }
             class carnival___Page_Container extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___Page_Container_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Page_Title_Config = {
+                'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___Page_Title extends Component {
-                constructor(config: {
-                    'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___Page_Title_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Page_TitleText_Config = {
+                'display'?: any /* block */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* lighter */
+            }
             class carnival___Page_TitleText extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* lighter */
-                }) {
+                constructor(config: carnival___Page_TitleText_Config) {
                     const defaults = {'display': "block", 'font-size': [3.58318,"rem"], 'line-height': [3,"rem"], 'font-weight': "lighter"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___Page_TitleNumber_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* block */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */, 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH]
+            }
             class carnival___Page_TitleNumber extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* block */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */, 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___Page_TitleNumber_Config) {
                     const defaults = {'display': "block", 'font-size': [2.0736,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bolder", 'text-transform': "uppercase", 'letter-spacing': [0.1,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___Page_Config = {
+        
+    }
     class carnival___Page extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___Page_Container, c1: carnival___Page_Title, c2: carnival___Page_TitleText, c3: carnival___Page_TitleNumber) {
+        constructor(config: carnival___Page_Config, c0: carnival___Page_Container, c1: carnival___Page_Title, c2: carnival___Page_TitleText, c3: carnival___Page_TitleNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -2538,89 +2782,98 @@ class Shape {
 
     // START: carnival___ModuleShape
     
+            type carnival___ModuleShape_ContainerWrapper_Config = {
+                
+            }
             class carnival___ModuleShape_ContainerWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___ModuleShape_ContainerWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ModuleShape_H2Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___ModuleShape_H2Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___ModuleShape_H2Title_Config) {
                     const defaults = {'font-size': [1.728,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ModuleShape_List__MarginLeft_Config = {
+                'margin-left'?: [number, LENGTH]
+            }
             class carnival___ModuleShape_List__MarginLeft extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ModuleShape_List__MarginLeft_Config) {
                     const defaults = {'margin-left': [24,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ModuleShape_H3Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___ModuleShape_H3Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___ModuleShape_H3Title_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ModuleShape_H4Title_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___ModuleShape_H4Title extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ModuleShape_H4Title_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ModuleShape_ParagraphTitle_Config = {
+                'margin-right'?: [number, LENGTH]
+            }
             class carnival___ModuleShape_ParagraphTitle extends Component {
-                constructor(config: {
-                    'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ModuleShape_ParagraphTitle_Config) {
                     const defaults = {'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ModuleShape_Nested__List__MarginLeft_Config = {
+                'margin-left'?: [number, LENGTH]
+            }
             class carnival___ModuleShape_Nested__List__MarginLeft extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ModuleShape_Nested__List__MarginLeft_Config) {
                     const defaults = {'margin-left': [16,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ModuleShape_TitleOverFigure_Config = {
+                'padding-top'?: [number, LENGTH]
+            }
             class carnival___ModuleShape_TitleOverFigure extends Component {
-                constructor(config: {
-                    'padding-top'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ModuleShape_TitleOverFigure_Config) {
                     const defaults = {'padding-top': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___ModuleShape_Config = {
+        
+    }
     class carnival___ModuleShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___ModuleShape_ContainerWrapper, c1: carnival___ModuleShape_H2Title, c2: carnival___ModuleShape_List__MarginLeft, c3: carnival___ModuleShape_H3Title, c4: carnival___ModuleShape_H4Title, c5: carnival___ModuleShape_ParagraphTitle, c6: carnival___ModuleShape_Nested__List__MarginLeft, c7: carnival___ModuleShape_TitleOverFigure) {
+        constructor(config: carnival___ModuleShape_Config, c0: carnival___ModuleShape_ContainerWrapper, c1: carnival___ModuleShape_H2Title, c2: carnival___ModuleShape_List__MarginLeft, c3: carnival___ModuleShape_H3Title, c4: carnival___ModuleShape_H4Title, c5: carnival___ModuleShape_ParagraphTitle, c6: carnival___ModuleShape_Nested__List__MarginLeft, c7: carnival___ModuleShape_TitleOverFigure) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7])
         }
@@ -2630,39 +2883,43 @@ class Shape {
 
     // START: carnival___IndentShape
     
+            type carnival___IndentShape_ContainerWrapper_Config = {
+                
+            }
             class carnival___IndentShape_ContainerWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___IndentShape_ContainerWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IndentShape_Paragraph_Config = {
+                'text-indent'?: [number, LENGTH], 'padding-left'?: [number, LENGTH]
+            }
             class carnival___IndentShape_Paragraph extends Component {
-                constructor(config: {
-                    'text-indent'?: [number, LENGTH], 'padding-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___IndentShape_Paragraph_Config) {
                     const defaults = {'text-indent': [16,"px"], 'padding-left': [-16,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___IndentShape_SectionWrapper_Config = {
+                
+            }
             class carnival___IndentShape_SectionWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___IndentShape_SectionWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___IndentShape_Config = {
+        
+    }
     class carnival___IndentShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___IndentShape_ContainerWrapper, c1: carnival___IndentShape_Paragraph, c2: carnival___IndentShape_SectionWrapper) {
+        constructor(config: carnival___IndentShape_Config, c0: carnival___IndentShape_ContainerWrapper, c1: carnival___IndentShape_Paragraph, c2: carnival___IndentShape_SectionWrapper) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2])
         }
@@ -2672,59 +2929,65 @@ class Shape {
 
     // START: carnival___SectionKeyTermsShape
     
+            type carnival___SectionKeyTermsShape_Container_Config = {
+                'margin-left'?: number, 'margin-bottom'?: number
+            }
             class carnival___SectionKeyTermsShape_Container extends Component {
-                constructor(config: {
-                    'margin-left'?: number, 'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___SectionKeyTermsShape_Container_Config) {
                     const defaults = {'margin-left': 0, 'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___SectionKeyTermsShape_Table_Config = {
+                'margin-bottom'?: number
+            }
             class carnival___SectionKeyTermsShape_Table extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___SectionKeyTermsShape_Table_Config) {
                     const defaults = {'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___SectionKeyTermsShape_TableBodyWrapper_Config = {
+                
+            }
             class carnival___SectionKeyTermsShape_TableBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___SectionKeyTermsShape_TableBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___SectionKeyTermsShape_TableRowWrapper_Config = {
+                
+            }
             class carnival___SectionKeyTermsShape_TableRowWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___SectionKeyTermsShape_TableRowWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___SectionKeyTermsShape_TableData_Config = {
+                'padding-right': any /* ENUM__ValueSet:::REQUIRED */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
+            }
             class carnival___SectionKeyTermsShape_TableData extends Component {
-                constructor(config: {
-                    'padding-right': any /* ENUM__ValueSet:::REQUIRED */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___SectionKeyTermsShape_TableData_Config) {
                     const defaults = {'padding-top': [0.7,"rem"], 'padding-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___SectionKeyTermsShape_Config = {
+        
+    }
     class carnival___SectionKeyTermsShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___SectionKeyTermsShape_Container, c1: carnival___SectionKeyTermsShape_Table, c2: carnival___SectionKeyTermsShape_TableBodyWrapper, c3: carnival___SectionKeyTermsShape_TableRowWrapper, c4: carnival___SectionKeyTermsShape_TableData) {
+        constructor(config: carnival___SectionKeyTermsShape_Config, c0: carnival___SectionKeyTermsShape_Container, c1: carnival___SectionKeyTermsShape_Table, c2: carnival___SectionKeyTermsShape_TableBodyWrapper, c3: carnival___SectionKeyTermsShape_TableRowWrapper, c4: carnival___SectionKeyTermsShape_TableData) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4])
         }
@@ -2734,79 +2997,87 @@ class Shape {
 
     // START: carnival___GenericEOCShape
     
+            type carnival___GenericEOCShape_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___GenericEOCShape_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___GenericEOCShape_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___GenericEOCShape_H2Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___GenericEOCShape_H2Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___GenericEOCShape_H2Title_Config) {
                     const defaults = {'font-size': [1.728,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___GenericEOCShape_H3Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___GenericEOCShape_H3Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___GenericEOCShape_H3Title_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___GenericEOCShape_H3LinkTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */
+            }
             class carnival___GenericEOCShape_H3LinkTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___GenericEOCShape_H3LinkTitle_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___GenericEOCShape_H3ListTitle_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* bold */
+            }
             class carnival___GenericEOCShape_H3ListTitle extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___GenericEOCShape_H3ListTitle_Config) {
                     const defaults = {'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___GenericEOCShape_H4Title_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
+            }
             class carnival___GenericEOCShape_H4Title extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___GenericEOCShape_H4Title_Config) {
                     const defaults = {'font-weight': "bold", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___GenericEOCShape_H4LinkTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */
+            }
             class carnival___GenericEOCShape_H4LinkTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___GenericEOCShape_H4LinkTitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___GenericEOCShape_Config = {
+        
+    }
     class carnival___GenericEOCShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___GenericEOCShape_Container, c1: carnival___GenericEOCShape_H2Title, c2: carnival___GenericEOCShape_H3Title, c3: carnival___GenericEOCShape_H3LinkTitle, c4: carnival___GenericEOCShape_H3ListTitle, c5: carnival___GenericEOCShape_H4Title, c6: carnival___GenericEOCShape_H4LinkTitle) {
+        constructor(config: carnival___GenericEOCShape_Config, c0: carnival___GenericEOCShape_Container, c1: carnival___GenericEOCShape_H2Title, c2: carnival___GenericEOCShape_H3Title, c3: carnival___GenericEOCShape_H3LinkTitle, c4: carnival___GenericEOCShape_H3ListTitle, c5: carnival___GenericEOCShape_H4Title, c6: carnival___GenericEOCShape_H4LinkTitle) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6])
         }
@@ -2816,59 +3087,65 @@ class Shape {
 
     // START: carnival___EOCDefaultCompoundComposite
     
+            type carnival___EOCDefaultCompoundComposite_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EOCDefaultCompoundComposite_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EOCDefaultCompoundComposite_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCDefaultCompoundComposite_H2Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EOCDefaultCompoundComposite_H2Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EOCDefaultCompoundComposite_H2Title_Config) {
                     const defaults = {'font-size': [1.728,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCDefaultCompoundComposite_H3Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EOCDefaultCompoundComposite_H3Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EOCDefaultCompoundComposite_H3Title_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCDefaultCompoundComposite_H3TitleBottomBorder_Config = {
+                'content'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'height'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EOCDefaultCompoundComposite_H3TitleBottomBorder extends Component {
-                constructor(config: {
-                    'content'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'height'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EOCDefaultCompoundComposite_H3TitleBottomBorder_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCDefaultCompoundComposite_H4LinkTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */
+            }
             class carnival___EOCDefaultCompoundComposite_H4LinkTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___EOCDefaultCompoundComposite_H4LinkTitle_Config) {
                     const defaults = {'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EOCDefaultCompoundComposite_Config = {
+        
+    }
     class carnival___EOCDefaultCompoundComposite extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EOCDefaultCompoundComposite_Container, c1: carnival___EOCDefaultCompoundComposite_H2Title, c2: carnival___EOCDefaultCompoundComposite_H3Title, c3: carnival___EOCDefaultCompoundComposite_H3TitleBottomBorder, c4: carnival___EOCDefaultCompoundComposite_H4LinkTitle) {
+        constructor(config: carnival___EOCDefaultCompoundComposite_Config, c0: carnival___EOCDefaultCompoundComposite_Container, c1: carnival___EOCDefaultCompoundComposite_H2Title, c2: carnival___EOCDefaultCompoundComposite_H3Title, c3: carnival___EOCDefaultCompoundComposite_H3TitleBottomBorder, c4: carnival___EOCDefaultCompoundComposite_H4LinkTitle) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4])
         }
@@ -2878,49 +3155,54 @@ class Shape {
 
     // START: carnival___EocKeyTerm
     
+            type carnival___EocKeyTerm_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocKeyTerm_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocKeyTerm_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyTerm_TermDL_Config = {
+                'text-indent': any /* ENUM__ValueSet:::REQUIRED */, 'padding-left': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocKeyTerm_TermDL extends Component {
-                constructor(config: {
-                    'text-indent': any /* ENUM__ValueSet:::REQUIRED */, 'padding-left': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocKeyTerm_TermDL_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyTerm_Term_Config = {
+                'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'padding-right': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocKeyTerm_Term extends Component {
-                constructor(config: {
-                    'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'padding-right': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocKeyTerm_Term_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyTerm_TermDD_Config = {
+                'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocKeyTerm_TermDD extends Component {
-                constructor(config: {
-                    'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocKeyTerm_TermDD_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocKeyTerm_Config = {
+        
+    }
     class carnival___EocKeyTerm extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocKeyTerm_Container, c1: carnival___EocKeyTerm_TermDL, c2: carnival___EocKeyTerm_Term, c3: carnival___EocKeyTerm_TermDD) {
+        constructor(config: carnival___EocKeyTerm_Config, c0: carnival___EocKeyTerm_Container, c1: carnival___EocKeyTerm_TermDL, c2: carnival___EocKeyTerm_Term, c3: carnival___EocKeyTerm_TermDD) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3])
         }
@@ -2930,109 +3212,120 @@ class Shape {
 
     // START: carnival___EocKeyEquations
     
+            type carnival___EocKeyEquations_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocKeyEquations_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocKeyEquations_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_Section__MarginBottom_Config = {
+                'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocKeyEquations_Section__MarginBottom extends Component {
-                constructor(config: {
-                    'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocKeyEquations_Section__MarginBottom_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_KeyEquations_Config = {
+                'padding'?: number
+            }
             class carnival___EocKeyEquations_KeyEquations extends Component {
-                constructor(config: {
-                    'padding'?: number
-                }) {
+                constructor(config: carnival___EocKeyEquations_KeyEquations_Config) {
                     const defaults = {'padding': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_KeyEquationsTableContainer_Config = {
+                'margin-bottom'?: number, 'margin-left'?: number, 'margin-right'?: number
+            }
             class carnival___EocKeyEquations_KeyEquationsTableContainer extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number, 'margin-left'?: number, 'margin-right'?: number
-                }) {
+                constructor(config: carnival___EocKeyEquations_KeyEquationsTableContainer_Config) {
                     const defaults = {'margin-bottom': 0, 'margin-left': 0, 'margin-right': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_UnnumberedUnstyledTable_Config = {
+                'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocKeyEquations_UnnumberedUnstyledTable extends Component {
-                constructor(config: {
-                    'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocKeyEquations_UnnumberedUnstyledTable_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_TableHeadWrapper_Config = {
+                
+            }
             class carnival___EocKeyEquations_TableHeadWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___EocKeyEquations_TableHeadWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_TableRowWrapper_Config = {
+                
+            }
             class carnival___EocKeyEquations_TableRowWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___EocKeyEquations_TableRowWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_TableHeadCell_Config = {
+                'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocKeyEquations_TableHeadCell extends Component {
-                constructor(config: {
-                    'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocKeyEquations_TableHeadCell_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_TableBodyWrapper_Config = {
+                
+            }
             class carnival___EocKeyEquations_TableBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___EocKeyEquations_TableBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocKeyEquations_TableData_Config = {
+                'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocKeyEquations_TableData extends Component {
-                constructor(config: {
-                    'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocKeyEquations_TableData_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocKeyEquations_Config = {
+        
+    }
     class carnival___EocKeyEquations extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocKeyEquations_Container, c1: carnival___EocKeyEquations_Section__MarginBottom, c2: carnival___EocKeyEquations_KeyEquations, c3: carnival___EocKeyEquations_KeyEquationsTableContainer, c4: carnival___EocKeyEquations_UnnumberedUnstyledTable, c5: carnival___EocKeyEquations_TableHeadWrapper, c6: carnival___EocKeyEquations_TableRowWrapper, c7: carnival___EocKeyEquations_TableHeadCell, c8: carnival___EocKeyEquations_TableBodyWrapper, c9: carnival___EocKeyEquations_TableData) {
+        constructor(config: carnival___EocKeyEquations_Config, c0: carnival___EocKeyEquations_Container, c1: carnival___EocKeyEquations_Section__MarginBottom, c2: carnival___EocKeyEquations_KeyEquations, c3: carnival___EocKeyEquations_KeyEquationsTableContainer, c4: carnival___EocKeyEquations_UnnumberedUnstyledTable, c5: carnival___EocKeyEquations_TableHeadWrapper, c6: carnival___EocKeyEquations_TableRowWrapper, c7: carnival___EocKeyEquations_TableHeadCell, c8: carnival___EocKeyEquations_TableBodyWrapper, c9: carnival___EocKeyEquations_TableData) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9])
         }
@@ -3042,39 +3335,43 @@ class Shape {
 
     // START: carnival___EocSummary
     
+            type carnival___EocSummary_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocSummary_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocSummary_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocSummary_List__MarginLeft_Config = {
+                'margin-left'?: [number, LENGTH]
+            }
             class carnival___EocSummary_List__MarginLeft extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocSummary_List__MarginLeft_Config) {
                     const defaults = {'margin-left': [24,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocSummary_Nested__List__MarginLeft_Config = {
+                'margin-left'?: [number, LENGTH]
+            }
             class carnival___EocSummary_Nested__List__MarginLeft extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocSummary_Nested__List__MarginLeft_Config) {
                     const defaults = {'margin-left': [16,"px"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocSummary_Config = {
+        
+    }
     class carnival___EocSummary extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocSummary_Container, c1: carnival___EocSummary_List__MarginLeft, c2: carnival___EocSummary_Nested__List__MarginLeft) {
+        constructor(config: carnival___EocSummary_Config, c0: carnival___EocSummary_Container, c1: carnival___EocSummary_List__MarginLeft, c2: carnival___EocSummary_Nested__List__MarginLeft) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2])
         }
@@ -3084,69 +3381,76 @@ class Shape {
 
     // START: carnival___EocExercise
     
+            type carnival___EocExercise_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocExercise_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocExercise_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExercise_ProblemWrapper_Config = {
+                'display'?: any /* table */
+            }
             class carnival___EocExercise_ProblemWrapper extends Component {
-                constructor(config: {
-                    'display'?: any /* table */
-                }) {
+                constructor(config: carnival___EocExercise_ProblemWrapper_Config) {
                     const defaults = {'display': "table"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExercise_ProblemNumber_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* table-cell */
+            }
             class carnival___EocExercise_ProblemNumber extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* table-cell */
-                }) {
+                constructor(config: carnival___EocExercise_ProblemNumber_Config) {
                     const defaults = {'display': "table-cell"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExercise_ProblemDivider_Config = {
+                'margin-right': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocExercise_ProblemDivider extends Component {
-                constructor(config: {
-                    'margin-right': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocExercise_ProblemDivider_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExercise_ProblemContainer_Config = {
+                'display'?: any /* table-cell */
+            }
             class carnival___EocExercise_ProblemContainer extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */
-                }) {
+                constructor(config: carnival___EocExercise_ProblemContainer_Config) {
                     const defaults = {'display': "table-cell"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExercise_ProblemParagraph_Config = {
+                'margin-bottom'?: number
+            }
             class carnival___EocExercise_ProblemParagraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___EocExercise_ProblemParagraph_Config) {
                     const defaults = {'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocExercise_Config = {
+        
+    }
     class carnival___EocExercise extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocExercise_Container, c1: carnival___EocExercise_ProblemWrapper, c2: carnival___EocExercise_ProblemNumber, c3: carnival___EocExercise_ProblemDivider, c4: carnival___EocExercise_ProblemContainer, c5: carnival___EocExercise_ProblemParagraph) {
+        constructor(config: carnival___EocExercise_Config, c0: carnival___EocExercise_Container, c1: carnival___EocExercise_ProblemWrapper, c2: carnival___EocExercise_ProblemNumber, c3: carnival___EocExercise_ProblemDivider, c4: carnival___EocExercise_ProblemContainer, c5: carnival___EocExercise_ProblemParagraph) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5])
         }
@@ -3156,119 +3460,131 @@ class Shape {
 
     // START: carnival___EocExerciseWithoutSubtitle
     
+            type carnival___EocExerciseWithoutSubtitle_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocExerciseWithoutSubtitle_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_ProblemWrapper_Config = {
+                'display'?: any /* table */
+            }
             class carnival___EocExerciseWithoutSubtitle_ProblemWrapper extends Component {
-                constructor(config: {
-                    'display'?: any /* table */
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_ProblemWrapper_Config) {
                     const defaults = {'display': "table"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_ProblemNumber_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* table-cell */
+            }
             class carnival___EocExerciseWithoutSubtitle_ProblemNumber extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* table-cell */
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_ProblemNumber_Config) {
                     const defaults = {'display': "table-cell"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_ProblemDivider_Config = {
+                'margin-right': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocExerciseWithoutSubtitle_ProblemDivider extends Component {
-                constructor(config: {
-                    'margin-right': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_ProblemDivider_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_ProblemContainer_Config = {
+                'display'?: any /* table-cell */
+            }
             class carnival___EocExerciseWithoutSubtitle_ProblemContainer extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_ProblemContainer_Config) {
                     const defaults = {'display': "table-cell"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_ProblemParagraph_Config = {
+                'margin-bottom'?: number
+            }
             class carnival___EocExerciseWithoutSubtitle_ProblemParagraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_ProblemParagraph_Config) {
                     const defaults = {'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_ExerciseFigure_Config = {
+                'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocExerciseWithoutSubtitle_ExerciseFigure extends Component {
-                constructor(config: {
-                    'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_ExerciseFigure_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_ExerciseTable_Config = {
+                'width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'table-layout'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocExerciseWithoutSubtitle_ExerciseTable extends Component {
-                constructor(config: {
-                    'width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'table-layout'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_ExerciseTable_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EocExerciseWithoutSubtitle_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_Nested__List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EocExerciseWithoutSubtitle_Nested__List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_Nested__List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [16,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocExerciseWithoutSubtitle_ExerciseTableRow_Config = {
+                'text-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocExerciseWithoutSubtitle_ExerciseTableRow extends Component {
-                constructor(config: {
-                    'text-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocExerciseWithoutSubtitle_ExerciseTableRow_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocExerciseWithoutSubtitle_Config = {
+        
+    }
     class carnival___EocExerciseWithoutSubtitle extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocExerciseWithoutSubtitle_Container, c1: carnival___EocExerciseWithoutSubtitle_ProblemWrapper, c2: carnival___EocExerciseWithoutSubtitle_ProblemNumber, c3: carnival___EocExerciseWithoutSubtitle_ProblemDivider, c4: carnival___EocExerciseWithoutSubtitle_ProblemContainer, c5: carnival___EocExerciseWithoutSubtitle_ProblemParagraph, c6: carnival___EocExerciseWithoutSubtitle_ExerciseFigure, c7: carnival___EocExerciseWithoutSubtitle_ExerciseTable, c8: carnival___EocExerciseWithoutSubtitle_List__MarginLeftBottom, c9: carnival___EocExerciseWithoutSubtitle_Nested__List__MarginLeftBottom, c10: carnival___EocExerciseWithoutSubtitle_ExerciseTableRow) {
+        constructor(config: carnival___EocExerciseWithoutSubtitle_Config, c0: carnival___EocExerciseWithoutSubtitle_Container, c1: carnival___EocExerciseWithoutSubtitle_ProblemWrapper, c2: carnival___EocExerciseWithoutSubtitle_ProblemNumber, c3: carnival___EocExerciseWithoutSubtitle_ProblemDivider, c4: carnival___EocExerciseWithoutSubtitle_ProblemContainer, c5: carnival___EocExerciseWithoutSubtitle_ProblemParagraph, c6: carnival___EocExerciseWithoutSubtitle_ExerciseFigure, c7: carnival___EocExerciseWithoutSubtitle_ExerciseTable, c8: carnival___EocExerciseWithoutSubtitle_List__MarginLeftBottom, c9: carnival___EocExerciseWithoutSubtitle_Nested__List__MarginLeftBottom, c10: carnival___EocExerciseWithoutSubtitle_ExerciseTableRow) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10])
         }
@@ -3278,109 +3594,120 @@ class Shape {
 
     // START: carnival___EocCompChapExercises
     
+            type carnival___EocCompChapExercises_Container_Config = {
+                'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocCompChapExercises_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH], 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocCompChapExercises_Container_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_ProblemWrapper_Config = {
+                'display'?: any /* table */
+            }
             class carnival___EocCompChapExercises_ProblemWrapper extends Component {
-                constructor(config: {
-                    'display'?: any /* table */
-                }) {
+                constructor(config: carnival___EocCompChapExercises_ProblemWrapper_Config) {
                     const defaults = {'display': "table"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_ProblemNumber_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* table-cell */
+            }
             class carnival___EocCompChapExercises_ProblemNumber extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'text-decoration': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* table-cell */
-                }) {
+                constructor(config: carnival___EocCompChapExercises_ProblemNumber_Config) {
                     const defaults = {'display': "table-cell"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_ProblemDivider_Config = {
+                'margin-right': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EocCompChapExercises_ProblemDivider extends Component {
-                constructor(config: {
-                    'margin-right': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EocCompChapExercises_ProblemDivider_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_ProblemContainer_Config = {
+                'display'?: any /* table-cell */
+            }
             class carnival___EocCompChapExercises_ProblemContainer extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */
-                }) {
+                constructor(config: carnival___EocCompChapExercises_ProblemContainer_Config) {
                     const defaults = {'display': "table-cell"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_ProblemParagraph_Config = {
+                'margin-bottom'?: number
+            }
             class carnival___EocCompChapExercises_ProblemParagraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___EocCompChapExercises_ProblemParagraph_Config) {
                     const defaults = {'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EocCompChapExercises_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocCompChapExercises_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_Nested__List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EocCompChapExercises_Nested__List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocCompChapExercises_Nested__List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [16,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_ExerciseFigure_Config = {
+                'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EocCompChapExercises_ExerciseFigure extends Component {
-                constructor(config: {
-                    'max-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EocCompChapExercises_ExerciseFigure_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EocCompChapExercises_List__MarginLeftBottomIncreased_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EocCompChapExercises_List__MarginLeftBottomIncreased extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EocCompChapExercises_List__MarginLeftBottomIncreased_Config) {
                     const defaults = {'margin-left': [32,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EocCompChapExercises_Config = {
+        
+    }
     class carnival___EocCompChapExercises extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EocCompChapExercises_Container, c1: carnival___EocCompChapExercises_ProblemWrapper, c2: carnival___EocCompChapExercises_ProblemNumber, c3: carnival___EocCompChapExercises_ProblemDivider, c4: carnival___EocCompChapExercises_ProblemContainer, c5: carnival___EocCompChapExercises_ProblemParagraph, c6: carnival___EocCompChapExercises_List__MarginLeftBottom, c7: carnival___EocCompChapExercises_Nested__List__MarginLeftBottom, c8: carnival___EocCompChapExercises_ExerciseFigure, c9: carnival___EocCompChapExercises_List__MarginLeftBottomIncreased) {
+        constructor(config: carnival___EocCompChapExercises_Config, c0: carnival___EocCompChapExercises_Container, c1: carnival___EocCompChapExercises_ProblemWrapper, c2: carnival___EocCompChapExercises_ProblemNumber, c3: carnival___EocCompChapExercises_ProblemDivider, c4: carnival___EocCompChapExercises_ProblemContainer, c5: carnival___EocCompChapExercises_ProblemParagraph, c6: carnival___EocCompChapExercises_List__MarginLeftBottom, c7: carnival___EocCompChapExercises_Nested__List__MarginLeftBottom, c8: carnival___EocCompChapExercises_ExerciseFigure, c9: carnival___EocCompChapExercises_List__MarginLeftBottomIncreased) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9])
         }
@@ -3390,149 +3717,164 @@ class Shape {
 
     // START: carnival___AnswerKeyShape
     
+            type carnival___AnswerKeyShape_ContainerWrapper_Config = {
+                
+            }
             class carnival___AnswerKeyShape_ContainerWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___AnswerKeyShape_ContainerWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_H1Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___AnswerKeyShape_H1Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-transform': any /* ENUM__ValueSet:::REQUIRED */, 'column-span'?: any /* all */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'border-bottom-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom-style'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AnswerKeyShape_H1Title_Config) {
                     const defaults = {'font-weight': "bold", 'column-span': "all", 'font-size': [3.58318,"rem"], 'line-height': [3,"rem"], 'padding-bottom': [0.7,"rem"], 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_H3Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___AnswerKeyShape_H3Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'overflow'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___AnswerKeyShape_H3Title_Config) {
                     const defaults = {'font-size': [1.44,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_CompositePage_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___AnswerKeyShape_CompositePage extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AnswerKeyShape_CompositePage_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_H2Title_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___AnswerKeyShape_H2Title extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'column-span'?: any /* ENUM__ValueSet:::OPTIONAL */, 'text-transform'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___AnswerKeyShape_H2Title_Config) {
                     const defaults = {'font-size': [1.728,"rem"], 'line-height': [1.5,"rem"], 'margin-bottom': [0.7,"rem"], 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_SolutionArea_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___AnswerKeyShape_SolutionArea extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AnswerKeyShape_SolutionArea_Config) {
                     const defaults = {'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_SolutionWrapper_Config = {
+                'display'?: any /* table */
+            }
             class carnival___AnswerKeyShape_SolutionWrapper extends Component {
-                constructor(config: {
-                    'display'?: any /* table */
-                }) {
+                constructor(config: carnival___AnswerKeyShape_SolutionWrapper_Config) {
                     const defaults = {'display': "table"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_Number_Config = {
+                'display'?: any /* table-cell */, 'text-decoration'?: any /* none */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
+            }
             class carnival___AnswerKeyShape_Number extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'text-decoration'?: any /* none */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___AnswerKeyShape_Number_Config) {
                     const defaults = {'display': "table-cell", 'text-decoration': "none", 'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_SolutionDivider_Config = {
+                'margin-right'?: [number, LENGTH]
+            }
             class carnival___AnswerKeyShape_SolutionDivider extends Component {
-                constructor(config: {
-                    'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AnswerKeyShape_SolutionDivider_Config) {
                     const defaults = {'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_SolutionContainer_Config = {
+                'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
+            }
             class carnival___AnswerKeyShape_SolutionContainer extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AnswerKeyShape_SolutionContainer_Config) {
                     const defaults = {'display': "table-cell", 'width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_SolutionParagraph_Config = {
+                'margin-bottom'?: number
+            }
             class carnival___AnswerKeyShape_SolutionParagraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___AnswerKeyShape_SolutionParagraph_Config) {
                     const defaults = {'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_Image_Config = {
+                'max-width'?: [number, LENGTH]
+            }
             class carnival___AnswerKeyShape_Image extends Component {
-                constructor(config: {
-                    'max-width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AnswerKeyShape_Image_Config) {
                     const defaults = {'max-width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_AnswerKey__List__MarginBottomLeft_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: number
+            }
             class carnival___AnswerKeyShape_AnswerKey__List__MarginBottomLeft extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___AnswerKeyShape_AnswerKey__List__MarginBottomLeft_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___AnswerKeyShape_SolutionContainerSpecific_Config = {
+                'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
+            }
             class carnival___AnswerKeyShape_SolutionContainerSpecific extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___AnswerKeyShape_SolutionContainerSpecific_Config) {
                     const defaults = {'display': "table-cell", 'width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___AnswerKeyShape_Config = {
+        
+    }
     class carnival___AnswerKeyShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___AnswerKeyShape_ContainerWrapper, c1: carnival___AnswerKeyShape_H1Title, c2: carnival___AnswerKeyShape_H3Title, c3: carnival___AnswerKeyShape_CompositePage, c4: carnival___AnswerKeyShape_H2Title, c5: carnival___AnswerKeyShape_SolutionArea, c6: carnival___AnswerKeyShape_SolutionWrapper, c7: carnival___AnswerKeyShape_Number, c8: carnival___AnswerKeyShape_SolutionDivider, c9: carnival___AnswerKeyShape_SolutionContainer, c10: carnival___AnswerKeyShape_SolutionParagraph, c11: carnival___AnswerKeyShape_Image, c12: carnival___AnswerKeyShape_AnswerKey__List__MarginBottomLeft, c13: carnival___AnswerKeyShape_SolutionContainerSpecific) {
+        constructor(config: carnival___AnswerKeyShape_Config, c0: carnival___AnswerKeyShape_ContainerWrapper, c1: carnival___AnswerKeyShape_H1Title, c2: carnival___AnswerKeyShape_H3Title, c3: carnival___AnswerKeyShape_CompositePage, c4: carnival___AnswerKeyShape_H2Title, c5: carnival___AnswerKeyShape_SolutionArea, c6: carnival___AnswerKeyShape_SolutionWrapper, c7: carnival___AnswerKeyShape_Number, c8: carnival___AnswerKeyShape_SolutionDivider, c9: carnival___AnswerKeyShape_SolutionContainer, c10: carnival___AnswerKeyShape_SolutionParagraph, c11: carnival___AnswerKeyShape_Image, c12: carnival___AnswerKeyShape_AnswerKey__List__MarginBottomLeft, c13: carnival___AnswerKeyShape_SolutionContainerSpecific) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13])
         }
@@ -3542,369 +3884,406 @@ class Shape {
 
     // START: carnival___NoUnitToc
     
+            type carnival___NoUnitToc_Container_Config = {
+                'page-break-after'?: any /* always */
+            }
             class carnival___NoUnitToc_Container extends Component {
-                constructor(config: {
-                    'page-break-after'?: any /* always */
-                }) {
+                constructor(config: carnival___NoUnitToc_Container_Config) {
                     const defaults = {'page-break-after': "always"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TopLevelList_Config = {
+                'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* inline */
+            }
             class carnival___NoUnitToc_TopLevelList extends Component {
-                constructor(config: {
-                    'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* inline */
-                }) {
+                constructor(config: carnival___NoUnitToc_TopLevelList_Config) {
                     const defaults = {'list-style': "none", 'padding-left': 0, 'margin-left': 0, 'display': "inline"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapter_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___NoUnitToc_TocChapter extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapter_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterNumber_Config = {
+                'display'?: any /* block */, 'text-decoration'?: any /* none */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH]
+            }
             class carnival___NoUnitToc_TocChapterNumber extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'text-decoration'?: any /* none */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterNumber_Config) {
                     const defaults = {'display': "block", 'text-decoration': "none", 'font-weight': "bolder", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'text-transform': "uppercase", 'letter-spacing': [0.1,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocChapterLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocChapterLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterList_Config = {
+                'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* block */
+            }
             class carnival___NoUnitToc_TocChapterList extends Component {
-                constructor(config: {
-                    'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* block */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterList_Config) {
                     const defaults = {'list-style': "none", 'padding-left': 0, 'margin-left': 0, 'display': "block"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterPage_Config = {
+                'display'?: any /* block */
+            }
             class carnival___NoUnitToc_TocChapterPage extends Component {
-                constructor(config: {
-                    'display'?: any /* block */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterPage_Config) {
                     const defaults = {'display': "block"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterPageLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocChapterPageLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterPageLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterPageLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocChapterPageLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterPageLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterCompositePage_Config = {
+                'display'?: any /* block */
+            }
             class carnival___NoUnitToc_TocChapterCompositePage extends Component {
-                constructor(config: {
-                    'display'?: any /* block */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterCompositePage_Config) {
                     const defaults = {'display': "block"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterCompositePageLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocChapterCompositePageLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterCompositePageLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocChapterCompositePageLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocChapterCompositePageLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocChapterCompositePageLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocEocCompositeChapter_Config = {
+                
+            }
             class carnival___NoUnitToc_TocEocCompositeChapter extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___NoUnitToc_TocEocCompositeChapter_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocEocCompositeChapterList_Config = {
+                'display'?: any /* none */
+            }
             class carnival___NoUnitToc_TocEocCompositeChapterList extends Component {
-                constructor(config: {
-                    'display'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocEocCompositeChapterList_Config) {
                     const defaults = {'display': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocEocCompositeChapterLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocEocCompositeChapterLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocEocCompositeChapterLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocEocCompositeChapterLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocEocCompositeChapterLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocEocCompositeChapterLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocPreface_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___NoUnitToc_TocPreface extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NoUnitToc_TocPreface_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocPrefaceLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocPrefaceLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocPrefaceLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocPrefaceLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocPrefaceLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocPrefaceLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocAppendix_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___NoUnitToc_TocAppendix extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NoUnitToc_TocAppendix_Config) {
                     const defaults = {'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocAppendixNumber_Config = {
+                'text-decoration'?: any /* none */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */
+            }
             class carnival___NoUnitToc_TocAppendixNumber extends Component {
-                constructor(config: {
-                    'text-decoration'?: any /* none */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocAppendixNumber_Config) {
                     const defaults = {'text-decoration': "none", 'font-weight': "bolder"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocAppendixDivider_Config = {
+                'content'?: any /* ' ' */
+            }
             class carnival___NoUnitToc_TocAppendixDivider extends Component {
-                constructor(config: {
-                    'content'?: any /* ' ' */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocAppendixDivider_Config) {
                     const defaults = {'content': "' '"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocAppendixLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocAppendixLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocAppendixLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocAppendixLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocAppendixLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocAppendixLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocReferences_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___NoUnitToc_TocReferences extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NoUnitToc_TocReferences_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocReferencesLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocReferencesLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocReferencesLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocReferencesLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocReferencesLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocReferencesLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocIndex_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___NoUnitToc_TocIndex extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NoUnitToc_TocIndex_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocIndexLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocIndexLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocIndexLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocIndexLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocIndexLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocIndexLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocCompositeChapter_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___NoUnitToc_TocCompositeChapter extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NoUnitToc_TocCompositeChapter_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocCompositeChapterList_Config = {
+                'display'?: any /* none */
+            }
             class carnival___NoUnitToc_TocCompositeChapterList extends Component {
-                constructor(config: {
-                    'display'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocCompositeChapterList_Config) {
                     const defaults = {'display': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocCompositeChapterLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___NoUnitToc_TocCompositeChapterLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocCompositeChapterLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocCompositeChapterLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___NoUnitToc_TocCompositeChapterLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___NoUnitToc_TocCompositeChapterLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NoUnitToc_TocTitleWord_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* block */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* lighter */, 'border-bottom'?: any /* 0.5rem solid */, 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'margin-bottom'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
+            }
             class carnival___NoUnitToc_TocTitleWord extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* block */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* lighter */, 'border-bottom'?: any /* 0.5rem solid */, 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'margin-bottom'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NoUnitToc_TocTitleWord_Config) {
                     const defaults = {'font-size': [4.29982,"rem"], 'line-height': [3,"rem"], 'display': "block", 'font-weight': "lighter", 'border-bottom': "0.5rem solid", 'margin-bottom': [2.8,"rem"], 'padding-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___NoUnitToc_Config = {
+        
+    }
     class carnival___NoUnitToc extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___NoUnitToc_Container, c1: carnival___NoUnitToc_TopLevelList, c2: carnival___NoUnitToc_TocChapter, c3: carnival___NoUnitToc_TocChapterNumber, c4: carnival___NoUnitToc_TocChapterLink, c5: carnival___NoUnitToc_TocChapterLinkPage, c6: carnival___NoUnitToc_TocChapterList, c7: carnival___NoUnitToc_TocChapterPage, c8: carnival___NoUnitToc_TocChapterPageLink, c9: carnival___NoUnitToc_TocChapterPageLinkPage, c10: carnival___NoUnitToc_TocChapterCompositePage, c11: carnival___NoUnitToc_TocChapterCompositePageLink, c12: carnival___NoUnitToc_TocChapterCompositePageLinkPage, c13: carnival___NoUnitToc_TocEocCompositeChapter, c14: carnival___NoUnitToc_TocEocCompositeChapterList, c15: carnival___NoUnitToc_TocEocCompositeChapterLink, c16: carnival___NoUnitToc_TocEocCompositeChapterLinkPage, c17: carnival___NoUnitToc_TocPreface, c18: carnival___NoUnitToc_TocPrefaceLink, c19: carnival___NoUnitToc_TocPrefaceLinkPage, c20: carnival___NoUnitToc_TocAppendix, c21: carnival___NoUnitToc_TocAppendixNumber, c22: carnival___NoUnitToc_TocAppendixDivider, c23: carnival___NoUnitToc_TocAppendixLink, c24: carnival___NoUnitToc_TocAppendixLinkPage, c25: carnival___NoUnitToc_TocReferences, c26: carnival___NoUnitToc_TocReferencesLink, c27: carnival___NoUnitToc_TocReferencesLinkPage, c28: carnival___NoUnitToc_TocIndex, c29: carnival___NoUnitToc_TocIndexLink, c30: carnival___NoUnitToc_TocIndexLinkPage, c31: carnival___NoUnitToc_TocCompositeChapter, c32: carnival___NoUnitToc_TocCompositeChapterList, c33: carnival___NoUnitToc_TocCompositeChapterLink, c34: carnival___NoUnitToc_TocCompositeChapterLinkPage, c35: carnival___NoUnitToc_TocTitleWord) {
+        constructor(config: carnival___NoUnitToc_Config, c0: carnival___NoUnitToc_Container, c1: carnival___NoUnitToc_TopLevelList, c2: carnival___NoUnitToc_TocChapter, c3: carnival___NoUnitToc_TocChapterNumber, c4: carnival___NoUnitToc_TocChapterLink, c5: carnival___NoUnitToc_TocChapterLinkPage, c6: carnival___NoUnitToc_TocChapterList, c7: carnival___NoUnitToc_TocChapterPage, c8: carnival___NoUnitToc_TocChapterPageLink, c9: carnival___NoUnitToc_TocChapterPageLinkPage, c10: carnival___NoUnitToc_TocChapterCompositePage, c11: carnival___NoUnitToc_TocChapterCompositePageLink, c12: carnival___NoUnitToc_TocChapterCompositePageLinkPage, c13: carnival___NoUnitToc_TocEocCompositeChapter, c14: carnival___NoUnitToc_TocEocCompositeChapterList, c15: carnival___NoUnitToc_TocEocCompositeChapterLink, c16: carnival___NoUnitToc_TocEocCompositeChapterLinkPage, c17: carnival___NoUnitToc_TocPreface, c18: carnival___NoUnitToc_TocPrefaceLink, c19: carnival___NoUnitToc_TocPrefaceLinkPage, c20: carnival___NoUnitToc_TocAppendix, c21: carnival___NoUnitToc_TocAppendixNumber, c22: carnival___NoUnitToc_TocAppendixDivider, c23: carnival___NoUnitToc_TocAppendixLink, c24: carnival___NoUnitToc_TocAppendixLinkPage, c25: carnival___NoUnitToc_TocReferences, c26: carnival___NoUnitToc_TocReferencesLink, c27: carnival___NoUnitToc_TocReferencesLinkPage, c28: carnival___NoUnitToc_TocIndex, c29: carnival___NoUnitToc_TocIndexLink, c30: carnival___NoUnitToc_TocIndexLinkPage, c31: carnival___NoUnitToc_TocCompositeChapter, c32: carnival___NoUnitToc_TocCompositeChapterList, c33: carnival___NoUnitToc_TocCompositeChapterLink, c34: carnival___NoUnitToc_TocCompositeChapterLinkPage, c35: carnival___NoUnitToc_TocTitleWord) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32, c33, c34, c35])
         }
@@ -3914,399 +4293,439 @@ class Shape {
 
     // START: carnival___UnitToc
     
+            type carnival___UnitToc_Container_Config = {
+                'page-break-after'?: any /* always */
+            }
             class carnival___UnitToc_Container extends Component {
-                constructor(config: {
-                    'page-break-after'?: any /* always */
-                }) {
+                constructor(config: carnival___UnitToc_Container_Config) {
                     const defaults = {'page-break-after': "always"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TopLevelList_Config = {
+                'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* inline */
+            }
             class carnival___UnitToc_TopLevelList extends Component {
-                constructor(config: {
-                    'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* inline */
-                }) {
+                constructor(config: carnival___UnitToc_TopLevelList_Config) {
                     const defaults = {'list-style': "none", 'padding-left': 0, 'margin-left': 0, 'display': "inline"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocPreface_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocPreface extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocPreface_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocPrefaceLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocPrefaceLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocPrefaceLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocPrefaceLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocPrefaceLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocPrefaceLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocAppendix_Config = {
+                'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocAppendix extends Component {
-                constructor(config: {
-                    'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocAppendix_Config) {
                     const defaults = {'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocAppendixNumber_Config = {
+                'text-decoration'?: any /* none */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */
+            }
             class carnival___UnitToc_TocAppendixNumber extends Component {
-                constructor(config: {
-                    'text-decoration'?: any /* none */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */
-                }) {
+                constructor(config: carnival___UnitToc_TocAppendixNumber_Config) {
                     const defaults = {'text-decoration': "none", 'font-weight': "bolder"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocAppendixDivider_Config = {
+                'content'?: any /* ' ' */
+            }
             class carnival___UnitToc_TocAppendixDivider extends Component {
-                constructor(config: {
-                    'content'?: any /* ' ' */
-                }) {
+                constructor(config: carnival___UnitToc_TocAppendixDivider_Config) {
                     const defaults = {'content': "' '"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocAppendixLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocAppendixLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocAppendixLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocAppendixLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocAppendixLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocAppendixLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocReferences_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocReferences extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocReferences_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocReferencesLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocReferencesLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocReferencesLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocReferencesLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocReferencesLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocReferencesLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocIndex_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocIndex extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocIndex_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocIndexLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocIndexLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocIndexLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocIndexLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocIndexLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocIndexLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocCompositeChapter_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocCompositeChapter extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocCompositeChapter_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocCompositeChapterList_Config = {
+                'display'?: any /* none */
+            }
             class carnival___UnitToc_TocCompositeChapterList extends Component {
-                constructor(config: {
-                    'display'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocCompositeChapterList_Config) {
                     const defaults = {'display': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocCompositeChapterLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocCompositeChapterLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocCompositeChapterLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocCompositeChapterLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocCompositeChapterLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocCompositeChapterLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocUnitWrapper_Config = {
+                
+            }
             class carnival___UnitToc_TocUnitWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___UnitToc_TocUnitWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocUnitLink_Config = {
+                'display'?: any /* block */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'border-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH], 'text-decoration'?: any /* none */, 'padding-bottom'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocUnitLink extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight': any /* ENUM__ValueSet:::REQUIRED */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'border-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH], 'text-decoration'?: any /* none */, 'padding-bottom'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocUnitLink_Config) {
                     const defaults = {'display': "block", 'text-transform': "uppercase", 'letter-spacing': [0.1,"rem"], 'text-decoration': "none", 'padding-bottom': [0.7,"rem"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocUnitList_Config = {
+                'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* block */
+            }
             class carnival___UnitToc_TocUnitList extends Component {
-                constructor(config: {
-                    'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* block */
-                }) {
+                constructor(config: carnival___UnitToc_TocUnitList_Config) {
                     const defaults = {'list-style': "none", 'padding-left': 0, 'margin-left': 0, 'display': "block"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapter_Config = {
+                'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocChapter extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocChapter_Config) {
                     const defaults = {'display': "block", 'margin-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterNumber_Config = {
+                'display'?: any /* block */, 'text-decoration'?: any /* none */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocChapterNumber extends Component {
-                constructor(config: {
-                    'display'?: any /* block */, 'text-decoration'?: any /* none */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bolder */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'text-transform'?: any /* uppercase */, 'letter-spacing'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterNumber_Config) {
                     const defaults = {'display': "block", 'text-decoration': "none", 'font-weight': "bolder", 'font-size': [1.2,"rem"], 'line-height': [1.5,"rem"], 'text-transform': "uppercase", 'letter-spacing': [0.1,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocChapterLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocChapterLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterList_Config = {
+                'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* block */
+            }
             class carnival___UnitToc_TocChapterList extends Component {
-                constructor(config: {
-                    'list-style'?: any /* none */, 'padding-left'?: number, 'margin-left'?: number, 'display'?: any /* block */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterList_Config) {
                     const defaults = {'list-style': "none", 'padding-left': 0, 'margin-left': 0, 'display': "block"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterPage_Config = {
+                'display'?: any /* block */
+            }
             class carnival___UnitToc_TocChapterPage extends Component {
-                constructor(config: {
-                    'display'?: any /* block */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterPage_Config) {
                     const defaults = {'display': "block"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterPageLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocChapterPageLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterPageLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterPageLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocChapterPageLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterPageLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterCompositePage_Config = {
+                'display'?: any /* block */
+            }
             class carnival___UnitToc_TocChapterCompositePage extends Component {
-                constructor(config: {
-                    'display'?: any /* block */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterCompositePage_Config) {
                     const defaults = {'display': "block"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterCompositePageLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocChapterCompositePageLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterCompositePageLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocChapterCompositePageLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocChapterCompositePageLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocChapterCompositePageLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocEocCompositeChapter_Config = {
+                
+            }
             class carnival___UnitToc_TocEocCompositeChapter extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___UnitToc_TocEocCompositeChapter_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocEocCompositeChapterList_Config = {
+                'display'?: any /* none */
+            }
             class carnival___UnitToc_TocEocCompositeChapterList extends Component {
-                constructor(config: {
-                    'display'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocEocCompositeChapterList_Config) {
                     const defaults = {'display': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocEocCompositeChapterLink_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
+            }
             class carnival___UnitToc_TocEocCompositeChapterLink extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* #000000 */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___UnitToc_TocEocCompositeChapterLink_Config) {
                     const defaults = {'color': ["ENUM__ValueSet:::OPTIONAL","#000000"], 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocEocCompositeChapterLinkPage_Config = {
+                'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnitToc_TocEocCompositeChapterLinkPage extends Component {
-                constructor(config: {
-                    'content': any /* ENUM__ValueSet:::REQUIRED */, 'display': any /* ENUM__ValueSet:::REQUIRED */, 'margin-left': any /* ENUM__ValueSet:::REQUIRED */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size': any /* ENUM__ValueSet:::REQUIRED */, 'line-height': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'color'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnitToc_TocEocCompositeChapterLinkPage_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnitToc_TocTitleWord_Config = {
+                'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* block */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* lighter */, 'border-bottom'?: any /* 0.5rem solid */, 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'margin-bottom'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
+            }
             class carnival___UnitToc_TocTitleWord extends Component {
-                constructor(config: {
-                    'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'color': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* block */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* lighter */, 'border-bottom'?: any /* 0.5rem solid */, 'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'margin-bottom'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___UnitToc_TocTitleWord_Config) {
                     const defaults = {'font-size': [4.29982,"rem"], 'line-height': [3,"rem"], 'display': "block", 'font-weight': "lighter", 'border-bottom': "0.5rem solid", 'margin-bottom': [2.8,"rem"], 'padding-bottom': [1.4,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___UnitToc_Config = {
+        
+    }
     class carnival___UnitToc extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___UnitToc_Container, c1: carnival___UnitToc_TopLevelList, c2: carnival___UnitToc_TocPreface, c3: carnival___UnitToc_TocPrefaceLink, c4: carnival___UnitToc_TocPrefaceLinkPage, c5: carnival___UnitToc_TocAppendix, c6: carnival___UnitToc_TocAppendixNumber, c7: carnival___UnitToc_TocAppendixDivider, c8: carnival___UnitToc_TocAppendixLink, c9: carnival___UnitToc_TocAppendixLinkPage, c10: carnival___UnitToc_TocReferences, c11: carnival___UnitToc_TocReferencesLink, c12: carnival___UnitToc_TocReferencesLinkPage, c13: carnival___UnitToc_TocIndex, c14: carnival___UnitToc_TocIndexLink, c15: carnival___UnitToc_TocIndexLinkPage, c16: carnival___UnitToc_TocCompositeChapter, c17: carnival___UnitToc_TocCompositeChapterList, c18: carnival___UnitToc_TocCompositeChapterLink, c19: carnival___UnitToc_TocCompositeChapterLinkPage, c20: carnival___UnitToc_TocUnitWrapper, c21: carnival___UnitToc_TocUnitLink, c22: carnival___UnitToc_TocUnitList, c23: carnival___UnitToc_TocChapter, c24: carnival___UnitToc_TocChapterNumber, c25: carnival___UnitToc_TocChapterLink, c26: carnival___UnitToc_TocChapterLinkPage, c27: carnival___UnitToc_TocChapterList, c28: carnival___UnitToc_TocChapterPage, c29: carnival___UnitToc_TocChapterPageLink, c30: carnival___UnitToc_TocChapterPageLinkPage, c31: carnival___UnitToc_TocChapterCompositePage, c32: carnival___UnitToc_TocChapterCompositePageLink, c33: carnival___UnitToc_TocChapterCompositePageLinkPage, c34: carnival___UnitToc_TocEocCompositeChapter, c35: carnival___UnitToc_TocEocCompositeChapterList, c36: carnival___UnitToc_TocEocCompositeChapterLink, c37: carnival___UnitToc_TocEocCompositeChapterLinkPage, c38: carnival___UnitToc_TocTitleWord) {
+        constructor(config: carnival___UnitToc_Config, c0: carnival___UnitToc_Container, c1: carnival___UnitToc_TopLevelList, c2: carnival___UnitToc_TocPreface, c3: carnival___UnitToc_TocPrefaceLink, c4: carnival___UnitToc_TocPrefaceLinkPage, c5: carnival___UnitToc_TocAppendix, c6: carnival___UnitToc_TocAppendixNumber, c7: carnival___UnitToc_TocAppendixDivider, c8: carnival___UnitToc_TocAppendixLink, c9: carnival___UnitToc_TocAppendixLinkPage, c10: carnival___UnitToc_TocReferences, c11: carnival___UnitToc_TocReferencesLink, c12: carnival___UnitToc_TocReferencesLinkPage, c13: carnival___UnitToc_TocIndex, c14: carnival___UnitToc_TocIndexLink, c15: carnival___UnitToc_TocIndexLinkPage, c16: carnival___UnitToc_TocCompositeChapter, c17: carnival___UnitToc_TocCompositeChapterList, c18: carnival___UnitToc_TocCompositeChapterLink, c19: carnival___UnitToc_TocCompositeChapterLinkPage, c20: carnival___UnitToc_TocUnitWrapper, c21: carnival___UnitToc_TocUnitLink, c22: carnival___UnitToc_TocUnitList, c23: carnival___UnitToc_TocChapter, c24: carnival___UnitToc_TocChapterNumber, c25: carnival___UnitToc_TocChapterLink, c26: carnival___UnitToc_TocChapterLinkPage, c27: carnival___UnitToc_TocChapterList, c28: carnival___UnitToc_TocChapterPage, c29: carnival___UnitToc_TocChapterPageLink, c30: carnival___UnitToc_TocChapterPageLinkPage, c31: carnival___UnitToc_TocChapterCompositePage, c32: carnival___UnitToc_TocChapterCompositePageLink, c33: carnival___UnitToc_TocChapterCompositePageLinkPage, c34: carnival___UnitToc_TocEocCompositeChapter, c35: carnival___UnitToc_TocEocCompositeChapterList, c36: carnival___UnitToc_TocEocCompositeChapterLink, c37: carnival___UnitToc_TocEocCompositeChapterLinkPage, c38: carnival___UnitToc_TocTitleWord) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32, c33, c34, c35, c36, c37, c38])
         }
@@ -4316,19 +4735,21 @@ class Shape {
 
     // START: carnival___Term
     
+            type carnival___Term_Term_Config = {
+                'font-weight'?: any /* bold */
+            }
             class carnival___Term_Term extends Component {
-                constructor(config: {
-                    'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___Term_Term_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___Term_Config = {
+        
+    }
     class carnival___Term extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___Term_Term) {
+        constructor(config: carnival___Term_Config, c0: carnival___Term_Term) {
             const defaults = {}
             super(defaults, config, [c0])
         }
@@ -4338,19 +4759,21 @@ class Shape {
 
     // START: carnival___EquationShape
     
+            type carnival___EquationShape_EquationContainer_Config = {
+                'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* flex */, 'flex-direction'?: any /* ENUM__ValueSet:::OPTIONAL */, 'align-items'?: any /* center */, 'justify-content'?: any /* center */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EquationShape_EquationContainer extends Component {
-                constructor(config: {
-                    'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* flex */, 'flex-direction'?: any /* ENUM__ValueSet:::OPTIONAL */, 'align-items'?: any /* center */, 'justify-content'?: any /* center */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EquationShape_EquationContainer_Config) {
                     const defaults = {'display': "flex", 'align-items': "center", 'justify-content': "center", 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EquationShape_Config = {
+        
+    }
     class carnival___EquationShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EquationShape_EquationContainer) {
+        constructor(config: carnival___EquationShape_Config, c0: carnival___EquationShape_EquationContainer) {
             const defaults = {}
             super(defaults, config, [c0])
         }
@@ -4360,29 +4783,32 @@ class Shape {
 
     // START: carnival___NumberedEquationShape
     
+            type carnival___NumberedEquationShape_EquationContainer_Config = {
+                'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* flex */, 'flex-direction'?: any /* ENUM__ValueSet:::OPTIONAL */, 'align-items'?: any /* center */, 'justify-content'?: any /* center */, 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___NumberedEquationShape_EquationContainer extends Component {
-                constructor(config: {
-                    'position'?: any /* ENUM__ValueSet:::OPTIONAL */, 'display'?: any /* flex */, 'flex-direction'?: any /* ENUM__ValueSet:::OPTIONAL */, 'align-items'?: any /* center */, 'justify-content'?: any /* center */, 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NumberedEquationShape_EquationContainer_Config) {
                     const defaults = {'display': "flex", 'align-items': "center", 'justify-content': "center", 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___NumberedEquationShape_EquationNumber_Config = {
+                'position'?: any /* absolute */, 'right'?: number, 'top'?: [number, LENGTH], 'transform'?: any /* translate(0, -50%) */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'margin-right'?: [number, LENGTH]
+            }
             class carnival___NumberedEquationShape_EquationNumber extends Component {
-                constructor(config: {
-                    'position'?: any /* absolute */, 'right'?: number, 'top'?: [number, LENGTH], 'transform'?: any /* translate(0, -50%) */, 'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-size'?: [number, LENGTH], 'line-height'?: [number, LENGTH], 'font-weight'?: any /* bold */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___NumberedEquationShape_EquationNumber_Config) {
                     const defaults = {'position': "absolute", 'right': 0, 'top': [50,"%"], 'transform': "translate(0, -50%)", 'font-size': [1,"rem"], 'line-height': [1.5,"rem"], 'font-weight': "bold", 'margin-right': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___NumberedEquationShape_Config = {
+        
+    }
     class carnival___NumberedEquationShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___NumberedEquationShape_EquationContainer, c1: carnival___NumberedEquationShape_EquationNumber) {
+        constructor(config: carnival___NumberedEquationShape_Config, c0: carnival___NumberedEquationShape_EquationContainer, c1: carnival___NumberedEquationShape_EquationNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1])
         }
@@ -4392,159 +4818,175 @@ class Shape {
 
     // START: carnival___BasicTableShape
     
+            type carnival___BasicTableShape_TableContainer_Config = {
+                'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___BasicTableShape_TableContainer extends Component {
-                constructor(config: {
-                    'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___BasicTableShape_TableContainer_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_Table_Config = {
+                'border-collapse'?: any /* collapse */
+            }
             class carnival___BasicTableShape_Table extends Component {
-                constructor(config: {
-                    'border-collapse'?: any /* collapse */
-                }) {
+                constructor(config: carnival___BasicTableShape_Table_Config) {
                     const defaults = {'border-collapse': "collapse"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableHeadWrapper_Config = {
+                
+            }
             class carnival___BasicTableShape_TableHeadWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___BasicTableShape_TableHeadWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableRowWrapper_Config = {
+                
+            }
             class carnival___BasicTableShape_TableRowWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___BasicTableShape_TableRowWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableHeadCell_Config = {
+                'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___BasicTableShape_TableHeadCell extends Component {
-                constructor(config: {
-                    'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___BasicTableShape_TableHeadCell_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableBodyWrapper_Config = {
+                
+            }
             class carnival___BasicTableShape_TableBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___BasicTableShape_TableBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableData_Config = {
+                'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___BasicTableShape_TableData extends Component {
-                constructor(config: {
-                    'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___BasicTableShape_TableData_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableDataList_Config = {
+                'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___BasicTableShape_TableDataList extends Component {
-                constructor(config: {
-                    'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___BasicTableShape_TableDataList_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableDataUnstyledList_Config = {
+                'list-style-type'?: any /* none */
+            }
             class carnival___BasicTableShape_TableDataUnstyledList extends Component {
-                constructor(config: {
-                    'list-style-type'?: any /* none */
-                }) {
+                constructor(config: carnival___BasicTableShape_TableDataUnstyledList_Config) {
                     const defaults = {'list-style-type': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_FirstTableData_Config = {
+                'border-left'?: any /* none */, 'border-right': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___BasicTableShape_FirstTableData extends Component {
-                constructor(config: {
-                    'border-left'?: any /* none */, 'border-right': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___BasicTableShape_FirstTableData_Config) {
                     const defaults = {'border-left': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableBottomBorderData_Config = {
+                'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___BasicTableShape_TableBottomBorderData extends Component {
-                constructor(config: {
-                    'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___BasicTableShape_TableBottomBorderData_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_LastTableMergedCellsRowData_Config = {
+                'border-right'?: any /* none */
+            }
             class carnival___BasicTableShape_LastTableMergedCellsRowData extends Component {
-                constructor(config: {
-                    'border-right'?: any /* none */
-                }) {
+                constructor(config: carnival___BasicTableShape_LastTableMergedCellsRowData_Config) {
                     const defaults = {'border-right': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_CaptionContainer_Config = {
+                'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'caption-side'?: any /* ENUM__ValueSet:::OPTIONAL */, 'prince-caption-page'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___BasicTableShape_CaptionContainer extends Component {
-                constructor(config: {
-                    'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'caption-side'?: any /* ENUM__ValueSet:::OPTIONAL */, 'prince-caption-page'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___BasicTableShape_CaptionContainer_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_CaptionTitle_Config = {
+                'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___BasicTableShape_CaptionTitle extends Component {
-                constructor(config: {
-                    'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___BasicTableShape_CaptionTitle_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___BasicTableShape_TableNumber_Config = {
+                'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___BasicTableShape_TableNumber extends Component {
-                constructor(config: {
-                    'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___BasicTableShape_TableNumber_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___BasicTableShape_Config = {
+        
+    }
     class carnival___BasicTableShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___BasicTableShape_TableContainer, c1: carnival___BasicTableShape_Table, c2: carnival___BasicTableShape_TableHeadWrapper, c3: carnival___BasicTableShape_TableRowWrapper, c4: carnival___BasicTableShape_TableHeadCell, c5: carnival___BasicTableShape_TableBodyWrapper, c6: carnival___BasicTableShape_TableData, c7: carnival___BasicTableShape_TableDataList, c8: carnival___BasicTableShape_TableDataUnstyledList, c9: carnival___BasicTableShape_FirstTableData, c10: carnival___BasicTableShape_TableBottomBorderData, c11: carnival___BasicTableShape_LastTableMergedCellsRowData, c12: carnival___BasicTableShape_CaptionContainer, c13: carnival___BasicTableShape_CaptionTitle, c14: carnival___BasicTableShape_TableNumber) {
+        constructor(config: carnival___BasicTableShape_Config, c0: carnival___BasicTableShape_TableContainer, c1: carnival___BasicTableShape_Table, c2: carnival___BasicTableShape_TableHeadWrapper, c3: carnival___BasicTableShape_TableRowWrapper, c4: carnival___BasicTableShape_TableHeadCell, c5: carnival___BasicTableShape_TableBodyWrapper, c6: carnival___BasicTableShape_TableData, c7: carnival___BasicTableShape_TableDataList, c8: carnival___BasicTableShape_TableDataUnstyledList, c9: carnival___BasicTableShape_FirstTableData, c10: carnival___BasicTableShape_TableBottomBorderData, c11: carnival___BasicTableShape_LastTableMergedCellsRowData, c12: carnival___BasicTableShape_CaptionContainer, c13: carnival___BasicTableShape_CaptionTitle, c14: carnival___BasicTableShape_TableNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14])
         }
@@ -4554,89 +4996,98 @@ class Shape {
 
     // START: carnival___ColumnHeaderTableShape
     
+            type carnival___ColumnHeaderTableShape_TableContainer_Config = {
+                'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___ColumnHeaderTableShape_TableContainer extends Component {
-                constructor(config: {
-                    'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___ColumnHeaderTableShape_TableContainer_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ColumnHeaderTableShape_ColumnHeaderTable_Config = {
+                'border-collapse'?: any /* collapse */
+            }
             class carnival___ColumnHeaderTableShape_ColumnHeaderTable extends Component {
-                constructor(config: {
-                    'border-collapse'?: any /* collapse */
-                }) {
+                constructor(config: carnival___ColumnHeaderTableShape_ColumnHeaderTable_Config) {
                     const defaults = {'border-collapse': "collapse"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ColumnHeaderTableShape_TableBodyWrapper_Config = {
+                
+            }
             class carnival___ColumnHeaderTableShape_TableBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___ColumnHeaderTableShape_TableBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ColumnHeaderTableShape_TableRowWrapper_Config = {
+                
+            }
             class carnival___ColumnHeaderTableShape_TableRowWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___ColumnHeaderTableShape_TableRowWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ColumnHeaderTableShape_TableData_Config = {
+                'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___ColumnHeaderTableShape_TableData extends Component {
-                constructor(config: {
-                    'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___ColumnHeaderTableShape_TableData_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ColumnHeaderTableShape_FirstTableData_Config = {
+                'border-left'?: any /* none */, 'border-right': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___ColumnHeaderTableShape_FirstTableData extends Component {
-                constructor(config: {
-                    'border-left'?: any /* none */, 'border-right': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___ColumnHeaderTableShape_FirstTableData_Config) {
                     const defaults = {'border-left': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ColumnHeaderTableShape_FirstTableRow_Config = {
+                'border-top-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top-style'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___ColumnHeaderTableShape_FirstTableRow extends Component {
-                constructor(config: {
-                    'border-top-color'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top-width'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top-style'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___ColumnHeaderTableShape_FirstTableRow_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ColumnHeaderTableShape_LastTableRowData_Config = {
+                'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM
+            }
             class carnival___ColumnHeaderTableShape_LastTableRowData extends Component {
-                constructor(config: {
-                    'border-bottom-color': any /* ENUM__ValueSet:::REQUIRED */, 'border-bottom-width'?: [number, LENGTH], 'border-bottom-style'?: SLICE_ENUM
-                }) {
+                constructor(config: carnival___ColumnHeaderTableShape_LastTableRowData_Config) {
                     const defaults = {'border-bottom-width': [0.1,"rem"], 'border-bottom-style': "solid"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___ColumnHeaderTableShape_Config = {
+        
+    }
     class carnival___ColumnHeaderTableShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___ColumnHeaderTableShape_TableContainer, c1: carnival___ColumnHeaderTableShape_ColumnHeaderTable, c2: carnival___ColumnHeaderTableShape_TableBodyWrapper, c3: carnival___ColumnHeaderTableShape_TableRowWrapper, c4: carnival___ColumnHeaderTableShape_TableData, c5: carnival___ColumnHeaderTableShape_FirstTableData, c6: carnival___ColumnHeaderTableShape_FirstTableRow, c7: carnival___ColumnHeaderTableShape_LastTableRowData) {
+        constructor(config: carnival___ColumnHeaderTableShape_Config, c0: carnival___ColumnHeaderTableShape_TableContainer, c1: carnival___ColumnHeaderTableShape_ColumnHeaderTable, c2: carnival___ColumnHeaderTableShape_TableBodyWrapper, c3: carnival___ColumnHeaderTableShape_TableRowWrapper, c4: carnival___ColumnHeaderTableShape_TableData, c5: carnival___ColumnHeaderTableShape_FirstTableData, c6: carnival___ColumnHeaderTableShape_FirstTableRow, c7: carnival___ColumnHeaderTableShape_LastTableRowData) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7])
         }
@@ -4646,139 +5097,153 @@ class Shape {
 
     // START: carnival___FakeTitleTableShape
     
+            type carnival___FakeTitleTableShape_TableContainer_Config = {
+                'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FakeTitleTableShape_TableContainer extends Component {
-                constructor(config: {
-                    'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_TableContainer_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_TableTitle_Config = {
+                'color': any /* ENUM__ValueSet:::REQUIRED */, 'padding': any /* ENUM__ValueSet:::REQUIRED */, 'text-align'?: any /* center */, 'page-break-after'?: any /* avoid */
+            }
             class carnival___FakeTitleTableShape_TableTitle extends Component {
-                constructor(config: {
-                    'color': any /* ENUM__ValueSet:::REQUIRED */, 'padding': any /* ENUM__ValueSet:::REQUIRED */, 'text-align'?: any /* center */, 'page-break-after'?: any /* avoid */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_TableTitle_Config) {
                     const defaults = {'text-align': "center", 'page-break-after': "avoid"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_FakeTitleTable_Config = {
+                'border-collapse'?: any /* collapse */, 'width'?: [number, LENGTH]
+            }
             class carnival___FakeTitleTableShape_FakeTitleTable extends Component {
-                constructor(config: {
-                    'border-collapse'?: any /* collapse */, 'width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_FakeTitleTable_Config) {
                     const defaults = {'border-collapse': "collapse", 'width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_TableHeadWrapper_Config = {
+                
+            }
             class carnival___FakeTitleTableShape_TableHeadWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_TableHeadWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_TableRowWrapper_Config = {
+                
+            }
             class carnival___FakeTitleTableShape_TableRowWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_TableRowWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_TableHeadCell_Config = {
+                'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___FakeTitleTableShape_TableHeadCell extends Component {
-                constructor(config: {
-                    'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_TableHeadCell_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_TableBodyWrapper_Config = {
+                
+            }
             class carnival___FakeTitleTableShape_TableBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_TableBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_TableData_Config = {
+                'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___FakeTitleTableShape_TableData extends Component {
-                constructor(config: {
-                    'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_TableData_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_FirstTableData_Config = {
+                'border-left'?: any /* none */, 'border-right': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FakeTitleTableShape_FirstTableData extends Component {
-                constructor(config: {
-                    'border-left'?: any /* none */, 'border-right': any /* ENUM__ValueSet:::REQUIRED */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_FirstTableData_Config) {
                     const defaults = {'border-left': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_LastTableRow_Config = {
+                'border-bottom': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___FakeTitleTableShape_LastTableRow extends Component {
-                constructor(config: {
-                    'border-bottom': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_LastTableRow_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_CaptionContainer_Config = {
+                'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'caption-side'?: any /* ENUM__ValueSet:::OPTIONAL */, 'prince-caption-page'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FakeTitleTableShape_CaptionContainer extends Component {
-                constructor(config: {
-                    'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'caption-side'?: any /* ENUM__ValueSet:::OPTIONAL */, 'prince-caption-page'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_CaptionContainer_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_CaptionTitle_Config = {
+                'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FakeTitleTableShape_CaptionTitle extends Component {
-                constructor(config: {
-                    'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_CaptionTitle_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___FakeTitleTableShape_TableNumber_Config = {
+                'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___FakeTitleTableShape_TableNumber extends Component {
-                constructor(config: {
-                    'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___FakeTitleTableShape_TableNumber_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___FakeTitleTableShape_Config = {
+        
+    }
     class carnival___FakeTitleTableShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___FakeTitleTableShape_TableContainer, c1: carnival___FakeTitleTableShape_TableTitle, c2: carnival___FakeTitleTableShape_FakeTitleTable, c3: carnival___FakeTitleTableShape_TableHeadWrapper, c4: carnival___FakeTitleTableShape_TableRowWrapper, c5: carnival___FakeTitleTableShape_TableHeadCell, c6: carnival___FakeTitleTableShape_TableBodyWrapper, c7: carnival___FakeTitleTableShape_TableData, c8: carnival___FakeTitleTableShape_FirstTableData, c9: carnival___FakeTitleTableShape_LastTableRow, c10: carnival___FakeTitleTableShape_CaptionContainer, c11: carnival___FakeTitleTableShape_CaptionTitle, c12: carnival___FakeTitleTableShape_TableNumber) {
+        constructor(config: carnival___FakeTitleTableShape_Config, c0: carnival___FakeTitleTableShape_TableContainer, c1: carnival___FakeTitleTableShape_TableTitle, c2: carnival___FakeTitleTableShape_FakeTitleTable, c3: carnival___FakeTitleTableShape_TableHeadWrapper, c4: carnival___FakeTitleTableShape_TableRowWrapper, c5: carnival___FakeTitleTableShape_TableHeadCell, c6: carnival___FakeTitleTableShape_TableBodyWrapper, c7: carnival___FakeTitleTableShape_TableData, c8: carnival___FakeTitleTableShape_FirstTableData, c9: carnival___FakeTitleTableShape_LastTableRow, c10: carnival___FakeTitleTableShape_CaptionContainer, c11: carnival___FakeTitleTableShape_CaptionTitle, c12: carnival___FakeTitleTableShape_TableNumber) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12])
         }
@@ -4788,79 +5253,87 @@ class Shape {
 
     // START: carnival___UnnumberedUnstyledTable
     
+            type carnival___UnnumberedUnstyledTable_TableContainer_Config = {
+                'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnnumberedUnstyledTable_TableContainer extends Component {
-                constructor(config: {
-                    'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */, 'display'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'margin-right'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnnumberedUnstyledTable_TableContainer_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnnumberedUnstyledTable_UnnumberedUnstyledTable_Config = {
+                'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___UnnumberedUnstyledTable_UnnumberedUnstyledTable extends Component {
-                constructor(config: {
-                    'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___UnnumberedUnstyledTable_UnnumberedUnstyledTable_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnnumberedUnstyledTable_TableHeadWrapper_Config = {
+                
+            }
             class carnival___UnnumberedUnstyledTable_TableHeadWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___UnnumberedUnstyledTable_TableHeadWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnnumberedUnstyledTable_TableRowWrapper_Config = {
+                
+            }
             class carnival___UnnumberedUnstyledTable_TableRowWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___UnnumberedUnstyledTable_TableRowWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnnumberedUnstyledTable_TableHeadCell_Config = {
+                'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___UnnumberedUnstyledTable_TableHeadCell extends Component {
-                constructor(config: {
-                    'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'font-weight'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___UnnumberedUnstyledTable_TableHeadCell_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnnumberedUnstyledTable_TableBodyWrapper_Config = {
+                
+            }
             class carnival___UnnumberedUnstyledTable_TableBodyWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___UnnumberedUnstyledTable_TableBodyWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___UnnumberedUnstyledTable_TableData_Config = {
+                'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___UnnumberedUnstyledTable_TableData extends Component {
-                constructor(config: {
-                    'font-family'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-left'?: any /* ENUM__ValueSet:::OPTIONAL */, 'border-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___UnnumberedUnstyledTable_TableData_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
+    type carnival___UnnumberedUnstyledTable_Config = {
+        
+    }
     class carnival___UnnumberedUnstyledTable extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___UnnumberedUnstyledTable_TableContainer, c1: carnival___UnnumberedUnstyledTable_UnnumberedUnstyledTable, c2: carnival___UnnumberedUnstyledTable_TableHeadWrapper, c3: carnival___UnnumberedUnstyledTable_TableRowWrapper, c4: carnival___UnnumberedUnstyledTable_TableHeadCell, c5: carnival___UnnumberedUnstyledTable_TableBodyWrapper, c6: carnival___UnnumberedUnstyledTable_TableData) {
+        constructor(config: carnival___UnnumberedUnstyledTable_Config, c0: carnival___UnnumberedUnstyledTable_TableContainer, c1: carnival___UnnumberedUnstyledTable_UnnumberedUnstyledTable, c2: carnival___UnnumberedUnstyledTable_TableHeadWrapper, c3: carnival___UnnumberedUnstyledTable_TableRowWrapper, c4: carnival___UnnumberedUnstyledTable_TableHeadCell, c5: carnival___UnnumberedUnstyledTable_TableBodyWrapper, c6: carnival___UnnumberedUnstyledTable_TableData) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6])
         }
@@ -4870,129 +5343,142 @@ class Shape {
 
     // START: carnival___ExerciseShape
     
+            type carnival___ExerciseShape_Container_Config = {
+                'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___ExerciseShape_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___ExerciseShape_Container_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_ProblemWrapper_Config = {
+                'display'?: any /* table */
+            }
             class carnival___ExerciseShape_ProblemWrapper extends Component {
-                constructor(config: {
-                    'display'?: any /* table */
-                }) {
+                constructor(config: carnival___ExerciseShape_ProblemWrapper_Config) {
                     const defaults = {'display': "table"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_ProblemNumber_Config = {
+                'display'?: any /* table-cell */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-decoration'?: any /* none */
+            }
             class carnival___ExerciseShape_ProblemNumber extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___ExerciseShape_ProblemNumber_Config) {
                     const defaults = {'display': "table-cell", 'font-weight': "bold", 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_ProblemDivider_Config = {
+                'margin-right'?: [number, LENGTH]
+            }
             class carnival___ExerciseShape_ProblemDivider extends Component {
-                constructor(config: {
-                    'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ExerciseShape_ProblemDivider_Config) {
                     const defaults = {'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_ProblemContainer_Config = {
+                'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
+            }
             class carnival___ExerciseShape_ProblemContainer extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ExerciseShape_ProblemContainer_Config) {
                     const defaults = {'display': "table-cell", 'width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_ProblemParagraph_Config = {
+                'margin-bottom'?: number
+            }
             class carnival___ExerciseShape_ProblemParagraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___ExerciseShape_ProblemParagraph_Config) {
                     const defaults = {'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_ExerciseImage_Config = {
+                'max-width'?: [number, LENGTH]
+            }
             class carnival___ExerciseShape_ExerciseImage extends Component {
-                constructor(config: {
-                    'max-width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ExerciseShape_ExerciseImage_Config) {
                     const defaults = {'max-width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___ExerciseShape_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ExerciseShape_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_Nested__List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___ExerciseShape_Nested__List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ExerciseShape_Nested__List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [16,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_ProblemContainerSpecific_Config = {
+                'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
+            }
             class carnival___ExerciseShape_ProblemContainerSpecific extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___ExerciseShape_ProblemContainerSpecific_Config) {
                     const defaults = {'display': "table-cell", 'width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_SolutionWrapper_Config = {
+                
+            }
             class carnival___ExerciseShape_SolutionWrapper extends Component {
-                constructor(config: {
-                    
-                }) {
+                constructor(config: carnival___ExerciseShape_SolutionWrapper_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___ExerciseShape_SolutionTitle_Config = {
+                'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
+            }
             class carnival___ExerciseShape_SolutionTitle extends Component {
-                constructor(config: {
-                    'font-family': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */
-                }) {
+                constructor(config: carnival___ExerciseShape_SolutionTitle_Config) {
                     const defaults = {'font-weight': "bold"}
                     super(defaults, config)
                 }
             }
             
+    type carnival___ExerciseShape_Config = {
+        
+    }
     class carnival___ExerciseShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___ExerciseShape_Container, c1: carnival___ExerciseShape_ProblemWrapper, c2: carnival___ExerciseShape_ProblemNumber, c3: carnival___ExerciseShape_ProblemDivider, c4: carnival___ExerciseShape_ProblemContainer, c5: carnival___ExerciseShape_ProblemParagraph, c6: carnival___ExerciseShape_ExerciseImage, c7: carnival___ExerciseShape_List__MarginLeftBottom, c8: carnival___ExerciseShape_Nested__List__MarginLeftBottom, c9: carnival___ExerciseShape_ProblemContainerSpecific, c10: carnival___ExerciseShape_SolutionWrapper, c11: carnival___ExerciseShape_SolutionTitle) {
+        constructor(config: carnival___ExerciseShape_Config, c0: carnival___ExerciseShape_Container, c1: carnival___ExerciseShape_ProblemWrapper, c2: carnival___ExerciseShape_ProblemNumber, c3: carnival___ExerciseShape_ProblemDivider, c4: carnival___ExerciseShape_ProblemContainer, c5: carnival___ExerciseShape_ProblemParagraph, c6: carnival___ExerciseShape_ExerciseImage, c7: carnival___ExerciseShape_List__MarginLeftBottom, c8: carnival___ExerciseShape_Nested__List__MarginLeftBottom, c9: carnival___ExerciseShape_ProblemContainerSpecific, c10: carnival___ExerciseShape_SolutionWrapper, c11: carnival___ExerciseShape_SolutionTitle) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11])
         }
@@ -5002,149 +5488,164 @@ class Shape {
 
     // START: carnival___EOCAssesmentsShape
     
+            type carnival___EOCAssesmentsShape_Container_Config = {
+                'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
+            }
             class carnival___EOCAssesmentsShape_Container extends Component {
-                constructor(config: {
-                    'margin-bottom'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-count'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-gap'?: any /* ENUM__ValueSet:::OPTIONAL */, 'column-width'?: any /* ENUM__ValueSet:::OPTIONAL */
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_Container_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_Section__MarginBottom_Config = {
+                'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */
+            }
             class carnival___EOCAssesmentsShape_Section__MarginBottom extends Component {
-                constructor(config: {
-                    'margin-bottom': any /* ENUM__ValueSet:::REQUIRED */
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_Section__MarginBottom_Config) {
                     const defaults = {}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_List__MarginLeftBottomIncreased_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EOCAssesmentsShape_List__MarginLeftBottomIncreased extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_List__MarginLeftBottomIncreased_Config) {
                     const defaults = {'margin-left': [32,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EOCAssesmentsShape_List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [24,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_Nested__List__MarginLeftBottom_Config = {
+                'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
+            }
             class carnival___EOCAssesmentsShape_Nested__List__MarginLeftBottom extends Component {
-                constructor(config: {
-                    'margin-left'?: [number, LENGTH], 'margin-bottom'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_Nested__List__MarginLeftBottom_Config) {
                     const defaults = {'margin-left': [16,"px"], 'margin-bottom': [0.7,"rem"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_ProblemWrapper_Config = {
+                'display'?: any /* table */
+            }
             class carnival___EOCAssesmentsShape_ProblemWrapper extends Component {
-                constructor(config: {
-                    'display'?: any /* table */
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_ProblemWrapper_Config) {
                     const defaults = {'display': "table"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_ProblemNumber_Config = {
+                'display'?: any /* table-cell */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-decoration'?: any /* none */
+            }
             class carnival___EOCAssesmentsShape_ProblemNumber extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'color': any /* ENUM__ValueSet:::REQUIRED */, 'font-weight'?: any /* bold */, 'text-decoration'?: any /* none */
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_ProblemNumber_Config) {
                     const defaults = {'display': "table-cell", 'font-weight': "bold", 'text-decoration': "none"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_ProblemDivider_Config = {
+                'margin-right'?: [number, LENGTH]
+            }
             class carnival___EOCAssesmentsShape_ProblemDivider extends Component {
-                constructor(config: {
-                    'margin-right'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_ProblemDivider_Config) {
                     const defaults = {'margin-right': [8,"px"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_ProblemContainer_Config = {
+                'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
+            }
             class carnival___EOCAssesmentsShape_ProblemContainer extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_ProblemContainer_Config) {
                     const defaults = {'display': "table-cell", 'width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_ProblemParagraph_Config = {
+                'margin-bottom'?: number
+            }
             class carnival___EOCAssesmentsShape_ProblemParagraph extends Component {
-                constructor(config: {
-                    'margin-bottom'?: number
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_ProblemParagraph_Config) {
                     const defaults = {'margin-bottom': 0}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_ExerciseImage_Config = {
+                'max-width'?: [number, LENGTH]
+            }
             class carnival___EOCAssesmentsShape_ExerciseImage extends Component {
-                constructor(config: {
-                    'max-width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_ExerciseImage_Config) {
                     const defaults = {'max-width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_ProblemContainerSpecific_Config = {
+                'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
+            }
             class carnival___EOCAssesmentsShape_ProblemContainerSpecific extends Component {
-                constructor(config: {
-                    'display'?: any /* table-cell */, 'vertical-align'?: any /* ENUM__ValueSet:::OPTIONAL */, 'padding-top'?: any /* ENUM__ValueSet:::OPTIONAL */, 'width'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_ProblemContainerSpecific_Config) {
                     const defaults = {'display': "table-cell", 'width': [100,"%"]}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_Table_Config = {
+                'max-width'?: [number, LENGTH], 'table-layout'?: any /* fixed */
+            }
             class carnival___EOCAssesmentsShape_Table extends Component {
-                constructor(config: {
-                    'max-width'?: [number, LENGTH], 'table-layout'?: any /* fixed */
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_Table_Config) {
                     const defaults = {'max-width': [100,"%"], 'table-layout': "fixed"}
                     super(defaults, config)
                 }
             }
             
 
+            type carnival___EOCAssesmentsShape_TableData_Config = {
+                'text-align'?: any /* center */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-right'?: [number, LENGTH], 'padding-left'?: [number, LENGTH]
+            }
             class carnival___EOCAssesmentsShape_TableData extends Component {
-                constructor(config: {
-                    'text-align'?: any /* center */, 'padding-top'?: [number, LENGTH], 'padding-bottom'?: [number, LENGTH], 'padding-right'?: [number, LENGTH], 'padding-left'?: [number, LENGTH]
-                }) {
+                constructor(config: carnival___EOCAssesmentsShape_TableData_Config) {
                     const defaults = {'text-align': "center", 'padding-top': [0.7,"rem"], 'padding-bottom': [0.7,"rem"], 'padding-right': [4,"px"], 'padding-left': [4,"px"]}
                     super(defaults, config)
                 }
             }
             
+    type carnival___EOCAssesmentsShape_Config = {
+        
+    }
     class carnival___EOCAssesmentsShape extends Shape {
-        constructor(config: {
-            
-        }, c0: carnival___EOCAssesmentsShape_Container, c1: carnival___EOCAssesmentsShape_Section__MarginBottom, c2: carnival___EOCAssesmentsShape_List__MarginLeftBottomIncreased, c3: carnival___EOCAssesmentsShape_List__MarginLeftBottom, c4: carnival___EOCAssesmentsShape_Nested__List__MarginLeftBottom, c5: carnival___EOCAssesmentsShape_ProblemWrapper, c6: carnival___EOCAssesmentsShape_ProblemNumber, c7: carnival___EOCAssesmentsShape_ProblemDivider, c8: carnival___EOCAssesmentsShape_ProblemContainer, c9: carnival___EOCAssesmentsShape_ProblemParagraph, c10: carnival___EOCAssesmentsShape_ExerciseImage, c11: carnival___EOCAssesmentsShape_ProblemContainerSpecific, c12: carnival___EOCAssesmentsShape_Table, c13: carnival___EOCAssesmentsShape_TableData) {
+        constructor(config: carnival___EOCAssesmentsShape_Config, c0: carnival___EOCAssesmentsShape_Container, c1: carnival___EOCAssesmentsShape_Section__MarginBottom, c2: carnival___EOCAssesmentsShape_List__MarginLeftBottomIncreased, c3: carnival___EOCAssesmentsShape_List__MarginLeftBottom, c4: carnival___EOCAssesmentsShape_Nested__List__MarginLeftBottom, c5: carnival___EOCAssesmentsShape_ProblemWrapper, c6: carnival___EOCAssesmentsShape_ProblemNumber, c7: carnival___EOCAssesmentsShape_ProblemDivider, c8: carnival___EOCAssesmentsShape_ProblemContainer, c9: carnival___EOCAssesmentsShape_ProblemParagraph, c10: carnival___EOCAssesmentsShape_ExerciseImage, c11: carnival___EOCAssesmentsShape_ProblemContainerSpecific, c12: carnival___EOCAssesmentsShape_Table, c13: carnival___EOCAssesmentsShape_TableData) {
             const defaults = {}
             super(defaults, config, [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13])
         }
