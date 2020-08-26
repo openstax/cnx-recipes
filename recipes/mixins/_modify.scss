@@ -962,12 +962,12 @@
   }
 }
 
-@mixin modify_addFirstElementClass($element) {
+@mixin modify_addFirstElementClass($element, $type ) {
   @if release-flag-enabled(exercise-first-element) {
     [data-type="exercise"]:not(.unnumbered) .os-problem-container {
-      @if $element ==  " > ol.circled:first-child" {
+      @if $type == inlineList {
         #{$element} {
-        class: attr(class) " first-circled-list-element";
+        class: attr(class) " first-inline-list-element";
         }
       } @else {
       #{$element} {
@@ -981,9 +981,9 @@
 
       @if $type == "Answer Key" { // see config.scss file for u-physics for details
         .os-eob [data-type="solution"] .os-solution-container {
-          @if $element ==  " > ol.circled:first-child" {
+          @if $type == inlineList {
             #{$element} {
-              class: attr(class) " first-circled-list-element";
+              class: attr(class) " first-inline-list-element";
             }
           } @else { 
             #{$element} {
@@ -1006,11 +1006,13 @@
       &:deferred {
         class: attr(class) string(hasFirstElement);
       }
-      .first-circled-list-element {
-        string-set: hasFirstElement " has-first-circled-list-element";
-      }
-      &:deferred {
-        class: attr(class) string(hasFirstElement);
+        @if $ConfighasFirstInlineListElement == true {
+          .first-inline-list-element {
+            string-set: hasFirstElement " has-first-inline-list-element";
+          }
+          &:deferred {
+            class: attr(class) string(hasFirstElement);
+          }
       }
     }
 
@@ -1026,11 +1028,13 @@
           &:deferred {
             class: attr(class) string(hasFirstElement);
           }
-          .first-circled-list-element {
-            string-set: hasFirstElement " has-first-circled-list-element";
-          }
-          &:deferred {
-            class: attr(class) string(hasFirstElement);
+          @if TEMPLATE() == "TEMPLATE2" {
+            .first-inline-list-element {
+              string-set: hasFirstElement " has-first-inline-list-element";
+            }
+            &:deferred {
+              class: attr(class) string(hasFirstElement);
+            }
           }
         }
       }
