@@ -962,10 +962,10 @@
   }
 }
 
-@mixin modify_addFirstElementClass($element, $type ) {
+@mixin modify_addFirstElementClass($element, $elementtype ) {
   @if release-flag-enabled(exercise-first-element) {
     [data-type="exercise"]:not(.unnumbered) .os-problem-container {
-      @if $type == inlineList {
+      @if $elementtype == inlineList {
         #{$element} {
         class: attr(class) " first-inline-list-element";
         }
@@ -977,24 +977,23 @@
     }
 
     @each $page in $Config_BookCompositePages {
-      $type: map-get($page, type);
-
-      @if $type == "Answer Key" { // see config.scss file for u-physics for details
-        .os-eob [data-type="solution"] .os-solution-container {
-          @if $type == inlineList {
-            #{$element} {
-              class: attr(class) " first-inline-list-element";
+      $type: map-get($page, type);    
+          @if $type == "Answer Key" { // see config.scss file for u-physics for details
+            .os-eob [data-type="solution"] .os-solution-container {
+              @if $elementtype == inlineList {
+                #{$element} {
+                  class: attr(class) " first-inline-list-element";
+                } 
+              } @else { 
+                #{$element} {
+                class: attr(class) " first-element";
+              }
             }
-          } @else { 
-            #{$element} {
-            class: attr(class) " first-element";
           }
         }
       }
     }
   }
-}
-}
 
 @mixin modify_tagExerciseWithFirstElementClass() {
   @if release-flag-enabled(exercise-first-element) {
