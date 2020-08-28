@@ -1,4 +1,7 @@
 @import '_eoc-components';
+@import 'figureimage-components';
+@import 'table-components';
+@import 'lists-components';
 
 @include create_shape('corn:::EocKeyTerm',(
     _components:(
@@ -7,10 +10,49 @@
                 map-merge($Term--DL,(
                     _components:(
                         $Term--DT,
-                        $Term--DD,
+                        map-merge($Term--DD, (
+                          _components: (
+                            $UnorderedList--KeyTerms,
+                          ),
+                        ))
                     ),
                 )),
             ),
         )),
     )
+));
+
+// Used in Formula Review 
+@include create_shape('corn:::TwoColumnVerticalEocShape',(
+    _components:(
+        map-merge($Eoc__Container, (
+            _components: (
+                $H2,
+                map-merge($EocSection__Container, (
+                    _components: (
+                        map-merge($Table--Eoc__Container, (
+                            _components: (
+                                $Table,
+                                $Caption__Container,
+                            ),
+                        )),
+                    ),
+                )),
+            ),
+        )),
+    )
+));
+
+@include create_shape('corn:::ReferencesShape', (
+  _components: (
+    map-merge($Eoc__Container, (
+        _components: (
+        map-merge($References__Section, (
+          _components: (
+            $References__Text
+          ),
+        ))
+      ),
+    )),
+  )
 ));
