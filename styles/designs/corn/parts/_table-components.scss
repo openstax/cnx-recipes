@@ -19,6 +19,7 @@ $Table: (
         border-spacing: enum('ValueSet:::OPTIONAL'),
         table-layout: enum('ValueSet:::OPTIONAL'), //used in Exercises
         max-width: enum('ValueSet:::OPTIONAL'), //used in Exercises
+        break-inside: enum('ValueSet:::OPTIONAL'), //used in Tables in Formula Review Two Column Vertical Shape
     )
 );
 
@@ -60,7 +61,7 @@ $Table__Row: empty_wrapper(TableRow, ' > tr');
 
 $Table__Data: (
     _name: "TableData",
-    _subselector: " > td:not(:only-of-type)",
+    _subselector: " > td",
     _properties: (
         font-family: enum('ValueSet:::REQUIRED'),
         font-size: font-scale(0),
@@ -78,6 +79,30 @@ $Table__Data: (
         border-bottom-style: enum('ValueSet:::OPTIONAL'), //propety used in Unumbered Unstyled Tables
         border-bottom-color: enum('ValueSet:::OPTIONAL'), //propety used in Unumbered Unstyled Tables
     )
+);
+
+$Table__Data--LeftAligned: (
+    _name: "LeftAlignedTabledata",
+    _subselector: " > td[data-align="left"]",
+    _properties: (
+        text-align: left,
+    )    
+);
+
+$Table__Data--RightAligned: (
+    _name: "RightAlignedTabledata",
+    _subselector: " > td[data-align="right"]",
+    _properties: (
+        text-align: right,
+    )    
+);
+
+$Table__Data--Centered: (
+    _name: "CenteredTabledata",
+    _subselector: " > td[data-align="center"]",
+    _properties: (
+        text-align: center,
+    )    
 );
 
 $Table__Head__Row: empty_wrapper(TableHeadRow, ' > tr');
@@ -106,7 +131,7 @@ $Table__Data--First: (
 
 $Table__Data--FirstType: (
     _name: "FirstTableDataType",
-    _subselector: " > td:first-of-type:not(:only-of-type)",
+    _subselector: " > td:first-of-type",
     _properties: (
         color: enum('ValueSet:::OPTIONAL'),
         font-weight: bold,
@@ -115,9 +140,9 @@ $Table__Data--FirstType: (
     )
 );
 
-// Used in Exercises    
-$Table--Exercise__Container: (
-    _name: "ExerciseTableContainer",
+// Used in Exercises, Formula Review    
+$Table--Eoc__Container: (
+    _name: "EocTableContainer",
     _subselector: " > .os-table",
     _properties: (
         margin-left: enum('ValueSet:::REQUIRED'),
