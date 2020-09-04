@@ -990,16 +990,29 @@ Formula Review page
   data-type: "solution-title";
   content: pending(div-TITLECONTAINER); }
 
-:pass(3) [data-type="example"] [data-type="commentary"]::before {
-  container: span;
-  content: "Interpretation of Results";
-  class: os-title-label;
-  move-to: div-TITLECONTAINER; }
+:pass(3) [data-type="example"] [data-type="commentary"] [data-type="title"] {
+  move-to: commentaryTitle; }
 
 :pass(3) [data-type="example"] [data-type="commentary"]::before {
   container: div;
   data-type: "commentary-title";
-  content: pending(div-TITLECONTAINER); }
+  content: pending(commentaryTitle); }
+
+:pass(3) [data-type="example"] {
+  counter-reset: solution; }
+
+:pass(3) [data-type="example"] [data-type="solution"]:not(.unnumbered) {
+  counter-increment: solution; }
+
+:pass(3) [data-type="example"] [data-type="solution"]:not(.unnumbered)::before {
+  container: span;
+  content: counter(solution);
+  class: os-number; }
+
+:pass(3) [data-type="example"] [data-type="solution"]:not(.unnumbered)::before {
+  container: span;
+  content: " ";
+  class: os-divider; }
 
 :pass(3) [data-type="chapter"], :pass(3) .appendix {
   counter-reset: lab; }
@@ -1237,6 +1250,20 @@ Formula Review page
 
 :pass(3) [data-type="example"] [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
+
+:pass(4) [data-type="example"] [data-type="solution"]:not(.unnumbered) .os-divider {
+  move-to: solutionTitle; }
+
+:pass(4) [data-type="example"] [data-type="solution"]:not(.unnumbered) .os-number {
+  move-to: solutionTitleb; }
+
+:pass(4) [data-type="example"] [data-type="solution"]:not(.unnumbered) [data-type="solution-title"]::after {
+  content: pending(solutionTitle);
+  container: span; }
+
+:pass(4) [data-type="example"] [data-type="solution"]:not(.unnumbered) [data-type="solution-title"]::after {
+  content: pending(solutionTitleb);
+  container: span; }
 
 :pass(6) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(6) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
@@ -1947,9 +1974,6 @@ Formula Review page
 
 :pass(10) .appendix > section > section > [data-type="title"], :pass(10) .appendix > section > section [data-type="document-title"] {
   container: h3; }
-
-:pass(10) [data-type="example"] [data-type="commentary"] > [data-type="title"] {
-  move-to: trash; }
 
 :pass(11) .os-index-link-separator:last-child {
   move-to: trash; }

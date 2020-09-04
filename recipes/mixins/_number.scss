@@ -134,6 +134,17 @@
         [data-type="commentary"] {
           @include utils_title($commentaryTitleContent, null, div, "commentary-title");
         }
+      } @else {
+        [data-type="commentary"] {
+          [data-type="title"] {
+              move-to: commentaryTitle;
+          }
+          &::before {
+            container: div;
+            data-type: "commentary-title";
+            content: pending(commentaryTitle);
+          }
+        }
       }
     }
   } @else {
@@ -162,6 +173,17 @@
       @if $commentaryTitleContent {
         [data-type="commentary"] {
           @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+        } 
+      } @else {
+        [data-type="commentary"] {
+          [data-type="title"] {
+              move-to: commentaryTitle;
+          }
+          &::before {
+            container: div;
+            data-type: "commentary-title";
+            content: pending(commentaryTitle);
+          }
         }
       }
     }
@@ -207,6 +229,17 @@
     @if $commentaryTitleContent {
       [data-type="commentary"] {
         @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+      }
+    } @else {
+      [data-type="commentary"] {
+        [data-type="title"] {
+            move-to: commentaryTitle;
+        }
+        &::before {
+          container: div;
+          data-type: "commentary-title";
+          content: pending(commentaryTitle);
+        }
       }
     }
   }
@@ -545,6 +578,13 @@
   }
 }
 
+@mixin number_solutions ($numberedSolution, $numberAfterSolutionTitle) {
+    [data-type="example"] [data-type="solution"]:not(.unnumbered) {
+      @if $numberAfterSolutionTitle {
+        @include utils_title($numberedSolution, null);
+      }
+    }
+}
 
 @mixin number_citations($citationCounter, $citationLinkCounter ) {
   [data-type="cite"] {

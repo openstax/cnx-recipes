@@ -222,6 +222,12 @@
     }
   }
 
+  //Count Solutions
+  @if map-get($Config_PartType_Example, hasNumberedSolutions) == true {
+    @include count_countSolutions(solution);
+  }
+
+
   @if $Config_CustomExample != () {
     $firstCounterName: map-get($Config_CustomExample, firstCounterName);
     $secondCounterName: map-get($Config_CustomExample, secondCounterName);
@@ -249,10 +255,14 @@
       @include number_equations($titleContent, $numberAfterEq);
     }
   }
-
-  // @include count_countExamples(example);
-  // @include number_numberExamples($exampleTitleContent, $exampleSolutionTitleContent);
-
+  // Number solutions if they have a numberContent
+  $numberContent               : map-get($Config_PartType_Numbered_Solution_In_Examples, numberContent);
+  $numberAfterSolutionTitle    : map-get($Config_PartType_Numbered_Solution_In_Examples, numberAfterSolutionTitle);
+  @if $numberContent {
+    @include validate_typeOptional($numberAfterSolutionTitle, bool);
+    // @include count_countSolutions(solution);
+    @include number_solutions($numberContent, $numberAfterSolutionTitle);
+  }
   // Count and number any Notes that need it
   @each $note in $Config_Notes {
     $className: map-get($note, className);
@@ -302,6 +312,9 @@
   @include compose_prepEOCcompoundCompositesPages($_chapterPrepCompoundCompositePages);
 }
 :pass(4) {
+  @if $Config_PartType_Numbered_Solution_In_Examples !=() {
+   @include modify_solutions_title_in_examples();
+  }
   $_chapterPrepCompoundCompositePages: ();
   @each $page in $Config_ChapterCompositePages {
     @if map-get($page, childPages) != null {
