@@ -202,7 +202,7 @@
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
-    $commentaryTitleContent:  map-get($Config_PartType_Example, commentaryTitleContent);
+    $hasCommentary:  map-get($Config_PartType_Example, hasCommentary);
     $resetAt: map-get($Config_PartType_Example, resetAt);
 
     @if $resetAt == moduleReset {
@@ -213,12 +213,12 @@
     @if release-flag-enabled(appendix-has-numbered-examples) {
       @if map-has-key($Config_PartType_Example, apTitleContent) {
         $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
-        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $commentaryTitleContent, $apTitleContent);
+        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $hasCommentary, $apTitleContent);
       } @else {
-        @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
+        @include number_numberContentExamples($titleContent, $solutionTitleContent, $hasCommentary);
       }
     } @else {
-      @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
+      @include number_numberContentExamples($titleContent, $solutionTitleContent, $hasCommentary);
     }
   }
 
@@ -230,10 +230,10 @@
     $titleContent:  map-get($Config_CustomExample, titleContent);
     $customTitleContent:  map-get($Config_CustomExample, customTitleContent);
     $solutionTitleContent:  map-get($Config_CustomExample, solutionTitleContent);
-    $commentaryTitleContent:  map-get($Config_CustomExample, commentaryTitleContent);
+    $hasCommentary:  map-get($Config_CustomExample, hasCommentary);
 
     @include count_countCustomExamples($firstCounterName, $secondCounterName, $customClass, $customResetSelector);
-    @include number_numberCustomExamples($customClass, $titleContent, $customTitleContent, $solutionTitleContent, $commentaryTitleContent)
+    @include number_numberCustomExamples($customClass, $titleContent, $customTitleContent, $solutionTitleContent, $hasCommentary)
   }
 
   // Number equations if they have a titleContent

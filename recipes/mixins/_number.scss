@@ -114,7 +114,7 @@
   }
 }
 
-@mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $commentaryTitleContent) {
+@mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary) {
   @if release-flag-enabled(subtitled-examples) {
     [data-type="example"] {
       @include utils_title($exampleTitleContent, bExampleLabel);
@@ -130,9 +130,18 @@
       [data-type="solution"] {
         @include utils_title($solutionTitleContent, null, div, "solution-title");
       }
-      @if $commentaryTitleContent {
+      @if $hasCommentary == true {
         [data-type="commentary"] {
-          @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+          > [data-type="title"] {
+            &::inside {
+              container: span;
+              class: "os-title-label";
+            }
+            &::deferred {
+              container: div;
+              data-type: "commentary-title";
+            }
+          }
         }
       }
     }
@@ -159,9 +168,18 @@
       [data-type="solution"] {
         @include utils_title($solutionTitleContent, null, div, "solution-title");
       }
-      @if $commentaryTitleContent {
+      @if $hasCommentary == true {
         [data-type="commentary"] {
-          @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+          > [data-type="title"] {
+            &::inside {
+              container: span;
+              class: "os-title-label";
+            }
+            &::deferred {
+              container: div;
+              data-type: "commentary-title";
+            }
+          }
         }
       }
     }
@@ -175,7 +193,7 @@
 /// @arg {Map} $solutionTitleContent - map with title parts for solution within example
 /// @arg {Map} $commentaryTitleContent - map with title parts for commentary within example
 /// @group number
-@mixin number_numberCustomExamples($customClass, $exampleTitleContent, $exampleCustomTitleContent, $solutionTitleContent, $commentaryTitleContent) {
+@mixin number_numberCustomExamples($customClass, $exampleTitleContent, $exampleCustomTitleContent, $solutionTitleContent, $hasCommentary) {
   [data-type="example"] {
     &:not(.#{$customClass}) {
       @include utils_title($exampleTitleContent, bExampleLabel);
@@ -204,20 +222,29 @@
     [data-type="solution"] {
       @include utils_title($solutionTitleContent, null, div, "solution-title");
     }
-    @if $commentaryTitleContent {
+    @if $hasCommentary == true {
       [data-type="commentary"] {
-        @include utils_title($commentaryTitleContent, null, div, "commentary-title");
+        > [data-type="title"] {
+          &::inside {
+            container: span;
+            class: "os-title-label";
+          }
+          &::deferred {
+            container: div;
+            data-type: "commentary-title";
+          }
+        }
       }
     }
   }
 }
 
-@mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent,$commentaryTitleContent, $appendixTitleContent) {
+@mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary, $appendixTitleContent) {
   [data-type="chapter"] {
-    @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $commentaryTitleContent);
+    @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary);
   }
   .appendix {
-    @include number_numberContentExamples($appendixTitleContent, $solutionTitleContent, $commentaryTitleContent);
+    @include number_numberContentExamples($appendixTitleContent, $solutionTitleContent, $hasCommentary);
   }
 }
 
