@@ -114,7 +114,7 @@
   }
 }
 
-@mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary) {
+@mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent) {
   @if release-flag-enabled(subtitled-examples) {
     [data-type="example"] {
       @include utils_title($exampleTitleContent, bExampleLabel);
@@ -127,8 +127,17 @@
       &:deferred {
         content: pending(bExampleHeader) content();
       }
-      [data-type="solution"] {
-        @include utils_title($solutionTitleContent, null, div, "solution-title");
+      @if $solutionNumberedTitleContent {
+        [data-type="solution"]:not(.unnumbered) {
+          @include utils_title($solutionNumberedTitleContent, null, div, "solution-title");
+        }
+        [data-type="solution"].unnumbered {
+          @include utils_title($solutionTitleContent, null, div, "solution-title");
+        }
+      } @else {
+        [data-type="solution"] {
+          @include utils_title($solutionTitleContent, null, div, "solution-title");
+        }
       }
       @if $hasCommentary == true {
         [data-type="commentary"] {
@@ -165,8 +174,17 @@
       &:deferred {
         content: pending(bExampleHeader) content();
       }
-      [data-type="solution"] {
-        @include utils_title($solutionTitleContent, null, div, "solution-title");
+      @if $solutionNumberedTitleContent {
+        [data-type="solution"]:not(.unnumbered) {
+          @include utils_title($solutionNumberedTitleContent, null, div, "solution-title");
+        }
+        [data-type="solution"].unnumbered {
+          @include utils_title($solutionTitleContent, null, div, "solution-title");
+        }
+      } @else {
+        [data-type="solution"] {
+          @include utils_title($solutionTitleContent, null, div, "solution-title");
+        }
       }
       @if $hasCommentary == true {
         [data-type="commentary"] {
@@ -192,8 +210,9 @@
 /// @arg {Map} $exampleCustomTitleContent - map with title parts for examples WITH special class
 /// @arg {Map} $solutionTitleContent - map with title parts for solution within example
 /// @arg {Map} $commentaryTitleContent - map with title parts for commentary within example
+/// @arg {Map} $solutionNumberedTitleContent - map with title parts for numbered solution within example (optional)
 /// @group number
-@mixin number_numberCustomExamples($customClass, $exampleTitleContent, $exampleCustomTitleContent, $solutionTitleContent, $hasCommentary) {
+@mixin number_numberCustomExamples($customClass, $exampleTitleContent, $exampleCustomTitleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent) {
   [data-type="example"] {
     &:not(.#{$customClass}) {
       @include utils_title($exampleTitleContent, bExampleLabel);
@@ -219,8 +238,17 @@
         content: pending(bExampleHeader) content();
       }
     }
-    [data-type="solution"] {
-      @include utils_title($solutionTitleContent, null, div, "solution-title");
+    @if $solutionNumberedTitleContent {
+      [data-type="solution"]:not(.unnumbered) {
+        @include utils_title($solutionNumberedTitleContent, null, div, "solution-title");
+      }
+      [data-type="solution"].unnumbered {
+        @include utils_title($solutionTitleContent, null, div, "solution-title");
+      }
+    } @else {
+      [data-type="solution"] {
+        @include utils_title($solutionTitleContent, null, div, "solution-title");
+      }
     }
     @if $hasCommentary == true {
       [data-type="commentary"] {
@@ -239,12 +267,12 @@
   }
 }
 
-@mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary, $appendixTitleContent) {
+@mixin number_numberSpecifiedExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary, $appendixTitleContent, $solutionNumberedTitleContent) {
   [data-type="chapter"] {
-    @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary);
+    @include number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent);
   }
   .appendix {
-    @include number_numberContentExamples($appendixTitleContent, $solutionTitleContent, $hasCommentary);
+    @include number_numberContentExamples($appendixTitleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent);
   }
 }
 
