@@ -211,8 +211,15 @@
   @if map-get($Config_PartType_Example, moveTo) == $AREA_NONE {
     $titleContent:  map-get($Config_PartType_Example, titleContent);
     $solutionTitleContent:  map-get($Config_PartType_Example, solutionTitleContent);
-    $commentaryTitleContent:  map-get($Config_PartType_Example, commentaryTitleContent);
+    $hasCommentary:  map-get($Config_PartType_Example, hasCommentary);
     $resetAt: map-get($Config_PartType_Example, resetAt);
+    $solutionNumberedTitleContent:  map-get($Config_PartType_Example, solutionNumberedTitleContent);
+
+    @include validate_typeOptional($solutionNumberedTitleContent, map);
+
+    @if $solutionNumberedTitleContent {
+      @include count_countSolutions(solutions);
+    }
 
     @if $resetAt == moduleReset {
       @include count_countSectionExamples(exampleInSection);
@@ -222,12 +229,12 @@
     @if release-flag-enabled(appendix-has-numbered-examples) {
       @if map-has-key($Config_PartType_Example, apTitleContent) {
         $apTitleContent: map-get($Config_PartType_Example, apTitleContent);
-        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $commentaryTitleContent, $apTitleContent);
+        @include number_numberSpecifiedExamples($titleContent, $solutionTitleContent, $hasCommentary, $apTitleContent, $solutionNumberedTitleContent);
       } @else {
-        @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
+        @include number_numberContentExamples($titleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent);
       }
     } @else {
-      @include number_numberContentExamples($titleContent, $solutionTitleContent, $commentaryTitleContent);
+      @include number_numberContentExamples($titleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent);
     }
   }
 
@@ -239,10 +246,17 @@
     $titleContent:  map-get($Config_CustomExample, titleContent);
     $customTitleContent:  map-get($Config_CustomExample, customTitleContent);
     $solutionTitleContent:  map-get($Config_CustomExample, solutionTitleContent);
-    $commentaryTitleContent:  map-get($Config_CustomExample, commentaryTitleContent);
+    $hasCommentary:  map-get($Config_CustomExample, hasCommentary);
+    $solutionNumberedTitleContent:  map-get($Config_CustomExample, solutionNumberedTitleContent);
+
+    @include validate_typeOptional($solutionNumberedTitleContent, map);
+
+    @if $solutionNumberedTitleContent {
+      @include count_countSolutions(solutions);
+    }
 
     @include count_countCustomExamples($firstCounterName, $secondCounterName, $customClass, $customResetSelector);
-    @include number_numberCustomExamples($customClass, $titleContent, $customTitleContent, $solutionTitleContent, $commentaryTitleContent)
+    @include number_numberCustomExamples($customClass, $titleContent, $customTitleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent)
   }
 
   // Number equations if they have a titleContent
