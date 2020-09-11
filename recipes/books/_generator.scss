@@ -65,7 +65,7 @@
 :pass(0) {
   //putting all unnecessary elements in the trash and emptying the trash
   //first step so that these elements are not counted
-  @if $Config_TrashSelectedElements {
+  @if $Config_TrashSelectedElements != () {
     @each $trash in $Config_TrashSelectedElements {
       @include modify_trash($trash);
     }
@@ -616,6 +616,12 @@
 
   @if release-flag-enabled(custom-lists) {
     @include modify_lists($Config_CustomList);
+  }
+
+  @if $Config_TrashSelectedElements != () {
+    @each $trash in $Config_TrashSelectedElements {
+      @include modify_trash($trash);
+    }
   }
 }
 :pass(11) {
