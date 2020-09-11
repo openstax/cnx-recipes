@@ -115,6 +115,8 @@
 }
 
 @mixin number_numberContentExamples($exampleTitleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent) {
+  $mainSolutionSelector: ''; //defined below; depends on whether $solutionNumberedTitleContent exists
+
   @if release-flag-enabled(subtitled-examples) {
     [data-type="example"] {
       @include utils_title($exampleTitleContent, bExampleLabel);
@@ -128,16 +130,16 @@
         content: pending(bExampleHeader) content();
       }
       @if $solutionNumberedTitleContent {
+        $mainSolutionSelector: '[data-type="solution"].unnumbered';
+  
         [data-type="solution"]:not(.unnumbered) {
           @include utils_title($solutionNumberedTitleContent, null, div, "solution-title");
         }
-        [data-type="solution"].unnumbered {
-          @include utils_title($solutionTitleContent, null, div, "solution-title");
-        }
       } @else {
-        [data-type="solution"] {
-          @include utils_title($solutionTitleContent, null, div, "solution-title");
-        }
+        $mainSolutionSelector: '[data-type="solution"]';
+      }
+      #{$mainSolutionSelector} {
+        @include utils_title($solutionTitleContent, null, div, "solution-title");
       }
       @if $hasCommentary == true {
         [data-type="commentary"] {
@@ -175,16 +177,16 @@
         content: pending(bExampleHeader) content();
       }
       @if $solutionNumberedTitleContent {
+        $mainSolutionSelector: '[data-type="solution"].unnumbered';
+  
         [data-type="solution"]:not(.unnumbered) {
           @include utils_title($solutionNumberedTitleContent, null, div, "solution-title");
         }
-        [data-type="solution"].unnumbered {
-          @include utils_title($solutionTitleContent, null, div, "solution-title");
-        }
       } @else {
-        [data-type="solution"] {
-          @include utils_title($solutionTitleContent, null, div, "solution-title");
-        }
+        $mainSolutionSelector: '[data-type="solution"]';
+      }
+      #{$mainSolutionSelector} {
+        @include utils_title($solutionTitleContent, null, div, "solution-title");
       }
       @if $hasCommentary == true {
         [data-type="commentary"] {
@@ -213,6 +215,8 @@
 /// @arg {Map} $solutionNumberedTitleContent - map with title parts for numbered solution within example (optional)
 /// @group number
 @mixin number_numberCustomExamples($customClass, $exampleTitleContent, $exampleCustomTitleContent, $solutionTitleContent, $hasCommentary, $solutionNumberedTitleContent) {
+  $mainSolutionSelector: ''; //defined below; depends on whether $solutionNumberedTitleContent exists
+
   [data-type="example"] {
     &:not(.#{$customClass}) {
       @include utils_title($exampleTitleContent, bExampleLabel);
@@ -239,16 +243,16 @@
       }
     }
     @if $solutionNumberedTitleContent {
+      $mainSolutionSelector: '[data-type="solution"].unnumbered';
+
       [data-type="solution"]:not(.unnumbered) {
         @include utils_title($solutionNumberedTitleContent, null, div, "solution-title");
       }
-      [data-type="solution"].unnumbered {
-        @include utils_title($solutionTitleContent, null, div, "solution-title");
-      }
     } @else {
-      [data-type="solution"] {
-        @include utils_title($solutionTitleContent, null, div, "solution-title");
-      }
+      $mainSolutionSelector: '[data-type="solution"]';
+    }
+    #{$mainSolutionSelector} {
+      @include utils_title($solutionTitleContent, null, div, "solution-title");
     }
     @if $hasCommentary == true {
       [data-type="commentary"] {
