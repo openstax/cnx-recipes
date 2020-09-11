@@ -63,6 +63,15 @@
 
 
 :pass(0) {
+  //putting all unnecessary elements in the trash and emptying the trash
+  //first step so that these elements are not counted
+  @if $Config_TrashSelectedElements != () {
+    @each $trash in $Config_TrashSelectedElements {
+      @include modify_trash($trash);
+    }
+    @include utils_clearTrash();
+  }
+  
   //Some modifications to be done to the book before any collation
   @include misc_webview_styling();
   @if $Config_hasStimuli {
@@ -609,7 +618,7 @@
     @include modify_lists($Config_CustomList);
   }
 
-  @if $Config_TrashSelectedElements {
+  @if $Config_TrashSelectedElements != () {
     @each $trash in $Config_TrashSelectedElements {
       @include modify_trash($trash);
     }
