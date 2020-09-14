@@ -70,13 +70,14 @@
   );
 }
 // By this function you can create components for problem and solution container from exercises.
-// When image is the first child of problem/solution container then it has class .has-first-element and some additional properties
+// When image, table or inline list is the first child of problem/solution container then it has class .has-first-element or .has-first-inline-list-element respectively and some additional properties
 // must be added to style this element correctly.
 // Used in exercises and answer key.
 @function exerciseChildContainer($childSpecs) {
   $child: map-get($childSpecs, child);
   $name: map-get($childSpecs, name);
   $hasImageTableOnTop: map-get($childSpecs, hasImageTableOnTop);
+  $hasInlineListOnTop: map-get($childSpecs , hasInlineListOnTop);
   
   @if $hasImageTableOnTop == true {
     @return (
@@ -90,6 +91,17 @@
           padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
       ),
     );
+  } @else if $hasInlineListOnTop == true {
+      @return (
+        _name: #{$name},
+        _subselector: ' .os-#{$child}-container.has-first-inline-list-element',
+        _properties:(
+            display: table-cell,
+            vertical-align: bottom,
+            width: 100%,
+            padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
+        ),
+      );
   } @else {
     @return (
       _name: #{$name},
@@ -98,7 +110,6 @@
           display: table-cell,
           width: 100%,
           padding-left: enum('ValueSet:::OPTIONAL'), // used in Answer Key
-          vertical-align: enum('ValueSet:::OPTIONAL'), // used in Answer Key
       ),
     );
   }

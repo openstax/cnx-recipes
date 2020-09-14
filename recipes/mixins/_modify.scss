@@ -962,27 +962,38 @@
   }
 }
 
-@mixin modify_addFirstElementClass($element) {
+@mixin modify_addFirstElementClass($element, $elementtype ) {
   @if release-flag-enabled(exercise-first-element) {
     [data-type="exercise"]:not(.unnumbered) .os-problem-container {
+      @if $elementtype == inlineList {
+        #{$element} {
+        class: attr(class) " first-inline-list-element";
+        }
+      } @else {
       #{$element} {
         class: attr(class) " first-element";
+      }
       }
     }
 
     @each $page in $Config_BookCompositePages {
-      $type: map-get($page, type);
-
-      @if $type == "Answer Key" { // see config.scss file for u-physics for details
-        .os-eob [data-type="solution"] .os-solution-container {
-          #{$element} {
-            class: attr(class) " first-element";
+      $type: map-get($page, type);    
+          @if $type == "Answer Key" { // see config.scss file for u-physics for details
+            .os-eob [data-type="solution"] .os-solution-container {
+              @if $elementtype == inlineList {
+                #{$element} {
+                  class: attr(class) " first-inline-list-element";
+                } 
+              } @else { 
+                #{$element} {
+                class: attr(class) " first-element";
+              }
+            }
           }
         }
       }
     }
   }
-}
 
 @mixin modify_tagExerciseWithFirstElementClass() {
   @if release-flag-enabled(exercise-first-element) {
@@ -993,6 +1004,14 @@
       }
       &:deferred {
         class: attr(class) string(hasFirstElement);
+      }
+        @if $Config_hasFirstInlineListElement == true {
+          .first-inline-list-element {
+            string-set: hasFirstElement " has-first-inline-list-element";
+          }
+          &:deferred {
+            class: attr(class) string(hasFirstElement);
+          }
       }
     }
 
@@ -1007,6 +1026,14 @@
           }
           &:deferred {
             class: attr(class) string(hasFirstElement);
+          }
+          @if $Config_hasFirstInlineListElement == true {
+            .first-inline-list-element {
+              string-set: hasFirstElement " has-first-inline-list-element";
+            }
+            &:deferred {
+              class: attr(class) string(hasFirstElement);
+            }
           }
         }
       }
