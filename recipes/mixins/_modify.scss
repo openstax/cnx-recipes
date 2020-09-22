@@ -962,7 +962,7 @@
   }
 }
 
-@mixin modify_addFirstElementClass($element, $elementtype ) {
+@mixin modify_addFirstElementClass($element, $elementtype) {
   @if release-flag-enabled(exercise-first-element) {
     [data-type="exercise"]:not(.unnumbered) .os-problem-container {
       @if $elementtype == inlineList {
@@ -975,27 +975,27 @@
       }
       }
     }
-
-    @each $page in $Config_BookCompositePages {
-      $type: map-get($page, type);    
-          @if $type == "Answer Key" { // see config.scss file for u-physics for details
-            .os-eob [data-type="solution"] .os-solution-container {
-              @if $elementtype == inlineList {
-                #{$element} {
-                  class: attr(class) " first-inline-list-element";
-                } 
-              } @else { 
-                #{$element} {
-                class: attr(class) " first-element";
-              }
-            }
-          }
+    
+      $selector: '';
+      $config: '';
+      
+      @each $page in $Config_BookCompositePages {
+        $type: map-get($page, type);    
+        @if $type == "Answer Key" {
+        $selector: '.os-eob';
+        $config: $Config_BookCompositePages;
         }
-      }
+      } 
       @each $page in $Config_ChapterCompositePages {
-        $type: map-get($page, type);
-          @if $type == "Solutions" { // this key has been used here to select solutions in chapter composite pages. Added in config.scss file for statistics books
-            .os-eoc [data-type="solution"] .os-solution-container {
+          $type: map-get($page, type); 
+          @if $type == "Solutions" {
+          $selector: '.os-eoc';
+          $config: $Config_ChapterCompositePages;
+          }
+      }
+
+    @each $page in #{$config} {
+            #{$selector} [data-type="solution"] .os-solution-container {
               @if $elementtype == inlineList {
                 #{$element} {
                   class: attr(class) " first-inline-list-element";
@@ -1006,11 +1006,9 @@
               }
             }
           }
-        }
       }
-    }
-  }
-
+      }
+}
 @mixin modify_tagExerciseWithFirstElementClass() {
   @if release-flag-enabled(exercise-first-element) {
     .os-problem-container {
@@ -1030,11 +1028,25 @@
           }
       }
     }
-
-    @each $page in $Config_BookCompositePages {
-      $type: map-get($page, type);
-
-      @if $type == "Answer Key" {
+    $config: '';
+    $hasType: '';
+    
+      @each $page in $Config_BookCompositePages {
+          $type: map-get($page, type);    
+          @if $type == "Answer Key" {
+          $config: $Config_BookCompositePages;
+          $hasType: true;
+          }
+        } 
+      @each $page in $Config_ChapterCompositePages {
+            $type: map-get($page, type); 
+            @if $type == "Solutions" {
+            $config: $Config_ChapterCompositePages;
+            $hasType: true;
+            }
+      }
+      @each $page in #{$config} {
+        @if $hasType == true {
         .os-solution-container {
           string-set: hasFirstElement " ";
           .first-element {
@@ -1053,30 +1065,7 @@
           }
         }
       }
-    }
-
-    @each $page in $Config_ChapterCompositePages {
-      $type: map-get($page, type);
-        @if $type == "Solutions" { // this key has been used here to select solutions in chapter composite pages. Added in config.scss file for statistics books
-          .os-solution-container {
-            string-set: hasFirstElement " ";
-            .first-element {
-              string-set: hasFirstElement " has-first-element";
-            }
-            &:deferred {
-              class: attr(class) string(hasFirstElement);
-            }
-            @if $Config_hasFirstInlineListElement == true {
-              .first-inline-list-element {
-                string-set: hasFirstElement " has-first-inline-list-element";
-              }
-              &:deferred {
-                class: attr(class) string(hasFirstElement);
-              }
-            }
-          }
       }
-    }
   }
 }
 
