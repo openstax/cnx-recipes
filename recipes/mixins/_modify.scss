@@ -962,6 +962,17 @@
   }
 }
 
+@mixin internal_get_key_value() {
+}
+  
+@function internal_get_key_value($pageconfig) {
+  $pageconfig:'';
+        @each $page in #{$pageconfig} {
+          $type: map-get($page, type);
+            @return $type;
+        }
+}
+
 @mixin modify_addFirstElementClass($element, $elementtype ) {
   @if release-flag-enabled(exercise-first-element) {
     [data-type="exercise"]:not(.unnumbered) .os-problem-container {
@@ -976,10 +987,24 @@
       }
     }
 
-    @each $page in $Config_BookCompositePages {
-      $type: map-get($page, type);    
-          @if $type == "Answer Key" { // see config.scss file for u-physics for details
-            .os-eob [data-type="solution"] .os-solution-container {
+  $pageconfig:'';
+  @include internal_get_key_value(internal_get_key_value($pageconfig));
+  $typeSolution: internal_get_key_value($Config_ChapterCompositePages);
+  $typeAnswerKey: internal_get_key_value-($Config_BookCompositePages);
+
+  $typeAnswerKey: '';
+  $typeSolution: '';
+  $selector: '';
+  @if $typeAnswerKey {
+    $selector: '.os-eob';
+    $config: $Config_BookCompositePages;
+  } @else if $typeSolution {
+    $selector: '.os-eoc';
+    $config: $Config_ChapterCompositePages;
+  }
+
+    @each $page in #{$config} {  
+        #{$selector} [data-type="solution"] .os-solution-container {
               @if $elementtype == inlineList {
                 #{$element} {
                   class: attr(class) " first-inline-list-element";
@@ -989,27 +1014,10 @@
                 class: attr(class) " first-element";
               }
             }
-          }
         }
-      }
-      @each $page in $Config_ChapterCompositePages {
-        $type: map-get($page, type);
-          @if $type == "Solutions" { // this key has been used here to select solutions in chapter composite pages. Added in config.scss file for statistics books
-            .os-eoc [data-type="solution"] .os-solution-container {
-              @if $elementtype == inlineList {
-                #{$element} {
-                  class: attr(class) " first-inline-list-element";
-                } 
-              } @else { 
-                #{$element} {
-                class: attr(class) " first-element";
-              }
-            }
-          }
-        }
-      }
     }
   }
+}
 
 @mixin modify_tagExerciseWithFirstElementClass() {
   @if release-flag-enabled(exercise-first-element) {
@@ -1030,11 +1038,21 @@
           }
       }
     }
+  
+  $pageconfig:'';
+  @include internal_get_key_value(internal_get_key_value($pageconfig));
+  $typeSolution: internal_get_key_value($Config_ChapterCompositePages);
+  $typeAnswerKey: internal_get_key_value-($Config_BookCompositePages);
 
-    @each $page in $Config_BookCompositePages {
-      $type: map-get($page, type);
+  $typeAnswerKey: '';
+  $typeSolution: '';
 
-      @if $type == "Answer Key" {
+  @if $typeAnswerKey {
+    $config: $Config_BookCompositePages;
+  } @else if $typeSolution {
+    $config: $Config_ChapterCompositePages;
+  }
+    @each $page in #{$config} {
         .os-solution-container {
           string-set: hasFirstElement " ";
           .first-element {
@@ -1054,30 +1072,6 @@
         }
       }
     }
-
-    @each $page in $Config_ChapterCompositePages {
-      $type: map-get($page, type);
-        @if $type == "Solutions" { // this key has been used here to select solutions in chapter composite pages. Added in config.scss file for statistics books
-          .os-solution-container {
-            string-set: hasFirstElement " ";
-            .first-element {
-              string-set: hasFirstElement " has-first-element";
-            }
-            &:deferred {
-              class: attr(class) string(hasFirstElement);
-            }
-            @if $Config_hasFirstInlineListElement == true {
-              .first-inline-list-element {
-                string-set: hasFirstElement " has-first-inline-list-element";
-              }
-              &:deferred {
-                class: attr(class) string(hasFirstElement);
-              }
-            }
-          }
-      }
-    }
-  }
 }
 
 // Tag table parent container with inside table and create it's class based on the existing table class   
