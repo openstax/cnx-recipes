@@ -992,6 +992,22 @@
           }
         }
       }
+      @each $page in $Config_ChapterCompositePages {
+        $type: map-get($page, type);
+          @if $type == "Solutions" { // this key has been used here to select solutions in chapter composite pages. Added in config.scss file for statistics books
+            .os-eoc [data-type="solution"] .os-solution-container {
+              @if $elementtype == inlineList {
+                #{$element} {
+                  class: attr(class) " first-inline-list-element";
+                } 
+              } @else { 
+                #{$element} {
+                class: attr(class) " first-element";
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -1036,6 +1052,29 @@
             }
           }
         }
+      }
+    }
+
+    @each $page in $Config_ChapterCompositePages {
+      $type: map-get($page, type);
+        @if $type == "Solutions" { // this key has been used here to select solutions in chapter composite pages. Added in config.scss file for statistics books
+          .os-solution-container {
+            string-set: hasFirstElement " ";
+            .first-element {
+              string-set: hasFirstElement " has-first-element";
+            }
+            &:deferred {
+              class: attr(class) string(hasFirstElement);
+            }
+            @if $Config_hasFirstInlineListElement == true {
+              .first-inline-list-element {
+                string-set: hasFirstElement " has-first-inline-list-element";
+              }
+              &:deferred {
+                class: attr(class) string(hasFirstElement);
+              }
+            }
+          }
       }
     }
   }
