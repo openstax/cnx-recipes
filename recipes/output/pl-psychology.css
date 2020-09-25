@@ -557,6 +557,12 @@
   data-type: "title";
   content: "Cel dydaktyczny"; }
 
+:pass(1) div[data-type="page"] dl > dt[cmlnle|reference]::after,
+:pass(1) div[data-type="composite-page"] dl > dt[cmlnle|reference]::after {
+  container: span;
+  data-type: glossary-content;
+  content: attr(cmlnle|reference); }
+
 :pass(2) [data-type="exercise"].missing-exercise {
   move-to: trash; }
 
@@ -810,6 +816,23 @@
   class: "os-title";
   attr-data-type: "title"; }
 
+:pass(2) div[data-type="page"] dl > dt > span[data-type="glossary-content"],
+:pass(2) div[data-type="composite-page"] dl > dt > span[data-type="glossary-content"] {
+  move-to: glossary-trash; }
+  :pass(2) div[data-type="page"] dl > dt > span[data-type="glossary-content"]:match(\^\[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\]),
+  :pass(2) div[data-type="composite-page"] dl > dt > span[data-type="glossary-content"]:match(\^\[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\]) {
+    string-set: sort-by first-letter(content()); }
+  :pass(2) div[data-type="page"] dl > dt > span[data-type="glossary-content"]:match(\^\[\^a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\]),
+  :pass(2) div[data-type="composite-page"] dl > dt > span[data-type="glossary-content"]:match(\^\[\^a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\]) {
+    string-set: sort-by " Symbols"; }
+
+:pass(2) div[data-type="page"] dl > dt:deferred,
+:pass(2) div[data-type="composite-page"] dl > dt:deferred {
+  attr-sort-by: string(sort-by); }
+
+:pass(2) body:deferred::after {
+  content: clear(glossary-trash); }
+
 :pass(3) body {
   counter-reset: unit; }
 
@@ -985,7 +1008,7 @@
     class: "os-eoc os-glossary-container";
     data-type: "composite-page";
     data-uuid-key: "glossary";
-    sort-by: xhtml|dl > xhtml|dt, nocase; }
+    sort-by: xhtml|dl > xhtml|dt::attr(sort-by), nocase; }
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
