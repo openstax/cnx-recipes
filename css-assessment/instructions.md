@@ -11,9 +11,11 @@ Use PrinceXML to generate a styled PDF with the book content provided and add th
 
 PrinceXML installation documentation can be found [here](https://www.princexml.com/doc/installing/).
 
-And instruction on how to generate a styled PDF using PrinceXML can be found [here](https://www.princexml.com/doc/command-line/).
+And instructions on how to generate a styled PDF using PrinceXML can be found [here](https://www.princexml.com/doc/command-line/).
 
-When you are finished with the assement and have push your changes to your forked repository, email BrittanyJ at bj20@rice.edu with a link to the repo. 
+Fork this repo, `cnx-recipes`. 
+
+When you are finished with the assement and have pushed your changes to your forked repository, email BrittanyJ at bj20@rice.edu with a link to the repo. 
 
 ### Tips
 - Use your web browser and dev tools inspector during developement as you normally would but keep in mind that your final output is the PDF, not the web. 
@@ -41,9 +43,12 @@ A broad overview of a typical workflow for implementing a new design is as follo
 - Default font is 
 - Default font size is 12px
 
+- [Link to Muli Google font](https://fonts.googleapis.com/css?family=Muli:400,700,900&display=swap&subset=latin,latin-ext)
+-[Link to IBM Plex Sans Google font](https://fonts.googleapis.com/css?family=IBM+Plex+Sans:200,400,500,700&display=swap&subset=latin,latin-ext)
+
 ## Chapter Title
 - [Reference Image](css-assessment/img/ChapterTitle.png)
-- **Element container selector**: `h1 [data-type="document-title"]`
+- **Element container selector**: `h1[data-type="document-title"]`
 
 `Chapter 1`  Title Text: 
   - text color: #0074BC
@@ -63,7 +68,7 @@ A broad overview of a typical workflow for implementing a new design is as follo
 
 ## Splash Image
 - [Reference Image](css-assessment/img/SplashImg.png)
-- Element container selector: `div.os-figure.has-splash`
+- **Element container selector**: `div.os-figure.has-splash`
 
 Container: 
  - margin bottom: 2rem
