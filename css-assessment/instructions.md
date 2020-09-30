@@ -42,9 +42,12 @@ A broad overview of a typical workflow for implementing a new design is as follo
 - Default font is 
 - Default font size is 12px
 
+- [Link to Muli Google font](https://fonts.googleapis.com/css?family=Muli:400,700,900&display=swap&subset=latin,latin-ext)
+-[Link to IBM Plex Sans Google font](https://fonts.googleapis.com/css?family=IBM+Plex+Sans:200,400,500,700&display=swap&subset=latin,latin-ext)
+
 ## Chapter Title
 - [Reference Image](css-assessment/img/ChapterTitle.png)
-- **Element container selector**: `h1 [data-type="document-title"]`
+- **Element container selector**: `h1[data-type="document-title"]`
 
 `Chapter 1`  Title Text: 
   - text color: #0074BC
@@ -64,7 +67,7 @@ A broad overview of a typical workflow for implementing a new design is as follo
 
 ## Splash Image
 - [Reference Image](css-assessment/img/SplashImg.png)
-- Element container selector: `div.os-figure.has-splash`
+- **Element container selector**: `div.os-figure.has-splash`
 
 Container: 
  - margin bottom: 2rem
