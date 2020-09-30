@@ -1185,22 +1185,6 @@ Formula Review page
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.free-response {
-    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
-    content: nodes(sectionHeaderNode) content();
-    move-to: free-response-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.free-response > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(free-response-TOCOMPOSITE);
-    class: "os-eoc os-free-response-container";
-    data-type: "composite-page";
-    data-uuid-key: ".free-response"; }
-
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.bring-together-homework {
     move-to: bring-together-homework-TOCOMPOSITE; }
     :pass(3) div[data-type="chapter"] section.bring-together-homework > [data-type="title"] {
@@ -1231,6 +1215,54 @@ Formula Review page
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.review-questions {
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
+    move-to: review-questions-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.review-questions > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(review-questions-TOCOMPOSITE);
+    class: "os-eoc os-review-questions-container";
+    data-type: "composite-page";
+    data-uuid-key: ".review-questions"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.case-questions {
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
+    move-to: case-questions-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.case-questions > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(case-questions-TOCOMPOSITE);
+    class: "os-eoc os-case-questions-container";
+    data-type: "composite-page";
+    data-uuid-key: ".case-questions"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.free-response {
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
+    move-to: free-response-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.free-response > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(free-response-TOCOMPOSITE);
+    class: "os-eoc os-free-response-container";
+    data-type: "composite-page";
+    data-uuid-key: ".free-response"; }
 
 :pass(3) .try [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1350,10 +1382,16 @@ Formula Review page
 :pass(9) [data-type="chapter"] .os-eoc.os-bring-together-exercises-container [data-type="solution"] {
   move-to: solutions-TOCOMPOSITE; }
 
-:pass(9) [data-type="chapter"] .os-eoc.os-free-response-container [data-type="solution"] {
+:pass(9) [data-type="chapter"] .os-eoc.os-bring-together-homework-container [data-type="solution"] {
   move-to: solutions-TOCOMPOSITE; }
 
-:pass(9) [data-type="chapter"] .os-eoc.os-bring-together-homework-container [data-type="solution"] {
+:pass(9) [data-type="chapter"] .os-eoc.os-review-questions-container [data-type="solution"] {
+  move-to: solutions-TOCOMPOSITE; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-case-questions-container [data-type="solution"] {
+  move-to: solutions-TOCOMPOSITE; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-free-response-container [data-type="solution"] {
   move-to: solutions-TOCOMPOSITE; }
 
 :pass(9) [data-type="chapter"]::after {
@@ -1522,17 +1560,6 @@ Formula Review page
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(10) [data-type="composite-page"].os-eoc.os-free-response-container::before {
-  container: span;
-  content: "Homework";
-  class: os-text;
-  move-to: h2-TITLECONTAINER; }
-
-:pass(10) [data-type="composite-page"].os-eoc.os-free-response-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
-
 :pass(10) [data-type="composite-page"].os-eoc.os-bring-together-homework-container::before {
   container: span;
   content: "Bringing It Together: Homework";
@@ -1562,6 +1589,39 @@ Formula Review page
   move-to: h2-TITLECONTAINER; }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-solutions-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-review-questions-container::before {
+  container: span;
+  content: "Review Questions";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-review-questions-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-case-questions-container::before {
+  container: span;
+  content: "Case Questions";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-case-questions-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-free-response-container::before {
+  container: span;
+  content: "Discussion Questions";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-free-response-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
