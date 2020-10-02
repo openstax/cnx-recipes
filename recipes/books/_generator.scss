@@ -192,9 +192,13 @@
   @include number_numberSections($Config_PartType_Section_TitleContent);
 
   @if not release-flag-enabled(move-footnotes) {
-    @include count_footnotes(footnotes);
-    @include count_footnoteLinks(footnoteLinks);
-    @include number_footnotes(footnotes, footnoteLinks);
+    @if $Config_CustomNumberFootnotes !=() {
+      @include modify_customNumberFootnotes($Config_CustomNumberFootnotes);
+    } @else {
+      @include count_footnotes(footnotes);
+      @include count_footnoteLinks(footnoteLinks);
+      @include number_footnotes(footnotes, footnoteLinks);
+    }
   }
 
   @if ($Config_hasCitation) {
@@ -364,6 +368,8 @@
   }
 
   @include modify_customFootnotes($Config_CustomFootnotes); // ToDo: move it to proper pass when enable "move-footnotes" flag for precalc and coreq
+  // @include modify_customNumberFootnotes($Config_CustomNumberFootnotes); // ToDo: move it to proper pass when enable "move-footnotes" flag for precalc and coreq
+
 }
 
 :pass(6) {
@@ -748,9 +754,13 @@
   @include modify_groupTocTitleTextAndNumber('.os-toc-unit');
   @include modify_groupTocTitleTextAndNumber('.os-toc-appendix');
   @if release-flag-enabled(move-footnotes) {
+    @if $Config_CustomNumberFootnotes != () {
     @include count_footnotes(footnotes);
     @include count_footnoteLinks(footnoteLinks);
     @include number_footnotes(footnotes, footnoteLinks);
+  } @else {
+    @include modify_customNumberFootnotes($Config_CustomNumberFootnotes);
+  }
   }
 }
 :pass(100) {
