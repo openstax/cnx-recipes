@@ -5,7 +5,7 @@ If you have any questions, please feel free to email BrittanyJ at bj20@rice.edu.
 
 # Instructions
 
-Use sass or css to style the book content provided in `biology.xhtml` so it matches the example page in the reference image [here](css-assessment/img/FullPage.png) while following the design specificiations below. 
+Use sass or css to style the book content provided in [biology.xhtml](biology.xhtml) so it matches the example page in the reference image [here](./img/FullPage.png) while following the design specificiations below. 
 
 Use PrinceXML to generate a styled PDF using the provided book content and your style, and place that PDF of your final design in the `./final-design` folder.
 
@@ -39,14 +39,14 @@ A broad overview of a typical workflow for implementing a new design is as follo
 # Page Elements 
 
 - Default font color is #000000
-- Default font is 
+- Default font is IBM Plex Sans
 - Default font size is 12px
 
 - [Link to Muli Google font](https://fonts.googleapis.com/css?family=Muli:400,700,900&display=swap&subset=latin,latin-ext)
--[Link to IBM Plex Sans Google font](https://fonts.googleapis.com/css?family=IBM+Plex+Sans:200,400,500,700&display=swap&subset=latin,latin-ext)
+- [Link to IBM Plex Sans Google font](https://fonts.googleapis.com/css?family=IBM+Plex+Sans:200,400,500,700&display=swap&subset=latin,latin-ext)
 
 ## Chapter Title
-- [Reference Image](css-assessment/img/ChapterTitle.png)
+- [Reference Image](./img/ChapterTitle.png)
 - **Element container selector**: `h1[data-type="document-title"]`
 
 `Chapter 1`  Title Text: 
@@ -66,7 +66,7 @@ A broad overview of a typical workflow for implementing a new design is as follo
   - font weight: lighter 
 
 ## Splash Image
-- [Reference Image](css-assessment/img/SplashImg.png)
+- [Reference Image](./img/SplashImg.png)
 - **Element container selector**: `div.os-figure.has-splash`
 
 Container: 
@@ -91,8 +91,8 @@ Caption:
   - font weight: bold
 
 ## Introduction Paragraph 
-- [Reference Image]()
-- Element container selector: `.intro-body`
+- [Reference Image](./img/IntroAndOutline.png)
+- **Element container selector**: `.intro-body`
 
 Paragraph:
  - margin bottom: .7rem
@@ -102,7 +102,7 @@ Paragraph:
   - font weight: 700
   - font size: 12px
 
-"Chapter Outline" Title Text: 
+`Chapter Outline` Title Text: 
   - border bottom: white 1px solid
   - line height 1.5rem
 
@@ -118,18 +118,19 @@ Chapter Outline:
   - color: white
 
 ## Learning Objectives 
-Element container selector: `[data-type="page"].chapter-content-module`
+- [Reference Image](./img/LearningObj.png)
+- **Element container selector**: `[data-type="page"].chapter-content-module`
 
-  Section Title `1.1 The Science of Biology` 
+Section Title `1.1 The Science of Biology` 
   - color: #0074BC
   - font: Muli
   - font size: 1.7rem 
   - line height: 1.5rem 
   
-  Subtile `By the end of this section-` 
+Subtile `By the end of this section-` 
   - same as section title but italic 
   
-  Unordered List 
+Unordered List 
   - font: Muli 
   - font size: 1rem
   - line height: 1.5rem
