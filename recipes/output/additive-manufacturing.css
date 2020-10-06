@@ -1105,6 +1105,40 @@ Formula Review page
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
+    /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+    move-to: trash; }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
+    move-to: glossary-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(glossary-TOCOMPOSITE);
+    class: "os-eoc os-glossary-container";
+    data-type: "composite-page";
+    data-uuid-key: "glossary";
+    sort-by: xhtml|dl > xhtml|dt, nocase; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.summary {
+    /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
+    content: nodes(sectionHeaderNode) content();
+    move-to: summary-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.summary > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(summary-TOCOMPOSITE);
+    class: "os-eoc os-summary-container";
+    data-type: "composite-page";
+    data-uuid-key: ".summary"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] section.review-questions {
     /* TODO: Is this used? because it looks like there is a typo here. `sectionHeaderNode` is not defined */
     content: nodes(sectionHeaderNode) content();
@@ -1366,6 +1400,28 @@ Formula Review page
 
 :pass(10) [data-type="composite-page"] {
   content: nodes(bookMetadata) content(); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
+  container: span;
+  content: "Key Terms";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-summary-container::before {
+  container: span;
+  content: "Chapter Review";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-summary-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-review-questions-container::before {
   container: span;
