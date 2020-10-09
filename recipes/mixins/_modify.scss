@@ -210,6 +210,44 @@
   }
 }
 
+@mixin modify_prepGlossaryTerms() {
+  div[data-type="page"],
+  div[data-type="composite-page"] {
+    dl > dt[cmlnle|reference]::after {
+      container: span;
+      data-type: glossary-content;
+      content: attr(#{"cmlnle|reference"});
+    }
+  }
+}
+
+@mixin modify_finishPreppingGlossaryTerms($regexpForNotASymbol, $regexpForASymbol) {
+  @include validate_type($regexpForASymbol, string);
+  @include validate_type($regexpForNotASymbol, string);
+  div[data-type="page"],
+  div[data-type="composite-page"] {
+    dl {
+      > dt {
+        > span[data-type="glossary-content"] {
+          &:match(#{$regexpForNotASymbol}) {
+            string-set: sort-by first-letter(content());
+          }
+          &:match(#{$regexpForASymbol}) {
+            string-set: sort-by " Symbols";
+          }
+          move-to: glossary-trash;
+        }
+        &:deferred {
+          attr-sort-by: string(sort-by);
+        }
+      }
+    }
+  }
+  body:deferred::after {
+    content: clear(glossary-trash);
+  }
+}
+
 /// Modifies the ' Symbols' group name in index, should it exist, as the first group-label.
 /// @arg {string} $location - The string of the location where title needs to be added
 /// @arg {string} $name - The string of the title for this group
