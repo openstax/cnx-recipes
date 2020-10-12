@@ -2,41 +2,55 @@
 $Page__Container: empty_wrapper(PageContainer, '');
 $Preface__Container: empty_wrapper(PrefaceContainer, '.preface');
 $Appendix__Container: empty_wrapper(AppendixContainer, '.appendix');
-$Chapter__Container: empty_wrapper(Chapter, '');
+// $Chapter__Container: empty_wrapper(Chapter, '');
+$Page--Composite__Container: empty_wrapper(CompositePageContainer, '');
 
 //Wrappers
 $SectionWrapper--FirstLevel: empty_wrapper(FirstLevel, ' > section');
 $SectionWrapper--SecondLevel: empty_wrapper(SecondLevel, ' > section > section');
 $SectionWrapper--ThirdLevel: empty_wrapper(ThirdLevel, ' > section > section > section');
 
+$Chapter__Container: (
+  _name: "ChapterWrapper",
+  _subselector: '',
+  _properties: (
+    margin-top: -6rem,
+  )
+);
+
 // H1 headers
 $H1: (
-    _name:"H1Title",
-    _subselector: ' > h1',
-    _properties: (
-        color: enum('ValueSet:::REQUIRED'),
-        font-family: enum('ValueSet:::REQUIRED'),
-        font-size: font-scale(3),
-        line-height: line-height(3),
-        margin-bottom: v-spacing(1),
-        column-span: enum('ValueSet:::OPTIONAL'), //used in Index
-    )
+  _name:"H1Title",
+  _subselector: ' > h1',
+  _properties: (
+    color: enum('ValueSet:::REQUIRED'),
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(3),
+    line-height: line-height(3),
+    margin-bottom: v-spacing(1),
+    column-span: enum('ValueSet:::OPTIONAL'), //used in Index
+    font-weight: normal,
+  )
 );
 
 $H1--Numbered: (
   _name: "H1Numbered",
   _subselector: ' > h1',
   _properties: (
-    display: table,
+    display: enum('ValueSet:::OPTIONAL'),
     color: enum('ValueSet:::REQUIRED'),
     font-family: enum('ValueSet:::REQUIRED'), 
     font-size: enum('ValueSet:::REQUIRED'), 
     line-height: enum('ValueSet:::REQUIRED'), 
     margin-bottom: v-spacing(1),
     position: enum('ValueSet:::OPTIONAL'), //used in Chapters
-    // top: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    top: enum('ValueSet:::OPTIONAL'), //used in Chapters
     bottom: enum('ValueSet:::OPTIONAL'), //used in Chapters
-    backgound-color: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    background-color: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    font-weight: normal,
+    padding-top: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    padding-bottom: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    flex-direction: enum('ValueSet:::OPTIONAL'), //used in Chapters
   )
 );
 
@@ -44,7 +58,7 @@ $H1--Numbered__Text: (
   _name: "H1TitleText",
   _subselector: ' > .os-text',
   _properties: (
-    display: table-cell,
+    display:enum('ValueSet:::OPTIONAL'), // used in Pages Titles
     padding-left: h-spacing(2),
     position: enum('ValueSet:::OPTIONAL'), //used in Chapters
     margin-left: enum('ValueSet:::OPTIONAL'), //used in Chapters
@@ -67,11 +81,31 @@ $H1--Numbered__Number: (
     border-width: 0.2rem,
     border-color: enum('ValueSet:::REQUIRED'),
     padding: 0.5rem,
-    width: v-spacing(4),
-    height: v-spacing(4),
-    display: table-cell,
+    width: enum('ValueSet:::REQUIRED'),
+    height: enum('ValueSet:::REQUIRED'),
+    display:  enum('ValueSet:::REQUIRED'),
     text-align: center,
     vertical-align: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    background-color: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    position:  enum('ValueSet:::OPTIONAL'), //used in Chapters
+    bottom:  enum('ValueSet:::OPTIONAL'), //used in Chapters
+    color: enum('ValueSet:::OPTIONAL'), //used in Chapters
+    border-radius: enum('ValueSet:::OPTIONAL'), //used in Chapters
+  )
+);
+
+//used in chapter title
+$H1--Numbered__Icon: (
+  _name: "H1Icon",
+  _subselector: '::before',
+  _properties: (
+    background: enum('ValueSet:::REQUIRED'),
+    background-size: contain,
+    height: v-spacing(3),
+    width: v-spacing(3),
+    padding-right: h-spacing(1),
+    content: "''",
+    display: inline-block,
   )
 );
 
@@ -127,6 +161,35 @@ $H2--Numbered__Text: (
   )
 );
 
+$H2--WithIcon: (
+  _name: "H2WithIcon",
+  _subselector: ' > h2',
+  _properties: (
+    display: flex,
+    align-items: center,
+    color: enum('ValueSet:::REQUIRED'),
+    font-family: enum('ValueSet:::REQUIRED'), 
+    font-size: font-scale(2),
+    line-height: font-scale(2),
+    margin-bottom: v-spacing(1),
+    font-weight: normal,
+  )
+);
+
+$H2--WithIcon__Icon: (
+  _name: "H2Icon",
+  _subselector: '::before',
+  _properties: (
+    background: enum('ValueSet:::REQUIRED'),
+    background-size: contain,
+    height: v-spacing(3),
+    width: v-spacing(3),
+    padding-right: h-spacing(1),
+    content: "''",
+    display: inline-block,
+  )
+);
+
 // H3 headers
 $H3: (
     _name:"H3Title",
@@ -139,6 +202,17 @@ $H3: (
         margin-bottom: v-spacing(1),
         font-weight: bold,
     )
+);
+
+$H3--LearningObjectives: (
+  _name: "H3LearningObjectivesTitle",
+  _subselector: ' > h3[data-type="title"]',
+  _properties: (
+    color: enum('ValueSet:::REQUIRED'),
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(1),
+    line-height: line-height(1),
+  )
 );
 
 // H4 headers
