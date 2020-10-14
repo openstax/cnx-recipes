@@ -971,6 +971,16 @@
   }
 }
 
+//mixin used to get the counter type set in the config.scss file for bookes where a different counter type is needed
+@mixin modify_customNumberFootnotes($footnoteNumberConfig) {
+  @each $footnotenumbering in $footnoteNumberConfig {
+    $counterType: map-get($footnotenumbering, counterType);
+    @include count_footnotes(footnotes);
+    @include count_footnoteLinks(footnoteLinks);
+    @include custom_numberFootnotes(footnotes, footnoteLinks, $counterType);
+  }
+}
+
 //select body content and chap outline in the intro and place them into one div
 @mixin modify_groupChapOutlineIntroContent() {
   @if release-flag-enabled(groupChapOutlineIntroContent) {
@@ -1122,15 +1132,25 @@
 @mixin modify_tagTableParentContainer() {
       @each $tableClassSelector in $Config_Table_Classes {
       $tableClass: map-get($tableClassSelector , className); 
+      $secondTableClass:  map-get($tableClassSelector , secondClassName); 
         .os-table {
             string-set: hasTable " ";
-              table.#{$tableClass} {
-                string-set: hasTable " os-#{$tableClass}-container";
+              @if $secondTableClass {
+                table.#{$tableClass}.#{$secondTableClass} {
+                  string-set: hasTable " os-#{$tableClass}-#{$secondTableClass}-container";
+                }
+                &:deferred {
+                  class: attr(class) string(hasTable);
+                }
+              } @else {
+                table.#{$tableClass}{
+                  string-set: hasTable " os-#{$tableClass}-container";
+                }
+                &:deferred {
+                  class: attr(class) string(hasTable);
+                }
               }
-              &:deferred {
-                class: attr(class) string(hasTable);
-              }
-            }
+    }
   }
 }
 
