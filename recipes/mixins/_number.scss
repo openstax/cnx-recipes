@@ -647,6 +647,17 @@
   }
 }
 
+//mixin for custom numbering footnotes using counter type 
+@mixin custom_numberFootnotes($footnoteCounter, $footnoteLinkCounter, $counterType) {
+  a[role="doc-noteref"] {
+    content: counter($footnoteLinkCounter, $counterType);
+  }
+  aside[role="doc-footnote"]::before {
+    data-type: "footnote-number";
+    content: counter($footnoteCounter, $counterType);
+  }
+}
+
 @mixin number_customFootnotes($parentSelector, $footnoteCounter, $footnoteLinkCounter, $counterType) {
   // Footnotes option 1
   #{$parentSelector} li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
