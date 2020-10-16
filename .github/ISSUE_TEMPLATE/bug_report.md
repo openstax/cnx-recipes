@@ -1,33 +1,22 @@
----
-name: Bug report
-about: Create a report to help us improve
-title: Bug
-labels: type:bug
-assignees: ''
+# Brief Description of Scenario and Screenshots
+What kind of issue is this? [ ] recipe [ ] styles [ ] both [ ] i don't know
 
----
+<!-- Do you have a annotated screenshot you can provided? -->
 
-# Scenario
+# Acceptance Criteria
+
+# Bug Location(s)
+collection ID:
+server:
+chapter/section: 
+surrounding text: 
+
+# Test Content Location(s)
+(leave blank if the same as above)
+collection ID:
+server: 
+chapter/section:
+surrounding text:
 
 
-# Acceptance Criteria (required)
-
-
-# Steps to Reproduce (required)
-* **How many times were you able to reproduce the issue?**
-* **Images or Screenshots Included:** [ ] Yes  [ ] No  (_attach below_)
-
-# Environment: (required)
-* **Medium**: [ ] REX [ ] PDF  [ ] cnx.org
-* **Instance**: [ ] production  [ ] qa  [ ] staging  [ ] dev  [ ] content
-* **OS**: [ ] Mac OSX  [ ] Windows  [ ] iOS  [ ] Android
-* **Browser**: [ ] Chrome  [ ] Firefox  [ ] Safari  [ ] Opera  [ ] IE  [ ] Edge
-
-# Impact
-* **Severity**: [ ] High [ ] Medium  [ ] Low
-* **Frequency of Occurrence**: [ ] High [ ] Medium  [ ] Low
-
-# Next Steps for User
-If the card is accepted or rejected, what does user need to know now?
-
-# Test Plan
+<!-- Please add the book labels for all titles that need testing -->
