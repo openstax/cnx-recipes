@@ -632,7 +632,7 @@
   .references [data-type="note"] a {
     attr-href:"#" #{string(pageID)} "-endNote" counter($noteCounter);
     span{
-      content: counter($noteCounter);
+      content: counter($noteCounter) ".";
     }
   }
 }
@@ -644,6 +644,17 @@
   aside[role="doc-footnote"]::before {
     data-type: "footnote-number";
     content: counter($footnoteCounter);
+  }
+}
+
+//mixin for custom numbering footnotes using counter type 
+@mixin custom_numberFootnotes($footnoteCounter, $footnoteLinkCounter, $counterType) {
+  a[role="doc-noteref"] {
+    content: counter($footnoteLinkCounter, $counterType);
+  }
+  aside[role="doc-footnote"]::before {
+    data-type: "footnote-number";
+    content: counter($footnoteCounter, $counterType);
   }
 }
 

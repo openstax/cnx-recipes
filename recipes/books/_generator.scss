@@ -748,9 +748,13 @@
   @include modify_groupTocTitleTextAndNumber('.os-toc-unit');
   @include modify_groupTocTitleTextAndNumber('.os-toc-appendix');
   @if release-flag-enabled(move-footnotes) {
-    @include count_footnotes(footnotes);
-    @include count_footnoteLinks(footnoteLinks);
-    @include number_footnotes(footnotes, footnoteLinks);
+    @if $Config_CustomNumberFootnotes != () {
+      @include modify_customNumberFootnotes($Config_CustomNumberFootnotes);
+    } @else {
+      @include count_footnotes(footnotes);
+      @include count_footnoteLinks(footnoteLinks);
+      @include number_footnotes(footnotes, footnoteLinks);
+    }
   }
 }
 :pass(100) {
