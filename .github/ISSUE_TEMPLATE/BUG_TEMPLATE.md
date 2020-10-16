@@ -1,3 +1,10 @@
+---
+name: Bug report 🐞
+about: Create a report to help us improve
+title: ''
+assignees: ''
+---
+
 # Brief Description of Scenario and Screenshots
 What kind of issue is this? [ ] recipe [ ] styles [ ] both [ ] i don't know
 
