@@ -210,6 +210,44 @@
   }
 }
 
+@mixin modify_prepGlossaryTerms() {
+  div[data-type="page"],
+  div[data-type="composite-page"] {
+    dl > dt[cmlnle|reference]::after {
+      container: span;
+      data-type: glossary-content;
+      content: attr(#{"cmlnle|reference"});
+    }
+  }
+}
+
+@mixin modify_finishPreppingGlossaryTerms($regexpForNotASymbol, $regexpForASymbol) {
+  @include validate_type($regexpForASymbol, string);
+  @include validate_type($regexpForNotASymbol, string);
+  div[data-type="page"],
+  div[data-type="composite-page"] {
+    dl {
+      > dt {
+        > span[data-type="glossary-content"] {
+          &:match(#{$regexpForNotASymbol}) {
+            string-set: sort-by first-letter(content());
+          }
+          &:match(#{$regexpForASymbol}) {
+            string-set: sort-by " Symbols";
+          }
+          move-to: glossary-trash;
+        }
+        &:deferred {
+          attr-sort-by: string(sort-by);
+        }
+      }
+    }
+  }
+  body:deferred::after {
+    content: clear(glossary-trash);
+  }
+}
+
 /// Modifies the ' Symbols' group name in index, should it exist, as the first group-label.
 /// @arg {string} $location - The string of the location where title needs to be added
 /// @arg {string} $name - The string of the title for this group
@@ -933,6 +971,16 @@
   }
 }
 
+//mixin used to get the counter type set in the config.scss file for bookes where a different counter type is needed
+@mixin modify_customNumberFootnotes($footnoteNumberConfig) {
+  @each $footnotenumbering in $footnoteNumberConfig {
+    $counterType: map-get($footnotenumbering, counterType);
+    @include count_footnotes(footnotes);
+    @include count_footnoteLinks(footnoteLinks);
+    @include custom_numberFootnotes(footnotes, footnoteLinks, $counterType);
+  }
+}
+
 //select body content and chap outline in the intro and place them into one div
 @mixin modify_groupChapOutlineIntroContent() {
   @if release-flag-enabled(groupChapOutlineIntroContent) {
@@ -992,6 +1040,22 @@
           }
         }
       }
+      @each $page in $Config_ChapterCompositePages {
+        $type: map-get($page, type);
+          @if $type == "Solutions" { // this key has been used here to select solutions in chapter composite pages. Added in config.scss file for statistics books
+            .os-eoc [data-type="solution"] .os-solution-container {
+              @if $elementtype == inlineList {
+                #{$element} {
+                  class: attr(class) " first-inline-list-element";
+                } 
+              } @else { 
+                #{$element} {
+                class: attr(class) " first-element";
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -1038,6 +1102,29 @@
         }
       }
     }
+
+    @each $page in $Config_ChapterCompositePages {
+      $type: map-get($page, type);
+        @if $type == "Solutions" { // this key has been used here to select solutions in chapter composite pages. Added in config.scss file for statistics books
+          .os-solution-container {
+            string-set: hasFirstElement " ";
+            .first-element {
+              string-set: hasFirstElement " has-first-element";
+            }
+            &:deferred {
+              class: attr(class) string(hasFirstElement);
+            }
+            @if $Config_hasFirstInlineListElement == true {
+              .first-inline-list-element {
+                string-set: hasFirstElement " has-first-inline-list-element";
+              }
+              &:deferred {
+                class: attr(class) string(hasFirstElement);
+              }
+            }
+          }
+      }
+    }
   }
 }
 
@@ -1045,15 +1132,25 @@
 @mixin modify_tagTableParentContainer() {
       @each $tableClassSelector in $Config_Table_Classes {
       $tableClass: map-get($tableClassSelector , className); 
+      $secondTableClass:  map-get($tableClassSelector , secondClassName); 
         .os-table {
             string-set: hasTable " ";
-              table.#{$tableClass} {
-                string-set: hasTable " os-#{$tableClass}-container";
+              @if $secondTableClass {
+                table.#{$tableClass}.#{$secondTableClass} {
+                  string-set: hasTable " os-#{$tableClass}-#{$secondTableClass}-container";
+                }
+                &:deferred {
+                  class: attr(class) string(hasTable);
+                }
+              } @else {
+                table.#{$tableClass}{
+                  string-set: hasTable " os-#{$tableClass}-container";
+                }
+                &:deferred {
+                  class: attr(class) string(hasTable);
+                }
               }
-              &:deferred {
-                class: attr(class) string(hasTable);
-              }
-            }
+    }
   }
 }
 
