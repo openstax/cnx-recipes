@@ -648,29 +648,22 @@
 }
 
 //mixin for custom numbering footnotes using counter type 
-@mixin custom_numberFootnotes($footnoteCounter, $footnoteLinkCounter, $counterType) {
-  a[role="doc-noteref"] {
+@mixin number_customFootnotes($footnoteCounter, $footnoteLinkCounter, $counterType, $parentSelector: null) {
+  $footnoteLinkSelector: '';
+  $footnoteSelector: '';
+  
+  @if $parentSelector != null {
+    $footnoteLinkSelector: '#{$parentSelector} a[role="doc-noteref"]';
+    $footnoteSelector: '#{$parentSelector} aside[role="doc-footnote"]::before';
+  } @else {
+    $footnoteLinkSelector: 'a[role="doc-noteref"]';
+    $footnoteSelector: 'aside[role="doc-footnote"]::before';
+  }
+  #{$footnoteLinkSelector} {
     content: counter($footnoteLinkCounter, $counterType);
   }
-  aside[role="doc-footnote"]::before {
+  #{$footnoteSelector} {
     data-type: "footnote-number";
     content: counter($footnoteCounter, $counterType);
-  }
-}
-
-@mixin number_customFootnotes($parentSelector, $footnoteCounter, $footnoteLinkCounter, $counterType) {
-  // Footnotes option 1
-  #{$parentSelector} li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
-    content: counter($footnoteCounter, $counterType);
-  }
-  #{$parentSelector} sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
-    content: counter($footnoteLinkCounter, $counterType);
-  }
-  // Footnotes option 2
-  #{$parentSelector} li > a[data-type="footnote-ref"] {
-    content: counter($footnoteCounter, $counterType);
-  }
-  #{$parentSelector} a[data-type="footnote-number"] > sup {
-    content: counter($footnoteLinkCounter, $counterType);
   }
 }
