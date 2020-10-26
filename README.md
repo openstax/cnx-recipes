@@ -1,10 +1,34 @@
 [![Coverage][codecov-image]][codecov-url]
 
-# Install
+# About 
+The cnx-recipes repo contains the recipes and styles framework. The recipe framework is used for content manipulation and the styles framework is used to style the content. The backend of the recipes framework is contained in the [cnx-easybake repo](https://github.com/openstax/cnx-easybake). 
 
-1. Run `./script/install-docker` to install docker and docker-compose.
+[Recipes specific README]()
 
-**For Windows Users:** If your username contains whitespace, the setup and installation will not work. Create a new user without whitespace in the username in order to succesfully complete installation.
+[Styles speicific README]()
+
+# Installation
+
+docker, docker-compose, bakery cli
+Run `./script/install-docker` to install docker and docker-compose.
+
+**Note For Windows Users:** If your username contains whitespace, the setup and installation may not work. Create a new user without whitespace in the username in order to succesfully complete installation.
+
+The `./script/` folder contains a variety of scripts relating to installation, book generation, and testing. 
+
+It's recommended to prepend the `./script/run` script when running most scripts from this directory. Although not requried, the `run` script runs the `setup` script and tries to ensure that you have the necessary dependencies by running the script in a docker container. For example, if you want to run `./script/test`, you would run `./script/run ./script/test`. 
+
+
+There are 6 steps in the PDF generation pipeline: 
+ - fetch 
+ - assemble 
+ - link-extras 
+ - bake
+ - mathify 
+ - build-pdf
+
+ We perform these steps by running commands locally using either bakery-cli or docker-compose. 
+
 
 # Create a baked pdf for a new book
 
