@@ -632,7 +632,7 @@
   .references [data-type="note"] a {
     attr-href:"#" #{string(pageID)} "-endNote" counter($noteCounter);
     span{
-      content: counter($noteCounter);
+      content: counter($noteCounter) ".";
     }
   }
 }
@@ -647,19 +647,23 @@
   }
 }
 
-@mixin number_customFootnotes($parentSelector, $footnoteCounter, $footnoteLinkCounter, $counterType) {
-  // Footnotes option 1
-  #{$parentSelector} li[data-type="footnote-ref"] > a[data-type="footnote-ref-link"] {
-    content: counter($footnoteCounter, $counterType);
+//mixin for custom numbering footnotes using counter type 
+@mixin number_customFootnotes($footnoteCounter, $footnoteLinkCounter, $counterType, $parentSelector: null) {
+  $footnoteLinkSelector: '';
+  $footnoteSelector: '';
+  
+  @if $parentSelector != null {
+    $footnoteLinkSelector: '#{$parentSelector} a[role="doc-noteref"]';
+    $footnoteSelector: '#{$parentSelector} aside[role="doc-footnote"]::before';
+  } @else {
+    $footnoteLinkSelector: 'a[role="doc-noteref"]';
+    $footnoteSelector: 'aside[role="doc-footnote"]::before';
   }
-  #{$parentSelector} sup[data-type="footnote-number"] > a[data-type="footnote-link"] {
+  #{$footnoteLinkSelector} {
     content: counter($footnoteLinkCounter, $counterType);
   }
-  // Footnotes option 2
-  #{$parentSelector} li > a[data-type="footnote-ref"] {
+  #{$footnoteSelector} {
+    data-type: "footnote-number";
     content: counter($footnoteCounter, $counterType);
-  }
-  #{$parentSelector} a[data-type="footnote-number"] > sup {
-    content: counter($footnoteLinkCounter, $counterType);
   }
 }
