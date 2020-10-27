@@ -362,8 +362,6 @@
     @include compose_chapterOutline($outlineTitle, $hasLearningObjectives);
     @include modify_trash('.introduction [data-type="abstract"]');
   }
-
-  @include modify_customFootnotes($Config_CustomFootnotes); // ToDo: move it to proper pass when enable "move-footnotes" flag for precalc and coreq
 }
 
 :pass(6) {
@@ -748,9 +746,13 @@
   @include modify_groupTocTitleTextAndNumber('.os-toc-unit');
   @include modify_groupTocTitleTextAndNumber('.os-toc-appendix');
   @if release-flag-enabled(move-footnotes) {
-    @include count_footnotes(footnotes);
-    @include count_footnoteLinks(footnoteLinks);
-    @include number_footnotes(footnotes, footnoteLinks);
+    @if $Config_CustomFootnotes != () {
+      @include modify_customFootnotes($Config_CustomFootnotes);
+    } @else {
+      @include count_footnotes(footnotes);
+      @include count_footnoteLinks(footnoteLinks);
+      @include number_footnotes(footnotes, footnoteLinks);
+    }
   }
 }
 :pass(100) {

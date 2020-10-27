@@ -375,10 +375,17 @@
   )
 }
 
-@mixin count_customFootnotes($name, $parentSelector, $resetSelector) {
+@mixin count_customFootnotes($name, $resetSelector, $parentSelector: null) {
+  $selector: '';
+  @if $parentSelector != null {
+    $selector: $parentSelector 'aside[role="doc-footnote"]';
+  } @else {
+    $selector: 'aside[role="doc-footnote"]';
+  }
+
   @include _count(
     $name,
-    $parentSelector '[data-type="footnote-ref"]',
+    $selector,
     $resetSelector
   )
 }
@@ -394,10 +401,17 @@
   )
 }
 
-@mixin count_customFootnoteLinks($name, $parentSelector, $resetSelector) {
+@mixin count_customFootnoteLinks($name, $resetSelector, $parentSelector: null) {
+  $selector: '';
+  @if $parentSelector != null {
+    $selector: '#{$parentSelector} a[role="doc-noteref"]';
+  } @else {
+    $selector: 'a[role="doc-noteref"]';
+  }
+
   @include _count(
     $name,
-    $parentSelector '[data-type="footnote-number"]',
+    $selector,
     $resetSelector
   )
 }
