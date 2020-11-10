@@ -10,7 +10,27 @@ $bandColor: #24739E;
 @import '../../templates/template3/design.scss';
 @import '../../templates/template3/settings.scss';
 
-//Settings
+// Settings
+
+@include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
+    'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-intro2.svg")) no-repeat top left,
+    'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+    'SplashImgMediaBar:::background-color': (_ref: "colorMap:::chapterTitleBgColor"),
+    'SplashImgMediaBar:::border-top-color': (_ref: "colorMap:::chapterTitleBorderColor"),
+  )
+));
+
+@include add_settings((
+  ChapterTitles: (
+  _selectors: ('[data-type="chapter"]'),
+  'H1ChapterIntroNumbered:::color': (_ref: 'colorMap:::chapterTitleColor'),
+  'H1ChapterIntroTitleNumber:::color': (_ref: 'colorMap:::chapterTitleNumberColor'),
+  'H1ChapterIntroIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-introskyline.svg")) no-repeat top left,
+  )
+));
 
 @include add_settings((
   LinkToLearning: (
@@ -92,11 +112,13 @@ $bandColor: #24739E;
 @include use('Link', 'cardboard:::LinkShape');
 @include use('Toc', 'cardboard:::NoUnitToc');
 @include use('LearningObjectives', 'cardboard:::LearningObjectivesShape');
+@include use('ChapterIntro', 'cardboard:::ChapterIntroShape');
 @include use('AnswerKey', 'cardboard:::AnswerKeyShape');
 @include use('Figure', 'cardboard:::FigureShape');
 
 //Tables
-@include use('FakeTitleTable', 'cardboard:::FakeTitleTableShape');
+@include use('FakeTitleTable', 'cardboard:::TableWithBordersShape');
+@include use('DefaultTable', 'cardboard:::TableWithBordersShape');
 
 //Notes
 @include use('LinkToLearning', 'cardboard:::BoxedNoteShape');
@@ -106,6 +128,7 @@ $bandColor: #24739E;
 
 //Titles
 @include use('PageTitles', 'cardboard:::PageTitlesShape');
+@include use('ChapterTitles', 'cardboard:::ChapterTitlesShape');
 @include use('KeyTermsTitles', 'cardboard:::CompositePageTitlesShape');
 @include use('SummaryTitles', 'cardboard:::CompositePageTitlesShape');
 @include use('AssessmentQuestionsTitles', 'cardboard:::CompositePageTitlesShape');
