@@ -1,4 +1,4 @@
-//folio content strings
+//Folio content strings
 [data-type="chapter"] > h1[data-type="document-title"] {
   .os-number {
     string-set: chapter-number content();
@@ -47,7 +47,7 @@ div[data-type="composite-page"].os-eob > h1[data-type="document-title"] {
   }
 }
 
-//page definitions
+//Page definitions
 nav#toc {
   page: table-of-contents;
 }
@@ -149,7 +149,7 @@ div[data-type="composite-page"].os-eob {
     font-weight: 700;
 }
 
-@mixin folio($leftContent, $rightContent, $page: null ) {
+@mixin folio($leftContent, $rightContent, $bottomContent, $page: null ) {
     @page #{$page}:left {
       @top-left {
         @include CornFolioStyles();
@@ -161,7 +161,7 @@ div[data-type="composite-page"].os-eob {
       }
       @bottom-left {
           @include CornFolioStyles();
-          content: "Access for free at openstax.org.";
+          content: $bottomContent;
       }
     }
   
@@ -176,7 +176,7 @@ div[data-type="composite-page"].os-eob {
       }
     }
   }
-  @mixin folioWithBand($leftContent, $rightContent, $page) {
+  @mixin folioWithBand($leftContent, $rightContent, $bottomContent, $page) {
     @page #{$page}:left {
       @top-left {
         @include CornFolioStyles();
@@ -184,7 +184,7 @@ div[data-type="composite-page"].os-eob {
       }
       @bottom-left {
         @include CornFolioStyles();
-        content: "Access for free at openstax.org.";
+        content: $bottomContent;
       }
     }
   
@@ -199,15 +199,17 @@ div[data-type="composite-page"].os-eob {
   $defaultLeftContent: string(chapter-number) " • " string(chapter-title);
   $defaultRightContent: string(module-number) " • " string(module-title);
   $prefaceContent: "Preface";
+  $accessContent: "Access for free at openstax.org.";
   $eocContent: string(chapter-number) " • " string(eoc-title);
   $appendixContent: string(appendix-number) " • " string(appendix-title);
   $eobContent: string(eob-title);
-  @include folio($defaultLeftContent, $defaultRightContent,);
-  @include folio($prefaceContent, $prefaceContent, preface );
-  @include folioWithBand($eocContent, $eocContent, eoc);
-  @include folioWithBand($appendixContent, $appendixContent, appendix);
-  @include folioWithBand($eobContent, $eobContent, eob);
-
+  @include folio($defaultLeftContent, $defaultRightContent, $accessContent);
+  @include folio($prefaceContent, $prefaceContent, $accessContent, preface );
+  @include folioWithBand($eocContent, $eocContent, $accessContent,  eoc);
+  @include folioWithBand($appendixContent, $appendixContent, $accessContent, appendix);
+  @include folioWithBand($eobContent, $eobContent, $accessContent, eob);
+  
+  //Page margins
   @page {
     margin-left: 1in;
     margin-right: 1in;
