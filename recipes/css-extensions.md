@@ -1,8 +1,6 @@
 ### Easybake: Structured Text Manipulation via CSS Extensions
 (Taken from cnx-easybake repo)
 
-
-
 ###  CSS3 Syntax for Collation and Numbering - OpenStax easybake
 
 ## Moving and copying nodes:
