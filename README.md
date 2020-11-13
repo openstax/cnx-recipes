@@ -1,22 +1,60 @@
 [![Coverage][codecov-image]][codecov-url]
 
-# Install
+**Note For Windows Users:** If your username contains whitespace, the setup and installation may not work. Create a new user without whitespace in the username in order to succesfully complete installation.
 
-1. Run `./script/install-docker` to install docker and docker-compose.
+# About 
+The cnx-recipes repo contains the recipes and styles framework. The recipe framework is used for content manipulation and the styles framework is used to style the content. The backend of the recipes framework is contained in the [cnx-easybake repo](https://github.com/openstax/cnx-easybake). 
 
-**For Windows Users:** If your username contains whitespace, the setup and installation will not work. Create a new user without whitespace in the username in order to succesfully complete installation.
+[Baked PDF frameworkguide](./styles/styling-bakedpdf.md)
 
-# Create a baked pdf for a new book
+[Styling framework tutorial](./styles/README.md)
 
-1. Run `docker-compose run --rm -e HOST=katalyst01.cnx.org fetch-book --with-resources intro-business` to download the cnxml from the server.
+## Installation
+
+Almost all of the scripts that we run to generate outputs at various stages of development require docker or bakery-cli, or both. 
+
+Run `./script/install-docker` to install docker and docker-compose.
+
+[To install bakery-cli follow the instructions here.](https://www.npmjs.com/package/@openstax/bakery-cli)
+
+There are 6 steps in the PDF generation pipeline: 
+ - **fetch** : fetch raw cnxml content from a specified server
+ - **assemble** : converts the cnxml to xhtml
+ - **link-extras** : replaces legacy module ids in links to external modules with
+uuids from the target module and corresponding canonical book
+ - **bake** : based on a given set of instructions, 
+ - **mathify** : converts mathjax to svg - [link to repo](https://github.com/openstax/mathify)
+ - **build-pdf** : generates a PDF
+
+We perform these steps by running commands locally using either bakery-cli or the scripts in `./script` with docker-compose. 
+
+The `./script` folder contains a variety of scripts relating to installation, book generation, and testing. 
+
+It's recommended to prepend the `./script/run` script when running most scripts from this directory. Although not requried, the `run` script runs the `setup` script and tries to ensure that you have the necessary dependencies by running the script in a docker container. For example, if you want to run `./script/fetch-book`, you would run `./script/run ./script/fetch-book`. 
+
+
+## Create a baked pdf for a new book
+
+There are currently two ways to create a baked PDF. One way is with the `docker-compose` commands listed below, the other is with bakery-cli (documentation linked at the top of this README).
+
+1. Run `docker-compose run --rm -e HOST=katalyst01.cnx.org fetch-book --with-resources ${book-name}` to download the cnxml from the server.
    - **Note:** To see the list of books available see `./books.txt`
-1. Run `docker-compose run --rm assemble-book intro-business` to create the single-file HTML for the book.
+   - `HOST` is optional if one is specified in `./books.txt`
+   - `--with-resources` is optional if you do not need images in the content to be fetched
+1. Run `docker-compose run --rm assemble-book ${book-name}` to create the single-file HTML for the book.
    - Exercises are fetched when assembling the book. If the book has exercises that are being fetched from the exercises db, it can take 20+ minutes when first assembling a book. After the first time, it should not take as long
-1. Run `docker-compose run --rm bake-book intro-business` to convert the single-file HTML locally into the "baked" book.
-1. Run `docker-compose run --rm mathify-book intro-business` to convert all the math to svg.
-1. Run `docker-compose run --rm build-pdf intro-business` to create the pdf.
+1. Run `docker-compose run --rm bake-book ${book-name}` to convert the single-file HTML locally into the "baked" book.
+1. Run `docker-compose run --rm mathify-book ${book-name}` to convert all the math to svg.
+1. Run `docker-compose run --rm build-pdf ${book-name}` to create the pdf.
 
-# Create JSON files for a book
+A few things to note when using bakery-cli vs the commands above: 
+
+- The bakery-cli more closely matches what is being used on production via COPS
+- The bakery-cli commands will on average run a faster
+- When using the bakery-cli, the style file linked in the xhtml is not a path to your local file system. This means that everytime you need to update a style during development, you must either re-bake the file and run the subsequent steps in the process depending on your needed output (baked file, mathified file, or PDF) or manually update the style link in the head of the document. 
+- When using bakery-cli you cannot bake without passing it a style file or build a PDF without mathifying 
+
+## Create JSON files for a book
 
 Follow the first few steps above, up to and including the `bake-book` step. Then do the following:
 
@@ -43,7 +81,7 @@ or to run tests, run:
 
 ## Updating Neb
 
-**Stops and removes container**
+**Stops and removes container:**
 `docker-compose down`
 
 **To pull the latest version of neb:**
@@ -55,7 +93,7 @@ or to run tests, run:
 **To check the version of neb:**
 `docker-compose run neb neb --version`
 
-## Add a New Book to the config
+## Add a New Book to the books.text config
 
 The steps to add a new book (like `dark-matter-for-dummies`) are:
 
