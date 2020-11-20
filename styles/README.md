@@ -107,9 +107,9 @@ Component Variable Names are written using [Block, Element, Modifier (BEM) synta
 
 So given the example of `$note--boxed__container:` in the next section, the variable represents a container that is a piece of a "boxed" type note.
 
-### Writing the shapes
+### Writing the components and shapes
 
-Open the file we just created in your favorite editor to get started writing our design shapes. We will write our components to variables so that they can be reused.
+Open the file we just created in your favorite editor to get started writing our design components and shapes. We will write our components to variables so that they can be reused.
 ```scss
 // _design.scss
 $Note--Boxed__Container: (
@@ -155,7 +155,7 @@ Next, let's create shapes from these components using the framework provided mix
 // type-one, type-two
 @include create_shape('BoxedNoteTitled', (
   _components: (
-    map-merge($boxed_note_container, (
+    map-merge($Note--Boxed__Container, (
       _components: (
         $Note--Boxed__Title
       )
@@ -208,7 +208,7 @@ In the blank book.scss file, let's import our framework and the design we have j
 ```scss
 // book.scss
 @import 'framework/framework';
-@import 'design/example/design';
+@import 'designs/example/design';
 ```
 
 Let's try to build our new book.scss. If there is an entry added to books.txt for your book style you can use
@@ -248,7 +248,9 @@ We got an error. The framework has told us we need to specify selectors in our s
 
 ### Settings
 
-To add settings, we can call the framework provided mixin `add_settings`. `add_settings` takes a variable number of arguments, but each must be a map of settings. Let's call the `add_settings` mixin to resolve the compiler error we received earlier.
+To add settings, we can call the framework provided mixin `add_settings`. `add_settings` takes a variable number of arguments, but each must be a map of settings. Settings can be defined in the `book.scss` file or in the `/design-settings` directory. 
+
+Conventionally we only put settings in the book file if the value of a property varies across books in a design/theme, ie. color. But for this tutorial, we will add all settings to the `book.scss` file. Let's call the `add_settings` mixin to resolve the compiler error we received earlier.
 
 ```scss
 // book.scss

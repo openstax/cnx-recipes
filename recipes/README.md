@@ -5,8 +5,10 @@ The generated CSS is stored in the [./output](./output) directory.
 ## Relevant Scripts
 
 ```sh
-./script/fetch-html ${book_name}     # Stores result in `./data/`
+./script/fetch-html ${book_name} # Stores result in `./data/`
+./script/assemble-book ${book_name}    # Stores result in `./data/`
 ./script/bake-book ${book_name}      # Uses the results of `./script/fetch-html`
+./script/mathify-book ${book_name}
 ./script/build-guide ${book_name}
 ```
 
@@ -78,7 +80,7 @@ The config settings are variables that start with `$Config_` and have the follow
 - `$Config_HACK_modifyAnyContainerTitleSelector`: a boolean
 - `$Config_hasCompositeAppendixes`: a boolean (used for some TEA books)
 - `$Config_hasCitation`: a boolean used for References.
-
+- `$Config_hasGroupedIntroBody`: a boolean used for include mixin modify_groupChapOutlineIntroContent as a temporary solution for Principles of Managemet.
 ## TitleContent
 
 This is a map whose keys are the `className` of the element that will be created (ie `os-divider` or `os-number`) and the values are the css that will be used (ie `"|"` or `counter(exercise)`).
