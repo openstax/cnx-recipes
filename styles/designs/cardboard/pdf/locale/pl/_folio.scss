@@ -1,0 +1,201 @@
+//Folio content strings
+ [data-type="chapter"] > h1[data-type="document-title"] {
+    .os-number {
+      string-set: chapter-number content();
+  }
+    .os-text {
+      string-set: chapter-title content();
+    }
+  }
+  
+  [data-type="chapter"] > {
+    [data-type="page"].introduction .intro-text > h2[data-type="document-title"] {
+      string-set: module-number string(chapter-number);
+      
+      .os-text {
+        string-set: module-title "Introduction";
+      }
+    }
+    [data-type="page"]:not(.introduction) > h2[data-type="document-title"] {
+      .os-number {
+        string-set: module-number content();
+      }
+      .os-text {
+        string-set: module-title content();
+      }
+    }
+  }
+  
+  .os-eoc > h2[data-type="document-title"] {
+    .os-text {
+      string-set: eoc-title content();
+    }
+  }
+  
+  .appendix > h1[data-type="document-title"] {
+    .os-number {
+      string-set: appendix-number content();
+  }
+    .os-text {
+      string-set: appendix-title content();
+    }
+  }
+  
+  div[data-type="composite-page"].os-eob > h1[data-type="document-title"] {
+    .os-text {
+      string-set: eob-title content();
+    }
+  }
+  
+  //Page definitions
+  nav#toc {
+    page: table-of-contents;
+  }
+  
+  div[data-type="page"].preface {
+    page: preface;
+    counter-reset: page 1;
+  }
+  
+  .os-eoc {
+    page: eoc;
+  }
+  
+  [data-type="chapter"] {
+    page: chapter;
+    prince-page-group: start;
+  }
+  
+  div[data-type="page"].appendix {
+    page: appendix;
+  }
+  
+  div[data-type="composite-page"].os-eob {
+    page: eob;
+  }
+  
+  //Unnumbered Pages
+  
+  @page table-of-contents {
+    @top-left-corner {
+      content: none;
+    }
+    @top-left {
+      content: none;
+    }
+    @top-right-corner {
+      content: none;
+    }
+    @top-right {
+      content: none;
+    }
+  }
+  
+  //Numbered Pages
+  
+  //Chapter Intro
+  
+  @page chapter:nth(1):right {
+    @top-right-corner {
+      font-size: font-scale(-1);
+      font-family: "Noto Sans";
+      color: white;
+      background: transparent;
+      z-index: 1;
+      content: "\00a0\00a0\00a0\00a0\00a0" counter(page);
+    }
+    @top-middle {
+      background: transparent;
+      z-index: 1;
+      content: " ";
+    }
+    @top-right {
+        font-size: font-scale(-1);
+        font-family: "Noto Sans";
+        color: white;
+        background: transparent;
+        z-index: 1;
+        content: string(module-number) " • " string(module-title) "\00a0\00a0\00a0\00a0\00a0";
+    }
+    @top-left-corner {
+      background: transparent;
+      z-index: 1;
+      content: " ";
+    }
+  } 
+  
+  @mixin CornFolioStyles() {
+      font-size: font-scale(-1);
+      font-family: "Noto Sans";
+      color: #000000; 
+      font-weight: 700;
+  }
+  
+  @mixin folio($leftContent, $rightContent, $bottomContent, $page: null ) {
+      @page #{$page}:left {
+        @top-left {
+          @include CornFolioStyles();
+          content: $leftContent;
+        }
+        @top-left-corner {
+          @include CornFolioStyles();
+          content: counter(page) "\00a0\00a0\00a0\00a0\00a0";
+        }
+        @bottom-left {
+            @include CornFolioStyles();
+            content: $bottomContent;
+        }
+      }
+    
+      @page #{$page}:right {
+        @top-right {
+          @include CornFolioStyles();
+          content: $rightContent;
+        }
+        @top-right-corner {
+          @include CornFolioStyles();
+          content: "\00a0\00a0\00a0\00a0\00a0" counter(page);
+        }
+      }
+    }
+    @mixin folioWithBand($leftContent, $rightContent, $bottomContent, $page) {
+      @page #{$page}:left {
+        @top-left {
+          @include CornFolioStyles();
+          content: counter(page) "\00a0\00a0\00a0\00a0\00a0" $leftContent;
+        }
+        @bottom-left {
+          @include CornFolioStyles();
+          content: $bottomContent;
+        }
+      }
+    
+      @page #{$page}:right {
+        @top-right {
+          @include CornFolioStyles();
+          content: $rightContent "\00a0\00a0\00a0\00a0\00a0" counter(page);
+        }
+      }
+    }
+  
+    $defaultLeftContent: string(chapter-number) " • " string(chapter-title);
+    $defaultRightContent: string(module-number) " • " string(module-title);
+    $accessContent: "Podręcznik dostępny na openstax.org";
+    $prefaceContent: "Przedmowa";
+    $eocContent: string(chapter-number) " • " string(eoc-title);
+    $appendixContent: string(appendix-number) " • " string(appendix-title);
+    $eobContent: string(eob-title);
+    @include folio($defaultLeftContent, $defaultRightContent, $accessContent);
+    @include folio($prefaceContent, $prefaceContent, $accessContent, preface );
+    @include folioWithBand($eocContent, $eocContent, $accessContent, eoc);
+    @include folioWithBand($appendixContent, $appendixContent, $accessContent, appendix);
+    @include folioWithBand($eobContent, $eobContent, $accessContent eob);
+    
+    //Page margins
+    @page {
+      margin-left: 1in;
+      margin-right: 1in;
+      margin-bottom: 0.8in;
+      margin-top: 0.8in;
+    }
+  
