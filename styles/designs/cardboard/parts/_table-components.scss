@@ -179,7 +179,7 @@ $Table__Head__Cell--Centered: (
 );
 
 $Table__Body: empty_wrapper(TableBody, ' > tbody');
-$Table__Row: empty_wrapper(TableRow, ' > tr');
+$Table__Row: empty_wrapper(TableRow, ' > tr:not(:first-child)');
 $First__Table__Row: empty_wrapper(FirstTableRow, ' > tr:first-child');
 
 $Table__Data: (
@@ -198,10 +198,12 @@ $Table__Data: (
         border-width: enum('ValueSet:::OPTIONAL'), //unused in text-havy tables
     )
 );
+//Used only in TableWithBordersShape
+$Table__Row--Textheavy: empty_wrapper(TableRowTextHeavy, ' > tr'); //in this shape every tr in tbody has the same style
 
-$FirstTable__Data: (
-    _name: "FirstTableData",
-    _subselector: " > td:first-child",
+$Table__Data--FirstRow: (
+    _name: "FirstRowTableData",
+    _subselector: " > td",
     _properties: (
         font-family: enum('ValueSet:::REQUIRED'),
         font-size: font-scale(0),
@@ -210,9 +212,15 @@ $FirstTable__Data: (
         padding-bottom: table-v-spacing(1),
         padding-left: table-h-spacing(1),
         padding-right: table-h-spacing(1),
-        border-top-style: enum('ValueSet:::OPTIONAL'), //unused in text-havy tables
-        border-top-color: enum('ValueSet:::OPTIONAL'), //unused in text-havy tables
-        border-top-width: enum('ValueSet:::OPTIONAL'), //unused in text-havy tables
+        border-bottom-style: solid,
+        border-bottom-color: enum('ValueSet:::REQUIRED'), 
+        border-bottom-width: 0.08rem,
+        border-right-style: solid,
+        border-right-color: enum('ValueSet:::REQUIRED'),
+        border-right-width: 0.08rem,
+        border-left-style: solid,
+        border-left-color: enum('ValueSet:::REQUIRED'),
+        border-left-width: 0.08rem,
     )
 );
 
