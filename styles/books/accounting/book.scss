@@ -6,7 +6,6 @@ $PagesWithBands: ();
 @import '../../designs/cardboard/pdf/folio';
 
 //Notes
-
 @include add_settings ((
     // BoxedNoteWithSubtitleShape
     YourTurn: (
@@ -31,14 +30,23 @@ $PagesWithBands: ();
     )
 ));
 
-@include use('BookRoot', 'common:::BookRoot');
+@include add_settings((
+    EmphasizedColoredText: (
+        _selectors: ('.colored-text'),
+        'ColoredTextContainer:::color': (_ref: 'colorMap:::emphasizedTextColor'),
+    )
+));
 
-// Notes
+@include use('BookRoot', 'common:::BookRoot');
+@include use('EmphasizedColoredText', 'common:::ColoredText');
+
+//Titles
+@include use('PageTitles', 'cardboard:::PageTitlesShape');
+
+//Notes
 @include use('ConceptsPractice', 'cardboard:::BoxedNoteWithSubtitleShape');
 @include use('YourTurn', 'cardboard:::BoxedNoteWithSubtitleShape');
 
 // Eob
 @include use('AnswerKey', 'cardboard:::AnswerKeyShape');
 @include use('CompositeChapterTitles', 'cardboard:::CompositeChapterTitlesShape');
-
-
