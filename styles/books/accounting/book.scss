@@ -27,6 +27,16 @@ $PagesWithBands: ();
         "Body:::background-color": ( _ref: "colorMap:::noteOption2BodyBackgroundColor" ),
         "Subtitle:::color": ( _ref: "colorMap:::noteSubtitleColor" ),
         "Subtitle:::font-family": ( _ref: "typography:::titleFont" ),
+    ),
+    ThinkItThrough: (
+        _selectors: ('.think-through'),
+        "Title:::color": (_ref: "colorMap:::noteOption2HeaderColor"),
+        "Title:::font-family": ( _ref: "typography:::titleFont" ),
+        "Title:::background-color": ( _ref: "colorMap:::noteOption2HeaderBackgroundColor" ),
+        "Body:::font-family": ( _ref: "typography:::baseFont" ),
+        "Body:::background-color": ( _ref: "colorMap:::noteOption2BodyBackgroundColor" ),
+        "Subtitle:::color": ( _ref: "colorMap:::noteSubtitleColor" ),
+        "Subtitle:::font-family": ( _ref: "typography:::titleFont" ),
     )
 ));
 
@@ -37,16 +47,62 @@ $PagesWithBands: ();
     )
 ));
 
+// EoC titles
+@include add_settings((
+    KeyTermsTitles: (
+        _selectors: (".os-glossary-container"),
+        'H2WithIcon:::font-family': (_ref: 'typography:::titleFont'),
+        'H2WithIcon:::color': (_ref: "colorMap:::titleColor"),
+        'H2Icon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-keyterms.svg")) no-repeat top left,
+        'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
+        'H4Title:::font-family': (_ref: 'typography:::baseFont'),
+        'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+    ),
+    SummaryTitles: (
+        _selectors: (".os-section-summary-container"),
+        'H2WithIcon:::font-family': (_ref: 'typography:::titleFont'),
+        'H2WithIcon:::color': (_ref: "colorMap:::titleColor"),
+        'H2Icon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-summary.svg")) no-repeat top left,
+        'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
+        'H4Title:::font-family': (_ref: 'typography:::baseFont'),
+        'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+    ),
+));
+
+// Common settings
 @include use('BookRoot', 'common:::BookRoot');
+@include use('Toc', 'cardboard:::NoUnitToc');
 @include use('EmphasizedColoredText', 'common:::ColoredText');
+@include use('Footnote', 'common:::FootnoteShape');
+@include use('FootnoteCall', 'common:::FootnoteCallShape');
 
-//Titles
+// Titles
 @include use('PageTitles', 'cardboard:::PageTitlesShape');
+@include use('KeyTermsTitles', 'cardboard:::EocCompositePageTitlesShape');
+@include use('SummaryTitles', 'cardboard:::EocCompositePageTitlesShape');
 
-//Notes
+// Tables
+@include use('FakeTitleTable', 'cardboard:::TableWithBordersShape');
+
+// Misc
+@include use('Figure','cardboard:::FigureShape');
+@include use('Link', 'cardboard:::LinkShape');
+
+// Lists
+@include use('CompositePageLists', 'cardboard:::CompositePageListsShape');
+@include use('PageLists', 'cardboard:::PageListsShape');
+
+// Notes
+@include use('NotesLists', 'cardboard:::NotesListsShape');
 @include use('ConceptsPractice', 'cardboard:::BoxedNoteWithSubtitleShape');
 @include use('YourTurn', 'cardboard:::BoxedNoteWithSubtitleShape');
+@include use('ThinkItThrough', 'cardboard:::BoxedNoteWithSubtitleShape');
+
+// Eoc
+@include use('KeyTerms', 'cardboard:::KeyTermsShape');
 
 // Eob
 @include use('AnswerKey', 'cardboard:::AnswerKeyShape');
 @include use('CompositeChapterTitles', 'cardboard:::CompositeChapterTitlesShape');
+@include use('Index', 'cardboard:::IndexShape');
+@include use('EobCompositePageTitles', 'cardboard:::EobCompositePageTitlesShape');
