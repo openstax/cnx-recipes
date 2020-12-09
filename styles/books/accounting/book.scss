@@ -5,6 +5,30 @@ $PagesWithBands: ();
 @import '../../design-settings/cardboard/_settings.scss';
 @import '../../designs/cardboard/pdf/folio';
 
+// Introduction & splash image
+@include add_settings((
+    ChapterIntro: (
+        _selectors: (".introduction"),
+        'OutlineTitle:::color': (),
+        'IntroductionTitleIcon:::background': (),
+        'IntroContentHeader:::color': (),
+        'SplashImgMediaBar:::background-color': (_ref: "colorMap:::chapterTitleBgColor"),
+        'SplashImgMediaBar:::border-top-color': (_ref: "colorMap:::chapterTitleBorderColor"),
+    ),
+));
+
+@include add_settings((
+  // Formats the chapter title over the splash image and media bar
+  ChapterTitles: (
+  _selectors: ('[data-type="chapter"]'),
+    'H1ChapterIntroNumbered:::color': (_ref: 'colorMap:::chapterTitleColor'),
+    'H1ChapterIntroTitleNumber:::color': (_ref: 'colorMap:::chapterTitleNumberColor'),
+    'H1ChapterIntroIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-introskyline.svg")) no-repeat top left,
+    'H1ChapterIntroIcon:::bottom': 0.1rem,
+    'H1ChapterIntroIcon:::left': 0rem,
+  ),
+));
+
 //Notes
 @include add_settings ((
     // BoxedNoteWithSubtitleShape
@@ -40,12 +64,14 @@ $PagesWithBands: ();
     )
 ));
 
+// Inline colored text throughout the book
 @include add_settings((
     EmphasizedColoredText: (
         _selectors: ('.colored-text'),
         'ColoredTextContainer:::color': (_ref: 'colorMap:::emphasizedTextColor'),
     )
 ));
+
 
 // EoC titles
 @include add_settings((
@@ -71,13 +97,15 @@ $PagesWithBands: ();
 
 // Common settings
 @include use('BookRoot', 'common:::BookRoot');
-@include use('Toc', 'cardboard:::NoUnitToc');
 @include use('EmphasizedColoredText', 'common:::ColoredText');
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
+@include use('Toc', 'cardboard:::NoUnitToc');
+@include use('ChapterIntro', 'cardboard:::ChapterIntroShape');
 
 // Titles
 @include use('PageTitles', 'cardboard:::PageTitlesShape');
+@include use('ChapterTitles', 'cardboard:::ChapterTitlesShape');
 @include use('KeyTermsTitles', 'cardboard:::EocCompositePageTitlesShape');
 @include use('SummaryTitles', 'cardboard:::EocCompositePageTitlesShape');
 
