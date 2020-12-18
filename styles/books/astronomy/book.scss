@@ -1,0 +1,65 @@
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: appendix, firstSelector: '.appendix', generalSelector: '.appendix'),
+  (pageName: eob, firstSelector: '.os-eob[data-type="composite-page"]', generalSelector: '.os-eob'),
+);
+
+$bandColor: #772949;
+
+@import 'framework/framework';
+@import '../../design-settings/cardboard/design.scss';
+@import '../../designs/cardboard/pdf/folio';
+@import '../../design-settings/cardboard//settings.scss';
+
+//Settings
+
+@include add_settings((
+  TableOfContents: (
+    _selectors: ('nav#toc'),
+    'ContentsTitle:::font-family': (_ref: 'typography:::titleFontAstronomy'),
+    'ContentsTitle:::color': (_ref: 'colorMap:::tocTitleColorAstronomy'),
+    'ContentsTitleIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-toc1.svg")) no-repeat top left, // todo: switch icon to toc1
+    'TopLevelLink:::font-family': (_ref: 'typography:::baseFont'),
+    'TopLevelLink:::color': (_ref: 'colorMap:::tocLinkColorAstronomy'),
+    'Number:::border-color': (_ref: 'colorMap:::tocNumberBorderColorAstronomy'),
+    'ChapterOddItem:::background-color': (_ref: 'colorMap:::tocBackgroundColor'),
+    'MiddleLevelList:::border-left-color': (_ref: 'colorMap:::tocModuleBorderColor'),
+    'MiddleLevelLink:::color': (_ref: 'colorMap:::fontBodyColor'),
+  )
+));
+
+@include add_settings((
+  PageTitles: (
+    _selectors: ('[data-type="page"]:not(.introduction)'),
+    'H1Title:::color': (_ref: "colorMap:::titleColorAstronomy"),
+    'H1Title:::font-family': (_ref: 'typography:::titleFontAstronomy'),
+    'H1Numbered:::color': (_ref: "colorMap:::titleColorAstronomy"),
+    'H1Numbered:::font-family': (_ref: 'typography:::titleFontAstronomy'),
+    'H1Numbered:::font-size': font-scale(3),
+    'H1Numbered:::line-height': font-scale(3),
+    'H1Numbered:::margin-bottom': v-spacing(1),
+    'H1TitleNumber:::border-color': (_ref: "colorMap:::titleAppendixBorderColorAstronomy"),
+    'H2Numbered:::color': (_ref: "colorMap:::titleColorAstronomy"),
+    'H2Numbered:::font-family': (_ref: 'typography:::titleFontAstronomy'),
+    'H2TitleNumber:::border-color': (_ref: "colorMap:::titleSectionBorderColorAstronomy"),
+    'H2Title:::color': (_ref: "colorMap:::titleColorAstronomy"),
+    'H2Title:::font-family': (_ref: 'typography:::baseFont'),
+    'H3Title:::color': (_ref: "colorMap:::titleColorAstronomy"),
+    'H3Title:::font-family': (_ref: 'typography:::baseFont'),
+    'H4Title:::color': (_ref: "colorMap:::titleColorAstronomy"),
+    'H4Title:::font-family': (_ref: 'typography:::baseFont'),
+    'H5Title:::font-family': (_ref: 'typography:::baseFont'),
+  ),
+));
+
+@include use('BookRoot', "common:::BookRoot");
+@include use('Footnote', 'common:::FootnoteShape');
+@include use('FootnoteCall', 'common:::FootnoteCallShape');
+@include use('Figure','cardboard:::FigureShape');
+@include use('TableOfContents', 'cardboard:::NoUnitToc');
+
+//Titles
+@include use('PageTitles', 'cardboard:::PageTitlesShape');
+
+//Lists
+@include use('PageLists', 'cardboard:::PageListsShape');
