@@ -18,6 +18,19 @@ $Table: (
     )
 );
 
+// After discusion we decided to use proportions in col attributes. In this case, data-width is set to 1* for each column.
+// It means all columns should be the same size. There is also a decision that we are using percentages. It might be useful
+// in the future for the web. But, lets keep in mind that we can meet some problems. More informations you can find here: 
+// https://github.com/openstax/cnx-recipes/issues/2776
+
+$Table__Column: (
+    _name: "TableColumn",
+    _subselector: " col[data-width='1*']",
+    _properties: (
+        width: 25%,
+    )
+);
+
 $Table__Head: empty_wrapper(TableHead, ' > thead');
 
 $Table__Head__FirstRow__Cell: (
@@ -179,8 +192,8 @@ $Table__Head__Cell--Centered: (
 );
 
 $Table__Body: empty_wrapper(TableBody, ' > tbody');
-$Table__Row: empty_wrapper(TableRow, ' > tr:not(:first-child)');
-$First__Table__Row: empty_wrapper(FirstTableRow, ' > tr:first-child');
+$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child)');
+$Table__Row--FirstChild: empty_wrapper(TableRowFirstChild, ' > tr:first-child');
 
 $Table__Data: (
     _name: "TableData",
@@ -276,5 +289,13 @@ $Table__Head__Cell--WithBottomBorder: (
     )
 );
 
-$Table__Row--Textheavy: empty_wrapper(TableRowTextHeavy, ' > tr'); //in this shape every tr in tbody has the same style
+$Table__Row: empty_wrapper(TableRow, ' > tr'); // every tr - used in text-heavy and unstyled tables
 
+// Used in unstyled tables
+$Table__Container--Unstyled: (
+    _name: "TableContainerUnstyled",
+    _subselector: "",
+    _properties: (
+        margin-bottom: table-v-spacing(2),
+    )
+);
