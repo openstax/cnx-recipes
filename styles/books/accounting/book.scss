@@ -1,4 +1,10 @@
-$PagesWithBands: ();
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: eob, firstSelector: '.os-eob[data-type="composite-chapter"]', generalSelector: '.os-eob'),
+  (pageName: appendix, firstSelector: '.appendix', generalSelector: '.appendix'),
+);
+
+$bandColor: #24739E;
 
 @import 'framework/framework';
 @import '../../design-settings/cardboard/_design.scss';
@@ -6,12 +12,14 @@ $PagesWithBands: ();
 @import '../../designs/cardboard/pdf/folio';
 
 // Introduction & splash image
-@include add_settings((
-    ChapterIntro: (
+
+@include add_settings ((
+    ChapterIntroWithLO: (
         _selectors: (".introduction"),
-        'OutlineTitle:::color': (),
-        'IntroductionTitleIcon:::background': (),
-        'IntroContentHeader:::color': (),
+        'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
+        'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-intro2.svg")) no-repeat top left,
+        'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+        'OutlineObjectiveLOButton:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-lobullet.svg")) no-repeat bottom left,
         'SplashImgMediaBar:::background-color': (_ref: "colorMap:::chapterTitleBgColor"),
         'SplashImgMediaBar:::border-top-color': (_ref: "colorMap:::chapterTitleBorderColor"),
     ),
@@ -213,7 +221,7 @@ $PagesWithBands: ();
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
 @include use('Toc', 'cardboard:::NoUnitToc');
-@include use('ChapterIntro', 'cardboard:::ChapterIntroShape');
+@include use('ChapterIntroWithLO', 'cardboard:::ChapterIntroShapeWithLO');
 
 // Titles
 @include use('PageTitles', 'cardboard:::PageTitlesShape');
@@ -236,24 +244,24 @@ $PagesWithBands: ();
 @include use('Link', 'cardboard:::LinkShape');
 @include use('ExercisesModule', 'cardboard:::ExercisesModuleShape');
 
-//Notes
+// Notes
 @include use('YourTurn', 'cardboard:::BoxedNoteWithSubtitleShape');
 @include use('ConceptsPractice', 'cardboard:::BoxedNoteWithSubtitleShape');
 @include use('IfrsConnection', 'cardboard:::BoxedNoteWithSubtitleShape');
 @include use('ContinuingApplication', 'cardboard:::BoxedNoteWithSubtitleShape');
 @include use('EthicalConsiderations', 'cardboard:::BoxedNoteWithSubtitleShape');
 @include use('LinkToLearning', 'cardboard:::BoxedNoteShape');
+@include use('NotesLists', 'cardboard:::NotesListsShape');
+@include use('ThinkItThrough', 'cardboard:::BoxedNoteWithSubtitleShape');
+
+//Equations
+@include use('Equation', 'cardboard:::EquationShape');
+@include use('NumberedEquation', 'cardboard:::NumberedEquationShape');
 
 // Lists
 @include use('CompositePageLists', 'cardboard:::CompositePageListsShape');
 @include use('PageLists', 'cardboard:::PageListsShape');
 @include use('ExercisesProblemLists', 'cardboard:::ExercisesListsShape');
-
-// Notes
-@include use('NotesLists', 'cardboard:::NotesListsShape');
-@include use('ConceptsPractice', 'cardboard:::BoxedNoteWithSubtitleShape');
-@include use('YourTurn', 'cardboard:::BoxedNoteWithSubtitleShape');
-@include use('ThinkItThrough', 'cardboard:::BoxedNoteWithSubtitleShape');
 
 // Eoc
 @include use('KeyTerms', 'cardboard:::KeyTermsShape');
