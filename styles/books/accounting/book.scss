@@ -1,4 +1,10 @@
-$PagesWithBands: ();
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: eob, firstSelector: '.os-eob[data-type="composite-chapter"]', generalSelector: '.os-eob'),
+  (pageName: appendix, firstSelector: '.appendix', generalSelector: '.appendix'),
+);
+
+$bandColor: #24739E;
 
 @import 'framework/framework';
 @import '../../design-settings/cardboard/_design.scss';
@@ -217,6 +223,12 @@ $PagesWithBands: ();
     ),
 ));
 
+@include add_settings((
+  LOLink: (
+    _selectors: ('.lo-reference'),
+    'LOLinkMarker:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-lo.svg")) no-repeat bottom left,
+  )
+));
 
 // Common settings
 @include use('BookRoot', 'common:::BookRoot');
@@ -241,10 +253,12 @@ $PagesWithBands: ();
 
 // Tables
 @include use('FakeTitleTable', 'cardboard:::TableWithBordersShape');
+@include use('UnstyledTable', 'cardboard:::UnstyledTableShape');
 
 // Misc
 @include use('Figure','cardboard:::FigureShape');
 @include use('Link', 'cardboard:::LinkShape');
+@include use('LOLink', 'cardboard:::LOLinkShape');
 @include use('ExercisesModule', 'cardboard:::ExercisesModuleShape');
 
 // Notes
@@ -256,6 +270,10 @@ $PagesWithBands: ();
 @include use('LinkToLearning', 'cardboard:::BoxedNoteShape');
 @include use('NotesLists', 'cardboard:::NotesListsShape');
 @include use('ThinkItThrough', 'cardboard:::BoxedNoteWithSubtitleShape');
+
+//Equations
+@include use('Equation', 'cardboard:::EquationShape');
+@include use('NumberedEquation', 'cardboard:::NumberedEquationShape');
 
 // Lists
 @include use('CompositePageLists', 'cardboard:::CompositePageListsShape');
