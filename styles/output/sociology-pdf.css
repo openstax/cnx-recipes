@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&display=swap&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap&subset=latin,latin-ext");
@@ -369,6 +370,220 @@ sub {
   bottom: -0.25em; }
 
 /* stylelint-disable-next-line meowtec/no-px */
+[data-type="chapter"] > h1[data-type="document-title"] .os-number {
+  string-set: chapter-number content(); }
+
+[data-type="chapter"] > h1[data-type="document-title"] .os-text {
+  string-set: chapter-title content(); }
+
+[data-type="chapter"] > [data-type="page"].introduction .intro-text > h2[data-type="document-title"] {
+  string-set: module-number string(chapter-number); }
+  [data-type="chapter"] > [data-type="page"].introduction .intro-text > h2[data-type="document-title"] .os-text {
+    string-set: module-title "Introduction"; }
+
+[data-type="chapter"] > [data-type="page"]:not(.introduction) > h2[data-type="document-title"] .os-number {
+  string-set: module-number content(); }
+
+[data-type="chapter"] > [data-type="page"]:not(.introduction) > h2[data-type="document-title"] .os-text {
+  string-set: module-title content(); }
+
+.os-eoc > h2[data-type="document-title"] .os-text {
+  string-set: eoc-title content(); }
+
+.appendix > h1[data-type="document-title"] .os-number {
+  string-set: appendix-number content(); }
+
+.appendix > h1[data-type="document-title"] .os-text {
+  string-set: appendix-title content(); }
+
+div[data-type="composite-page"].os-eob > h1[data-type="document-title"] .os-text {
+  string-set: eob-title content(); }
+
+nav#toc {
+  page: table-of-contents; }
+
+div[data-type="page"].preface {
+  page: preface;
+  counter-reset: page 1; }
+
+.os-eoc {
+  page: eoc; }
+
+[data-type="chapter"] {
+  page: chapter;
+  prince-page-group: start; }
+
+div[data-type="page"].appendix {
+  page: appendix; }
+
+div[data-type="composite-page"].os-eob {
+  page: eob; }
+
+@page chapter:nth(1) {
+  @top-left-corner {
+    content: none; }
+  @top-right-corner {
+    content: none; }
+  @top-left {
+    content: none; }
+  @top-center {
+    content: none; }
+  @top-right {
+    content: none; } }
+
+@page table-of-contents {
+  @top-left-corner {
+    content: none; }
+  @top-left {
+    content: none; }
+  @top-right-corner {
+    content: none; }
+  @top-right {
+    content: none; } }
+
+@page :left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(chapter-number) " • " string(chapter-title); }
+  @top-left-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     "; }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org."; } }
+
+@page :right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(module-number) " • " string(module-title); }
+  @top-right-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "     " counter(page); } }
+
+@page preface:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Preface"; }
+  @top-left-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     "; }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org."; } }
+
+@page preface:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Preface"; }
+  @top-right-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "     " counter(page); } }
+
+@page eoc:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     " string(chapter-number) " • " string(eoc-title); }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org.";
+    content: "Access for free at openstax.org."; } }
+
+@page eoc:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(chapter-number) " • " string(eoc-title) "     " counter(page); } }
+
+@page appendix:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     " string(appendix-number) " • " string(appendix-title); }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org.";
+    content: "Access for free at openstax.org."; } }
+
+@page appendix:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(appendix-number) " • " string(appendix-title) "     " counter(page); } }
+
+@page eob:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     " string(eob-title); }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org.";
+    content: "Access for free at openstax.org."; } }
+
+@page eob:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(eob-title) "     " counter(page); } }
+
+@page {
+  margin-left: 1in;
+  margin-right: 1in;
+  margin-bottom: 0.8in;
+  margin-top: 0.8in; }
+
 :root {
   font-family: IBM Plex Serif, serif, StixGeneral;
   font-size: 12px;
@@ -386,7 +601,8 @@ sub {
   top: 0;
   margin-bottom: 3.5rem;
   padding-top: 2.1rem;
-  transform: translate3d(-0.9in, 0, 0);
+  transform: translate3d(-1in, 0, 0);
+  margin-left: -1.2rem;
   padding-right: 1in;
   padding-left: 1in;
   padding-bottom: 0.3in;
@@ -554,11 +770,12 @@ sub {
   position: absolute;
   bottom: 0;
   background-color: black;
-  transform: translate3d(-0.9in, 0, 0);
+  transform: translate3d(-1in, 0, 0);
   left: 0;
   z-index: -1;
   width: 8.8in;
-  height: 1.15in; }
+  height: 1.15in;
+  margin-left: -1.2rem; }
 
 [data-type="page"] > ul:not([data-labeled-item="true"]) {
   margin-left: 24px; }
