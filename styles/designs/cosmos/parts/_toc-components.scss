@@ -1,0 +1,178 @@
+$Toc__Container: empty_wrapper(Container, '');
+
+$Toc__Title: (
+  _name: 'TocTitle',
+  _subselector: ' > .os-toc-title',
+  _properties: (
+    font-size: font-scale(6),
+    line-height: font-scale(6), //should be the same as font size
+    color: enum('ValueSet:::REQUIRED'),
+    font-family: enum('ValueSet:::REQUIRED'),
+    font-weight: bold,
+    text-transform: uppercase,
+    padding-bottom: v-spacing(3),
+    margin-bottom: v-spacing(3),
+    border-bottom-style: solid,
+    border-bottom-color: enum('ValueSet:::REQUIRED'),
+    border-bottom-width: 0.25rem, //3px
+  )
+);
+
+//FIRST LEVEL: ol with Units
+
+//SECOND LEVEL: ol with Preface, Chapters, Answer Key, Appendix, Index
+
+$Toc__List--SecondLevel: (
+  _name: 'SecondLevelList',
+  _subselector: ' > ol',
+  _properties: (
+    list-style: none,
+    margin-left: 0,
+  )
+);
+
+$Toc__Link--SecondLevel: ( 
+  _name: 'SecondLevelLink',
+  _subselector: ' > a',
+  _properties: (
+    text-decoration: none,
+  ),
+);
+
+// NoChapter items (Preface, Answer Key, Appendix, Index)
+
+$Toc__List--SecondLevel__Item--NoChapter: empty_wrapper(SecondLevelListNoChapterItem, ' > li:not(.os-toc-chapter)');
+
+$Toc__List--SecondLevel__Item--Preface: (
+  _name: 'SecondLevelListPrefaceItem',
+  _subselector: ' > li.os-toc-preface',
+  _properties: (
+    margin-bottom: v-spacing(1),
+  )
+);
+
+$Toc__Link--SecondLevel__Page--NoChapter: (
+  _name: 'SecondLevelLinkNoChapterPage',
+  _subselector: '::after',
+  _properties: (
+    content: "target-counter(attr(href), page)",
+    display: inline-block,
+    margin-left: h-spacing(3),
+    font-family: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(0),
+    line-height: line-height(0),
+  ),
+);
+
+$Toc__Link--SecondLevel__Number--NoChapter: (  //used for Appendix
+  _name: 'SecondLevelLinkNoChapterNumber',
+  _subselector: ' > .os-number',
+  _properties: (
+    font-family: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(0),
+    line-height: line-height(0),
+    font-weight: bold,
+  ),
+);
+
+$Toc__Link--SecondLevel__Text--NoChapter: (
+  _name: 'SecondLevelLinkNoChapterText',
+  _subselector: ' > .os-text',
+  _properties: (
+    font-family: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(0),
+    line-height: line-height(0),
+  ),
+);
+
+// Chapter items
+
+$Toc__List--SecondLevel__Item--Chapter: (
+  _name: 'SecondLevelListChapterItem',
+  _subselector: ' > li.os-toc-chapter',
+  _properties: (
+    margin-bottom: v-spacing(1),
+  )
+);
+
+$Toc__Link--SecondLevel__Number--Chapter: (
+  _name: 'SecondLevelLinkChapterNumber',
+  _subselector: ' > .os-number',
+  _properties: (
+    font-family: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(0),
+    line-height: line-height(0),
+    text-transform: uppercase,
+    display: block,
+  ),
+);
+
+$Toc__Link--SecondLevel__Text--Chapter: (
+  _name: 'SecondLevelLinkChapterText',
+  _subselector: ' > .os-text',
+  _properties: (
+    font-family: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(3),
+    line-height: line-height(3),
+    font-weight: 500,
+  ),
+);
+
+$Toc__Link--SecondLevel__Page--Chapter: (
+  _name: 'SecondLevelLinkChapterPage',
+  _subselector: '::after',
+  _properties: (
+    content: "target-counter(attr(href), page)",
+    display: inline-block,
+    margin-left: h-spacing(3),
+    font-family: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(0),
+    line-height: line-height(0),
+    font-weight: bold,
+  ),
+);
+
+//THIRD LEVEL: ol with regular and EOC modules
+
+$Toc__List--ThirdLevel: (
+  _name: 'ThirdLevelList',
+  _subselector: ' > ol.os-chapter',
+  _properties: (
+    list-style: none,
+    margin-left: 0,
+  )
+);
+
+$Toc__List--ThirdLevel__Item: empty_wrapper(ThirdLevelListItem, ' > li');
+
+$Toc__Link--ThirdLevel: (
+  _name: 'ThirdLevelLink',
+  _subselector: ' > a',
+  _properties: (
+    text-decoration: none,
+    font-family: enum('ValueSet:::REQUIRED'), //in this level .os-text and .os-number have the same specs, so I don't create
+    color: enum('ValueSet:::REQUIRED'),       //separate components for them, instead I add properties to link component
+    font-size: font-scale(0),
+    line-height: line-height(0),
+  ),
+);
+
+$Toc__Link--ThirdLevel__Page: (
+  _name: 'ThirdLevelLinkPage',
+  _subselector: '::after',
+  _properties: (
+    content: "target-counter(attr(href), page)",
+    display: inline-block,
+    margin-left: h-spacing(3),
+    font-family: enum('ValueSet:::REQUIRED'),
+    color: enum('ValueSet:::REQUIRED'),
+    font-size: font-scale(0),
+    line-height: line-height(0),
+  ),
+);
