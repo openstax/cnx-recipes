@@ -1,4 +1,10 @@
-$PagesWithBands: ();
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: eob, firstSelector: '.os-eob[data-type="composite-chapter"]', generalSelector: '.os-eob'),
+  (pageName: appendix, firstSelector: '.appendix', generalSelector: '.appendix'),
+);
+
+$bandColor: #24739E;
 
 @import 'framework/framework';
 @import '../../design-settings/cardboard/_design.scss';
@@ -13,7 +19,7 @@ $PagesWithBands: ();
         'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
         'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-intro2.svg")) no-repeat top left,
         'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
-        'OutlineObjectiveLOButton:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-lobullet.svg")) no-repeat bottom left,
+        'OutlineObjectiveLOButton:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-lo.svg")) no-repeat bottom left,
         'SplashImgMediaBar:::background-color': (_ref: "colorMap:::chapterTitleBgColor"),
         'SplashImgMediaBar:::border-top-color': (_ref: "colorMap:::chapterTitleBorderColor"),
     ),
@@ -125,6 +131,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
     SummaryTitles: (
         _selectors: (".os-section-summary-container"),
@@ -134,6 +141,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
     MultipleChoiceTitles: (
         _selectors: (".os-multiple-choice-container"),
@@ -143,6 +151,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
     QuestionsTitles: (
         _selectors: (".os-questions-container"),
@@ -152,6 +161,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
     ExerciseSetATitles: (
         _selectors: (".os-exercise-set-a-container"),
@@ -161,6 +171,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
     ExerciseSetBTitles: (
         _selectors: (".os-exercise-set-b-container"),
@@ -170,6 +181,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
     ProblemSetATitles: (
         _selectors: (".os-problem-set-a-container"),
@@ -179,6 +191,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
     ProblemSetBTitles: (
         _selectors: (".os-problem-set-b-container"),
@@ -188,6 +201,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
     ThoughtProvokersTitles: (
         _selectors: (".os-thought-provokers-container"),
@@ -197,6 +211,7 @@ $PagesWithBands: ();
         'H3LinkTitle:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::font-family': (_ref: 'typography:::baseFont'),
         'H4Title:::color': (_ref: 'colorMap:::titleColor'),
+        'H5Title:::font-family': (_ref: 'typography:::baseFont'),
     ),
 ));
 
@@ -208,6 +223,12 @@ $PagesWithBands: ();
     ),
 ));
 
+@include add_settings((
+  LOLink: (
+    _selectors: ('.lo-reference'),
+    'LOLinkMarker:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-lo.svg")) no-repeat bottom left,
+  )
+));
 
 // Common settings
 @include use('BookRoot', 'common:::BookRoot');
@@ -232,10 +253,12 @@ $PagesWithBands: ();
 
 // Tables
 @include use('FakeTitleTable', 'cardboard:::TableWithBordersShape');
+@include use('UnstyledTable', 'cardboard:::UnstyledTableShape');
 
 // Misc
 @include use('Figure','cardboard:::FigureShape');
 @include use('Link', 'cardboard:::LinkShape');
+@include use('LOLink', 'cardboard:::LOLinkShape');
 @include use('ExercisesModule', 'cardboard:::ExercisesModuleShape');
 
 // Notes
@@ -247,6 +270,10 @@ $PagesWithBands: ();
 @include use('LinkToLearning', 'cardboard:::BoxedNoteShape');
 @include use('NotesLists', 'cardboard:::NotesListsShape');
 @include use('ThinkItThrough', 'cardboard:::BoxedNoteWithSubtitleShape');
+
+//Equations
+@include use('Equation', 'cardboard:::EquationShape');
+@include use('NumberedEquation', 'cardboard:::NumberedEquationShape');
 
 // Lists
 @include use('CompositePageLists', 'cardboard:::CompositePageListsShape');
