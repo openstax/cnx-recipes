@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&display=swap&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap&subset=latin,latin-ext");
@@ -464,6 +465,220 @@ sub {
   bottom: -0.25em; }
 
 /* stylelint-disable-next-line meowtec/no-px */
+[data-type="chapter"] > h1[data-type="document-title"] .os-number {
+  string-set: chapter-number content(); }
+
+[data-type="chapter"] > h1[data-type="document-title"] .os-text {
+  string-set: chapter-title content(); }
+
+[data-type="chapter"] > [data-type="page"].introduction .intro-text > h2[data-type="document-title"] {
+  string-set: module-number string(chapter-number); }
+  [data-type="chapter"] > [data-type="page"].introduction .intro-text > h2[data-type="document-title"] .os-text {
+    string-set: module-title "Introduction"; }
+
+[data-type="chapter"] > [data-type="page"]:not(.introduction) > h2[data-type="document-title"] .os-number {
+  string-set: module-number content(); }
+
+[data-type="chapter"] > [data-type="page"]:not(.introduction) > h2[data-type="document-title"] .os-text {
+  string-set: module-title content(); }
+
+.os-eoc > h2[data-type="document-title"] .os-text {
+  string-set: eoc-title content(); }
+
+.appendix > h1[data-type="document-title"] .os-number {
+  string-set: appendix-number content(); }
+
+.appendix > h1[data-type="document-title"] .os-text {
+  string-set: appendix-title content(); }
+
+div[data-type="composite-page"].os-eob > h1[data-type="document-title"] .os-text {
+  string-set: eob-title content(); }
+
+nav#toc {
+  page: table-of-contents; }
+
+div[data-type="page"].preface {
+  page: preface;
+  counter-reset: page 1; }
+
+.os-eoc {
+  page: eoc; }
+
+[data-type="chapter"] {
+  page: chapter;
+  prince-page-group: start; }
+
+div[data-type="page"].appendix {
+  page: appendix; }
+
+div[data-type="composite-page"].os-eob {
+  page: eob; }
+
+@page chapter:nth(1) {
+  @top-left-corner {
+    content: none; }
+  @top-right-corner {
+    content: none; }
+  @top-left {
+    content: none; }
+  @top-center {
+    content: none; }
+  @top-right {
+    content: none; } }
+
+@page table-of-contents {
+  @top-left-corner {
+    content: none; }
+  @top-left {
+    content: none; }
+  @top-right-corner {
+    content: none; }
+  @top-right {
+    content: none; } }
+
+@page :left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(chapter-number) " • " string(chapter-title); }
+  @top-left-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     "; }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org."; } }
+
+@page :right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(module-number) " • " string(module-title); }
+  @top-right-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "     " counter(page); } }
+
+@page preface:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Preface"; }
+  @top-left-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     "; }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org."; } }
+
+@page preface:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Preface"; }
+  @top-right-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "     " counter(page); } }
+
+@page eoc:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     " string(chapter-number) " • " string(eoc-title); }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org.";
+    content: "Access for free at openstax.org."; } }
+
+@page eoc:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(chapter-number) " • " string(eoc-title) "     " counter(page); } }
+
+@page appendix:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     " string(appendix-number) " • " string(appendix-title); }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org.";
+    content: "Access for free at openstax.org."; } }
+
+@page appendix:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(appendix-number) " • " string(appendix-title) "     " counter(page); } }
+
+@page eob:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     " string(eob-title); }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org.";
+    content: "Access for free at openstax.org."; } }
+
+@page eob:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(eob-title) "     " counter(page); } }
+
+@page {
+  margin-left: 1in;
+  margin-right: 1in;
+  margin-bottom: 0.8in;
+  margin-top: 0.8in; }
+
 :root {
   font-family: IBM Plex Serif, serif, StixGeneral;
   font-size: 12px;
@@ -588,6 +803,145 @@ nav#toc > ol > li:not(.os-toc-unit):not(.os-toc-chapter) > a > .os-text {
 nav#toc > ol > li:not(.os-toc-unit):not(.os-toc-chapter) > ol {
   display: none; }
 
+a {
+  color: #027EB5; }
+
+.os-figure:not(.has-splash) > figure {
+  display: table;
+  margin-left: auto;
+  margin-right: auto; }
+
+.os-figure:not(.has-splash) > .os-caption-container {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0.7rem; }
+
+.os-figure:not(.has-splash) > .os-caption-container > .os-title-label {
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #8B1504;
+  text-transform: uppercase; }
+
+.os-figure:not(.has-splash) > .os-caption-container > .os-number {
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #8B1504; }
+
+.os-figure:not(.has-splash) > .os-caption-container > .os-title {
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #000000; }
+
+.os-figure:not(.has-splash) > .os-caption-container > .os-caption {
+  font-family: IBM Plex Sans, sans-serif, StixGeneral;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000000; }
+
+[data-type="unit"] > h1 {
+  display: none; }
+
+.introduction > .os-figure.has-splash {
+  background-color: #000000;
+  width: 8.8in;
+  position: relative;
+  z-index: -1;
+  box-sizing: border-box;
+  top: 0;
+  margin-bottom: 3.5rem;
+  padding-top: 3.5rem;
+  transform: translate3d(-1in, 0, 0);
+  margin-left: -1.2rem;
+  padding-right: 1in;
+  padding-left: 1in;
+  padding-bottom: 1.4rem;
+  margin-top: -0.1rem; }
+
+.introduction > .os-figure.has-splash > figure.splash {
+  margin-bottom: 1.4rem;
+  display: table;
+  margin-left: auto;
+  margin-right: auto; }
+
+.introduction > .os-figure.has-splash > figure.splash > span[data-type="media"] > img {
+  width: 100%; }
+
+.introduction > .os-figure.has-splash > .os-caption-container {
+  margin-bottom: 0.7rem; }
+
+.introduction > .os-figure.has-splash > .os-caption-container > .os-number {
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #DCB83D; }
+
+.introduction > .os-figure.has-splash > .os-caption-container > .os-title-label {
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #DCB83D;
+  text-transform: uppercase; }
+
+.introduction > .os-figure.has-splash > .os-caption-container > .os-caption {
+  font-family: IBM Plex Sans, sans-serif, StixGeneral;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #FFFFFF; }
+
+.introduction > .intro-body > .os-chapter-outline {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin-bottom: 1.5rem; }
+
+.introduction > .intro-body > .os-chapter-outline > .os-title {
+  margin: 0 0 0.5rem 0;
+  font-family: Archivo, sans-serif, StixGeneral;
+  color: #8B693A;
+  font-weight: 700;
+  text-transform: uppercase; }
+
+.introduction > .intro-body > .os-chapter-outline > div.os-chapter-objective > a.os-chapter-objective {
+  display: inline-block;
+  text-decoration: none;
+  color: #000000;
+  font-family: IBM Plex Sans, sans-serif, StixGeneral;
+  font-weight: 700; }
+
+.introduction > .intro-body > .os-chapter-outline > div.os-chapter-objective > a.os-chapter-objective > .os-text {
+  color: #000000;
+  font-weight: 400;
+  font-family: IBM Plex Sans, sans-serif, StixGeneral;
+  padding-left: 0.3rem; }
+
+.introduction > .intro-body > .intro-text > h2[data-type="document-title"]:first-of-type {
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 0.5rem 0 0;
+  color: #8B693A;
+  float: left; }
+
+[data-type="page"] .learning-objectives > h3[data-type="title"] {
+  color: #8B693A;
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase; }
+
+[data-type="page"] .learning-objectives > p {
+  margin: 0;
+  font-family: IBM Plex Sans, sans-serif, StixGeneral; }
+
+[data-type="page"] .learning-objectives > ul {
+  margin-left: 24px;
+  font-family: IBM Plex Sans, sans-serif, StixGeneral; }
+
 [data-type="page"]:not(.introduction).preface > h1 {
   color: #C31427;
   font-family: Archivo, sans-serif, StixGeneral;
@@ -635,6 +989,94 @@ nav#toc > ol > li:not(.os-toc-unit):not(.os-toc-chapter) > ol {
   margin-bottom: 0.7rem;
   font-weight: 700; }
 
+.os-eob[data-type="composite-page"] > h1 {
+  color: #000000;
+  font-family: IBM Plex Sans, sans-serif, StixGeneral;
+  font-size: 2.98598rem;
+  line-height: 3rem;
+  padding-bottom: 2.1rem;
+  margin-bottom: 2.1rem;
+  column-span: all;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom-color: #000000;
+  border-bottom-style: solid;
+  border-bottom-width: 0.1rem; }
+
+.os-eoc[data-type="composite-page"] > h2 {
+  color: #C31427;
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1.44rem;
+  line-height: 1.5rem;
+  margin-bottom: 0.7rem;
+  font-weight: 600; }
+
+.os-eoc[data-type="composite-page"] > section > a > h3[data-type="document-title"] {
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  margin-bottom: 0.7rem;
+  font-weight: 600; }
+
+[data-type="chapter"] {
+  height: 100%;
+  position: relative;
+  z-index: 1; }
+
+[data-type="chapter"] > h1 {
+  display: flex;
+  font-family: Archivo, sans-serif, StixGeneral;
+  position: relative;
+  font-weight: normal;
+  flex-direction: row;
+  justify-content: flex-start;
+  left: 0;
+  padding-top: 2.8rem;
+  margin-bottom: 0;
+  margin-top: -0.15in;
+  padding-bottom: 0; }
+
+[data-type="chapter"] > h1 > .os-part-text {
+  display: none; }
+
+[data-type="chapter"] > h1 > .os-number {
+  display: inline-block;
+  position: absolute;
+  color: #C31427;
+  font-weight: 700;
+  font-size: 4.29982rem;
+  line-height: 3rem;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%); }
+
+[data-type="chapter"] > h1 > .os-text {
+  display: flex;
+  color: #FFFFFF;
+  font-size: 2.48832rem;
+  line-height: 3rem;
+  font-weight: 400;
+  max-width: 5in;
+  transform: translate(0, -50%);
+  left: 0;
+  top: 50%;
+  position: absolute;
+  padding-top: 0rem;
+  flex-wrap: wrap; }
+
+[data-type="chapter"] > h1::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  background-color: black;
+  transform: translate3d(-1in, 0, 0);
+  left: 0;
+  z-index: -1;
+  width: 8.8in;
+  margin-left: -1.2rem;
+  height: 1.15in; }
+
 [data-type="page"] > ul:not([data-labeled-item="true"]) {
   margin-left: 24px; }
 
@@ -653,40 +1095,230 @@ nav#toc > ol > li:not(.os-toc-unit):not(.os-toc-chapter) > ol {
 [data-type="page"] > section > section > ol {
   margin-left: 24px; }
 
-.os-figure:not(.has-splash) > figure {
-  display: table;
-  margin-left: auto;
-  margin-right: auto; }
+[data-type="problem"] > div > ul:not([data-labeled-item="true"]) {
+  margin-left: 24px; }
 
-.os-figure:not(.has-splash) > .os-caption-container {
-  display: table;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 0.7rem; }
+[data-type="problem"] > div > ol {
+  margin-left: 24px; }
 
-.os-figure:not(.has-splash) > .os-caption-container > .os-title-label {
-  font-family: Archivo, sans-serif, StixGeneral;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #8B1504;
-  text-transform: uppercase; }
+.milestone {
+  margin-bottom: 1.4rem; }
 
-.os-figure:not(.has-splash) > .os-caption-container > .os-number {
-  font-family: Archivo, sans-serif, StixGeneral;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #8B1504; }
+.milestone > .os-title {
+  color: #FFFFFF;
+  font-family: Archivo Black, sans-serif, StixGeneral;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  text-transform: uppercase;
+  text-align: right;
+  font-weight: normal;
+  background-color: #0F4839;
+  padding: 0.7rem;
+  position: relative;
+  border-bottom: solid;
+  border-color: #FFFFFF; }
 
-.os-figure:not(.has-splash) > .os-caption-container > .os-title {
-  font-family: Archivo, sans-serif, StixGeneral;
-  font-weight: 500;
-  font-size: 1rem;
-  color: #000000; }
-
-.os-figure:not(.has-splash) > .os-caption-container > .os-caption {
+.milestone > .os-note-body {
   font-family: IBM Plex Sans, sans-serif, StixGeneral;
   font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.7rem;
+  background-color: #F0F8F1; }
+
+.milestone > .os-note-body > h4.os-subtitle {
+  color: #000000;
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0rem; }
+
+.middle-ground {
+  margin-bottom: 1.4rem; }
+
+.middle-ground > .os-title {
+  color: #FFFFFF;
+  font-family: Archivo Black, sans-serif, StixGeneral;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  text-transform: uppercase;
+  text-align: right;
+  font-weight: normal;
+  background-color: #38568A;
+  padding: 0.7rem;
+  position: relative;
+  border-bottom: solid;
+  border-color: #FFFFFF; }
+
+.middle-ground > .os-note-body {
+  font-family: IBM Plex Sans, sans-serif, StixGeneral;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.7rem;
+  background-color: #EFF3FA; }
+
+.middle-ground > .os-note-body > h4.os-subtitle {
+  color: #000000;
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0rem; }
+
+.insider-perspective {
+  margin-bottom: 1.4rem; }
+
+.insider-perspective > .os-title {
+  color: #FFFFFF;
+  font-family: Archivo Black, sans-serif, StixGeneral;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  text-transform: uppercase;
+  text-align: right;
+  font-weight: normal;
+  background-color: #C31427;
+  padding: 0.7rem;
+  position: relative;
+  border-bottom: solid;
+  border-color: #FFFFFF; }
+
+.insider-perspective > .os-note-body {
+  font-family: IBM Plex Sans, sans-serif, StixGeneral;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.7rem;
+  background-color: #FFE5E5; }
+
+.insider-perspective > .os-note-body > h4.os-subtitle {
+  color: #000000;
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0rem; }
+
+.american.government.link-to-learning {
+  margin-bottom: 1.4rem;
+  box-decoration-break: slice; }
+
+.american.government.link-to-learning > .os-note-body {
+  border-bottom-style: solid;
+  border-bottom-width: 0.125rem;
+  border-bottom-color: #78B042;
+  box-decoration-break: slice; }
+
+.american.government.link-to-learning > .os-note-body > p {
+  margin-bottom: 0.7rem; }
+
+.american.government.link-to-learning > .os-title {
+  margin-bottom: 0.7rem;
   font-weight: 400;
-  color: #000000; }
+  letter-spacing: 0.05rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-family: Archivo Black, sans-serif, StixGeneral; }
+
+.american.government.link-to-learning > .os-title > .os-title-label {
+  display: inline-block;
+  word-wrap: normal;
+  text-transform: uppercase; }
+
+.american.government.link-to-learning > .os-title::before {
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIzLjAuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAyNyAyNyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjcgMjc7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbDojRkZGRkZGO3N0cm9rZTojNzlCMTQyO3N0cm9rZS13aWR0aDoyLjI1O30KCS5zdDF7ZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojNzlCMTQyO30KPC9zdHlsZT4KPGcgaWQ9IlBhZ2UtMSI+Cgk8ZyBpZD0iSWNvbi1HdWlkZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTExNS4wMDAwMDAsIC0xOC4wMDAwMDApIj4KCQk8ZyBpZD0iR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDExNi4wMDAwMDAsIDE5LjAwMDAwMCkiPgoJCQk8cGF0aCBpZD0iU3Ryb2tlLTMzIiBjbGFzcz0ic3QwIiBkPSJNMjQuMzMsMTIuMTJjMCw2LjYzLTUuMzcsMTItMTIsMTJzLTEyLTUuMzctMTItMTJzNS4zNy0xMiwxMi0xMgoJCQkJQzE4Ljk1LDAuMTIsMjQuMzMsNS41LDI0LjMzLDEyLjEyeiIvPgoJCQk8cGF0aCBpZD0iRmlsbC0xNSIgY2xhc3M9InN0MSIgZD0iTTEyLjEyLDUuMjJsLTIuMDYsMi4wOUM5LjksNy40OSw5LjczLDcuNjgsOS42LDcuODhDOS41Niw3LjkyLDkuNTQsNy45Nyw5LjUxLDguMDEKCQkJCWMwLjk5LTAuMjcsMi4wNS0wLjI2LDMuMDMsMC4wNWwwLjE3LTAuMTdsMS4xMy0xLjE1YzAuOTktMS4wMSwyLjYtMS4wMSwzLjU5LDBjMC45OSwxLjAxLDAuOTksMi42NCwwLDMuNjVsLTEuMjksMS4zMQoJCQkJbC0wLjI3LDAuMjdsLTAuMjYsMC4yNmwwLDBsLTAuNDMsMC40NGMtMC40NSwwLjQ1LTEuMDIsMC43LTEuNiwwLjc1bDAsMGwwLDBjLTAuMTIsMC4wMS0wLjIzLDAuMDEtMC4zMSwwLjAxCgkJCQljLTAuMDcsMC0wLjE3LTAuMDEtMC4xNy0wLjAxbC0wLjE1LTAuMDNsMCwwYy0wLjQ5LTAuMDktMC45Ny0wLjMzLTEuMzYtMC43MmMtMC4zNy0wLjM4LTAuNi0wLjg1LTAuNy0xLjMzCgkJCQljMC0wLjAxLDAtMC4wMy0wLjAxLTAuMDRjLTAuNDMsMC4wNC0wLjg2LDAuMjItMS4xOSwwLjU2bC0wLjY4LDAuNjljMC4yNCwwLjYsMC41OSwxLjE3LDEuMDcsMS42NnMxLjAzLDAuODUsMS42MywxLjA5CgkJCQljMC4xMSwwLjA0LDAuMjIsMC4wOCwwLjMzLDAuMTJjMC4wOSwwLjAzLDAuMTksMC4wNiwwLjI5LDAuMDhjMC4wMSwwLDAuMDEsMCwwLjAyLDBjMC4wMiwwLDAuMDMsMC4wMSwwLjA1LDAuMDEKCQkJCWMwLjk4LDAuMjMsMi4wMywwLjE0LDIuOTYtMC4yNmMwLjEyLTAuMDUsMC4yMy0wLjEsMC4zNC0wLjE2YzAuMDEsMCwwLjAxLTAuMDEsMC4wMi0wLjAxYzAuMDItMC4wMSwwLjA0LTAuMDIsMC4wNi0wLjAzCgkJCQljMC4wNS0wLjAzLDAuMS0wLjA1LDAuMTQtMC4wOGwwLDBjMC4zNC0wLjIxLDAuNjYtMC40NiwwLjk1LTAuNzVsMi4wNS0yLjA5YzEuODgtMS45MSwxLjg4LTUsMC02LjkKCQkJCUMxNy4wNCwzLjMyLDE0LDMuMzIsMTIuMTIsNS4yMiIvPgoJCQk8cGF0aCBpZD0iRmlsbC0xNyIgY2xhc3M9InN0MSIgZD0iTTEyLjI4LDE4Ljg2bDIuMDYtMi4wOWMwLjE4LTAuMTgsMC4zMy0wLjM3LDAuNDgtMC41N2MwLjAzLTAuMDQsMC4wNi0wLjA5LDAuMDktMC4xMwoJCQkJYy0wLjk5LDAuMjctMi4wNSwwLjI2LTMuMDMtMC4wNWwtMC4xNywwLjE4bC0xLjEzLDEuMTVjLTAuOTksMS4wMS0yLjYsMS4wMS0zLjU5LDBzLTAuOTktMi42NCwwLTMuNjVsMS4yOS0xLjMxbDAuMjctMC4yNwoJCQkJbDAuMjYtMC4yNmwwLDBsMC40My0wLjQ0YzAuNDUtMC40NiwxLjAyLTAuNywxLjYtMC43NWwwLDBsMCwwYzAuMTItMC4wMSwwLjIzLTAuMDEsMC4zMS0wLjAxYzAuMiwwLjAxLDAuMzEsMC4wNCwwLjMxLDAuMDRsMCwwCgkJCQlsMCwwYzAuNDksMC4wOSwwLjk3LDAuMzMsMS4zNSwwLjcyYzAuMzcsMC4zOCwwLjYsMC44NCwwLjcsMS4zM2MwLDAuMDEsMCwwLjAzLDAuMDEsMC4wNGMwLjQzLTAuMDQsMC44Ny0wLjIyLDEuMTktMC41NgoJCQkJbDAuNjgtMC43Yy0wLjI0LTAuNi0wLjU5LTEuMTctMS4wNy0xLjY2cy0xLjAzLTAuODUtMS42My0xLjA5Yy0wLjExLTAuMDQtMC4yMi0wLjA4LTAuMzMtMC4xMmMtMC4xLTAuMDMtMC4xOS0wLjA2LTAuMjktMC4wOAoJCQkJYy0wLjAxLDAtMC4wMSwwLTAuMDItMC4wMWMtMC4wMiwwLTAuMDMtMC4wMS0wLjA1LTAuMDFjLTAuOTgtMC4yMy0yLjAzLTAuMTQtMi45NiwwLjI2QzguOTUsOC44OSw4LjgzLDguOTQsOC43Miw5CgkJCQlDOC43MSw5LDguNzEsOS4wMSw4LjcsOS4wMUM4LjY4LDkuMDIsOC42Niw5LjAzLDguNjQsOS4wNEM4LjU5LDkuMDcsOC41NCw5LjA5LDguNSw5LjEybDAsMGMtMC4zNCwwLjItMC42NiwwLjQ1LTAuOTUsMC43NQoJCQkJbC0yLjA2LDIuMDljLTEuODgsMS45MS0xLjg4LDUsMCw2LjlDNy4zNywyMC43NywxMC40MSwyMC43NywxMi4yOCwxOC44NiIvPgoJCTwvZz4KCTwvZz4KPC9nPgo8L3N2Zz4K) no-repeat top left;
+  background-size: contain;
+  height: 1.4rem;
+  width: 1.4rem;
+  display: inline-block;
+  position: relative;
+  content: '';
+  padding-right: 8px; }
+
+.os-eoc.os-glossary-container {
+  margin-bottom: 1.4rem; }
+
+.os-eoc.os-glossary-container > dl {
+  text-indent: -24px;
+  padding-left: 24px; }
+
+.os-eoc.os-glossary-container > dl > dt {
+  display: inline;
+  font-weight: bold; }
+
+.os-eoc.os-glossary-container > dl > dd {
+  display: inline;
+  margin-left: 16px; }
+
+.os-eoc.os-suggested-reading-container {
+  margin-bottom: 1.4rem; }
+
+.os-eoc.os-suggested-reading-container > section > p {
+  text-indent: -16px;
+  padding-left: 16px; }
+
+.os-eoc.os-review-questions-container [data-type="exercise"] {
+  margin-bottom: 0.7rem; }
+
+.os-eoc.os-review-questions-container [data-type="exercise"] [data-type='problem'] {
+  display: table; }
+
+.os-eoc.os-review-questions-container [data-type="exercise"] [data-type='problem'] > .os-number {
+  display: table-cell;
+  text-decoration: none;
+  color: #000000;
+  font-weight: bold; }
+
+.os-eoc.os-review-questions-container [data-type="exercise"] [data-type='problem'] > .os-divider {
+  margin-right: 8px; }
+
+.os-eoc.os-review-questions-container [data-type="exercise"] [data-type='problem'] .os-problem-container {
+  display: table-cell;
+  width: 100%; }
+
+.os-eoc.os-review-questions-container [data-type="exercise"] [data-type='problem'] .os-problem-container > p {
+  margin-bottom: 0; }
+
+.os-eoc.os-critical-thinking-container [data-type="exercise"] {
+  margin-bottom: 0.7rem; }
+
+.os-eoc.os-critical-thinking-container [data-type="exercise"] [data-type='problem'] {
+  display: table; }
+
+.os-eoc.os-critical-thinking-container [data-type="exercise"] [data-type='problem'] > .os-number {
+  display: table-cell;
+  text-decoration: none;
+  color: #000000;
+  font-weight: bold; }
+
+.os-eoc.os-critical-thinking-container [data-type="exercise"] [data-type='problem'] > .os-divider {
+  margin-right: 8px; }
+
+.os-eoc.os-critical-thinking-container [data-type="exercise"] [data-type='problem'] .os-problem-container {
+  display: table-cell;
+  width: 100%; }
+
+.os-eoc.os-critical-thinking-container [data-type="exercise"] [data-type='problem'] .os-problem-container > p {
+  margin-bottom: 0; }
+
+.os-index-container {
+  column-count: 3;
+  column-gap: 32px; }
+
+.os-index-container > .group-by {
+  margin-bottom: 1.4rem; }
+
+.os-index-container > .group-by > .group-label {
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1.44rem;
+  line-height: 1.5rem;
+  font-weight: 600; }
+
+.os-index-container > .group-by > .os-index-item > .os-term {
+  padding-right: 8px; }
+
+.os-index-container > .group-by > .os-index-item > .os-term-section-link {
+  content: target-counter(attr(href, url), page); }
 
 /*# sourceMappingURL=american-government-pdf.css.map */
