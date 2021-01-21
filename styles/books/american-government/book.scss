@@ -9,8 +9,18 @@ $bandColor: #DCB83D;
 @import 'framework/framework';
 @import '../../design-settings/cosmos/_design.scss';
 @import '../../design-settings/cosmos/_settings.scss';
+@import '../../designs/cosmos/parts/pdf/_folio.scss';
 
-@include use('BookRoot', "common:::BookRoot");
+// Settings
+// Condensed icon note
+@include add_settings((
+  LinkToLearning:(
+      _selectors: (".american.government.link-to-learning"),
+      'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningBottomBorderColor'),
+      'Title:::font-family': (_ref: 'typography:::titleOption3Font'),
+      'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/carnival-linktolearning.svg")) no-repeat top left,
+  ),
+));
 
 // Boxed Notes
 @include add_settings((
@@ -49,18 +59,51 @@ $bandColor: #DCB83D;
     ),
 ));
 
+@include add_settings((
+  ReviewQuestions: (
+    _selectors: ('.os-eoc.os-review-questions-container'),
+    'ProblemSolutionNumber:::color': (_ref: "colorMap:::fontBodyColor"),
+  ),
+  CriticalThinking: (
+    _selectors: ('.os-eoc.os-critical-thinking-container'),
+    'ProblemSolutionNumber:::color': (_ref: "colorMap:::fontBodyColor"),
+  ),
+  SuggestedReading: (
+    _selectors: ('.os-eoc.os-suggested-reading-container'),
+  ),
+));
+
+@include use('BookRoot', "common:::BookRoot");
+@include use('TocUnit', 'cosmos:::TocUnitShape');
+@include use('Link', 'cosmos:::LinkShape');
+@include use('Figure', 'cosmos:::FigureShape');
+@include use('UnitTitle', 'common:::Hidden');
+@include use('ChapterIntro', 'cosmos:::ChapterIntroShape');
+@include use('LearningObjectivesModule', 'cosmos:::LearningObjectivesModuleShape');;
+
 //Titles
 @include use('PageTitles', 'cosmos:::PageTitlesShape');
+@include use('EobCompositePageTitles', 'cosmos:::EobCompositePageTitlesShape');
+@include use('EocCompositePageTitles', 'cosmos:::EocCompositePageTitlesShape');
+@include use('ChapterTitles', 'cosmos:::ChapterTitlesShape');
 
 // Lists
 @include use('PageLists', 'cosmos:::PageListsShape');
-
-// Figure
-@include use('Figure', 'cosmos:::FigureShape');
+@include use('ExercisesProblemLists', 'cosmos:::ExercisesListsShape');
 
 //Notes
 @include use('Milestone', 'cosmos:::BoxedNoteWithSubtitleShape');
 @include use('FindingAMiddleGround', 'cosmos:::BoxedNoteWithSubtitleShape');
 @include use('InsiderPerspective', 'cosmos:::BoxedNoteWithSubtitleShape');
+@include use('LinkToLearning', 'cosmos:::CondensedIconNoteShape');
 
+// Eoc
+@include use('KeyTerms', 'cosmos:::KeyTermsShape');
+@include use('SuggestedReading', 'cosmos:::ModuleWithIndentationShape');
 
+//Exercises
+@include use('ReviewQuestions', 'cosmos:::ExercisesModuleShape');
+@include use('CriticalThinking', 'cosmos:::ExercisesModuleShape');
+
+//EoB
+@include use('Index', 'cosmos:::IndexShape');
