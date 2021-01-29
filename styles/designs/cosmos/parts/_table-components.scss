@@ -1,0 +1,297 @@
+$Table__Container: (
+    _name: "TableContainer",
+    _subselector: "",
+    _properties: (
+        margin-bottom: table-v-spacing(2),
+        display: table,
+        margin-left: auto,
+        margin-right: auto,
+    )
+);
+
+$Table: (
+    _name: "Table",
+    _subselector: " > table",
+    _properties: (
+        width: 100%,
+        border-collapse: collapse,
+    )
+);
+
+// After discusion we decided to use proportions in col attributes. In this case, data-width is set to 1* for each column.
+// It means all columns should be the same size. There is also a decision that we are using percentages. It might be useful
+// in the future for the web. But, lets keep in mind that we can meet some problems. More informations you can find here: 
+// https://github.com/openstax/cnx-recipes/issues/2776
+
+$Table__Column: (
+    _name: "TableColumn",
+    _subselector: " col[data-width='1*']",
+    _properties: (
+        width: 25%,
+    )
+);
+
+$Table__Head: empty_wrapper(TableHead, ' > thead');
+
+$Table__Head__FirstRow__Cell: (
+    _name: "TableHeadCellFirstRow",
+    _subselector: " > th:not(:only-child)",
+    _properties: (
+        color: enum('ValueSet:::REQUIRED'),
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-weight: bold,
+        font-size: font-scale(0),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-right: table-h-spacing(1),
+        padding-left: table-h-spacing(1),
+        background-color: enum('ValueSet:::OPTIONAL'),
+        border-style: solid,
+        border-color: enum('ValueSet:::REQUIRED'), 
+        border-width: 0.02rem, //.25px converted to rem
+        border-left-style: none,
+        border-left-color: transparent,
+        border-left-width: 0rem,
+        border-right-style: none,
+        border-right-color: transparent,
+        border-right-width: 0rem,
+    )
+);
+
+$Table__Head__Cell: (
+    _name: "TableHeadCell",
+    _subselector: " > th:not(:only-child)",
+    _properties: (
+        color: enum('ValueSet:::REQUIRED'),
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-right: table-h-spacing(1),
+        padding-left: table-h-spacing(1),
+        background-color: enum('ValueSet:::OPTIONAL'),
+        border-width: 0.02rem, //.25px converted to rem
+        border-style: solid,
+        border-color: enum('ValueSet:::REQUIRED'), 
+        border-left-style: none,
+        border-left-color: transparent,
+        border-left-width: 0rem,
+        border-right-style: none,
+        border-right-color: transparent,
+        border-right-width: 0rem, 
+    )
+);
+
+$Table__Head__Cell--TopAligned: (
+    _name: "TopAlignedTableHeadCell",
+    _subselector: "[data-valign="top"]",
+    _properties: (
+       vertical-align: top,
+    )    
+);
+
+$Table__Head__Cell--LeftAligned: (
+    _name: "LeftAlignedTableHeadCell",
+    _subselector: "[data-align="left"]",
+    _properties: (
+        text-align: left,
+    )    
+);
+
+$Table__Head__Cell--RightAligned: (
+    _name: "RightAlignedTableHeadCell",
+    _subselector: "[data-align="right"]",
+    _properties: (
+        text-align: right,
+    )    
+);
+
+$Table__Head__Cell--Centered: (
+    _name: "CenteredTableHeadCell",
+    _subselector: "[data-align="center"]",
+    _properties: (
+        text-align: center,
+    )    
+);
+
+$Table__Body: empty_wrapper(TableBody, ' > tbody');
+
+$Table__Row: empty_wrapper(TableRow, ' > tr');
+
+$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child)');
+$Table__Row--FirstChild: empty_wrapper(TableRowFirstChild, ' > tr:first-child');
+
+$Table__Row--NotLastChild: empty_wrapper(TableRowNotLastChild, ' > tr:not(:last-child)');
+$Table__Row--LastChild: empty_wrapper(TableRowLastChild, ' > tr:last-child');
+
+$Table__Data--FirstChild: (     //To achieve open ends on either side of the table. is there a better name?
+    _name: "TableDataFirstChild",
+    _subselector: " > td:first-child:not(:only-child)",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-left: table-h-spacing(1),
+        padding-right: table-h-spacing(1),
+        border-width: .02rem, // .25px in rem
+        border-style: solid,
+        border-color: enum('ValueSet:::REQUIRED'),
+        border-left-style: none,
+        border-left-color: transparent,
+    )
+);
+
+$Table__Data--MiddleChild: (
+    _name: "TableDataMiddleChild",
+    _subselector: " > td:not(:first-child):not(:last-child):not(:only-child)",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-left: table-h-spacing(1),
+        padding-right: table-h-spacing(1),
+        border-style: enum('ValueSet:::REQUIRED'), 
+        border-color: enum('ValueSet:::REQUIRED'),
+        border-width: .02rem, // .25px in rem
+    )
+);
+
+$Table__Data--LastChild: (
+    _name: "TableDataLastChild",
+    _subselector: "> td:last-child:not(:only-child)",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-left: table-h-spacing(1),
+        padding-right: table-h-spacing(1),
+        border-width: .02rem, // .25px in rem
+        border-style: solid, 
+        border-color: enum('ValueSet:::REQUIRED'),
+        border-right-style: none, 
+        border-right-color: transparent,
+    ),
+);
+
+$Table__Data--OnlyChild: (
+    _name: "TableDataOnlyChild",
+    _subselector: " > td:only-child",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-left: table-h-spacing(1),
+        padding-right: table-h-spacing(1),
+        border-width: .02rem, // .25px in rem
+        border-style: solid, 
+        border-color: enum('ValueSet:::REQUIRED'),
+        border-right-style: none, 
+        border-right-color: transparent,
+        border-left-style: none,
+        border-left-color: transparent,
+    ),
+);
+
+//For the last row
+
+$Table__Data--LastRowFirstChild: (     
+    _name: "TableDataLastRowFirstChild",
+    _subselector: " > td:first-child",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-left: table-h-spacing(1),
+        padding-right: table-h-spacing(1),
+        border-width: .02rem, // .25px in rem
+        border-style: solid, 
+        border-color: enum('ValueSet:::REQUIRED'),
+        border-bottom-color: enum('ValueSet:::REQUIRED'),
+        border-bottom-width: 0.12rem, // 1.5px in rem
+        border-left-style: none,
+        border-left-color: transparent,
+    )
+);
+
+$Table__Data--LastRowMiddleChild: (
+    _name: "TableDataLastRowMiddleChild",
+    _subselector: " > td:not(:first-child):not(:last-child)",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-left: table-h-spacing(1),
+        padding-right: table-h-spacing(1),
+        border-style: solid, 
+        border-color: enum('ValueSet:::REQUIRED'),
+        border-width: .02rem, // .25px in rem
+        border-bottom-width: .12rem, 
+        border-bottom-color: enum('ValueSet:::REQUIRED'),
+    )
+);
+
+$Table__Data--LastRowLastChild: (
+    _name: "TableDataLastRowLastChild",
+    _subselector: "> td:last-child",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-left: table-h-spacing(1),
+        padding-right: table-h-spacing(1),
+        border-width: .02rem, // .25px in rem
+        border-style: solid, 
+        border-color: enum('ValueSet:::REQUIRED'),
+        border-right-style: none, 
+        border-right-color: transparent,
+        border-bottom-color: enum('ValueSet:::REQUIRED'),
+        border-bottom-width: .12rem, // 1.5px in rem
+    ),
+);
+
+$Table__Data--TopAligned: (
+    _name: "TopAlignedTableData",
+    _subselector: "[data-valign="top"]",
+    _properties: (
+       vertical-align: top,
+    )    
+);
+
+$Table__Data--LeftAligned: (
+    _name: "LeftAlignedTabledata",
+    _subselector: " > td[data-align="left"]",
+    _properties: (
+        text-align: left,
+    )    
+);
+
+$Table__Data--RightAligned: (
+    _name: "RightAlignedTabledata",
+    _subselector: " > td[data-align="right"]",
+    _properties: (
+        text-align: right,
+    )    
+);
+
+$Table__Data--Centered: (
+    _name: "CenteredTabledata",
+    _subselector: " > td[data-align="center"]",
+    _properties: (
+        text-align: center,
+    )    
+);
+

@@ -18,12 +18,8 @@ $Toc__Title: (
   )
 );
 
-//FIRST LEVEL: ol with Units
-
-//SECOND LEVEL: ol with Preface, Chapters, Answer Key, Appendix, Index
-
-$Toc__List--SecondLevel: (
-  _name: 'SecondLevelList',
+$Toc__List: (
+  _name: 'ToclList',
   _subselector: ' > ol',
   _properties: (
     list-style: none,
@@ -31,28 +27,30 @@ $Toc__List--SecondLevel: (
   )
 );
 
-$Toc__Link--SecondLevel: ( 
-  _name: 'SecondLevelLink',
+$Toc__Link: ( 
+  _name: 'TocLink',
   _subselector: ' > a',
   _properties: (
     text-decoration: none,
   ),
 );
 
-// NoChapter items (Preface, Answer Key, Appendix, Index)
+// NO UNIT, CHAPTER: li for Preface, Answer Key, Appendix, Index, References
+// (these elements can appear in both shapes: TocNoUnit and TocUnit, and they are always direct siblings
+// of li.os-toc-chapter and li.os-toc-unit respectively)
 
-$Toc__List--SecondLevel__Item--NoChapter: empty_wrapper(SecondLevelListNoChapterItem, ' > li:not(.os-toc-chapter)');
+$Toc__ListItem--NoUnitChapter: empty_wrapper(NoUnitChapterListItem, ' > li:not(.os-toc-unit):not(.os-toc-chapter)');
 
-$Toc__List--SecondLevel__Item--Preface: (
-  _name: 'SecondLevelListPrefaceItem',
+$Toc__ListItem--Preface: (
+  _name: 'PrefaceListItem',
   _subselector: ' > li.os-toc-preface',
   _properties: (
     margin-bottom: v-spacing(1),
   )
 );
 
-$Toc__Link--SecondLevel__Page--NoChapter: (
-  _name: 'SecondLevelLinkNoChapterPage',
+$Toc__LinkPage--NoUnitChapter: (
+  _name: 'NoUnitChapterLinkPage',
   _subselector: '::after',
   _properties: (
     content: "target-counter(attr(href), page)",
@@ -65,8 +63,8 @@ $Toc__Link--SecondLevel__Page--NoChapter: (
   ),
 );
 
-$Toc__Link--SecondLevel__Number--NoChapter: (  //used for Appendix
-  _name: 'SecondLevelLinkNoChapterNumber',
+$Toc__LinkNumber--NoUnitChapter: (  //used for Appendix
+  _name: 'NoUnitChapterLinkNumber',
   _subselector: ' > .os-number',
   _properties: (
     font-family: enum('ValueSet:::REQUIRED'),
@@ -77,8 +75,8 @@ $Toc__Link--SecondLevel__Number--NoChapter: (  //used for Appendix
   ),
 );
 
-$Toc__Link--SecondLevel__Text--NoChapter: (
-  _name: 'SecondLevelLinkNoChapterText',
+$Toc__LinkText--NoUnitChapter: (
+  _name: 'NoUnitChapterLinkText',
   _subselector: ' > .os-text',
   _properties: (
     font-family: enum('ValueSet:::REQUIRED'),
@@ -88,18 +86,68 @@ $Toc__Link--SecondLevel__Text--NoChapter: (
   ),
 );
 
-// Chapter items
+$Toc__List--NoUnitChapter: ( //child of Answer Key
+  _name: 'NoUnitChapterlList',
+  _subselector: ' > ol',
+  _properties: (
+    display: none,
+  )
+);
 
-$Toc__List--SecondLevel__Item--Chapter: (
-  _name: 'SecondLevelListChapterItem',
+// UNIT
+
+$Toc__List--Unit: (
+  _name: 'UnitList',
+  _subselector: ' > ol.os-unit',
+  _properties: (
+    list-style: none,
+    margin-left: 0,
+    margin-top: v-spacing(1),
+  )
+);
+
+$Toc__ListItem--Unit: empty_wrapper(UnitListItem, ' > li.os-toc-unit');
+
+$Toc__Link--Unit: (
+  _name: 'UnitLink',
+  _subselector: ' > a',
+  _properties: (
+    text-decoration: none,
+    font-family: enum('ValueSet:::REQUIRED'), //in this level .os-text and .os-number have the same specs, so I don't create
+    color: enum('ValueSet:::REQUIRED'),       //separate components for them, instead I add properties to link component
+    font-size: font-scale(3),
+    line-height: line-height(3),
+    font-weight: 500,
+    text-transform: uppercase,
+    border-bottom-style: solid,
+    border-bottom-color: enum('ValueSet:::REQUIRED'),
+    border-bottom-width: 0.1rem,
+    display: block,
+    padding-bottom: v-spacing(1),
+  ),
+);
+
+// CHAPTER
+
+$Toc__List--Chapter: (
+  _name: 'ChapterList',
+  _subselector: ' > ol.os-chapter',
+  _properties: (
+    list-style: none,
+    margin-left: 0,
+  )
+);
+
+$Toc__ListItem--Chapter: (
+  _name: 'ChapterListItem',
   _subselector: ' > li.os-toc-chapter',
   _properties: (
     margin-bottom: v-spacing(1),
   )
 );
 
-$Toc__Link--SecondLevel__Number--Chapter: (
-  _name: 'SecondLevelLinkChapterNumber',
+$Toc__LinkNumber--Chapter: (
+  _name: 'ChapterLinkNumber',
   _subselector: ' > .os-number',
   _properties: (
     font-family: enum('ValueSet:::REQUIRED'),
@@ -111,8 +159,8 @@ $Toc__Link--SecondLevel__Number--Chapter: (
   ),
 );
 
-$Toc__Link--SecondLevel__Text--Chapter: (
-  _name: 'SecondLevelLinkChapterText',
+$Toc__LinkText--Chapter: (
+  _name: 'ChapterLinkText',
   _subselector: ' > .os-text',
   _properties: (
     font-family: enum('ValueSet:::REQUIRED'),
@@ -123,8 +171,8 @@ $Toc__Link--SecondLevel__Text--Chapter: (
   ),
 );
 
-$Toc__Link--SecondLevel__Page--Chapter: (
-  _name: 'SecondLevelLinkChapterPage',
+$Toc__LinkPage--Chapter: (
+  _name: 'ChapterLinkPage',
   _subselector: '::after',
   _properties: (
     content: "target-counter(attr(href), page)",
@@ -138,21 +186,12 @@ $Toc__Link--SecondLevel__Page--Chapter: (
   ),
 );
 
-//THIRD LEVEL: ol with regular and EOC modules
+// MODULE: li for regular and EOC modules
 
-$Toc__List--ThirdLevel: (
-  _name: 'ThirdLevelList',
-  _subselector: ' > ol.os-chapter',
-  _properties: (
-    list-style: none,
-    margin-left: 0,
-  )
-);
+$Toc__ListItem--Module: empty_wrapper(ModuleListItem, ' > li');
 
-$Toc__List--ThirdLevel__Item: empty_wrapper(ThirdLevelListItem, ' > li');
-
-$Toc__Link--ThirdLevel: (
-  _name: 'ThirdLevelLink',
+$Toc__Link--Module: (
+  _name: 'ModuleLink',
   _subselector: ' > a',
   _properties: (
     text-decoration: none,
@@ -163,8 +202,8 @@ $Toc__Link--ThirdLevel: (
   ),
 );
 
-$Toc__Link--ThirdLevel__Page: (
-  _name: 'ThirdLevelLinkPage',
+$Toc__LinkPage--Module: (
+  _name: 'ModuleLinkPage',
   _subselector: '::after',
   _properties: (
     content: "target-counter(attr(href), page)",
