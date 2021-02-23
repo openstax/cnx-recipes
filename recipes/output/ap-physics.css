@@ -430,6 +430,21 @@
   container: div;
   content: pending(bListLabel) content(); }
 
+:pass(1) :not([data-type="alternatives"]) > iframe {
+  class: attr(class) "os-is-iframe"; }
+  :pass(1) :not([data-type="alternatives"]) > iframe::after {
+    container: a;
+    class: "os-is-link";
+    attr-target: "_window";
+    attr-href: attr(src);
+    content: "Click to view content";
+    move-to: bIframeLink; }
+  :pass(1) :not([data-type="alternatives"]) > iframe::outside {
+    container: div;
+    data-type: "alternatives";
+    class: "os-has-iframe os-has-link";
+    content: pending(bIframeLink) content(); }
+
 :pass(1) cnx-pi {
   move-to: trash; }
 
@@ -2223,6 +2238,13 @@
 
 :pass(15) nav#toc > ol .os-toc-appendix > a > .os-number:deferred {
   content: pending(partString) content(); }
+
+:pass(16) p {
+  string-set: hasNoteref " "; }
+  :pass(16) p a[role="doc-noteref"] {
+    string-set: hasNoteref " has-noteref"; }
+  :pass(16) p:deferred {
+    class: attr(class) string(hasNoteref); }
 
 :pass(100) div.delete-me {
   move-to: trash; }
