@@ -9,11 +9,38 @@ $bandColor: #DCB83D;
 @import 'framework/framework';
 @import '../../design-settings/cosmos/_design.scss';
 @import '../../design-settings/cosmos/_settings.scss';
-@import '../../designs/cosmos/parts/pdf/_folio.scss';
+@import '../../designs/cosmos/pdf/folio';
+
 
 // Settings
 // Iconned Notes
 @include add_settings((
+  BringItHome: (
+    _selectors: ('.economics.bringhome'),
+    'Container:::box-decoration-break': slice,
+    'Title:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Title:::font-family': (_ref: 'typography:::titleOption3Font'),
+    'Title:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorBrown'),
+    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-home.svg")) no-repeat bottom left,
+    'TitleIcon:::height': v-spacing(4),
+    'TitleIcon:::width': v-spacing(4),
+    'TitleIcon:::bottom': -0.7rem,
+    'Body:::font-family': (_ref: 'typography:::titleOption2Font'),
+    'Body:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorBrown'),
+    'Subtitle:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Subtitle:::font-family': (_ref: 'typography:::titleOption1Font'),
+  ),
+));
+
+// Condensed icon note
+@include add_settings((
+  LinkItUp:(
+      _selectors: (".economics.linkup"),
+      'Container:::box-decoration-break': slice,
+      'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningBottomBorderColor'),
+      'Title:::font-family': (_ref: 'typography:::titleOption3Font'),
+      'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/carnival-linktolearning.svg")) no-repeat top left,
+    ),
   ClearItUp: (
         _selectors: ('.economics.clearup'),
         'Container:::box-decoration-break': slice,
@@ -67,34 +94,36 @@ $bandColor: #DCB83D;
 ));
 
 @include use('BookRoot', "common:::BookRoot");
+@include use('LearningObjectivesAbstractModule', 'cosmos:::LearningObjectivesModuleShape');
+@include use('ChapterIntroWithChapterObjectives', 'cosmos:::ChapterIntroWithChapterObjectivesShape');
 @include use('Link', 'cosmos:::LinkShape');
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
 @include use('Figure', 'cosmos:::FigureShape');
-@include use('LearningObjectivesAbstractModule', 'cosmos:::LearningObjectivesAbstractModuleShape');
 @include use('TocNoUnit', 'cosmos:::TocNoUnitShape');
 @include use('Equation', 'cosmos:::EquationShape');
 
-//Tables
-@include use('DefaultTable', 'cosmos:::BasicTableShape');
-
-// Lists
-@include use('ExercisesProblemLists', 'cosmos:::ExercisesListsShape');
+// Notes
+@include use('BringItHome', 'cosmos:::IconnedNoteWithSubtitleShape');
+@include use('LinkItUp', 'cosmos:::CondensedIconNoteShape');
+@include use('ClearItUp', 'cosmos:::IconnedNoteWithSubtitleShape');
+@include use('WorkItOut', 'cosmos:::BoxedNoteWithSubtitleShape');
 
 // Titles
 @include use('PageTitles', 'cosmos:::PageTitlesShape');
+@include use('ChapterTitles', 'cosmos:::ChapterTitlesShape');
+@include use('IntroductionPageTitles', 'cosmos:::IntroductionPageTitlesShape');
 @include use('EocCompositePageTitles', 'cosmos:::EocCompositePageTitlesShape');
 @include use('EobTitles', 'cosmos:::EobTitlesShape');
+
+//Tables
+@include use('DefaultTable', 'cosmos:::BasicTableShape');
 
 // Lists
 @include use('PageLists', 'cosmos:::PageListsShape');
 @include use('NotesLists', 'cosmos:::NotesListsShape');
 @include use('ExercisesProblemLists', 'cosmos:::ExercisesListsShape');
 @include use('ExercisesSolutionLists', 'cosmos:::ExercisesListsShape');
-
-// Notes
-@include use('ClearItUp', 'cosmos:::IconnedNoteWithSubtitleShape');
-@include use('WorkItOut', 'cosmos:::BoxedNoteWithSubtitleShape');
 
 // Eoc
 @include use('KeyTerms', 'cosmos:::KeyTermsShape');
