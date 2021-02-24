@@ -2340,6 +2340,21 @@
 :pass(14) nav#toc li > a:deferred {
   content: pending(title-spans); }
 
+:pass(14) .introduction .os-chapter-outline {
+  move-to: chap-outline; }
+
+:pass(14) .introduction > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
+  move-to: intro-text; }
+
+:pass(14) .introduction::after {
+  content: pending(intro-text);
+  move-to: intro-body;
+  class: "intro-text"; }
+
+:pass(14) .introduction:deferred::after {
+  content: pending(chap-outline) pending(intro-body);
+  class: "intro-body"; }
+
 :pass(15) nav#toc > ol .os-toc-chapter > a > .os-part-text {
   move-to: partString; }
 
@@ -2357,6 +2372,13 @@
 
 :pass(15) nav#toc > ol .os-toc-appendix > a > .os-number:deferred {
   content: pending(partString) content(); }
+
+:pass(16) p {
+  string-set: hasNoteref " "; }
+  :pass(16) p a[role="doc-noteref"] {
+    string-set: hasNoteref " has-noteref"; }
+  :pass(16) p:deferred {
+    class: attr(class) string(hasNoteref); }
 
 :pass(100) div.delete-me {
   move-to: trash; }
