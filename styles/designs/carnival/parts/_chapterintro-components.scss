@@ -18,18 +18,14 @@ $ChapterOutline--Margin: (
     _subselector: ' > .os-chapter-outline',
     _properties: (
         font-family: enum('ValueSet:::REQUIRED'),
-        font-size: enum('ValueSet:::REQUIRED'),
-        font-weight: enum('ValueSet:::REQUIRED'),
-        line-height: enum('ValueSet:::REQUIRED'),
-        width: enum('ValueSet:::REQUIRED'),
-        background-color: enum('ValueSet:::OPTIONAL'),
-        color: enum('ValueSet:::OPTIONAL'),
-        margin: enum('ValueSet:::OPTIONAL'),
-        padding: enum('ValueSet:::OPTIONAL'),
-        border-bottom-color: enum('ValueSet:::OPTIONAL'),
-        border-bottom-width: enum('ValueSet:::OPTIONAL'),
-        border-bottom-style: enum('ValueSet:::OPTIONAL'),
-        box-decoration-break: enum('ValueSet:::OPTIONAL'),
+        font-size: font-scale(0),
+        font-weight: 500,
+        line-height: line-height(0),
+        width: half-fullBleedsSize(2, in),
+        background-color: enum('ValueSet:::REQUIRED'),
+        color: enum('ValueSet:::REQUIRED'),
+        margin: "0 fullBleedsMargin(0, rem) 0 1.5rem",
+        padding: "1.5rem 0 1.5rem 1.5rem",
     )
 );
 
@@ -38,17 +34,15 @@ $ChapterOutline--FullWidth: (
     _subselector: ' > .os-chapter-outline',
     _properties: (
         font-family: enum('ValueSet:::REQUIRED'),
-        font-size: enum('ValueSet:::REQUIRED'),
-        font-weight: enum('ValueSet:::REQUIRED'),
-        line-height: enum('ValueSet:::REQUIRED'),
-        width: enum('ValueSet:::REQUIRED'),
-        color: enum('ValueSet:::OPTIONAL'),
-        margin: enum('ValueSet:::OPTIONAL'),
-        padding: enum('ValueSet:::OPTIONAL'),
-        border-bottom-color: enum('ValueSet:::OPTIONAL'),
-        border-bottom-width: enum('ValueSet:::OPTIONAL'),
-        border-bottom-style: enum('ValueSet:::OPTIONAL'),
-        box-decoration-break: enum('ValueSet:::OPTIONAL'),
+        font-size: font-scale(0),
+        font-weight: 500,        
+        line-height: line-height(0),
+        width: 6.5in, // Width of the page minus margins
+        margin: "0 0 1.5rem 0",
+        border-bottom-color: enum('ValueSet:::REQUIRED'),
+        border-bottom-width: 0.2rem ,
+        border-bottom-style: solid,
+        box-decoration-break: slice,
     )
 );
 
@@ -56,18 +50,18 @@ $ChapterOutline__Title: (
     _name: "OutlineTitle",
     _subselector: ' > .os-title',
     _properties: (
-        overflow: enum('ValueSet:::OPTIONAL'),
-        border-bottom: enum('ValueSet:::OPTIONAL'),
-        padding: enum('ValueSet:::OPTIONAL'),
+        overflow: enum('ValueSet:::OPTIONAL'), //  Used in Chapter Intro Margin
+        border-bottom: enum('ValueSet:::OPTIONAL'), //  Used in Chapter Intro Margin
+        padding: enum('ValueSet:::OPTIONAL'), //  Used in Chapter Intro Margin
         margin: enum('ValueSet:::REQUIRED'),
         font-size: enum('ValueSet:::REQUIRED'),
         line-height: enum('ValueSet:::REQUIRED'),
         font-weight: enum('ValueSet:::REQUIRED'),
         font-family: enum('ValueSet:::REQUIRED'),
-        color: enum('ValueSet:::OPTIONAL'),
-        position: enum('ValueSet:::OPTIONAL'),
-        display: enum('ValueSet:::OPTIONAL'),
-        flex-direction: enum('ValueSet:::OPTIONAL'),
+        color: enum('ValueSet:::OPTIONAL'), // Used in FullWidthChapterIntro
+        position: enum('ValueSet:::OPTIONAL'), // Used in FullWidthChapterIntro
+        display: enum('ValueSet:::OPTIONAL'), // Used in FullWidthChapterIntro
+        flex-direction: enum('ValueSet:::OPTIONAL'), // Used in FullWidthChapterIntro
     )
 );
 
@@ -85,45 +79,32 @@ $ChapterOutline__Objective--Link: (
     _subselector: ' > a.os-chapter-objective',
     _properties: (
         display: enum('ValueSet:::REQUIRED'),
-        text-decoration: enum('ValueSet:::OPTIONAL'),
+        text-decoration: enum('ValueSet:::OPTIONAL'), // Used in Chapoter Intro Margin
         color: enum('ValueSet:::REQUIRED'),
-        font-family: enum('ValueSet:::OPTIONAL'),
-        font-weight: enum('ValueSet:::OPTIONAL'),
-        font-size: enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::OPTIONAL'), // Used in FullWidthChapterIntro
+        font-weight: enum('ValueSet:::OPTIONAL'), // Used in FullWidthChapterIntro
+        font-size: enum('ValueSet:::OPTIONAL'), // Used in FullWidthChapterIntro
+        margin-bottom: enum('ValueSet:::OPTIONAL'), // Used in FullWidthChapterIntro
     )
 );
 
-$ChapterOutline__Objective--Text: (
+$ChapterOutline__Objective--Text: ( // Used only in Chapter Intro Margin
     _name: "ChapterOutlineObjectiveText",
     _subselector: ' > .os-text', 
     _properties: (
-        display: enum('ValueSet:::OPTIONAL'),
-        margin-left: enum('ValueSet:::OPTIONAL'),
+        margin-left: .5rem,
+        display: inline-block, 
     )
 );
 
-$ChapterOutline__Objective--Learning: (
-    _name: "OutlineObjectiveLearning",
-    _subselector: ' > .learning-objective',
-    _properties: (
-        margin-left: enum('ValueSet:::OPTIONAL'),
-    )
-);
+$ChapterOutline__Objective--Learning: empty_wrapper(OutlineObjectiveLearning, ' > .learning-objective');
+
 $ChapterOutline__Abstract: (
     _name: "OutlineAbstract",
     _subselector: ' > [data-type="abstract"]',
     _properties: (
         margin-left: 1.5rem,
-        font-family: enum('ValueSet:::OPTIONAL'),
-    )
-);
-
-$ChapterOutline__List: (
-    _name: "OutlineList",
-    _subselector: ' > ul',
-    _properties: (
-        margin-bottom: v-spacing(1),
+        font-family: enum('ValueSet:::REQUIRED'),
     )
 );
 
@@ -154,49 +135,7 @@ $ChapterObjectives__Para: (
     )
 );
 
-$ChapterObjectives__List: (
-    _name: "ObjectivesList",
-    _subselector: ' > ul',
-    _properties: (
-        margin-bottom:v-spacing(2),
-        margin-left: h-spacing(2),
-        padding-left: 0,
-        font-size: font-scale(0),
-        line-height: line-height(0),
-    )
-);
-
-$ChapterObjectives__List__Item: (
-    _name: "ObjectivesListItem",
-    _subselector: ' > li',
-    _properties: (
-        color: enum('ValueSet:::REQUIRED'),
-        font-family: enum('ValueSet:::REQUIRED'),
-        padding: 0,
-    )
-);
-
-$ChapterObjectives__List__Dot: (
-    _name: "ObjectivesListDot",
-    _subselector: '::marker',
-    _properties: (
-        color: enum('ValueSet:::REQUIRED'),
-    )
-);
-
 $ChapterIntro__Content: empty_wrapper(IntroContent, ' > .intro-text');
-
-$ChapterIntro__Content__Header: (
-    _name: "IntroContentHeader",
-    _subselector: ' > h2[data-type="document-title"]:first-of-type', 
-    _properties: (
-        float: left,
-        font-size: enum('ValueSet:::OPTIONAL'), 
-        text-transform: enum('ValueSet:::OPTIONAL'), 
-        margin: enum('ValueSet:::OPTIONAL'),
-        font-weight: enum('ValueSet:::OPTIONAL'),
-    )
-);
 
 $ChapterSplash__Img: (
     _name: "SplashImg",
@@ -216,18 +155,14 @@ $ChapterSplash__Media: (
         width: half-fullBleedsSize(7.5, in),
         justify-content: flex-end
     ),
-    _components: (
-        $ChapterSplash__Img,
-    )
 );
 
-@function fullWidthBg($kind, $color) {
-    @return (
-        _name: "#{$kind}Bg",
+$SplashFigureBg: (
+        _name: "SplashFigureBg",
         _subselector: '::before',
         _properties: (
             content: "''",
-            background-color: $color,
+            background-color: enum('ValueSet:::REQUIRED'),
             position: absolute,
             height: 100%,
             width: enum('ValueSet:::REQUIRED'),
@@ -237,8 +172,25 @@ $ChapterSplash__Media: (
             padding: inherit,
             top: 0,
         ),
-    );
-}
+);
+
+$SplashCaptionBg: (
+        _name: "SplashCaptionBg",
+        _subselector: '::before',
+        _properties: (
+            content: "''",
+            background-color: enum('ValueSet:::OPTIONAL'),
+            position: absolute,
+            height: 100%,
+            width: enum('ValueSet:::REQUIRED'),
+            margin-left: enum('ValueSet:::REQUIRED'),
+            z-index: -1,
+            box-sizing: border-box,
+            padding: inherit,
+            top: 0,
+        ),
+);
+
 
 $ChapterSplash__Figure: (
     _name: "SplashFigure",
@@ -247,10 +199,6 @@ $ChapterSplash__Figure: (
         position: relative,
         margin: 0,
     ),
-    _components: (
-        fullWidthBg("SplashFigure", enum('ValueSet:::REQUIRED')),
-        $ChapterSplash__Media,
-    )
 );
 
 $ChapterSplash__Caption: (
@@ -261,13 +209,6 @@ $ChapterSplash__Caption: (
         padding-top: 1rem,
         padding-bottom: 2rem,
     ),
-    _components: (
-        fullWidthBg("SplashCaption", enum('ValueSet:::REQUIRED')),
-        $Figure__Num,
-        $Figure__Label,
-        $Figure__Title,
-        $Caption
-    )
 );
 
 $ChapterSplash__Figure__Wrapper: (
@@ -276,10 +217,6 @@ $ChapterSplash__Figure__Wrapper: (
     _properties: (
         margin-bottom: 2rem,
     ),
-    _components: (
-        $ChapterSplash__Figure,
-        $ChapterSplash__Caption,
-    )
 );
 
 $ChapterOutline__Title--BottomBorder: titleBottomBorder("Outline", 116.7);
