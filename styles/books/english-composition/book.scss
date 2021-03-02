@@ -1,0 +1,63 @@
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: eob, firstSelector: '.os-eob[data-type="composite-page"]', generalSelector: '.os-eob'),
+);
+
+
+$bandColor: #DCB83D;
+
+@import 'framework/framework';
+@import '../../design-settings/cosmos/_design.scss';
+@import '../../design-settings/cosmos/_settings.scss';
+@import '../../designs/cosmos/pdf/folio';
+
+@include add_settings((
+  CultureAnnotation:(
+      _selectors: (".culture-icon::before"),
+      'Icon:::background-image': 'url("../designs/cosmos/resources/cosmos-culture.svg"), url("../designs/cosmos/resources/cosmos-linguistic.svg")'
+  )
+));
+
+@include add_settings((
+  Trailblazer: (
+    _selectors:("[data-type='page'].narrative-trailblazer"),
+    'ContainerBar:::background-color': (_ref: "colorMap:::trailBlazerModuleColor"),
+    'ModuleNumber:::font-family': (_ref: 'typography:::titleOption1Font'),
+    'ModuleNumber:::color': (_ref: "colorMap:::fontBodyColor"),
+    'ModuleTitle:::color': (_ref: "colorMap:::fontBodyColor"),
+    'ModuleTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
+    'Title:::background-color': (_ref: "colorMap:::trailBlazerModuleColor"),
+    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-pencil.svg")) no-repeat top left,
+    'AuthorName:::color': (_ref: "colorMap:::fontBodyColor"),
+    'AuthorName:::font-family': (_ref: 'typography:::titleOption1Font'),
+  )
+));
+
+@include use('BookRoot', "common:::BookRoot");
+@include use('TocUnit', 'cosmos:::TocUnitShape');
+@include use('Figure', 'cosmos:::FigureShape');
+@include use('Link', 'cosmos:::LinkShape');
+@include use('Blockquote', "cosmos:::BlockquoteShape");
+@include use('ChapterIntro', 'cosmos:::ChapterIntroShape');
+@include use('ChapterIntroWithLO', 'cosmos:::ChapterIntroWithLOShape');
+
+//Notes & Annotations
+@include use('CultureAnnotation', 'cosmos:::AnnotationShape');
+// @include use('LinguisticAnnotation', 'cosmos:::AnnotationShape');
+@include use('Trailblazer', 'cosmos:::IconFullPageNoteShape');
+
+// Titles
+@include use('PageTitles', 'cosmos:::PageTitlesShape');
+@include use('ChapterTitles', 'cosmos:::ChapterTitlesShape');
+@include use('EocCompositePageTitles', 'cosmos:::EocCompositePageTitlesShape');
+@include use('EobTitles', 'cosmos:::EobTitlesShape');
+
+// Lists
+@include use('PageLists', 'cosmos:::PageListsShape');
+
+// Tables
+@include use('FakeTitleTable', 'cosmos:::BasicTableShape');
+@include use('DefaultTable', 'cosmos:::BasicTableShape');
+
+//EoB
+@include use('Index', 'cosmos:::IndexShape');

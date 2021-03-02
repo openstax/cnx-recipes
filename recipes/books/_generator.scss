@@ -178,6 +178,44 @@
   @if $Config_hasReferenceInTerm == true {
     @include modify_finishPreppingGlossaryTerms($Config_Index_NotSymbolRegexp, $Config_Index_SymbolRegexp);
   }
+
+  //Sections w/ titles injected in config - implemented for English Comp
+   //not very pretty but this will be moving to kitchen 
+  // @each $section in $Config_Custom_Section {
+  //   $className: map-get($section, className);
+  //   $sectionTitle: map-get($section, sectionTitle);
+
+  //   @include validate_type($className, string);
+  //   @include validate_typeOptional($sectionTitle, string);
+
+  //   //for data-type page
+  //   [data-type="page"].#{$className} {
+  //     > h2[data-type="document-title"] {
+  //       > .os-text {
+  //         // string-set: subtitle;
+  //         content: $sectionTitle;
+  //       }
+  //     }
+  //   }
+
+
+  //   //inject given title in h3
+  //   //take data-type title and put in h4
+  //   //for sections
+  //   section.#{$className}  {
+  //     > [data-type="title"] {
+  //       container: h4;
+  //     }
+  //     &:deferred {
+  //       &::before {
+  //         content: $sectionTitle;
+  //         container: h3;
+  //         class: 'os-title';
+  //       }
+  //     }
+  //   }
+
+  // }
 }
 :pass(3) {
 
@@ -760,6 +798,50 @@
 }
 :pass(16) {
   @include modify_tagNoteref();
+  @each $section in $Config_Custom_Section {
+    $className: map-get($section, className);
+    $sectionTitle: map-get($section, sectionTitle);
+
+    @include validate_type($className, string);
+    @include validate_typeOptional($sectionTitle, string);
+
+    //for data-type page
+    [data-type="page"].#{$className} {
+      > h2[data-type="document-title"] {
+        > .os-text {
+          string-set: subtitle content();
+        }
+        & + div {
+          content: string(subtitle);
+          container: h3;
+          class: 'os-subtitle';
+        }
+        &:deferred {
+          > .os-text {
+            content: $sectionTitle;
+          }
+        }
+      }
+    }
+
+
+    //inject given title in h3
+    //take data-type title and put in h4
+    //for sections
+    section.#{$className}  {
+      > [data-type="title"] {
+        container: h4;
+      }
+      &:deferred {
+        &::before {
+          content: $sectionTitle;
+          container: h3;
+          class: 'os-title';
+        }
+      }
+    }
+
+  }
 }
 :pass(100) {
   // Get rid of delete-me objects that easybake misses
