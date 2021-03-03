@@ -325,7 +325,7 @@
   class: "body"; }
 
 :pass(1) [data-type="chapter"] > [data-type="page"]:not(.introduction) {
-  class: "chapter-content-module"; }
+  class: attr(class) " chapter-content-module"; }
 
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
@@ -437,6 +437,11 @@
 
 :pass(1) ol[data-number-style="lower-alpha"] {
   attr-type: "a"; }
+
+:pass(1) [data-type="abstract"]::before {
+  container: h3;
+  data-type: "title";
+  content: "Learning Objectives"; }
 
 :pass(2) [data-type="exercise"].missing-exercise {
   move-to: trash; }
@@ -642,6 +647,33 @@
     data-type: "composite-page";
     data-uuid-key: ".works-consulted"; }
 
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"] {
+  string-set: outlinePageId attr(id); }
+  :pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction) > [data-type="document-title"]::after {
+    container: a;
+    class: "os-chapter-objective";
+    content: content();
+    attr-href: "#" string(outlinePageId);
+    move-to: chapOutlineLink; }
+
+:pass(5) [data-type="chapter"] [data-type="page"]:not(.introduction)::after {
+  class: "os-chapter-objective";
+  content: pending(chapOutlineLink) pending(outlineLO);
+  move-to: chapOutline; }
+
+:pass(5) [data-type="chapter"]::before {
+  container: h3;
+  class: "os-title";
+  content: "Chapter Outline";
+  move-to: chapOutlineTitle; }
+
+:pass(5) [data-type="chapter"]:deferred::before {
+  class: "os-chapter-outline";
+  content: pending(chapOutlineTitle) pending(chapOutline); }
+
+:pass(5) .introduction [data-type="abstract"] {
+  move-to: trash; }
+
 :pass(6) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(6) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
   data-visited: true;
@@ -700,6 +732,12 @@
   content: pending(index-term) pending(index-section-link);
   class: os-index-item;
   move-to: index-TOCOMPOSITE; }
+
+:pass(7) .os-chapter-outline {
+  move-to: ChapterOutline; }
+
+:pass(7) .introduction {
+  content: pending(ChapterOutline) content(); }
 
 :pass(8) body {
   counter-reset: exerciseAll; }
@@ -1609,10 +1647,10 @@
 :pass(14) nav#toc li > a:deferred {
   content: pending(title-spans); }
 
-:pass(14) .introduction .chapter-objectives {
-  move-to: chap-objectives; }
+:pass(14) .introduction .os-chapter-outline {
+  move-to: chap-outline; }
 
-:pass(14) .introduction > :not(.chapter-objectives):not([data-type="metadata"]):not(.has-splash) {
+:pass(14) .introduction > :not(.os-chapter-outline):not([data-type="metadata"]):not(.has-splash) {
   move-to: intro-text; }
 
 :pass(14) .introduction::after {
@@ -1621,7 +1659,7 @@
   class: "intro-text"; }
 
 :pass(14) .introduction:deferred::after {
-  content: pending(chap-objectives) pending(intro-body);
+  content: pending(chap-outline) pending(intro-body);
   class: "intro-body"; }
 
 :pass(15) nav#toc > ol .os-toc-chapter > a > .os-part-text {
@@ -1660,25 +1698,6 @@
 :pass(16) [data-type="page"].narrative-trailblazer > h2[data-type="document-title"]:deferred > .os-text {
   content: "Literacy Narrative Trailblazer"; }
 
-:pass(16) section.narrative-trailblazer > [data-type="title"] {
-  container: h4; }
-
-:pass(16) section.narrative-trailblazer:deferred::before {
-  content: "Literacy Narrative Trailblazer";
-  container: h3;
-  class: 'os-title'; }
-
-:pass(16) [data-type="page"].living-words > h2[data-type="document-title"] > .os-text {
-  string-set: subtitle content(); }
-
-:pass(16) [data-type="page"].living-words > h2[data-type="document-title"] + div {
-  content: string(subtitle);
-  container: h3;
-  class: 'os-subtitle'; }
-
-:pass(16) [data-type="page"].living-words > h2[data-type="document-title"]:deferred > .os-text {
-  content: "Living by Their Own Words"; }
-
 :pass(16) section.living-words > [data-type="title"] {
   container: h4; }
 
@@ -1686,6 +1705,9 @@
   content: "Living by Their Own Words";
   container: h3;
   class: 'os-title'; }
+
+:pass(16) section.quick-launch > h3[data-type="title"] {
+  content: "Quick Launch: " content(); }
 
 :pass(100) div.delete-me {
   move-to: trash; }
