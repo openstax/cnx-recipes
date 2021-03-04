@@ -11,12 +11,20 @@ $bandColor: #DCB83D;
 @import '../../design-settings/cosmos/_settings.scss';
 @import '../../designs/cosmos/pdf/folio';
 
-// @include add_settings((
-//   CultureAnnotation:(
-//       _selectors: (".culture-icon::before"),
-//       'Icon:::background-image': 'url("../designs/cosmos/resources/cosmos-culture.svg"), url("../designs/cosmos/resources/cosmos-linguistic.svg")'
-//   )
-// ));
+@include add_settings((
+  CultureAnnotation:(
+    _selectors: ("span.culture-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-linguistic.svg")) no-repeat top left
+  ),
+  LinguisticAnnotation: (
+    _selectors: ("span.linguistic-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-culture.svg")) no-repeat top left
+  ),
+  DreamingAnnotation: (
+    _selectors: ("span.dreaming-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-dreaming.svg")) no-repeat top left
+  )
+));
 
 @include add_settings((
   Trailblazer: (
@@ -36,9 +44,9 @@ $bandColor: #DCB83D;
     'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-launch.svg")) no-repeat top left, 
   ),
   LivingWords: (
-    _selectors: ('.living-words'),
+    _selectors: ('section.living-words'),
     'Container:::box-decoration-break': slice,
-    'Title:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Title:::color': (_ref: 'colorMap:::iconnedNoteBorderColorGreen'),
     'Title:::font-family': (_ref: 'typography:::titleOption3Font'),
     'Title:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorBlue'),
     'TitleIcon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-world.svg")) no-repeat bottom left,
@@ -77,8 +85,10 @@ $bandColor: #DCB83D;
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
 
 //Notes & Annotations
-// @include use('CultureAnnotation', 'cosmos:::AnnotationShape');
-// @include use('LinguisticAnnotation', 'cosmos:::AnnotationShape');
+@include use('CultureAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('LinguisticAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('DreamingAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('Annotation', 'cosmos:::AnnotationShape');
 @include use('Trailblazer', 'cosmos:::IconFullPageNoteShape');
 @include use('QuickLaunch', 'cosmos:::QuickLaunchShape');
 @include use('LivingWords', 'cosmos:::IconnedSectionWithSubtitleShape');

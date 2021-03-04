@@ -757,6 +757,12 @@
   @if release-flag-enabled(modify-column-container) {
     @include modify_columnContainer();
   }
+  .annotation {
+    &::inside {
+      class: 'os-text';
+      container: span;
+    }
+  }
 }
 :pass(16) {
   @include modify_tagNoteref();
@@ -819,6 +825,27 @@
           content: $text content();
         }
       }
+    }
+  }
+  // .annotation {
+  //   &::inside {
+  //     class: 'os-text';
+  //   }
+  // }
+  @each $class in $Config_Annotation_Classes {
+    p.#{$class} {
+      &::before {
+        class: $class;
+        container: span;
+        move-to: icons;
+      }
+    }
+  }
+
+  p.annotation {
+    &::before {
+      class: 'os-icons';
+      content: pending(icons);
     }
   }
 }
