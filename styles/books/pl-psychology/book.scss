@@ -11,14 +11,27 @@ $bandColor: #DCB83D;
 @import '../../designs/cosmos/pdf/locale/pl/folio';
 
 // Settings
-// Condensed icon note
+
+//TOC
 @include add_settings((
-  LinkToLearning:(
-      _selectors: (".psychology.link-to-learning"),
-      'Container:::box-decoration-break': slice,
-      'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningBottomBorderColor'),
-      'Title:::font-family': (_ref: 'typography:::titleOption3Font'),
-      'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/carnival-linktolearning.svg")) no-repeat top left,
+  TocNoUnit:(
+    _selectors: ('nav#toc'),
+    'TocTitle:::color': (_ref: 'colorMap:::tocTitlePlPsychologyColor'),
+    'TocTitle:::border-bottom-color': (_ref: 'colorMap:::tocTitlePlPsychologyColor'),
+    'NoUnitChapterLinkPage:::color': (_ref: 'colorMap:::tocTitlePlPsychologyColor'),
+    'NoUnitChapterLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+    'NoUnitChapterLinkPage:::display': inline,
+    'NoUnitChapterLinkPage:::margin-left': 0,
+    'ChapterLinkNumber:::color': (_ref: 'colorMap:::tocTitlePlPsychologyColor'),
+    'ChapterLinkText:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ChapterLinkPage:::color': (_ref: 'colorMap:::tocTitlePlPsychologyColor'),
+    'ChapterLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+    'ChapterLinkPage:::display': inline,
+    'ChapterLinkPage:::margin-left': 0,
+    'ModuleLinkPage:::color': (_ref: 'colorMap:::tocTitlePlPsychologyColor'),
+    'ModuleLinkPage:::content': "leader('.') target-counter(attr(href), page)",
+    'ModuleLinkPage:::display': inline,
+    'ModuleLinkPage:::margin-left': 0,
   ),
 ));
 
@@ -38,6 +51,19 @@ $bandColor: #DCB83D;
     'Body:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorBlue'),
     'Subtitle:::color': (_ref: 'colorMap:::fontBodyColor'),
     'Subtitle:::font-family': (_ref: 'typography:::titleOption1Font'),
+  ),
+  LinkToLearning:(
+      _selectors: (".psychology.link-to-learning"),
+    'Container:::box-decoration-break': slice,
+    'Title:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Title:::font-family': (_ref: 'typography:::titleOption3Font'),
+    'Title:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorGreen2'),
+    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/carnival-linktolearning.svg")) no-repeat bottom left,
+    'TitleIcon:::height': v-spacing(4),
+    'TitleIcon:::width': v-spacing(4),
+    'TitleIcon:::bottom': -1rem,
+    'Body:::font-family': (_ref: 'typography:::titleOption2Font'),
+    'Body:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorGreen2'),
   ),
 ));
 
@@ -113,6 +139,33 @@ $bandColor: #DCB83D;
     ),
 ));
 
+@include add_settings((
+    Figure: (
+        _selectors: (".os-figure:not(.has-splash)"),
+        CaptionContainer:(
+            display: table,
+            margin-left: auto,
+            margin-right: auto,
+        ),
+        CaptionTitleLabel:(
+            font-family: (_ref: "typography:::titleOption1Font"),
+            color: (_ref: "colorMap:::captionNumberColorPlPsychology"),
+        ),
+        CaptionNumber:(
+            font-family: (_ref: "typography:::titleOption1Font"),
+            color: (_ref: "colorMap:::captionNumberColorPlPsychology"),
+        ),
+        CaptionTitle:(
+            font-family: (_ref: "typography:::titleOption1Font"),
+            color: (_ref: "colorMap:::captionTextColor"),
+        ),
+        CaptionText:(
+            font-family: (_ref: "typography:::titleOption2Font"),
+            color: (_ref: "colorMap:::captionTextColor"),
+        ),
+    )
+));
+
 @include use('BookRoot', "common:::BookRoot");
 @include use('Figure', 'cosmos:::FigureShape');
 @include use('Link', 'cosmos:::LinkShape');
@@ -134,7 +187,7 @@ $bandColor: #DCB83D;
 
 // Notes
 @include use('ConnectConcepts', 'cosmos:::IconnedNoteWithSubtitleShape');
-@include use('LinkToLearning', 'cosmos:::CondensedIconNoteShape');
+@include use('LinkToLearning', 'cosmos:::IconnedNoteShape');
 @include use('EverydayConnection', 'cosmos:::BoxedNoteWithSubtitleShape');
 @include use('WhatDoYouThink', 'cosmos:::BoxedNoteWithSubtitleShape');
 @include use('DigDeeper', 'cosmos:::BoxedNoteWithSubtitleShape');
