@@ -1604,6 +1604,11 @@ Formula Review page
   class: os-divider;
   move-to: bCaption; }
 
+:pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered).top-titled thead tr:first-child th {
+  container: div;
+  class: "os-temporary-table-title";
+  move-to: tableTopTitle; }
+
 :pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered) caption {
   container: span;
   class: "os-caption";
@@ -1629,7 +1634,7 @@ Formula Review page
 :pass(10) [data-type="chapter"] :not(table) > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopTitle) content() pending(bCaptionContainer); }
 
 :pass(10) [data-type="chapter"] > table.unnumbered caption {
   move-to: trash; }
@@ -1685,7 +1690,13 @@ Formula Review page
 :pass(10) .appendix > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopTitle) content() pending(bCaptionContainer); }
+
+:pass(10) .appendix :not(table) > table:not(.unnumbered).top-titled thead tr:first-child th,
+:pass(10) .appendix > table:not(.unnumbered).top-titled thead tr:first-child th {
+  container: div;
+  class: "os-temporary-table-title";
+  move-to: tableTopTitle; }
 
 :pass(10) .appendix > table.unnumbered caption {
   move-to: trash; }
@@ -1733,7 +1744,7 @@ Formula Review page
 :pass(10) .preface :not(table) > table:not(.unnumbered)::outside {
   class: os-table;
   container: div;
-  content: content() pending(bCaptionContainer); }
+  content: pending(tableTopTitle) content() pending(bCaptionContainer); }
 
 :pass(10) .preface > table.unnumbered caption {
   move-to: trash; }
@@ -1931,6 +1942,12 @@ Formula Review page
 :pass(10) .appendix > section > section > [data-type="title"], :pass(10) .appendix > section > section [data-type="document-title"] {
   container: h3; }
 
+:pass(11) .os-table .top-titled thead tr:first-child {
+  move-to: trash; }
+
+:pass(11) .os-table .os-temporary-table-title::inside {
+  class: "os-table-title"; }
+
 :pass(11) .os-index-link-separator:last-child {
   move-to: trash; }
 
@@ -1961,6 +1978,15 @@ Formula Review page
 :pass(11) [data-type="composite-page"] {
   counter-increment: composite-page;
   attr-id: "composite-page-" counter(composite-page); }
+
+:pass(12) .os-table .os-table-title {
+  move-to: tableFinalTitle; }
+
+:pass(12) .os-table .os-temporary-table-title {
+  move-to: trash; }
+
+:pass(12) .os-table::deferred {
+  content: pending(tableFinalTitle) content(); }
 
 :pass(12) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(12) div.os-eob [data-type="cnx-archive-uri"] {
@@ -2371,6 +2397,13 @@ Formula Review page
 
 :pass(15) nav#toc > ol .os-toc-appendix > a > .os-number:deferred {
   content: pending(partString) content(); }
+
+:pass(16) p {
+  string-set: hasNoteref " "; }
+  :pass(16) p a[role="doc-noteref"] {
+    string-set: hasNoteref " has-noteref"; }
+  :pass(16) p:deferred {
+    class: attr(class) string(hasNoteref); }
 
 :pass(100) div.delete-me {
   move-to: trash; }
