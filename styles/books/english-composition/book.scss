@@ -1,0 +1,125 @@
+$PagesWithBands: (
+  (pageName: eoc, firstSelector: '.os-eoc.os-glossary-container', generalSelector: '.os-eoc'),
+  (pageName: eob, firstSelector: '.os-eob[data-type="composite-page"]', generalSelector: '.os-eob'),
+);
+
+
+$bandColor: #DCB83D;
+
+@import 'framework/framework';
+@import '../../design-settings/cosmos/_design.scss';
+@import '../../design-settings/cosmos/_settings.scss';
+@import '../../designs/cosmos/pdf/folio';
+
+@include add_settings((
+  CultureAnnotation:(
+    _selectors: ("span.culture-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-linguistic.svg")) no-repeat top left
+  ),
+  LinguisticAnnotation: (
+    _selectors: ("span.linguistic-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-culture.svg")) no-repeat top left
+  ),
+  DreamingAnnotation: (
+    _selectors: ("span.dreaming-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-dreaming.svg")) no-repeat top left
+  )
+));
+
+@include add_settings((
+  Trailblazer: (
+    _selectors:("[data-type='page'].narrative-trailblazer"),
+    'ContainerBar:::background-color': (_ref: "colorMap:::trailBlazerModuleColor"),
+    'ModuleNumber:::font-family': (_ref: 'typography:::titleOption1Font'),
+    'ModuleNumber:::color': (_ref: "colorMap:::fontBodyColor"),
+    'ModuleTitle:::color': (_ref: "colorMap:::fontBodyColor"),
+    'ModuleTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
+    'Title:::background-color': (_ref: "colorMap:::trailBlazerModuleColor"),
+    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-pencil.svg")) no-repeat top left,
+    'AuthorName:::color': (_ref: "colorMap:::fontBodyColor"),
+    'AuthorName:::font-family': (_ref: 'typography:::titleOption1Font'),
+  ),
+  QuickLaunch: (
+    _selectors:(".quick-launch"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-launch.svg")) no-repeat top left, 
+  ),
+  LivingWords: (
+    _selectors: ('section.living-words'),
+    'Container:::box-decoration-break': slice,
+    'Title:::color': (_ref: 'colorMap:::iconnedNoteBorderColorGreen'),
+    'Title:::font-family': (_ref: 'typography:::titleOption3Font'),
+    'Title:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorGreen'),
+    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-quote.svg")) no-repeat bottom left,
+    'TitleIcon:::height': v-spacing(4),
+    'TitleIcon:::width': v-spacing(4),
+    'TitleIcon:::bottom': -0.7rem,
+    'Subtitle:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'Subtitle:::font-family': (_ref: 'typography:::titleOption1Font'),
+),
+));
+
+@include add_settings((
+  AnnotationText: (
+    _selectors:("p"),
+    'AnnotationText:::font-family': (_ref: 'typography:::titleOption2Font'),
+    'AnnotationText:::color': (_ref: "colorMap:::AnnotationTextColor"),
+  ),
+  PublicDomainText: (
+    _selectors:("p"),
+    'PublicDomainText:::font-family': (_ref: 'typography:::fontOption1'),
+    'PublicDomainText:::color': (_ref: "colorMap:::fontBodyColor"),
+  ),
+));
+
+@include add_settings((
+  DiscussionQuestions: (
+    _selectors: ('section'),
+    'ProblemNumber:::color': (_ref: "colorMap:::fontBodyColor"),
+  ),
+));
+
+@include use('BookRoot', "common:::BookRoot");
+@include use('TocUnit', 'cosmos:::TocUnitShape');
+@include use('Figure', 'cosmos:::FigureShape');
+@include use('Link', 'cosmos:::LinkShape');
+@include use('Blockquote', "cosmos:::BlockquoteShape");
+@include use('ChapterIntro', 'cosmos:::ChapterIntroShape');
+@include use('LearningObjectivesModule', 'cosmos:::LearningObjectivesModuleShape');
+@include use('AnnotationText', 'common:::AnnotationTextShape');
+@include use('PublicDomainText', 'common:::PublicDomainTextShape');
+@include use('Footnote', 'common:::FootnoteShape');
+@include use('FootnoteCall', 'common:::FootnoteCallShape');
+@include use('UnitTitle', 'common:::Hidden');
+
+//Notes & Annotations
+@include use('CultureAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('LinguisticAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('DreamingAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('Annotation', 'cosmos:::AnnotationShape');
+@include use('Trailblazer', 'cosmos:::IconFullPageNoteShape');
+@include use('QuickLaunch', 'cosmos:::QuickLaunchShape');
+@include use('LivingWords', 'cosmos:::IconnedSectionWithSubtitleShape');
+
+// Titles
+@include use('PageTitles', 'cosmos:::PageTitlesShape');
+@include use('ChapterTitles', 'cosmos:::ChapterTitlesShape');
+@include use('EocCompositePageTitles', 'cosmos:::EocCompositePageTitlesShape');
+@include use('EobTitles', 'cosmos:::EobTitlesShape');
+
+// Lists
+@include use('PageLists', 'cosmos:::PageListsShape');
+
+// Tables
+@include use('FakeTitleTable', 'cosmos:::BasicTableShape');
+@include use('DefaultTable', 'cosmos:::BasicTableShape');
+
+//EoC
+@include use('FurtherReading', 'cosmos:::ModuleWithIndentationShape');
+@include use('WorksCited', 'cosmos:::ModuleWithIndentationShape');
+@include use('WorksConsulted', 'cosmos:::ModuleWithIndentationShape');
+
+//EoB
+@include use('Index', 'cosmos:::IndexShape');
+
+//Exercises
+@include use('DiscussionQuestions', 'cosmos:::ExercisesModuleShape');
