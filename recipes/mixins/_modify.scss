@@ -954,7 +954,7 @@
 
 @mixin modify_addChapterPageClass() {
   [data-type="chapter"] > [data-type="page"]:not(.introduction) {
-    class: "chapter-content-module"
+    class: attr(class) " chapter-content-module"
   }
 }
 
@@ -1248,6 +1248,27 @@
       }
     > .os-number:deferred {
       content: pending(partString) content();  
+    }
+  }
+}
+
+//when property column-count is applied to <section> text displays from left to the right in columns, not from top to the bottom
+//(see Appendix with Glossary in Microbiology)
+@mixin modify_columnContainer() {
+  section.column-container {
+    container: div;
+  }
+}
+
+// tag paragraphs that contain footnotes references
+@mixin modify_tagNoteref() {
+  p {
+    string-set: hasNoteref " ";
+    a[role="doc-noteref"] {
+      string-set: hasNoteref " has-noteref";
+    }
+    &:deferred {
+      class: attr(class) string(hasNoteref);
     }
   }
 }

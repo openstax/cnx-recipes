@@ -444,7 +444,7 @@
   class: "body"; }
 
 :pass(1) [data-type="chapter"] > [data-type="page"]:not(.introduction) {
-  class: "chapter-content-module"; }
+  class: attr(class) " chapter-content-module"; }
 
 :pass(1) div.preface > [data-type="document-title"] {
   container: h1;
@@ -760,6 +760,62 @@
   move-to: bNoteLabel; }
 
 :pass(2) [data-type="note"] [data-type="note"].workout:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].chapter-objectives > div[data-type="title"] {
+  move-to: trash; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].chapter-objectives > p:first-of-type > span[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].chapter-objectives > p:first-of-type > span[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].chapter-objectives::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].chapter-objectives:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Chapter Objectives";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].chapter-objectives:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].chapter-objectives > div[data-type="title"] {
+  move-to: trash; }
+
+:pass(2) [data-type="note"] [data-type="note"].chapter-objectives > p:first-of-type > span[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].chapter-objectives > p:first-of-type > span[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].chapter-objectives::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].chapter-objectives:deferred::before {
+  container: span;
+  class: "os-title-label";
+  content: "Chapter Objectives";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].chapter-objectives:deferred::before {
   container: h4;
   content: pending(bNoteLabel);
   class: "os-title";
@@ -2347,6 +2403,27 @@
   :pass(13) .os-table:deferred {
     class: attr(class) string(hasTable); }
 
+:pass(13) .os-table {
+  string-set: hasTable " "; }
+  :pass(13) .os-table table.narrow-table {
+    string-set: hasTable " os-narrow-table-container"; }
+  :pass(13) .os-table:deferred {
+    class: attr(class) string(hasTable); }
+
+:pass(13) .os-table {
+  string-set: hasTable " "; }
+  :pass(13) .os-table table.top-titled.narrow-table {
+    string-set: hasTable " os-top-titled-narrow-table-container"; }
+  :pass(13) .os-table:deferred {
+    class: attr(class) string(hasTable); }
+
+:pass(13) .os-table {
+  string-set: hasTable " "; }
+  :pass(13) .os-table table.unstyled.narrow-table {
+    string-set: hasTable " os-unstyled-narrow-table-container"; }
+  :pass(13) .os-table:deferred {
+    class: attr(class) string(hasTable); }
+
 :pass(13) [data-type="page"].introduction figure.splash.unnumbered {
   move-to: splash; }
   :pass(13) [data-type="page"].introduction figure.splash.unnumbered figcaption {
@@ -2403,6 +2480,21 @@
 
 :pass(15) nav#toc > ol .os-toc-appendix > a > .os-number:deferred {
   content: pending(partString) content(); }
+
+:pass(15) .annotation::inside {
+  class: 'os-text';
+  container: span; }
+
+:pass(16) p {
+  string-set: hasNoteref " "; }
+  :pass(16) p a[role="doc-noteref"] {
+    string-set: hasNoteref " has-noteref"; }
+  :pass(16) p:deferred {
+    class: attr(class) string(hasNoteref); }
+
+:pass(16) p.annotation::before {
+  class: 'os-icons';
+  content: pending(icons); }
 
 :pass(100) div.delete-me {
   move-to: trash; }
