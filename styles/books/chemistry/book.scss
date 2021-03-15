@@ -14,45 +14,6 @@ $ChapterIntroType: fullWidth;
 @import '../../designs/carnival/pdf/folio';
 
 @include add_settings((
-  Preface: (
-    _selectors: (".preface"),
-    'H2Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'H4Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'H5Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-  ),
-));
-
-@include add_settings((
-ChapterModuleTitles: (
-    _selectors: ('[data-type="chapter"]'),
-    'TitleNumberText:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'TitleNumberDigit:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'H3Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'H4Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'H5Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-  ),
-));
-
-@include add_settings((
-  GenericEOC:(
-    _selectors: (".os-eoc"),
-    'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'H2Title:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H2Title:::column-span': all,
-    'H2Title:::text-transform': uppercase,
-    'H3Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'H3Title:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H3Title:::column-span': all,
-    'H3LinkTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H3ListTitle:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'H3ListTitle:::font-family': (_ref: "typography:::baseFont"),
-    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
-    'H4Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'H4LinkTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H4LinkTitle:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-  ),
   KeyTerm:(
     _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
     'Container:::column-count': 2,
@@ -105,20 +66,8 @@ ChapterModuleTitles: (
 @include add_settings((
     Appendix: (
     _selectors: (".appendix"),
-    'TitleText:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
-    'H1Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'H2Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
     'H3AppendixGlossaryTitle:::color': (_ref: "colorMap:::chemistryHeaderColor"),
     ),
-));
-
-@include add_settings((
-  AnswerKey: (
-    _selectors: ('[data-type="composite-chapter"]:not(.os-eoc)'),
-    'H2Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::chemistryHeaderColor"),
-  ),
 ));
 
 @include add_settings((
@@ -187,15 +136,48 @@ ChapterModuleTitles: (
   ),
 ));
 
+//Titles
+@include add_settings((
+  ChapterTitles: (
+    _selectors: ('[data-type="chapter"]'),
+    'H1Chapter:::color': (_ref: "colorMap:::chemistryHeaderColor"),
+  ),
+));
+
+@include add_settings((
+  PageTitles: (
+    _selectors: ('[data-type="page"]:not(.introduction)'),
+    'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H4Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H5Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H1AppendixText:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+  ),
+));
+
+@include add_settings((
+  EocCompositePageTitles: (
+    _selectors: ('[data-type="chapter"] > .os-eoc[data-type="composite-page"]'),
+    'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+  ),
+));
+
+@include add_settings((
+  EobTitles: (
+    _selectors: ('.os-eob'),
+    'H2Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::chemistryHeaderColor'),
+  ),
+));
+
 @include use('BookRoot', "common:::BookRoot");
 @include use('Link', "carnival:::Link");
 @include use('Figure','carnival:::FigureShape');
 
 //book specific styles
-@include use('Preface','carnival:::Preface');
+@include use('Preface','carnival:::Preface'); //remove when clean up work for lists be done
 @include use('ContentExercises','carnival:::ExerciseShape');
 //EOC
-@include use('GenericEOC','carnival:::GenericEOCShape');
 @include use('KeyTerm','carnival:::EocKeyTerm');
 @include use('EocKeyEquations','carnival:::EocKeyEquations');
 @include use('EocSummary','carnival:::EocSummary');
@@ -205,7 +187,7 @@ ChapterModuleTitles: (
 @include use('Index', 'carnival:::IndexShape');
 @include use('AnswerKey', 'carnival:::AnswerKeyShape');
 @include use('FullWidthChapterIntro', 'carnival:::FullWidthChapterIntroShape');
-@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape');
+@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape'); //remove when clean up work for lists be done
 @include use('TOC', 'carnival:::NoUnitToc');
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
@@ -217,3 +199,9 @@ ChapterModuleTitles: (
 @include use('Example', 'carnival:::IconNoteShape');
 @include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
 @include use('Equation', 'carnival:::EquationShape');
+
+//Titles
+@include use('ChapterTitles', 'carnival:::ChapterTitlesShape');
+@include use('PageTitles', 'carnival:::PageTitlesShape');
+@include use('EocCompositePageTitles', 'carnival:::EocCompositePageTitlesShape');
+@include use('EobTitles', 'carnival:::EobTitlesShape');
