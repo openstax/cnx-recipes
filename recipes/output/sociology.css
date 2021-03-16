@@ -493,6 +493,13 @@
 :pass(1) cnx-pi {
   move-to: trash; }
 
+:pass(1) :not([data-type="example"]) > [data-type="exercise"] {
+  string-set: isSolution ""; }
+  :pass(1) :not([data-type="example"]) > [data-type="exercise"] [data-type="solution"] {
+    string-set: isSolution " os-hasSolution"; }
+  :pass(1) :not([data-type="example"]) > [data-type="exercise"]::deferred {
+    class: attr(class) string(isSolution); }
+
 :pass(1) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"]:not([class])::inside {
   class: "os-note-body"; }
 
@@ -1148,15 +1155,79 @@
   content: counter(exercise);
   class: os-number; }
 
+:pass(7) [data-type="chapter"] {
+  counter-reset: solution_trash_half; }
+
+:pass(7) .os-eoc .os-hasSolution[data-type="exercise"] {
+  counter-increment: solution_trash_half;
+  string-set: trashStatus ""; }
+  :pass(7) .os-eoc .os-hasSolution[data-type="exercise"] [data-type="solution"] {
+    string-set: trashStatus counter(solution_trash_half); }
+  :pass(7) .os-eoc .os-hasSolution[data-type="exercise"]::deferred {
+    attr-trash-status: string(trashStatus); }
+
 :pass(8) body {
   counter-reset: exerciseAll; }
 
 :pass(8) .os-eoc [data-type="exercise"] {
   counter-increment: exerciseAll; }
 
+:pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="0"], :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="2"], :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="4"], :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="6"], :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="8"] {
+  class: attr(class) "-trashed"; }
+  :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="0"] [data-type="solution"], :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="2"] [data-type="solution"], :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="4"] [data-type="solution"], :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="6"] [data-type="solution"], :pass(8) .os-eoc .os-hasSolution[data-type="exercise"][trash-status$="8"] [data-type="solution"] {
+    move-to: trash; }
+
+:pass(8) [data-type="exercise"].os-hasSolution[trash-status$="1"], :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="3"], :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="5"], :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="7"], :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="9"] {
+  string-set: exerciseId attr(id); }
+  :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="problem"] > .os-number, :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="problem"] > .os-number, :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="problem"] > .os-number, :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="problem"] > .os-number, :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="problem"] > .os-number {
+    container: a;
+    attr-href: "#" string(exerciseId) "-solution"; }
+  :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"], :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"], :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"], :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"], :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] {
+    attr-id: string(exerciseId) "-solution"; }
+    :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="1"] [data-type="solution"] > .os-number, :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="3"] [data-type="solution"] > .os-number, :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="5"] [data-type="solution"] > .os-number, :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="7"] [data-type="solution"] > .os-number, :pass(8) [data-type="exercise"].os-hasSolution[trash-status$="9"] [data-type="solution"] > .os-number {
+      container: a;
+      attr-href: "#" string(exerciseId); }
+
 :pass(9) div[data-type="page"] > [data-type="document-title"],
 :pass(9) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-section-quiz-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(9) [data-type="chapter"] .os-eoc.os-short-answer-container [data-type="solution"] {
+  move-to: solution-GETCHAPTER; }
+
+:pass(9) [data-type="chapter"] > h1[data-type="document-title"] .os-number {
+  string-set: ChapNum content(); }
+
+:pass(9) [data-type="chapter"] > h1[data-type="document-title"] .os-part-text {
+  string-set: ChapText content(); }
+
+:pass(9) [data-type="chapter"]::after {
+  container: h2;
+  class: "os-title";
+  content: string(ChapText) string(ChapNum);
+  move-to: chaptTitleEOB; }
+
+:pass(9) [data-type="chapter"]::after {
+  class: os-chapter-area;
+  content: pending(chaptTitleEOB) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
+  move-to: solution-TOCOMPOSITE; }
+
+:pass(9) body::after {
+  content: pending(solution-TOCOMPOSITECHAPTER);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution";
+  /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
+
+:pass(9) body::after {
+  container: div;
+  content: pending(solution-TOCOMPOSITE);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution"; }
 
 :pass(9) body::after {
   container: div;
@@ -1323,6 +1394,17 @@
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eob.os-solution-container::before {
+  container: span;
+  content: "Answer Key";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eob.os-solution-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
 
 :pass(10) [data-type="composite-page"].os-eob.os-index-container::before {
   container: span;
@@ -1722,9 +1804,6 @@
 :pass(10) .appendix > section > section > [data-type="title"], :pass(10) .appendix > section > section [data-type="document-title"] {
   container: h3; }
 
-:pass(11) .os-eoc [data-type="solution"] {
-  move-to: trash; }
-
 :pass(11) .os-index-link-separator:last-child {
   move-to: trash; }
 
@@ -2026,6 +2105,13 @@
   :pass(13) .os-problem-container .first-element {
     string-set: hasFirstElement " has-first-element"; }
   :pass(13) .os-problem-container:deferred {
+    class: attr(class) string(hasFirstElement); }
+
+:pass(13) .os-solution-container {
+  string-set: hasFirstElement " "; }
+  :pass(13) .os-solution-container .first-element {
+    string-set: hasFirstElement " has-first-element"; }
+  :pass(13) .os-solution-container:deferred {
     class: attr(class) string(hasFirstElement); }
 
 :pass(13) .os-table {
