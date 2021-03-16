@@ -1,42 +1,83 @@
-//These caption components are used in both Tables and Figures shapes
-$Caption__Container: (
-    _name: "CaptionContainer",
+// Figures
+
+$Caption__Container--Figure: (
+    _name: "CaptionContainerFigure",
     _subselector: " .os-caption-container",
     _properties: (
-        display: enum('ValueSet:::OPTIONAL'),
-        caption-side: enum('ValueSet:::OPTIONAL'),
-        prince-caption-page: enum('ValueSet:::OPTIONAL'),
-        margin-left:  enum('ValueSet:::OPTIONAL'),
-        margin-right:  enum('ValueSet:::OPTIONAL'),
-        margin-bottom: enum('ValueSet:::OPTIONAL'), // used in Figures only (moved from Figure Container left OPTIONAL, not used in tables, need to be checked if it is also needed f.ex. in Chapter Intro)
-        font-size: enum('ValueSet:::OPTIONAL'), // used in Figures only (moved from Figure Container left OPTIONAL, not used in tables, need to be checked if it is also needed f.ex. in Chapter Intro)
-        line-height: enum('ValueSet:::OPTIONAL'), // used in Figures only (moved from Figure Container left OPTIONAL, not used in tables, need to be checked if it is also needed f.ex. in Chapter Intro)
+        display: table,
+        margin-left: auto,
+        margin-right: auto,
+        margin-bottom: v-spacing(1),
+        font-size: font-scale(-1),
+        line-height: line-height(0),
     )
 );
 
-$Caption__Title--Label: (
-    _name: "CaptionTitleLabel",
+$Caption__Title__Label--Figure: (
+    _name: "CaptionTitleLabelFigure",
     _subselector: " > .os-title-label",
     _properties: (
-        font-family: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::REQUIRED'),
         font-weight: bold,
-        color: enum('ValueSet:::OPTIONAL'),
+        color: enum('ValueSet:::REQUIRED'),
     )
 );
 
-$Caption__Number:( 
-    _name: "CaptionNumber",
+$Caption__Number--Figure:( 
+    _name: "CaptionNumberFigure",
     _subselector: "> .os-number",
     _properties:(
-        font-family: enum('ValueSet:::OPTIONAL'), 
+        font-family: enum('ValueSet:::REQUIRED'),
         font-weight: bold,
-        color: enum('ValueSet:::OPTIONAL'),
-        display: enum('ValueSet:::OPTIONAL'),
-        margin-right: enum('ValueSet:::OPTIONAL'),
+        color: enum('ValueSet:::REQUIRED'),
+        display: inline-block,
+        margin-right: h-spacing(1),
     )
 );
 
-//These components are only used in Figures shapes
+$Caption__Divider--Figure: ( 
+    _name: "CaptionDividerFigure",
+    _subselector: "> .os-divider",
+    _properties: (
+        margin: 0,
+    )
+);
+
+// Chapter Intro
+
+$Caption__Container--ChapterIntro: (
+    _name: "CaptionContainerChapterIntro",
+    _subselector: " .os-caption-container",
+    _properties: (
+        position: relative,
+        padding-top: 1rem,
+        padding-bottom: 2rem,
+    )
+);
+
+$Caption__Title__Label--ChapterIntro: (
+    _name: "CaptionTitleLabelChapterIntro",
+    _subselector: " > .os-title-label",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-weight: bold,
+        color: enum('ValueSet:::REQUIRED'),
+    )
+);
+
+$Caption__Number--ChapterIntro:( 
+    _name: "CaptionNumberChapterIntro",
+    _subselector: "> .os-number",
+    _properties:(
+        font-family: enum('ValueSet:::REQUIRED'), 
+        font-weight: bold,
+        color: enum('ValueSet:::REQUIRED'),
+        display: inline-block,
+        margin-right: h-spacing(1),
+    )
+);
+
+// Components used in both Figures and Chapter Intro shapes
 
 $Caption__Text:(
     _name: "CaptionText",
@@ -54,10 +95,34 @@ $Caption__Title: (
     )
 );
 
-$Caption__Divider: ( 
-    _name: "CaptionDivider",
-    _subselector: "> .os-divider",
+// Tables
+
+$Caption__Container--Table: empty_wrapper(CaptionContainerTable, ' .os-caption-container');
+
+$Caption__Container--TopTitledTable: ( // These properties are used only in Top Titled Tables
+    _name: "CaptionContainerTopTitledTable",
+    _subselector: " .os-caption-container",
+    _properties: (            
+        display: table-caption,
+        caption-side: bottom,
+        prince-caption-page: all,
+    )
+);
+
+$Caption__Title__Label--Table: (
+    _name: "CaptionTitleLabelTable",
+    _subselector: " > .os-title-label",
     _properties: (
-        margin: 0,
+        font-weight: bold,
+        font-family: enum('ValueSet:::REQUIRED'),
+    )
+);
+
+$Caption__Number--Table:( 
+    _name: "CaptionNumberTable",
+    _subselector: "> .os-number",
+    _properties:(
+        font-weight: bold,
+        font-family: enum('ValueSet:::REQUIRED'),
     )
 );
