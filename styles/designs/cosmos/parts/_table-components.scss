@@ -130,10 +130,10 @@ $Table__Body: empty_wrapper(TableBody, ' > tbody');
 
 $Table__Row: empty_wrapper(TableRow, ' > tr');
 
-$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child)');
+$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child):not(.header-row)');
 $Table__Row--FirstChild: empty_wrapper(TableRowFirstChild, ' > tr:first-child');
 
-$Table__Row--NotLastChild: empty_wrapper(TableRowNotLastChild, ' > tr:not(:last-child)');
+$Table__Row--NotLastChild: empty_wrapper(TableRowNotLastChild, ' > tr:not(:last-child):not(.header-row)');
 $Table__Row--LastChild: empty_wrapper(TableRowLastChild, ' > tr:last-child');
 
 $Table__Data--FirstChild: (     //To achieve open ends on either side of the table. is there a better name?
@@ -275,6 +275,33 @@ $Table__Data--LastRowLastChild: (
     ),
 );
 
+$Table__Row--MiddleHeader: empty_wrapper(TableRowMiddleHeader,  ' > tr.header-row'); // Used in World History
+
+$Table__Data--MiddleHeaderCell: (
+    _name: "TableDataMiddleHeaderCell",
+    _subselector: " > td",
+    _properties: (
+        color: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::OPTIONAL'),
+        font-weight: bold,
+        font-size: font-scale(0),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-right: table-h-spacing(1),
+        padding-left: table-h-spacing(1),
+        background-color: enum('ValueSet:::OPTIONAL'),
+        border-style: solid,
+        border-color: enum('ValueSet:::OPTIONAL'), 
+        border-width: 0.02rem, //.25px converted to rem
+        border-left-style: none,
+        border-left-color: transparent,
+        border-left-width: 0rem,
+        border-right-style: none,
+        border-right-color: transparent,
+        border-right-width: 0rem,
+    )
+);
+
 $Table__Data--TopAligned: (
     _name: "TopAlignedTableData",
     _subselector: "[data-valign="top"]",
@@ -306,4 +333,3 @@ $Table__Data--Centered: (
         text-align: center,
     )    
 );
-
