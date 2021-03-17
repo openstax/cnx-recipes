@@ -1205,20 +1205,22 @@
   string-set: ChapText content(); }
 
 :pass(9) [data-type="chapter"]::after {
-  container: h2;
-  class: "os-title";
+  container: span;
+  class: "os-text";
   content: string(ChapText) string(ChapNum);
-  move-to: chaptTitleEOB; }
+  move-to: eobCompositeTitlesContent; }
 
 :pass(9) [data-type="chapter"]::after {
-  class: os-chapter-area;
-  content: pending(chaptTitleEOB) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
-  move-to: solution-TOCOMPOSITE; }
+  content: pending(eobCompositeTitlesContent) pending(note-solution-GETCHAPTER) pending(solution-GETCHAPTER);
+  class: "os-eob os-solution-container";
+  data-type: "composite-page";
+  data-uuid-key: ".solution" string(ChapNum);
+  move-to: solution-TOCOMPOSITECHAPTER; }
 
 :pass(9) body::after {
   content: pending(solution-TOCOMPOSITECHAPTER);
   class: "os-eob os-solution-container";
-  data-type: "composite-page";
+  data-type: "composite-chapter";
   data-uuid-key: ".solution";
   /* TODO: Is this the correct key? We'll be stuck with it because it is used for generating the collated page uuid's */ }
 
@@ -1326,7 +1328,7 @@
 :pass(10) body > [data-type="metadata"] {
   node-set: bookMetadata; }
 
-:pass(10) [data-type="composite-page"] {
+:pass(10) [data-type="composite-page"], :pass(10) [data-type="composite-chapter"] {
   content: nodes(bookMetadata) content(); }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
@@ -1395,16 +1397,24 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(10) [data-type="composite-page"].os-eob.os-solution-container::before {
+:pass(10) [data-type="composite-chapter"].os-eob.os-solution-container::before {
   container: span;
   content: "Answer Key";
   class: os-text;
   move-to: h1-TITLECONTAINER; }
 
-:pass(10) [data-type="composite-page"].os-eob.os-solution-container::before {
+:pass(10) [data-type="composite-chapter"].os-eob.os-solution-container::before {
   container: h1;
   data-type: "document-title";
   content: pending(h1-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-chapter"].os-eob.os-solution-container [data-type="composite-page"] > span.os-text {
+  move-to: CCcompositePageTitles; }
+
+:pass(10) [data-type="composite-chapter"].os-eob.os-solution-container [data-type="composite-page"]:deferred::before {
+  container: h2;
+  data-type: document-title;
+  content: pending(CCcompositePageTitles); }
 
 :pass(10) [data-type="composite-page"].os-eob.os-index-container::before {
   container: span;
@@ -1798,6 +1808,38 @@
 :pass(10) [data-type="composite-page"].os-eob > .os-chapter-area > section > [data-type="document-title"] {
   container: h3; }
 
+:pass(10) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] [data-type="title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] [data-type="document-title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] [data-type="title"] {
+  container: h2; }
+
+:pass(10) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] > section [data-type="title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] > section [data-type="title"] {
+  container: h3;
+  data-type: title; }
+
+:pass(10) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section > section > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="page"] > section > section [data-type="title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] [data-type="composite-chapter"] > section > section [data-type="title"] {
+  container: h4; }
+
+:pass(10) [data-type="composite-chapter"] > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] [data-type="title"] {
+  container: h3; }
+
+:pass(10) [data-type="composite-chapter"] > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section [data-type="title"] {
+  container: h4;
+  data-type: title; }
+
+:pass(10) [data-type="composite-chapter"] > section > section > section [data-type="document-title"], :pass(10) [data-type="composite-chapter"] > section > section > section [data-type="title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="document-title"],
+:pass(10) [data-type="composite-chapter"] > [data-type="composite-page"] > section > section [data-type="title"] {
+  container: h5; }
+
 :pass(10) .appendix > section > [data-type="title"], :pass(10) .appendix > section [data-type="document-title"] {
   container: h2; }
 
@@ -1807,10 +1849,16 @@
 :pass(11) .os-index-link-separator:last-child {
   move-to: trash; }
 
-:pass(11) [data-type="composite-page"] > [data-type="document-title"] {
+:pass(11) [data-type="composite-page"] > [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="title"], :pass(11) [data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="title"] {
+  string-set: Cdoc-title-TOMETADATA content(); }
+
+:pass(11) [data-type="composite-page"] > [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(11) [data-type="composite-chapter"] > [data-type="composite-chapter"] > [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
+  content: string(Cdoc-title-TOMETADATA); }
+
+:pass(11) [data-type="composite-page"] > [data-type="document-title"], :pass(11) [data-type="composite-chapter"] > [data-type="document-title"] {
   string-set: doc-title-TOMETADATA content(); }
 
-:pass(11) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"] {
+:pass(11) [data-type="composite-page"] > [data-type="metadata"] > [data-type="document-title"], :pass(11) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="document-title"] {
   content: string(doc-title-TOMETADATA); }
 
 :pass(11) div.os-table:deferred::before {
@@ -1837,6 +1885,9 @@
 
 :pass(12) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(12) div.os-eob [data-type="cnx-archive-uri"] {
+  move-to: trash; }
+
+:pass(12) [data-type="composite-chapter"] > [data-type="metadata"] > [data-type="cnx-archive-uri"] {
   move-to: trash; }
 
 :pass(12) body > div[data-type="page"],
@@ -1920,39 +1971,94 @@
     attr-cnx-archive-shortid: string(page-shortid);
     container: li; }
 
-:pass(12) body > div[data-type="chapter"] > [data-type='document-title'] {
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
+  node-set: CchapterTitle;
+  string-set: CchapTitle-id attr(id); }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+  string-set: Cchap-shortid attr(data-value); }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: nodes(CchapterTitle);
+  attr-href: "#" string(CchapTitle-id);
+  container: a;
+  move-to: cc-link; }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] {
+  string-set: Cpage-id-chap attr(id); }
+  :pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='title'] {
+    node-set: CPageTitle; }
+  :pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+    string-set: Cpage-shortid attr(data-value); }
+  :pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: nodes(CPageTitle);
+    attr-href: "#" string(Cpage-id-chap);
+    container: a;
+    move-to: CpageLink; }
+  :pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: pending(CpageLink);
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(Cpage-shortid);
+    container: li;
+    class: "os-toc-chapter-composite-page";
+    move-to: Cpage-list; }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(Cpage-list);
+  container: ol;
+  class: "os-chapter";
+  move-to: cc-li; }
+
+:pass(12) body > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(cc-link) pending(cc-li);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(Cchap-shortid);
+  container: li;
+  class: "os-toc-composite-chapter";
+  move-to: eoc-toc-pages; }
+
+:pass(12) body > div[data-type="chapter"] > [data-type='document-title'], :pass(12) body > div[data-type="composite-chapter"] > [data-type='document-title'] {
   node-set: chapterTitle;
   string-set: chapTitle-id attr(id); }
 
 :pass(12) body > div[data-type="chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(12) body > div[data-type="composite-chapter"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
   string-set: chap-shortid attr(data-value); }
 
-:pass(12) body > div[data-type="chapter"]::after {
+:pass(12) body > div[data-type="chapter"]::after, :pass(12) body > div[data-type="composite-chapter"]::after {
   content: nodes(chapterTitle);
   attr-href: "#" string(chapTitle-id);
   container: a;
   move-to: eoc-toc; }
 
 :pass(12) body > div[data-type="chapter"] > div[data-type="page"],
-:pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"] {
+:pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"], :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"],
+:pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"] {
   string-set: page-id-chap attr(id); }
   :pass(12) body > div[data-type="chapter"] > div[data-type="page"] > [data-type='document-title'],
-  :pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='document-title'] {
+  :pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='document-title'], :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"] > [data-type='document-title'],
+  :pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='document-title'] {
     node-set: PageTitle; }
   :pass(12) body > div[data-type="chapter"] > div[data-type="page"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'],
   :pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
     string-set: page-shortid attr(data-value); }
   :pass(12) body > div[data-type="chapter"] > div[data-type="page"]::after,
-  :pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"]::after {
+  :pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"]::after, :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"]::after,
+  :pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"]::after {
     content: nodes(PageTitle);
     attr-href: "#" string(page-id-chap);
     container: a;
     move-to: page-link; }
 
-:pass(12) body > div[data-type="chapter"] > div[data-type="page"]::after {
+:pass(12) body > div[data-type="chapter"] > div[data-type="page"]::after, :pass(12) body > div[data-type="composite-chapter"] > div[data-type="page"]::after {
   content: pending(page-link);
   move-to: eoc-toc-pages;
   attr-cnx-archive-uri: attr(id);
@@ -1960,7 +2066,7 @@
   container: li;
   class: os-toc-chapter-page; }
 
-:pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"]::after {
+:pass(12) body > div[data-type="chapter"] > div[data-type="composite-page"]::after, :pass(12) body > div[data-type="composite-chapter"] > div[data-type="composite-page"]::after {
   content: pending(page-link);
   move-to: eoc-toc-pages;
   attr-cnx-archive-uri: attr(id);
@@ -1968,19 +2074,27 @@
   container: li;
   class: os-toc-chapter-composite-page; }
 
-:pass(12) body > div[data-type="chapter"]::after {
+:pass(12) body > div[data-type="chapter"]::after, :pass(12) body > div[data-type="composite-chapter"]::after {
   content: pending(eoc-toc-pages);
   container: ol;
   class: os-chapter;
   move-to: eoc-toc; }
 
-:pass(12) body > div[data-type="chapter"]::after {
+:pass(12) body > div[data-type="chapter"]:not([data-type="composite-chapter"])::after {
   content: pending(eoc-toc);
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(chap-shortid);
   container: li;
   move-to: eob-toc;
   class: "os-toc-chapter"; }
+
+:pass(12) body > div[data-type="composite-chapter"]::after {
+  content: pending(eoc-toc);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(chap-shortid);
+  container: li;
+  move-to: eob-toc;
+  class: "os-toc-composite-chapter"; }
 
 :pass(12) body > div[data-type="unit"] > [data-type='document-title'] {
   node-set: unitTitle;
@@ -1996,39 +2110,94 @@
   container: a;
   move-to: eou-toc; }
 
-:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type='document-title'] {
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > [data-type='document-title'] {
+  node-set: CchapterTitle;
+  string-set: CchapTitle-id attr(id); }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+  string-set: Cchap-shortid attr(data-value); }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: nodes(CchapterTitle);
+  attr-href: "#" string(CchapTitle-id);
+  container: a;
+  move-to: cc-link; }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] {
+  string-set: Cpage-id-chap attr(id); }
+  :pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='title'] {
+    node-set: CPageTitle; }
+  :pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'] {
+    string-set: Cpage-shortid attr(data-value); }
+  :pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: nodes(CPageTitle);
+    attr-href: "#" string(Cpage-id-chap);
+    container: a;
+    move-to: CpageLink; }
+  :pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"] > div[data-type="composite-page"]::after {
+    content: pending(CpageLink);
+    attr-cnx-archive-uri: attr(id);
+    attr-cnx-archive-shortid: string(Cpage-shortid);
+    container: li;
+    class: "os-toc-chapter-composite-page";
+    move-to: Cpage-list; }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(Cpage-list);
+  container: ol;
+  class: "os-chapter";
+  move-to: cc-li; }
+
+:pass(12) body > div[data-type="unit"] > [data-type="chapter"] > [data-type="composite-chapter"]::after {
+  content: pending(cc-link) pending(cc-li);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(Cchap-shortid);
+  container: li;
+  class: "os-toc-composite-chapter";
+  move-to: eoc-toc-pages; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type='document-title'], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type='document-title'] {
   node-set: chapterTitle;
   string-set: chapTitle-id attr(id); }
 
 :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
   string-set: chap-shortid attr(data-value); }
 
-:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]::after {
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"]::after {
   content: nodes(chapterTitle);
   attr-href: "#" string(chapTitle-id);
   container: a;
   move-to: eoc-toc; }
 
 :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"],
-:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] {
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"],
+:pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"] {
   string-set: page-id-chap attr(id); }
   :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"] > [data-type='document-title'],
-  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='document-title'] {
+  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='document-title'], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"] > [data-type='document-title'],
+  :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='document-title'] {
     node-set: PageTitle; }
   :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'],
   :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'], :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"] > [data-type='metadata']
+> [data-type='cnx-archive-shortid'],
+  :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"] > [data-type='metadata']
 > [data-type='cnx-archive-shortid'] {
     string-set: page-shortid attr(data-value); }
   :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"]::after,
-  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"]::after {
+  :pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"]::after,
+  :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"]::after {
     content: nodes(PageTitle);
     attr-href: "#" string(page-id-chap);
     container: a;
     move-to: page-link; }
 
-:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"]::after {
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="page"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="page"]::after {
   content: pending(page-link);
   move-to: eoc-toc-pages;
   attr-cnx-archive-uri: attr(id);
@@ -2036,7 +2205,7 @@
   container: li;
   class: os-toc-chapter-page; }
 
-:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"]::after {
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"] > div[data-type="composite-page"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"] > div[data-type="composite-page"]::after {
   content: pending(page-link);
   move-to: eoc-toc-pages;
   attr-cnx-archive-uri: attr(id);
@@ -2044,19 +2213,27 @@
   container: li;
   class: os-toc-chapter-composite-page; }
 
-:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]::after {
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]::after, :pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"]::after {
   content: pending(eoc-toc-pages);
   container: ol;
   class: os-chapter;
   move-to: eoc-toc; }
 
-:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]::after {
+:pass(12) body > div[data-type="unit"] > div[data-type="chapter"]:not([data-type="composite-chapter"])::after {
   content: pending(eoc-toc);
   attr-cnx-archive-uri: attr(id);
   attr-cnx-archive-shortid: string(chap-shortid);
   container: li;
   move-to: eou-toc-chapters;
   class: "os-toc-chapter"; }
+
+:pass(12) body > div[data-type="unit"] > div[data-type="composite-chapter"]::after {
+  content: pending(eoc-toc);
+  attr-cnx-archive-uri: attr(id);
+  attr-cnx-archive-shortid: string(chap-shortid);
+  container: li;
+  move-to: eou-toc-chapters;
+  class: "os-toc-composite-chapter"; }
 
 :pass(12) body > div[data-type="unit"]::after {
   content: pending(eou-toc-chapters);
