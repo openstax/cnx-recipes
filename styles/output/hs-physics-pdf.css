@@ -39,6 +39,9 @@ h1, h2, h3, h4, h5, h6,
 .os-table.os-top-titled-container > .os-table-title {
   page-break-after: avoid; }
 
+.os-table.os-top-captioned-container > .os-top-caption {
+  page-break-after: avoid; }
+
 .footnote {
   page-break-inside: avoid; }
 
@@ -50,6 +53,8 @@ h1, h2, h3, h4, h5, h6,
   page-break-after: left; }
   .os-index-container .group-label {
     page-break-after: avoid; }
+  .os-index-container .group-by > .os-index-item:first-of-type {
+    break-before: avoid; }
   .os-index-container .index-term, .os-index-container .os-term {
     page-break-inside: avoid; }
   .os-index-container .os-term-section-link {
@@ -162,7 +167,8 @@ blockquote {
 
 /* stylelint-disable-next-line meowtec/no-px */
 a[href^="http"]::after {
-  content: " (" attr(href) ") "; }
+  content: " (" attr(href) ") ";
+  overflow-wrap: break-word; }
 
 ol.os-stepwise {
   list-style-type: none; }
@@ -714,7 +720,7 @@ div[data-type="composite-page"].os-eob {
   height: 100%;
   width: 8.65in;
   margin-left: -1.15in;
-  z-index: -1;
+  z-index: -3;
   box-sizing: border-box;
   padding: inherit;
   top: 0; }
@@ -724,17 +730,19 @@ div[data-type="composite-page"].os-eob {
   height: 100%;
   display: flex;
   width: 7.65in;
-  justify-content: flex-end; }
+  justify-content: flex-end;
+  z-index: -2;
+  position: relative; }
 
 .introduction > .os-figure.has-splash > figure.splash > span[data-type="media"] > img {
   width: 8.15in; }
 
-.introduction > .os-figure.has-splash > .os-caption-container {
+.introduction > .os-figure.has-splash .os-caption-container {
   position: relative;
   padding-top: 1rem;
   padding-bottom: 2rem; }
 
-.introduction > .os-figure.has-splash > .os-caption-container::before {
+.introduction > .os-figure.has-splash .os-caption-container::before {
   content: '';
   background-color: #EEEAE0;
   position: absolute;
@@ -746,23 +754,23 @@ div[data-type="composite-page"].os-eob {
   padding: inherit;
   top: 0; }
 
-.introduction > .os-figure.has-splash > .os-caption-container > span.os-number {
+.introduction > .os-figure.has-splash .os-caption-container > .os-number {
   font-family: Mulish, sans-serif;
   font-weight: bold;
   color: #C31427;
   display: inline-block;
   margin-right: 8px; }
 
-.introduction > .os-figure.has-splash > .os-caption-container > span.os-title-label {
+.introduction > .os-figure.has-splash .os-caption-container > .os-title-label {
   font-family: Mulish, sans-serif;
   font-weight: bold;
   color: #C31427; }
 
-.introduction > .os-figure.has-splash > .os-caption-container > .os-title {
+.introduction > .os-figure.has-splash .os-caption-container > .os-title {
   font-family: Mulish, sans-serif;
   font-weight: bold; }
 
-.introduction > .os-figure.has-splash > .os-caption-container > span.os-caption {
+.introduction > .os-figure.has-splash .os-caption-container > .os-caption {
   font-family: IBM Plex Sans, sans-serif; }
 
 .introduction > .intro-body > .os-chapter-outline {
@@ -834,9 +842,10 @@ div[data-type="composite-page"].os-eob {
 
 .introduction > .intro-body > .intro-text > h2[data-type="document-title"]:first-of-type {
   float: left;
-  font-size: 12px;
+  font-family: IBM Plex Serif, serif;
+  font-size: 1rem;
   text-transform: uppercase;
-  margin: 0 0.5rem 0 0;
+  margin: 0 .5rem 0 0;
   font-weight: 700; }
 
 .introduction > .intro-body > .intro-text ol {
@@ -1185,10 +1194,12 @@ nav#toc > ol > .os-toc-composite-chapter > a::after {
   border-right: none; }
 
 .os-table:not(.os-unstyled-container) .os-caption-container > .os-title-label {
-  font-weight: bold; }
+  font-weight: bold;
+  font-family: Mulish, sans-serif; }
 
 .os-table:not(.os-unstyled-container) .os-caption-container > .os-number {
-  font-weight: bold; }
+  font-weight: bold;
+  font-family: Mulish, sans-serif; }
 
 .os-table.os-top-titled-container {
   margin-bottom: 1.4rem;
@@ -1234,10 +1245,12 @@ nav#toc > ol > .os-toc-composite-chapter > a::after {
   prince-caption-page: all; }
 
 .os-table.os-top-titled-container .os-caption-container > .os-title-label {
-  font-weight: bold; }
+  font-weight: bold;
+  font-family: Mulish, sans-serif; }
 
 .os-table.os-top-titled-container .os-caption-container > .os-number {
-  font-weight: bold; }
+  font-weight: bold;
+  font-family: Mulish, sans-serif; }
 
 [data-type="note"].learning-objectives > h3[data-type="title"] {
   color: #00819A;
@@ -3024,7 +3037,7 @@ iframe {
   color: #000000;
   font-family: IBM Plex Serif, serif;
   font-weight: normal;
-  padding-bottom: 4.2rem; }
+  padding-bottom: 1.4rem; }
 
 .os-index-container > .group-by > .group-label {
   color: #000000;
@@ -3036,13 +3049,13 @@ iframe {
 .os-index-container > .group-by > .os-index-item {
   color: #000000;
   font-family: IBM Plex Serif, serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.5rem; }
 
 .os-index-container > .group-by > .os-index-item > .os-term {
   color: #000000;
   font-family: IBM Plex Serif, serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.5rem;
   padding-right: 8px; }
 

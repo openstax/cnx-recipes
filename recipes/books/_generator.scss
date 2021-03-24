@@ -523,7 +523,7 @@
   @if $Config_SectionCompositePages != () { @include count_countSections(section); }
   @include count_countAppendices(appendix);
 
-  @if $Config_ResetSectionCounterForEOCLO == true { @include count_countSections(section); }
+  @if $Config_ResetSectionCounter == true { @include count_countSections(section); }
   
   @if map-get($Config_PartType_Exercise, moveTo) == $AREA_EOC { //check to see if this code is redundent,   same block above
     $resetAt:       map-get($Config_PartType_Exercise, resetAt);
@@ -757,9 +757,103 @@
   @if release-flag-enabled(modify-column-container) {
     @include modify_columnContainer();
   }
+
+  //for english comp - class not present in other titles
+  //put in place for styling reqs
+    //annotation icons needed to be in their own div so 
+    //that they could display vertically next to text content
+  .annotation {
+    &::inside {
+      class: 'os-text';
+      container: span;
+    }
+  }
 }
 :pass(16) {
   @include modify_tagNoteref();
+
+  //Sections w/ titles injected in config - implemented for English Comp
+  //not very pretty but this will be moving to kitchen 
+  @each $section in $Config_Custom_Section {
+    $className: map-get($section, className);
+    $text: map-get($section, text);
+    $inject: map-get($section, inject);
+
+    @include validate_type($className, string);
+    @include validate_type($text, string);
+    @include validate_type($inject, string);
+
+    //inject new title and move old title to subtitle
+    //for data-type page
+    @if $inject == 'title' {
+      [data-type="page"].#{$className} {
+        > h2[data-type="document-title"] {
+          > .os-text {
+            string-set: subtitle content();
+          }
+          & + div {
+            content: string(subtitle);
+            container: h3;
+            class: 'os-subtitle';
+          }
+          &:deferred {
+            > .os-text {
+              content: $text;
+            }
+          }
+        }
+      }
+    }
+
+    //inject given title in h3
+    //take data-type title and put in h4
+    //for sections
+    @if $inject == 'subtitle' {
+      section.#{$className}  {
+        > [data-type="title"] {
+          container: h4;
+        }
+        &:deferred {
+          &::before {
+            content: $text;
+            container: h3;
+            class: 'os-title';
+          }
+        }
+      }
+    }
+
+    //inject given title as prefix
+    //for sections
+    @if $inject == 'title_prefix' {
+      section.#{$className}  {
+        > h3[data-type="title"] {
+          content: $text content();
+        }
+      }
+    }
+  }
+
+  @each $class in $Config_Annotation_Classes {
+    p.#{$class} {
+      &::before {
+        class: $class;
+        container: span;
+        move-to: icons;
+      }
+    }
+  }
+
+  //for english comp - class not present in other titles
+  //put in place for styling reqs
+    //annotation icons needed to be in their own div so 
+    //that they could display vertically next to text content
+  p.annotation {
+    &::before {
+      class: 'os-icons';
+      content: pending(icons);
+    }
+  }
 }
 :pass(100) {
   // Get rid of delete-me objects that easybake misses
