@@ -1,6 +1,7 @@
 @import '_table-components';
 @import '_caption-components';
 @import '_titles-components';
+@import '_lists-components';
 
 @include create_shape('cosmos:::BasicTableShape', (
     _components: (
@@ -41,6 +42,16 @@
                         )),
                         map-merge($Table__Body, (
                             _components: (
+                                map-merge($Table__Row, (
+                                    _components: (
+                                        map-merge($Table__Data, (
+                                            _components: (
+                                                $UnorderedList--FirstLevel,
+                                                $OrderedList--FirstLevel,
+                                            ),
+                                        )),
+                                    ),
+                                )),
                                 map-merge($Table__Row--NotLastChild, (
                                     _components: (
                                         $Table__Data--FirstChild,
@@ -64,12 +75,25 @@
                                         $Table__Data--Centered,
                                     ),
                                 )),
+                                map-merge($Table__Row--MiddleHeader, (
+                                    _components: (
+                                        map-merge($Table__Data--MiddleHeaderCell, (
+                                            _components: (
+                                                $Table__Data--TopAligned,
+                                                $Table__Data--LeftAligned,
+                                                $Table__Data--RightAligned,
+                                                $Table__Data--Centered,
+                                            )
+                                        )),
+                                    )
+                                )),
                             )
                         )),
                     )
                 )),
                 map-merge($Caption__Container, (
                     _components: (
+                        $Table__BottomBorder,
                         $Caption__Title--Label,
                         $Caption__Number,
                         $Caption__Title,
