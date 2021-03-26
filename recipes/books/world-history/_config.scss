@@ -51,9 +51,14 @@ $RECIPE_NAME: "world-history";
 
 $Config_ChapterCompositePages: (
   (className: "glossary", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
-  (className: "summary", clusterBy: $CLUSTER_SECTION, name: "Summary"),
+  (className: "section-summary", clusterBy: $CLUSTER_SECTION, name: "Section Summary"),
   (className: "review-questions", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Questions"),
-  (className: "critical-thinking", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Critical Thinking Questions"),
+  (className: "check-understanding", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Check Your Understanding"),
+  (className: "reflection-questions", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Reflection Questions"),
+  (className: "visual-questions", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Visual-Based Questions"),
+  (className: "making-connections", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Making Connections"),
+  (className: "thought-provokers", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Thought Provokers"),
+  (className: "source-questions", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Source Questions"),
 );
 
 $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
@@ -61,7 +66,6 @@ $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt
 //Key "type" has the same value as "name", but it's needed because of internationalization.
 // "name" has different value in books from other countries (see pl-u-physics), but we need value common for all books (see mixin "modify_addFirstElementClas")
 $Config_BookCompositePages: (
-  (className: "solution", clusterBy: $CLUSTER_CHAPTER, compoundComposite: true, moveSolutionsTo: $AREA_EOB, type: "Answer Key", name: "Answer Key"),
   (className: "index", clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
 );
 
@@ -123,17 +127,23 @@ $Config_Notes: (
 );
 
 /*==========================================================
-  U.S. HISTORY TITLING CONTENT
+  WORLD HISTORY TITLING CONTENT
 ==========================================================*/
-$Config_SetTableCaption: (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: false, hasTitle: true, hasTopTitle: true);
-$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: false);
+$Config_SetTableCaption: (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true, hasTopTitle: true);
+$Config_SetFigureCaption: (captionType: $CAPTION_FIGURE, defaultContainer: figcaption, hasCaption: true, hasTitle: true);
 $Config_PartType_Table_CaptionContent: (os-title-label: "Table ", os-number: counter(chapter) "." counter(table), os-divider: ' ');
 $Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: counter(chapter) "." counter(figure), os-divider: ' ');
 
 /*==========================================================
-  U.S. HISTORY CONFIG
+  WORLD HISTORY CONFIG
 ==========================================================*/
 $Config_abstractTitle: "Learning Objectives";
 $Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
-$Config_PartType_Solution: (moveTo: $AREA_TRASH_HALF);
 $Config_hasCompositeChapter: true;
+$Config_PartType_Solution: (moveTo: $AREA_TRASH);
+
+$Config_ResetSectionCounter: true;
+
+$Config_CustomList: (
+  (selector: '.learning-objectives ul', name: "abstract", beforeLabel: counter(chapter) "." counter(section) ".", afterLabel: " "),
+);
