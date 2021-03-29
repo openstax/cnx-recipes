@@ -23,28 +23,7 @@ $ChapterIntroType: side;
   ),
 ));
 
-
-
 @include add_settings((
-  Preface: (
-    _selectors: (".preface"),
-    'H2Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'H4Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'H5Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
-  ),
-));
-
-@include add_settings((
-  ChapterModuleTitles: (
-    _selectors: ('[data-type="chapter"]'),
-    'TitleNumberText:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'TitleNumberDigit:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'H2Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'H3Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'H4Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'H5Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-  ),
   ChapterIntro: (
     _selectors: (".introduction"),
     'SplashFigureBg:::background-color': (_ref: "colorMap:::biologyHeaderColor")
@@ -130,23 +109,6 @@ $ChapterIntroType: side;
 
 //Can we convert those into group settings? A mixin? Something to DRY it.
 @include add_settings((
-  GenericEOC:(
-    _selectors: (".os-eoc"),
-    'H2Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'H2Title:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H2Title:::column-span': all,
-    'H2Title:::text-transform': uppercase,
-    'H3Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'H3Title:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H3Title:::column-span': all,
-    'H3LinkTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H3ListTitle:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'H3ListTitle:::font-family': (_ref: "typography:::baseFont"),
-    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
-    'H4Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-    'H4LinkTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H4LinkTitle:::color': (_ref: 'colorMap:::biologyHeaderColor'),
-  ),
   KeyTerm:(
     _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
     'Container:::column-count': 2,
@@ -204,23 +166,51 @@ $ChapterIntroType: side;
 @include add_settings((
   Appendix: (
     _selectors: (".appendix"),
-    'TitleText:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'H1Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'H2Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::biologyHeaderColor"),
     'H3AppendixGlossaryTitle:::color': (_ref: "colorMap:::biologyHeaderColor"),
   ),
 ));
 
+//Titles
+@include add_settings((
+  ChapterTitles: (
+    _selectors: ('[data-type="chapter"]'),
+    'H1Chapter:::color': (_ref: "colorMap:::biologyHeaderColor"),
+  ),
+));
 
+@include add_settings((
+  PageTitles: (
+    _selectors: ('[data-type="page"]:not(.introduction)'),
+    'H2Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'H4Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'H5Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'H1AppendixText:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+  ),
+));
+
+@include add_settings((
+  EocCompositePageTitles: (
+    _selectors: ('[data-type="chapter"] > .os-eoc[data-type="composite-page"]'),
+    'H2Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+  ),
+));
+
+@include add_settings((
+  EobTitles: (
+    _selectors: ('.os-eob'),
+    'H2Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::biologyHeaderColor'),
+  ),
+));
 
 //@use
 @include use('BookRoot', "common:::BookRoot");
 @include use('UnitToc', 'carnival:::UnitToc');
-@include use('Preface','carnival:::Preface');
+@include use('Preface','carnival:::Preface'); //remove when clean up work for lists be done
 @include use('ContentExercises','carnival:::ExerciseShape');
+
 //EOC
-@include use('GenericEOC','carnival:::GenericEOCShape');
 @include use('KeyTerm','carnival:::EocKeyTerm');
 @include use('EocSummary','carnival:::EocSummary');
 @include use('VisualExercise', 'carnival:::EOCAssesmentsShape');
@@ -232,7 +222,7 @@ $ChapterIntroType: side;
 @include use('Index', 'carnival:::IndexShape');
 @include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
 @include use('Link', 'carnival:::Link');
-@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape');
+@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape'); //remove when clean up work for lists be done
 @include use('ChapterIntro', 'carnival:::MarginChapterIntroShape');
 @include use('UnitTitle', 'common:::Hidden');
 @include use('BasicTable', 'carnival:::BasicTableShape');
@@ -252,3 +242,9 @@ $ChapterIntroType: side;
 @include use('InterconnectNote', 'carnival:::IconNoteShape'); //?
 @include use('LinkToLearningNote', 'carnival:::IconCondensedShape');
 @include use('ConceptsInActionNote', 'carnival:::IconCondensedShape');
+
+//Titles
+@include use('ChapterTitles', 'carnival:::ChapterTitlesShape');
+@include use('PageTitles', 'carnival:::PageTitlesShape');
+@include use('EocCompositePageTitles', 'carnival:::EocCompositePageTitlesShape');
+@include use('EobTitles', 'carnival:::EobTitlesShape');
