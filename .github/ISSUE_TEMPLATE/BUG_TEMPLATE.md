@@ -10,7 +10,7 @@ What kind of issue is this? [ ] recipe [ ] styles [ ] both [ ] i don't know
 
 <!-- Do you have a annotated screenshot you can provided? -->
 
-# Is there a discernable pattern? Where and when does this occur?
+# Does this happen for every instance? If no, is there a discernable pattern of occurrences?
 
 # Sample mark up if applicable
 
