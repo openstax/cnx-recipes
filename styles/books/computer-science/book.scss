@@ -1,14 +1,25 @@
 $PagesWithBands: ();
 
 @import 'framework/framework';
-@import '../../design-settings/cardboard/design.scss';
-@import '../../designs/cardboard/pdf/folio';
-@import '../../design-settings/cardboard/settings.scss';
+@import '../../design-settings/cardboard/_design.scss';
+@import '../../designs/cardboard/pdf/_folio';
+@import '../../design-settings/cardboard/_settings.scss';
+
+@include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
+    'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-intro2.svg")) no-repeat top left,
+    'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+    'SplashImgMediaBar:::background-color': (_ref: "colorMap:::chapterTitleBgColor"),
+    'SplashImgMediaBar:::border-top-color': (_ref: "colorMap:::chapterTitleBorderColor"),
+  )
+));
 
 // Notes
 @include add_settings ((
-// Option 2
-ThinkItThrough: (
+    // Option 2
+    ThinkItThrough: (
         _selectors: ('.think-through'),
         "Title:::color": (_ref: "colorMap:::noteOption2HeaderColor"),
         "Title:::font-family": ( _ref: "typography:::titleFont" ),
@@ -18,4 +29,68 @@ ThinkItThrough: (
         "Subtitle:::color": ( _ref: "colorMap:::noteSubtitleColor" ),
         "Subtitle:::font-family": ( _ref: "typography:::titleFont" ),
     ),
-))
+    // Option 2
+    ConceptsPractice: (
+    _selectors: ('.concepts-practice'),
+    "Title:::color": (_ref: "colorMap:::noteOption2HeaderColor"),
+    "Title:::font-family": ( _ref: "typography:::titleFont" ),
+    "Title:::background-color": ( _ref: "colorMap:::noteOption2HeaderBackgroundColor" ),
+    "Body:::font-family": ( _ref: "typography:::baseFont" ),
+    "Body:::background-color": ( _ref: "colorMap:::noteOption2BodyBackgroundColor" ),
+    "Subtitle:::color": ( _ref: "colorMap:::noteSubtitleColor" ),
+    "Subtitle:::font-family": ( _ref: "typography:::titleFont" ),
+    ),
+    LinkToLearning: (
+        _selectors: ('.link-to-learning'),
+        "Title:::color": (_ref: 'colorMap:::noteOption1HeaderColor'),
+        'Title:::background-color': (_ref: "colorMap:::noteOption1HeaderBackgroundColor"),
+        'Title:::font-family': (_ref: "typography:::titleFont"),
+        'Body:::font-family': (_ref: "typography:::baseFont"),
+        'Body:::background-color': (_ref: "colorMap:::noteOption1BodyBackgroundColor"),
+    ),
+    IndustrySpotlight: (
+        _selectors: (".industry-spotlight"),
+        'Title:::background-color': (_ref: "colorMap:::noteOption5HeaderBackgroundColor"),
+        'Title:::color': (_ref: "colorMap:::noteOption5HeaderColor"),
+        'Title:::font-family': (_ref: "typography:::titleFont"),
+        'Body:::font-family': (_ref: "typography:::baseFont"),
+        'Body:::background-color': (_ref: "colorMap:::noteOption5BodyBackgroundColor"),
+        "Subtitle:::color": ( _ref: "colorMap:::noteSubtitleColor" ),
+        "Subtitle:::font-family": ( _ref: "typography:::titleFont" ),
+      ),
+     // Option 3 Notes
+     GlobalTech: (
+        _selectors: (".global-tech"),
+        'Title:::background-color': (_ref: "colorMap:::noteOption3HeaderBackgroundColor"),
+        'Title:::color': (_ref: "colorMap:::noteOption3HeaderColor"),
+        'Title:::font-family': (_ref: "typography:::titleFont"),
+        'Body:::font-family': (_ref: "typography:::baseFont"),
+        'Body:::background-color': (_ref: "colorMap:::noteOption3BodyBackgroundColor"),
+        'Subtitle:::color': (_ref: "colorMap:::noteSubtitleColor"),
+        'Subtitle:::font-family': (_ref: "typography:::titleFont"),
+    ),
+));
+
+
+
+// Common settings
+@include use('BookRoot', "common:::BookRoot");
+@include use('ChapterIntro', 'cardboard:::ChapterIntroShape');
+@include use('Footnote', 'common:::FootnoteShape');
+@include use('FootnoteCall', 'common:::FootnoteCallShape');
+
+// Tables
+@include use('FakeTitleTable', 'cardboard:::TableWithBordersShape');
+@include use('UnstyledTable', 'cardboard:::UnstyledTableShape');
+
+// Misc
+@include use('Figure','cardboard:::FigureShape');
+@include use('Link', 'cardboard:::LinkShape');
+
+// Notes
+@include use('ThinkItThrough', 'cardboard:::BoxedNoteWithSubtitleShape');
+@include use('ConceptsPractice', 'cardboard:::BoxedNoteWithSubtitleShape');
+@include use('LinkToLearning', 'cardboard:::BoxedNoteShape');
+@include use('IndustrySpotlight', 'cardboard:::BoxedNoteWithSubtitleShape');
+@include use('GlobalTech', 'cardboard:::BoxedNoteWithSubtitleShape');
+@include use('NotesLists', 'cardboard:::NotesListsShape');
