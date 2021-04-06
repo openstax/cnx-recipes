@@ -10,6 +10,10 @@ What kind of issue is this? [ ] recipe [ ] styles [ ] both [ ] i don't know
 
 <!-- Do you have a annotated screenshot you can provided? -->
 
+# Is there a discernable pattern? Where and when does this occur?
+
+# Sample mark up if applicable
+
 # Acceptance Criteria
 
 # Bug Location(s)
