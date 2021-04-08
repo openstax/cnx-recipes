@@ -1,26 +1,15 @@
 @import 'titles-components';
 @import 'lists-components'; 
 
-@include create_shape('carnival:::ChapterModuleTitlesShape', (
+//---------------------------------------------------------------------------------------------------------------------------
+@include create_shape('carnival:::ChapterModuleTitlesShape', ( //ToDo: remove this shape when clean up work for lists be done
   _components: (
     map-merge($Chapter__Container, (
       _components: (
-        map-merge($Title__Container, (
-          _components: (
-            $Title__Text,
-            $Title__Number__Text,
-            $Title__Number__Digit,
-          )
-        )),
         map-merge($Module__Container, (
           _components: (
-            $H2,
             $UnorderedList--MarginLeft,
             $OrderedList--MarginLeft,
-            $H3,
-            $H4,
-            $H5,
-            $Title--InParagraph,
             map-merge($Section__UnorderedList--MarginLeft, (
               _components: (
                 $UnorderedList--Nested--MarginLeft,
@@ -29,8 +18,172 @@
             )),
             $SubSection__UnorderedList--MarginLeft,
             $SubSection__OrderedList--MarginLeft,
-            $Title--OverFigure,
           )
+        )),
+      )
+    )),
+  )
+));
+//--------------------------------------------------------------------------------------------------------------------------
+
+// Shapes with new convention
+
+@include create_shape('carnival:::ChapterTitlesShape', (
+  _components: (
+    map-merge($Chapter__Container, (
+      _components: (
+        map-merge($H1--Chapter, (
+          _components: (
+            $H1--Chapter__Text,
+          )
+        )),
+      )
+    )),
+  )
+));
+
+@include create_shape('carnival:::PageTitlesShape', (
+  _components: (
+    map-merge($Page__Container, (
+      _components: (
+        map-merge($Preface__Container,(
+          _components:(
+            $H1,
+          ),
+        )),
+        $H2,
+        map-merge($SectionWrapper--FirstLevel,(
+          _components:(
+            $H2,
+          ),
+        )),
+        map-merge($SectionWrapper--FirstLevel,(
+          _components:(
+            $H3,
+          ),
+        )),
+        map-merge($SectionWrapper--SecondLevel,(
+          _components:(
+            $H3,
+          ),
+        )),
+        map-merge($SectionWrapper--SecondLevel,(
+          _components:(
+            $H4,
+          ),
+        )),
+        map-merge($SectionWrapper--ThirdLevel,(
+          _components:(
+            $H5,
+          ),
+        )),
+        $Title--InParagraph,
+        $Title--OverFigure,
+        map-merge($Appendix__Container,(
+          _components:(
+            map-merge($H1--Appendix,(
+              _components:(
+                $H1--Appendix__Text,
+              ),
+            )),
+          ),
+        )),
+      )
+    )),
+  )
+));
+
+// EOC
+
+@include create_shape('carnival:::EocCompositePageTitlesShape',(
+  _components:(
+    map-merge($Page--Composite__Container,(
+      _components:(
+        $H2,
+        map-merge($SectionWrapper--FirstLevel,(
+          _components:(
+            $H3--Link,
+          ),
+        )),
+        $H3--List,
+      ),
+    )),
+  ))
+);
+
+@include create_shape('carnival:::EocCompositeChapterTitlesShape',(
+  _components:(
+    map-merge($Chapter--Composite__Container,(
+      _components:(
+        $H2,
+        map-merge($DivWrapper--FirstLevel, (
+          _components:(
+            $H3,
+            map-merge($DivWrapper--SecondLevel, (
+              _components:(
+                map-merge($SectionWrapper--FirstLevel,(
+                  _components:(
+                    $H3--NestedLink,
+                  ),
+                )),
+              ),
+            )),
+          ),
+        )),
+      ),
+    )),
+  ))
+);
+
+@include create_shape('carnival:::EocCompositeChapterTitlesWithBorderShape',( //used only in polish u-physics
+  _components:(
+    map-merge($Chapter--Composite__Container,(
+      _components:(
+        $H2,
+        map-merge($DivWrapper--FirstLevel, (
+          _components:(
+            map-merge($H3--WithBottomBorder,(
+              _components:(
+                $H3--WithBottomBorder__Border,
+              ),
+            )),
+            map-merge($DivWrapper--SecondLevel, (
+              _components:(
+                map-merge($SectionWrapper--FirstLevel,(
+                  _components:(
+                    $H3--NestedLink,
+                  ),
+                )),
+              ),
+            )),
+          ),
+        )),
+      ),
+    )),
+  )
+));
+
+// EOB
+
+@include create_shape('carnival:::EobTitlesShape', ( // Index, References, Answer Key
+  _components: (
+    map-merge($Eob__Container, (
+      _components: (
+        $H1,
+        map-merge($SectionWrapper--FirstLevel,(
+          _components:(
+            $H2,                              // References
+          ),
+        )),
+        map-merge($DivWrapper--FirstLevel, (
+          _components:(
+            $H2,                              // Answer Key
+          ),
+        )),
+        map-merge($DivWrapper--SecondLevel, ( // Answer Key u-physics
+          _components:(
+            $H3,
+          ),
         )),
       )
     )),
