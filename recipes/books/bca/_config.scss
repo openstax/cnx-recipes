@@ -1,0 +1,159 @@
+@import '../_common-stuff';
+$RECIPE_NAME: "bca";
+
+/*==========================================================
+  BCA CONFIG
+==========================================================*/
+
+/*==========================================================
+  Notes
+==========================================================*/
+/*
+/*
+  Link to Learning note
+
+  Contains a title "Link to Learning" and the note body.
+
+  Markup: ./styleguide/page.note.link-to-learning.xhtml-baked.html
+
+  Style guide: page.note.link-to-learning
+*/
+/*
+  Real World Application note
+
+  Contains a title "Real World Application", a subtitle and the note body. May contain tables, figures, footnotes.
+
+  Markup: ./styleguide/page.note.real-application.xhtml-baked.html
+
+  Style guide: page.note.real-application
+*/
+/*
+  Spotlight on Ethics note
+
+  Contains a title "Spotlight on Ethics", a subtitle, and the note body.
+
+  Markup: ./styleguide/page.note.spotlight-ethics.xhtml-baked.html
+
+  Style guide: page.note.spotlight-ethics
+*/
+/*
+  Checkpoint note
+
+  Contains a title "Checkpoint" and a note body with exercises.
+
+  Markup: ./styleguide/page.note.check-point.xhtml-baked.html
+
+  Style guide: page.note.check-point
+*/
+
+$_checkpointTitleContent        : (os-title-label: "Checkpoint");
+$_checkpointSolutionTitleContent: (os-title-label: "Answer");
+
+$Config_Notes: (
+    (className: 'link-to-learning',  moveSolutionTo: $AREA_NONE,  labelText: "Link to Learning"),
+    (className: 'real-application',  moveSolutionTo: $AREA_NONE,  labelText: "Real World Application"),
+    (className: 'spotlight-ethics',  moveSolutionTo: $AREA_NONE,  labelText: "Spotlight on Ethics"),
+    (className: 'check-point', moveSolutionTo: $AREA_NONE, titleContent: $_checkpointTitleContent, hasSolutions: true, solutionTitleContent: $_checkpointSolutionTitleContent),
+);
+
+/*==========================================================
+  EOC
+==========================================================*/
+/*
+  Summary page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.section-summary.xhtml-baked.html
+
+  Style guide: book.composite.section-summary
+*/
+/*
+  Key Terms page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
+*/
+/*
+  Review Questions page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.review-questions.xhtml-baked.html
+
+  Style guide: book.composite.review-questions
+*/
+/*
+  Now You Try It page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.you-try.xhtml-baked.html
+
+  Style guide: book.composite.you-try
+*/
+/*
+  Practice Exercises page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.practice-exercises.xhtml-baked.html
+
+  Style guide: book.composite.practice-exercises
+*/
+/*
+  Written Exercises page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.written-exercises.xhtml-baked.html
+
+  Style guide: book.composite.written-exercises
+*/
+/*
+  Case Exercise page
+
+  These should be collated at the end of a chapter.
+
+  Markup: ./styleguide/book.composite.case-exercises.xhtml-baked.html
+
+  Style guide: book.composite.case-exercises
+*/
+$Config_ChapterCompositePages: (
+  (className: "glossary",                clusterBy: $CLUSTER_NONE,      name: "Key Terms",  specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt",),
+  (className: "section-summary",         clusterBy: $CLUSTER_SECTION,                      name: "Summary"),
+  (className: "review-questions",    clusterBy: $CLUSTER_NONE,      name: "Review Questions", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+  (className: "you-try",    clusterBy: $CLUSTER_NONE,      name: "Now You Try It", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+  (className: "practice-exercises",    clusterBy: $CLUSTER_NONE,      name: "Practice Exercises", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+  (className: "written-exercises",    clusterBy: $CLUSTER_NONE,      name: "Written Exercises", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+  (className: "case-exercises",    clusterBy: $CLUSTER_NONE,      name: "Case Exercises", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+  (className: "extension-exercises",    clusterBy: $CLUSTER_NONE,      name: "Extension Exercises", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+);
+
+$Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
+
+//Key "type" has the same value as "name", but it's needed because of internationalization.
+// "name" has different value in books from other countries (see pl-u-physics), but we need value common for all books (see mixin "modify_addFirstElementClas")
+$Config_BookCompositePages: (
+  (className: "index",        clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+);
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_COMPOSITE_PAGE, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent);
+
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTitle: true, hasTopTitle: true);
+
+$Config_hasCompositeAppendixes: true;
+
+// for some reason this needs to be after $Config_BookCompositePages, especially if set to false (must be added here even if it's in the common file)
+$Config_hasCompositeChapter: true;
+
+$Config_ResetSectionCounter: true;
+
+$Config_CustomList: (
+  (selector: '.learning-objectives ul', name: "abstract", beforeLabel: counter(chapter) "." counter(section) ".", afterLabel: " "),
+);
+
+$Config_PartType_Solution: (moveTo: $AREA_TRASH);
