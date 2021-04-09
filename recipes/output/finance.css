@@ -408,61 +408,6 @@
 
   Style guide: book.composite.questions
 */
-/*
-  Exercise Set A
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Exercises Set A"
-
-  Markup: ./styleguide/book.composite.exercise-set-a.xhtml-baked.html
-
-  Style guide: book.composite.exercise-set-a
-*/
-/*
-  Exercise Set B
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Exercises Set B"
-
-  Markup: ./styleguide/book.composite.exercise-set-b.xhtml-baked.html
-
-  Style guide: book.composite.exercise-set-b
-*/
-/*
-  Problem Set A
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Problem Set A"
-
-  Markup: ./styleguide/book.composite.problem-set-a.xhtml-baked.html
-
-  Style guide: book.composite.problem-set-a
-*/
-/*
-  Problem Set B
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Problem Set B"
-
-  Markup: ./styleguide/book.composite.problem-set-b.xhtml-baked.html
-
-  Style guide: book.composite.problem-set-b
-*/
-/*
-  Thought Provokers
-
-  Should be collated at the end of a chapter.
-
-  Contains a title "Thought Provokers"
-
-  Markup: ./styleguide/book.composite.thought-provokers.xhtml-baked.html
-
-  Style guide: book.composite.thought-provokers
-*/
 /*==========================================================
   EOB
 ==========================================================*/
@@ -1148,34 +1093,6 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.multiple-choice {
-    move-to: multiple-choice-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.multiple-choice > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(multiple-choice-TOCOMPOSITE);
-    class: "os-eoc os-multiple-choice-container";
-    data-type: "composite-page";
-    data-uuid-key: ".multiple-choice"; }
-
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] section.questions {
-    move-to: questions-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] section.questions > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(questions-TOCOMPOSITE);
-    class: "os-eoc os-questions-container";
-    data-type: "composite-page";
-    data-uuid-key: ".questions"; }
-
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
     string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.cfa-institute {
@@ -1193,6 +1110,48 @@
     class: "os-eoc os-cfa-institute-container";
     data-type: "composite-page";
     data-uuid-key: ".cfa-institute"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.multiple-choice {
+    move-to: multiple-choice-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.multiple-choice > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(multiple-choice-TOCOMPOSITE);
+    class: "os-eoc os-multiple-choice-container";
+    data-type: "composite-page";
+    data-uuid-key: ".multiple-choice"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.review-questions {
+    move-to: review-questions-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.review-questions > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(review-questions-TOCOMPOSITE);
+    class: "os-eoc os-review-questions-container";
+    data-type: "composite-page";
+    data-uuid-key: ".review-questions"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.problem-set {
+    move-to: problem-set-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.problem-set > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(problem-set-TOCOMPOSITE);
+    class: "os-eoc os-problem-set-container";
+    data-type: "composite-page";
+    data-uuid-key: ".problem-set"; }
 
 :pass(3) .your-turn [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1252,6 +1211,37 @@
 :pass(7) div[data-type="composite-page"] > [data-type="document-title"] {
   string-set: sectionHeaderString content(); }
 
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: attr(cmlnle|reference, content());
+  attr-group-by: attr(group-by);
+  container: span;
+  class: "os-term";
+  move-to: index-term; }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: string(sectionHeaderString);
+  container: span;
+  class: "os-term-section";
+  move-to: index-section; }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  container: a;
+  content: pending(index-section);
+  attr-href: "#" attr(id);
+  class: "os-term-section-link";
+  move-to: index-section-link; }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  container: span;
+  content: ', ';
+  class: "os-index-link-separator";
+  move-to: index-section-link; }
+
+:pass(7) div[data-type="page"] span[data-type="term"]::after, :pass(7) div[data-type="composite-page"] span[data-type="term"]::after {
+  content: pending(index-term) pending(index-section-link);
+  class: os-index-item;
+  move-to: index-TOCOMPOSITE; }
+
 :pass(7) .os-chapter-outline {
   move-to: ChapterOutline; }
 
@@ -1304,6 +1294,14 @@
 :pass(9) div[data-type="page"] > [data-type="document-title"],
 :pass(9) div[data-type="composite-page"] > [data-type="document-title"] {
   node-set: sectionHeaderNode; }
+
+:pass(9) body::after {
+  container: div;
+  content: pending(index-TOCOMPOSITE);
+  class: "os-eob os-index-container";
+  data-type: "composite-page";
+  data-uuid-key: "index";
+  group-by: span, "span::attr(group-by)", nocase; }
 
 :pass(10) .os-index-container > div.group-by:first-of-type > span.group-label:match(\^\[ \]\(Symbols\|SYMBOLS\)) {
   content: "Symbols"; }
@@ -1429,6 +1427,17 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
+:pass(10) [data-type="composite-page"].os-eoc.os-cfa-institute-container::before {
+  container: span;
+  content: "CFA Institute";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-cfa-institute-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
 :pass(10) [data-type="composite-page"].os-eoc.os-multiple-choice-container::before {
   container: span;
   content: "Multiple Choice";
@@ -1440,27 +1449,38 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(10) [data-type="composite-page"].os-eoc.os-questions-container::before {
+:pass(10) [data-type="composite-page"].os-eoc.os-review-questions-container::before {
   container: span;
-  content: "Questions";
+  content: "Review Questions";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(10) [data-type="composite-page"].os-eoc.os-questions-container::before {
+:pass(10) [data-type="composite-page"].os-eoc.os-review-questions-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
-:pass(10) [data-type="composite-page"].os-eoc.os-cfa-institute-container::before {
+:pass(10) [data-type="composite-page"].os-eoc.os-problem-set-container::before {
   container: span;
-  content: "CFA Institute";
+  content: "Problems";
   class: os-text;
   move-to: h2-TITLECONTAINER; }
 
-:pass(10) [data-type="composite-page"].os-eoc.os-cfa-institute-container::before {
+:pass(10) [data-type="composite-page"].os-eoc.os-problem-set-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: span;
+  content: "Index";
+  class: os-text;
+  move-to: h1-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eob.os-index-container::before {
+  container: h1;
+  data-type: "document-title";
+  content: pending(h1-TITLECONTAINER); }
 
 :pass(10) div[data-type='chapter'] > h1[data-type='document-title'] {
   counter-increment: chapTitleNum;
