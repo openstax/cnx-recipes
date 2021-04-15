@@ -106,6 +106,10 @@ $Config_ContentExercise_TitleContent : (os-divider: ".", os-number : counter(exe
 
 $Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTopTitle: true);
 
+$Config_CustomList: ( 
+  (selector: '.stepwise', name: "stepwise", beforeLabel: "Step ", afterLabel: ". "), 
+);
+
 //Key "type" has the same value as "name", but it's needed because of internationalization.
 // "name" has different value in books from other countries (see pl-u-physics), but we need value common for all books (see mixin "modify_addFirstElementClas")
 $Config_BookCompositePages: (
@@ -119,5 +123,9 @@ $Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
 
 // for some reason this needs to be after $Config_BookCompositePages, especially if set to false (must be added here even if it's in the common file)
 $Config_hasCompositeChapter: true;
+
+$Config_TargetLabels : append($Config_TargetLabels,
+(selector: 'div[data-type="chapter"] > div[data-type="page"]:not(.introduction)', labelText: "LO ", labelCounter: counter(chapter) "." counter(section))
+);
 
 $Config_hasGroupedIntroBody: true;
