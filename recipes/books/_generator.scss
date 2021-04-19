@@ -697,8 +697,30 @@
   @include modify_elementsOrder($Config_Order_ChapterObjective);
   @include modify_elementsOrder($Config_Order_CompositePages);
   @include modify_elementsOrder($Config_Order_FigTableCaption);
+
+  @if release-flag-enabled(rm-empty-answ-key) {
+    .os-eob.os-solution-container[data-type="composite-chapter"] {
+      string-set: solutions "no-solutions ";
+      
+      > [data-type="composite-page"] {
+        > div[data-type="solution"] {
+          string-set: solutions "has-solutions ";
+        }
+      }
+      &:deferred {
+        class: string(solutions) attr(class);
+      }
+    }
+  }
+
 }
 :pass(12) {
+  @if release-flag-enabled(rm-empty-answ-key) {
+    .os-eob.os-solution-container.no-solutions {
+      move-to: trash;
+    }
+  }
+
   @if release-flag-enabled(table-move-fake-title) {
     @if map-get($Config_SetTableCaption, hasTopTitle) == true {
       .os-table {
