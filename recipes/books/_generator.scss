@@ -734,6 +734,7 @@
       move-to: trash;
     }
   }
+  @include utils_clearTrash();
 }
 :pass(13) {
   @include toc_putTOCElements($Config_TocTitleWord);
@@ -742,19 +743,11 @@
   @include modify_tagExerciseWithFirstElementClass();
   @include modify_tagTableParentContainer();
   @include compose_UnnumberedSplash();
-  @include modify_HACKrmAnswKeyTOC();
 }
 :pass(14) {
   @include toc_navTOCUnwrap();
   @if TEMPLATE() == "CARNIVAL" or TEMPLATE() == "CORN" or TEMPLATE() == "CARDBOARD" or TEMPLATE() == "COSMOS" or ($Config_hasGroupedIntroBody) {
     @include modify_groupChapOutlineIntroContent();
-  }
-  @if release-flag-enabled(hack-rm-empty-answ-key) {
-    body.no-answerkey {
-      #toc > ol > li.os-toc-composite-chapter {
-        move-to: trash;
-      }
-    }
   }
 }
 :pass(15) {
@@ -784,6 +777,7 @@
       container: span;
     }
   }
+  @include modify_HACKrmAnswKeyTOC();
 }
 :pass(16) {
   @include modify_tagNoteref();
@@ -868,6 +862,13 @@
     &::before {
       class: 'os-icons';
       content: pending(icons);
+    }
+  }
+  @if release-flag-enabled(hack-rm-empty-answ-key) {
+    body.no-answerkey {
+       > #toc > ol > li.os-toc-composite-chapter {
+        move-to: trash;
+      }
     }
   }
 }
