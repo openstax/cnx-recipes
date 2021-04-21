@@ -15,6 +15,7 @@ $Table: (
     _properties: (
         width: 100%,
         border-collapse: collapse,
+        margin-bottom: 0,
     )
 );
 
@@ -130,10 +131,10 @@ $Table__Body: empty_wrapper(TableBody, ' > tbody');
 
 $Table__Row: empty_wrapper(TableRow, ' > tr');
 
-$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child)');
+$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child):not(.header-row)');
 $Table__Row--FirstChild: empty_wrapper(TableRowFirstChild, ' > tr:first-child');
 
-$Table__Row--NotLastChild: empty_wrapper(TableRowNotLastChild, ' > tr:not(:last-child)');
+$Table__Row--NotLastChild: empty_wrapper(TableRowNotLastChild, ' > tr:not(:last-child):not(.header-row)');
 $Table__Row--LastChild: empty_wrapper(TableRowLastChild, ' > tr:last-child');
 
 $Table__Data: empty_wrapper(TableData, ' > td');
@@ -230,8 +231,6 @@ $Table__Data--LastRowFirstChild: (
         border-width: .02rem, // .25px in rem
         border-style: solid, 
         border-color: enum('ValueSet:::REQUIRED'),
-        border-bottom-color: enum('ValueSet:::REQUIRED'),
-        border-bottom-width: 0.12rem, // 1.5px in rem
         border-left-style: none,
         border-left-color: transparent,
     )
@@ -251,8 +250,6 @@ $Table__Data--LastRowMiddleChild: (
         border-style: solid, 
         border-color: enum('ValueSet:::REQUIRED'),
         border-width: .02rem, // .25px in rem
-        border-bottom-width: .12rem, 
-        border-bottom-color: enum('ValueSet:::REQUIRED'),
     )
 );
 
@@ -272,9 +269,34 @@ $Table__Data--LastRowLastChild: (
         border-color: enum('ValueSet:::REQUIRED'),
         border-right-style: none, 
         border-right-color: transparent,
-        border-bottom-color: enum('ValueSet:::REQUIRED'),
-        border-bottom-width: .12rem, // 1.5px in rem
     ),
+);
+
+$Table__Row--MiddleHeader: empty_wrapper(TableRowMiddleHeader,  ' > tr.header-row'); // Used in World History
+
+$Table__Data--MiddleHeaderCell: (
+    _name: "TableDataMiddleHeaderCell",
+    _subselector: " > td",
+    _properties: (
+        color: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::OPTIONAL'),
+        font-weight: bold,
+        font-size: font-scale(0),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-right: table-h-spacing(1),
+        padding-left: table-h-spacing(1),
+        background-color: enum('ValueSet:::OPTIONAL'),
+        border-style: solid,
+        border-color: enum('ValueSet:::OPTIONAL'), 
+        border-width: 0.02rem, //.25px converted to rem
+        border-left-style: none,
+        border-left-color: transparent,
+        border-left-width: 0rem,
+        border-right-style: none,
+        border-right-color: transparent,
+        border-right-width: 0rem,
+    )
 );
 
 $Table__Data--TopAligned: (
@@ -309,3 +331,18 @@ $Table__Data--Centered: (
     )    
 );
 
+$Table__BottomBorder: (
+    _name: "TableBottomBorder",
+    _subselector: ":before",
+    _properties: (
+        content: "''",
+        width: 100%,
+        border-bottom-color: enum('ValueSet:::REQUIRED'),
+        border-bottom-width: .12rem,
+        border-bottom-style: solid,
+        display: block,
+        position: relative,
+        top: -0.1rem,
+        margin-bottom: v-spacing(1),
+    )    
+);

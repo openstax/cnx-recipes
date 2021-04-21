@@ -21,61 +21,16 @@ $ChapterIntroType: fullWidth;
     'TocUnitLink:::color': (_ref: 'colorMap:::physicsTocColor'),
     'TocChapterNumber:::color': (_ref: 'colorMap:::physicsTocColor'),
   ),
-ChapterModuleTitles: (
-    _selectors: ('[data-type="chapter"]'),
-    'TitleNumberText:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'TitleNumberDigit:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H2Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H4Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H5Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-  ),
-  Preface: (
-    _selectors: (".preface"),
-    'H2Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H4Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H5Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-  ),
   FullWidthChapterIntro: (
     _selectors: (".introduction"),
     'SplashFigureBg:::background-color': (_ref: "colorMap:::physicsIntroColor"),
-    'OutlineTitleFullWidth:::color': (_ref: "colorMap:::physicsIntroColor"),
+    'OutlineFullWidthTitle:::color': (_ref: "colorMap:::physicsIntroColor"),
     'OutlineFullWidth:::border-bottom-color': (_ref: "colorMap:::physicsIntroColor"),
-    'OutlineTitleBottomBorder:::border-bottom-color': (_ref: "colorMap:::physicsIntroColor"),
-  ),
-  AnswerKey: (
-    _selectors: ('[data-type="composite-chapter"]:not(.os-eoc)'),
-    'H2Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-  ),
-  Appendix: (
-    _selectors: (".appendix"),
-    'TitleText:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H1Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H2Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H3Title:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H3AppendixGlossaryTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    'OutlineFullWidthTitleBottomBorder:::border-bottom-color': (_ref: "colorMap:::physicsIntroColor"),
   ),
 ));
+
 @include add_settings((
-  GenericEOC:(
-    _selectors: (".os-eoc"),
-    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H2Title:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H2Title:::column-span': all,
-    'H2Title:::text-transform': uppercase,
-    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H3Title:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H3Title:::column-span': all,
-    'H3LinkTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H3ListTitle:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'H3ListTitle:::font-family': (_ref: "typography:::baseFont"),
-    'H4Title:::font-family': (_ref: 'typography:::sansFont'),
-    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H4LinkTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H4LinkTitle:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-  ),
   KeyTerm:(
     _selectors: ("[data-type = 'composite-chapter'] > .os-glossary-container"),
     'Container:::column-count': 2,
@@ -97,14 +52,6 @@ ChapterModuleTitles: (
     'UnnumberedUnstyledTable:::margin-bottom': 0,
     'TableData:::padding-right': table-h-spacing(1), 
     'TableData:::padding-left': table-h-spacing(1),
-  ),
-  ChapterReviewCompositeChapter:(
-    _selectors: (".os-chapter-review-container"),
-    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H2Title:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
-    'H3Title:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'H4LinkTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
   ),
   ConceptualQuestionsCompChapPage:(
     _selectors: (".os-review-conceptual-questions-container"),
@@ -225,16 +172,52 @@ ChapterModuleTitles: (
     'TableTitle:::color': (_ref: "colorMap:::physicsTableColor"),
   ),
 ));
+
+//Titles
+@include add_settings((
+  ChapterTitles: (
+    _selectors: ('[data-type="chapter"]'),
+    'H1Chapter:::color': (_ref: "colorMap:::physicsHeaderColor"),
+  ),
+));
+
+@include add_settings((
+  PageTitles: (
+    _selectors: ('[data-type="page"]:not(.introduction)'),
+    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H4Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H5Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H1AppendixText:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+));
+
+@include add_settings((
+  EocCompositeChapterTitles: (
+    _selectors: ('.os-eoc[data-type="composite-chapter"]'),
+    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+));
+
+@include add_settings((
+  EobTitles: (
+    _selectors: ('.os-eob'),
+    'H2Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+    'H3Title:::color': (_ref: 'colorMap:::physicsHeaderColor'),
+  ),
+));
+
 //@use
 @include use('BookRoot', "common:::BookRoot");
 @include use('UnitToc', 'carnival:::UnitToc');
 @include use('UnitTitle', 'common:::Hidden');
-@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape');
+@include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape'); //remove when clean up work for lists be done
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
 @include use('Index', 'carnival:::IndexShape');
 @include use('Link', 'carnival:::Link');
-@include use('Preface','carnival:::Preface');
+@include use('Preface','carnival:::Preface'); //remove when clean up work for lists be done
 @include use('EquationCallOutNote', 'carnival:::BoxCondensedEquationShape');
 @include use('NumberedEquation', 'carnival:::NumberedEquationShape');
 @include use('Equation', 'carnival:::EquationShape');
@@ -247,19 +230,25 @@ ChapterModuleTitles: (
 @include use('DefaultNoClassNote', 'carnival:::BoxedNoteShape');
 @include use('Example', 'carnival:::IconNoteShape');
 @include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
-@include use('Appendix', 'carnival:::AppendixShape');
 @include use('AnswerKey', 'carnival:::AnswerKeyShape');
 @include use('BasicTable', 'carnival:::BasicTableShape');
 @include use('ContentExercises','carnival:::ExerciseShape');
 
 // EOC 
-@include use('GenericEOC','carnival:::GenericEOCShape');
 @include use('KeyTerm','carnival:::EocKeyTerm');
 @include use('EocSummary','carnival:::EocSummary');
 @include use('EocKeyEquations','carnival:::EocKeyEquations');
-@include use('ChapterReviewCompositeChapter','carnival:::EOCDefaultCompoundComposite');
 @include use('ConceptualQuestionsCompChapPage','carnival:::EOCAssesmentsShape');
 @include use('ProblemsCompChapPage','carnival:::EOCAssesmentsShape');
 @include use('AdditionalProblemsCompChapPage','carnival:::EOCAssesmentsShape');
 @include use('ChallengeProblemsCompChapPage','carnival:::EOCAssesmentsShape');
-@include use('FakeTitleTable', 'carnival:::FakeTitleTableShape'); 
+@include use('FakeTitleTable', 'carnival:::FakeTitleTableShape');
+
+//Titles
+@include use('ChapterTitles', 'carnival:::ChapterTitlesShape');
+@include use('PageTitles', 'carnival:::PageTitlesShape');
+@include use('EocCompositeChapterTitles', 'carnival:::EocCompositeChapterTitlesShape');
+@include use('EobTitles', 'carnival:::EobTitlesShape');
+
+//Lists
+@include use('PageLists', 'carnival:::PageListsShape');
