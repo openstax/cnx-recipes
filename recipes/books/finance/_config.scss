@@ -1,0 +1,131 @@
+@import '../_common-stuff';
+$RECIPE_NAME: "finance";
+
+/*==========================================================
+  Finance CONFIG
+==========================================================*/
+
+/*==========================================================
+  Notes
+==========================================================*/
+/*
+  Your Turn Note note
+
+  Contains a title "Your Turn" and exercies with solutions.
+*/
+/*
+  Think It Through note
+
+  Contains a title "Think It Through" and the content of the note.
+*/
+/*
+  Concepts In Practice note
+
+  Contains a title "Concepts In Practice" and the content of the note.
+*/
+/*
+  Continuing Application note
+
+  Contains a title "Continuing Application" and the content of the note.
+*/
+/*
+  Ethical Considerations note
+
+  Contains a title "Ethical Considerations" and the content of the note.
+*/
+/*
+  IFRS Connection note
+
+  Contains a title "IFRS Connection" and the content of the note.
+*/
+/*
+  Link to Learning note
+
+  Contains a title "Link to Learning" and the content of the note.
+*/
+
+$Config_Notes: (
+(className: 'your-turn',  moveSolutionTo: $AREA_NONE,  labelText: "Your Turn"),
+(className: 'think-through',  moveSolutionTo: $AREA_NONE,  labelText: "Think It Through"),
+(className: 'concepts-practice',  moveSolutionTo: $AREA_NONE,  labelText: "Concepts In Practice"),
+(className: 'continuing-application',  moveSolutionTo: $AREA_NONE,  labelText: "Continuing Application"),
+(className: 'ethical-considerations',  moveSolutionTo: $AREA_NONE,  labelText: "Ethical Considerations"),
+(className: 'ifrs-connection',  moveSolutionTo: $AREA_NONE,  labelText: "IFRS Connection"),
+(className: 'link-to-learning',  moveSolutionTo: $AREA_NONE,  labelText: "Link to Learning"),
+);
+
+$Config_UnnumberedElements: (
+  (contextSelector: '.your-turn', childSelector: '[data-type="exercise"]'),
+);
+
+/*==========================================================
+  EOC
+==========================================================*/
+/*
+  Summary
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Summary"
+*/
+/*
+  Key Terms
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Terms"
+*/
+/*
+  Multiple Choice
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Multiple Choice"
+*/
+/*
+  Questions
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Questions"
+*/
+
+
+$Config_ChapterCompositePages: (
+(className: "glossary",                clusterBy: $CLUSTER_NONE,      name: "Key Terms",  specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt",),
+(className: "section-summary",      clusterBy: $CLUSTER_SECTION,   hasSolutions: false,    name: "Summary"),
+(className: "cfa-institute", clusterBy: $CLUSTER_SECTION,   hasSolutions: false,    name: "CFA Institute"),
+(className: "multiple-choice", clusterBy: $CLUSTER_NONE,  name: "Multiple Choice", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+(className: "review-questions", clusterBy: $CLUSTER_NONE,  name: "Review Questions", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+(className: "problem-set", clusterBy: $CLUSTER_NONE,  name: "Problems", hasSolutions: true, moveSolutionsTo: $AREA_NONE,   numberAt: $NUMBER_BEFORE_MOVE,),
+);
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_COMPOSITE_PAGE, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent, );
+
+$Config_ContentExercise_TitleContent : (os-divider: ".", os-number : counter(exerciseMaybeInContent));
+
+$Config_SetTableCaption : (captionType: $CAPTION_TABLE, defaultContainer: caption, hasCaption: true, hasTopTitle: true);
+
+$Config_CustomList: ( 
+  (selector: '.stepwise', name: "stepwise", beforeLabel: "Step ", afterLabel: ". "), 
+);
+
+//Key "type" has the same value as "name", but it's needed because of internationalization.
+// "name" has different value in books from other countries (see pl-u-physics), but we need value common for all books (see mixin "modify_addFirstElementClas")
+$Config_BookCompositePages: (
+(className: "index",        clusterBy: $CLUSTER_NONE,    specialPageType: $PAGE_INDEX,     name: "Index"),
+);
+
+$Config_PartType_Chapter:  (outlineTitle: 'Chapter Outline');
+/*==========================================================
+  EOB
+==========================================================*/
+
+// for some reason this needs to be after $Config_BookCompositePages, especially if set to false (must be added here even if it's in the common file)
+$Config_hasCompositeChapter: true;
+
+$Config_TargetLabels : append($Config_TargetLabels,
+(selector: 'div[data-type="chapter"] > div[data-type="page"]:not(.introduction)', labelText: "LO ", labelCounter: counter(chapter) "." counter(section))
+);
+
+$Config_hasGroupedIntroBody: true;
