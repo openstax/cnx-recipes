@@ -1285,3 +1285,37 @@
     }
   }
 }
+// Hacky solution
+// Sociology 2e answer key is supressed, 3e key is present 
+// Requested to use 1 recipe - this is to remove the empty key in 2e
+@mixin modify_HACKrmEmptyAnswKey {
+  @if release-flag-enabled(hack-rm-empty-answ-key) {
+    .os-eob.os-solution-container[data-type="composite-chapter"] {
+      string-set: solutions "no-solutions ";
+      
+      > [data-type="composite-page"] {
+        > div[data-type="solution"] {
+          string-set: solutions "has-solutions ";
+        }
+      }
+      &:deferred {
+        class: string(solutions) attr(class);
+      }
+    }
+  }
+}
+
+@mixin modify_HACKrmAnswKeyTOC {
+  @if release-flag-enabled(hack-rm-empty-answ-key) {
+    body {
+      string-set: answerkey "no-answerkey ";
+  
+      .os-eob.os-solution-container[data-type="composite-chapter"] {
+        string-set: answerkey "has-answerkey";
+      }
+      &:deferred {
+        class: string(answerkey) attr(class);
+      }
+    }
+  }
+}

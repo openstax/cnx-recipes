@@ -1874,6 +1874,13 @@
   counter-increment: composite-page;
   attr-id: "composite-page-" counter(composite-page); }
 
+:pass(11) .os-eob.os-solution-container[data-type="composite-chapter"] {
+  string-set: solutions "no-solutions "; }
+  :pass(11) .os-eob.os-solution-container[data-type="composite-chapter"] > [data-type="composite-page"] > div[data-type="solution"] {
+    string-set: solutions "has-solutions "; }
+  :pass(11) .os-eob.os-solution-container[data-type="composite-chapter"]:deferred {
+    class: string(solutions) attr(class); }
+
 :pass(12) div.os-eoc [data-type="cnx-archive-uri"],
 :pass(12) div.os-eob [data-type="cnx-archive-uri"] {
   move-to: trash; }
@@ -2247,6 +2254,12 @@
   string-set: tableSummary content();
   move-to: trash; }
 
+:pass(12) .os-eob.os-solution-container.no-solutions {
+  move-to: trash; }
+
+:pass(12) body:deferred::after {
+  content: clear(trash); }
+
 :pass(13) nav#toc {
   content: ''; }
   :pass(13) nav#toc::after {
@@ -2399,6 +2412,13 @@
   class: 'os-text';
   container: span; }
 
+:pass(15) body {
+  string-set: answerkey "no-answerkey "; }
+  :pass(15) body .os-eob.os-solution-container[data-type="composite-chapter"] {
+    string-set: answerkey "has-answerkey"; }
+  :pass(15) body:deferred {
+    class: string(answerkey) attr(class); }
+
 :pass(16) p {
   string-set: hasNoteref " "; }
   :pass(16) p a[role="doc-noteref"] {
@@ -2409,6 +2429,9 @@
 :pass(16) p.annotation::before {
   class: 'os-icons';
   content: pending(icons); }
+
+:pass(16) body.no-answerkey > #toc > ol > li.os-toc-composite-chapter {
+  move-to: trash; }
 
 :pass(100) div.delete-me {
   move-to: trash; }

@@ -708,6 +708,8 @@
   @include modify_elementsOrder($Config_Order_ChapterObjective);
   @include modify_elementsOrder($Config_Order_CompositePages);
   @include modify_elementsOrder($Config_Order_FigTableCaption);
+
+  @include modify_HACKrmEmptyAnswKey();
 }
 :pass(12) {
   @if release-flag-enabled(table-move-fake-title) {
@@ -736,6 +738,13 @@
     @include validate_type($selector, string);
     @include validate_typeOptional($elementType, string);
     @include modify_addFirstElementClass($selector, $elementType);
+  }
+
+  @if release-flag-enabled(hack-rm-empty-answ-key) {
+    .os-eob.os-solution-container.no-solutions {
+      move-to: trash;
+    }
+    @include utils_clearTrash();
   }
 }
 :pass(13) {
@@ -779,6 +788,7 @@
       container: span;
     }
   }
+  @include modify_HACKrmAnswKeyTOC();
 }
 :pass(16) {
   @include modify_tagNoteref();
@@ -863,6 +873,13 @@
     &::before {
       class: 'os-icons';
       content: pending(icons);
+    }
+  }
+  @if release-flag-enabled(hack-rm-empty-answ-key) {
+    body.no-answerkey {
+       > #toc > ol > li.os-toc-composite-chapter {
+        move-to: trash;
+      }
     }
   }
 }
