@@ -1,0 +1,182 @@
+@import '../_common-stuff';
+$RECIPE_NAME: "contemporary-math";
+
+/*==========================================================
+  CONTEMPORARY MATH PAGES
+==========================================================*/
+/*
+  Key Terms
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Terms"
+
+  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
+
+  Style guide: book.composite.key-terms
+*/
+/*
+  Key Equations
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Equations"
+
+  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
+
+  Style guide: book.composite.key-equations
+*/
+/*
+  Key Concepts
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Concepts"
+
+  Markup: ./styleguide/book.composite.key-concepts.xhtml-baked.html
+
+  Style guide: book.composite.key-concepts
+*/
+/*
+  Review Exercises
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Chapter Review Exercises"
+
+  Markup: ./styleguide/book.composite.review-exercises.xhtml-baked.html
+
+  Style guide: book.composite.review-exercises
+*/
+
+$_eosTitle: (os-beforeLabel: "Section ",  os-number: counter(chapter) "." counter(section), os-afterLabel: " Exercises");
+
+$Config_SectionCompositePages: (
+  (className: "section-exercises",    clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle),
+);
+
+$_chapterReviewChildPages: (
+  (className: "glossary",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+  (className: "key-equations", clusterBy: $CLUSTER_NONE, name: "Key Equations"),
+  (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
+  (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
+);
+
+$Config_ChapterCompositePages: (
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions: true, name: "Chapter Review"),
+);
+
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent, );
+
+//Key "type" has the same value as "name", but it's needed because of internationalization.
+// "name" has different value in books from other countries (see pl-u-physics), but we need value common for all books (see mixin "modify_addFirstElementClas")
+$Config_BookCompositePages: (
+  (className: "solutions", clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, type: "Answer Key", name: "Answer Key"),
+  (className: "index",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+);
+
+/* =========================================================
+  CUSTOM NOTES
+==========================================================*/
+/*
+  Media note
+
+  Contains a title "Media" and the content of the note.
+
+  Markup: ./styleguide/page.note.media.xhtml-baked.html
+
+  Style guide: page.note.media
+/*
+  Checkpoint note
+
+  Contains a title "Checkpoint" and the content of the note.
+
+  Markup: ./styleguide/page.note.checkpoint.xhtml-baked.html
+
+  Style guide: page.note.checkpoint
+*/
+/*
+  Theorem note
+
+  Contains a title "Theorem" and the content of the note.
+
+  Markup: ./styleguide/page.note.theorem.xhtml-baked.html
+
+  Style guide: page.note.theorem
+*/
+/*
+  Student Project note
+
+  Contains a title "Student Project" and the content of the note.
+
+  Markup: ./styleguide/page.note.student-project.xhtml-baked.html
+
+  Style guide: page.note.student-project
+*/
+
+$_checkpointTitleContent        : (os-title-label: "Checkpoint ",    os-number: counter(chapter) "." counter(checkpoint),     os-divider: " ");
+$_checkpointSolutionTitleContent: (os-number: counter(chapter) "." counter(checkpoint), os-divider: " ");
+$_theoremTitleContent: (os-title-label: "Theorem ", os-number: counter(chapter) "." counter(theorem), os-divider: " ");
+
+$Config_Notes: (
+  (className: 'media-2', labelText: "Media"),
+  (className: 'checkpoint', moveSolutionTo: $AREA_EOB, counterName: checkpoint, titleContent: $_checkpointTitleContent, hasSolutions: true, solutionTitleContent: $_checkpointSolutionTitleContent),
+  (className: 'theorem', counterName: theorem, titleContent: $_theoremTitleContent),
+  (className: 'project', labelText: "Student Project"),
+  (className: 'problem-solving', labelText: "Problem-Solving Strategy"),
+);
+
+/*==========================================================
+  CONTEMPORARY MATH TITLING CONTENT
+==========================================================*/
+
+$_exampleTitleContent: (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution ");
+$_exerciseTitleContent     : (os-divider: ". ", os-number: counter(exerciseMaybeInContent));
+$_equationTitleContent     : (os-number: "(" counter(chapter) "." counter(equation) ")");
+
+/*==========================================================
+  CONTEMPORARY MATH CONFIG
+==========================================================*/
+
+$Config_PartType_Table_CaptionContent: (os-title-label: "Table ", os-number: counter(chapter) "." counter(table), os-divider: ' ');
+$Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: counter(chapter) "." counter(figure), os-divider: ' ');
+
+$Config_ContentExercise_TitleContent: ();
+
+$Config_PartType_Example: (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent, hasCommentary: true);
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Solution: (moveTo: $AREA_EOB);
+$Config_PartType_Equation: (moveTo: $AREA_NONE, titleContent: $_equationTitleContent, numberAt: $NUMBER_AFTER_MOVE, numberAfterEq: true);
+
+$Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
+$Config_abstractTitle: "Learning Objectives";
+
+$Config_CustomList: (
+  (selector: '[data-type="abstract"] ul', name: "abstract", beforeLabel: counter(chapter) "." counter(section) ".", afterLabel: " "),
+);
+
+$Config_UnnumberedElements: (
+  (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
+  (contextSelector: '.checkpoint', childSelector: '[data-type="exercise"]'),
+);
+
+$Config_FirstElements: (
+  (selector: ' > [data-type="media"]:first-child'),
+  (selector: ' > .os-table:first-child'),
+  (selector: ' > .circled:first-child', elementType: inlineList),
+);
+
+$Config_hasFirstInlineListElement: true;
+
+$Config_TrashSelectedElements: ('.checkpoint [data-type="commentary"]');
+
+$Config_SubtitleLabels: (
+  (selector: '[data-type="note"].theorem', subtitleSelector: '[data-type="title"]', stringName: "theoremSubtitleContent", labelText: attr(use-subtitle)),
+);
+
+$Config_hasCompositeChapter: true;
+
+/* =========================================================
+  OTHER PARTS
+==========================================================*/
