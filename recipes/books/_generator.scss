@@ -644,6 +644,17 @@
       @include modify_trash($trash);
     }
   }
+  @if $Config_NoteExerciseTitle {
+    @each $entry in $Config_NoteExerciseTitle {
+      $noteClass: map-get($entry, noteClass);
+      $title: map-get($entry, title);
+
+      @include validate_type($noteClass, string);
+      @include validate_type($title, string);
+
+      @include modify_addNoteExerciseHeader($noteClass, $title);
+    }
+  }
 }
 :pass(11) {
   @if release-flag-enabled(table-move-fake-title) {

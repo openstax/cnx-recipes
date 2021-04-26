@@ -11,7 +11,16 @@ $Table__Container: (
 
 $Table: (
     _name: "Table",
-    _subselector: " > table",
+    _subselector: " > table:not(.timeline-table)",
+    _properties: (
+        width: 100%,
+        border-collapse: collapse,
+    )
+);
+
+$Table--Timeline: (
+    _name: "TableTimeline",
+    _subselector: " > table.timeline-table",
     _properties: (
         width: 100%,
         border-collapse: collapse,
@@ -192,8 +201,16 @@ $Table__Head__Cell--Centered: (
 );
 
 $Table__Body: empty_wrapper(TableBody, ' > tbody');
-$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child)');
-$Table__Row--FirstChild: empty_wrapper(TableRowFirstChild, ' > tr:first-child');
+$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child):not(.gray-shading)');
+$Table__Row--FirstChild: empty_wrapper(TableRowFirstChild, ' > tr:first-child:not(.gray-shading)');
+
+$Table__Row--ColoredBackgroundRow: (
+    _name: "ColoredBackgroundRow",
+    _subselector: " > .gray-shading",
+    _properties: (
+        background-color: enum('ValueSet:::OPTIONAL'),
+    )
+);
 
 $Table__Data: (
     _name: "TableData",
@@ -267,6 +284,41 @@ $Table__Data--Centered: (
     )    
 );
 
+$Table__Timeline__Head__Cell: (
+    _name: "TimelineTableHead",
+    _subselector: " th",
+    _properties: (
+        color: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::OPTIONAL'),
+        font-size: font-scale(0),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-right: table-h-spacing(1),
+        padding-left: table-h-spacing(1),
+        background-color: enum('ValueSet:::OPTIONAL'),
+        border-style: solid,
+        border-color: enum('ValueSet:::OPTIONAL'), 
+        border-width: 0.08rem, //1px converted to rem
+    )
+);
+
+$Table__Timeline__Data__Cell: (
+    _name: "TimelineTableData",
+    _subselector: " td",
+    _properties: (
+        font-family: enum('ValueSet:::OPTIONAL'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::OPTIONAL'),
+        padding-top: table-v-spacing(1),
+        padding-bottom: table-v-spacing(1),
+        padding-left: table-h-spacing(1),
+        padding-right: table-h-spacing(1),
+        border-style: solid,
+        border-color: enum('ValueSet:::OPTIONAL'), 
+        border-width: 0.08rem, //1px converted to rem
+    )
+);
+
 // Used in text-heavy tables
 $Table__HeaderRow--WithBottomBorder: empty_wrapper(TableHeaderRowWithBottomBorder, ' > tr'); 
 
@@ -297,5 +349,18 @@ $Table__Container--Unstyled: (
     _subselector: "",
     _properties: (
         margin-bottom: table-v-spacing(2),
+    )
+);
+
+$Table__Row--MiddleHeader: empty_wrapper(TableRowMiddleHeader,  ' > tr.header-row'); // Used in CS
+
+$Table__Data--MiddleHeaderCell: (
+    _name: "TableDataMiddleHeaderCell",
+    _subselector: " > td",
+    _properties: (
+        color: enum('ValueSet:::OPTIONAL'),
+        font-size: font-scale(0),
+        background-color: enum('ValueSet:::OPTIONAL'),
+        font-family: enum('ValueSet:::OPTIONAL'),
     )
 );
