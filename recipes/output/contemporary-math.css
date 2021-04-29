@@ -301,10 +301,6 @@
   Should be collated at the end of a chapter.
 
   Contains a title "Key Terms"
-
-  Markup: ./styleguide/book.composite.key-terms.xhtml-baked.html
-
-  Style guide: book.composite.key-terms
 */
 /*
   Key Equations
@@ -312,10 +308,6 @@
   Should be collated at the end of a chapter.
 
   Contains a title "Key Equations"
-
-  Markup: ./styleguide/book.composite.key-equations.xhtml-baked.html
-
-  Style guide: book.composite.key-equations
 */
 /*
   Key Concepts
@@ -323,10 +315,6 @@
   Should be collated at the end of a chapter.
 
   Contains a title "Key Concepts"
-
-  Markup: ./styleguide/book.composite.key-concepts.xhtml-baked.html
-
-  Style guide: book.composite.key-concepts
 */
 /*
   Review Exercises
@@ -334,10 +322,6 @@
   Should be collated at the end of a chapter.
 
   Contains a title "Chapter Review Exercises"
-
-  Markup: ./styleguide/book.composite.review-exercises.xhtml-baked.html
-
-  Style guide: book.composite.review-exercises
 */
 /* =========================================================
   CUSTOM NOTES
@@ -347,35 +331,25 @@
 
   Contains a title "Media" and the content of the note.
 
-  Markup: ./styleguide/page.note.media.xhtml-baked.html
-
-  Style guide: page.note.media
 /*
   Checkpoint note
 
   Contains a title "Checkpoint" and the content of the note.
-
-  Markup: ./styleguide/page.note.checkpoint.xhtml-baked.html
-
-  Style guide: page.note.checkpoint
 */
 /*
   Theorem note
 
   Contains a title "Theorem" and the content of the note.
+*/
+/*
+  Work it out note
 
-  Markup: ./styleguide/page.note.theorem.xhtml-baked.html
-
-  Style guide: page.note.theorem
+  Contains a title "Work it out" and the content of the note.
 */
 /*
   Student Project note
 
   Contains a title "Student Project" and the content of the note.
-
-  Markup: ./styleguide/page.note.student-project.xhtml-baked.html
-
-  Style guide: page.note.student-project
 */
 /*==========================================================
   CONTEMPORARY MATH TITLING CONTENT
@@ -792,6 +766,54 @@
   class: "os-title";
   attr-data-type: "title"; }
 
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].work-out > div[data-type="title"]::deferred {
+  container: h4;
+  class: "os-subtitle";
+  move-to: noteSubtitle; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].work-out > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].work-out::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitle) content(); }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].work-out:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) :not([data-type="note"]) > :not([data-type="note"]) > :not([data-type="note"]) > [data-type="note"].work-out:deferred::before {
+  container: h3;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
+:pass(2) [data-type="note"] [data-type="note"].work-out > div[data-type="title"]::deferred {
+  container: h5;
+  class: "os-subtitle";
+  move-to: noteSubtitledepth1; }
+
+:pass(2) [data-type="note"] [data-type="note"].work-out > div[data-type="title"]::inside {
+  container: span;
+  class: "os-subtitle-label"; }
+
+:pass(2) [data-type="note"] [data-type="note"].work-out::inside {
+  class: "os-note-body";
+  content: pending(noteSubtitledepth1) content(); }
+
+:pass(2) [data-type="note"] [data-type="note"].work-out:deferred::before {
+  container: span;
+  class: "os-title-label";
+  move-to: bNoteLabel; }
+
+:pass(2) [data-type="note"] [data-type="note"].work-out:deferred::before {
+  container: h4;
+  content: pending(bNoteLabel);
+  class: "os-title";
+  attr-data-type: "title"; }
+
 :pass(3) body {
   counter-reset: unit; }
 
@@ -1061,6 +1083,42 @@
   move-to: bNoteHeader; }
 
 :pass(3) [data-type="note"].theorem:deferred {
+  content: pending(bNoteHeader) content(); }
+
+:pass(3) [data-type="chapter"], :pass(3) .appendix {
+  counter-reset: workItOut; }
+
+:pass(3) [data-type="note"].work-out {
+  counter-increment: workItOut; }
+
+:pass(3) [data-type="note"].work-out::before {
+  container: span;
+  content: "Work it out ";
+  class: os-title-label;
+  move-to: bNoteLabel-work-out; }
+
+:pass(3) [data-type="note"].work-out::before {
+  container: span;
+  content: counter(chapter) "." counter(workItOut);
+  class: os-number;
+  move-to: bNoteLabel-work-out; }
+
+:pass(3) [data-type="note"].work-out::before {
+  container: span;
+  content: " ";
+  class: os-divider;
+  move-to: bNoteLabel-work-out; }
+
+:pass(3) [data-type="note"].work-out > [data-type="title"] {
+  move-to: trash; }
+
+:pass(3) [data-type="note"].work-out::after {
+  container: div;
+  content: pending(bNoteLabel-work-out);
+  class: "os-title";
+  move-to: bNoteHeader; }
+
+:pass(3) [data-type="note"].work-out:deferred {
   content: pending(bNoteHeader) content(); }
 
 :pass(3) body {
@@ -1493,11 +1551,11 @@
   data-uuid-key: "index";
   group-by: span, "span::attr(group-by)", nocase; }
 
-:pass(9) [data-type="note"].theorem [data-type="title"] {
-  string-set: theoremSubtitleContent content(); }
+:pass(9) [data-type="note"].work-out [data-type="title"] {
+  string-set: workItOutSubtitleContent content(); }
 
-:pass(9) [data-type="note"].theorem:deferred {
-  attr-use-subtitle: string(theoremSubtitleContent); }
+:pass(9) [data-type="note"].work-out:deferred {
+  attr-use-subtitle: string(workItOutSubtitleContent); }
 
 :pass(10) .os-index-container > div.group-by:first-of-type > span.group-label:match(\^\[ \]\(Symbols\|SYMBOLS\)) {
   content: "Symbols"; }
@@ -1538,7 +1596,7 @@
 :pass(10) [data-type="equation"]:not(.unnumbered) {
   counter-increment: equation; }
 
-:pass(10) [data-type="note"].theorem {
+:pass(10) [data-type="note"].work-out {
   string-set: target-label attr(use-subtitle);
   string-set: target-label-nominative attr(use-subtitle); }
 
@@ -2172,7 +2230,7 @@
   counter-increment: composite-page;
   attr-id: "composite-page-" counter(composite-page); }
 
-:pass(11) [data-type="note"].theorem {
+:pass(11) [data-type="note"].work-out {
   attr-use-subtitle: "true"; }
 
 :pass(12) div.os-eoc [data-type="cnx-archive-uri"],
