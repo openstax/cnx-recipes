@@ -36,18 +36,18 @@ $RECIPE_NAME: "contemporary-math";
 $_eosTitle: (os-beforeLabel: "Section ",  os-number: counter(chapter) "." counter(section), os-afterLabel: " Exercises");
 
 $Config_SectionCompositePages: (
-  (className: "section-exercises",    clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle),
+  (className: "section-exercises",  clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle, moveSolutionTo: $AREA_EOB),
 );
 
-$_chapterReviewChildPages: (
-  (className: "glossary",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_GLOSSARY, sortBy: "xhtml|dl > xhtml|dt", name: "Key Terms"),
+$_chapterSummaryChildPages: (
+  (className: "chapter-review", clusterBy: $CLUSTER_SECTION, name: "Chapter Review"),
+  (className: "chapter-test", clusterBy: $CLUSTER_SECTION, name: "Chapter Test"),
   (className: "key-equations", clusterBy: $CLUSTER_NONE, name: "Key Equations"),
   (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
-  (className: "review-exercises", clusterBy: $CLUSTER_NONE, hasSolutions: true, name: "Review Exercises"),
 );
 
 $Config_ChapterCompositePages: (
-  (className: "chapter-review", clusterBy: $CLUSTER_NONE, childPages: $_chapterReviewChildPages, hasSolutions: true, name: "Chapter Review"),
+  (className: "chapter-summary", clusterBy: $CLUSTER_NONE, childPages: $_chapterSummaryChildPages, hasSolutions: false, name: "Chapter Summary"),
 );
 
 $Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $Config_exerciseTitleContent, );
@@ -83,23 +83,36 @@ $Config_BookCompositePages: (
   Contains a title "Work it out" and the content of the note.
 */
 /*
+  Who knew note
+
+  Contains a title "Who knew?" and the content of the note.
+*/
+/*
+  Tech Check note
+
+  Contains a title "Tech Check" and the content of the note.
+*/
+/*
   Student Project note
 
   Contains a title "Student Project" and the content of the note.
 */
 
-$_checkpointTitleContent        : (os-title-label: "Checkpoint ",    os-number: counter(chapter) "." counter(checkpoint),     os-divider: " ");
-$_checkpointSolutionTitleContent: (os-number: counter(chapter) "." counter(checkpoint), os-divider: " ");
-$_theoremTitleContent: (os-title-label: "Theorem ", os-number: counter(chapter) "." counter(theorem), os-divider: " ");
+// $_checkpointTitleContent        : (os-title-label: "Checkpoint ",    os-number: counter(chapter) "." counter(checkpoint),     os-divider: " ");
+// $_checkpointSolutionTitleContent: (os-number: counter(chapter) "." counter(checkpoint), os-divider: " ");
+// $_theoremTitleContent: (os-title-label: "Theorem ", os-number: counter(chapter) "." counter(theorem), os-divider: " ");
 $_workItOutTitleContent: (os-title-label: "Work it out ");
+$_whoKnewTitleContent: (os-title-label: "Who Knew? ");
 
 $Config_Notes: (
-  (className: 'media-2', labelText: "Media"),
-  (className: 'checkpoint', moveSolutionTo: $AREA_EOB, counterName: checkpoint, titleContent: $_checkpointTitleContent, hasSolutions: true, solutionTitleContent: $_checkpointSolutionTitleContent),
-  (className: 'theorem', counterName: theorem, titleContent: $_theoremTitleContent),
+  // (className: 'media', labelText: "Media"),
+  // (className: 'checkpoint', moveSolutionTo: $AREA_EOB, counterName: checkpoint, titleContent: $_checkpointTitleContent, hasSolutions: true, solutionTitleContent: $_checkpointSolutionTitleContent),
+  // (className: 'theorem', counterName: theorem, titleContent: $_theoremTitleContent),
   (className: 'project', labelText: "Student Project"),
   (className: 'problem-solving', labelText: "Problem-Solving Strategy"),
-  (className: 'work-out', counterName: workItOut, titleContent: $_workItOutTitleContent),
+  (className: 'work-out', titleContent: $_workItOutTitleContent),
+  (className: 'who-knew', titleContent: $_whoKnewTitleContent),
+  (className: 'who-knew', labelText: "Tech Check"),
 );
 
 /*==========================================================
@@ -121,7 +134,7 @@ $Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: c
 $Config_ContentExercise_TitleContent: ();
 
 $Config_PartType_Example: (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent, hasCommentary: true);
-$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Exercise: (moveTo: $AREA_NONE, resetAt: $RESET_CHAPTER, hasSolutions: true, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
 $Config_PartType_Solution: (moveTo: $AREA_EOB);
 $Config_PartType_Equation: (moveTo: $AREA_NONE, titleContent: $_equationTitleContent, numberAt: $NUMBER_AFTER_MOVE, numberAfterEq: true);
 
@@ -134,7 +147,6 @@ $Config_CustomList: (
 
 $Config_UnnumberedElements: (
   (contextSelector: '[data-type="example"]', childSelector: '[data-type="exercise"]'),
-  (contextSelector: '.checkpoint', childSelector: '[data-type="exercise"]'),
 );
 
 $Config_FirstElements: (
@@ -145,14 +157,15 @@ $Config_FirstElements: (
 
 $Config_hasFirstInlineListElement: true;
 
-$Config_TrashSelectedElements: ('.checkpoint [data-type="commentary"]');
+// $Config_TrashSelectedElements: ('.checkpoint [data-type="commentary"]');
 
-$Config_SubtitleLabels: (
-  (selector: '[data-type="note"].theorem', subtitleSelector: '[data-type="title"]', stringName: "theoremSubtitleContent", labelText: attr(use-subtitle)),
-);
+// $Config_SubtitleLabels: (
+//   (selector: '[data-type="note"].theorem', subtitleSelector: '[data-type="title"]', stringName: "theoremSubtitleContent", labelText: attr(use-subtitle)),
+// );
 
 $Config_SubtitleLabels: (
   (selector: '[data-type="note"].work-out', subtitleSelector: '[data-type="title"]', stringName: "workItOutSubtitleContent", labelText: attr(use-subtitle)),
+  (selector: '[data-type="note"].who-knew', subtitleSelector: '[data-type="title"]', stringName: "whoKnewSubtitleContent", labelText: attr(use-subtitle)),
 );
 
 $Config_hasCompositeChapter: true;
