@@ -1175,14 +1175,14 @@
 
 :pass(3) [data-type="note"].your-turn::before {
   container: span;
-  content: " ";
-  class: os-divider;
+  content: counter(chapter) "." counter(try);
+  class: os-number;
   move-to: bNoteLabel-your-turn; }
 
 :pass(3) [data-type="note"].your-turn::before {
   container: span;
-  content: counter(chapter) "." counter(try);
-  class: os-number;
+  content: " ";
+  class: os-divider;
   move-to: bNoteLabel-your-turn; }
 
 :pass(3) [data-type="note"].your-turn > [data-type="title"] {
@@ -1405,6 +1405,58 @@
 :pass(7) .introduction {
   content: pending(ChapterOutline) content(); }
 
+:pass(7) [data-type="chapter"], :pass(7) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(7) .os-eos [data-type="exercise"] {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(7) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(7) .os-eos [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(7) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(7) .os-eos [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(7) [data-type="chapter"], :pass(7) .appendix {
+  counter-reset: exerciseMaybeInContent; }
+
+:pass(7) .os-eoc [data-type="exercise"] {
+  counter-increment: exerciseMaybeInContent; }
+
+:pass(7) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(7) .os-eoc [data-type="exercise"] [data-type="problem"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
+:pass(7) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: ". ";
+  class: os-divider; }
+
+:pass(7) .os-eoc [data-type="exercise"] [data-type="solution"]::before {
+  container: span;
+  content: counter(exerciseMaybeInContent);
+  class: os-number; }
+
 :pass(8) body {
   counter-reset: exerciseAll; }
 
@@ -1541,6 +1593,12 @@
 
 :pass(10) div.appendix {
   counter-increment: appendix; }
+
+:pass(10) [data-type="chapter"], :pass(10) .appendix {
+  counter-reset: exercise; }
+
+:pass(10) .os-eoc [data-type="exercise"] {
+  counter-increment: exercise; }
 
 :pass(10) [data-type="chapter"], :pass(10) .appendix {
   counter-reset: example; }
