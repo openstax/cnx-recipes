@@ -1265,6 +1265,89 @@
 :pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
   node-set: CompoundSectionHeaderNode; }
 
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  string-set: moduleTitleId attr(id); }
+
+:pass(3) [data-type="chapter"] section.key-terms {
+  move-to: key-terms-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.key-terms > [data-type="title"] {
+    move-to: trash; }
+  :pass(3) [data-type="chapter"] section.key-terms::before {
+    container: a;
+    attr-href: "#" string(moduleTitleId);
+    content: nodes(CompoundSectionHeaderNode); }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-eoc os-key-terms-container";
+  content: pending(key-terms-DESTINATION);
+  data-type: composite-page;
+  data-uuid-key: ".key-terms"; }
+
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  string-set: moduleTitleId attr(id); }
+
+:pass(3) [data-type="chapter"] section.key-concepts {
+  move-to: key-concepts-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.key-concepts > [data-type="title"] {
+    move-to: trash; }
+  :pass(3) [data-type="chapter"] section.key-concepts::before {
+    container: a;
+    attr-href: "#" string(moduleTitleId);
+    content: nodes(CompoundSectionHeaderNode); }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-eoc os-key-concepts-container";
+  content: pending(key-concepts-DESTINATION);
+  data-type: composite-page;
+  data-uuid-key: ".key-concepts"; }
+
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  string-set: moduleTitleId attr(id); }
+
+:pass(3) [data-type="chapter"] section.eoc-videos {
+  move-to: eoc-videos-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.eoc-videos > [data-type="title"] {
+    move-to: trash; }
+  :pass(3) [data-type="chapter"] section.eoc-videos::before {
+    container: a;
+    attr-href: "#" string(moduleTitleId);
+    content: nodes(CompoundSectionHeaderNode); }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-eoc os-eoc-videos-container";
+  content: pending(eoc-videos-DESTINATION);
+  data-type: composite-page;
+  data-uuid-key: ".eoc-videos"; }
+
+:pass(3) [data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+  string-set: moduleTitleId attr(id); }
+
+:pass(3) [data-type="chapter"] section.formula-review {
+  move-to: formula-review-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.formula-review > [data-type="title"] {
+    move-to: trash; }
+  :pass(3) [data-type="chapter"] section.formula-review::before {
+    container: a;
+    attr-href: "#" string(moduleTitleId);
+    content: nodes(CompoundSectionHeaderNode); }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-eoc os-formula-review-container";
+  content: pending(formula-review-DESTINATION);
+  data-type: composite-page;
+  data-uuid-key: ".formula-review"; }
+
+:pass(3) [data-type="chapter"] section.projects {
+  move-to: projects-DESTINATION; }
+  :pass(3) [data-type="chapter"] section.projects > [data-type="title"] {
+    move-to: trash; }
+
+:pass(3) [data-type="chapter"]::after {
+  class: "os-eoc os-projects-container";
+  content: pending(projects-DESTINATION);
+  data-type: composite-page;
+  data-uuid-key: ".projects"; }
+
 :pass(3) [data-type="chapter"] section.chapter-review {
   move-to: chapter-review-DESTINATION; }
   :pass(3) [data-type="chapter"] section.chapter-review > [data-type="title"] {
@@ -1287,24 +1370,69 @@
   data-type: composite-page;
   data-uuid-key: ".chapter-test"; }
 
-:pass(3) [data-type="chapter"] section.key-concepts {
-  move-to: key-concepts-DESTINATION; }
-  :pass(3) [data-type="chapter"] section.key-concepts > [data-type="title"] {
-    move-to: trash; }
+:pass(4) .os-eoc.os-key-terms-container section.key-terms {
+  move-to: key-terms-separated; }
+  :pass(4) .os-eoc.os-key-terms-container section.key-terms:deferred::after {
+    class: "os-section-area";
+    content: pending(key-terms-separated);
+    move-to: key-terms-sectionSeparatedContainer; }
 
-:pass(3) [data-type="chapter"]::after {
-  class: "os-eoc os-key-concepts-container";
-  content: pending(key-concepts-DESTINATION);
-  data-type: composite-page;
-  data-uuid-key: ".key-concepts"; }
+:pass(4) .os-eoc.os-key-terms-container::after {
+  class: os-key-terms;
+  content: pending(key-terms-sectionSeparatedContainer); }
+
+:pass(4) .os-eoc.os-key-concepts-container section.key-concepts {
+  move-to: key-concepts-separated; }
+  :pass(4) .os-eoc.os-key-concepts-container section.key-concepts:deferred::after {
+    class: "os-section-area";
+    content: pending(key-concepts-separated);
+    move-to: key-concepts-sectionSeparatedContainer; }
+
+:pass(4) .os-eoc.os-key-concepts-container::after {
+  class: os-key-concepts;
+  content: pending(key-concepts-sectionSeparatedContainer); }
+
+:pass(4) .os-eoc.os-eoc-videos-container section.eoc-videos {
+  move-to: eoc-videos-separated; }
+  :pass(4) .os-eoc.os-eoc-videos-container section.eoc-videos:deferred::after {
+    class: "os-section-area";
+    content: pending(eoc-videos-separated);
+    move-to: eoc-videos-sectionSeparatedContainer; }
+
+:pass(4) .os-eoc.os-eoc-videos-container::after {
+  class: os-eoc-videos;
+  content: pending(eoc-videos-sectionSeparatedContainer); }
+
+:pass(4) .os-eoc.os-formula-review-container section.formula-review {
+  move-to: formula-review-separated; }
+  :pass(4) .os-eoc.os-formula-review-container section.formula-review:deferred::after {
+    class: "os-section-area";
+    content: pending(formula-review-separated);
+    move-to: formula-review-sectionSeparatedContainer; }
+
+:pass(4) .os-eoc.os-formula-review-container::after {
+  class: os-formula-review;
+  content: pending(formula-review-sectionSeparatedContainer); }
+
+:pass(5) [data-type="chapter"] .os-key-terms-container {
+  move-to: composite-chapter-summary-DESTINATION; }
+
+:pass(5) [data-type="chapter"] .os-key-concepts-container {
+  move-to: composite-chapter-summary-DESTINATION; }
+
+:pass(5) [data-type="chapter"] .os-eoc-videos-container {
+  move-to: composite-chapter-summary-DESTINATION; }
+
+:pass(5) [data-type="chapter"] .os-formula-review-container {
+  move-to: composite-chapter-summary-DESTINATION; }
+
+:pass(5) [data-type="chapter"] .os-projects-container {
+  move-to: composite-chapter-summary-DESTINATION; }
 
 :pass(5) [data-type="chapter"] .os-chapter-review-container {
   move-to: composite-chapter-summary-DESTINATION; }
 
 :pass(5) [data-type="chapter"] .os-chapter-test-container {
-  move-to: composite-chapter-summary-DESTINATION; }
-
-:pass(5) [data-type="chapter"] .os-key-concepts-container {
   move-to: composite-chapter-summary-DESTINATION; }
 
 :pass(5) [data-type="chapter"]::after {
@@ -1704,6 +1832,61 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
+:pass(10) [data-type="composite-page"].os-eoc.os-key-terms-container::before {
+  container: span;
+  content: "Key Terms";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-key-terms-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
+  container: span;
+  content: "Key Concepts";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-eoc-videos-container::before {
+  container: span;
+  content: "Videos";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-eoc-videos-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-formula-review-container::before {
+  container: span;
+  content: "Formula Review";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-formula-review-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-projects-container::before {
+  container: span;
+  content: "Projects";
+  class: os-text;
+  move-to: h3-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-projects-container::before {
+  container: h3;
+  data-type: "title";
+  content: pending(h3-TITLECONTAINER); }
+
 :pass(10) [data-type="composite-page"].os-eoc.os-chapter-review-container::before {
   container: span;
   content: "Chapter Review";
@@ -1722,17 +1905,6 @@
   move-to: h3-TITLECONTAINER; }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-chapter-test-container::before {
-  container: h3;
-  data-type: "title";
-  content: pending(h3-TITLECONTAINER); }
-
-:pass(10) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
-  container: span;
-  content: "Key Concepts";
-  class: os-text;
-  move-to: h3-TITLECONTAINER; }
-
-:pass(10) [data-type="composite-page"].os-eoc.os-key-concepts-container::before {
   container: h3;
   data-type: "title";
   content: pending(h3-TITLECONTAINER); }
