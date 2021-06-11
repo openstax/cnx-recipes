@@ -1,0 +1,162 @@
+@import '../_common-stuff';
+$RECIPE_NAME: "contemporary-math";
+
+/*==========================================================
+  CONTEMPORARY MATH PAGES
+==========================================================*/
+/*
+  Key Terms
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Terms"
+*/
+/*
+  Key Equations
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Equations"
+*/
+/*
+  Key Concepts
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Key Concepts"
+*/
+/*
+  Review Exercises
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Chapter Review Exercises"
+*/
+
+$_eosTitle: (os-beforeLabel: "Section ",  os-number: counter(chapter) "." counter(section), os-afterLabel: " Exercises");
+
+$Config_SectionCompositePages: (
+  (className: "section-exercises",  clusterBy: $CLUSTER_NONE, hasSolutions: true, titleContent: $_eosTitle, moveSolutionTo: $AREA_EOB),
+);
+
+$_chapterSummaryChildPages: (
+  (className: "key-terms", clusterBy: $CLUSTER_SECTION, name: "Key Terms"),
+  (className: "key-concepts", clusterBy: $CLUSTER_SECTION, name: "Key Concepts"),
+  (className: "eoc-videos", clusterBy: $CLUSTER_SECTION, name: "Videos"),
+  (className: "formula-review", clusterBy: $CLUSTER_SECTION, name: "Formula Review"),
+  (className: "projects", clusterBy: $CLUSTER_NONE, name: "Projects"),
+  (className: "chapter-review", clusterBy: $CLUSTER_NONE, name: "Chapter Review"),
+  (className: "chapter-test", clusterBy: $CLUSTER_NONE, name: "Chapter Test"),
+);
+
+$Config_ChapterCompositePages: (
+  (className: "chapter-summary", clusterBy: $CLUSTER_NONE, childPages: $_chapterSummaryChildPages, hasSolutions: true, name: "Chapter Summary"),
+);
+
+//Key "type" has the same value as "name", but it's needed because of internationalization.
+// "name" has different value in books from other countries (see pl-u-physics), but we need value common for all books (see mixin "modify_addFirstElementClas")
+$Config_BookCompositePages: (
+  (className: "solutions", clusterBy: $CLUSTER_SECTION, compoundComposite: true, moveSolutionsTo: $AREA_EOB, type: "Answer Key", name: "Answer Key"),
+  (className: "index",     clusterBy: $CLUSTER_NONE, specialPageType: $PAGE_INDEX, name: "Index"),
+);
+
+/* =========================================================
+  CUSTOM NOTES
+==========================================================*/
+/*
+  Media note
+
+  Contains a title "Media" and the content of the note.
+
+/*
+  Checkpoint note
+
+  Contains a title "Checkpoint" and the content of the note.
+*/
+/*
+  Theorem note
+
+  Contains a title "Theorem" and the content of the note.
+*/
+/*
+  Work it out note
+
+  Contains a title "Work it out" and the content of the note.
+*/
+/*
+  Who knew note
+
+  Contains a title "Who knew?" and the content of the note.
+*/
+/*
+  Tech Check note
+
+  Contains a title "Tech Check" and the content of the note.
+*/
+/*
+  Student Project note
+
+  Contains a title "Student Project" and the content of the note.
+*/
+
+$_tryItTitleContent : (os-title-label: "Your Turn ", os-number: counter(chapter) "." counter(try), os-divider: " ");
+$_tryItSolutionTitleContent: (os-divider: ". ", os-number: counter(try));
+
+$Config_Notes: (
+  (className: 'project', labelText: "Student Project"),
+  (className: 'problem-solving', labelText: "Problem-Solving Strategy"),
+  (className: 'work-out', labelText: "Work it out "),
+  (className: 'who-knew', labelText: "Who Knew? "),
+  (className: 'tech-check', labelText: "Tech Check"),
+  (className: 'people-mathematics', labelText: "People in Mathematics"),
+  (className: 'video', labelText: "Video"),
+  (className: 'check-point', labelText: "Checkpoint"),
+  (className: 'your-turn', moveSolutionTo: $AREA_EOB, counterName: try, titleContent: $_tryItTitleContent, hasSolutions: true, solutionTitleContent: $_tryItSolutionTitleContent),
+);
+
+/*==========================================================
+  CONTEMPORARY MATH TITLING CONTENT
+==========================================================*/
+
+$_exampleTitleContent: (os-title-label: "Example ", os-number: counter(chapter) "." counter(example), os-divider: " ");
+$_exampleSolutionTitleContent: (os-title-label: "Solution ");
+$_exerciseTitleContent     : (os-divider: ". ", os-number: counter(exerciseMaybeInContent));
+$_equationTitleContent     : (os-number: "(" counter(chapter) "." counter(equation) ")");
+
+/*==========================================================
+  CONTEMPORARY MATH CONFIG
+==========================================================*/
+
+$Config_PartType_Table_CaptionContent: (os-title-label: "Table ", os-number: counter(chapter) "." counter(table), os-divider: ' ');
+$Config_PartType_Figure_CaptionContent: (os-title-label: "Figure ", os-number: counter(chapter) "." counter(figure), os-divider: ' ');
+
+$Config_ContentExercise_TitleContent: ();
+
+$Config_PartType_Example: (moveTo: $AREA_NONE, titleContent: $_exampleTitleContent, solutionTitleContent: $_exampleSolutionTitleContent, hasCommentary: true);
+$Config_PartType_Exercise: (moveTo: $AREA_EOC, resetAt: $RESET_SECTION, hasSolutions: true, numberAt: $NUMBER_BEFORE_MOVE, titleContent: $_exerciseTitleContent);
+$Config_PartType_Solution: (moveTo: $AREA_EOB);
+$Config_PartType_Equation: (moveTo: $AREA_NONE, titleContent: $_equationTitleContent, numberAt: $NUMBER_AFTER_MOVE, numberAfterEq: true);
+
+$Config_PartType_Chapter: (outlineTitle: 'Chapter Outline');
+$Config_abstractTitle: "Learning Objectives";
+
+$Config_CustomList: (
+  (selector: '[data-type="abstract"] ul', name: "abstract", beforeLabel: counter(chapter) "." counter(section) ".", afterLabel: " "),
+);
+
+$Config_FirstElements: (
+  (selector: ' > [data-type="media"]:first-child'),
+  (selector: ' > .os-table:first-child'),
+  (selector: ' > .circled:first-child', elementType: inlineList),
+);
+
+$Config_hasFirstInlineListElement: true;
+
+$Config_Coverage_MayHaveIframes: true;
+$Config_Coverage_MayHaveMissingExercises: true;
+
+$Config_hasCompositeChapter: true;
+
+/* =========================================================
+  OTHER PARTS
+==========================================================*/
