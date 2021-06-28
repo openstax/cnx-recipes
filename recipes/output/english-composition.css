@@ -678,6 +678,30 @@
 :pass(5) .introduction [data-type="abstract"] {
   move-to: trash; }
 
+:pass(5) .handbook > section > [data-type="title"] {
+  string-set: outlineSectionId attr(id); }
+  :pass(5) .handbook > section > [data-type="title"]::after {
+    container: a;
+    class: "os-handbook-objective";
+    content: content();
+    attr-href: "#" string(outlineSectionId);
+    move-to: handbookOutlineLink; }
+
+:pass(5) .handbook > section::after {
+  class: "os-handbook-objective";
+  content: pending(handbookOutlineLink);
+  move-to: handbookOutline; }
+
+:pass(5) .handbook::before {
+  container: h3;
+  class: "os-title";
+  content: "Outline";
+  move-to: handbookOutlineTitle; }
+
+:pass(5) .handbook:deferred::before {
+  class: "os-handbook-outline";
+  content: pending(handbookOutlineTitle) pending(handbookOutline); }
+
 :pass(6) div[data-type="page"] span[data-type="term"] > span[data-type="term-content"],
 :pass(6) div[data-type="composite-page"] span[data-type="term"] > span[data-type="term-content"] {
   data-visited: true;
@@ -697,6 +721,15 @@
 
 :pass(6) body:deferred::after {
   content: clear(term-trash); }
+
+:pass(6) .handbook > .os-handbook-outline {
+  move-to: HandbookOutline; }
+
+:pass(6) .handbook > section {
+  move-to: HandbookSection; }
+
+:pass(6) .handbook:deferred {
+  content: content() pending(HandbookOutline) pending(HandbookSection); }
 
 :pass(7) div[data-type="page"] > [data-type="document-title"],
 :pass(7) div[data-type="composite-page"] > [data-type="document-title"] {
