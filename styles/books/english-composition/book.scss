@@ -14,16 +14,53 @@ $bandColor: #DCB83D;
 @include add_settings((
   CultureAnnotation:(
     _selectors: ("span.culture-icon"),
-    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-linguistic.svg")) no-repeat top left
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-culture.svg")) no-repeat top left
   ),
   LinguisticAnnotation: (
     _selectors: ("span.linguistic-icon"),
-    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-culture.svg")) no-repeat top left
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-linguistic.svg")) no-repeat top left
   ),
   DreamingAnnotation: (
     _selectors: ("span.dreaming-icon"),
     'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-dreaming.svg")) no-repeat top left
-  )
+  ),
+  VisualAnnotation: (
+    _selectors: ("span.visual-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-visual.svg")) no-repeat top left
+  ),
+  SpeechAnnotation: (
+    _selectors: ("span.speech-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-speech.svg")) no-repeat top left
+  ),
+  AuditoryAnnotation: (
+    _selectors: ("span.auditory-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-auditory.svg")) no-repeat top left
+  ),
+  KinestheticAnnotation: (
+    _selectors: ("span.kinesthetic-icon"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-kinesthetic.svg")) no-repeat top left
+  ),
+));
+
+@include add_settings((
+    DefaultTable: (
+        _selectors: (".os-table:not(.os-text-heavy-top-titled-container):not(.os-unstyled-container)"),
+        CaptionTitleLabel: (
+            font-family: (_ref: "typography:::titleOption1Font"),
+        ),
+        CaptionNumber: (
+            font-family: (_ref: "typography:::titleOption1Font"),
+        ),
+    ),
+    FakeTitleTable: (
+        _selectors: (".os-table.os-top-titled-container"),
+        CaptionTitleLabel: (
+            font-family: (_ref: "typography:::titleOption1Font"),
+        ),
+        CaptionNumber: (
+            font-family: (_ref: "typography:::titleOption1Font"),
+        ),
+    )
 ));
 
 @include add_settings((
@@ -35,17 +72,42 @@ $bandColor: #DCB83D;
     'ModuleTitle:::color': (_ref: "colorMap:::fontBodyColor"),
     'ModuleTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
     'Title:::background-color': (_ref: "colorMap:::trailBlazerModuleColor"),
-    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-pencil.svg")) no-repeat top left,
+    'TitleIcon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-trail.svg")) no-repeat top left,
     'AuthorName:::color': (_ref: "colorMap:::fontBodyColor"),
     'AuthorName:::font-family': (_ref: 'typography:::titleOption1Font'),
   ),
+  Drafting: (
+    _selectors:(".drafting"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-pencil.svg")) no-repeat top left, 
+    'Icon:::vertical-align': text-bottom,
+    'Icon:::height': 1.45rem,
+    'Icon:::width': 1.45rem,
+  ),
+  PeerReview: (
+    _selectors:(".peer-review"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-peerreview.svg")) no-repeat top left, 
+    'Icon:::vertical-align': text-bottom,
+    'Icon:::height': 1.45rem,
+    'Icon:::width': 1.45rem,
+  ),
+  Revising: (
+    _selectors:(".revising"),
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-revision.svg")) no-repeat top left, 
+    'Icon:::vertical-align': text-bottom,
+    'Icon:::height': 1.45rem,
+    'Icon:::width': 1.45rem,
+  ),
   QuickLaunch: (
     _selectors:(".quick-launch"),
-    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-launch.svg")) no-repeat top left, 
+    'Icon:::background': url(toDataUri("svg+xml", "designs/cosmos/resources/cosmos-quicklaunch.svg")) no-repeat top left,
+    'Icon:::vertical-align': inherit,
+    'Icon:::height': 2rem,
+    'Icon:::width': 2rem,
   ),
   LivingWords: (
-    _selectors: ('section.living-words'),
-    'Container:::box-decoration-break': slice,
+    _selectors: ('[data-type="page"]:not(.introduction) > section.living-words'),
+    'SectionContainer:::font-family': (_ref: 'typography:::titleOption2Font'),
+    'SectionContainer:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorGreen'),
     'Title:::color': (_ref: 'colorMap:::iconnedNoteBorderColorGreen'),
     'Title:::font-family': (_ref: 'typography:::titleOption3Font'),
     'Title:::border-color': (_ref: 'colorMap:::iconnedNoteBorderColorGreen'),
@@ -53,8 +115,8 @@ $bandColor: #DCB83D;
     'TitleIcon:::height': v-spacing(4),
     'TitleIcon:::width': v-spacing(4),
     'TitleIcon:::bottom': -0.7rem,
-    'Subtitle:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'Subtitle:::font-family': (_ref: 'typography:::titleOption1Font'),
+    'SectionSubtitle:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'SectionSubtitle:::font-family': (_ref: 'typography:::titleOption1Font'),
 ),
 ));
 
@@ -65,10 +127,17 @@ $bandColor: #DCB83D;
     'AnnotationText:::color': (_ref: "colorMap:::AnnotationTextColor"),
   ),
   PublicDomainText: (
-    _selectors:("p"),
-    'PublicDomainText:::font-family': (_ref: 'typography:::fontOption1'),
-    'PublicDomainText:::color': (_ref: "colorMap:::fontBodyColor"),
+    _selectors:("p.public-domain"),
+    'AnnotationTextWithLeftBorder:::border-color': (_ref: 'colorMap:::publicDomainBorderColor'),
+    'AnnotationTextWithLeftBorder:::font-family': (_ref: 'typography:::titleOption2Font'),
+    'AnnotationTextWithLeftBorder:::color': (_ref: "colorMap:::fontBodyColor"),
   ),
+  StudentSampleText: (
+    _selectors:("p.student-sample"),
+    'AnnotationTextWithLeftBorder:::border-color': (_ref: 'colorMap:::studentSampleBorderColor'),
+    'AnnotationTextWithLeftBorder:::font-family': (_ref: 'typography:::titleOption2Font'),
+    'AnnotationTextWithLeftBorder:::color': (_ref: "colorMap:::fontBodyColor"),
+  )
 ));
 
 @include add_settings((
@@ -78,27 +147,47 @@ $bandColor: #DCB83D;
   ),
 ));
 
+@include add_settings((
+  AuthorQuote: (
+    _selectors: ('.author-quote'),
+    'PhotoQuoteContainer:::background-color': (_ref: 'colorMap:::boxedNoteBodyBackgroundOption4Color'),
+    'PQBlockquoteFirstPara:::font-family': (_ref: 'typography:::titleOption1Font'),
+    'PQBlockquoteSecondPara:::font-family': (_ref: 'typography:::titleOption2Font'),
+  )
+));
+
 @include use('BookRoot', "common:::BookRoot");
 @include use('TocUnit', 'cosmos:::TocUnitShape');
 @include use('Figure', 'cosmos:::FigureShape');
 @include use('Link', 'cosmos:::LinkShape');
+@include use('UnderlineYellow', 'cosmos:::UnderlineShape');
 @include use('Blockquote', "cosmos:::BlockquoteShape");
 @include use('ChapterIntro', 'cosmos:::ChapterIntroShape');
 @include use('LearningObjectivesModule', 'cosmos:::LearningObjectivesModuleShape');
 @include use('AnnotationText', 'common:::AnnotationTextShape');
-@include use('PublicDomainText', 'common:::PublicDomainTextShape');
+@include use('PublicDomainText', 'common:::AnnotationTextLeftBorderShape');
+@include use('StudentSampleText', 'common:::AnnotationTextLeftBorderShape');
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
 @include use('UnitTitle', 'common:::Hidden');
+@include use('PunctuationEmphasis', 'cosmos:::PunctuationEmphasisShape');
 
 //Notes & Annotations
 @include use('CultureAnnotation', 'cosmos:::AnnotationIconShape');
 @include use('LinguisticAnnotation', 'cosmos:::AnnotationIconShape');
 @include use('DreamingAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('VisualAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('SpeechAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('AuditoryAnnotation', 'cosmos:::AnnotationIconShape');
+@include use('KinestheticAnnotation', 'cosmos:::AnnotationIconShape');
 @include use('Annotation', 'cosmos:::AnnotationShape');
 @include use('Trailblazer', 'cosmos:::IconFullPageNoteShape');
-@include use('QuickLaunch', 'cosmos:::QuickLaunchShape');
+@include use('QuickLaunch', 'cosmos:::SectionIconnedShape');
+@include use('Drafting', 'cosmos:::SectionIconnedShape');
+@include use('PeerReview', 'cosmos:::SectionIconnedShape');
+@include use('Revising', 'cosmos:::SectionIconnedShape');
 @include use('LivingWords', 'cosmos:::IconnedSectionWithSubtitleShape');
+@include use('AuthorQuote', 'cosmos:::PhotoQuoteNoteShape');
 
 // Titles
 @include use('PageTitles', 'cosmos:::PageTitlesShape');
