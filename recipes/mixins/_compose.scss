@@ -1018,6 +1018,52 @@
   }
 }
 
+@mixin compose_handbookOutline($handbookOutlineTitle) {
+  .handbook {
+    > section {
+      > [data-type="title"] {
+        string-set: outlineSectionId attr(id);
+        &::after {
+          container: a;
+          class: "os-handbook-objective";
+          content: content();
+          attr-href: "#" string(outlineSectionId);
+          move-to: handbookOutlineLink;
+        }
+      }
+      &::after {
+        class: "os-handbook-objective";
+        content: pending(handbookOutlineLink);
+        move-to: handbookOutline;
+      }
+    }
+    &::before {
+      container: h3;
+      class: "os-title";
+      content: $handbookOutlineTitle;
+      move-to: handbookOutlineTitle;
+    }
+    &:deferred::before {
+      class: "os-handbook-outline";
+      content: pending(handbookOutlineTitle) pending(handbookOutline);
+    }
+  }
+}
+
+@mixin compose_moveHandbookOutline() {
+  .handbook {
+    > .os-handbook-outline {
+      move-to: HandbookOutline;
+    }
+    > section {
+      move-to: HandbookSection;
+    }
+    &:deferred {
+      content: content() pending(HandbookOutline) pending(HandbookSection);
+    }
+  }
+}
+
 /// move the chapter objectives to the intro module
 
 @mixin compose_moveChapterOutline() {
