@@ -1,0 +1,37 @@
+---
+name: tests
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 0' # weekly
+jobs:
+  tests:
+    timeout-minutes: 30
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python-version: ["3.6"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Lint Python
+        run: |
+          pip install flake8
+          flake8 --exclude=tests cnxml
+          flake8 --max-line-length=200 cnxml/tests
+      - name: Run unit tests
+        run: |
+          pip install --upgrade setuptools
+          pip install pytest-cov codecov tox
+          pip install ".[test]"
+          ci_env=`bash <(curl -s https://codecov.io/env)`
+          tox
+          coverage report
+          codecov
