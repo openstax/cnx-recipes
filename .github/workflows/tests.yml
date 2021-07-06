@@ -1,0 +1,20 @@
+---
+name: tests
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 0' # weekly
+jobs:
+  tests:
+    timeout-minutes: 30
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name : Install npm dependencies
+      - name : Run yarn install
+        run: yarn install
+      - name: Run tests
+        run: ./script/build-recipes
