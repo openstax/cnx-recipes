@@ -348,6 +348,32 @@
       > [data-type='cnx-archive-shortid'] {
         string-set: unit-shortid attr(data-value);
       }
+      @if release-flag-enabled(add-unit-pages) {
+        > div[data-type="page"] {
+          string-set: page-id-unit attr(id);
+          > [data-type='document-title'] {
+            node-set: UnitPageTitle;
+          }
+          > [data-type='metadata']
+          > [data-type='cnx-archive-shortid'] {
+            string-set: page-shortid-unit attr(data-value);
+          }
+          &::after {
+            content: nodes(UnitPageTitle);
+            attr-href: "#" string(page-id-unit);
+            container: a;
+            move-to: unit-page-link;
+          }
+          &::after {
+            content: pending(unit-page-link);
+            move-to: eou-toc-pages;
+            attr-cnx-archive-uri: attr(id);
+            attr-cnx-archive-shortid: string(page-shortid-unit);
+            container: li;
+            class: os-toc-unit-page;
+          }
+        }
+      }
       &::after {
         content: nodes(unitTitle);
         attr-href: "#" string(uTitle-id);
@@ -460,7 +486,11 @@
         }
       }
       &::after {
-        content: pending(eou-toc-chapters);
+        @if release-flag-enabled(add-unit-pages) {
+          content: pending(eou-toc-pages) pending(eou-toc-chapters);
+        } @else {
+          content: pending(eou-toc-chapters);
+        }
         container: ol;
         class: os-unit;
         move-to: eou-toc;
