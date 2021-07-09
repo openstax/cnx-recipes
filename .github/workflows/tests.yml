@@ -1,0 +1,22 @@
+---
+name: tests
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+jobs:
+  tests:
+    timeout-minutes: 30
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: c-hive/gha-yarn-cache@v2
+      - name : Install npm dependencies
+        run: SKIP_MY_POSTINSTALL=true yarn install
+      - name: Build Recipes
+        run: ./script/build-recipes
+      - name: Verify recipes were committed
+        run: |
+          git diff
+          git diff-index --quiet HEAD
