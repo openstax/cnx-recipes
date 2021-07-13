@@ -20,6 +20,7 @@ $Table: (
         width: enum('ValueSet:::OPTIONAL'),
         max-width: enum('ValueSet:::OPTIONAL'), //used in exercises
         table-layout: enum('ValueSet:::OPTIONAL'), //used in exercises
+        margin-bottom: enum('ValueSet:::OPTIONAL'), // used in BasicTable
     )
 );
 
@@ -152,6 +153,7 @@ $Table__Data--BottomBorder: (
         padding: table-v-spacing(1),
     )
 );
+
 // Altered as part of the fix for cnx-recipes#1827.
 $Table__Data--First: (
     _name: "FirstTableData",
@@ -174,7 +176,7 @@ $Table__Row--First: (
     )
 );
 
-$Table__Row--Last__Data: (
+$Table__Row--Last__Data: (      // deprecated
     _name: "LastTableRowData",
     _subselector: " > tr:last-of-type > td",
     _properties: (
@@ -198,4 +200,21 @@ $Table__Row--Last--MergedCells__Data: (
     _properties: (
         border-right: none,
     )
+);
+
+// Better way to do a bottom border on a table: make it part of the caption
+$Table__BottomBorder: (
+    _name: "TableBottomBorder",
+    _subselector: ":before",
+    _properties: (
+        content: "''",
+        width: 100%,
+        border-bottom-color: enum('ValueSet:::REQUIRED'),
+        border-bottom-width: .12rem,
+        border-bottom-style: solid,
+        display: block,
+        position: relative,
+        top: -0.1rem,
+        margin-bottom: v-spacing(1),
+    )    
 );
