@@ -20,6 +20,7 @@ $Table: (
         width: enum('ValueSet:::OPTIONAL'),
         max-width: enum('ValueSet:::OPTIONAL'), //used in exercises
         table-layout: enum('ValueSet:::OPTIONAL'), //used in exercises
+        margin-bottom: enum('ValueSet:::OPTIONAL'), // used in BasicTable
     )
 );
 
@@ -59,6 +60,38 @@ $Table__Head__Cell: (
     )
 );
 
+$Table__HeadCell--TopAligned: (
+    _name: "TopAlignedTableHeadCell",
+    _subselector: "> th[data-valign="top"]",
+    _properties: (
+       vertical-align: top,
+    )    
+);
+
+$Table__HeadCell--LeftAligned: (
+    _name: "LeftAlignedTableHeadCell",
+    _subselector: "> th[data-align="left"]",
+    _properties: (
+        text-align: left,
+    )    
+);
+
+$Table__HeadCell--RightAligned: (
+    _name: "RightAlignedTableHeadCell",
+    _subselector: "> th[data-align="right"]",
+    _properties: (
+        text-align: right,
+    )    
+);
+
+$Table__HeadCell--Centered: (
+    _name: "CenteredTableHeadCell",
+    _subselector: "> th[data-align="center"]",
+    _properties: (
+        text-align: center,
+    )    
+);
+
 $Table__Body: empty_wrapper(TableBody, ' > tbody');
 
 $Table__Row: empty_wrapper(TableRow, ' > tr');
@@ -77,7 +110,40 @@ $Table__Data: (
         padding-left: enum('ValueSet:::REQUIRED'), //different value in exercises
     )
 );
-    
+
+// Content driven alignment
+$Table__Data--TopAligned: (
+    _name: "TopAlignedTableData",
+    _subselector: "> td[data-valign="top"]",
+    _properties: (
+       vertical-align: top,
+    )    
+);
+
+$Table__Data--LeftAligned: (
+    _name: "LeftAlignedTableData",
+    _subselector: "> td[data-align="left"]",
+    _properties: (
+        text-align: left,
+    )    
+);
+
+$Table__Data--RightAligned: (
+    _name: "RightAlignedTableData",
+    _subselector: "> td[data-align="right"]",
+    _properties: (
+        text-align: right,
+    )    
+);
+
+$Table__Data--Centered: (
+    _name: "CenteredTableData",
+    _subselector: "> td[data-align="center"]",
+    _properties: (
+        text-align: center,
+    )    
+);
+
 // Added as part of the fix for cnx-recipes#1827.
 $Table__Data--BottomBorder: (
     _name: "TableBottomBorderData",
@@ -87,6 +153,7 @@ $Table__Data--BottomBorder: (
         padding: table-v-spacing(1),
     )
 );
+
 // Altered as part of the fix for cnx-recipes#1827.
 $Table__Data--First: (
     _name: "FirstTableData",
@@ -109,7 +176,7 @@ $Table__Row--First: (
     )
 );
 
-$Table__Row--Last__Data: (
+$Table__Row--Last__Data: (      // deprecated
     _name: "LastTableRowData",
     _subselector: " > tr:last-of-type > td",
     _properties: (
@@ -133,4 +200,21 @@ $Table__Row--Last--MergedCells__Data: (
     _properties: (
         border-right: none,
     )
+);
+
+// Better way to do a bottom border on a table: make it part of the caption
+$Table__BottomBorder: (
+    _name: "TableBottomBorder",
+    _subselector: ":before",
+    _properties: (
+        content: "''",
+        width: 100%,
+        border-bottom-color: enum('ValueSet:::REQUIRED'),
+        border-bottom-width: .12rem,
+        border-bottom-style: solid,
+        display: block,
+        position: relative,
+        top: -0.1rem,
+        margin-bottom: v-spacing(1),
+    )    
 );
