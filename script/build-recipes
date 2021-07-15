@@ -1,6 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$0")/.." || exit 111
-source ./script/bootstrap || exit 111
+# source ./script/bootstrap || exit 111
 
 arg1=$1
 
@@ -23,11 +23,11 @@ for __book_config in "${BOOK_CONFIGS[@]}"; do
   sass_file="./recipes/books/${recipe_name}/book.scss"
   css_file="${output_dir}/${recipe_name}.css"
 
-  TEMPLATE=${template_name} do_progress "Building ${css_file}" \
-    node ./recipes/build/build.js "${sass_file}" "${css_file}"
+  echo "Building ${css_file}"
+  TEMPLATE=${template_name} node ./recipes/build/build.js "${sass_file}" "${css_file}"
 
   already_built+=("${recipe_name}")
 done
 
-do_progress_quiet "Building CSS manifest" \
-  ./script/build-manifest
+echo "Building CSS manifest"
+./script/build-manifest

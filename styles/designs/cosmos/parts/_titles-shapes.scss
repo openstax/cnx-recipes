@@ -51,6 +51,35 @@
     )
 ));
 
+// Used for Handbook in English Composition.
+// This is EOB section with [data-type="page"], similar as Appendix.
+// To discuss: we can move appendix from PageTitlesShape to this one (but it has different specs for H1),
+// or we can add specs for H2-H4 to EobTitlesShape and use that shape for Handbook (even it's a page, not composite-page)
+@include create_shape('cosmos:::EobPageTitlesShape', (
+    _components: (
+        map-merge($Eob__Container, (
+            _components: (
+                $H1--Eob,
+                map-merge($SectionWrapper--FirstLevel,(
+                    _components:(
+                        $H2,
+                    ),
+                )),
+                map-merge($SectionWrapper--SecondLevel,(
+                    _components:(
+                        $H3,
+                    ),
+                )),
+                map-merge($SectionWrapper--ThirdLevel,(
+                    _components:(
+                        $H4,
+                    ),
+                )),
+            )
+        )),
+    )
+));
+
 // Chapter Titles Shape
 @include create_shape('cosmos:::ChapterTitlesShape', (
     _components: (
@@ -78,6 +107,15 @@
                 map-merge($SectionWrapper--FirstLevel,(
                     _components:(
                         $H3--Link,
+                    ),
+                )),
+                map-merge($DivWrapper--SecondLevel, (
+                    _components:(
+                        map-merge($SectionWrapper--FirstLevel,(
+                            _components:(
+                                $H3--Link,
+                            ),
+                        )),
                     ),
                 )),
             )
