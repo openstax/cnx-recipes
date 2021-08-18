@@ -358,11 +358,32 @@
   Contains a title "Multiple Choice"
 */
 /*
-  Questions
+  CFA Institute
 
   Should be collated at the end of a chapter.
 
-  Contains a title "Questions"
+  Contains a title "CFA Institute"
+*/
+/*
+  Review Questions
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Review Questions"
+*/
+/* 
+  Problems
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Review Questions"
+*/
+/*
+  Video Activity
+
+  Should be collated at the end of a chapter.
+
+  Contains a title "Review Questions"
 */
 /*==========================================================
   EOB
@@ -1008,24 +1029,6 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
-  :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
-    /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
-    move-to: trash; }
-  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
-    move-to: glossary-TOCOMPOSITE; }
-    :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
-      /* Discard this Page-specific title because a chapter title is added when collated */
-      move-to: trash; }
-  :pass(3) div[data-type="chapter"]::after {
-    container: div;
-    content: pending(glossary-TOCOMPOSITE);
-    class: "os-eoc os-glossary-container";
-    data-type: "composite-page";
-    data-uuid-key: "glossary";
-    sort-by: xhtml|dl > xhtml|dt, nocase; }
-
-:pass(3) div[data-type="chapter"] {
-  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
     string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.section-summary {
@@ -1046,6 +1049,24 @@
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] {
+    /* Discard this Page-specific glossary because it is collated later and the title is added when this is collated */
+    move-to: trash; }
+  :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl {
+    move-to: glossary-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] div[data-type="glossary"] dl > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(glossary-TOCOMPOSITE);
+    class: "os-eoc os-glossary-container";
+    data-type: "composite-page";
+    data-uuid-key: "glossary";
+    sort-by: xhtml|dl > xhtml|dt, nocase; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
   :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
     string-set: moduleTitleId attr(id); }
   :pass(3) div[data-type="chapter"] section.cfa-institute {
@@ -1063,6 +1084,26 @@
     class: "os-eoc os-cfa-institute-container";
     data-type: "composite-page";
     data-uuid-key: ".cfa-institute"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] [data-type="page"] > [data-type="document-title"] {
+    string-set: moduleTitleId attr(id); }
+  :pass(3) div[data-type="chapter"] section.sources-notes {
+    move-to: sources-notes-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.sources-notes > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+    :pass(3) div[data-type="chapter"] section.sources-notes::before {
+      container: a;
+      attr-href: "#" string(moduleTitleId);
+      content: nodes(sectionHeaderNode); }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(sources-notes-TOCOMPOSITE);
+    class: "os-eoc os-sources-notes-container";
+    data-type: "composite-page";
+    data-uuid-key: ".sources-notes"; }
 
 :pass(3) div[data-type="chapter"] {
   string-set: chap-id attr(id); }
@@ -1105,6 +1146,20 @@
     class: "os-eoc os-problem-set-container";
     data-type: "composite-page";
     data-uuid-key: ".problem-set"; }
+
+:pass(3) div[data-type="chapter"] {
+  string-set: chap-id attr(id); }
+  :pass(3) div[data-type="chapter"] section.video-activity {
+    move-to: video-activity-TOCOMPOSITE; }
+    :pass(3) div[data-type="chapter"] section.video-activity > [data-type="title"] {
+      /* Discard this Page-specific title because a chapter title is added when collated */
+      move-to: trash; }
+  :pass(3) div[data-type="chapter"]::after {
+    container: div;
+    content: pending(video-activity-TOCOMPOSITE);
+    class: "os-eoc os-video-activity-container";
+    data-type: "composite-page";
+    data-uuid-key: ".video-activity"; }
 
 :pass(3) .your-turn [data-type="exercise"]:not(.unnumbered) {
   class: attr(class) " unnumbered"; }
@@ -1403,17 +1458,6 @@
 :pass(10) [data-type="composite-page"], :pass(10) [data-type="composite-chapter"] {
   content: nodes(bookMetadata) content(); }
 
-:pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
-  container: span;
-  content: "Key Terms";
-  class: os-text;
-  move-to: h2-TITLECONTAINER; }
-
-:pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
-  container: h2;
-  data-type: "document-title";
-  content: pending(h2-TITLECONTAINER); }
-
 :pass(10) [data-type="composite-page"].os-eoc.os-section-summary-container::before {
   container: span;
   content: "Summary";
@@ -1425,6 +1469,17 @@
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
 
+:pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
+  container: span;
+  content: "Key Terms";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-glossary-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
 :pass(10) [data-type="composite-page"].os-eoc.os-cfa-institute-container::before {
   container: span;
   content: "CFA Institute";
@@ -1432,6 +1487,17 @@
   move-to: h2-TITLECONTAINER; }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-cfa-institute-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-sources-notes-container::before {
+  container: span;
+  content: "Sources and Notes";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-sources-notes-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
@@ -1465,6 +1531,17 @@
   move-to: h2-TITLECONTAINER; }
 
 :pass(10) [data-type="composite-page"].os-eoc.os-problem-set-container::before {
+  container: h2;
+  data-type: "document-title";
+  content: pending(h2-TITLECONTAINER); }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-video-activity-container::before {
+  container: span;
+  content: "Video Activity";
+  class: os-text;
+  move-to: h2-TITLECONTAINER; }
+
+:pass(10) [data-type="composite-page"].os-eoc.os-video-activity-container::before {
   container: h2;
   data-type: "document-title";
   content: pending(h2-TITLECONTAINER); }
