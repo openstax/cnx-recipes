@@ -11,16 +11,7 @@ $Table__Container: (
 
 $Table: (
     _name: "Table",
-    _subselector: " > table:not(.timeline-table)",
-    _properties: (
-        width: 100%,
-        border-collapse: collapse,
-    )
-);
-
-$Table--Timeline: (
-    _name: "TableTimeline",
-    _subselector: " > table.timeline-table",
+    _subselector: " > table",
     _properties: (
         width: 100%,
         border-collapse: collapse,
@@ -201,16 +192,33 @@ $Table__Head__Cell--Centered: (
 );
 
 $Table__Body: empty_wrapper(TableBody, ' > tbody');
-$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child):not(.gray-shading)');
-$Table__Row--FirstChild: empty_wrapper(TableRowFirstChild, ' > tr:first-child:not(.gray-shading)');
+$Table__Row--NotFirstChild: empty_wrapper(TableRowNotFirstChild, ' > tr:not(:first-child):not(.gray-shading):not(.yellow-shading):not(.purple-shading)');
+$Table__Row--FirstChild: empty_wrapper(TableRowFirstChild, ' > tr:first-child:not(.gray-shading):not(.yellow-shading):not(.purple-shading)');
 
-$Table__Row--ColoredBackgroundRow: (
-    _name: "ColoredBackgroundRow",
+$Table__Row--GreyShadedBackgroundRow: (
+    _name: "GreyShadedBackgroundRow",
     _subselector: " > .gray-shading",
     _properties: (
         background-color: enum('ValueSet:::OPTIONAL'),
     )
 );
+
+$Table__Row--PurpleShadedBackgroundRow: (
+    _name: "PurpleShadedBackgroundRow",
+    _subselector: " > .purple-shading",
+    _properties: (
+        background-color: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
+$Table__Row--YellowShadedBackgroundRow: (
+    _name: "YellowShadedBackgroundRow",
+    _subselector: " > .yellow-shading",
+    _properties: (
+        background-color: enum('ValueSet:::OPTIONAL'),
+    )
+);
+
 
 $Table__Data: (
     _name: "TableData",
@@ -284,41 +292,6 @@ $Table__Data--Centered: (
     )    
 );
 
-$Table__Timeline__Head__Cell: (
-    _name: "TimelineTableHead",
-    _subselector: " th",
-    _properties: (
-        color: enum('ValueSet:::OPTIONAL'),
-        font-family: enum('ValueSet:::OPTIONAL'),
-        font-size: font-scale(0),
-        padding-top: table-v-spacing(1),
-        padding-bottom: table-v-spacing(1),
-        padding-right: table-h-spacing(1),
-        padding-left: table-h-spacing(1),
-        background-color: enum('ValueSet:::OPTIONAL'),
-        border-style: solid,
-        border-color: enum('ValueSet:::OPTIONAL'), 
-        border-width: 0.08rem, //1px converted to rem
-    )
-);
-
-$Table__Timeline__Data__Cell: (
-    _name: "TimelineTableData",
-    _subselector: " td",
-    _properties: (
-        font-family: enum('ValueSet:::OPTIONAL'),
-        font-size: font-scale(0),
-        color: enum('ValueSet:::OPTIONAL'),
-        padding-top: table-v-spacing(1),
-        padding-bottom: table-v-spacing(1),
-        padding-left: table-h-spacing(1),
-        padding-right: table-h-spacing(1),
-        border-style: solid,
-        border-color: enum('ValueSet:::OPTIONAL'), 
-        border-width: 0.08rem, //1px converted to rem
-    )
-);
-
 // Used in text-heavy tables
 $Table__HeaderRow--WithBottomBorder: empty_wrapper(TableHeaderRowWithBottomBorder, ' > tr'); 
 
@@ -341,7 +314,7 @@ $Table__Head__Cell--WithBottomBorder: (
     )
 );
 
-$Table__Row: empty_wrapper(TableRow, ' > tr'); // every tr - used in text-heavy and unstyled tables
+$Table__Row: empty_wrapper(TableRow, ' > tr'); // every tr - used in text-heavy, unstyled tables and timeline-tables
 
 // Used in unstyled tables
 $Table__Container--Unstyled: (
@@ -354,7 +327,7 @@ $Table__Container--Unstyled: (
 
 // Middle Header Row
 
-$Table__Row--MiddleHeader: empty_wrapper(TableRowMiddleHeader,  ' > tr:not(.gray-shading).header-row'); // Used in BCA and CS
+$Table__Row--MiddleHeader: empty_wrapper(TableRowMiddleHeader,  ' > tr:not(.gray-shading):not(.yellow-shading):not(.purple-shading).header-row'); // Used in BCA and CS
 
 $Table__Data--MiddleHeaderCell: (
     _name: "TableDataMiddleHeaderCell",
@@ -443,3 +416,118 @@ $Table__Data--MiddleHeaderCell--LastChild: (
         border-left-width: 0.08rem, //1px converted to rem
     )
 );
+
+// Time Line tables
+
+$Table__Timeline__Head__Cell--OnlyType: (
+    _name: "TimelineTableOnlyTypeHeadCell",
+    _subselector: " > th:only-of-type",
+    _properties: (
+        color: enum('ValueSet:::REQUIRED'),
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        padding-top: 0.16rem,
+        padding-bottom: 0.16rem,
+        padding-right: 0.16rem,
+        padding-left: 0.16rem,
+        border-bottom-style: solid,
+        border-bottom-color: enum('ValueSet:::REQUIRED'), 
+        border-bottom-width: 0.08rem, //1px converted to rem
+        border-top: none,
+        border-left: none,
+        border-right: none,
+    )
+);
+
+$Table__Timeline__Head__Cell: (
+    _name: "TimelineTableHeadCell",
+    _subselector: " > th:not(:only-of-type)",
+    _properties: (
+        color: enum('ValueSet:::REQUIRED'),
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        padding-top: 0.16rem,
+        padding-bottom: 0.16rem,
+        padding-right: 0.16rem,
+        padding-left: 0.16rem,
+        border-left-style: solid,
+        border-left-color: enum('ValueSet:::REQUIRED'), 
+        border-left-width: 0.08rem, //1px converted to rem
+        border-bottom-style: solid,
+        border-bottom-color: enum('ValueSet:::REQUIRED'), 
+        border-bottom-width: 0.08rem, //1px converted to rem
+        border-top: none,
+    )
+);
+
+$Table__Timeline__Head__Cell--First: (
+    _name: "TimelineTableFirstHeadCell",
+    _subselector: " > th:first-of-type:not(only-of-type)",
+    _properties: (
+        border-left: none,
+        border-right-style: solid,
+        border-right-color: enum('ValueSet:::REQUIRED'), 
+        border-right-width: 0.08rem, //1px converted to rem
+        border-top: none,
+    )
+);
+
+$Table__Timeline__Data__Cell: (
+    _name: "TimelineTableData",
+    _subselector: " > td:not(:only-of-type)",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: 0.16rem,
+        padding-bottom: 0.16rem,
+        padding-left: 0.16rem,
+        padding-right: 0.16rem,
+        border-left-style: solid,
+        border-left-color: enum('ValueSet:::REQUIRED'), 
+        border-left-width: 0.08rem, //1px converted to rem
+        border-right: none,
+        border-bottom-style: solid,
+        border-bottom-color: enum('ValueSet:::REQUIRED'), 
+        border-bottom-width: 0.08rem, //1px converted to rem
+    )
+);
+
+$Table__Timeline__Data__Cell--OnlyType: (
+    _name: "TimelineTableOnlyTypeTableData",
+    _subselector: " > td:only-of-type",
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        color: enum('ValueSet:::REQUIRED'),
+        padding-top: 0.16rem,
+        padding-bottom: 0.16rem,
+        padding-left: 0.16rem,
+        padding-right: 0.16rem,
+        border-left: none,
+        border-right:none,
+        border-bottom-style: solid,
+        border-bottom-color: enum('ValueSet:::REQUIRED'), 
+        border-bottom-width: 0.08rem, //1px converted to rem
+    )
+);
+
+$Table__Timeline__Data__Cell--FirstType: (
+    _name: "TimelineTableFirstTableData",
+    _subselector: " > td:first-of-type:not(:only-of-type)",
+    _properties: (
+        border-left: none,
+        border-right-style: solid,
+        border-right-color: enum('ValueSet:::REQUIRED'), 
+        border-right-width: 0.08rem, //1px converted to rem
+    )
+);
+
+$Table__Timeline__Row__Data__Cell--Last: (
+    _name: "TimelineTableLastRowData",
+    _subselector: " > tr:last-of-type > td",
+    _properties: (
+        border-bottom: none,
+    )
+);
+
