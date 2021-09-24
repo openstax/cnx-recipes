@@ -1,9 +1,29 @@
 @import 'lists-components';
 
-@include create_shape('webview:::ListsShape',(
+@include create_shape('webview:::ListsShape', (
     _components: (
         $UnorderedList,
         $OrderedList,
         $UnorderedList--NumberedLearningObjectives,
+    ),
+));
+
+@include create_shape('webview:::StepwiseListsShape', (
+    _components: (
+        map_merge($StepwiseList__Container, (
+            _components: (
+                map-merge($StepwiseList__FirstLevel, (
+                    _components: (
+                        $StepwiseList__CustomBullet,
+                        map-merge($StepwiseList__Content, (
+                            _components: (
+                                $StepwiseList__SecondLevel--UnorderedList,
+                                $StepwiseList__SecondLevel--OrderedList,
+                            ),
+                        )),
+                    ),
+                )),
+            ),
+        )),
     ),
 ));
