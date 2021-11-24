@@ -18,14 +18,14 @@ What kind of issue is this? [ ] recipe [ ] styles [ ] both [ ] i don't know
 
 # Bug Location(s)
 collection ID:
-server:
+github openstax/osbooks- link: 
 chapter/section: 
 surrounding text: 
 
 # Test Content Location(s)
 (leave blank if the same as above)
 collection ID:
-server: 
+github openstax/osbooks- link: 
 chapter/section:
 surrounding text:
 
