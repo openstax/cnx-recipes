@@ -14,7 +14,7 @@ What kind of change is this? [ ] recipe [ ] styles [ ] i don't know
 
 # Content Location(s)
 collection ID:
-server:
+github openstax/osbooks- link:
 chapter/section: 
 surrounding text: 
 
