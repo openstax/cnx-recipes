@@ -6,27 +6,30 @@ arg1=$1
 
 styles_root="./styles/books"
 
-# Pull in the BOOK_CONFIGS
-source ./books.txt || exit 1
+# Pull in the style names. No dependency on books.txt needed,
+# using the directory structure instead.
+PLATFORMS=(pdf)
+STYLE_NAMES=()
+for style in $(ls $styles_root); do STYLE_NAMES+=("${style}"); done
 
 if [ ! "${arg1}" == "" ]; then
-  TEMPLATE_NAMES=("${arg1} ${arg1}")
+  STYLE_NAMES=("${arg1}")
 fi
 
 output_dir="./styles/output"
 
-if [[ ${#TEMPLATE_NAMES[@]} == 0 ]]; then
-  die "No styles were found. Check books.txt"
+if [[ ${#STYLE_NAMES[@]} == 0 ]]; then
+  die "No styles were found. Check $styles_root"
 fi
 
-for style_config in "${TEMPLATE_NAMES[@]}"; do
-  read -r _ _ recipe_name <<< "${style_config}"
-
-  sass_file="${styles_root}/${recipe_name}/book.scss"
+for i in "${!STYLE_NAMES[@]}"; do
+  style_name="${STYLE_NAMES[i]}"
+  if [[ $style_name == "generic" ]]; then continue; fi # skip generic
+  sass_file="${styles_root}/${style_name}/book.scss"
   for platform in "${PLATFORMS[@]}"; do
-    css_file="${output_dir}/${recipe_name}-${platform}.css"
+    css_file="${output_dir}/${style_name}-${platform}.css"
 
-    PLATFORM="${platform}" do_progress "Generating ${css_file}" \
+    PLATFORM="${platform}" do_progress "Generating ${css_file} $((i + 1))/${#STYLE_NAMES[@]}" \
       node styles/build/build.js "${sass_file}" "${css_file}"
   done
 
