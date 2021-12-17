@@ -74,7 +74,8 @@ div.appendix,
 div.os-solution-container[data-type="composite-chapter"],
 div.os-solutions-container[data-type="composite-chapter"],
 div.os-eob.os-references-container[data-type="composite-page"],
-div.os-eob.os-reference-container[data-type="composite-page"] {
+div.os-eob.os-reference-container[data-type="composite-page"],
+div.handbook {
   page-break-before: right;
   page-break-after: left; }
 
@@ -430,6 +431,9 @@ iframe {
 div[data-type="composite-page"].os-eob > h1[data-type="document-title"] .os-text {
   string-set: eob-title content(); }
 
+.handbook > h1[data-type="document-title"] .os-text {
+  string-set: handbook-title content(); }
+
 nav#toc {
   page: table-of-contents; }
 
@@ -453,6 +457,9 @@ div[data-type="page"].appendix {
 
 div[data-type="composite-page"].os-eob {
   page: eob; }
+
+div[data-type="page"].handbook {
+  page: handbook; }
 
 @page unit {
   @top-left-corner {
@@ -551,6 +558,40 @@ div[data-type="composite-page"].os-eob {
     color: #000000;
     font-weight: 700;
     content: "Preface"; }
+  @top-right-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "     " counter(page); } }
+
+@page handbook:left {
+  @top-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(handbook-title); }
+  @top-left-corner {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: counter(page) "     "; }
+  @bottom-left {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: "Access for free at openstax.org."; } }
+
+@page handbook:right {
+  @top-right {
+    font-size: 0.83333rem;
+    font-family: "IBM Plex Sans";
+    color: #000000;
+    font-weight: 700;
+    content: string(handbook-title); }
   @top-right-corner {
     font-size: 0.83333rem;
     font-family: "IBM Plex Sans";
@@ -736,6 +777,28 @@ nav#toc > ol > li.os-toc-unit > ol.os-unit > li.os-toc-chapter > ol.os-chapter {
   list-style: none;
   margin-left: 0;
   padding-left: 0; }
+
+nav#toc > ol > li.os-toc-unit > ol.os-unit > li.os-toc-chapter > ol.os-chapter > li > ol {
+  list-style: none; }
+
+nav#toc > ol > li.os-toc-unit > ol.os-unit > li.os-toc-chapter > ol.os-chapter > li > ol > li {
+  margin-bottom: 0rem; }
+
+nav#toc > ol > li.os-toc-unit > ol.os-unit > li.os-toc-chapter > ol.os-chapter > li > ol > li > a {
+  text-decoration: none;
+  font-family: IBM Plex Serif, serif, StixGeneral;
+  color: #000000;
+  font-size: 1rem;
+  line-height: 1.5rem; }
+
+nav#toc > ol > li.os-toc-unit > ol.os-unit > li.os-toc-chapter > ol.os-chapter > li > ol > li > a::after {
+  content: target-counter(attr(href), page);
+  display: inline-block;
+  margin-left: 24px;
+  font-family: IBM Plex Sans, sans-serif, StixGeneral;
+  color: #000000;
+  font-size: 1rem;
+  line-height: 1.5rem; }
 
 nav#toc > ol > li.os-toc-unit > ol.os-unit > li.os-toc-chapter > ol.os-chapter > li > a {
   text-decoration: none;
@@ -1018,6 +1081,17 @@ a[role="doc-noteref"] {
   text-decoration: none;
   padding-right: 0.16rem; }
 
+span[data-screenreader-only="true"] {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap; }
+
 .os-handbook-outline {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -1148,14 +1222,14 @@ section.section-workscited > p {
 .handbook section.works-cited {
   margin-bottom: 1.4rem; }
 
-.handbook section.works-cited > p {
+.handbook section.works-cited p {
   text-indent: -16px;
   padding-left: 16px; }
 
 .handbook section.further-reading {
   margin-bottom: 1.4rem; }
 
-.handbook section.further-reading > p {
+.handbook section.further-reading p {
   text-indent: -16px;
   padding-left: 16px; }
 
@@ -1362,6 +1436,14 @@ p.annotation > .os-icons {
   padding-right: 8px;
   left: 0;
   bottom: -0.7rem; }
+
+[data-type="page"]:not(.introduction) > section.living-words > section > h4[data-type="title"] {
+  color: #000000;
+  font-family: Archivo, sans-serif, StixGeneral;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0rem; }
 
 [data-type="page"]:not(.introduction) > section.living-words > h4[data-type="title"] {
   color: #000000;
@@ -2311,21 +2393,21 @@ body > [data-type="page"]:not(.preface):not(.appendix) > section > section > sec
 .os-eoc.os-further-reading-container {
   margin-bottom: 1.4rem; }
 
-.os-eoc.os-further-reading-container > section > p {
+.os-eoc.os-further-reading-container p {
   text-indent: -16px;
   padding-left: 16px; }
 
 .os-eoc.os-works-cited-container {
   margin-bottom: 1.4rem; }
 
-.os-eoc.os-works-cited-container > section > p {
+.os-eoc.os-works-cited-container p {
   text-indent: -16px;
   padding-left: 16px; }
 
 .os-eoc.os-works-consulted-container {
   margin-bottom: 1.4rem; }
 
-.os-eoc.os-works-consulted-container > section > p {
+.os-eoc.os-works-consulted-container p {
   text-indent: -16px;
   padding-left: 16px; }
 

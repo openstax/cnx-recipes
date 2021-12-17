@@ -37,6 +37,7 @@ const toDataUri = (type, path) => {
 
 let scssResult
 try {
+  let time1 = new Date().getTime()
   scssResult = sass.renderSync({
     file: inputFile,
     includePaths: [stylesRoot, platformIncludesPath],
@@ -49,6 +50,8 @@ try {
     outputStyle: 'nested',
     outFile: outputFile
   })
+  let time2 = new Date().getTime()
+  console.log("time to render (s): " + ((time2-time1)/1000))
 } catch (error) {
   console.log(error.formatted)
   process.exit(1)
