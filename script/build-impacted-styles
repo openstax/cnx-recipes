@@ -1,0 +1,32 @@
+#!/bin/bash
+
+usage="script/build-impacted-styles <theme> <shape_name>"
+if [[ $# -lt 2 ]] ; then
+    echo "Not enough args"
+    echo $usage
+    exit 1
+fi
+
+cd "$(dirname "$0")/.." || exit 111
+source ./script/bootstrap || exit 111
+
+theme=$1
+shape_name=$2
+
+styles_root="./styles/books"
+output_dir="./styles/output"
+
+book_files=($(grep -R -l "$theme:::$shape_name" $styles_root))
+echo "Found ${#book_files[@]} files with this shape."
+
+PLATFORMS=(pdf)
+for i in "${!book_files[@]}"; do
+    sass_file=${book_files[i]}
+    style_name=$(cut -d / -f 4 <<< $sass_file)
+    for platform in "${PLATFORMS[@]}"; do
+        css_file="${output_dir}/${style_name}-${platform}.css"
+
+        PLATFORM="${platform}" do_progress "Generating ${css_file} $((i + 1))/${#book_files[@]}" \
+            node styles/build/build.js "${sass_file}" "${css_file}"
+    done
+done
