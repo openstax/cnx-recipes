@@ -68,6 +68,12 @@ RUN apt-get install \
     xsltproc \
     shellcheck
 
+# Setup dart
+RUN apt-get install apt-transport-https
+RUN sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -' && \
+    sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
+RUN apt-get update && apt-get install dart
+
 # Install docker
 RUN apt-get install -y curl && \
     curl -sSL https://get.docker.com | sh
@@ -124,3 +130,6 @@ FROM build-dependencies as code
 
 # Install code
 COPY . ./
+
+# dart pub get doesn't find the pubspec file until after the above line is run
+RUN dart pub get
