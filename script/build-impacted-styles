@@ -1,7 +1,7 @@
 #!/bin/bash
 
-usage="script/build-impacted-styles <theme> <shape_name>"
-if [[ $# -lt 2 ]] ; then
+usage="script/build-impacted-styles <theme> <shape_name (optional)>"
+if [[ $# -lt 1 ]] ; then
     echo "Not enough args"
     echo $usage
     exit 1
@@ -16,8 +16,10 @@ shape_name=$2
 styles_root="./styles/books"
 output_dir="./styles/output"
 
-book_files=($(grep -R -l "$theme:::$shape_name" $styles_root))
-echo "Found ${#book_files[@]} files with this shape."
+search_string="$theme:::$shape_name"
+book_files=($(grep -R -l $search_string $styles_root))
+echo "Found ${#book_files[@]} files with instances of $search_string."
+echo `grep -R -l $search_string $styles_root`
 
 PLATFORMS=(pdf)
 for i in "${!book_files[@]}"; do
