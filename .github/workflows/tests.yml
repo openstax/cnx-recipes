@@ -23,3 +23,12 @@ jobs:
         run: |
           git diff
           git diff-index --quiet HEAD
+  build:
+    steps:
+      - name: Build Styles
+        run: ./script/build-styles
+      - name: Commit style files
+        run: |
+          git checkout -b auto-styles-${{ GITHUB_RUN_ID }}
+          git add .
+          git commit -m "Built styles"
