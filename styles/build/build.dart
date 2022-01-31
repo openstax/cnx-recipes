@@ -1,14 +1,54 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:sass/sass.dart' as sass;
+import 'package:source_maps/source_maps.dart';
+import 'dart:io' show Platform;
 
 void main(List<String> arguments) {
+  if (arguments.length < 1) {
+    throw Exception('Input argument not given.');
+  }
+
+  var inputFile = arguments[0];
+  var outputFile = arguments[1];
+
   var stylesPath = "${Directory.current.path}/styles/";
-  var time1 = DateTime.now();
+  if (File(stylesPath).existsSync()) {
+    throw Exception('Cannot find styles root directory.');
+  }
+
+  Map<String, String> envVars = Platform.environment;
+
+  var platform = envVars["PLATFORM"] ?? 'none';
+  var platformIncludesPath = "${stylesPath}framework/platform/${platform}";
+  if(File(platformIncludesPath).existsSync()){
+    throw Exception("Specified platform '${platform}' does not have an associated directory.");
+  }
+
+  sass.Callable toDataUri = new sass.Callable.function('toDataUri', r'$type, $path', (arguments) {
+    var pathString = arguments[1].toString().replaceAll('"', '');
+    var typeString = arguments[0].toString().replaceAll('"', '');
+    var fileData = File("${stylesPath}${pathString}").readAsBytesSync();
+    var encoded = base64Encode(fileData);
+    var dataUri = "data:image/${typeString};base64,${encoded}";
+    return sass.SassString(dataUri);
+  });
+
+  var startTime = DateTime.now();
   var result = sass.compileToResult(
-    arguments[0],
-    loadPaths: {stylesPath}
+    inputFile,
+    loadPaths: {stylesPath},
+    sourceMap: true,
+    functions: [toDataUri]
   );
-  var time2 = DateTime.now();
-  print("compile time is: ${time2.difference(time1)}");
-  new File(arguments[1]).writeAsStringSync(result.css);
+  var endTime = DateTime.now();
+  print("compile time is: ${endTime.difference(startTime)}");
+
+  if (result.css.length > 0) {
+    new File(outputFile).writeAsStringSync(result.css);
+    new File("${outputFile}.map").writeAsStringSync(json.encode(result.sourceMap.toJson()));
+  } else {
+    print(result.css.toString());
+  }
+
 }
