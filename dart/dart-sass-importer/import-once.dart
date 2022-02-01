@@ -16,16 +16,29 @@ class UniqueImporter extends Importer {
         return true;
     }
 
-    Uri canonicalize(Uri url) { // This is called first in CompileToResult
+    Uri canonicalize(Uri url) { // This is called first in CompileToResult. Return the absolute URL?
         print("UniqueImporter.canonicalize(Uri) called");
-        print("Url is " + url.toString());
-        return url;
+        // get the directory styles code is in, do the code/styles (and then the relative url)
+        // return relative url for now! Worry about depreciation LATER
+        // take 'framework/framework' to .../code/styles/framework/_framework.scss
+        // if (url.toString()=='framework/framework') {
+        //     print("canonicalized returned " + url.toString());
+        //     return url;
+        // } else {
+        //     print("Url is " + url.toString());
+        //     return url;
+        // }
+        print(url.path.current);
+        //Overwrite UniqueImporter url with the absolute URL?
+        return new Uri.file('code/styles/framework/_framework.scss'); // This gets us past canonicalize?
     }
+
+// something to hold what's already imported?
 
     ImporterResult load(Uri url) {
         // super.load(url);
         print("UniqueImporter.load() called");
-        return null;
+        return null; // Null won't move to the next one, it'll throw an exception? :
     }
 
 // A legacy importer 

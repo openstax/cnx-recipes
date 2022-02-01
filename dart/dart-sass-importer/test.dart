@@ -7,11 +7,14 @@ import 'import-once.dart';
 void main() {
     var inputFile = './styles/books/finance/book.scss';
     var importer = new UniqueImporter();
+    var stylesPath = "${Directory.current.path}/styles/";
 
     // importer.load(Uri.file(inputFile));
 
     sass.compileToResult(inputFile, 
-        importers: [importer]
+        importers: [importer],
+        loadPaths: {stylesPath},
+        sourceMap: true
     );
 
 }
