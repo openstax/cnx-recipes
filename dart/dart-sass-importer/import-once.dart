@@ -28,8 +28,10 @@ class UniqueImporter extends Importer {
         //     print("Url is " + url.toString());
         //     return url;
         // }
-        print(url.path.current);
-        //Overwrite UniqueImporter url with the absolute URL?
+        // print(p.absolute(url.normalizePath().toString())); // still needs "styles" in there.
+        // Overwrite UniqueImporter url with the absolute URL?
+        // print(_sourceMapUrl.toString());
+        print(this.contents);
         return new Uri.file('code/styles/framework/_framework.scss'); // This gets us past canonicalize?
     }
 
