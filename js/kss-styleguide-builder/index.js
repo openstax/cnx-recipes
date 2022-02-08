@@ -1,3 +1,5 @@
+//delete_me
+
 const path = require('path')
 const KssBuilderBaseHandlebars = require('kss/builder/base/handlebars')
 
