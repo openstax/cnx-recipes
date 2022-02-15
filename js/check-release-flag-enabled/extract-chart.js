@@ -1,3 +1,5 @@
+// DELETE_ME
+
 const getStdin = require('get-stdin')
 const sassExtract = require('sass-extract')
 const order = Number.parseInt(process.argv[2])
