@@ -35,6 +35,8 @@ const toDataUri = (type, path) => {
   return SassString(dataUri)
 }
 
+console.log("baking" + inputFile)
+
 let scssResult
 try {
   let time1 = new Date().getTime()

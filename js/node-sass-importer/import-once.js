@@ -13,10 +13,11 @@ module.exports = function () {
       return (isSameDir && isCompatibleBase)
     }
     if (alreadyImported.some(isSameFile)) {
-      // console.log(`Not imported: ${asAbsolute}`)
+      console.log(`Not imported: ${asAbsolute}`)
       return {}
     } else {
       alreadyImported.push(asAbsolute)
+      console.log(`Imported: ${asAbsolute}`)
       return null
     }
   }
