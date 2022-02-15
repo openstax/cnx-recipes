@@ -39,6 +39,7 @@ class UniqueImporter extends Importer {
             print("Already been imported!");
         } else {
             print("Unimported URL!");
+            previouslyImported.add(url.toString());
         }
 
         // URL is the canonicalized URL!
