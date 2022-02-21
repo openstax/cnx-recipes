@@ -1,3 +1,5 @@
+// DELETE_ME (and the whole folder I'm in)
+
 const path = require('path')
 const KssBuilderBaseHandlebars = require('kss/builder/base/handlebars')
 
