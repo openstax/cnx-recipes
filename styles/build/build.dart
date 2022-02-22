@@ -17,14 +17,6 @@ void main(List<String> arguments) {
     throw Exception('Cannot find styles root directory.');
   }
 
-  Map<String, String> envVars = Platform.environment;
-
-  var platform = envVars["PLATFORM"] ?? 'none';
-  var platformIncludesPath = "${stylesPath}framework/platform/${platform}";
-  if(File(platformIncludesPath).existsSync()){
-    throw Exception("Specified platform '${platform}' does not have an associated directory.");
-  }
-
   sass.Callable toDataUri = new sass.Callable.function('toDataUri', r'$type, $path', (arguments) {
     var pathString = arguments[1].toString().replaceAll('"', '');
     var typeString = arguments[0].toString().replaceAll('"', '');
@@ -44,11 +36,10 @@ void main(List<String> arguments) {
   var endTime = DateTime.now();
   print("compile time is: ${endTime.difference(startTime)}");
 
-  if (result.css.length > 0) {
+  if ((result.css.length > 0) & (outputFile.length > 0)) {
     new File(outputFile).writeAsStringSync(result.css);
     new File("${outputFile}.map").writeAsStringSync(json.encode(result.sourceMap.toJson()));
   } else {
-    print(result.css.toString());
+    throw Exception("Empty output");
   }
-
 }
