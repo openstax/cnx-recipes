@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:sass/sass.dart' as sass;
 import 'package:source_maps/source_maps.dart';
-import 'dart:io' show Platform;
 
 void main(List<String> arguments) {
   if (arguments.length < 1) {
