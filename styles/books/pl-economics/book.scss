@@ -74,35 +74,31 @@ $bandColor: #DCB83D;
 
 // EOC exercises
 @include add_settings((
-  SelfCheckQuestions: (
-    _selectors: ('.os-eoc.os-self-check-questions-container'),
+  ExercisesModule: (
+    _selectors: ('.os-eoc.os-self-check-questions-container', '.os-eoc.os-review-questions-container', '.os-eoc.os-critical-thinking-container', '.os-eoc.os-problems-container'),
     'ProblemNumber:::color': (_ref: "colorMap:::fontBodyColor"),
-  ),
-  ReviewQuestions: (
-    _selectors: ('.os-eoc.os-review-questions-container'),
-    'ProblemNumber:::color': (_ref: "colorMap:::fontBodyColor"),
-  ),
-  CriticalThinking: (
-    _selectors: ('.os-eoc.os-critical-thinking-container'),
-    'ProblemNumber:::color': (_ref: "colorMap:::fontBodyColor"),
-  ),
-  Problems: (
-    _selectors: ('.os-eoc.os-problems-container'),
-    'ProblemNumber:::color': (_ref: "colorMap:::fontBodyColor"),
+    'ProblemNumber:::width': 2%,
+    'ProblemNumber:::text-align': right,
   ),
 ));
 
-
-
+//TOC
 @include add_settings((
   TocNoUnit:(
     _selectors: ('nav#toc'),
+    'TocTitle:::color': (_ref: 'colorMap:::tocTitlePlEconomicsColor'),
+    'TocTitle:::border-bottom-color': (_ref: 'colorMap:::tocTitlePlEconomicsColor'),
+    'NoUnitChapterLinkPage:::color': (_ref: 'colorMap:::tocTitlePlEconomicsColor'),
     'NoUnitChapterLinkPage:::content': "leader('.') target-counter(attr(href), page)",
     'NoUnitChapterLinkPage:::display': inline,
     'NoUnitChapterLinkPage:::margin-left': 0,
+    'ChapterLinkNumber:::color': (_ref: 'colorMap:::tocTitlePlEconomicsColor'),
+    'ChapterLinkText:::color': (_ref: 'colorMap:::fontBodyColor'),
+    'ChapterLinkPage:::color': (_ref: 'colorMap:::tocTitlePlEconomicsColor'),
     'ChapterLinkPage:::content': "leader('.') target-counter(attr(href), page)",
     'ChapterLinkPage:::display': inline,
     'ChapterLinkPage:::margin-left': 0,
+    'ModuleLinkPage:::color': (_ref: 'colorMap:::tocTitlePlEconomicsColor'),
     'ModuleLinkPage:::content': "leader('.') target-counter(attr(href), page)",
     'ModuleLinkPage:::display': inline,
     'ModuleLinkPage:::margin-left': 0,
@@ -127,6 +123,28 @@ $bandColor: #DCB83D;
     ),
 ));
 
+@include add_settings((
+  DefaultTable:(
+    _selectors: ('.os-table:not(.os-text-heavy-top-titled-container):not(.os-unstyled-container)'),
+    'TableBottomBorder:::border-bottom-color': (_ref: "colorMap:::tableBottomStrokePlEconomicsColor"),
+    'CaptionTitleLabel:::color': (_ref: "colorMap:::captionNumberPlEconomicsColor"),
+    'CaptionNumber:::color': (_ref: "colorMap:::captionNumberPlEconomicsColor"),
+  ),
+  TopCaptionedTable:(
+    _selectors: ('.os-table.os-top-captioned-container'),
+    'TableBottomBorder:::border-bottom-color': (_ref: "colorMap:::tableBottomStrokePlEconomicsColor"),
+    'CaptionTitleLabel:::color': (_ref: "colorMap:::captionNumberPlEconomicsColor"),
+    'CaptionNumber:::color': (_ref: "colorMap:::captionNumberPlEconomicsColor"),
+  ),
+));
+
+@include add_settings((
+  Figure:(
+    _selectors: ('.os-figure:not(.has-splash)'),
+    'CaptionTitleLabel:::color': (_ref: "colorMap:::captionNumberPlEconomicsColor"),
+    'CaptionNumber:::color': (_ref: "colorMap:::captionNumberPlEconomicsColor"),
+  ),
+));
 
 @include use('BookRoot', "common:::BookRoot");
 @include use('LearningObjectivesAbstractModule', 'cosmos:::LearningObjectivesModuleShape');
@@ -167,10 +185,7 @@ $bandColor: #DCB83D;
 @include use('KeyTerms', 'cosmos:::KeyTermsShape');
 
 //Exercises
-@include use('SelfCheckQuestions', 'cosmos:::ExercisesModuleShape');
-@include use('ReviewQuestions', 'cosmos:::ExercisesModuleShape');
-@include use('CriticalThinking', 'cosmos:::ExercisesModuleShape');
-@include use('Problems', 'cosmos:::ExercisesModuleShape');
+@include use('ExercisesModule', 'cosmos:::ExercisesModuleShape');
 
 // Eob
 @include use('EobReferencesWithoutNumbering', 'cosmos:::EobReferencesWithoutNumberingShape');
