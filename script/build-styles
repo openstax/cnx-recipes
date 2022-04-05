@@ -26,11 +26,10 @@ for i in "${!STYLE_NAMES[@]}"; do
   style_name="${STYLE_NAMES[i]}"
   if [[ $style_name == "generic" ]]; then continue; fi # skip generic
   sass_file="${styles_root}/${style_name}/book.scss"
-  for platform in "${PLATFORMS[@]}"; do
-    css_file="${output_dir}/${style_name}-${platform}.css"
+  css_file="${output_dir}/${style_name}-pdf.css"
 
-    PLATFORM="${platform}" do_progress "Generating ${css_file} $((i + 1))/${#STYLE_NAMES[@]}" \
-      node styles/build/build.js "${sass_file}" "${css_file}"
+  do_progress "Generating ${css_file} $((i + 1))/${#STYLE_NAMES[@]}" \
+    dart styles/build/build.dart "${sass_file}" "${css_file}"
   done
 
   #disable web styles for the time being
