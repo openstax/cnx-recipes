@@ -25,10 +25,9 @@ PLATFORMS=(pdf)
 for i in "${!book_files[@]}"; do
     sass_file=${book_files[i]}
     style_name=$(cut -d / -f 4 <<< $sass_file)
-    for platform in "${PLATFORMS[@]}"; do
-        css_file="${output_dir}/${style_name}-${platform}.css"
 
-        PLATFORM="${platform}" do_progress "Generating ${css_file} $((i + 1))/${#book_files[@]}" \
-            node styles/build/build.js "${sass_file}" "${css_file}"
-    done
+    css_file="${output_dir}/${style_name}-pdf.css"
+
+    do_progress "Generating ${css_file} $((i + 1))/${#book_files[@]}" \
+      dart styles/build/build.dart "${sass_file}" "${css_file}"
 done
