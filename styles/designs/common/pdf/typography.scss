@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @function pow($number, $exponent) {
   $value: 1;
 
@@ -7,7 +9,7 @@
     }
   } @else if $exponent < 0 {
     @for $i from 1 through -$exponent {
-      $value: $value / $number;
+      $value: math.div($value,  $number);
     }
   }
 
@@ -26,7 +28,7 @@
   $baseFontSize: 1; //1rem
 
   $font-size: $baseFontSize * pow($scaleModifier, $scale);
-  $line-height:  (ceil($font-size / $baseLineHeight)) * $baseLineHeight;
+  $line-height:  (ceil(math.div($font-size, $baseLineHeight))) * $baseLineHeight;
 
   @return $line-height * 1rem;
 }
