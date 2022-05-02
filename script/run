@@ -9,9 +9,7 @@ do
   shift
 done
 
-if [ ! -d node_modules ]
-then
-  docker-compose run --rm command "./script/setup"
-fi
-docker-compose run --rm "${env_vars[@]}" command "$@"
-docker-compose run --rm command /bin/bash -c "find ! -path './node_modules/*' ! -path './venv/*' ! -path './vendor/*' -user root -exec chown \"\$(stat -c '%u:%g' ./)\" '{}' \\;"
+docker build -t run-image .
+docker run --rm -it --name somename run-image /bin/bash   #how to keep open to run bash??
+# docker exec "${env_vars[@]}" somename "$@"
+#-compose run --rm "${env_vars[@]}" command "$@

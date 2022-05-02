@@ -1,0 +1,17 @@
+#!/bin/bash -x
+
+env_vars=()
+
+while echo "$1" | grep -q '='
+do
+  env_vars[${#env_vars[@]}]='-e'
+  env_vars[${#env_vars[@]}]="$1"
+  shift
+done
+
+if [ ! -d node_modules ]
+then
+  docker-compose run --rm command "./script/setup"
+fi
+docker-compose run --rm "${env_vars[@]}" command "$@"
+#docker-compose run --rm command /bin/bash -c "find ! -path './node_modules/*' ! -path './venv/*' ! -path './vendor/*' -user root -exec chown \"\$(stat -c '%u:%g' ./)\" '{}' \\;"
