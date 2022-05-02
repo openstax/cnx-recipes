@@ -61,8 +61,10 @@ FROM build-os-dependencies as build-dependencies
 COPY \
     package.json \
     yarn.lock \
+    pubspec.* \
     ./
 
+RUN dart pub get
 
 # Post-install builds the styles/output/_web-styles.json
 # which is not needed for being in a docker container.
@@ -72,6 +74,3 @@ FROM build-dependencies as code
 
 # Install code
 COPY . ./
-
-# dart pub get doesn't find the pubspec file until after the above line is run
-RUN dart pub get
