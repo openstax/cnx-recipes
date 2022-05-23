@@ -12,6 +12,17 @@ $ChapterIntroType: fullWidth;
 @import '../../designs/carnival/pdf/folio';
 
 //Settings
+@include add_settings((
+  ChapterIntro: (
+    _selectors: (".introduction"),
+    'SplashFigureBg:::background-color': (_ref: 'colorMap:::anthopologyAccentColor'),
+  ),
+  ChapterOutline: (
+    _selectors: (".os-chapter-outline"),
+    'ChapterOutlineContainer:::border-bottom-color': (_ref: 'colorMap:::anthopologyAccentColor'),
+    'ChapterOutlineTitle:::color': (_ref: 'colorMap:::anthopologyAccentColor'),
+  ),
+));
 
 @include add_settings((
   LearningObjectives: (
@@ -102,14 +113,6 @@ $ChapterIntroType: fullWidth;
 ));
 
 @include add_settings((
-  FullWidthChapterIntro: (
-    'SplashFigureBg:::background-color': (_ref: 'colorMap:::chapterOutlineColor'),
-    'OutlineFullWidth:::border-bottom-color': (_ref: 'colorMap:::chapterOutlineColor'),
-    'OutlineFullWidthTitle:::color': (_ref: 'colorMap:::chapterOutlineColor'),
-  )
-));
-
-@include add_settings((
   KeyTerm:(
     _selectors: ("[data-type = 'chapter'] > .os-glossary-container"),
     'Container:::column-count': 2,
@@ -141,13 +144,16 @@ $ChapterIntroType: fullWidth;
 ));
 
 @include use('BookRoot', "common:::BookRoot");
-@include use('FullWidthChapterIntro', 'carnival:::FullWidthChapterIntroShape');
 @include use('Link', "carnival:::Link");
 @include use('TOC', 'carnival:::NoUnitToc');
 @include use('LearningObjectives', 'carnival:::LearningObjectivesShape');
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
 @include use('Blockquote', "carnival:::BlockquoteShape");
+
+//Chapter Intro
+@include use('ChapterIntro', 'carnival:::ChapterIntroShape');
+@include use('ChapterOutline', 'carnival:::ChapterOutlineShape');
 
 //Titles
 @include use('ChapterTitles', 'carnival:::ChapterTitlesShape');
@@ -163,6 +169,9 @@ $ChapterIntroType: fullWidth;
 
 // Figure
 @include use('Figure','carnival:::FigureShape');
+@include use('FigureAfterSubtitle', 'carnival:::FigureTopSpacingShape');
+@include use('FigureFromExercisesProblem','carnival:::FigureFromExercisesShape');
+@include use('FigureFromInjectedQuestion','carnival:::FigureFromExercisesShape');
 
 // Notes
 @include use('EthnographicSketches', 'carnival:::IconNoteShape');
