@@ -36,6 +36,14 @@ $ChapterIntroType: fullWidth;
 ));
 
 @include add_settings((
+  LearningObjectivesAbstract: (
+      _selectors: ('[data-type="page"] > [data-type="abstract"]'),
+      'H3ObjectivesTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
+      'ListDot:::color': (_ref: "colorMap:::physicsHeaderColor"),
+    ),
+));
+
+@include add_settings((
   KeyTerm:(
     _selectors: ("[data-type = 'composite-chapter'] > .os-glossary-container"),
     'Container:::column-count': 2,
@@ -111,7 +119,8 @@ $ChapterIntroType: fullWidth;
     'SectionMarginBottom:::margin-bottom': 0,
   ),
 ));
-//notes
+
+// Notes
 @include add_settings((
   CheckYourUnderstandingNote:(
     _selectors: (".check-understanding"),
@@ -125,15 +134,6 @@ $ChapterIntroType: fullWidth;
     'Body:::border-bottom-color': (_ref: 'colorMap:::linkToLearningColor'),
     'Title:::font-family': (_ref: 'typography:::titleOption1Font'),
     'Icon:::background': url(toDataUri("svg+xml", "designs/carnival/resources/carnival-linktolearning.svg")) no-repeat top left,
-  ),
-  LearningObjectives: (
-    _selectors: ('[data-type="page"] > [data-type="abstract"]'),
-    'Paragraph:::color': (_ref: "colorMap:::fontBodyColor"),
-    'Paragraph:::font-family': (_ref: 'typography:::sansFont'),
-    'H3LearningObjectivesTitle:::color': (_ref: "colorMap:::physicsHeaderColor"),
-    'H3LearningObjectivesTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'ListItem:::font-family': (_ref: 'typography:::sansFont'),
-    'ListDot:::color': (_ref: "colorMap:::physicsHeaderColor"),
   ),
   ProblemSolving:(
     _selectors: (".problem-solving"),
@@ -212,27 +212,27 @@ $ChapterIntroType: fullWidth;
   ),
 ));
 
-//@use
 @include use('BookRoot', "common:::BookRoot");
-@include use('UnitToc', 'carnival:::UnitToc');
-@include use('UnitTitle', 'common:::Hidden');
+@include use('Link', 'carnival:::Link');
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
-@include use('Index', 'carnival:::IndexShape');
-@include use('Link', 'carnival:::Link');
-@include use('Preface','carnival:::Preface'); //remove when clean up work for lists be done
-@include use('EquationCallOutNote', 'carnival:::BoxCondensedEquationShape');
-@include use('NumberedEquation', 'carnival:::NumberedEquationShape');
-@include use('Equation', 'carnival:::EquationShape');
-@include use('LearningObjectives', 'carnival:::LearningObjectivesShape');
-@include use('Example', 'carnival:::IconNoteShape');
-@include use('AnswerKey', 'carnival:::AnswerKeyShape');
-@include use('ContentExercises','carnival:::ExerciseShape');
 @include use('Blockquote', "carnival:::BlockquoteShape");
+
+// Book specific styles
+@include use('UnitToc', 'carnival:::UnitToc');
+@include use('Preface','carnival:::Preface'); //remove when clean up work for lists be done
+@include use('LearningObjectivesAbstract', 'carnival:::LearningObjectivesShape');
+@include use('Example', 'carnival:::IconNoteShape');
+@include use('ContentExercises','carnival:::ExerciseShape');
 
 // Chapter Intro
 @include use('ChapterIntro', 'carnival:::ChapterIntroShape');
 @include use('ChapterOutline', 'carnival:::ChapterOutlineShape');
+
+// Equations
+@include use('EquationCallOutNote', 'carnival:::BoxCondensedEquationShape');
+@include use('NumberedEquation', 'carnival:::NumberedEquationShape');
+@include use('Equation', 'carnival:::EquationShape');
 
 // Figures
 @include use('Figure','carnival:::FigureShape');
@@ -270,9 +270,14 @@ $ChapterIntroType: fullWidth;
 @include use('EocCompositeChapterTitles', 'carnival:::EocCompositeChapterTitlesShape');
 @include use('EobTitles', 'carnival:::EobTitlesShape');
 @include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape'); //remove when clean up work for lists be done
+@include use('UnitTitle', 'common:::Hidden');
 
 //Lists
 @include use('PageLists', 'carnival:::PageListsShape');
+
+// EOB
+@include use('Index', 'carnival:::IndexShape');
+@include use('AnswerKey', 'carnival:::AnswerKeyShape');
 
 // Book Specific Override
 // https://github.com/openstax/cnx-recipes/issues/3958
