@@ -1,26 +1,44 @@
 @import '_references-components';
 
-@include create_shape('cardboard:::ReferencesShape', (
+@include create_shape('cardboard:::ReferencesFromEobShape', (
   _components: (
-    map-merge($EOB__Container, (
-        _components: (
-            map-merge($References_ChapterArea, (
-                _components: (
-                    map-merge($Reference__Container, (
-                        _components: (
-                            $Reference__Number,
-                        )
-                    )),
-                  )
-              )),
-          )
+        map-merge($References__Container--Eob, (
+            _components: (
+                map-merge($References__ChapterArea, (
+                    _components: (
+                        map-merge($References__Note--Eob, (
+                            _components: (
+                                $References__Number,
+                            )
+                        )),
+                    )
+                )),
+            )
         )),
     ),
 ));
 
-// Reference Link
-@include create_shape('cardboard:::ReferenceLinkShape', (
+@include create_shape('cardboard:::ReferencesFromEocShape',( //TO DO: change name; shape is used for Appendices as well
+    _components:(
+        map-merge($References__Container--Eoc,(
+            _components:(
+                map-merge($References__Section, (
+                    _components: (
+                        map-merge($References__Note--Eoc,(
+                            _components:(
+                                $References__Link,
+                            ),
+                        ))
+                    ),
+                ))
+            ),
+        ))
+    ),
+));
+
+// References Link placed within modules
+@include create_shape('cardboard:::ReferencesCiteLinkShape', (
   _components: (
-    $CiteLink--Reference,
+    $References__CiteLink,
   ),
 ));
