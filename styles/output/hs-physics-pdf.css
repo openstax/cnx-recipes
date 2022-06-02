@@ -888,6 +888,49 @@ div[data-type=composite-page].os-eob {
   prince-background-image-resolution: 200dpi;
 }
 
+aside[role=doc-footnote] {
+  float: footnote;
+  -prince-float-reference: page;
+  color: #000000;
+  line-height: 1rem;
+  font-family: IBM Plex Sans, sans-serif;
+  font-size: 0.8333333333rem;
+  text-align: left;
+  font-weight: normal;
+}
+
+aside[role=doc-footnote]::footnote-call {
+  content: none;
+}
+
+aside[role=doc-footnote]::footnote-marker {
+  content: none;
+}
+
+aside[role=doc-footnote] [data-type=footnote-number] {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+a[role=doc-noteref] {
+  font-family: IBM Plex Sans, sans-serif;
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  top: -0.7em;
+  padding-right: 0.16rem;
+}
+
+a {
+  color: #027EB5;
+}
+
+blockquote {
+  margin-left: 0.25in;
+  margin-right: 0.25in;
+}
+
 nav#toc > .os-toc-title {
   font-size: 4.29981696rem;
   line-height: 3rem;
@@ -1138,34 +1181,6 @@ nav#toc > ol > .os-toc-composite-chapter > a::after {
   display: none;
 }
 
-[data-type=chapter] > [data-type=page]:not(.introduction) > ul {
-  margin-left: 24px;
-}
-
-[data-type=chapter] > [data-type=page]:not(.introduction) > ol {
-  margin-left: 24px;
-}
-
-[data-type=chapter] > [data-type=page]:not(.introduction) > section > ul {
-  margin-left: 24px;
-}
-
-[data-type=chapter] > [data-type=page]:not(.introduction) > section > ul > li > ul {
-  margin-left: 16px;
-}
-
-[data-type=chapter] > [data-type=page]:not(.introduction) > section > ul > li > ol {
-  margin-left: 16px;
-}
-
-[data-type=chapter] > [data-type=page]:not(.introduction) > section > section > ul {
-  margin-left: 24px;
-}
-
-[data-type=chapter] > [data-type=page]:not(.introduction) > section > section > ol {
-  margin-left: 24px;
-}
-
 .preface {
   column-count: 2;
   column-gap: 2.4rem;
@@ -1210,60 +1225,24 @@ nav#toc > ol > .os-toc-composite-chapter > a::after {
   font-size: 1rem;
   line-height: 1.5rem;
   text-transform: uppercase;
-  font-style: normal;
   font-weight: bold;
   margin-bottom: 0;
 }
 
 [data-type=note].learning-objectives .os-note-body > p {
-  color: #000000;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
   margin-bottom: 0;
 }
 
-[data-type=note].learning-objectives .os-note-body > ul {
+[data-type=note].learning-objectives .os-note-body > ul:not([data-labeled-item=true]) {
   margin-left: 24px;
 }
 
-[data-type=note].learning-objectives .os-note-body > ul > li {
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
+[data-type=note].learning-objectives .os-note-body > ul:not([data-labeled-item=true]) > li {
+  max-width: 5.9in;
 }
 
-[data-type=note].learning-objectives .os-note-body > ul > li::marker {
+[data-type=note].learning-objectives .os-note-body > ul:not([data-labeled-item=true]) > li::marker {
   color: #00819A;
-}
-
-[data-type=equation]:not(.unnumbered) {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.7rem;
-}
-
-[data-type=equation]:not(.unnumbered) > .os-equation-number {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translate(0, -50%);
-  font-family: Mulish, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  font-weight: bold;
-  color: #C31427;
-  margin-right: 0.7rem;
-}
-
-[data-type=equation].unnumbered {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.7rem;
 }
 
 :not(.os-note-body) > [data-type=exercise] [data-type=problem] {
@@ -1593,6 +1572,35 @@ h4.os-subtitle + .os-figure:not(.has-splash) > figure {
   vertical-align: top;
   display: inline;
   padding-top: 0.7rem;
+}
+
+[data-type=equation]:not(.unnumbered) {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.7rem;
+}
+
+[data-type=equation]:not(.unnumbered) > .os-equation-number {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-family: Mulish, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: bold;
+  color: #C31427;
+  margin-right: 0.7rem;
+}
+
+[data-type=equation].unnumbered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.7rem;
 }
 
 .os-table:not(.os-unstyled-container) {
@@ -3752,88 +3760,6 @@ h4.os-subtitle + .os-figure:not(.has-splash) > figure {
   padding-left: 4px;
 }
 
-.os-index-container {
-  column-count: 3;
-  column-gap: 32px;
-}
-
-.os-index-container > .group-by {
-  color: #000000;
-  font-family: IBM Plex Sans, sans-serif;
-  font-weight: normal;
-  padding-bottom: 0.7rem;
-}
-
-.os-index-container > .group-by > .group-label {
-  color: #000000;
-  font-family: Mulish, sans-serif;
-  font-size: 1.44rem;
-  line-height: 1.5rem;
-  font-weight: bold;
-}
-
-.os-index-container > .group-by > .os-index-item {
-  color: #000000;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
-.os-index-container > .group-by > .os-index-item > .os-term {
-  color: #000000;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  padding-right: 8px;
-}
-
-.os-index-container > .group-by > .os-index-item > .os-term-section-link {
-  content: target-counter(attr(href, url), page);
-}
-
-aside[role=doc-footnote] {
-  float: footnote;
-  -prince-float-reference: page;
-  color: #000000;
-  line-height: 1rem;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.8333333333rem;
-  text-align: left;
-  font-weight: normal;
-}
-
-aside[role=doc-footnote]::footnote-call {
-  content: none;
-}
-
-aside[role=doc-footnote]::footnote-marker {
-  content: none;
-}
-
-aside[role=doc-footnote] [data-type=footnote-number] {
-  display: inline-block;
-  margin-right: 8px;
-}
-
-a[role=doc-noteref] {
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-  top: -0.7em;
-  padding-right: 0.16rem;
-}
-
-a {
-  color: #027EB5;
-}
-
-blockquote {
-  margin-left: 0.25in;
-  margin-right: 0.25in;
-}
-
 .virtual-physics {
   border: solid;
   border-color: #1E9575;
@@ -4686,6 +4612,34 @@ blockquote {
   font-weight: 600;
 }
 
+[data-type=chapter] > [data-type=page]:not(.introduction) > ul {
+  margin-left: 24px;
+}
+
+[data-type=chapter] > [data-type=page]:not(.introduction) > ol {
+  margin-left: 24px;
+}
+
+[data-type=chapter] > [data-type=page]:not(.introduction) > section > ul {
+  margin-left: 24px;
+}
+
+[data-type=chapter] > [data-type=page]:not(.introduction) > section > ul > li > ul {
+  margin-left: 16px;
+}
+
+[data-type=chapter] > [data-type=page]:not(.introduction) > section > ul > li > ol {
+  margin-left: 16px;
+}
+
+[data-type=chapter] > [data-type=page]:not(.introduction) > section > section > ul {
+  margin-left: 24px;
+}
+
+[data-type=chapter] > [data-type=page]:not(.introduction) > section > section > ol {
+  margin-left: 24px;
+}
+
 [data-type=page] > ul:not([data-labeled-item=true]) {
   margin-left: 24px;
 }
@@ -4728,4 +4682,43 @@ blockquote {
 
 [data-type=page] > div > div > ol {
   margin-left: 24px;
+}
+
+.os-index-container {
+  column-count: 3;
+  column-gap: 32px;
+}
+
+.os-index-container > .group-by {
+  color: #000000;
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: normal;
+  padding-bottom: 0.7rem;
+}
+
+.os-index-container > .group-by > .group-label {
+  color: #000000;
+  font-family: Mulish, sans-serif;
+  font-size: 1.44rem;
+  line-height: 1.5rem;
+  font-weight: bold;
+}
+
+.os-index-container > .group-by > .os-index-item {
+  color: #000000;
+  font-family: IBM Plex Sans, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.os-index-container > .group-by > .os-index-item > .os-term {
+  color: #000000;
+  font-family: IBM Plex Sans, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding-right: 8px;
+}
+
+.os-index-container > .group-by > .os-index-item > .os-term-section-link {
+  content: target-counter(attr(href, url), page);
 }
