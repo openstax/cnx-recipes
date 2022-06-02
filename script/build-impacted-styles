@@ -8,7 +8,6 @@ if [[ $# -lt 1 ]] ; then
 fi
 
 cd "$(dirname "$0")/.." || exit 111
-source ./script/bootstrap || exit 111
 
 theme=$1
 shape_name=$2
@@ -28,6 +27,6 @@ for i in "${!book_files[@]}"; do
 
     css_file="${output_dir}/${style_name}-pdf.css"
 
-    do_progress "Generating ${css_file} $((i + 1))/${#book_files[@]}" \
-      dart styles/build/build.dart "${sass_file}" "${css_file}"
+    echo "Generating ${css_file} $((i + 1))/${#book_files[@]}"
+    dart styles/build/build.dart "${sass_file}" "${css_file}"
 done

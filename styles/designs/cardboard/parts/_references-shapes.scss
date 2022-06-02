@@ -1,26 +1,50 @@
 @import '_references-components';
 
-@include create_shape('cardboard:::ReferencesShape', (
+// There are three types of references. Two of them are modules with notes that have
+// citation links within chapters. They are styled here, in references files.
+// Third type is module with sections and paragraphs that have indentations.
+// They should be styled by ModuleWithIndentation shape.
+// In this theme there are no such cases at this moment. See module-settings.scss from Cosmos.
+
+@include create_shape('cardboard:::ReferencesWithNumberedNotesShape', (
   _components: (
-    map-merge($EOB__Container, (
-        _components: (
-            map-merge($References_ChapterArea, (
-                _components: (
-                    map-merge($Reference__Container, (
-                        _components: (
-                            $Reference__Number,
-                        )
-                    )),
-                  )
-              )),
-          )
+        map-merge($References__Container, (
+            _components: (
+                map-merge($References__ChapterArea, (
+                    _components: (
+                        map-merge($References__Note, (
+                            _components: (
+                                $References__Number,
+                            )
+                        )),
+                    )
+                )),
+            )
         )),
     ),
 ));
 
-// Reference Link
-@include create_shape('cardboard:::ReferenceLinkShape', (
+@include create_shape('cardboard:::ReferencesWithLinkedNotesShape',(
+    _components:(
+        map-merge($References__Container--WithMargin,(
+            _components:(
+                map-merge($References__Section, (
+                    _components: (
+                        map-merge($References__Note--Decreased,(
+                            _components:(
+                                $References__Link,
+                            ),
+                        ))
+                    ),
+                ))
+            ),
+        ))
+    ),
+));
+
+// References Link placed within modules
+@include create_shape('cardboard:::ReferencesCiteLinkShape', (
   _components: (
-    $CiteLink--Reference,
+    $References__CiteLink,
   ),
 ));
