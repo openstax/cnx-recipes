@@ -5,9 +5,6 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;500;700&display=swap&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&display=swap&subset=latin,latin-ext");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&display=swap&subset=latin,latin-ext");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;500;700&display=swap&subset=latin,latin-ext");
-@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&display=swap&subset=latin,latin-ext");
 nav#toc > ol > .os-toc-unit > a > .os-text,
 nav#toc > ol > .os-toc-unit > a,
 nav#toc > ol > .os-toc-unit > ol > .os-toc-chapter > a > .os-number,
@@ -257,6 +254,15 @@ iframe {
   display: none;
 }
 
+blockquote {
+  margin-left: 0.25in;
+  margin-right: 0.25in;
+}
+
+a {
+  color: #027EB5;
+}
+
 .os-eoc.os-glossary-container {
   page: eoc;
   prince-page-group: start;
@@ -500,7 +506,6 @@ iframe {
     margin-top: 0.7rem;
   }
 }
-/* stylelint-disable-next-line meowtec/no-px */
 /* stylelint-disable-next-line meowtec/no-px */
 /* stylelint-disable-next-line meowtec/no-px */
 [data-type=chapter] > h1[data-type=document-title] .os-number {
@@ -771,8 +776,38 @@ div[data-type=composite-page].os-eob {
   prince-background-image-resolution: 200dpi;
 }
 
-a {
-  color: #027EB5;
+aside[role=doc-footnote] {
+  float: footnote;
+  -prince-float-reference: page;
+  color: #000000;
+  line-height: 1rem;
+  font-family: IBM Plex Sans, sans-serif;
+  font-size: 0.8333333333rem;
+  text-align: left;
+  font-weight: normal;
+}
+
+aside[role=doc-footnote]::footnote-call {
+  content: none;
+}
+
+aside[role=doc-footnote]::footnote-marker {
+  content: none;
+}
+
+aside[role=doc-footnote] [data-type=footnote-number] {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+a[role=doc-noteref] {
+  font-family: IBM Plex Sans, sans-serif;
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  top: -0.7em;
+  padding-right: 0.16rem;
 }
 
 nav#toc > .os-toc-title {
@@ -1027,16 +1062,11 @@ nav#toc > ol > .os-toc-composite-chapter > a::after {
   font-size: 1rem;
   line-height: 1.5rem;
   text-transform: uppercase;
-  font-style: normal;
   font-weight: bold;
   margin-bottom: 0;
 }
 
 [data-type=chapter] > [data-type=page] > section.learning-objectives > p {
-  color: #000000;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
   margin-bottom: 0;
 }
 
@@ -1045,52 +1075,11 @@ nav#toc > ol > .os-toc-composite-chapter > a::after {
 }
 
 [data-type=chapter] > [data-type=page] > section.learning-objectives > ul > li {
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
+  max-width: 5.9in;
 }
 
 [data-type=chapter] > [data-type=page] > section.learning-objectives > ul > li::marker {
   color: #0074BC;
-}
-
-aside[role=doc-footnote] {
-  float: footnote;
-  -prince-float-reference: page;
-  color: #000000;
-  line-height: 1rem;
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 0.8333333333rem;
-  text-align: left;
-  font-weight: normal;
-}
-
-aside[role=doc-footnote]::footnote-call {
-  content: none;
-}
-
-aside[role=doc-footnote]::footnote-marker {
-  content: none;
-}
-
-aside[role=doc-footnote] [data-type=footnote-number] {
-  display: inline-block;
-  margin-right: 8px;
-}
-
-a[role=doc-noteref] {
-  font-family: IBM Plex Sans, sans-serif;
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-  top: -0.7em;
-  padding-right: 0.16rem;
-}
-
-blockquote {
-  margin-left: 0.25in;
-  margin-right: 0.25in;
 }
 
 .introduction > .os-figure.has-splash {
@@ -1613,12 +1602,20 @@ h4.os-subtitle + .os-figure:not(.has-splash) > figure {
   margin-top: 1rem;
 }
 
-[data-type=problem] img {
-  max-width: 100%;
+.os-eoc .os-problem-container > p + .os-figure > figure {
+  margin-top: 1rem;
 }
 
-[data-type=problem] h4[data-type=solution-title] + .has-first-element > .first-element > img {
+[data-type=solution] > h4[data-type=solution-title] + .has-first-element > .first-element > img {
   margin-top: 1rem;
+}
+
+.os-eoc .os-problem-container > p + [data-type=media] > img {
+  margin-top: 1rem;
+}
+
+[data-type=problem] img {
+  max-width: 100%;
 }
 
 [data-type=problem] > div > ol > li > .os-figure:first-child img {
@@ -1635,10 +1632,6 @@ h4.os-subtitle + .os-figure:not(.has-splash) > figure {
 
 [data-type=exercise-question] img {
   max-width: 100%;
-}
-
-[data-type=exercise-question] h4[data-type=solution-title] + .has-first-element > .first-element > img {
-  margin-top: 1rem;
 }
 
 [data-type=exercise-question] > div > ol > li > .os-figure:first-child img {
@@ -1734,23 +1727,6 @@ h4.os-subtitle + .os-figure:not(.has-splash) > figure {
   margin-bottom: 0.7rem;
 }
 
-.ethnographic-sketches p:first-of-type > [data-type=title] {
-  font-size: 1.2rem;
-  line-height: 1.5rem;
-  font-weight: bold;
-}
-
-.ethnographic-sketches p > [data-type=title] {
-  font-size: 1rem;
-  line-height: 1.5rem;
-  font-weight: bold;
-}
-
-.ethnographic-sketches > .body > [data-type=note] > .os-title > .os-title-label {
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
 .fieldwork-activity > .os-title {
   font-family: Mulish, sans-serif;
   font-weight: 900;
@@ -1832,23 +1808,6 @@ h4.os-subtitle + .os-figure:not(.has-splash) > figure {
   margin-bottom: 0.7rem;
 }
 
-.fieldwork-activity p:first-of-type > [data-type=title] {
-  font-size: 1.2rem;
-  line-height: 1.5rem;
-  font-weight: bold;
-}
-
-.fieldwork-activity p > [data-type=title] {
-  font-size: 1rem;
-  line-height: 1.5rem;
-  font-weight: bold;
-}
-
-.fieldwork-activity > .body > [data-type=note] > .os-title > .os-title-label {
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
 .profiles-anthropology > .os-title {
   font-family: Mulish, sans-serif;
   font-weight: 900;
@@ -1928,23 +1887,6 @@ h4.os-subtitle + .os-figure:not(.has-splash) > figure {
 .profiles-anthropology > .os-note-body ul {
   margin-left: 24px;
   margin-bottom: 0.7rem;
-}
-
-.profiles-anthropology p:first-of-type > [data-type=title] {
-  font-size: 1.2rem;
-  line-height: 1.5rem;
-  font-weight: bold;
-}
-
-.profiles-anthropology p > [data-type=title] {
-  font-size: 1rem;
-  line-height: 1.5rem;
-  font-weight: bold;
-}
-
-.profiles-anthropology > .body > [data-type=note] > .os-title > .os-title-label {
-  font-size: 1rem;
-  line-height: 1.5rem;
 }
 
 .media-video {
@@ -2383,7 +2325,7 @@ h4.os-subtitle + .os-figure:not(.has-splash) > figure {
 }
 
 .os-references-container {
-  margin-bottom: 0.7rem;
+  margin-bottom: 1.4rem;
 }
 
 .os-references-container > section > p {
