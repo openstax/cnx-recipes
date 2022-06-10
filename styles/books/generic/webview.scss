@@ -166,9 +166,37 @@
 //Code
 @include add_settings((
     Code: (
-        _selectors: ('code'),
-        'Code:::color': (_ref: 'colorMap:::CodeText'),
-        'Code:::background-color': (_ref: 'colorMap:::CodeBackground'),
+        _selectors: ('[data-type="code"]'),
+        'Code:::font-family': (_ref: 'typography:::fontOption2'),
+    ),
+    BlueCode: (
+        _selectors: ('[data-type="code"].blue-code'),
+        'CodeWithColor:::color': (_ref: 'colorMap:::BlueCode'),
+    ),
+    RedCode: (
+        _selectors: ('[data-type="code"].blue-code'),
+        'CodeWithColor:::color': (_ref: 'colorMap:::RedCode'),
+    ),
+));
+
+@include add_settings((
+    CodeBlock: (
+        _selectors: ('pre[data-type="code"]'),
+    ),
+    CenteredCodeBlock: (
+        _selectors: ('pre[data-type="code"].centered-code'),
+        'CodeBlockCentered:::color': (_ref: 'colorMap:::baseColor'),
+    ),
+));
+
+//Functions
+@include add_settings((
+    Function: (
+        _selectors: ('.primary-function, .secondary-function'),
+        'Function:::font-family': (_ref: 'typography:::fontOption2'),
+    ),
+    PrimaryFunction: (
+        _selectors: ('.primary-function'),
     ),
 ));
 
@@ -219,29 +247,6 @@
     ),
 ));
 
-//Code
-@include add_settings((
-    Code: (
-        _selectors: ('[data-type="code"]'),
-        'Code:::font-family': (_ref: 'typography:::fontOption2'),
-    ),
-));
-
-//Functions
-@include add_settings((
-    Function: (
-        _selectors: ('.primary-function, .secondary-function'),
-        'Function:::font-family': (_ref: 'typography:::fontOption2'),
-    ),
-));
-
-@include add_settings((
-    PrimaryFunction: (
-        _selectors: ('.primary-function'),
-        'PrimaryFunction:::font-weight': bold,
-      ),
-));
-
 //Annotations
 @include add_settings((
     AnnotationText: (
@@ -290,6 +295,13 @@
 @include use('Blockquote', 'webview:::BlockquoteShape');
 //Code
 @include use('Code', 'webview:::CodeShape');
+@include use('RedCode', 'webview:::CodeWithColorShape');
+@include use('BlueCode', 'webview:::CodeWithColorShape');
+@include use('CodeBlock', 'webview:::CodeBlockShape');
+@include use('CenteredCodeBlock', 'webview:::CodeBlockCenteredShape');
+//Functions
+@include use('Function', 'webview:::FunctionShape');
+@include use('PrimaryFunction', 'webview:::FunctionPrimaryShape');
 //Keyterm
 @include use('KeyTerm', 'webview:::KeyTermShape');
 //Chapter intro
