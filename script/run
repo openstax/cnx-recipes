@@ -9,9 +9,8 @@ do
   shift
 done
 
-if [ ! -d node_modules ]
-then
-  docker-compose run --rm command "./script/setup"
-fi
-docker-compose run --rm "${env_vars[@]}" command "$@"
-docker-compose run --rm command /bin/bash -c "find ! -path './node_modules/*' ! -path './venv/*' ! -path './vendor/*' -user root -exec chown \"\$(stat -c '%u:%g' ./)\" '{}' \\;"
+docker build -t cnx-recipes-image .
+docker run -d -t --rm --mount type=bind,source="$PWD",target=/code --name styles_temp_container cnx-recipes-image /bin/bash
+echo "Executing $@..."
+docker exec "${env_vars[@]}" styles_temp_container "$@"
+docker stop styles_temp_container > /dev/null    # mutes "styles_temp_container" output

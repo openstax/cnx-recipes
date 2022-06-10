@@ -16,11 +16,17 @@ $bandColor: #24739E;
 @include add_settings((
   ChapterIntro: (
     _selectors: (".introduction"),
-    'OutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
-    'IntroductionTitleIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-intro2.svg")) no-repeat top left,
-    'IntroContentHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
+    'H2IntroTextHeaderIcon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-intro2.svg")) no-repeat top left,
+    'H2IntroTextHeader:::color': (_ref: "colorMap:::introContentHeaderColor"),
     'SplashImgMediaBar:::background-color': (_ref: "colorMap:::chapterTitleBgColor"),
     'SplashImgMediaBar:::border-top-color': (_ref: "colorMap:::chapterTitleBorderColor"),
+  )
+));
+
+@include add_settings((
+  ChapterOutline: (
+    _selectors: (".os-chapter-outline"),
+    'ChapterOutlineTitle:::color': (_ref: "colorMap:::chapterOutlineTitleColor"),
   )
 ));
 
@@ -89,7 +95,7 @@ $bandColor: #24739E;
     'H5Title:::font-family': (_ref: 'typography:::baseFont'),
   ),
   ReviewQuestionsTitles: (
-    _selectors: (".os-review-questions-container"),    
+    _selectors: (".os-review-questions-container"),
     'H2WithIcon:::font-family': (_ref: 'typography:::titleFont'),
     'H2WithIcon:::color': (_ref: "colorMap:::titleColor"),
     'H2Icon:::background': url(toDataUri("svg+xml", "designs/cardboard/resources/cardboard-suggested.svg")) no-repeat top left,
@@ -271,15 +277,25 @@ $bandColor: #24739E;
 @include use('CenteredText', 'common:::CenteredTextShape');
 
 //Other settings
-
 @include use('Toc', 'cardboard:::NoUnitToc');
-@include use('ChapterIntro', 'cardboard:::ChapterIntroShape');
-@include use('Figure','cardboard:::FigureShape');
 @include use('LearningObjectives', 'cardboard:::LearningObjectivesShape');
-@include use('Link', 'cardboard:::LinkShape');
+
+// Chapter Intro
+@include use('ChapterIntro', 'cardboard:::ChapterIntroShape');
+@include use('ChapterOutline', 'cardboard:::ChapterOutlineShape');
+
+//Figures
+@include use('Figure','cardboard:::FigureShape');
+@include use('FigureAfterSubtitle', 'cardboard:::FigureTopSpacingShape');
+@include use('FigureAfterEocPara', 'cardboard:::FigureTopSpacingShape');
+@include use('ImageAfterSolutionTitle', 'cardboard:::ImageTopSpacingShape');
+@include use('ImageAfterEocPara', 'cardboard:::ImageTopSpacingShape');
+@include use('FigureFromExercisesProblem','cardboard:::FigureFromExercisesShape');
+@include use('FigureFromInjectedQuestion','cardboard:::FigureFromExercisesShape');
 
 // Titles
 
+// Titles
 @include use('PageTitles', 'cardboard:::PageTitlesShape');
 @include use('ChapterTitles', 'cardboard:::ChapterTitlesShape');
 @include use('KeyTermsTitles', 'cardboard:::EocCompositePageTitlesShape');

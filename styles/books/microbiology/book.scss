@@ -14,21 +14,26 @@ $ChapterIntroType: fullWidth;
 @import '../../designs/carnival/pdf/folio';
 
 @include add_settings((
-  LearningObjectives: (
-    _selectors: ('[data-type="chapter"] > [data-type="page"] > section.learning-objectives'),
-    'Paragraph:::color': (_ref: 'colorMap:::fontBodyColor'),
-    'Paragraph:::font-family': (_ref: 'typography:::sansFont'),
-    'H3LearningObjectivesTitle:::color': (_ref: 'colorMap:::microbioHeaderColor'),
-    'H3LearningObjectivesTitle:::font-family': (_ref: 'typography:::titleOption1Font'),
-    'ListItem:::font-family': (_ref: 'typography:::sansFont'),
-    'ListDot:::color': (_ref: 'colorMap:::microbioHeaderColor'),
-  ),
-  FullWidthChapterIntro: (
+  ChapterIntro: (
     _selectors: (".introduction"),
     'SplashFigureBg:::background-color': (_ref: "colorMap:::microbioIntroColor"),
-    'OutlineFullWidthTitle:::color': (_ref: "colorMap:::microbioIntroColor"),
-    'OutlineFullWidth:::border-bottom-color': (_ref: "colorMap:::microbioIntroColor"),
   ),
+  ChapterOutline: (
+    _selectors: (".os-chapter-outline"),
+    'ChapterOutlineTitle:::color': (_ref: "colorMap:::microbioIntroColor"),
+    'ChapterOutlineContainer:::border-bottom-color': (_ref: "colorMap:::microbioIntroColor"),
+  ),
+));
+
+@include add_settings((
+  LearningObjectivesSection: (
+    _selectors: ('[data-type="chapter"] > [data-type="page"] > section.learning-objectives'),
+    'H3ObjectivesTitle:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+    'ListDot:::color': (_ref: 'colorMap:::microbioHeaderColor'),
+  ),
+));
+
+@include add_settings((
   ClinicalFocusNote:(
     _selectors:(".clinical-focus"),
     group-border-color: (_ref: 'colorMap:::microbioClinicalFocusColor'),
@@ -220,10 +225,8 @@ $ChapterIntroType: fullWidth;
 ));
 
 @include use('BookRoot', "common:::BookRoot");
-@include use('Link', "carnival:::Link");
 @include use('Preface','carnival:::Preface'); //remove when clean up work for lists be done
 @include use('TOC', 'carnival:::NoUnitToc');
-@include use('FullWidthChapterIntro', 'carnival:::FullWidthChapterIntroShape');
 @include use('ChapterModuleTitles', 'carnival:::ChapterModuleTitlesShape'); //remove when clean up work for lists be done
 @include use('Footnote', 'common:::FootnoteShape');
 @include use('FootnoteCall', 'common:::FootnoteCallShape');
@@ -231,14 +234,25 @@ $ChapterIntroType: fullWidth;
 @include use('UnnumberedUnstyledTable', 'carnival:::UnnumberedUnstyledTable');
 @include use('Index', 'carnival:::IndexShape');
 @include use('AnswerKeyInline', 'carnival:::AnswerKeyInlineShape');
-@include use('LearningObjectives', 'carnival:::LearningObjectivesShape');
+@include use('LearningObjectivesSection', 'carnival:::LearningObjectivesShape');
 @include use('AppendixGlossary', 'carnival:::AppendixGlossaryShape');
 @include use('ContentExercises','carnival:::ExerciseShape');
-@include use('Figure','carnival:::FigureShape');
 @include use('Equation', 'carnival:::EquationShape');
-@include use('Blockquote', "carnival:::BlockquoteShape");
 
-//EOC
+// Chapter Intro
+@include use('ChapterIntro', 'carnival:::ChapterIntroShape');
+@include use('ChapterOutline', 'carnival:::ChapterOutlineShape');
+
+// Figures
+@include use('Figure','carnival:::FigureShape');
+@include use('FigureAfterSubtitle', 'carnival:::FigureTopSpacingShape');
+@include use('FigureAfterEocPara', 'carnival:::FigureTopSpacingShape');
+@include use('ImageAfterSolutionTitle', 'carnival:::ImageTopSpacingShape');
+@include use('ImageAfterEocPara', 'carnival:::ImageTopSpacingShape');
+@include use('FigureFromExercisesProblem','carnival:::FigureFromExercisesShape');
+@include use('FigureFromInjectedQuestion','carnival:::FigureFromExercisesShape');
+
+// EOC
 @include use('EocSummary', 'carnival:::EocSummary');
 @include use('MultipleChoiceCompChapPage','carnival:::EOCAssesmentsShape');
 @include use('CriticalThinkingCompChapPage','carnival:::EOCAssesmentsShape');
@@ -247,7 +261,7 @@ $ChapterIntroType: fullWidth;
 @include use('MatchingCompChapPage','carnival:::EOCAssesmentsShape');
 @include use('TrueFalseCompChapPage','carnival:::EOCAssesmentsShape');
 
-//notes
+// Notes
 @include use('ClinicalFocusNote', 'carnival:::BoxedNoteShape');
 @include use('CaseInPointNote', 'carnival:::BoxedNoteShape');
 @include use('EyeOnEthicsNote', 'carnival:::LogoNoteBoxedShape');
@@ -257,10 +271,10 @@ $ChapterIntroType: fullWidth;
 @include use('MicroConnectionsNote', 'carnival:::IconNoteShape');
 @include use('FakeTitleTable', 'carnival:::FakeTitleTableShape');
 
-//Lists
+// Lists
 @include use('PageLists', 'carnival:::PageListsShape');
 
-//Titles
+// Titles
 @include use('ChapterTitles', 'carnival:::ChapterTitlesShape');
 @include use('PageTitles', 'carnival:::PageTitlesShape');
 @include use('EocCompositePageTitles', 'carnival:::EocCompositePageTitlesShape');

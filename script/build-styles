@@ -1,6 +1,5 @@
 #!/bin/bash
 cd "$(dirname "$0")/.." || exit 111
-source ./script/bootstrap || exit 111
 
 arg1=$1
 
@@ -28,8 +27,8 @@ for i in "${!STYLE_NAMES[@]}"; do
   sass_file="${styles_root}/${style_name}/book.scss"
   css_file="${output_dir}/${style_name}-pdf.css"
 
-  do_progress "Generating ${css_file} $((i + 1))/${#STYLE_NAMES[@]}" \
-    dart styles/build/build.dart "${sass_file}" "${css_file}"
+  echo "Generating ${css_file} $((i + 1))/${#STYLE_NAMES[@]}"
+  dart styles/build/build.dart "${sass_file}" "${css_file}"
 
   #disable web styles for the time being
   #do_progress "Building webpackable _web-styles.json" \
