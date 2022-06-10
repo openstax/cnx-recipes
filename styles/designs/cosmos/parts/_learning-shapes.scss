@@ -1,14 +1,13 @@
 @import 'learning-components';
-@import 'titles-components';
 @import 'lists-components';
 
-@include create_shape('cosmos:::LearningObjectivesModuleShape', (
+@include create_shape('cosmos:::LearningObjectivesShape', (
   _components: (
-    map-merge($LearningObjectives__Container, (
+    map-merge($Objectives__Container, (
       _components: (
-        $H3--LearningObjectives,
-        $LearningObjectives__Paragraph,
-        $UnorderedList--LearningObjectives
+        $H3--Objectives,
+        $Objectives__Paragraph,
+        $UnorderedList--FirstLevel,
         ),
     ))
   ),
@@ -16,15 +15,15 @@
 
 @include create_shape('cosmos:::LearningObjectivesNumberedShape', (
   _components: (
-    map-merge($LearningObjectives__Container, (
+    map-merge($Objectives__Container, (
       _components: (
-        $H3--LearningObjectives,
-        $LearningObjectives__Paragraph,
-        map-merge($UnorderedList--NumberedLearningObjectives, (
+        $H3--Objectives,
+        $Objectives__Paragraph,
+        map-merge($LearningObjectives__UnorderedList--WithoutBullets, (
           _components: (
-            map-merge($UnorderedList--NumberedLearningObjectives__Item, (
+            map-merge($LearningObjectives__ListItem--Flex, (
               _components: (
-                $LearningObjectives--Numbered__Token,
+                $LearningObjectives__Token--Number,
               )
             )),
           )
@@ -32,4 +31,20 @@
       )
     )),
   )
+));
+
+@include create_shape('cosmos:::ChapterObjectivesShape', (  // Used in economics books
+    _components: (
+        map-merge($Objectives__Container, (
+            _components: (
+                $H3--Objectives,
+                map-merge($ChapterObjectives__NoteBody, (
+                    _components: (
+                        $Objectives__Paragraph,
+                        $UnorderedList--FirstLevel,
+                    )
+                )),
+            )
+        )),
+    )
 ));

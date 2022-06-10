@@ -1,3 +1,5 @@
+// Containers
+
 $Exercise__Container: (
       _name: "ExerciseContainer",
       _subselector: ' [data-type="exercise"]',
@@ -20,6 +22,8 @@ $Exercise__Container--MaterialSet2: (
         padding-right: v-spacing(1),
       )
 );
+
+$Exercise__Container--FromExample: empty_wrapper(ExerciseFromExample, '');
 
 $ExercisesModule__Container: empty_wrapper(ExercisesModuleContainer, '');
 
@@ -45,6 +49,8 @@ $Exercise__Problem__Container: exerciseChildContainer((child: problem, name: "Pr
 $Exercise__Problem__Container--WithImageTableOnTop: exerciseChildContainer((child: problem, name: "ProblemContainerWithImageTableOnTop", hasImageTableOnTop: true, hasInlineListOnTop: false));
 $Exercise__Problem__Container--WithInlineListOnTop: exerciseChildContainer((child: problem, name: "ProblemContainerWithInlineLitsOnTop", hasImageTableOnTop: false, hasInlineListOnTop: true));
 
+$Exercise__Problem--FromExample: empty_wrapper(ExerciseProblemFromExample, ' > [data-type="problem"]'); // ToDo: remove "Wrapper" from component with properties and use here for empty wrapper
+
 // Solution components
 $Exercise__Solution__Wrapper: (
   _name: "SolutionWrapper",
@@ -58,11 +64,15 @@ $Exercise__Solution__Wrapper: (
   )
 );
 
-
 $Exercise__Solution__Container: exerciseChildContainer((child: solution, name: "SolutionContainer", hasImageTableOnTop: false, hasInlineListOnTop: false));
 $Exercise__Solution__Container--WithImageTableOnTop: exerciseChildContainer((child: solution, name: "SolutionContainerWithImageTableOnTop", hasImageTableOnTop: true, hasInlineListOnTop: false));
 $Exercise__Solution__Container--WithInlineListOnTop: exerciseChildContainer((child: solution, name: "SolutionContainerWithInlineListOnTop", hasImageTableOnTop: false, hasInlineListOnTop: true));
 
+$Exercise__Solution--FromExample: empty_wrapper(ExerciseSolutionFromExample, ' > [data-type="solution"]'); // ToDo: remove "Wrapper" from component with properties and use here for empty wrapper
+
+// Commentary components
+
+$Exercise__Commentary: empty_wrapper(ExerciseCommentary, ' > [data-type="commentary"]');
 
 // General problem and solution components
 $Exercise__ProblemSolution__Paragraph:(
@@ -131,4 +141,112 @@ $InjectedExercise__Solution__Wrapper: (
   _properties: (
     margin-bottom: (enum('ValueSet:::OPTIONAL'), v-spacing(2)),
   )
+);
+
+// Exercise titles components
+
+$Exercise__Title--Problem: (
+    _name: "ProblemTitle",
+    _subselector: ' [data-type="title"]',
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        color: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        line-height: line-height(0),
+        font-weight: bold,
+    )
+);
+
+$Exercise__Title--ProblemDefault: ( //title created by recipe for statistics
+    _name: "DefaultProblemTitle",
+    _subselector: ' > [data-type="problem-title"]',
+    _properties: (
+        display: flex,
+        flex-direction: row,
+        align-items: center,
+    )
+);
+
+$Exercise__Title--Solution: (
+    _name: "SolutionTitle",
+    _subselector: ' > [data-type="solution-title"]',
+    _properties: (
+        display: flex,
+        flex-direction: row,
+        align-items: center,
+    )
+);
+
+$Exercise__Title--Commentary: (
+    _name: "CommentaryTitle",
+    _subselector: ' > [data-type="commentary-title"]',
+    _properties: (
+        display: flex,
+        flex-direction: row,
+        align-items: center,
+    )
+);
+
+$Exercise__Title__Icon--Solution: (
+    _name: "ExerciseTitleSolutionIcon",
+    _subselector: '::before',
+    _properties: (
+        background: enum('ValueSet:::REQUIRED'),
+        background-size: contain,
+        height: 1rem,
+        width: 1rem,
+        padding-right: h-spacing(1),
+        content: "''",
+    )
+);
+
+$Exercise__Title__Icon--Commentary: (
+    _name: "ExerciseTitleCommentaryIcon",
+    _subselector: '::before',
+    _properties: (
+        background: enum('ValueSet:::REQUIRED'), //has different icon than solution
+        background-size: contain,
+        height: 1rem,
+        width: 1rem,
+        padding-right: h-spacing(1),
+        content: "''",
+    )
+);
+
+$Exercise__Title__Icon--Problem: ( 
+    _name: "ExerciseTitleProblemIcon",
+    _subselector: '::before',
+    _properties: (
+        background: enum('ValueSet:::REQUIRED'), //has different icon than solution and commentary
+        background-size: contain,
+        height: 1rem,
+        width: 1rem,
+        padding-right: h-spacing(1),
+        content: "''",
+    )
+);
+
+$Exercise__Title__Label: (
+    _name: "ExerciseTitleLabel",
+    _subselector: ' > .os-title-label',
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        color: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        line-height: line-height(0),
+        font-weight: bold,
+    )
+);
+
+$Exercise__Title__Number: (
+    _name: "ExerciseTitleNumber",
+    _subselector: ' > .os-number',
+    _properties: (
+        font-family: enum('ValueSet:::REQUIRED'),
+        color: enum('ValueSet:::REQUIRED'),
+        font-size: font-scale(0),
+        line-height: line-height(0),
+        font-weight: bold,
+        margin-left: h-spacing(1),
+    )
 );
