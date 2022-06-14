@@ -1,3 +1,8 @@
+# THIS REPO IS NOW FOR ISSUES ONLY
+
+Styles are maintained in https://github.com/openstax/ce-styles
+Recipes are maintained in https://github.com/openstax/cookbook
+
 [![Coverage][codecov-image]][codecov-url]
 
 **Note For Windows Users:** If your username contains whitespace, the setup and installation may not work. Create a new user without whitespace in the username in order to succesfully complete installation.
