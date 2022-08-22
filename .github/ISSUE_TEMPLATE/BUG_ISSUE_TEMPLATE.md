@@ -1,5 +1,5 @@
 ---
-name: Issue Template
+name: Bug and Change Request Issue Template
 about: Please use this template for any and all change requests or bug issues.
 title: ''
 assignees: ''
