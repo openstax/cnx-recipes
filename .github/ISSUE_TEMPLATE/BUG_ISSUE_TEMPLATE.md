@@ -5,7 +5,7 @@ title: ''
 assignees: ''
 ---
 
-<!-- Please add the book labels and the title of the book in the title of this issue.  -->
+<!-- Please add the title of the book in the title of this issue and attach the appropriate book: labels.  -->
 
 # Brief Description of Scenario
 <!-- Please give an overview of the issue, and include screenshots if available -->
@@ -14,7 +14,9 @@ assignees: ''
 <!-- Does this happen for every instance? Is there a discernable pattern of occurrences? Please describe below. -->
 
 # Acceptance Criteria
-
+<!-- OPENSTAX ONLY: Define the requirements to be met to close card ("definition of done"). Describe how the product should look/work when the card is finished
+  Should not include implementation details. -->
+  
 # Sample Mark-Up
 ```
 <!-- Please paste here if applicable. -->
