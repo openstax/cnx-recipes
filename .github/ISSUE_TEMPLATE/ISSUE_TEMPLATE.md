@@ -5,17 +5,33 @@ title: ''
 assignees: ''
 ---
 
-<!-- Please add the title of the book in the title of this issue and attach the appropriate book: labels.  -->
+<!-- Please include the book title in the issue title and attach the appropriate book: labels.  -->
 
 # Summary & Screenshots
-<!-- Please give an overview of the issue, and include screenshots of both web and PDF -->
+<!-- Please give an overview of the issue including screenshots of both web and PDF -->
 
-This issue happens *(Check all that apply)*
+# Sample Mark-Up
+```
+<!-- Paste CNXML here. -->
+```
+
+# Issue Occurrence(s)
+<!-- Check all that apply -->
+ **Location**
 - [ ] In PDF
 - [ ] In Web
+
+**Frequency**
 - [ ] At every instance of the content
 - [ ] Irregularly
-- [ ] Other (Please describe)
+- [ ] Other (Please describe below)
+
+# Content Location(s)
+- **osbooks repo:** 
+- **collection slug:**
+- **ref/branch:**
+- **chapter/section:** 
+- **surrounding text:** 
 
 # Acceptance Criteria
 <!-- OPENSTAX ONLY -->
@@ -23,18 +39,3 @@ This issue happens *(Check all that apply)*
 ## PDF
 
 ## Web
-
-  
-# Sample Mark-Up
-```
-<!-- Paste CNXML here. -->
-```
-
-# Location(s)
-- **osbooks repo:** 
-- **collection slug:**
-- **ref/branch:**
-- **chapter/section:** 
-- **surrounding text:** 
-
-
